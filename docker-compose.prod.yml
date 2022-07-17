@@ -1,0 +1,25 @@
+version: "3"
+services:
+  installer:
+    environment:
+      - ENV_DESCRIPTION=default,prod
+  npm_build:
+    build: containers/npm
+    environment:
+      # we don't set NODE_ENV as production, as that is for serving node requests, not building stuff.
+      - PHP_WEB_BUGS_BASE_URL=https://api.phpopendocs.com
+      - ENV_DESCRIPTION=default,prod
+    entrypoint: ["bash", "/var/app/containers/npm/build_prod_assets.sh"]
+    volumes:
+      - .:/var/app
+  php_fpm:
+    environment:
+      - ENV_DESCRIPTION=default,prod
+  varnish:
+    depends_on:
+      - nginx
+      - php_fpm
+    ports:
+      - "8007:80"
+    environment:
+      - ENV_DESCRIPTION=default,prod

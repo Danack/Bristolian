@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "h",
+    "module": "ES6",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "outDir": "./build/",
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "target": "ES6"
+  },
+  "include": [
+    "./docs/tsx/**/**/*.tsx",
+    "./docs/tsx/**/**/*.ts"
+  ]
+}

@@ -1,0 +1,82 @@
+version: "3"
+services:
+  installer:
+    build: containers/installer
+    environment:
+      - COMPOSER_CACHE_DIR=/var/app/var/cache/composer
+      - COMPOSER_ALLOW_SUPERUSER=1
+    networks:
+      default_network:
+    volumes:
+      - .:/var/app
+  npm:
+    build: containers/npm
+  #  ports:
+  #    - 8888:8888
+    volumes:
+      - .:/var/app
+  npm_dev_build:
+    build: containers/npm_dev_build
+  #  ports:
+  #    - 8888:8888
+    volumes:
+      - .:/var/app
+  php_fpm:
+    build: containers/php_fpm
+    image: bristolian_php_fpm
+    environment:
+      - COMPOSER_CACHE_DIR=/var/app/var/cache/composer
+      - COMPOSER_ALLOW_SUPERUSER=1
+    networks:
+      default_network:
+    volumes:
+      - .:/var/app
+  php_fpm_debug:
+    build: containers/php_fpm_debug
+    environment:
+      - COMPOSER_CACHE_DIR=/var/app/var/cache/composer
+      - COMPOSER_ALLOW_SUPERUSER=1
+      - PHP_IDE_CONFIG="serverName=PHP_OPENDOCS_DEBUG"
+    depends_on:
+      - php_fpm
+    networks:
+      default_network:
+    volumes:
+      - .:/var/app
+  nginx:
+    build: containers/nginx
+    depends_on:
+      - php_fpm
+    volumes:
+      - .:/var/app
+    networks:
+      default_network:
+        aliases:
+          - internal.bristolian.org
+  redis:
+    image: redis:6.0.10
+    volumes:
+      - .:/var/app
+    command: ["redis-server", "/var/app/containers/redis/config/redis.conf"]
+    networks:
+      default_network:
+  supervisord:
+    build: containers/supervisord
+    depends_on:
+      - redis
+    volumes:
+      - .:/var/app
+  varnish:
+    build: containers/varnish
+    environment:
+      CACHE_SIZE: 128m
+    networks:
+      default_network:
+    volumes:
+      - ./:/var/app
+    depends_on:
+      - nginx
+      - php_fpm
+networks:
+  default_network:
+

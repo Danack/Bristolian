@@ -1,0 +1,121 @@
+
+.bristolian_content {
+  background-color: var(--content_panel_background_color);
+  color: var(--content_panel_text_color);
+
+  line-height: 20px;
+
+  h1 {
+    margin-block-start: 0.5em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 8px;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+
+  h1 {
+    margin-bottom: 8px;
+  }
+
+  h1, h2 {
+    text-decoration-line: underline;
+    text-decoration-thickness: 0.1px;
+    text-underline-offset: 0.15em;
+    text-decoration-color: var(--content_panel_text_color_semi_transparent);
+  }
+
+  h3, h4, h5 {
+    text-decoration-line: none;
+  }
+
+  p + p {
+    padding-top: 8px;
+  }
+
+  // These are applied by default
+  h1 {
+    font-size: 2.4em;
+  }
+  h2 {
+    margin-top: 24px;
+    font-size: 2.0em;
+  }
+  h3 {
+    margin-top: 16px;
+    font-size: 1.4em;
+  }
+  h4 {
+    margin-top: 8px;
+    font-size: 1.2em;
+  }
+  h5 {
+    margin-top: 8px;
+    font-size: 1.0em;
+  }
+
+  @media (min-width: $screen_break_large) {
+    // Customise margin on larger devices.
+    h1 {
+    }
+
+    h2 {
+      margin-top: 36px;
+    }
+
+    h3 {
+      margin-top: 24px;
+    }
+
+    h4 {
+      margin-top: 8px;
+    }
+    h5 {
+    }
+  }
+
+  a {
+    color: var(--standard_link_color);
+  }
+
+  a:hover, a:focus {
+    color: var(--standard_link_hover_color);
+  }
+
+  p {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+  }
+
+  ul {
+    padding-left: 20px;
+    line-height: 20px;
+  }
+
+  li+li {
+    padding-top: 12px;
+  }
+
+  code {
+    font-family: Inconsolata, monospace;
+  }
+
+  h1 .heading-permalink,
+  h2 .heading-permalink,
+  h3 .heading-permalink,
+  h4 .heading-permalink,
+  h5 .heading-permalink,
+  h6 .heading-permalink{
+    visibility: hidden;
+  }
+
+  h1:hover .heading-permalink,
+  h2:hover .heading-permalink,
+  h3:hover .heading-permalink,
+  h4:hover .heading-permalink,
+  h5:hover .heading-permalink,
+  h6:hover .heading-permalink{
+    visibility: visible;
+  }
+}

@@ -1,0 +1,35 @@
+
+.bristolian_prev_next {
+
+  color: var(--prev_next_text_color);
+  background-color: var(--prev_next_background_color);
+  border-top: 1px solid var(--prev_next_border_color);
+  border-bottom: 1px solid var(--prev_next_border_color);
+  width: 100%;
+
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  .bristolian_prev_next_container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .bristolian_prev {
+  }
+
+  .bristolian_next {
+  }
+
+  a {
+    text-decoration: none;
+    //padding: 12px;
+    color: var(--prev_next_link_color);
+    border:0;
+    //text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  }
+
+  a:hover, a:focus {
+    color: var(--prev_next_link_hover_color);
+  }
+}

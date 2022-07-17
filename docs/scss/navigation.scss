@@ -1,0 +1,45 @@
+
+.bristolian_navigation {
+
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  color: var(--navigation_text_color);
+  background-color: var(--navigation_background_color);
+  border-top: 1px solid var(--navigation_border_color);
+  border-bottom: 1px solid var(--navigation_border_color);
+
+  ul {
+    padding-inline-start: 0;
+    margin: 0px;
+
+    li+li:before {
+      content:"\203A\203A";
+    }
+
+    li {
+      list-style-type: none;
+      float: left;
+      font-weight: 400;
+      padding-left: 12px;
+
+      a {
+        text-decoration: none;
+        color: var(--navigation_link_color);
+        border:0;
+        margin-left: 12px;
+      }
+
+      a:hover, a:focus {
+        color: var(--navigation_link_hover_color);
+      }
+    }
+
+    li:first-child {
+      padding-left: 0px;
+      a {
+        margin-left: 0px;
+      }
+    }
+  }
+}

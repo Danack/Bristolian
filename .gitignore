@@ -1,2 +1,9 @@
 /credentials.php
 .idea
+node_modules/
+vendor/
+var/
+config.generated.php
+.idea/
+containers/nginx/config/nginx.conf
+containers/varnish/config/default.vcl

@@ -1,0 +1,40 @@
+
+
+@import "colors.scss";
+
+pre {
+  margin: 0px;
+  padding: 0px;
+  code {
+    display: inline-block;
+    white-space: pre;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+    max-width: 100%;
+    min-width: 100px;
+
+    line-height: 1.2em;
+    margin: 0px;
+    background: var(--code_background);
+    color: var(--code_color);
+
+    border: 1px solid var(--code_border_color);
+    font-size: 0.9em;
+
+    @media (min-width: $screen_break_medium) {
+      padding: 6px 24px 6px 6px;
+    }
+
+    @media (min-width: $screen_break_small) {
+      padding: 3px 12px 3px 3px;
+    }
+
+    @media (max-width: $screen_break_small) {
+      padding: 2px;
+    }
+
+    @media (min-width: $screen_break_large) {
+      padding: 8px 24px 8px 8px;
+    }
+  }
+}
