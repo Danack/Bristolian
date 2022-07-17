@@ -30,8 +30,9 @@ php vendor/bin/configurate \
     containers/php_fpm/config/php.ini \
     $ENV_TO_USE
 
+# tail -f /var/app/README.md
 
-/usr/sbin/php-fpm8.0 \
+/usr/sbin/php-fpm8.1 \
   --nodaemonize \
   --fpm-config=/var/app/containers/php_fpm/config/fpm.conf \
   -c /var/app/containers/php_fpm/config/php.ini

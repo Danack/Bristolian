@@ -1,0 +1,17 @@
+default:
+  autoload:
+    '': "%paths.base%/bootstrap"
+  suites:
+    default:
+      contexts:
+        - FeatureContext:
+  extensions:
+    DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
+    Behat\MinkExtension:
+      browser_name: chrome
+      sessions:
+        default:
+          chrome:
+#            api_url: "http://127.0.0.1:9222"
+            api_url: "http://chrome_headless:9222"
+            socket_timeout: 60
