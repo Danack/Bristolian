@@ -1,0 +1,23 @@
+
+
+.bristolian_footer {
+  color: var(--footer_text_color);
+  background-color: var(--footer_background_color);
+  border-top: 1px solid var(--footer_border_color);
+
+  padding: 10px;
+  width: 100%;
+  font-weight: bold;
+
+  a {
+    text-decoration: none;
+    padding: 12px;
+
+    color: var(--footer_link_color);
+    border:0;
+  }
+
+  a:hover, a:focus {
+    color: var(--footer_link_hover_color);
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "An example of all the Imagick functions. Or at least most of them. The site is hosted at http://phpimagick.com/",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc",
+    "test": "./test"
+  },
+  "scripts": {
+    "js:test": "echo \\\"Error: no ../test specified\\\" && exit 1",
+    "js:build:dev": "webpack --mode development",
+    "js:build:dev:watch": "webpack --watch --mode development",
+    "js:build:prod": "webpack --mode production",
+    "js:build:prod:watch": "webpack --watch --mode production",
+    "stats": "webpack --profile",
+    "sass:build:dev": "sass docs/scss/site.scss docs/css/site.css",
+    "sass:build:prod": "sass docs/scss/site.scss docs/css/site.css --style=compressed",
+    "sass:build:watch": "sass docs/scss/site.scss docs/css/site.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Danack/Bristolian/issues"
+  },
+  "homepage": "https://github.com/Danack/Bristolian",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Danack/Bristolian.git"
+  },
+  "dependencies": {
+    "argv": "0.0.2",
+    "command-line-args": "^5.2.0",
+    "danack-message": "0.0.4",
+    "preact": "^8.5.3",
+    "preact-compat": "^3.19.0",
+    "preact-render-to-string": "4.1.0",
+    "promise-polyfill": "^8.2.1",
+    "widgety": "0.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^14.18.4",
+    "compression-webpack-plugin": "^3.0.1",
+    "css-loader": "^3.6.0",
+    "raw-loader": "^4.0.2",
+    "sass": "^1.45.2",
+    "script-loader": "^0.7.2",
+    "source-map-loader": "^0.2.4",
+    "style-loader": "^1.3.0",
+    "timestamp-webpack-plugin": "^0.2.3",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.9.10",
+    "webpack": "^4.46.0",
+    "webpack-bundle-analyzer": "^3.9.0",
+    "webpack-cli": "^3.3.12"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.1.2"
+  }
+}

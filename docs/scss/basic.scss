@@ -1,0 +1,65 @@
+
+// Global resets of standard HTML elements
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--background_color);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0px;
+}
+
+table {
+  border-collapse: collapse;
+  font-size: 1rem;
+  border: 0px;
+
+  tr {
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+  }
+
+  tr:hover td
+  {
+    border-top: 1px solid var(--table_row_border_hover_color);
+    border-bottom: 1px solid var(--table_row_border_hover_color);
+  }
+
+  tr:hover td:first-child
+  {
+    border-left: 1px solid var(--table_row_border_hover_color);
+  }
+
+  tr:hover td:last-child
+  {
+    border-right: 1px solid var(--table_row_border_hover_color);
+  }
+
+  th {
+    text-align: left;
+    vertical-align: top;
+  }
+
+  td {
+    vertical-align: top;
+  }
+
+  th, td {
+    padding-top:4px;
+    padding-bottom:4px;
+    padding-right:4px;
+  }
+
+  tr:nth-child(even) {
+    background: rgba(230, 230, 230, 0.5)
+  }
+}

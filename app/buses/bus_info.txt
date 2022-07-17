@@ -1,0 +1,36 @@
+Data
+
+Access and download open data:
+
+https://data.bus-data.dft.gov.uk/
+
+
+
+Create an account: https://data.bus-data.dft.gov.uk/account/signup/
+
+
+
+Stops
+
+Download National Public Transport Access Nodes (NaPTAN) data, national or via local authority area - Bath & North East Somerset (018), Bristol (010), North Somerset (019) and South Gloucestershire (017).
+
+https://beta-naptan.dft.gov.uk/
+
+
+
+Timetables with route map
+
+Traveline South West:
+
+https://nationaljourneyplanner.travelinesw.com/swe/XSLT_SELTT_REQUEST?itdLPxx_page=ttb
+
+
+
+If you need to find out which routes serve which area, Travelwest can give you an idea as they separate services by Local Authority for example BRISTOL will show the routes that use this area most:
+https://journeyplanner.travelwest.info/routes
+
+
+
+I hope this helps you.
+
+For further communication please use our Transport Operations email as I may not be available and would not want to hold up any future information requests.

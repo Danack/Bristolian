@@ -1,0 +1,3 @@
+Varnish should be running, but silently.
+
+If you need logging again, turn it back on in the start_varnish.sh file
