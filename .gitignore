@@ -5,3 +5,4 @@ config.generated.php
 .idea/
 containers/nginx/config/nginx.conf
 containers/varnish/config/default.vcl
+containers/varnish/libvmod-geoip2-1.3.0

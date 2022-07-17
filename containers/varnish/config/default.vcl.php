@@ -32,7 +32,7 @@ $config = <<< END
 vcl 4.0;
 
 import std;
-import geoip2;
+# import geoip2;
 
 
 # Default backend definition. Set this to point to your content server.
@@ -43,7 +43,7 @@ backend default {
 }
 
 sub vcl_init {
-    new country = geoip2.geoip2("/var/app/containers/varnish/GeoLite2-Country_20181225/GeoLite2-Country.mmdb");
+    # new country = geoip2.geoip2("/var/app/containers/varnish/GeoLite2-Country_20181225/GeoLite2-Country.mmdb");
 }
 
 # acl purge {
@@ -74,10 +74,12 @@ sub add_country_code_if_required {
       set req.http.X-IP-to-use = req.http.X-IP-Spoof;
     }
 
-    set req.http.X-country-code = country.lookup(
-      "country/iso_code",
-      std.ip(req.http.X-IP-to-use,"0.0.0.0")
-    );
+  # commented out as libgeoip isn't loaded yet.
+  # needs to be recompiled.
+  #  set req.http.X-country-code = country.lookup(
+  #    "country/iso_code",
+  #    std.ip(req.http.X-IP-to-use,"0.0.0.0")
+  #  );
   }
 }
 

@@ -27,10 +27,10 @@ $default = [
     'php.post_max_size' => '1M',
     'php.opcache.validate_timestamps' => 0,
 
+    Config::BRISTOLIAN_DEPLOY_TIME => (new DateTime())->format('Y_m_d_H_i_s'),
+
     Config::BRISTOLIAN_ASSETS_FORCE_REFRESH => false,
     Config::BRISTOLIAN_COMMIT_SHA => $sha,
-
-
     Config::BRISTOLIAN_REDIS_INFO => [
         'host' => 'redis',
         'password' => 'ePvDZpYTXzT5N9xAPu24',
