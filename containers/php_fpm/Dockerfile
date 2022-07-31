@@ -5,7 +5,7 @@ USER root
 # Get Debian up-to-date
 RUN apt-get update -qq \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y git \
-    mariadb-client wget curl \
+    mariadb-client wget curl unzip \
     ca-certificates lsb-release apt-transport-https gnupg
 
 #   bsdmainutils

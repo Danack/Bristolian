@@ -6,6 +6,8 @@ services:
       - "9222:9222"
     cap_add:
       - SYS_ADMIN
+    environment:
+      - CHROME_OPTS=--window-size="800,800"
     networks:
       default_network:
     security_opt:
@@ -13,6 +15,7 @@ services:
       #extra_hosts:
       #      - "local.phpimagick.com:imagick_php_backend"
       # - "local.phpimagick.com:162.242.195.82"
+
   installer:
     build: containers/installer
     environment:
@@ -28,8 +31,8 @@ services:
   #    - 8888:8888
     volumes:
       - .:/var/app
-  npm_dev_build:
-    build: containers/npm_dev_build
+  sass_dev_builder:
+    build: containers/sass_dev_builder
   #  ports:
   #    - 8888:8888
     volumes:
@@ -49,7 +52,7 @@ services:
     environment:
       - COMPOSER_CACHE_DIR=/var/app/var/cache/composer
       - COMPOSER_ALLOW_SUPERUSER=1
-      - PHP_IDE_CONFIG="serverName=PHP_OPENDOCS_DEBUG"
+      - PHP_IDE_CONFIG=serverName=BRISTOLIAN_DEBUG
     depends_on:
       - php_fpm
     networks:

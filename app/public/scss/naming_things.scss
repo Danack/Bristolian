@@ -1,0 +1,88 @@
+
+@import "colors.scss";
+
+.nouns_table,
+.verbs_table {
+
+  th,
+  td {
+    padding-top: 6px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+  }
+
+  th:first-child,
+  td:first-child {
+    padding-left:0px;
+  }
+
+
+  @media (max-width: $screen_break_small) {
+    th,
+    td {
+      padding-top: 0px;
+      padding-bottom: 4px;
+      padding-right: 0px;
+    }
+
+    th:first-child,
+    td:first-child {
+      padding-left: 0px;
+    }
+  }
+
+  th:last-child,
+  td:last-child {
+    padding-right: 0;
+  }
+
+  a.anchor {
+    text-decoration: none;
+    color: var(--content_panel_text_color);
+  }
+
+  a.anchor:hover {
+    color: var(--content_panel_text_color);
+  }
+
+  a.anchor::after {
+    // \00a0 = nbsp
+    content: "\00a0🔗";
+    font-size: 0.75em;
+    color: transparent;
+  }
+
+  a.anchor:hover::after {
+    color: inherit;
+  }
+}
+
+.nouns_see_also_wide_display,
+.verbs_see_also_wide_display {
+  //display: inherit;
+  min-width: 100px;
+  //color: red;
+}
+
+.nouns_see_also_wide_hide,
+.verbs_see_also_wide_hide {
+  display: none;
+}
+
+
+@media (max-width: 1200px) {
+  .nouns_see_also_wide_display,
+  .verbs_see_also_wide_display {
+    display: none;
+  }
+
+  .nouns_see_also_wide_hide,
+  .verbs_see_also_wide_hide {
+    display: initial;
+  }
+
+  .nouns_see_also_wide_penultimate_cell:hover,
+  .verbs_see_also_wide_penultimate_cell:hover {
+    border-right: 1px solid var(--table_row_border_hover_color);
+  }
+}

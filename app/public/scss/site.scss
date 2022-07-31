@@ -1,0 +1,89 @@
+
+@import "colors.scss";
+@import "variables.scss";
+@import "fonts.scss";
+
+@import "layout.scss";
+@import "breadcrumbs.scss";
+@import "content.scss";
+@import "content_links.scss";
+@import "footer.scss";
+@import "header.scss";
+@import "prev_next.scss";
+@import "basic.scss";
+@import "comments_panel.scss";
+@import "code.scss";
+@import "merch.scss";
+
+// todo move this to it's own repo
+@import "naming_things.scss";
+@import "funding.scss";
+
+body {
+  font-family: SourceSansPro-Regular, Arial, x-locale-body, sans-serif;
+  font-variation-settings: 'wght' 400;
+  font-size: 16px;
+}
+
+th {
+  font-family: Manrope, Arial, x-locale-body, sans-serif;
+  font-weight: 600;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Cabin, Arial, x-locale-body, sans-serif;
+  font-weight: 600;
+}
+
+blockquote {
+  quotes: "“" "”" "‘" "’";
+  background: #f9f9f9;
+  font-style: italic;
+}
+
+
+blockquote::before {
+  content: open-quote;
+}
+blockquote::after {
+  content: close-quote;
+}
+
+
+
+// TODO - move the below to a system.css
+
+.width_above_large,
+.width_medium_to_large,
+.width_small_to_medium,
+.width_below_small {
+  display: none;
+}
+
+@media (min-width: $screen_break_large) {
+  .width_above_large {
+    display: inline-block;
+  }
+}
+
+@media (max-width: $screen_break_large) {
+  @media (min-width: $screen_break_medium) {
+    .width_medium_to_large {
+      display: inline-block;
+    }
+  }
+}
+
+@media (max-width: $screen_break_medium) {
+  @media (min-width: $screen_break_small) {
+    .width_small_to_medium {
+      display: inline-block;
+    }
+  }
+}
+
+@media (max-width: $screen_break_small) {
+  .width_below_small {
+    display: inline-block;
+  }
+}
