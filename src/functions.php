@@ -2,23 +2,23 @@
 
 declare(strict_types = 1);
 
-use ImagickDemo\FloatInfo\FloatTwiddleControl;
-use Params\Create\CreateFromRequest;
-use Params\Create\CreateFromVarMap;
-use Params\Create\CreateOrErrorFromVarMap;
-use Params\InputParameter;
-use Params\ExtractRule\GetBoolOrDefault;
-use Params\ExtractRule\GetIntOrDefault;
-use Params\ExtractRule\GetStringOrDefault;
-use Params\ProcessRule\MaxIntValue;
-use Params\ProcessRule\MinIntValue;
-use Params\SafeAccess;
+use Bristolian\FloatInfo\FloatTwiddleControl;
+use TypeSpec\Create\CreateFromRequest;
+use TypeSpec\Create\CreateFromVarMap;
+use TypeSpec\Create\CreateOrErrorFromVarMap;
+use TypeSpec\InputTypeSpec;
+use TypeSpec\ExtractRule\GetBoolOrDefault;
+use TypeSpec\ExtractRule\GetIntOrDefault;
+use TypeSpec\ExtractRule\GetStringOrDefault;
+use TypeSpec\ProcessRule\MaxIntValue;
+use TypeSpec\ProcessRule\MinIntValue;
+use TypeSpec\SafeAccess;
 use VarMap\ArrayVarMap;
 use VarMap\VarMap;
-use Params\ProcessRule\EnumMap;
-use ImagickDemo\ToArray;
-use Params\InputParameterList;
-use ImagickDemo\Example;
+use TypeSpec\ProcessRule\EnumMap;
+use Bristolian\ToArray;
+
+
 
 function hackVarMap($varMap)
 {
@@ -241,7 +241,7 @@ function continuallyExecuteCallable($callable, int $secondsBetweenRuns, int $sle
 function json_decode_safe(?string $json)
 {
     if ($json === null) {
-        throw new \ImagickDemo\Exception\JsonException("Error decoding JSON: cannot decode null.");
+        throw new \Bristolian\Exception\JsonException("Error decoding JSON: cannot decode null.");
     }
 
     $data = json_decode($json, true);
@@ -258,10 +258,10 @@ function json_decode_safe(?string $json)
     }
 
     if ($data === null) {
-        throw new \ImagickDemo\Exception\JsonException("Error decoding JSON: null returned.");
+        throw new \Bristolian\Exception\JsonException("Error decoding JSON: null returned.");
     }
 
-    throw new \ImagickDemo\Exception\JsonException("Error decoding JSON: " . json_last_error_msg());
+    throw new \Bristolian\Exception\JsonException("Error decoding JSON: " . json_last_error_msg());
 }
 
 
@@ -276,7 +276,7 @@ function json_encode_safe($data, $options = 0): string
     $result = json_encode($data, $options);
 
     if ($result === false) {
-        throw new \ImagickDemo\Exception\JsonException("Failed to encode data as json: " . json_last_error_msg());
+        throw new \Bristolian\Exception\JsonException("Failed to encode data as json: " . json_last_error_msg());
     }
 
     return $result;
@@ -453,14 +453,13 @@ function fetchUri(string $uri, string $method, array $queryParams = [], string $
 // Define a function that writes a string into the response object.
 function convertStringToHtmlResponse(
     string $result,
+    \Psr\Http\Message\RequestInterface $request,
     \Psr\Http\Message\ResponseInterface $response
 ): \Psr\Http\Message\ResponseInterface {
     $response = $response->withHeader('Content-Type', 'text/html');
     $response->getBody()->write($result);
     return $response;
 }
-
-
 
 
 //function getEyeColorSpaceStringFromValue(int $value)
@@ -477,71 +476,71 @@ function convertStringToHtmlResponse(
 //}
 
 
-function getImagePathForOption(string $selected_option)
-{
-    $imageOptions = getImagePathOptions();
+//function getImagePathForOption(string $selected_option)
+//{
+//    $imageOptions = getImagePathOptions();
+//
+//    foreach ($imageOptions as $path => $option) {
+//        if ($option === $selected_option) {
+//            return $path;
+//        }
+//    }
+//
+//    foreach ($imageOptions as $key => $value) {
+//        return $key;
+//    }
+//
+//
+//    return array_key_first($imageOptions);
+//}
 
-    foreach ($imageOptions as $path => $option) {
-        if ($option === $selected_option) {
-            return $path;
-        }
-    }
 
-    foreach ($imageOptions as $key => $value) {
-        return $key;
-    }
+//function image(
+//    ?string $activeCategory,
+//    ?string $activeExample,
+//    array $values,
+//    Example $example
+//) {
+//    $imgUrl = sprintf(
+//        "/image/%s/%s",
+//        $activeCategory,
+//        $activeExample
+//    );
+//    $pageBaseUrl = sprintf("/%s/%s",
+//        $activeCategory,
+//        $activeExample
+//    );
+//
+//    return createReactImagePanel(
+//        $imgUrl,
+//        $pageBaseUrl,
+//        $example
+//    );
+//
+//}
 
-
-    return array_key_first($imageOptions);
-}
-
-
-function image(
-    ?string $activeCategory,
-    ?string $activeExample,
-    array $values,
-    Example $example
-) {
-    $imgUrl = sprintf(
-        "/image/%s/%s",
-        $activeCategory,
-        $activeExample
-    );
-    $pageBaseUrl = sprintf("/%s/%s",
-        $activeCategory,
-        $activeExample
-    );
-
-    return createReactImagePanel(
-        $imgUrl,
-        $pageBaseUrl,
-        $example
-    );
-
-}
-
-function customImage(
-    ?string $activeCategory,
-    ?string $activeExample,
-    array $values,
-    Example $example
-) {
-    $imgUrl = sprintf(
-        "/customImage/%s/%s",
-        $activeCategory,
-        $activeExample
-    );
-    $pageBaseUrl = sprintf("/%s/%s",
-        $activeCategory,
-        $activeExample
-    );
-
-    return createReactImagePanel(
-        $imgUrl,
-        $pageBaseUrl,
-        $example
-    );
-}
+//function customImage(
+//    ?string $activeCategory,
+//    ?string $activeExample,
+//    array $values,
+//    Example $example
+//) {
+//    $imgUrl = sprintf(
+//        "/customImage/%s/%s",
+//        $activeCategory,
+//        $activeExample
+//    );
+//    $pageBaseUrl = sprintf("/%s/%s",
+//        $activeCategory,
+//        $activeExample
+//    );
+//
+//    return createReactImagePanel(
+//        $imgUrl,
+//        $pageBaseUrl,
+//        $example
+//    );
+//}
 
 function getMask($name)
 {
@@ -594,3 +593,65 @@ function twiddleWithShit(FloatTwiddleControl $floatTwiddleControl )
 
     return [$sign, $exponent, $mantissa];
 }
+
+function showTotalErrorPage(\Throwable $exception)
+{
+    $exceptionText = null;
+
+    $exceptionText = "Failed to get exception text.";
+
+    try {
+        $exceptionText = getExceptionText($exception);
+
+        \error_log("Exception in code and Slim error handler failed also: " . get_class($exception) . " " . $exceptionText);
+    }
+    catch (\Throwable $exception) {
+        // Does nothing.
+    }
+
+    http_response_code(503);
+
+    if ($exceptionText !== null) {
+        var_dump(get_class($exception));
+        echo nl2br($exceptionText);
+    }
+}
+
+
+/**
+ * @return int
+ * @throws Exception
+ */
+function getMemoryLimit()
+{
+    $memoryLimit = ini_get('memory_limit');
+
+    if ($memoryLimit === false) {
+        throw new \Exception("Failed to get memory_limit.");
+    }
+
+    if (strrpos($memoryLimit, 'M') === (strlen($memoryLimit) - 1)) {
+        $memoryLimitValue = ((int)$memoryLimit) * 1024 * 1024;
+    }
+    else if (strrpos($memoryLimit, 'G') === (strlen($memoryLimit))) {
+        $memoryLimitValue = ((int)$memoryLimit) * 1024 * 1024 * 1024;
+    }
+    else {
+        throw new \Exception("Could not understand memory limit of [$memoryLimit]");
+    }
+
+    return $memoryLimitValue;
+}
+
+function getPercentMemoryUsed() : int
+{
+    $maxMemory = memory_get_peak_usage();
+
+    $memoryLimitValue = getMemoryLimit();
+
+    $percentMemoryUsed = (int)((100 * $maxMemory) / $memoryLimitValue);
+
+    return $percentMemoryUsed;
+}
+
+

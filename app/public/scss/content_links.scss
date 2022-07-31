@@ -1,0 +1,63 @@
+
+.bristolian_content_links {
+
+  color: var(--content_links_text_color);
+  line-height: 1.6;
+  letter-spacing: -.00278rem;
+  border-left: 1px dotted var(--content_links_border_color);
+
+  .bristolian_content_link_level_1,
+  .bristolian_content_link_level_2,
+  .bristolian_content_link_level_3 {
+    a {
+      text-decoration: none;
+    }
+
+    a:link, a:visited {
+      color: var(--content_links_link_color);
+    }
+
+    a:hover, a:focus, #layout-content a:hover, #layout-content a:focus {
+      color: var(--content_links_link_hover_color);
+      outline: 0;
+    }
+
+    a {
+      border-bottom: 1px dotted;
+      //border-color: rgba(128, 128, 128, 0.25);
+      border-color: var(--content_links_border_color);
+
+
+
+      margin-bottom:-1px;
+      display:block;
+    }
+  }
+
+  .bristolian_content_link_level_1:not(:first-child) {
+    padding-top: 16px;
+  }
+
+  .bristolian_content_link_level_1 {
+    padding-left: 0.25rem;
+  }
+  .bristolian_content_link_level_2 {
+    padding-left: 0.5rem;
+  }
+  .bristolian_content_link_level_3 {
+    padding-left: 0.75rem;
+  }
+
+  li:not(:first-child) div {
+    margin-top: 16px;
+  }
+
+  .bristolian_content_links_level_1 {
+  }
+
+  .bristolian_content_links_level_2 {
+  }
+
+  .bristolian_content_links_level_3 {
+  }
+}
