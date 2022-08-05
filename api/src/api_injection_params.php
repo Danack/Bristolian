@@ -14,27 +14,29 @@ function injectionParams() : InjectionParams
     // where they are required.
     $aliases = [
         \VarMap\VarMap::class => \VarMap\Psr7VarMap::class,
-
-//        \Bristolian\Repo\PhpBugsStorage\PhpBugsStorage::class =>
-//            \Bristolian\Repo\PhpBugsStorage\RedisPhpBugsStorage::class,
         \Bristolian\Service\TooMuchMemoryNotifier\TooMuchMemoryNotifier::class =>
-            \Bristolian\Service\TooMuchMemoryNotifier\NullTooMuchMemoryNotifier::class,
-
+          \Bristolian\Service\TooMuchMemoryNotifier\NullTooMuchMemoryNotifier::class,
         \Bristolian\CSPViolation\CSPViolationStorage::class =>
-            \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
-
-//        \Bristolian\JsonInput\JsonInput::class => \Bristolian\JsonInput\InputJsonInput::class,
+          \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
+        Psr\Http\Message\ResponseFactoryInterface::class =>
+          \Laminas\Diactoros\ResponseFactory::class,
+        \Bristolian\JsonInput\JsonInput::class =>
+          \Bristolian\JsonInput\InputJsonInput::class,
     ];
 
     // Delegate the creation of types to callables.
     $delegates = [
-        \Redis::class => 'createRedis',
-        \Bristolian\Service\MemoryWarningCheck\MemoryWarningCheck::class => 'createMemoryWarningCheck',
-        \SlimAuryn\ExceptionMiddleware::class => 'createExceptionMiddlewareForApi',
-//        \SlimAuryn\SlimAurynInvokerFactory::class => 'createSlimAurynInvokerFactory',
-        \Slim\App::class => 'createSlimAppForApi',
-        \SlimAuryn\Routes::class => 'createRoutesForApi',
-        \Bristolian\AppErrorHandler\AppErrorHandler::class => 'createJsonAppErrorHandler',
+        \Redis::class =>
+          'createRedis',
+        \Bristolian\Service\MemoryWarningCheck\MemoryWarningCheck::class
+          => 'createMemoryWarningCheck',
+        \Slim\App::class =>
+          'createSlimAppForApi',
+
+        \Bristolian\AppErrorHandler\AppErrorHandler::class
+          => 'createJsonAppErrorHandler',
+        \Bristolian\Middleware\ExceptionToJsonResponseMiddleware::class =>
+            'createExceptionMiddlewareForApi',
     ];
 
     // Define some params that can be injected purely by name.

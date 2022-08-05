@@ -4,11 +4,12 @@ declare(strict_types = 1);
 
 namespace Bristolian\Middleware;
 
-use Psr\Http\Message\ResponseInterface;
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Bristolian\Service\RequestNonce;
 use Bristolian\Data\ApiDomain;
+use Bristolian\App;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
@@ -43,7 +44,8 @@ class ContentSecurityPolicyMiddleware implements MiddlewareInterface
         ];
 
         $frameSrcDomains = [
-//            'https://js.stripe.com',
+//            'https://youtube.com',
+//            'https://www.youtube.com',
 //            'https://hooks.stripe.com',
         ];
 
@@ -67,7 +69,7 @@ class ContentSecurityPolicyMiddleware implements MiddlewareInterface
         );
         $cspLines[] = "object-src *";
         $cspLines[] = "style-src 'self'";
-        $cspLines[] = "report-uri " . $this->apiDomain->getDomain() . "/csp_violation";
+        $cspLines[] = "report-uri " . $this->apiDomain->getDomain() . App::CSP_REPORT_PATH;
 
         $response = $response->withHeader(
             'Content-Security-Policy',

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PhpOpenDocs\JsonInput;
+namespace Bristolian\JsonInput;
 
 class InputJsonInput implements JsonInput
 {
@@ -16,3 +16,4 @@ class InputJsonInput implements JsonInput
         return json_decode_safe($payload);
     }
 }
+

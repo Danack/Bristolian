@@ -342,7 +342,7 @@ function peak_memory($real_usage = false)
  *
  * @return array{string, null}|array{null, mixed}
  */
-function convertToValue($value)
+function convertToValue(mixed $value)
 {
     if (is_scalar($value) === true) {
         return [
@@ -408,6 +408,47 @@ function convertToValue($value)
     ];
 }
 
+
+///**
+// * @param string $name
+// * @param mixed $value
+// * @return mixed
+// * @throws Exception
+// */
+//function convertToValue(string $name, $value)
+//{
+//    if (is_scalar($value) === true) {
+//        return $value;
+//    }
+//    if ($value === null) {
+//        return null;
+//    }
+//
+//    $callable = [$value, 'toArray'];
+//    if (is_object($value) === true && is_callable($callable)) {
+//        return $callable();
+//    }
+//    if (is_object($value) === true && $value instanceof \DateTime) {
+//        return $value->format(\Bristolian\App::DATE_TIME_EXACT_FORMAT);
+//    }
+//
+//    if (is_array($value) === true) {
+//        $values = [];
+//        foreach ($value as $key => $entry) {
+//            $values[$key] = convertToValue($key, $entry);
+//        }
+//
+//        return $values;
+//    }
+//
+//    $message = "Unknown error converting to param '$name' to value.";
+//
+//    if (is_object($value) === true) {
+//        $message = "Unsupported type [" . gettype($value) . "] of class [" . get_class($value) . "] for toArray for property $name.";
+//    }
+//
+//    throw new \Exception($message);
+//}
 
 /**
  * Fetch data and return statusCode, body and headers

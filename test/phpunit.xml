@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="phpunit_bootstrap.php" beStrictAboutCoversAnnotation="false" beStrictAboutOutputDuringTests="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage>
+    <include>
+      <directory>../src</directory>
+    </include>
+    <exclude>
+      <directory>../src/TypeSpec/OpenApi</directory>
+      <file>../src/TypeSpec/OpenApi/OpenApiV300Description.php</file>
+      <file>../src/TypeSpec/OpenApi/ShouldNeverBeCalledParamDescription.php</file>
+    </exclude>
+    <report>
+      <html outputDirectory="../tmp/coverage" lowUpperBound="35" highLowerBound="70"/>
+      <text outputFile="php://stdout" showUncoveredFiles="false" showOnlySummary="true"/>
+    </report>
+  </coverage>
+  <php>
+    </php>
+  <testsuites>
+    <testsuite name="Test Suite">
+      <directory>../test/</directory>
+    </testsuite>
+  </testsuites>
+  <groups>
+    <exclude>
+      <group>needs_fixing</group>
+      <group>deadish</group>
+    </exclude>
+  </groups>
+  <logging>
+    <!-- <log type="coverage-php" target="../tmp/coverage/unittest.cov"/> -->
+  </logging>
+</phpunit>
