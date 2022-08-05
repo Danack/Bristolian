@@ -192,27 +192,28 @@ function createPageHeaderHtml(/*HeaderLinks $headerLinks*/) : string
 //    return implode($html_snippets);
 //}
 
-//function createFooterHtml(
+function createFooterHtml(
 //    CopyrightInfo $copyrightInfo,
 //    EditInfo $editInfo
-//): string {
-//    $html = <<< HTML
-//<span class="copyright">
-//  <a href=":attr_copyright_link" target="_blank" rel="noopener noreferrer">© :html_copyright_name</a>
-//</span>
-//<span class="edit_link">
+): string {
+    $html = <<< HTML
+<span class="system">
+  <a href="/system">System</a>
+</span>
+HTML;
+
+//    <span class="edit_link">
 //  :raw_edit_links
-//</span>
-//HTML;
-//
-//    $params = [
+//    </span>
+
+    $params = [
 //        ':html_copyright_name' => $copyrightInfo->getName(),
 //        ':attr_copyright_link' => $copyrightInfo->getLink(),
 //        ':raw_edit_links' => createEditLinks($editInfo->getNamesWithLinks())
-//    ];
-//
-//    return esprintf($html, $params);
-//}
+    ];
+
+    return esprintf($html, $params);
+}
 
 function getPageLayoutHtml(): string
 {
@@ -293,7 +294,7 @@ function createPageHtml(
         ':raw_prev_next' => '', //createPrevNextHtml($page->getPrevNextLinks()),
         ':raw_content' => $html, //$page->getContentHtml(),
         ':raw_nav_content' => '', //createContentLinksHtml($prefix, $page->getContentLinks()),
-        ':raw_footer' => '', //createFooterHtml($page->getCopyrightInfo(), $page->getEditInfo()),
+        ':raw_footer' => createFooterHtml(),
     ];
 
     return esprintf(getPageLayoutHtml(), $params);

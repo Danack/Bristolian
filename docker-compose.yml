@@ -25,8 +25,8 @@ services:
       default_network:
     volumes:
       - .:/var/app
-  npm:
-    build: containers/npm
+  js_dev_builder:
+    build: containers/js_dev_builder
   #  ports:
   #    - 8888:8888
     volumes:
@@ -70,7 +70,7 @@ services:
         aliases:
           - internal.bristolian.org
   redis:
-    image: redis:6.0.10
+    image: redis:6.2.4
     volumes:
       - .:/var/app
     command: ["redis-server", "/var/app/containers/redis/config/redis.conf"]

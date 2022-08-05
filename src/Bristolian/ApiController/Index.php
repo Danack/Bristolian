@@ -4,15 +4,13 @@ declare(strict_types = 1);
 
 namespace Bristolian\ApiController;
 
-use SlimAuryn\Routes;
 use SlimAuryn\Response\JsonResponse;
 
 class Index
 {
-    public function getRouteList(Routes $routes)
+    public function getRouteList()
     {
-
-        $routes = require __DIR__ . "/../../../api/src/api_routes.php";
+        $routes = getAllRoutes();
 
         return new JsonResponse($routes);
     }

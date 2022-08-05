@@ -41,4 +41,7 @@ class App
     const TEST_ADMIN_PASSWORD = 'password12345';
     public const ENVIRONMENT_LOCAL = 'local';
     public const ENVIRONMENT_PROD = 'prod';
+
+    const CSP_REPORT_PATH = '/csp/violation';
+
 }

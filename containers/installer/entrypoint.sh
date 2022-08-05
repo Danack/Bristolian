@@ -28,4 +28,4 @@ php vendor/bin/classconfig \
 # php vendor/bin/phinx migrate -e internal
 # php cli.php seed:initial
 
-echo "Installer is finished, site should be available."
+echo "Installer is finished."

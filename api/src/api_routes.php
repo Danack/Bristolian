@@ -2,6 +2,7 @@
 
 //namespace Bristolian\Route;
 
+use Bristolian\App;
 
 function getAllRoutes()
 {
@@ -15,7 +16,8 @@ function getAllRoutes()
 // an api key, should call an appropriate callable.
     return [
 
-        ['/csp_violation', 'POST', 'Bristolian\AppController\ContentSecurityPolicy::postReport'],
+        [App::CSP_REPORT_PATH, 'POST', 'Bristolian\AppController\ContentSecurityPolicy::postReport'],
+
 
 //    ['/csp/test', 'GET', 'Osf\CommonController\ContentSecurityPolicy::getTestPage'],
 //    ['/csp', 'POST', 'Osf\CommonController\ContentSecurityPolicy::postReport'],

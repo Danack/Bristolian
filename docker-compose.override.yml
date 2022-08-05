@@ -14,14 +14,9 @@ services:
     ports:
       - "8000:8000"
       - "8001:8001"
-  npm:
+  js_dev_builder:
     environment:
       - PHP_WEB_BUGS_BASE_URL=http://local.api.bristolian.org
-#  npm_dev_build:
-#    ports:
-#      - 8888:8888
-#    environment:
-#      - PHP_WEB_BUGS_BASE_URL=http://local.api.bristolian.org
   php_fpm:
     environment:
       - ENV_DESCRIPTION=default,local

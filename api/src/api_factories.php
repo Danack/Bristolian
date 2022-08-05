@@ -5,6 +5,7 @@ declare(strict_types = 1);
 use Auryn\Injector;
 use Bristolian\Config;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use SlimAuryn\AurynCallableResolver;
 use Laminas\Diactoros\ResponseFactory;
 
@@ -20,10 +21,11 @@ function createJsonAppErrorHandler(
     return $injector->make(\Bristolian\AppErrorHandler\JsonErrorHandlerForLocalDev::class);
 }
 
-function createRoutesForApi()
-{
-    return new \SlimAuryn\Routes(__DIR__ . '/../api/src/api_routes.php');
-}
+//function createRoutesForApi()
+//{
+//    return new \SlimAuryn\Routes(__DIR__ . '/../api/src/api_routes.php');
+//}
+
 
 
 /**
@@ -39,9 +41,11 @@ function createExceptionMiddlewareForApi(\Auryn\Injector $injector)
 //        \PDOException::class => 'pdoExceptionMapper',
     ];
 
-    return new \SlimAuryn\ExceptionMiddleware(
-        $exceptionHandlers,
-        getResultMappers($injector)
+    $responseFactory = $injector->make(ResponseFactoryInterface::class);
+
+    return new \Bristolian\Middleware\ExceptionToJsonResponseMiddleware(
+        $responseFactory,
+        $exceptionHandlers
     );
 }
 
@@ -64,11 +68,26 @@ function createSlimAppForApi(
         /* ?MiddlewareDispatcherInterface */ $middlewareDispatcher = null
     );
 
-
-    $app->add($injector->make(\SlimAuryn\ExceptionMiddleware::class));
+    $app->add($injector->make(\Bristolian\Middleware\ExceptionToJsonResponseMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\MemoryCheckMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\AllowAllCors::class));
 
-
     return $app;
+}
+
+
+/**
+ * Creates the objects that map StubResponse into PSR7 responses
+ * @return mixed
+ */
+function getResultMappers(\Auryn\Injector $injector)
+{
+    return [
+        \SlimAuryn\Response\JsonResponse::class =>
+            'SlimAuryn\mapStubResponseToPsr7',
+        SlimAuryn\Response\TextResponse::class =>
+            'SlimAuryn\mapStubResponseToPsr7',
+        ResponseInterface::class =>
+          'SlimAuryn\passThroughResponse'
+    ];
 }

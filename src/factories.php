@@ -65,10 +65,10 @@ function createRedis(Config $config)
 function createApiDomain(Config $config)
 {
     if ($config->isProductionEnv()) {
-        return new \Bristolian\Data\ApiDomain("https://api.Bristolian.com");
+        return new \Bristolian\Data\ApiDomain("https://api.Bristolian.org");
     }
 
-    return new \Bristolian\Data\ApiDomain("http://local.api.Bristolian.com");
+    return new \Bristolian\Data\ApiDomain("http://local.api.Bristolian.org");
 }
 
 

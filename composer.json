@@ -1,13 +1,6 @@
 {
-    "name": "alwaysseptember/open-docs",
+    "name": "danack/bristolian",
     "type": "project",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Danack",
-            "email": "Danack@basereality.com"
-        }
-    ],
     "require": {
         "danack/rfc-codex": "dev-master",
         "danack/configurator": "1.1.1",
@@ -15,7 +8,7 @@
         "danack/esprintf": "^2.0.0",
         "danack/looping-exec": "^0.3.0",
         "danack/json-safe": "^0.1.1",
-        "danack/slim4-auryn-invoker": "dev-dev",
+        "danack/slim4-auryn-invoker": "0.1.0",
         "danack/typespec": "0.1.0",
         "dmore/chrome-mink-driver": "2.8.1",
         "ext-redis": "*",
@@ -59,7 +52,8 @@
     },
     "autoload-dev": {
         "psr-0": {
-            "BristolianTest\\": "test/"
+            "BristolianTest\\": "test/",
+            "IntegrationTest\\": "test/"
         }
     },
     "config": {

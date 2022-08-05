@@ -44,6 +44,32 @@ class RedisCSPViolationStorage implements CSPViolationStorage
         $elements = $this->redis->lrange(
             ContentSecurityPolicyKey::getAbsoluteKeyName('csp'),
             0,
+            1000
+        );
+        $data = [];
+
+        foreach ($elements as $element) {
+            $datum = json_decode_safe($element);
+            $data[] = ContentPolicyViolationReport::fromArray($datum);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @return ContentPolicyViolationReport[]
+     */
+    public function getReportsByPage(int $page)
+    {
+        if ($page < 0) {
+            $page = 0;
+        }
+
+        $offset = $page * 50;
+
+        $elements = $this->redis->lrange(
+            ContentSecurityPolicyKey::getAbsoluteKeyName('csp'),
+            $offset,
             49
         );
         $data = [];
@@ -55,6 +81,7 @@ class RedisCSPViolationStorage implements CSPViolationStorage
 
         return $data;
     }
+
 
     public function getCount() : int
     {
