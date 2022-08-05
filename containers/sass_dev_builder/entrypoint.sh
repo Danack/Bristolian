@@ -3,7 +3,8 @@ cd /var/app/app
 
 echo "Updating/installing npm modules"
 
-npm update
+# This is done in the installer
+# npm update
 
 echo "Updated. Running sass builder"
 

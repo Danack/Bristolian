@@ -1,7 +1,7 @@
 import {h, Component} from "preact";
 
 
-let api_url: string = process.env.PHP_WEB_BUGS_BASE_URL;
+// let api_url: string = process.env.PHP_WEB_BUGS_BASE_URL;
 
 export interface CSPViolationReportsPanelProps {
     // no properties currently
@@ -9,17 +9,17 @@ export interface CSPViolationReportsPanelProps {
 }
 
 interface CSPViolationReport {
-    document_uri: string;
-    referrer: string;
-    blocked_uri: string;
-    violated_directive: string;
-    original_policy: string;
-    disposition: string;
-    effective_directive: string;
-    line_number: string;
-    script_sample: string;
-    source_file: string;
-    status_code: string;
+    document_uri: string|null;
+    referrer: string|null;
+    blocked_uri: string|null;
+    violated_directive: string|null;
+    original_policy: string|null;
+    disposition: string|null;
+    effective_directive: string|null;
+    line_number: string|null;
+    script_sample: string|null;
+    source_file: string|null;
+    status_code: string|null;
 }
 
 interface CSPViolationReportsPanelState {
@@ -27,35 +27,51 @@ interface CSPViolationReportsPanelState {
     csp_reports: Array<CSPViolationReport>;
 }
 
-function getDefaultState(): CSPViolationReportsPanelState {
+function getDefaultState(props: CSPViolationReportsPanelProps): CSPViolationReportsPanelState
+{
     return {
         current_page: 0,
-        csp_reports: []
+        csp_reports: convertJsonToCSPViolationReport(props.initial_json_data)
     };
 }
 
-// Example data
-// http://127.0.0.1/api.php?type=comment_details&comment_id=1
-// {"comment_id":1,"error":"bug report is private", "bug_id": 3}
-// {"comment_id":1,"email":"asda.. at bar dot com", "bug_id": 3}
-// http://127.0.0.1/api.php?type=max_comment_id
-// {"max_comment_id":1}
+function convertDataToCspReport(data:any): CSPViolationReport
+{
+    let csp_violation_report: CSPViolationReport = {
+        document_uri: data['document-uri'] ?? null,
+        referrer: data['referrer'] ?? null,
+        blocked_uri: data['blocked-uri'] ?? null,
+        violated_directive: data['violated-directive'] ?? null,
+        original_policy: data['original-policy'] ?? null,
+        disposition: data['disposition'] ?? null,
+        effective_directive: data['effective-directive'] ?? null,
+        line_number: data['line-number'] ?? null,
+        script_sample: data['script-sample'] ?? null,
+        source_file: data['source-file'] ?? null,
+        status_code: data['status-code'] ?? null,
+    };
 
-export class CommentsPanel extends Component<CSPViolationReportsPanelProps, CSPViolationReportsPanelState> {
+    return csp_violation_report;
+}
 
-    // maxCommentId: number|null = null;
-    // maxLoadedCommentId: number|null = null;
+function convertJsonToCSPViolationReport(array_of_data: any):Array<CSPViolationReport>
+{
+    let csp_reports: Array<CSPViolationReport> = [];
+    for (let datum in array_of_data) {
+        let csp_report = convertDataToCspReport(array_of_data[datum])
+        csp_reports.push(csp_report);
+    }
+
+    return csp_reports;
+}
+
+export class CSPViolationReportsPanel extends
+  Component<CSPViolationReportsPanelProps, CSPViolationReportsPanelState> {
+
 
     constructor(props: CSPViolationReportsPanelProps) {
         super(props);
-        this.state = getDefaultState(/*props.initialControlParams*/);
-
-        debugger;
-
-        // TODO - copy the data which is passed in as props,
-        // to real data.
-
-        // this.fetchMaxCommentData();
+        this.state = getDefaultState(props);
     }
 
     // processMaxCommentData(data: any) {
@@ -68,7 +84,7 @@ export class CommentsPanel extends Component<CSPViolationReportsPanelProps, CSPV
     //     this.maxCommentId = data.max_comment_id;
     //     this.fetchComments();
     // }
-    //
+
     // fetchComments() {
     //     // this is the first comment loaded, so just load it
     //     if (this.maxLoadedCommentId == null) {
@@ -165,44 +181,53 @@ export class CommentsPanel extends Component<CSPViolationReportsPanelProps, CSPV
     }
 
     renderCSPReport(csp_report: CSPViolationReport, index: number) {
-        return <div key={index}>
-
-           document_uri : {csp_report.document_uri}
-           referrer : {csp_report.referrer}
-           blocked_uri : {csp_report.blocked_uri}
-           violated_directive : {csp_report.violated_directive}
-           original_policy : {csp_report.original_policy}
-           disposition : {csp_report.disposition}
-           effective_directive : {csp_report.effective_directive}
-           line_number : {csp_report.line_number}
-           script_sample : {csp_report.script_sample}
-           source_file : {csp_report.source_file}
-           status_code : {csp_report.status_code}
-        </div>;
+        return <tr key={index}>
+          <td>{csp_report.document_uri}</td>
+          <td>{csp_report.referrer}</td>
+          <td>{csp_report.blocked_uri}</td>
+          <td>{csp_report.violated_directive}</td>
+          <td>{csp_report.original_policy}</td>
+          <td>{csp_report.disposition}</td>
+          <td>{csp_report.effective_directive}</td>
+          <td>{csp_report.line_number}</td>
+          <td>{csp_report.script_sample}</td>
+          <td>{csp_report.source_file}</td>
+          <td>{csp_report.status_code}</td>
+        </tr>;
     }
 
-    renderCSPReports() {
+    renderCSPReportsTableBody() {
+
+        return <tbody>{this.state.csp_reports.map(this.renderCSPReport)} </tbody>;
+    }
+
+    render(props: CSPViolationReportsPanelProps, state: CSPViolationReportsPanelState) {
+
         if (this.state.csp_reports.length == 0) {
             return <span>No csp reports</span>
         }
 
-        return <div>
-            {this.state.csp_reports.map(this.renderCSPReport)}
-        </div>;
-    }
-
-    render(props: CSPViolationReportsPanelProps, state: CSPViolationReportsPanelState) {
-        let comments_block = this.renderCSPReports();
-        // let error_block = <span>&nbsp;</span>;
-        // {error_block}
+        let csp_reports_table_body = this.renderCSPReportsTableBody();
 
         return  <div>
-            <div>
-                {comments_block}
-            </div>
+          <table>
+            <thead>
+              <th>document_uri</th>
+              <th>referrer</th>
+              <th>blocked_uri</th>
+              <th>violated_directive</th>
+              <th>original_policy</th>
+              <th>disposition</th>
+              <th>effective_directive</th>
+              <th>line_number</th>
+              <th>script_sample</th>
+              <th>source_file</th>
+              <th>status_code</th>
+            </thead>
 
+            {csp_reports_table_body}
 
-
+          </table>
         </div>;
     }
 }
