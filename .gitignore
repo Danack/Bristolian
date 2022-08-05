@@ -8,3 +8,5 @@ config.generated.php
 containers/nginx/config/nginx.conf
 containers/varnish/config/default.vcl
 containers/varnish/libvmod-geoip2-1.3.0
+site.css
+site.css.map

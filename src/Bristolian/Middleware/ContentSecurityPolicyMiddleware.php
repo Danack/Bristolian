@@ -44,8 +44,8 @@ class ContentSecurityPolicyMiddleware implements MiddlewareInterface
         ];
 
         $frameSrcDomains = [
-//            'https://youtube.com',
-//            'https://www.youtube.com',
+            'https://youtube.com',
+            'https://www.youtube.com',
 //            'https://hooks.stripe.com',
         ];
 
