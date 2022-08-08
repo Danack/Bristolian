@@ -25,5 +25,4 @@ class AssetLinkEmitter
 
         return "?version=" . $sha;
     }
-
 }

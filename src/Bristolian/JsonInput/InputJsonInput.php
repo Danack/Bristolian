@@ -16,4 +16,3 @@ class InputJsonInput implements JsonInput
         return json_decode_safe($payload);
     }
 }
-

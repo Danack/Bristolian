@@ -12,7 +12,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
-
 // Check to make sure that not too much memory is being used.
 // in dev, just return an error.
 // in production, log it.

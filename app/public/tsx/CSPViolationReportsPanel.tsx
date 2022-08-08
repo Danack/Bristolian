@@ -1,7 +1,8 @@
 import {h, Component} from "preact";
 
 
-// let api_url: string = process.env.PHP_WEB_BUGS_BASE_URL;
+let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
+let REPORTS_SHOWN_PER_PAGE: number = 10;
 
 export interface CSPViolationReportsPanelProps {
     // no properties currently
@@ -25,13 +26,15 @@ interface CSPViolationReport {
 interface CSPViolationReportsPanelState {
     current_page: number;
     csp_reports: Array<CSPViolationReport>;
+    csp_report_count: number;
 }
 
 function getDefaultState(props: CSPViolationReportsPanelProps): CSPViolationReportsPanelState
 {
     return {
         current_page: 0,
-        csp_reports: convertJsonToCSPViolationReport(props.initial_json_data)
+        csp_reports: convertJsonToCSPViolationReport(props.initial_json_data),
+        csp_report_count: getCountFromInfo(props.initial_json_data)
     };
 }
 
@@ -54,11 +57,19 @@ function convertDataToCspReport(data:any): CSPViolationReport
     return csp_violation_report;
 }
 
+function getCountFromInfo(array_of_data: any): number
+{
+    let count = array_of_data['count'];
+    return count;
+}
+
 function convertJsonToCSPViolationReport(array_of_data: any):Array<CSPViolationReport>
 {
     let csp_reports: Array<CSPViolationReport> = [];
-    for (let datum in array_of_data) {
-        let csp_report = convertDataToCspReport(array_of_data[datum])
+    let reports = array_of_data['reports'];
+
+    for (let datum in reports) {
+        let csp_report = convertDataToCspReport(reports[datum])
         csp_reports.push(csp_report);
     }
 
@@ -68,94 +79,11 @@ function convertJsonToCSPViolationReport(array_of_data: any):Array<CSPViolationR
 export class CSPViolationReportsPanel extends
   Component<CSPViolationReportsPanelProps, CSPViolationReportsPanelState> {
 
-
     constructor(props: CSPViolationReportsPanelProps) {
         super(props);
         this.state = getDefaultState(props);
     }
 
-    // processMaxCommentData(data: any) {
-    //     if (data.max_comment_id == undefined) {
-    //         console.log("Data did not return max_comment_id");
-    //         return;
-    //     }
-    //     // @ts-ignore:int blah blah
-    //     this.setState({max_comment_id: data.max_comment_id});
-    //     this.maxCommentId = data.max_comment_id;
-    //     this.fetchComments();
-    // }
-
-    // fetchComments() {
-    //     // this is the first comment loaded, so just load it
-    //     if (this.maxLoadedCommentId == null) {
-    //         this.fetchComment(this.maxCommentId);
-    //         this.maxLoadedCommentId = this.maxCommentId;
-    //         return;
-    //     }
-    //
-    //     for (let i=this.maxLoadedCommentId; i<this.maxCommentId; i+=1) {
-    //         this.fetchComment(i);
-    //     }
-    //
-    //     this.maxLoadedCommentId = this.maxCommentId;
-    // }
-
-    // processFetchCommentError(error: any) {
-    //     console.log('processFetchCommentError:', error);
-    //     this.setState({last_error: error})
-    // }
-    //
-    // fetchComment(commentId: number) {
-    //     console.log("Need to fetch comment " + commentId);
-    //     let url = api_url + '/api.php?type=comment_details&comment_id=' + commentId;
-    //     fetch(url)
-    //         .then(response => response.json())
-    //         .then(data => this.processCommentData(commentId, data))
-    //         .catch((error) => {
-    //             this.setState({last_error: "Failed to fetchComment " + commentId});
-    //         });
-    // }
-
-    // processCommentData(commentId: number, data: any) {
-    //     console.log(commentId);
-    //     console.log(data);
-    //
-    //     let comment:Comment = {
-    //         comment_id: data.comment_id,
-    //         bug_id: data.bug_id,
-    //         error: data.error ?? null,
-    //         email: data.email ?? null,
-    //     };
-    //
-    //     if (comment.email !== null) {
-    //         comment.email = comment.email.replace(' &#x64;&#111;&#x74; ', '.');
-    //         comment.email = comment.email.replace(' &#x61;&#116; ', '@');
-    //     }
-    //
-    //     let newComments: Array<Comment> = this.state.comments;
-    //     newComments.unshift(comment);
-    //     newComments = newComments.slice(0, 10);
-    //
-    //     this.setState({comments: newComments});
-    // }
-
-    // fetchMaxCommentData() {
-    //     let url = api_url + '/api.php?type=max_comment_id';
-    //     fetch(url)
-    //         .then(response => response.json())
-    //         .then(data => this.processMaxCommentData(data))
-    //         .catch((error) => {
-    //             this.setState({last_error: "Failed to fetchMaxCommentData"});
-    //         });
-    //
-    //     //call check function after timeout
-    //     // @ts-ignore: Timeout blah blah
-    //     this.fetchMaxCommentCallback = setTimeout(
-    //         () => this.fetchMaxCommentData(),
-    //         this.refresh_rate * 1000
-    //     );
-    //     // console.log("Should refresh");
-    // }
 
     componentDidMount() {
         // this.restoreStateFn = (event:any) => this.restoreState(event.state);
@@ -168,16 +96,6 @@ export class CSPViolationReportsPanel extends
         // @ts-ignore: I don't understand that error message.
         // window.removeEventListener('popstate', this.restoreStateFn, false);
         // this.restoreStateFn = null;
-    }
-
-    restoreState(state_to_restore: object) {
-        // if (state_to_restore === null) {
-        //     this.setState(getDefaultState(this.props.initialControlParams));
-        //     return;
-        // }
-        //
-        // this.setState(state_to_restore);
-        // this.triggerSetImageParams();
     }
 
     renderCSPReport(csp_report: CSPViolationReport, index: number) {
@@ -197,8 +115,71 @@ export class CSPViolationReportsPanel extends
     }
 
     renderCSPReportsTableBody() {
-
         return <tbody>{this.state.csp_reports.map(this.renderCSPReport)} </tbody>;
+    }
+
+    renderSelectorOptions(csp_report_count: number) {
+        let option_array = [];
+        let max_page_for_selector = csp_report_count / REPORTS_SHOWN_PER_PAGE;
+
+        if (max_page_for_selector > REPORTS_SHOWN_PER_PAGE) {
+            max_page_for_selector = REPORTS_SHOWN_PER_PAGE;
+        }
+
+        for (let i = 0; i < max_page_for_selector; i += 1) {
+            option_array.push(<option value="{i}">{i + 1}</option>)
+        }
+
+        return option_array;
+    }
+
+    processCspPageData(selected_index: number, data: any) {
+        let new_state = {
+            current_page: selected_index,
+            csp_reports: convertJsonToCSPViolationReport(data),
+            csp_report_count: getCountFromInfo(data)
+        };
+
+        this.setState(new_state);
+    }
+
+    updatePageSelector(event: Event) {
+        // @ts-ignore:selectedIndex will too exist.
+        let selected_index = event.target.selectedIndex;
+
+        console.log("Need to fetch page " + selected_index);
+        let url = api_url + '/system/csp/reports_for_page?page=' + selected_index;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => this.processCspPageData(selected_index, data))
+            .catch((error) => {
+                // this.setState({last_error: "Failed to page " + selected_index});
+                console.log(error)
+        });
+    }
+
+
+    renderCSPReportsPageSelector() {
+
+        let textblock = <span>Number of CSP reports: {this.state.csp_report_count}</span>;
+
+        if (this.state.csp_report_count <= REPORTS_SHOWN_PER_PAGE) {
+            return <div>{textblock}</div>
+        }
+
+        let selector_options = this.renderSelectorOptions(this.state.csp_report_count);
+
+        let selector = <div>
+            Page select:
+            <select name="page" onChange={(e) => this.updatePageSelector(e)}>
+              {selector_options}
+            </select>
+        </div>;
+
+        return <div>
+            {textblock}
+            {selector}
+        </div>;
     }
 
     render(props: CSPViolationReportsPanelProps, state: CSPViolationReportsPanelState) {
@@ -208,8 +189,11 @@ export class CSPViolationReportsPanel extends
         }
 
         let csp_reports_table_body = this.renderCSPReportsTableBody();
+        let csp_reports_selector = this.renderCSPReportsPageSelector();
 
         return  <div>
+            <div>{csp_reports_selector}</div>
+
           <table>
             <thead>
               <th>document_uri</th>

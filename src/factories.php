@@ -70,6 +70,3 @@ function createApiDomain(Config $config)
 
     return new \Bristolian\Data\ApiDomain("http://local.api.Bristolian.org");
 }
-
-
-

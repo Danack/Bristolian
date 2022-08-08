@@ -9,7 +9,6 @@ require_once __DIR__ . "/scrape_functions.php";
 use Behat\Mink\Session;
 use DMore\ChromeDriver\ChromeDriver;
 
-
 $options = [
     'socketTimeout' => 30,
     'domWaitTimeout' => 3000,

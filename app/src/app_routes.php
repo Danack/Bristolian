@@ -22,7 +22,9 @@ function getAllRoutes()
 
         // System pages
 
-        ['/system/csp_reports', 'GET', '\Bristolian\AppController\System::show_csp_reports'],
+        ['/system/csp/reports', 'GET', '\Bristolian\AppController\System::show_csp_reports'],
+        ['/system/csp/test', 'GET', 'Bristolian\AppController\ContentSecurityPolicy::getTestPage'],
+        ['/system/csp/clear', 'GET', 'Bristolian\AppController\ContentSecurityPolicy::clearReports'],
         ['/system', 'GET', 'Bristolian\AppController\System::index'],
 
 
@@ -36,8 +38,7 @@ function getAllRoutes()
         // ['/system', 'GET', 'Bristolian\AppController\System::indexPage'],
         ['/system/htmltest', 'GET', 'Bristolian\AppController\Pages::htmlTest'],
         // ['/system/csp_reports', 'GET', 'Bristolian\AppController\System::getReports'],
-        ['/system/csp_test', 'GET', 'Bristolian\AppController\ContentSecurityPolicy::getTestPage'],
-        ['/system/csp_clear', 'GET', 'Bristolian\AppController\ContentSecurityPolicy::clearReports'],
+
 
 //    ['/css/{any:.*}', 'GET', 'Bristolian\AppController\Pages::get404Page'],
 

@@ -53,24 +53,24 @@ function setupSlimAurynInvoker(
         new \Learning\LearningSectionInfo
     ));
     $injector->share(new \NamingThings\NamingThingsSection(
-            '/naming',
-            'Naming',
-            'Naming things',
-            new \Bristolian\NamingThingsSectionInfo
-        ));
+        '/naming',
+        'Naming',
+        'Naming things',
+        new \Bristolian\NamingThingsSectionInfo
+    ));
 
     $injector->share(new \Bristolian\SystemSection(
-            '/system',
-            'System',
-            'Site system stuff...',
-            new \Bristolian\SystemSectionInfo
-        ));
+        '/system',
+        'System',
+        'Site system stuff...',
+        new \Bristolian\SystemSectionInfo
+    ));
 
     $injector->share(new \Bristolian\RfcCodexSection(
-            '/rfc_codex',
-            'RFC Codex',
-            "Discussions ideas for how PHP can be improved, why some ideas haven't come to fruition yet.",
-            new \RfcCodexBristolian\RfcCodexSectionInfo()
+        '/rfc_codex',
+        'RFC Codex',
+        "Discussions ideas for how PHP can be improved, why some ideas haven't come to fruition yet.",
+        new \RfcCodexBristolian\RfcCodexSectionInfo()
     ));
 
 

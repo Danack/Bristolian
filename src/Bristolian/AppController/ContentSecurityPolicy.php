@@ -26,10 +26,12 @@ class ContentSecurityPolicy
         return new TextResponse("CSP report accepted.\n", [], 201);
     }
 
-    public function clearReports(CSPViolationStorage $csppvReporter) : JsonNoCacheResponse
+    public function clearReports(CSPViolationStorage $csppvReporter) : TextResponse
     {
         $csppvReporter->clearReports();
-        return new JsonNoCacheResponse(['ok']);
+//        return new JsonNoCacheResponse(['ok']);
+
+        return new TextResponse("Reports cleared.\n", [], 201);
     }
 
     public function getReports(CSPViolationStorage $csppvStorage) : JsonNoCacheResponse

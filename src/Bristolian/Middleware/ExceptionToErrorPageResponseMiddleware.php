@@ -56,7 +56,7 @@ class ExceptionToErrorPageResponseMiddleware implements MiddlewareInterface
     public function __construct(
         PageResponseGenerator $pageResponseGenerator,
         array $exceptionToResponseHandlerList,
-//        array $stubResponseToPSR7ResponseHandlerList
+        //        array $stubResponseToPSR7ResponseHandlerList
     ) {
         $this->pageResponseGenerator = $pageResponseGenerator;
         $this->exceptionToResponseHandlerList = $exceptionToResponseHandlerList;
@@ -77,7 +77,6 @@ class ExceptionToErrorPageResponseMiddleware implements MiddlewareInterface
 
             return $response;
         } catch (\Throwable $e) {
-
             $response = $this->convertExceptionToResponse($e, $request);
 
             if ($response !== null) {
@@ -106,5 +105,4 @@ class ExceptionToErrorPageResponseMiddleware implements MiddlewareInterface
 
         return null;
     }
-
 }

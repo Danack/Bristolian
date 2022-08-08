@@ -8,7 +8,6 @@ function injectionParams()
     // These classes will only be created once by the injector.
     $shares = [
         \Auryn\Injector::class,
-//        \Slim\Container::class,
         \Slim\App::class,
         \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
         \Bristolian\Service\RequestNonce::class,
@@ -36,15 +35,19 @@ function injectionParams()
 
     // Delegate the creation of types to callables.
     $delegates = [
-        \Bristolian\Service\MemoryWarningCheck\MemoryWarningCheck::class => 'createMemoryWarningCheck',
-//        \SlimAuryn\Routes::class => 'createRoutesForApp',
+        \Bristolian\Service\MemoryWarningCheck\MemoryWarningCheck::class =>
+          'createMemoryWarningCheck',
         \Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class =>
-            'createExceptionToErrorPageResponseMiddleware',
+          'createExceptionToErrorPageResponseMiddleware',
 
-        \Slim\App::class => 'createSlimAppForApp',
-        \Bristolian\AppErrorHandler\AppErrorHandler::class => 'createHtmlAppErrorHandler',
-        \Bristolian\Data\ApiDomain::class => 'createApiDomain',
-        \Redis::class => 'createRedis',
+        \Slim\App::class =>
+          'createSlimAppForApp',
+        \Bristolian\AppErrorHandler\AppErrorHandler::class =>
+          'createHtmlAppErrorHandler',
+        \Bristolian\Data\ApiDomain::class =>
+          'createApiDomain',
+        \Redis::class =>
+          'createRedis',
     ];
 
     // Define some params that can be injected purely by name.

@@ -16,17 +16,16 @@ class PageStubResponseGenerator
 
     public function create404Page(string $path): StubResponse
     {
-        $output = "This is a 404 page.";
+        $output = "<p>This is a 404 page.</p>";
 
         $output .= sprintf(
-            "So you were trying to reach '%s'",
+            "<p>So you were trying to reach '%s', but we couldn't find it.</p>",
             $path
         );
 
         $pageHtml = createPageHtml($this->assetLinkEmitter, $output);
 
         return new HtmlPageStubResponse(404, $pageHtml, []);
-
     }
 
 
