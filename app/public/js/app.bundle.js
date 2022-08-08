@@ -975,10 +975,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CSPViolationReportsPanel", function() { return CSPViolationReportsPanel; });
 /* harmony import */ var preact__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! preact */ "./node_modules/preact/dist/preact.mjs");
 
+let api_url = "http://local.api.bristolian.org";
+let REPORTS_SHOWN_PER_PAGE = 10;
 function getDefaultState(props) {
     return {
         current_page: 0,
-        csp_reports: convertJsonToCSPViolationReport(props.initial_json_data)
+        csp_reports: convertJsonToCSPViolationReport(props.initial_json_data),
+        csp_report_count: getCountFromInfo(props.initial_json_data)
     };
 }
 function convertDataToCspReport(data) {
@@ -998,10 +1001,15 @@ function convertDataToCspReport(data) {
     };
     return csp_violation_report;
 }
+function getCountFromInfo(array_of_data) {
+    let count = array_of_data['count'];
+    return count;
+}
 function convertJsonToCSPViolationReport(array_of_data) {
     let csp_reports = [];
-    for (let datum in array_of_data) {
-        let csp_report = convertDataToCspReport(array_of_data[datum]);
+    let reports = array_of_data['reports'];
+    for (let datum in reports) {
+        let csp_report = convertDataToCspReport(reports[datum]);
         csp_reports.push(csp_report);
     }
     return csp_reports;
@@ -1014,8 +1022,6 @@ class CSPViolationReportsPanel extends preact__WEBPACK_IMPORTED_MODULE_0__["Comp
     componentDidMount() {
     }
     componentWillUnmount() {
-    }
-    restoreState(state_to_restore) {
     }
     renderCSPReport(csp_report, index) {
         return Object(preact__WEBPACK_IMPORTED_MODULE_0__["h"])("tr", { key: index },
@@ -1036,12 +1042,59 @@ class CSPViolationReportsPanel extends preact__WEBPACK_IMPORTED_MODULE_0__["Comp
             this.state.csp_reports.map(this.renderCSPReport),
             " ");
     }
+    renderSelectorOptions(csp_report_count) {
+        let option_array = [];
+        let max_page_for_selector = csp_report_count / REPORTS_SHOWN_PER_PAGE;
+        if (max_page_for_selector > REPORTS_SHOWN_PER_PAGE) {
+            max_page_for_selector = REPORTS_SHOWN_PER_PAGE;
+        }
+        for (let i = 0; i < max_page_for_selector; i += 1) {
+            option_array.push(Object(preact__WEBPACK_IMPORTED_MODULE_0__["h"])("option", { value: "{i}" }, i + 1));
+        }
+        return option_array;
+    }
+    processCspPageData(selected_index, data) {
+        let new_state = {
+            current_page: selected_index,
+            csp_reports: convertJsonToCSPViolationReport(data),
+            csp_report_count: getCountFromInfo(data)
+        };
+        this.setState(new_state);
+    }
+    updatePageSelector(event) {
+        let selected_index = event.target.selectedIndex;
+        console.log("Need to fetch page " + selected_index);
+        let url = api_url + '/system/csp/reports_for_page?page=' + selected_index;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => this.processCspPageData(selected_index, data))
+            .catch((error) => {
+            console.log(error);
+        });
+    }
+    renderCSPReportsPageSelector() {
+        let textblock = Object(preact__WEBPACK_IMPORTED_MODULE_0__["h"])("span", null,
+            "Number of CSP reports: ",
+            this.state.csp_report_count);
+        if (this.state.csp_report_count <= REPORTS_SHOWN_PER_PAGE) {
+            return Object(preact__WEBPACK_IMPORTED_MODULE_0__["h"])("div", null, textblock);
+        }
+        let selector_options = this.renderSelectorOptions(this.state.csp_report_count);
+        let selector = Object(preact__WEBPACK_IMPORTED_MODULE_0__["h"])("div", null,
+            "Page select:",
+            Object(preact__WEBPACK_IMPORTED_MODULE_0__["h"])("select", { name: "page", onChange: (e) => this.updatePageSelector(e) }, selector_options));
+        return Object(preact__WEBPACK_IMPORTED_MODULE_0__["h"])("div", null,
+            textblock,
+            selector);
+    }
     render(props, state) {
         if (this.state.csp_reports.length == 0) {
             return Object(preact__WEBPACK_IMPORTED_MODULE_0__["h"])("span", null, "No csp reports");
         }
         let csp_reports_table_body = this.renderCSPReportsTableBody();
+        let csp_reports_selector = this.renderCSPReportsPageSelector();
         return Object(preact__WEBPACK_IMPORTED_MODULE_0__["h"])("div", null,
+            Object(preact__WEBPACK_IMPORTED_MODULE_0__["h"])("div", null, csp_reports_selector),
             Object(preact__WEBPACK_IMPORTED_MODULE_0__["h"])("table", null,
                 Object(preact__WEBPACK_IMPORTED_MODULE_0__["h"])("thead", null,
                     Object(preact__WEBPACK_IMPORTED_MODULE_0__["h"])("th", null, "document_uri"),
