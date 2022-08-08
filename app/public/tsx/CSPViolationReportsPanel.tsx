@@ -1,11 +1,9 @@
 import {h, Component} from "preact";
 
-
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 let REPORTS_SHOWN_PER_PAGE: number = 10;
 
 export interface CSPViolationReportsPanelProps {
-    // no properties currently
     initial_json_data: string;
 }
 
@@ -84,7 +82,6 @@ export class CSPViolationReportsPanel extends
         this.state = getDefaultState(props);
     }
 
-
     componentDidMount() {
         // this.restoreStateFn = (event:any) => this.restoreState(event.state);
         // @ts-ignore: I don't understand that error message.
@@ -157,7 +154,6 @@ export class CSPViolationReportsPanel extends
                 console.log(error)
         });
     }
-
 
     renderCSPReportsPageSelector() {
 
