@@ -11,4 +11,3 @@ interface CSPViolationReporter
     /** Store a report about a CSP violation */
     public function report(ContentPolicyViolationReport $cpvr): void;
 }
-

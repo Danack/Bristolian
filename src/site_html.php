@@ -193,8 +193,8 @@ function createPageHeaderHtml(/*HeaderLinks $headerLinks*/) : string
 //}
 
 function createFooterHtml(
-//    CopyrightInfo $copyrightInfo,
-//    EditInfo $editInfo
+    //    CopyrightInfo $copyrightInfo,
+    //    EditInfo $editInfo
 ): string {
     $html = <<< HTML
 <span class="system">
@@ -268,7 +268,7 @@ HTML;
 
 function createPageHtml(
     \Bristolian\AssetLinkEmitter $assetLinkEmitter,
-//    Page $page
+    //    Page $page
     string $html,
 ): string {
 

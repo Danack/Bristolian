@@ -23,6 +23,7 @@ function getAllRoutes()
 //    ['/csp', 'POST', 'Osf\CommonController\ContentSecurityPolicy::postReport'],
 //  ['/projects/{project_name:.+}', 'GET', '\Osf\AppController\Projects::getProject'],
 
+        ['/system/csp/reports_for_page', 'GET', 'Bristolian\ApiController\Csp::get_reports_for_page'],
         ['/test/caught_exception', 'GET', 'Bristolian\ApiController\Debug::testCaughtException'],
         ['/test/uncaught_exception', 'GET', 'Bristolian\ApiController\Debug::testUncaughtException'],
         ['/test/xdebug', 'GET', 'Bristolian\ApiController\Debug::testXdebugWorking'],

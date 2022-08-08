@@ -27,12 +27,9 @@ function createExceptionToErrorPageResponseMiddleware(Injector $injector): Excep
         \Throwable::class => 'genericExceptionHandler' // should be last
     ];
 
-//    $resultMappers = getResultMappers($injector);
-
     return new ExceptionToErrorPageResponseMiddleware(
         $injector->make(PageResponseGenerator::class),
-        $exceptionHandlers,
-//        $resultMappers
+        $exceptionHandlers
     );
 }
 
@@ -93,10 +90,10 @@ function getResultMappers(\Auryn\Injector $injector)
 {
     return [
         \SlimAuryn\Response\StubResponse::class =>
-            '\SlimAuryn\ResponseMapper\ResponseMapper::mapStubResponseToPsr7',
+            'SlimAuryn\mapStubResponseToPsr7',
 //        \Bristolian\Page::class => 'mapBristolianPageToPsr7',
         ResponseInterface::class =>
-            'SlimAuryn\ResponseMapper\ResponseMapper::passThroughResponse',
+            'SlimAuryn\passThroughResponse',
         'string' =>
             'Bristolian\StringToHtmlPageConverter::convertStringToHtmlResponse',
     ];

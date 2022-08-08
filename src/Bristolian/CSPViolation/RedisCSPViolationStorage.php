@@ -7,6 +7,7 @@ namespace Bristolian\CSPViolation;
 use Bristolian\Data\ContentPolicyViolationReport;
 use Bristolian\Key\ContentSecurityPolicyKey;
 use Redis;
+use Bristolian\App;
 
 class RedisCSPViolationStorage implements CSPViolationStorage
 {
@@ -65,12 +66,12 @@ class RedisCSPViolationStorage implements CSPViolationStorage
             $page = 0;
         }
 
-        $offset = $page * 50;
+        $offset = $page * App::CSP_REPORTS_SHOWN_PER_PAGE;
 
         $elements = $this->redis->lrange(
             ContentSecurityPolicyKey::getAbsoluteKeyName('csp'),
             $offset,
-            49
+            $offset + App::CSP_REPORTS_SHOWN_PER_PAGE
         );
         $data = [];
 

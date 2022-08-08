@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Bristolian\AppController;
 
 use Bristolian\SiteHtml\PageStubResponseGenerator;
-use Psr\Http\Message\RequestInterface as Request;
-use \Bristolian\MarkdownRenderer\MarkdownRenderer;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Bristolian\MarkdownRenderer\MarkdownRenderer;
 
 class Pages
 {

@@ -18,8 +18,6 @@ use VarMap\VarMap;
 use TypeSpec\ProcessRule\EnumMap;
 use Bristolian\ToArray;
 
-
-
 function hackVarMap($varMap)
 {
     $params = $varMap->toArray();
@@ -598,7 +596,7 @@ function getMask($name)
     throw new \Exception("Unknown type $name");
 }
 
-function twiddleWithShit(FloatTwiddleControl $floatTwiddleControl )
+function twiddleWithShit(FloatTwiddleControl $floatTwiddleControl)
 {
     /** @var FloatTwiddleControl $floatTwiddleControl */
     $mask = getMask($floatTwiddleControl->getName());
@@ -694,5 +692,3 @@ function getPercentMemoryUsed() : int
 
     return $percentMemoryUsed;
 }
-
-

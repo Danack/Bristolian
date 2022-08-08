@@ -34,4 +34,3 @@ try {
 catch (\Throwable $exception) {
     showTotalErrorPage($exception);
 }
-

@@ -39,7 +39,6 @@ class ExceptionToJsonResponseMiddleware implements MiddlewareInterface
         private ResponseFactory $responseFactory,
         private $exceptionToResponseHandlerList,
     ) {
-
     }
 
     /**
@@ -56,7 +55,6 @@ class ExceptionToJsonResponseMiddleware implements MiddlewareInterface
 
             return $response;
         } catch (\Throwable $e) {
-
             $response = $this->convertExceptionToResponse($e, $request);
 
             if ($response !== null) {
@@ -89,7 +87,7 @@ class ExceptionToJsonResponseMiddleware implements MiddlewareInterface
     private function createJsonWithStatusCode(
         array $exceptionArray,
         int $statusCode
-    ): Response  {
+    ): Response {
         $response = $this->responseFactory->createResponse();
         $response = $response->withHeader('Content-Type', 'application/json');
         $response->getBody()->write(json_encode_safe($exceptionArray));
@@ -97,5 +95,4 @@ class ExceptionToJsonResponseMiddleware implements MiddlewareInterface
 
         return $response;
     }
-
 }

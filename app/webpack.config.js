@@ -62,8 +62,6 @@ module.exports = {
         // hints: process.env.NODE_ENV === 'production' ? "warning" : false
     },
     plugins: [
-        // new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'src', 'app', 'index.html') }),
-        // new webpack.HotModuleReplacementPlugin()
         // new TimestampWebpackPlugin({
         //     path: path.join(__dirname, 'public/dist'),
         //     // default output is timestamp.json
@@ -84,8 +82,10 @@ module.exports = {
         new CompressionPlugin(),
 
         new webpack.EnvironmentPlugin({
-            // NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
-            PHP_WEB_BUGS_BASE_URL: undefined,
+            // We don't define NODE_ENV. That is for server side node
+            // applications.
+            // NODE_ENV: 'development',
+            BRISTOLIAN_API_BASE_URL: undefined,
         }),
 
         new webpack.optimize.LimitChunkCountPlugin({

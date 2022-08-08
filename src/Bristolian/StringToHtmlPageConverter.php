@@ -10,7 +10,6 @@ class StringToHtmlPageConverter
 {
     public function __construct(private AssetLinkEmitter $assetLinkEmitter)
     {
-
     }
 
     // Define a function that writes a string into the response object.

@@ -13,26 +13,30 @@ class HtmlPageStubResponse implements StubResponse
         private string $body,
         private array $headers
     ) {
-
+        $this->headers['Content-Type'] = 'text/html; charset=UTF-8';
     }
 
     public static function createErrorPage(string $errorPageHtml)
     {
-
+        return new self(
+            501,
+            $errorPageHtml,
+            ['ContentType: text/html']
+        );
     }
 
     public function getStatus(): int
     {
-        throw new \Exception("getStatus not implemented yet.");
+        return $this->status;
     }
 
     public function getBody(): string
     {
-        throw new \Exception("getBody not implemented yet.");
+        return $this->body;
     }
 
     public function getHeaders(): array
     {
-        throw new \Exception("getHeaders not implemented yet.");
+        return $this->headers;
     }
 }

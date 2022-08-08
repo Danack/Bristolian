@@ -48,7 +48,6 @@ function findByXpath(ChromeDriver $driver, $selector): ?NodeElement
 
 
     if ($elements !== null) {
-
         if (is_array($elements) !== true) {
             throw new \Exception("Finding selector [$selector] on page, failed. Didn't get an array back");
         }
