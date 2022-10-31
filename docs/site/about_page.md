@@ -2,8 +2,9 @@
 
 ### About
 
-Hey, lots of info goes here.
+What you're looking at is the very start of an attempt to make a communication/collaboration tool that is useful at many different scales of communication.
 
+You may have noticed that online communication is kind of crap.
 
 
 ### Code of conduct

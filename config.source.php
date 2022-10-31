@@ -44,6 +44,11 @@ $default = [
 //        "172.0.0.0/8",   // docker local networking
 //        '192.168.0.0/16'
 //    ]
+
+    Config::BRISTOLIAN_SQL_HOST => getEnvString('MYSQL_HOST'),
+    Config::BRISTOLIAN_SQL_DATABASE => getEnvString('MYSQL_DATABASE'),
+    Config::BRISTOLIAN_SQL_USERNAME => getEnvString('MYSQL_USER'),
+    Config::BRISTOLIAN_SQL_PASSWORD => getEnvString('MYSQL_PASSWORD'),
 ];
 
 // Settings for local development.

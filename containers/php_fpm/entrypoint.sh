@@ -7,7 +7,6 @@ ENV_TO_USE=${ENV_DESCRIPTION:=default}
 
 echo "ENV_TO_USE is ${ENV_TO_USE}";
 
-
 # Generate config settings used per environment
 php vendor/bin/classconfig \
     -p config.source.php \

@@ -39,7 +39,8 @@ function injectionParams()
           'createMemoryWarningCheck',
         \Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class =>
           'createExceptionToErrorPageResponseMiddleware',
-
+        \PDO::class =>
+          'createPDOForUser',
         \Slim\App::class =>
           'createSlimAppForApp',
         \Bristolian\AppErrorHandler\AppErrorHandler::class =>

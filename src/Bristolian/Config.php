@@ -2,6 +2,8 @@
 
 namespace Bristolian;
 
+use Bristolian\Data\DatabaseUserConfig;
+
 class Config
 {
     const BRISTOLIAN_ASSETS_FORCE_REFRESH = 'bristol_org.force_assets_refresh';
@@ -10,10 +12,16 @@ class Config
     const BRISTOLIAN_ENVIRONMENT = 'bristol_org.env';
     const BRISTOLIAN_REDIS_INFO = 'bristol_org.redis_info';
 
+    const BRISTOLIAN_SQL_HOST     = 'bristol_org.db.host';
+    const BRISTOLIAN_SQL_DATABASE = 'bristol_org.db.schema';
+    const BRISTOLIAN_SQL_USERNAME = 'bristol_org.db.username';
+    const BRISTOLIAN_SQL_PASSWORD = 'bristol_org.db.password';
+
     private $values = [];
 
     public function __construct()
     {
+//        self::testValuesArePresent();
         $this->values = getGeneratedConfig();
     }
 
@@ -54,10 +62,6 @@ class Config
 
     public function getRedisInfo(): array
     {
-//        ['host'],
-//        ['port'],
-//        ['password']);
-
         return $this->get(self::BRISTOLIAN_REDIS_INFO);
     }
 
@@ -88,5 +92,15 @@ class Config
     public function getCommitSha(): string
     {
         return $this->get(self::BRISTOLIAN_COMMIT_SHA);
+    }
+
+    public function getDatabaseUserConfig(): DatabaseUserConfig
+    {
+        return new DatabaseUserConfig(
+            $this->get(self::BRISTOLIAN_SQL_HOST),
+            $this->get(self::BRISTOLIAN_SQL_USERNAME),
+            $this->get(self::BRISTOLIAN_SQL_PASSWORD),
+            $this->get(self::BRISTOLIAN_SQL_DATABASE)
+        );
     }
 }
