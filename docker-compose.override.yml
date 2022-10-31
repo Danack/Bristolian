@@ -1,16 +1,14 @@
 version: "3"
 services:
-#  chrome:
-#    ports:
-#      - "9222:9222"
-#    environment:
-#      - CHROME_ARGS=--disable-web-security
+  db:
+    ports:
+      - "3306:3306"
   installer:
-    environment:
-      - ENV_DESCRIPTION=default,local
+    env_file:
+      - env_local_dev.env
   nginx:
-    environment:
-      - ENV_DESCRIPTION=default,local
+    env_file:
+      - env_local_dev.env
     ports:
       - "8000:8000"
       - "8001:8001"
@@ -18,11 +16,11 @@ services:
     environment:
       - BRISTOLIAN_API_BASE_URL=http://local.api.bristolian.org
   php_fpm:
-    environment:
-      - ENV_DESCRIPTION=default,local
+    env_file:
+      - env_local_dev.env
   php_fpm_debug:
-    environment:
-      - ENV_DESCRIPTION=default,local
+    env_file:
+      - env_local_dev.env
   redis:
     ports:
       - "6379:6379"
@@ -36,7 +34,7 @@ services:
       - php_fpm_debug
     ports:
       - "80:80"
-    environment:
-      - ENV_DESCRIPTION=default,local
+    env_file:
+      - env_local_dev.env
 
 

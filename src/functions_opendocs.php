@@ -689,17 +689,7 @@ function getRandomId(): string
 //    );
 //}
 
-/**
- * Remove the installation directory prefix from a filename
- */
-function normaliseFilePath(string $file): string
-{
-    if (strpos($file, "/var/app/") === 0) {
-        $file = substr($file, strlen("/var/app/"));
-    }
 
-    return $file;
-}
 
 function convertPageToHtmlResponse(
     \Bristolian\Section $section,

@@ -1,7 +1,7 @@
 <?php
 
-use Bristolian\InjectionParams;
-//use Bristolian\Config;
+use AurynConfig\InjectionParams;
+
 
 if (function_exists('injectionParams') == false) {
 
@@ -17,10 +17,10 @@ if (function_exists('injectionParams') == false) {
         // Alias interfaces (or classes) to the actual types that should be used
         // where they are required.
         $aliases = [
-            \Bristolian\Repo\PhpBugsFetcher\PhpBugsFetcher::class =>
-              \Bristolian\Repo\PhpBugsFetcher\CurlPhpBugsFetcher::class,
-            \Bristolian\Repo\PhpBugsStorage\PhpBugsStorage::class =>
-              \Bristolian\Repo\PhpBugsStorage\RedisPhpBugsStorage::class,
+//            \Bristolian\Repo\PhpBugsFetcher\PhpBugsFetcher::class =>
+//              \Bristolian\Repo\PhpBugsFetcher\CurlPhpBugsFetcher::class,
+//            \Bristolian\Repo\PhpBugsStorage\PhpBugsStorage::class =>
+//              \Bristolian\Repo\PhpBugsStorage\RedisPhpBugsStorage::class,
         ];
 
 //        $environment = getConfig(Config::OSF_ENVIRONMENT);
@@ -31,7 +31,7 @@ if (function_exists('injectionParams') == false) {
 
         // Delegate the creation of types to callables.
         $delegates = [
-//            \PDO::class => 'createPDO',
+            \PDO::class => 'createPDOForUser',
             \Redis::class => 'createRedis',
 //            \Doctrine\ORM\EntityManager::class => 'createDoctrineEntityManager',
 

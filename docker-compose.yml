@@ -15,7 +15,21 @@ services:
       #extra_hosts:
       #      - "local.phpimagick.com:imagick_php_backend"
       # - "local.phpimagick.com:162.242.195.82"
-
+  db:
+    image: mysql:8.0.30
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: PrJaGpnNSzSLW8p8
+      MYSQL_DATABASE: bristolian
+      MYSQL_USER: bristolian
+      MYSQL_PASSWORD: p5ffrKSk4mPqN8vH
+      MYSQL_ROOT_HOST: "%"
+    networks:
+      default_network:
+    volumes:
+      - ./docker/mysql/config/my.cnf:/etc/mysql/my.cnf
+      - ./data/mysql:/var/lib/mysql
+      - ./data/mysql_import:/docker-entrypoint-initdb.d
   installer:
     build: containers/installer
     environment:
@@ -40,6 +54,8 @@ services:
   php_fpm:
     build: containers/php_fpm
     image: bristolian_php_fpm
+    depends_on:
+      - db
     environment:
       - COMPOSER_CACHE_DIR=/var/app/var/cache/composer
       - COMPOSER_ALLOW_SUPERUSER=1

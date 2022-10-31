@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-use Bristolian\FloatInfo\FloatTwiddleControl;
+//use Bristolian\FloatInfo\FloatTwiddleControl;
 use TypeSpec\Create\CreateFromRequest;
 use TypeSpec\Create\CreateFromVarMap;
 use TypeSpec\Create\CreateOrErrorFromVarMap;
@@ -691,4 +691,28 @@ function getPercentMemoryUsed() : int
     $percentMemoryUsed = (int)((100 * $maxMemory) / $memoryLimitValue);
 
     return $percentMemoryUsed;
+}
+
+/**
+ * Remove the installation directory prefix from a filename
+ */
+function normaliseFilePath(string $file): string
+{
+    if (strpos($file, "/var/app/") === 0) {
+        $file = substr($file, strlen("/var/app/"));
+    }
+
+    return $file;
+}
+
+function getEnvString(string $name)
+{
+    $value = getenv($name);
+
+    if (is_string($value) !== true) {
+        echo "Getting env variable $name resulted in " . var_export($value, true) . " which is not a string.";
+        exit(-1);
+    }
+
+    return $value;
 }

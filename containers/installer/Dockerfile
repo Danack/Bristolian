@@ -14,9 +14,9 @@ RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 
 RUN  apt-get update -qq && \
      apt-get dist-upgrade -y && \
-     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y php8.0 php8.0-common php8.0-cli \
-     php8.0-mysql php8.0-curl php8.0-xml php8.0-mbstring \
-     php8.0-intl php8.0-redis php8.0-zip unzip
+     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y php8.1 php8.1-common php8.1-cli \
+     php8.1-mysql php8.1-curl php8.1-xml php8.1-mbstring \
+     php8.1-intl php8.1-redis php8.1-zip unzip
 
 # Make the default directory be the useful one
 WORKDIR /var/app

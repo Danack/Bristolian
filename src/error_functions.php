@@ -96,7 +96,7 @@ function saneErrorHandler(
         // to allow shutdown to continue
         return false;
     }
-    $message = "Error: [$errorNumber] $errorMessage in file $errorFile on line $errorLine.";
+    $message = "Error: [$errorNumber] $errorMessage in file $errorFile:$errorLine.";
     throw new \Exception($message);
 }
 

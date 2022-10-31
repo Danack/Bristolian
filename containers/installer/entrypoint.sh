@@ -24,8 +24,14 @@ php vendor/bin/classconfig \
     config.generated.php \
     $ENV_TO_USE
 
-# php cli.php misc:wait_for_db
-# php vendor/bin/phinx migrate -e internal
+# There can be a race condition between the DB coming
+# up, and us trying to use it. Explicitly waiting for it
+# to be available save annoyance.
+php cli.php db:wait_for_db
+
+php cli.php db:migrate_to_latest
+
+php vendor/bin/phinx migrate -e development
 # php cli.php seed:initial
 
 echo "Installer is finished."

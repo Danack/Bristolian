@@ -53,10 +53,10 @@ class CLIFunction
                 $line = $lastError['line'];
             }
 
-            $errorMessage = sprintf("Fatal error: %s in %s on line %d", $message, $file, $line);
+            $errorMessage = sprintf("Fatal error: %s in %s:%d", $message, $file, $line);
 
             error_log($errorMessage);
-            $msg = "Oops! Something went terribly wrong :(";
+            $msg = "Oops! Something went terribly wrong :(\n";
             $msg .= $errorMessage;
             $msg .= "\n";
 
