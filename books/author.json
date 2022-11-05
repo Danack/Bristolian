@@ -1,0 +1,14 @@
+{
+  "name": "Underwood Dudley",
+  "personal_name": "Underwood Dudley",
+  "last_modified": {
+    "type": "/type/datetime",
+    "value": "2008-09-02 19:48:30.198619"
+  },
+  "key": "/authors/OL407888A",
+  "type": {
+    "key": "/type/author"
+  },
+  "id": 1118235,
+  "revision": 2
+}
