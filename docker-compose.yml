@@ -1,5 +1,18 @@
 version: "3"
 services:
+  caddy:
+    build: containers/caddy
+    # container_name: caddy
+    # image: caddy:latest
+    volumes:
+      - .:/var/app
+#    ports:
+#      - 80:80
+#      - 8080:80
+    depends_on:
+     - php_fpm
+    networks:
+      default_network:
   chrome_headless:
     image: alpeware/chrome-headless-trunk
     ports:
@@ -39,10 +52,8 @@ services:
       default_network:
     volumes:
       - .:/var/app
-  js_dev_builder:
-    build: containers/js_dev_builder
-  #  ports:
-  #    - 8888:8888
+  js_builder:
+    build: containers/js_builder
     volumes:
       - .:/var/app
   sass_dev_builder:
@@ -54,8 +65,8 @@ services:
   php_fpm:
     build: containers/php_fpm
     image: bristolian_php_fpm
-    depends_on:
-      - db
+#    depends_on:
+#      - db
     environment:
       - COMPOSER_CACHE_DIR=/var/app/var/cache/composer
       - COMPOSER_ALLOW_SUPERUSER=1
@@ -75,16 +86,16 @@ services:
       default_network:
     volumes:
       - .:/var/app
-  nginx:
-    build: containers/nginx
-    depends_on:
-      - php_fpm
-    volumes:
-      - .:/var/app
-    networks:
-      default_network:
-        aliases:
-          - internal.bristolian.org
+#  nginx:
+#    build: containers/nginx
+#    depends_on:
+#      - php_fpm
+#    volumes:
+#      - .:/var/app
+#    networks:
+#      default_network:
+#        aliases:
+#          - internal.bristolian.org
   redis:
     image: redis:6.2.4
     volumes:
@@ -107,7 +118,7 @@ services:
     volumes:
       - ./:/var/app
     depends_on:
-      - nginx
+      - caddy
       - php_fpm
 networks:
   default_network:
