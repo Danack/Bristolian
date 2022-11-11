@@ -1,0 +1,65 @@
+
+.floating_point_panel_react {
+
+
+
+  table {
+    border-collapse: collapse;
+
+    td {
+      text-align: center;
+      border: 1px solid #000;
+      padding: 5px 2px;
+    }
+  }
+
+  .floating_point_bit {
+    font-size: 10px;
+    line-height: 6px;
+    border: none;
+  }
+
+  .floating_point_bit_dark {
+    background: #efefef;
+  }
+
+  .floating_point_sign_number {
+    background: #BBF;
+  }
+
+  .floating_point_exponent_number {
+    background: #BFB;
+
+    &:hover {
+      background: #9ddb9dff;
+    }
+  }
+
+  .floating_point_fraction_number {
+    background: #FBB;
+  }
+
+
+  .floating_point_control {
+
+    /* clicking buttons leads to accidental text selection far too often */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+
+
+
+    border: 1px solid #000;
+    cursor: pointer;
+    border-radius: 3px;
+    background-color: #003286;
+    color: white;
+    padding: 3px;
+    margin: 3px;
+    &:hover {
+      background: #d2e3ff;
+      color: black;
+    }
+  }
+}

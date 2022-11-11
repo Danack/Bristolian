@@ -1,19 +1,16 @@
 import { h, render } from "preact";
-// import { MotionsPanel } from "./MotionsPanel";
-// import { FfmpegCalculatorPanel } from "./FfmpegCalculator";
 import { CSPViolationReportsPanel } from "./CSPViolationReportsPanel";
-
+import { FloatingPointPanel } from "./FloatingPointPanel";
 import initByClass from "widgety";
 import type { WidgetClassBinding } from "widgety";
-
 import { startMessageProcessing } from "danack-message";
 
 
 let panels: WidgetClassBinding[] = [
-    // {
-    //     class: 'widget_motions_panel',
-    //     component: MotionsPanel
-    // },
+    {
+         class: 'floating_point_panel',
+         component: FloatingPointPanel
+    },
     {
         class: 'widget_csp_violation_reports',
         component: CSPViolationReportsPanel
