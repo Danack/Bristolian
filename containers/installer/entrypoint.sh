@@ -24,14 +24,22 @@ php vendor/bin/classconfig \
     config.generated.php \
     $ENV_TO_USE
 
+
+# Generate nginx config file for the centos,dev environment
+#php vendor/bin/configurate \
+#    -p config.source.php \
+#    containers/nginx/config/nginx.conf.php \
+#    containers/nginx/config/nginx.conf \
+#    $ENV_TO_USE
+
 # There can be a race condition between the DB coming
 # up, and us trying to use it. Explicitly waiting for it
 # to be available save annoyance.
-php cli.php db:wait_for_db
+# php cli.php db:wait_for_db
 
-php cli.php db:migrate_to_latest
+# php cli.php db:migrate_to_latest
 
-php vendor/bin/phinx migrate -e development
+# php vendor/bin/phinx migrate -e development
 # php cli.php seed:initial
 
 echo "Installer is finished."

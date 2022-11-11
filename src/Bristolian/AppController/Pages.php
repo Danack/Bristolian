@@ -12,7 +12,11 @@ class Pages
 {
     public function index()
     {
-        return "Hello there";
+        $content = "<h1>Floating point shenanigans</h1>";
+
+        $content .= "<div class='floating_point_panel'></div>";
+
+        return $content;
     }
 
     public function homepage()

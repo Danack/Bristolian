@@ -1,0 +1,25 @@
+{
+    auto_https off
+}
+
+local.bristolian.org:80 {
+    root * /var/app/app/public
+    php_fastcgi php_fpm:9000
+    file_server
+
+    encode {
+
+    	gzip
+    	zstd
+
+    	# minimum_length <length>
+
+    	# response matcher single line syntax
+    	# match [header <field> [<value>]] | [status <code...>]
+    	# or response matcher block for multiple conditions
+    	# match {
+    	#	status <code...>
+    	#	header <field> [<value>]
+    	# }
+    }
+}

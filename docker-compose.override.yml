@@ -6,13 +6,13 @@ services:
   installer:
     env_file:
       - env_local_dev.env
-  nginx:
-    env_file:
-      - env_local_dev.env
+  caddy:
+#    env_file:
+#      - env_local_dev.env
     ports:
-      - "8000:8000"
+      - "8000:80"
       - "8001:8001"
-  js_dev_builder:
+  js_builder:
     environment:
       - BRISTOLIAN_API_BASE_URL=http://local.api.bristolian.org
   php_fpm:
@@ -29,7 +29,7 @@ services:
       - "8002:8080"
   varnish:
     depends_on:
-      - nginx
+#      - nginx
       - php_fpm
       - php_fpm_debug
     ports:

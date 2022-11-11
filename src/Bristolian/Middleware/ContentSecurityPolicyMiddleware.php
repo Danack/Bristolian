@@ -62,7 +62,8 @@ class ContentSecurityPolicyMiddleware implements MiddlewareInterface
 
         $cspLines[] = "img-src * data:";
         $cspLines[] = sprintf(
-            "script-src 'self' 'nonce-%s' %s",
+            // TODO - remove the unsafe eval
+            "script-src 'self' 'nonce-%s' %s 'unsafe-eval'",
             $this->requestNonce->getRandom(),
             implode(' ', $scriptSrcDomains)
         );

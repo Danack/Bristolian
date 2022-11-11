@@ -38,8 +38,8 @@ import std;
 # Default backend definition. Set this to point to your content server.
 # These do use the docker network stack.
 backend default {
-    .host = "nginx";
-    .port = "8000";
+    .host = "caddy";
+    .port = "80";
 }
 
 sub vcl_init {
