@@ -19,6 +19,40 @@ class Pages
         return $content;
     }
 
+    // pasted reference is:
+    // \Bristolian\AppController\Pages::timeline_page
+
+    public function timeline_page()
+    {
+        $content = "<h1>Time line page goes here</h1>";
+
+        $content .= "<div class='time_line_panel'></div>";
+
+        return $content;
+    }
+
+    public function notes_page()
+    {
+        $content = "<h1>Note page goes here</h1>";
+
+        $content .= "<div class='notes_panel'></div>";
+
+        return $content;
+    }
+
+
+
+
+    public function twitter_splitter_page()
+    {
+        $content = "<h1>Twitter splitter goes here</h1>";
+
+        $content .= "<div class='twitter_splitter_panel'></div>";
+
+        return $content;
+    }
+
+
     public function homepage()
     {
         return "Hello there";

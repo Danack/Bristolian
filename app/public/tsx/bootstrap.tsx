@@ -6,6 +6,11 @@ import type { WidgetClassBinding } from "widgety";
 import { startMessageProcessing } from "danack-message";
 
 
+import { NotesPanel } from "./NotesPanel";
+import { TimeLinePanel } from "./TimeLinePanel";
+import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
+
+
 let panels: WidgetClassBinding[] = [
     {
          class: 'floating_point_panel',
@@ -15,7 +20,24 @@ let panels: WidgetClassBinding[] = [
         class: 'widget_csp_violation_reports',
         component: CSPViolationReportsPanel
     },
+    {
+        class: 'time_line_panel',
+        component: TimeLinePanel
+    },
+    {
+        class: 'notes_panel',
+        component: NotesPanel
+    },
+
+    {
+        class: 'twitter_splitter_panel',
+        component: TwitterSplitterPanel
+    },
+
+
+
 ];
+
 
 initByClass(panels, h, render);
 

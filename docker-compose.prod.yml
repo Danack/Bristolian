@@ -4,12 +4,12 @@ services:
     environment:
       - ENV_DESCRIPTION=default,prod
   js_and_css_prod_builder:
-    build: containers/npm
+    build: containers/js_builder
     environment:
       # we don't set NODE_ENV as production, as that is for serving node requests, not building assets.
       - BRISTOLIAN_API_BASE_URL=https://api.bristolian.org
       - ENV_DESCRIPTION=default,prod
-    entrypoint: ["bash", "/var/app/containers/npm/build_prod_assets.sh"]
+    entrypoint: ["bash", "/var/app/containers/js_builder/build_prod_assets.sh"]
     volumes:
       - .:/var/app
   php_fpm:
@@ -17,7 +17,7 @@ services:
       - ENV_DESCRIPTION=default,prod
   varnish:
     depends_on:
-      - nginx
+      - caddy
       - php_fpm
     ports:
       - "8007:80"

@@ -20,6 +20,11 @@ function getAllRoutes()
         ['/about', 'GET', 'Bristolian\AppController\Pages::about'],
         ['/privacy_policy', 'GET', 'Bristolian\AppController\Pages::privacyPolicy'],
 
+        ['/timeline', 'GET', '\Bristolian\AppController\Pages::timeline_page'],
+        ['/notes', 'GET', '\Bristolian\AppController\Pages::notes_page'],
+
+        ['/twitter_splitter', 'GET', '\Bristolian\AppController\Pages::twitter_splitter_page'],
+
         // System pages
 
         ['/system/csp/reports', 'GET', '\Bristolian\AppController\System::show_csp_reports'],
