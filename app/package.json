@@ -30,31 +30,26 @@
     "url": "git://github.com/Danack/Bristolian.git"
   },
   "dependencies": {
-    "argv": "0.0.2",
-    "command-line-args": "^5.2.0",
-    "danack-message": "0.0.4",
-    "preact": "^8.5.3",
-    "preact-compat": "^3.19.0",
-    "preact-render-to-string": "4.1.0",
-    "promise-polyfill": "^8.2.1",
-    "widgety": "0.0.7"
+    "preact": "^10.11.3"
   },
   "devDependencies": {
-    "@types/node": "^14.18.23",
-    "compression-webpack-plugin": "^3.0.1",
-    "css-loader": "^3.6.0",
+    "@types/node": "^18.11.9",
+    "argv": "0.0.2",
+    "command-line-args": "^5.2.0",
+    "compression-webpack-plugin": "^10.0.0",
+    "css-loader": "^6.7.2",
     "jest": "^29.3.1",
     "raw-loader": "^4.0.2",
-    "sass": "^1.54.3",
+    "sass": "^1.56.1",
     "script-loader": "^0.7.2",
-    "source-map-loader": "^0.2.4",
-    "style-loader": "^1.3.0",
+    "source-map-loader": "^4.0.1",
+    "style-loader": "^3.3.1",
     "timestamp-webpack-plugin": "^0.2.3",
-    "ts-loader": "^6.2.1",
-    "typescript": "^3.9.10",
-    "webpack": "^4.46.0",
-    "webpack-bundle-analyzer": "^3.9.0",
-    "webpack-cli": "^3.3.12"
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.9.3",
+    "webpack": "^5.75.0",
+    "webpack-bundle-analyzer": "^4.7.0",
+    "webpack-cli": "^5.0.0"
   },
   "optionalDependencies": {
     "fsevents": "^2.1.2"

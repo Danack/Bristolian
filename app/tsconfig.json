@@ -14,5 +14,8 @@
   "include": [
     "./public/tsx/**/**/*.tsx",
     "./public/tsx/**/**/*.ts"
+  ],
+  "exclude": [
+    "./public/tsx/**/*.test.tsx"
   ]
 }

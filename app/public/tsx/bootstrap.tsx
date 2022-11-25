@@ -1,15 +1,13 @@
 import { h, render } from "preact";
 import { CSPViolationReportsPanel } from "./CSPViolationReportsPanel";
 import { FloatingPointPanel } from "./FloatingPointPanel";
-import initByClass from "widgety";
-import type { WidgetClassBinding } from "widgety";
-import { startMessageProcessing } from "danack-message";
-
+import initByClass from "./widgety/widgety";
+import type { WidgetClassBinding } from "./widgety/widgety";
+import { startMessageProcessing } from "./message/message";
 
 import { NotesPanel } from "./NotesPanel";
 import { TimeLinePanel } from "./TimeLinePanel";
 import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
-
 
 let panels: WidgetClassBinding[] = [
     {
@@ -33,9 +31,6 @@ let panels: WidgetClassBinding[] = [
         class: 'twitter_splitter_panel',
         component: TwitterSplitterPanel
     },
-
-
-
 ];
 
 

@@ -4,8 +4,13 @@ export interface TwitterSplitterPanelProps {
   // no properties currently
 }
 
+interface Tweet {
+  text: string;
+  copied: boolean
+}
+
 interface TwitterSplitterPanelState {
-  tweets: Array<string>;
+  tweets: Array<Tweet>;
 }
 
 function getDefaultState(/*initialControlParams: object*/): TwitterSplitterPanelState {
@@ -25,20 +30,29 @@ function remove_text(remaining_text: string) {
     ". ",
     ", ",
     ",",
+    "\n\n"
   ];
+
+  let best_break_point = 0;
 
   for (const breakpoint of breakpoints) {
     let index_of_break = text_to_analyze.lastIndexOf(breakpoint);
     if (index_of_break != -1) {
-      let tweet_text = remaining_text.substr(0, index_of_break + breakpoint.length);
-      remaining_text = remaining_text.substr(index_of_break + breakpoint.length);
-      return [remaining_text, tweet_text];
+      if (best_break_point < index_of_break) {
+        best_break_point = index_of_break;
+      }
     }
   }
 
+  if (best_break_point !== 0) {
+    let tweet_text = remaining_text.substring(0, best_break_point + 1);
+    remaining_text = remaining_text.substring(best_break_point + 1);
+    return [remaining_text, tweet_text];
+  }
+
   // No nice places found, just hard split at 280 characters
-  let tweet_text = remaining_text.substr(0, 280);
-  remaining_text = remaining_text.substr(280);
+  let tweet_text = remaining_text.substring(0, 280);
+  remaining_text = remaining_text.substring(280);
 
   return [remaining_text, tweet_text];
 }
@@ -89,32 +103,74 @@ export class TwitterSplitterPanel extends Component<TwitterSplitterPanelProps, T
     // this.triggerSetImageParams();
   }
 
-    handleMessageChange(event: any) {
+  handleMessageChange(event: any) {
+    let tweet_strings = split_tweets(event.target.value);
+    let tweets = [];
+    for (let i in tweet_strings) {
+      tweets.push({
+        text: tweet_strings[i],
+        copied: false
+      })
+    }
 
-        // setMessage(event.target.value);
+    this.setState({tweets: tweets});
+  };
 
-        // // @ts-ignore: Why are events so hard to type
-        // console.log(event.target.value);
-      let tweets = split_tweets(event.target.value);
+  copyTweet(index: number) {
 
-      this.setState({tweets: tweets});
-    };
+    let text = this.state.tweets[index].text;
 
+    try {
+      navigator.clipboard.writeText(text);
+    }
+    catch (e) {
+      alert("Error writing to clipboard");
+      return;
+    }
 
+    let current_tweets = this.state.tweets;
+    current_tweets[index].copied = true;
+    this.setState({tweets: current_tweets});
+  }
 
-  renderTweet(tweet: string, index: number) {
+  debugFunc() {
+    debugger;
+  }
+
+  renderTweet(tweet: Tweet, index: number) {
+    let copy_button = <img
+      onClick={() => this.debugFunc}
+      src="/svg/copy-icon.svg"
+      alt="copy"
+      width="16"
+      height="16"/>;
+
+    if (tweet.copied) {
+      copy_button = <span>copied</span>;
+    }
+
     return <tr key={index}>
-      <td>{tweet}</td>
+      <td>
+        {tweet.text}
+      </td>
+      <td onClick={() => this.copyTweet(index)}>
+        {copy_button}
+        <br/>
+        <div>
+        {tweet.text.length}&nbsp;/&nbsp;280
+        </div>
+      </td>
     </tr>
   }
 
   renderTweets() {
     let tweets = [<tr>
         <td>No tweets yet.</td>
+        <td></td>
     </tr>];
 
     if (this.state.tweets.length != 0) {
-      tweets = this.state.tweets.map(this.renderTweet);
+      tweets = this.state.tweets.map(this.renderTweet, this);
     }
 
     return <table>
@@ -142,8 +198,6 @@ export class TwitterSplitterPanel extends Component<TwitterSplitterPanelProps, T
         </tr>
       </table>
     </div>;
-
-    return <div>These are TwitterSplitter.</div>
   }
 }
 

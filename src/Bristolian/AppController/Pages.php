@@ -19,9 +19,6 @@ class Pages
         return $content;
     }
 
-    // pasted reference is:
-    // \Bristolian\AppController\Pages::timeline_page
-
     public function timeline_page()
     {
         $content = "<h1>Time line page goes here</h1>";
@@ -40,18 +37,16 @@ class Pages
         return $content;
     }
 
-
-
-
     public function twitter_splitter_page()
     {
-        $content = "<h1>Twitter splitter goes here</h1>";
+        $content = "<h1>Twitter splitter</h1>";
+
+        $content .= "<p>Write some text in the box, it will be split into tweets on the right.";
 
         $content .= "<div class='twitter_splitter_panel'></div>";
 
         return $content;
     }
-
 
     public function homepage()
     {
