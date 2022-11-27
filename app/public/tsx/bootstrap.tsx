@@ -8,6 +8,7 @@ import { startMessageProcessing } from "./message/message";
 import { NotesPanel } from "./NotesPanel";
 import { TimeLinePanel } from "./TimeLinePanel";
 import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
+import { TeleprompterPanel } from "./TeleprompterPanel";
 
 let panels: WidgetClassBinding[] = [
     {
@@ -30,6 +31,10 @@ let panels: WidgetClassBinding[] = [
     {
         class: 'twitter_splitter_panel',
         component: TwitterSplitterPanel
+    },
+    {
+        class: 'teleprompter_panel',
+        component: TeleprompterPanel
     },
 ];
 

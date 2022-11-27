@@ -464,6 +464,7 @@ export class FloatingPointPanel extends Component<FloatingPointPanelProps, Float
 
         return  <div class='floating_point_panel_react'>
             <h3>Input</h3>
+            <div>Enter a number or an expression, e.g. "0.3" or "1 / 3" </div>
             <div>
                 <input type='text'
                        width="128"
@@ -489,7 +490,7 @@ export class FloatingPointPanel extends Component<FloatingPointPanelProps, Float
             </table>
 
 
-            <h3>Something</h3>
+            <h3>Calculation</h3>
             <table>
                 <tr>
                     <td>Sign</td>

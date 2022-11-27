@@ -20,13 +20,17 @@ function getAllRoutes()
         ['/about', 'GET', 'Bristolian\AppController\Pages::about'],
         ['/privacy_policy', 'GET', 'Bristolian\AppController\Pages::privacyPolicy'],
 
-        ['/timeline', 'GET', '\Bristolian\AppController\Pages::timeline_page'],
-        ['/notes', 'GET', '\Bristolian\AppController\Pages::notes_page'],
+        ['/tools', 'GET', '\Bristolian\AppController\Pages::tools_page'],
 
-        ['/twitter_splitter', 'GET', '\Bristolian\AppController\Pages::twitter_splitter_page'],
+
+        ['/tools/floating_point', 'GET', '\Bristolian\AppController\Pages::floating_point_page'],
+        ['/tools/timeline', 'GET', '\Bristolian\AppController\Pages::timeline_page'],
+        ['/tools/notes', 'GET', '\Bristolian\AppController\Pages::notes_page'],
+
+        ['/tools/twitter_splitter', 'GET', '\Bristolian\AppController\Pages::twitter_splitter_page'],
+        ['/tools/teleprompter', 'GET', '\Bristolian\AppController\Pages::teleprompter_page'],
 
         // System pages
-
         ['/system/csp/reports', 'GET', '\Bristolian\AppController\System::show_csp_reports'],
         ['/system/csp/test', 'GET', 'Bristolian\AppController\ContentSecurityPolicy::getTestPage'],
         ['/system/csp/clear', 'GET', 'Bristolian\AppController\ContentSecurityPolicy::clearReports'],

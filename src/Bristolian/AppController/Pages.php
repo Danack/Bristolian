@@ -19,6 +19,15 @@ class Pages
         return $content;
     }
 
+    public function floating_point_page()
+    {
+        $content = "<h1>Floating point shenanigans</h1>";
+
+        $content .= "<div class='floating_point_panel'></div>";
+
+        return $content;
+    }
+
     public function timeline_page()
     {
         $content = "<h1>Time line page goes here</h1>";
@@ -27,6 +36,35 @@ class Pages
 
         return $content;
     }
+
+    public function teleprompter_page()
+    {
+        $content = "<h1>Teleprompter</h1>";
+
+        $content .= "<div class='teleprompter_panel'></div>";
+
+        return $content;
+    }
+
+
+
+    public function tools_page()
+    {
+        $content = "<h1>Tools page</h1>";
+        $content .= <<< HTML
+<ul>
+  <li><a href="/tools/floating_point">Floating point</a></li>          
+  <li><a href="/tools/twitter_splitter">Twitter splitter</a></li>          
+  <li><a href="/tools/teleprompter">Teleprompter</a></li>
+  <li><a href="/tools/timeline">Timeline</a></li>          
+  <li><a href="/tools/notes">Notes</a></li>          
+</ul>
+
+HTML;
+
+        return $content;
+    }
+
 
     public function notes_page()
     {
@@ -42,8 +80,8 @@ class Pages
         $content = "<h1>Twitter splitter</h1>";
 
         $content .= "<p>Write some text in the box, it will be split into tweets on the right.";
-
         $content .= "<div class='twitter_splitter_panel'></div>";
+        $content .= "<p>Emojis might not be handled correctly. Or links.";
 
         return $content;
     }

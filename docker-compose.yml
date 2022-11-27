@@ -86,16 +86,6 @@ services:
       default_network:
     volumes:
       - .:/var/app
-#  nginx:
-#    build: containers/nginx
-#    depends_on:
-#      - php_fpm
-#    volumes:
-#      - .:/var/app
-#    networks:
-#      default_network:
-#        aliases:
-#          - internal.bristolian.org
   redis:
     image: redis:6.2.4
     volumes:

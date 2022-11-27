@@ -92,7 +92,7 @@ function createPageHeaderHtml(/*HeaderLinks $headerLinks*/) : string
 {
     $headerLinks = new HeaderLinks([
         new HeaderLink('/', 'Home'),
-        new HeaderLink('/topics', 'Topics'),
+        new HeaderLink('/tools', 'Tools'),
         new HeaderLink('/about', "About")
     ]);
 

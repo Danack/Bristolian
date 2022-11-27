@@ -80,29 +80,6 @@ export class TwitterSplitterPanel extends Component<TwitterSplitterPanelProps, T
     // this.fetchMaxCommentData();
   }
 
-  componentDidMount() {
-    // this.restoreStateFn = (event:any) => this.restoreState(event.state);
-    // // @ts-ignore: I don't understand that error message.
-    // window.addEventListener('popstate', this.restoreStateFn);
-  }
-
-  componentWillUnmount() {
-    // // unbind the listener
-    // // @ts-ignore: I don't understand that error message.
-    // window.removeEventListener('popstate', this.restoreStateFn, false);
-    // this.restoreStateFn = null;
-  }
-
-  restoreState(state_to_restore: object) {
-    // if (state_to_restore === null) {
-    //     this.setState(getDefaultState(this.props.initialControlParams));
-    //     return;
-    // }
-    //
-    // this.setState(state_to_restore);
-    // this.triggerSetImageParams();
-  }
-
   handleMessageChange(event: any) {
     let tweet_strings = split_tweets(event.target.value);
     let tweets = [];
@@ -125,21 +102,17 @@ export class TwitterSplitterPanel extends Component<TwitterSplitterPanelProps, T
     }
     catch (e) {
       alert("Error writing to clipboard");
-      return;
     }
 
     let current_tweets = this.state.tweets;
     current_tweets[index].copied = true;
     this.setState({tweets: current_tweets});
-  }
-
-  debugFunc() {
-    debugger;
+    return false;
   }
 
   renderTweet(tweet: Tweet, index: number) {
     let copy_button = <img
-      onClick={() => this.debugFunc}
+      // onClick={() => {return this.copyTweet(index)}}
       src="/svg/copy-icon.svg"
       alt="copy"
       width="16"
@@ -153,7 +126,7 @@ export class TwitterSplitterPanel extends Component<TwitterSplitterPanelProps, T
       <td>
         {tweet.text}
       </td>
-      <td onClick={() => this.copyTweet(index)}>
+      <td onClick={() => { return this.copyTweet(index)}}>
         {copy_button}
         <br/>
         <div>
