@@ -215,7 +215,6 @@ export class TeleprompterPanel extends Component<TeleprompterPanelProps, Telepro
         <button onClick={(e) => this.toggleShowing(e)}>Start</button>
       </div>
     </span>
-
   }
 
   render(props: TeleprompterPanelProps, state: TeleprompterPanelState) {
@@ -266,14 +265,8 @@ export class TeleprompterPanel extends Component<TeleprompterPanelProps, Telepro
             <div>Page down - page down</div>
             <div>Escape - exit fullscreen</div>
             <div>Space - pause</div>
-
-
           </td>
         </tr>
-
-
-
-
       </table>
 
       {prompt}
