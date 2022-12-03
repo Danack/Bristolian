@@ -79,9 +79,9 @@ HTML;
     {
         $content = "<h1>Twitter splitter</h1>";
 
-        $content .= "<p>Write some text in the box, it will be split into tweets on the right.";
+
         $content .= "<div class='twitter_splitter_panel'></div>";
-        $content .= "<p>Emojis might not be handled correctly. Or links.";
+
 
         return $content;
     }

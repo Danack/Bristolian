@@ -9,22 +9,51 @@ interface Tweet {
   copied: boolean
 }
 
-interface TwitterSplitterPanelState {
-  tweets: Array<Tweet>;
+enum Numbering {
+  None = "None",
+  Prefix = "1/ Prefix",
 }
 
-function getDefaultState(/*initialControlParams: object*/): TwitterSplitterPanelState {
+
+interface TwitterSplitterPanelState {
+  tweets: Array<Tweet>;
+  numbering: Numbering;
+  current_text: string;
+}
+
+function getDefaultState(): TwitterSplitterPanelState {
   return {
-    tweets: []
+    tweets: [],
+    numbering: Numbering.None,
+    current_text: ""
   };
 }
 
-function remove_text(remaining_text: string) {
-  if (remaining_text.length < 280) {
-    return ["", remaining_text];
+function getNumberPrefixString(numbering: Numbering, tweet_index: number) {
+  if (numbering !== Numbering.Prefix) {
+    return "";
   }
 
-  let text_to_analyze = remaining_text.slice(0, 280);
+  return "" + tweet_index + "/ ";
+}
+
+function getNumberPostfixString(numbering: Numbering, tweet_index: number) {
+  return "";
+}
+
+
+function remove_text(remaining_text: string, numbering: Numbering, tweet_index: number) {
+
+  let number_prefix = getNumberPrefixString(numbering, tweet_index);
+  let number_postfix = getNumberPostfixString(numbering, tweet_index);
+
+  let size_available = 280 - number_prefix.length;
+
+  if (remaining_text.length < size_available) {
+    return ["", number_prefix + remaining_text + number_postfix];
+  }
+
+  let text_to_analyze = remaining_text.slice(0, size_available);
 
   let breakpoints = [
     ". ",
@@ -47,54 +76,71 @@ function remove_text(remaining_text: string) {
   if (best_break_point !== 0) {
     let tweet_text = remaining_text.substring(0, best_break_point + 1);
     remaining_text = remaining_text.substring(best_break_point + 1);
-    return [remaining_text, tweet_text];
+    return [remaining_text, number_prefix + tweet_text + number_postfix];
   }
 
-  // No nice places found, just hard split at 280 characters
-  let tweet_text = remaining_text.substring(0, 280);
-  remaining_text = remaining_text.substring(280);
+  // No nice places found, just hard split at size_available characters
+  let tweet_text = remaining_text.substring(0, size_available);
+  remaining_text = remaining_text.substring(size_available);
 
-  return [remaining_text, tweet_text];
+  return [remaining_text, number_prefix + tweet_text + number_postfix];
 }
 
-export function split_tweets(input_text: string): Array<string> {
+export function split_tweets(input_text: string, numbering: Numbering): Array<string> {
 
   let tweets = [];
   let tweet_text: string;
   let remaining_text: string = input_text;
 
   while (remaining_text.length > 0) {
-    [remaining_text, tweet_text] = remove_text(remaining_text);
+    [remaining_text, tweet_text] = remove_text(remaining_text, numbering, tweets.length + 1);
     tweets.push(tweet_text);
   }
 
   return tweets;
 }
 
+function calculate_tweets(new_text: string, numbering: Numbering): Array<Tweet> {
+  let tweet_strings = split_tweets(new_text, numbering);
+  let tweets = [];
+  for (let i in tweet_strings) {
+    tweets.push({
+      text: tweet_strings[i],
+      copied: false
+    })
+  }
+
+  return tweets;
+}
 
 export class TwitterSplitterPanel extends Component<TwitterSplitterPanelProps, TwitterSplitterPanelState> {
 
   constructor(props: TwitterSplitterPanelProps) {
     super(props);
-    this.state = getDefaultState(/*props.initialControlParams*/);
-    // this.fetchMaxCommentData();
+    this.state = getDefaultState();
   }
 
-  handleMessageChange(event: any) {
-    let tweet_strings = split_tweets(event.target.value);
-    let tweets = [];
-    for (let i in tweet_strings) {
-      tweets.push({
-        text: tweet_strings[i],
-        copied: false
-      })
-    }
+  handleTextChange(event: any) {
 
-    this.setState({tweets: tweets});
+    let new_text = event.target.value;
+    let tweets = calculate_tweets(new_text, this.state.numbering);
+
+    this.setState({
+      tweets: tweets,
+      current_text: new_text
+    });
   };
 
-  copyTweet(index: number) {
+  handleNumberingChange(e: any) {
+    let new_numbering = e.target.value;
+    let tweets = calculate_tweets(this.state.current_text, new_numbering);
+    this.setState({
+      numbering: new_numbering,
+      tweets: tweets
+    });
+  }
 
+  copyTweet(index: number) {
     let text = this.state.tweets[index].text;
 
     try {
@@ -112,7 +158,6 @@ export class TwitterSplitterPanel extends Component<TwitterSplitterPanelProps, T
 
   renderTweet(tweet: Tweet, index: number) {
     let copy_button = <img
-      // onClick={() => {return this.copyTweet(index)}}
       src="/svg/copy-icon.svg"
       alt="copy"
       width="16"
@@ -151,11 +196,32 @@ export class TwitterSplitterPanel extends Component<TwitterSplitterPanelProps, T
     </table>
   }
 
+  renderNumbering() {
+    let none_selected = false;
+    let prefix_selected = false;
+
+    if (this.state.numbering == Numbering.None) {
+      none_selected = true;
+    }
+
+    if (this.state.numbering == Numbering.Prefix) {
+      prefix_selected = true;
+    }
+
+    return <select onChange={(e) => this.handleNumberingChange(e)}>
+      <option selected={none_selected}>{Numbering.None}</option>)
+      <option selected={prefix_selected}>{Numbering.Prefix}</option>)
+    </select>;
+  }
+
   render(props: TwitterSplitterPanelProps, state: TwitterSplitterPanelState) {
 
     let tweets = this.renderTweets();
+    let numbering = this.renderNumbering();
 
     return <div class='twitter_splitter_panel_react'>
+      <p>Write some text in the box, it will be split into tweets on the right. Copy the tweets when you're done.</p>
+      Tweet numbering: {numbering}
       <table>
         <tr>
           <td>
@@ -163,23 +229,17 @@ export class TwitterSplitterPanel extends Component<TwitterSplitterPanelProps, T
               cols={100}
               rows={40}
               placeholder="Type here..."
-              onChange={(event) => this.handleMessageChange(event)}
-              onInput={(event) => this.handleMessageChange(event)}>
+              value={this.state.current_text}
+              onChange={(event) => this.handleTextChange(event)}
+              onInput={(event) => this.handleTextChange(event)}>
             </textarea>
           </td>
-          <td>{tweets}</td>
+          <td>
+            {tweets}
+          </td>
         </tr>
       </table>
+      <p>Emojis might not be handled correctly. Or links.</p>
     </div>;
   }
 }
-
-
-
-
-
-
-
-
-
-
