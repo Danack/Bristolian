@@ -167,9 +167,11 @@ export class TwitterSplitterPanel extends Component<TwitterSplitterPanelProps, T
       copy_button = <span>copied</span>;
     }
 
+    let shown_text = tweet.text;//.replace(/(?:\r\n|\r|\n)/g, '<br>');
+
     return <tr key={index}>
-      <td>
-        {tweet.text}
+      <td style="white-space: pre-line">
+        {shown_text}
       </td>
       <td onClick={() => { return this.copyTweet(index)}}>
         {copy_button}
@@ -219,6 +221,8 @@ export class TwitterSplitterPanel extends Component<TwitterSplitterPanelProps, T
     let tweets = this.renderTweets();
     let numbering = this.renderNumbering();
 
+    let chars_info = <div>Chars: {this.state.current_text.length}</div>;
+
     return <div class='twitter_splitter_panel_react'>
       <p>Write some text in the box, it will be split into tweets on the right. Copy the tweets when you're done.</p>
       Tweet numbering: {numbering}
@@ -235,6 +239,7 @@ export class TwitterSplitterPanel extends Component<TwitterSplitterPanelProps, T
             </textarea>
           </td>
           <td>
+            {chars_info}
             {tweets}
           </td>
         </tr>
