@@ -20,6 +20,6 @@ services:
       - caddy
       - php_fpm
     ports:
-      - "8007:80"
+      - "8008:80"
     environment:
       - ENV_DESCRIPTION=default,prod
