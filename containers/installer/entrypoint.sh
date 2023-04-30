@@ -33,12 +33,13 @@ php vendor/bin/configurate \
     $ENV_TO_USE
 
 
-# Generate nginx config file for the centos,dev environment
-#php vendor/bin/configurate \
-#    -p config.source.php \
-#    containers/nginx/config/nginx.conf.php \
-#    containers/nginx/config/nginx.conf \
-#    $ENV_TO_USE
+
+# Generate varnish config
+php vendor/bin/configurate \
+    -p config.source.php \
+    containers/varnish/config/default.vcl.php \
+    containers/varnish/config/default.vcl \
+    $ENV_TO_USE
 
 # There can be a race condition between the DB coming
 # up, and us trying to use it. Explicitly waiting for it

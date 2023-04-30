@@ -11,21 +11,6 @@ TEXT;
 
 }
 
-//${'redirectNonHttpsToHttps'}
-//$redirectNonHttpsToHttps = '# vary - varnish.allow_non_ssl';
-//if (${'varnish.allow_non_ssl'} !== true) {
-//    $redirectNonHttpsToHttps .= <<< REDIRECT_NON_HTTPS_TO_HTTPS
-//
-//# http -> https redirect
-//# http_x_forwarded_proto can be spoofed to downgrade the connection.
-//if (client.ip != "127.0.0.1" && req.http.X-Forwarded-Proto !~ "https") {
-//    set req.http.x-https-redirect = "https://" + req.http.host + req.url;
-//    return(synth(850, "Moved permanently"));
-//}
-//
-//REDIRECT_NON_HTTPS_TO_HTTPS;
-//}
-
 
 $config = <<< END
 
