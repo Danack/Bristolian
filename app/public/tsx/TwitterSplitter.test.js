@@ -16,7 +16,7 @@ let tests = [
 describe(
  'twitter_splitter',
   function () {
-    it('Message queue management', function () {
+    it('splits them correctly', function () {
 
         let result = split_tweets(tests[0].input);
 

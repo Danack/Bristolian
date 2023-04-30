@@ -18,4 +18,4 @@ docker-compose up --build \
 # docker-compose up --build php_fpm npm_dev_build
 
 
-docker-compose up --build db varnish nginx php_fpm php_fpm_debug
+#docker-compose up --build db varnish caddy php_fpm php_fpm_debug

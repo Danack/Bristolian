@@ -6,6 +6,7 @@ namespace Bristolian;
 
 use Bristolian\AssetLinkEmitter;
 
+// TODO - this needs an interface
 class StringToHtmlPageConverter
 {
     public function __construct(private AssetLinkEmitter $assetLinkEmitter)
@@ -20,7 +21,6 @@ class StringToHtmlPageConverter
     ): \Psr\Http\Message\ResponseInterface {
 
         $page = createPageHtml($this->assetLinkEmitter, $result);
-
 
         $response = $response->withHeader('Content-Type', 'text/html');
         $response->getBody()->write($page);

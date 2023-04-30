@@ -10,13 +10,13 @@ declare (strict_types = 1);
  * as that would make it harder to read, not easier.
  */
 
-use Auryn\Injector;
+use DI\Injector;
 use Bristolian\Config;
 use Psr\Http\Message\ResponseInterface;
 use SlimAuryn\AurynCallableResolver;
 use Laminas\Diactoros\ResponseFactory;
 
-function forbidden(\Auryn\Injector $injector): void
+function forbidden(\DI\Injector $injector): void
 {
     $injector->make("Please don't use this object directly; create a more specific type to use.");
 }

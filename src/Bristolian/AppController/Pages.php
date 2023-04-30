@@ -12,9 +12,9 @@ class Pages
 {
     public function index()
     {
-        $content = "<h1>Floating point shenanigans</h1>";
+        $content = "<h1>Absolute alpha</h1>";
 
-        $content .= "<div class='floating_point_panel'></div>";
+        $content .= "<p>There is really very little here...</p>";
 
         return $content;
     }

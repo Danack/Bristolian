@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-use Auryn\Injector;
+use DI\Injector;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SlimAuryn\RouteParams;

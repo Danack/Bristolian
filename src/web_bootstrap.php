@@ -21,7 +21,7 @@ set_error_handler('saneErrorHandler');
 
 function showPage(\Bristolian\Page $page)
 {
-    $injector = new Auryn\Injector();
+    $injector = new DI\Injector();
     $injectionParams = injectionParams();
     $injectionParams->addToInjector($injector);
     $injector->share($injector);
@@ -58,7 +58,7 @@ function showPage(\Bristolian\Page $page)
 
 function showInternalsResponse($callable)
 {
-    $injector = new Auryn\Injector();
+    $injector = new DI\Injector();
     $injectionParams = injectionParams();
     $injectionParams->addToInjector($injector);
     $injector->share($injector);
@@ -71,7 +71,7 @@ function showInternalsResponse($callable)
 
 function showLearningResponse($callable)
 {
-    $injector = new Auryn\Injector();
+    $injector = new DI\Injector();
     $injectionParams = injectionParams();
     $injectionParams->addToInjector($injector);
     $injector->share($injector);
@@ -84,7 +84,7 @@ function showLearningResponse($callable)
 
 function showResponse($callable)
 {
-    $injector = new Auryn\Injector();
+    $injector = new DI\Injector();
     $injectionParams = injectionParams();
     $injectionParams->addToInjector($injector);
     $injector->share($injector);
@@ -92,7 +92,7 @@ function showResponse($callable)
     showResponseInternal($callable, $injector);
 }
 
-function showResponseInternal($callable, Auryn\Injector $injector)
+function showResponseInternal($callable, DI\Injector $injector)
 {
     try {
         $container = new \Slim\Container();

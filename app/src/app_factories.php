@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-use Auryn\Injector;
+use DI\Injector;
 use Bristolian\Config;
 use Psr\Http\Message\ResponseInterface;
-use SlimAuryn\AurynCallableResolver;
+use SlimDispatcher\DispatchingResolver;
 use Laminas\Diactoros\ResponseFactory;
 use Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware;
 use Bristolian\SiteHtml\PageResponseGenerator;
@@ -35,7 +35,7 @@ function createExceptionToErrorPageResponseMiddleware(Injector $injector): Excep
 
 function createHtmlAppErrorHandler(
     Config $config,
-    \Auryn\Injector $injector
+    \DI\Injector $injector
 ) : \Bristolian\AppErrorHandler\AppErrorHandler {
     if ($config->isProductionEnv() === true) {
         return $injector->make(\Bristolian\AppErrorHandler\HtmlErrorHandlerForProd::class);
@@ -56,8 +56,10 @@ function createSlimAppForApp(
     \Bristolian\AppErrorHandler\AppErrorHandler $appErrorHandler
 ): \Slim\App {
 
-    $callableResolver = new AurynCallableResolver(
-        $injector,
+    $dispatcher = new \Bristolian\Basic\Dispatcher($injector);
+
+    $callableResolver = new DispatchingResolver(
+        $dispatcher,
         $resultMappers = getResultMappers($injector)
     );
 
@@ -86,11 +88,11 @@ function createSlimAppForApp(
  * Creates the objects that map StubResponse into PSR7 responses
  * @return mixed
  */
-function getResultMappers(\Auryn\Injector $injector)
+function getResultMappers(\DI\Injector $injector)
 {
     return [
-        \SlimAuryn\Response\StubResponse::class =>
-            'SlimAuryn\mapStubResponseToPsr7',
+        \SlimDispatcher\Response\StubResponse::class =>
+            'SlimDispatcher\mapStubResponseToPsr7',
 //        \Bristolian\Page::class => 'mapBristolianPageToPsr7',
         ResponseInterface::class =>
             'SlimAuryn\passThroughResponse',

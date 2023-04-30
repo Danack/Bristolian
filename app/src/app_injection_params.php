@@ -1,13 +1,12 @@
 <?php
 
-
-use AurynConfig\InjectionParams;
+use Bristolian\InjectionParams;
 
 function injectionParams()
 {
     // These classes will only be created once by the injector.
     $shares = [
-        \Auryn\Injector::class,
+        \DI\Injector::class,
         \Slim\App::class,
         \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
         \Bristolian\Service\RequestNonce::class,

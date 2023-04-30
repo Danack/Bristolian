@@ -63,17 +63,16 @@ services:
     volumes:
       - .:/var/app
   php_fpm:
-    build: containers/php_fpm
-    image: bristolian_php_fpm
-#    depends_on:
-#      - db
-    environment:
+   build: containers/php_fpm
+   # The image name is so the debug container can be built from it
+   image: bristolian_php_fpm
+   environment:
       - COMPOSER_CACHE_DIR=/var/app/var/cache/composer
       - COMPOSER_ALLOW_SUPERUSER=1
-    networks:
+   networks:
       default_network:
-    volumes:
-      - .:/var/app
+   volumes:
+     - .:/var/app
   php_fpm_debug:
     build: containers/php_fpm_debug
     environment:
