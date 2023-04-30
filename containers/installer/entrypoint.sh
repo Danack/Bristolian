@@ -16,12 +16,20 @@ else
     php composer.phar install
 fi
 
+# tail -f /var/app/README.md
 
 # Generate config settings used per environment
 php vendor/bin/classconfig \
     -p config.source.php \
     "Bristolian\\Config" \
     config.generated.php \
+    $ENV_TO_USE
+
+# Generate fpm config file
+php vendor/bin/configurate \
+    -p config.source.php \
+    containers/php_fpm/config/fpm.conf.php \
+    containers/php_fpm/config/fpm.conf \
     $ENV_TO_USE
 
 
