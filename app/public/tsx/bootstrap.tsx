@@ -9,6 +9,8 @@ import { NotesPanel } from "./NotesPanel";
 import { TimeLinePanel } from "./TimeLinePanel";
 import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
 import { TeleprompterPanel } from "./TeleprompterPanel";
+import { EmailLinkGeneratorPanel } from "./EmailLinkGenerator";
+
 
 let panels: WidgetClassBinding[] = [
     {
@@ -35,6 +37,10 @@ let panels: WidgetClassBinding[] = [
     {
         class: 'teleprompter_panel',
         component: TeleprompterPanel
+    },
+    {
+        class: 'email_link_generator_panel',
+        component: EmailLinkGeneratorPanel
     },
 ];
 

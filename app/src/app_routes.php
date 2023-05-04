@@ -22,6 +22,11 @@ function getAllRoutes()
 
         ['/tools', 'GET', '\Bristolian\AppController\Pages::tools_page'],
 
+        ['/qr/code', 'GET', '\Bristolian\AppController\QRCode::get'],
+
+        ['/bcc/committee_meetings', 'GET', '\Bristolian\AppController\Pages::bcc_committee_meetings'],
+
+        ['/complaints/triangle_road', 'GET', '\Bristolian\AppController\Pages::triangle_road'],
 
         ['/tools/floating_point', 'GET', '\Bristolian\AppController\Pages::floating_point_page'],
         ['/tools/timeline', 'GET', '\Bristolian\AppController\Pages::timeline_page'],
@@ -29,6 +34,7 @@ function getAllRoutes()
 
         ['/tools/twitter_splitter', 'GET', '\Bristolian\AppController\Pages::twitter_splitter_page'],
         ['/tools/teleprompter', 'GET', '\Bristolian\AppController\Pages::teleprompter_page'],
+        ['/tools/email_link_generator', 'GET', '\Bristolian\AppController\Pages::email_link_generator_page'],
 
         // System pages
         ['/system/csp/reports', 'GET', '\Bristolian\AppController\System::show_csp_reports'],

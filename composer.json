@@ -8,7 +8,7 @@
         "danack/looping-exec": "^0.3.0",
         "danack/json-safe": "^0.1.1",
         "danack/slim-dispatcher": "dev-dev",
-        "danack/typespec": "0.1.0",
+        "danack/datatype": "0.5.2",
         "dmore/chrome-mink-driver": "2.8.1",
         "ext-redis": "*",
         "justinrainbow/json-schema": "^5.2.7",
@@ -25,7 +25,8 @@
         "league/commonmark": "^2.3.5",
         "ext-posix": "*",
         "spatie/yaml-front-matter": "^2.0",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "chillerlan/php-qrcode": "^4.3"
     },
     "require-dev": {
         "danack/coding-standard": "0.3.0",
