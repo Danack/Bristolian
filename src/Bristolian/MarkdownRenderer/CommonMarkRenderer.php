@@ -15,6 +15,7 @@ use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
 use League\CommonMark\Normalizer\SlugNormalizer;
 use League\CommonMark\MarkdownConverter;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\Footnote\FootnoteExtension;
 
 class CommonMarkRenderer implements MarkdownRenderer
 {
@@ -69,6 +70,9 @@ class CommonMarkRenderer implements MarkdownRenderer
             // This errors "Unexpected item 'disallowed_raw_html'."
             $environment->addExtension(new GithubFlavoredMarkdownExtension());
         }
+
+        // Add the extension
+        $environment->addExtension(new FootnoteExtension());
 
         $converter = new MarkdownConverter($environment);
 
