@@ -12,6 +12,8 @@ docker-compose up --build -d db
 
 docker-compose up --build installer
 
+docker-compose build php_fpm
+
 docker-compose up --build \
  varnish caddy \
  php_fpm php_fpm_debug \

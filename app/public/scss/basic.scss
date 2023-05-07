@@ -28,6 +28,23 @@ table {
     border-right: 1px solid transparent;
   }
 
+  th {
+    text-align: center;
+    vertical-align: top;
+  }
+
+  td {
+    vertical-align: top;
+  }
+
+  th, td {
+    padding-top:4px;
+    padding-bottom:4px;
+    padding-right:4px;
+  }
+}
+
+table.large_table {
   tr:hover td
   {
     border-top: 1px solid var(--table_row_border_hover_color);
@@ -42,21 +59,6 @@ table {
   tr:hover td:last-child
   {
     border-right: 1px solid var(--table_row_border_hover_color);
-  }
-
-  th {
-    text-align: center;
-    vertical-align: top;
-  }
-
-  td {
-    vertical-align: top;
-  }
-
-  th, td {
-    padding-top:4px;
-    padding-bottom:4px;
-    padding-right:4px;
   }
 
   tr:nth-child(even) {
