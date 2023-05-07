@@ -204,7 +204,7 @@ export class EmailLinkGeneratorPanel extends Component<EmailLinkGeneratorPanelPr
 
     return  <div class='email_link_generator_panel_react'>
       <h3>Input</h3>
-      <table class='large_table'>
+      <table>
         <tbody>
         <tr>
           <td>Address</td>
