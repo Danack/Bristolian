@@ -39,7 +39,11 @@ As well as your name and address, you need to say why you are objecting. I would
 
 * Reopening the road doesn't actually help cars get around the city. They can turn into Queen's Avenue to get to Woodland road.
 
-Click <a href="mailto:tro.comments@bristol.gov.uk?Subject=I%20object%20to%20CAE%2FNMT%2FP-1262&cc=cllr.Ani.Stafford-Townsend%40Bristol.gov.uk" target='_blank'>this link</a> to send an email to TRO Comments, and also CC Councillor Stafford-Townsend, a Green party councillor for the ward.
+Click <a href="mailto:tro.comments@bristol.gov.uk?Subject=I%20object%20to%20CAE%2FNMT%2FP-1262&cc=cllr.Ani.Stafford-Townsend%40Bristol.gov.uk" target='_blank'>this link to email tro.comments@bristol.gov.uk</a>, and also CC Councillor Stafford-Townsend, a Green party councillor for the ward.
+
+## Other things to do
+
+You could join [the Green party](https://join.greenparty.org.uk/). They seem to be the only political party that wants to make cities be walkable.
 
 ## Full details
 

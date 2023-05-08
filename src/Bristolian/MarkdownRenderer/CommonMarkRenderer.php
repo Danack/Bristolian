@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Bristolian\MarkdownRenderer;
 
 use League\CommonMark\Extension\Autolink\AutolinkExtension;
+use League\CommonMark\Extension\Autolink\UrlAutolinkParser;
 use League\CommonMark\Extension\DisallowedRawHtml\DisallowedRawHtmlExtension;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\Extension\Strikethrough\StrikethroughExtension;
@@ -60,7 +61,8 @@ class CommonMarkRenderer implements MarkdownRenderer
 
         if (true) {
             // This works
-            $environment->addExtension(new AutolinkExtension());
+            // $environment->addExtension(new AutolinkExtension());
+            $environment->addInlineParser(new UrlAutolinkParser());
             $environment->addExtension(new DisallowedRawHtmlExtension());
             $environment->addExtension(new StrikethroughExtension());
             $environment->addExtension(new TableExtension());
