@@ -8,6 +8,8 @@ use Bristolian\SiteHtml\PageStubResponseGenerator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Bristolian\MarkdownRenderer\MarkdownRenderer;
 
+use Bristolian\Page;
+
 class Pages
 {
     public function index()
@@ -94,15 +96,13 @@ HTML;
         $content = "<h1>Tools page</h1>";
         $content .= <<< HTML
 <ul>
-  <li><a href="/tools/floating_point">Floating point</a></li>          
+  <li><a href="/tools/email_link_generator">Email link generator</a></li>
   <li><a href="/tools/twitter_splitter">Twitter splitter</a></li>          
-  <li><a href="/tools/teleprompter">Teleprompter</a></li>
+  <!-- <li><a href="/tools/teleprompter">Teleprompter</a></li> -->
   <!-- <li><a href="/tools/timeline">Timeline</a></li> -->          
   <!-- <li><a href="/tools/notes">Notes</a></li> -->
-  <li><a href="/tools/email_link_generator">Email link generator</a></li>
+  <li><a href="/tools/floating_point">Floating point visualiser</a></li>
 </ul>
-
-
 
 HTML;
 
@@ -153,6 +153,8 @@ HTML;
     public function triangle_road(MarkdownRenderer $markdownRenderer)
     {
         $fullPath = __DIR__ . "/../../../docs/complaints/triangle_road.md";
+
+        Page::setQrShareMessage("Please share this with anyone you know who would be affected by this road reopening. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
 
         $html = $markdownRenderer->renderFile($fullPath);
         $html .= "<hr/>";

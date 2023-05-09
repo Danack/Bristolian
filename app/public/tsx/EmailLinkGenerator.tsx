@@ -254,7 +254,7 @@ export class EmailLinkGeneratorPanel extends Component<EmailLinkGeneratorPanelPr
 
         <tr>
           <td>Body</td>
-          <td><input type="text" size={80}
+          <td><textarea type="text" cols={60} rows={5}
                      // @ts-ignore:event types are annoying
                      onInput={(e) => this.handleBodyChange(e)}
                      onChange={(e) => this.handleBodyChange(e)}

@@ -130,8 +130,9 @@ function share_this_page()
     $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     $query = http_build_query(['url' => $url]);
     $content = "<h3>Share this page</h3>";
-    $content .= "<p>Show this QR code to someone, and they can scan it with the camera in their device:</p>";
+    $content .= "<p>" . \Bristolian\Page::getQrShareMessage() . "</p>";
     $content .= "<img src='/qr/code?$query' alt='qr code' width='256' height='256'></img>";
 
     return $content;
 }
+
