@@ -41,7 +41,7 @@ As well as your name and address, you need to say why you are objecting. I would
 
 * Before the junction was closed there was a regular problem with cars driving south against the one-way system. Opening the road will make that happen again.
 
-Click <a href="mailto:tro.comments@bristol.gov.uk?Subject=I%20object%20to%20CAE%2FNMT%2FP-1262&cc=cllr.Ani.Stafford-Townsend%40Bristol.gov.uk" target='_blank'>this link to email tro.comments@bristol.gov.uk</a>, and also CC Councillor Stafford-Townsend, a Green party councillor for the ward.
+Click <a href='mailto:tro.comments@bristol.gov.uk?Subject=I%20object%20to%20CAE%2FNMT%2FP-1262&cc=cllr.Ani.Stafford-Townsend%40Bristol.gov.uk&body=Name%3A%0AAddress%3A%0AReason%20for%20objection%3A' target='_blank'>this link to email tro.comments@bristol.gov.uk</a>, and also CC Councillor Stafford-Townsend, a Green party councillor for the ward.
 
 ## Other things to do
 

@@ -144,7 +144,7 @@ export class EmailLinkGeneratorPanel extends Component<EmailLinkGeneratorPanelPr
       body_text = separator + "body=" + encodeURIComponent(this.state.body);
     }
 
-    let href = "mailto:" + this.state.address + "?" + subject_text + cc_text + bcc_text + body_text;
+    let href = "'mailto:" + this.state.address + "?" + subject_text + cc_text + bcc_text + body_text + "'";
     let link_text = this.generate_link();
 
     let result = `<a href=${href} target='_blank'>${link_text}</a>`;
@@ -154,7 +154,7 @@ export class EmailLinkGeneratorPanel extends Component<EmailLinkGeneratorPanelPr
 
   // This is duplication, but it's quicker than figuring out
   // how to get the raw html from a DOM object.
-  generate_link_html() {
+  generate_link_dom() {
 
     if (this.state.address.length == 0) {
       return "";
@@ -193,7 +193,7 @@ export class EmailLinkGeneratorPanel extends Component<EmailLinkGeneratorPanelPr
   }
 
   render(props: EmailLinkGeneratorPanelProps, state: EmailLinkGeneratorPanelState) {
-    let link_html = this.generate_link_html();
+    let link_html = this.generate_link_dom();
     let link_string = this.generate_link_string();
 
     let copy_button = <span></span>;
