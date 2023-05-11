@@ -86,10 +86,20 @@ HTML;
         $content .= "Email links can be setup to include pre-filled subject, CC, BCC and body text. This is a tool that does the needful to generate appropriate HTML, for embedding in other pages.";
 
         $content .= "<div class='email_link_generator_panel'></div>";
+        $content .= "<hr/><p></p><a href='https://mailtolink.me/'/>Or use this one</a>.</p>";
 
         return $content;
     }
 
+    public function qr_code_generator_page()
+    {
+        $content = "<h1>QR code generator</h1>";
+
+        $content .= "<div class='qr_code_generator_panel'></div>";
+        $content .= "<p>Or just use <a href='https://smiley.codes/qrcode/'>smiley.codes/qrcode/</a></p>";
+
+        return $content;
+    }
 
     public function tools_page()
     {
@@ -101,6 +111,7 @@ HTML;
   <!-- <li><a href="/tools/teleprompter">Teleprompter</a></li> -->
   <!-- <li><a href="/tools/timeline">Timeline</a></li> -->          
   <!-- <li><a href="/tools/notes">Notes</a></li> -->
+  <li><a href="/tools/qr_code_generator">QR generator</a></li>
   <li><a href="/tools/floating_point">Floating point visualiser</a></li>
 </ul>
 

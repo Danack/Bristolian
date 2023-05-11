@@ -46,8 +46,8 @@ export class EmailLinkGeneratorPanel extends Component<EmailLinkGeneratorPanelPr
   }
 
   componentDidMount() {
-
     if (navigator.clipboard === undefined) {
+      console.log("Clipboard isn't going to be available");
       this.setState({clipboard: false});
     }
   }

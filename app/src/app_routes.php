@@ -36,6 +36,8 @@ function getAllRoutes()
         ['/tools/teleprompter', 'GET', '\Bristolian\AppController\Pages::teleprompter_page'],
         ['/tools/email_link_generator', 'GET', '\Bristolian\AppController\Pages::email_link_generator_page'],
 
+        ['/tools/qr_code_generator', 'GET', '\Bristolian\AppController\Pages::qr_code_generator_page'],
+
         // System pages
         ['/system/csp/reports', 'GET', '\Bristolian\AppController\System::show_csp_reports'],
         ['/system/csp/test', 'GET', 'Bristolian\AppController\ContentSecurityPolicy::getTestPage'],

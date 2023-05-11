@@ -10,7 +10,7 @@ import { TimeLinePanel } from "./TimeLinePanel";
 import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
 import { TeleprompterPanel } from "./TeleprompterPanel";
 import { EmailLinkGeneratorPanel } from "./EmailLinkGenerator";
-
+import { QrCodeGeneratorPanel } from "./QrCodeGenerator";
 
 let panels: WidgetClassBinding[] = [
     {
@@ -41,6 +41,10 @@ let panels: WidgetClassBinding[] = [
     {
         class: 'email_link_generator_panel',
         component: EmailLinkGeneratorPanel
+    },
+    {
+        class: 'qr_code_generator_panel',
+        component: QrCodeGeneratorPanel
     },
 ];
 

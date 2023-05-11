@@ -17,12 +17,14 @@ class QRCode
     {
         $qrData = QRData::createFromVarMap($varMap);
 
+//        https://www.qrcode.com/en/about/version.html#versionPage1_10
+
         $options = new QROptions([
-            'version'             => 7,
+//            'version'             => 7,
             'outputType'          => QRCodeGenerator::OUTPUT_MARKUP_SVG,
 //            'svgViewBoxSize'    => '0 0 100 100',
             'imageBase64'         => false,
-//            'eccLevel'            => EccLevel::L,
+            'eccLevel'            => QRCodeGenerator::ECC_Q,
             'addQuietzone'        => true,
             // if set to false, the light modules won't be rendered
             'drawLightModules'    => true,
@@ -32,8 +34,7 @@ class QRCode
             // draw the modules as circles isntead of squares
 //            'drawCircularModules' => true,
             'circleRadius'        => 0.4,
-            // connect paths
-//            'connectPaths'        => true,
+            'connectPaths'        => true,
             // keep modules of these types as square
 //            'keepAsSquare'        => [
 //                QRMatrix::M_FINDER_DARK,
