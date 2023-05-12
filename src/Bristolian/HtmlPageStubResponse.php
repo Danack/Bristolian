@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian;
 
-use SlimAuryn\Response\StubResponse;
+use SlimDispatcher\Response\StubResponse;
 
 class HtmlPageStubResponse implements StubResponse
 {

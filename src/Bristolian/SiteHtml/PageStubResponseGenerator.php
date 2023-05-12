@@ -6,7 +6,7 @@ namespace Bristolian\SiteHtml;
 
 use Bristolian\AssetLinkEmitter;
 use Bristolian\HtmlPageStubResponse;
-use SlimAuryn\Response\StubResponse;
+use SlimDispatcher\Response\StubResponse;
 
 class PageStubResponseGenerator
 {
