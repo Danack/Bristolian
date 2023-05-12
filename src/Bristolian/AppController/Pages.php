@@ -23,8 +23,6 @@ class Pages
         $content .= "<p>Maybe have a look at the <a href='/bcc/committee_meetings'>BCC committee meetings</a> about committees.</p>";
         $content .= "<p>Or why you should object to the <a href='/complaints/triangle_road'>Triangle road change</a>.</p>";
 
-        $content .= "<p>Testing deployer...</p>";
-
         return $content;
     }
 
