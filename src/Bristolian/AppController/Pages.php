@@ -94,8 +94,8 @@ HTML;
     public function qr_code_generator_page()
     {
         $content = "<h1>QR code generator</h1>";
-
-        $content .= "<div class='qr_code_generator_panel'></div>";
+        $content .= "<p>outside panel</p>";
+        $content .= "<div class='qr_code_generator_panel'> inside panel</div>";
         $content .= "<p>Or just use <a href='https://smiley.codes/qrcode/'>smiley.codes/qrcode/</a></p>";
 
         return $content;

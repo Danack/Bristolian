@@ -69,7 +69,7 @@ export class QrCodeGeneratorPanel extends Component<QrCodeGeneratorPanelProps, Q
 
     let status = <span></span>;
 
-    if (trimmed_address > 0) {
+    if (trimmed_address.length > 0) {
       status = <span class='status_error'>URL is not valid</span>;
     }
 
