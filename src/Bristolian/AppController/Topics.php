@@ -18,29 +18,29 @@ class Topics
 
         $topics = [];
 
-        'present',
-        'now',
-        'future',
-
-        'local',
-        'visitors',
-        'new to bristol'
+//        'present',
+//        'now',
+//        'future',
+//
+//        'local',
+//        'visitors',
+//        'new to bristol'
 
 
         $topics['council stuff'] = [
             '/bristol_energy', 'Bristol Energy',
             '/bristol_water', 'Bristol water',
             'SEND', 'Special Educational Needs Disability',
-            '/cyclepaths', 'cyclepaths'
-            'Mayor Rees'
-
-        'Cllr Don Alexander'
+//            '/cyclepaths', 'cyclepaths'
+//            'Mayor Rees'
+//
+//        'Cllr Don Alexander'
 
         ];
 
 
 
-        "public issues"
+//        "public issues"
         // abandoned buildings.
         // https://twitter.com/DanicaPriest/status/1556755113510932481
 

@@ -13,7 +13,7 @@ class DevEnvironmentMemoryWarning implements MemoryWarningCheck
         $percentMemoryUsed = getPercentMemoryUsed();
 
         if ($percentMemoryUsed > 50) {
-            throw new \Exception("Request is using too much memory.");
+            throw new MemoryUseException("Request is using too much memory.");
         }
 
         return $percentMemoryUsed;

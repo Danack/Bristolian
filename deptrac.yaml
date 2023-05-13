@@ -1,0 +1,55 @@
+deptrac:
+  paths:
+    - ./src
+  exclude_files:
+    - '#.*test.*#'
+  layers:
+    - name: AppController
+      collectors:
+        - type: className
+          value: .*AppControll\Controller.*
+    - name: Repository
+      collectors:
+        - type: className
+          value: .*Repository.*
+    - name: Service
+      collectors:
+        - type: className
+          value: .*Service.*
+    - name: Internals
+      collectors:
+        - type: php_internal
+          value: .*
+    - name: SharedInternal
+      collectors:
+        - type: className
+          value: ^Exception$
+
+  ruleset:
+    AppController:
+      - Service
+      - SharedInternal
+    Service:
+      - Repository
+      - SharedInternal
+    Repository:
+
+#  skip_violations:
+#    Library\LibClass:
+#      - Core\CoreClass
+
+
+
+#      - name: Foo
+#        collectors:
+#          - type: uses
+#            value: 'App\SomeTrait'
+#            private: true
+
+
+#      - type: composer
+#        composerPath: composer.json
+#        composerLockPath: composer.lock
+#        packages:
+#          - symfony/config
+#          - symfony/console
