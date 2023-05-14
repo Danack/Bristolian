@@ -51,6 +51,7 @@ export class QrCodeGeneratorPanel extends Component<QrCodeGeneratorPanelProps, Q
       is_valid = true;
     } catch (_) {
       // nothing to do.
+      console.log("is valid");
     }
 
     this.setState({address: trimmed, is_valid: is_valid});
@@ -69,8 +70,14 @@ export class QrCodeGeneratorPanel extends Component<QrCodeGeneratorPanelProps, Q
 
     let status = <span></span>;
 
-    if (trimmed_address.length > 0) {
-      status = <span class='status_error'>URL is not valid</span>;
+    if (this.state.is_valid === false && trimmed_address.length > 0) {
+      if (trimmed_address.startsWith("https://") === false &&
+        trimmed_address.startsWith("http://") === false) {
+        status = <span class='status_error'>URL is not valid - needs to start with http:// or https://</span>;
+      }
+      else {
+        status = <span class='status_error'>URL is not valid</span>;
+      }
     }
 
     return  <div class='qr_code_generator_panel_react'>
