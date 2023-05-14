@@ -51,7 +51,6 @@ export class QrCodeGeneratorPanel extends Component<QrCodeGeneratorPanelProps, Q
       is_valid = true;
     } catch (_) {
       // nothing to do.
-      console.log("is valid");
     }
 
     this.setState({address: trimmed, is_valid: is_valid});
