@@ -68,8 +68,12 @@ $prod = [
     Config::BRISTOLIAN_ENVIRONMENT => 'prod',
 ];
 
+// set this to test varnish caching locally
 $varnish_debug = [
     'varnish.pass_all_requests' => false
 ];
 
-
+// Test with something like:
+// php vendor/bin/classconfig \
+// -p config.source.php Bristolian\\Config config.generated.php \
+// default,local,varnish_debug

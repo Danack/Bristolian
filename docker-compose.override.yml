@@ -4,8 +4,11 @@ services:
     ports:
       - "3306:3306"
   installer:
-    env_file:
-      - env_local_dev.env
+#    env_file:
+#      - env_local_dev.env
+    environment:
+      - ENV_DESCRIPTION=default,local
+    #  - ENV_DESCRIPTION=default,local,varnish_debug
   caddy:
 #    env_file:
 #      - env_local_dev.env
@@ -15,12 +18,12 @@ services:
   js_builder:
     environment:
       - BRISTOLIAN_API_BASE_URL=http://local.api.bristolian.org
-  php_fpm:
-    env_file:
-      - env_local_dev.env
-  php_fpm_debug:
-    env_file:
-      - env_local_dev.env
+#  php_fpm:
+#    env_file:
+#      - env_local_dev.env
+#  php_fpm_debug:
+#    env_file:
+#      - env_local_dev.env
   redis:
     ports:
       - "6379:6379"

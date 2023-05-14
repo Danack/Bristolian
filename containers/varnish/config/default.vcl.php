@@ -1,11 +1,15 @@
 <?php
 
 
-$varnishPassAllString = '# vary - varnish.pass_all_requests';
+$varnishPassAllString = <<< CACHING
+
+# return(pass) is not used - aka caching is enabled
+CACHING;
+
 
 if (${'varnish.pass_all_requests'} === true) {
     $varnishPassAllString .= <<< TEXT
-
+# pass all requests - aka caching is disabled
 return(pass);
 TEXT;
 

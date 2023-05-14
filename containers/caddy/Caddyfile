@@ -1,25 +1,41 @@
 {
-    auto_https off
+	auto_https off
 }
 
+#@static {
+#	file
+#
+#	# Maybe add more of these?
+#	# bmp|bz2|css|gif|doc|gz|html|ico|jpg|jpeg|js|map|mid|midi|pcap|png|rtf|rar|
+#	# pdf|ppt|tar|tgz|txt|wav|xls|zip
+#	path *.ico *.css *.js *.gif *.jpg *.jpeg *.png *.svg *.woff
+#}
+
+
 *.bristolian.org:80, bristolian.org:80 {
-    root * /var/app/app/public
-    php_fastcgi php_fpm:9000
-    file_server
+	root * /var/app/app/public
+	php_fastcgi php_fpm:9000
+	file_server
 
-    encode {
+	@static {
+		file
+		path *.ico *.css *.js *.gif *.jpg *.jpeg *.png *.svg *.woff *.woff2 *.json
+	}
 
-    	gzip
-    	zstd
+	header @static Cache-Control max-age=3600
 
-    	# minimum_length <length>
+	encode {
+		gzip
+		zstd
 
-    	# response matcher single line syntax
-    	# match [header <field> [<value>]] | [status <code...>]
-    	# or response matcher block for multiple conditions
-    	# match {
-    	#	status <code...>
-    	#	header <field> [<value>]
-    	# }
-    }
+		# minimum_length <length>
+
+		# response matcher single line syntax
+		# match [header <field> [<value>]] | [status <code...>]
+		# or response matcher block for multiple conditions
+		# match {
+		#	status <code...>
+		#	header <field> [<value>]
+		# }
+	}
 }

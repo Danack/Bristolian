@@ -32,8 +32,6 @@ php vendor/bin/configurate \
     containers/php_fpm/config/fpm.conf \
     $ENV_TO_USE
 
-
-
 # Generate varnish config
 php vendor/bin/configurate \
     -p config.source.php \

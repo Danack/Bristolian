@@ -3,9 +3,9 @@ set -e
 set -x
 
 
-ENV_TO_USE=${ENV_DESCRIPTION:=default}
-
-echo "ENV_TO_USE is ${ENV_TO_USE}";
+#ENV_TO_USE=${ENV_DESCRIPTION:=default}
+#
+#echo "ENV_TO_USE is ${ENV_TO_USE}";
 
 
 ## Generate nginx config file for the centos,dev environment
