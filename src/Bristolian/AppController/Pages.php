@@ -23,6 +23,17 @@ class Pages
         $content .= "<p>Maybe have a look at the <a href='/bcc/committee_meetings'>BCC committee meetings</a> about committees.</p>";
         $content .= "<p>Or why you should object to the <a href='/complaints/triangle_road'>Triangle road change</a>.</p>";
 
+
+        $content .= <<< HTML
+
+<h3>Eldon House music</h3>
+<p>
+  <a href="https://www.youtube.com/watch?v=hCNsspqVXMk&ab_channel=Danack">Act 1</a><br/> 
+  <a href="https://www.youtube.com/watch?v=3tpIn6oVkPE&ab_channel=Danack">Act 2</a> <br/>
+  <a href="https://www.youtube.com/watch?v=fvNFsCnoSn0&ab_channel=Danack">Act 3</a><br/>
+</p>
+HTML;
+
         return $content;
     }
 
