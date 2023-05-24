@@ -2,20 +2,8 @@
 
 declare(strict_types = 1);
 
-//use Bristolian\FloatInfo\FloatTwiddleControl;
-use TypeSpec\Create\CreateFromRequest;
-use TypeSpec\Create\CreateFromVarMap;
-use TypeSpec\Create\CreateOrErrorFromVarMap;
-use TypeSpec\InputTypeSpec;
-use TypeSpec\ExtractRule\GetBoolOrDefault;
-use TypeSpec\ExtractRule\GetIntOrDefault;
-use TypeSpec\ExtractRule\GetStringOrDefault;
-use TypeSpec\ProcessRule\MaxIntValue;
-use TypeSpec\ProcessRule\MinIntValue;
-use TypeSpec\SafeAccess;
 use VarMap\ArrayVarMap;
 use VarMap\VarMap;
-use TypeSpec\ProcessRule\EnumMap;
 use Bristolian\ToArray;
 
 function hackVarMap($varMap)
@@ -715,4 +703,15 @@ function getEnvString(string $name)
     }
 
     return $value;
+}
+
+
+/**
+ * @param mixed $needle
+ * @param array<mixed> $haystack
+ * @return bool
+ */
+function array_contains($needle, array $haystack): bool
+{
+    return in_array($needle, $haystack, true);
 }

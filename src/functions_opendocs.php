@@ -507,15 +507,6 @@ function getPercentMemoryUsed() : int
 }
 
 
-/**
- * @param mixed $needle
- * @param array<mixed> $haystack
- * @return bool
- */
-function array_contains($needle, array $haystack): bool
-{
-    return in_array($needle, $haystack, true);
-}
 
 
 /**

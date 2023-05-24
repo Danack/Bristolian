@@ -19,11 +19,11 @@ require __DIR__ . '/config.generated.php';
 
 set_time_limit(20);
 
-$injector = new Auryn\Injector();
+$injector = new DI\Injector();
 
 CLIFunction::setupErrorHandlers();
 
-$cliInjectionParams = require __DIR__ . "/cli/cli_injectionParams.php";
+$cliInjectionParams = require __DIR__ . "/cli/cli_injection_params.php";
 $cliInjectionParams->addToInjector($injector);
 
 $injector->share($injector);

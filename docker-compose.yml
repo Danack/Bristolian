@@ -2,13 +2,8 @@ version: "3"
 services:
   caddy:
     build: containers/caddy
-    # container_name: caddy
-    # image: caddy:latest
     volumes:
       - .:/var/app
-#    ports:
-#      - 80:80
-#      - 8080:80
     depends_on:
      - php_fpm
     networks:

@@ -3,6 +3,14 @@ services:
   db:
     ports:
       - "3306:3306"
+    environment:
+      - ENV_DESCRIPTION=default,local
+      - MYSQL_HOST=DB
+      - MYSQL_ROOT_PASSWORD=PrJaGpnNSzSLW8p8
+      - MYSQL_DATABASE=bristolian
+      - MYSQL_USER=bristolian
+      - MYSQL_PASSWORD=p5ffrKSk4mPqN8vH
+
   installer:
 #    env_file:
 #      - env_local_dev.env
@@ -37,7 +45,7 @@ services:
       - php_fpm_debug
     ports:
       - "80:80"
-    env_file:
-      - env_local_dev.env
+#    env_file:
+#      - env_local_dev.env
 
 

@@ -1,7 +1,6 @@
 <?php
 
-use AurynConfig\InjectionParams;
-
+use Bristolian\InjectionParams;
 
 if (function_exists('injectionParams') == false) {
 
@@ -11,7 +10,6 @@ if (function_exists('injectionParams') == false) {
         $shares = [
 //            \Doctrine\ORM\EntityManager::class,
             \Redis::class,
-//            \Airbrake\Notifier::class
         ];
 
         // Alias interfaces (or classes) to the actual types that should be used

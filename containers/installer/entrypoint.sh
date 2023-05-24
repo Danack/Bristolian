@@ -42,9 +42,9 @@ php vendor/bin/configurate \
 # There can be a race condition between the DB coming
 # up, and us trying to use it. Explicitly waiting for it
 # to be available save annoyance.
-# php cli.php db:wait_for_db
+php cli.php db:wait_for_db
 
-# php cli.php db:migrate_to_latest
+php cli.php db:migrate_to_latest
 
 # php vendor/bin/phinx migrate -e development
 # php cli.php seed:initial

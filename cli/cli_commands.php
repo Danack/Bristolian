@@ -102,7 +102,7 @@ function addDatabaseCommands(Application $console)
 {
     $command = new Command(
         'db:wait_for_db',
-        'Bristolian\CliController\Misc::waitForDBToBeWorking'
+        'Bristolian\CliController\Database::waitForDBToBeWorking'
     );
     $command->setDescription("Wait for the database to be online");
     $console->add($command);

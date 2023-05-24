@@ -6,7 +6,8 @@ namespace Bristolian\CliController;
 
 use Bristolian\Config;
 use PDO;
-
+use Bristolian\DataType\Migration;
+use function DataType\createArrayOfType;
 
 function require_all_migration_files()
 {
@@ -18,7 +19,7 @@ function require_all_migration_files()
     $numbers = [];
 
     foreach ($files as $file) {
-        echo $file;
+        echo $file . "\n";
         require_once $file;
         $filename = basename($file);
 
@@ -64,7 +65,6 @@ SQL;
     $pdo->exec($sql);
 }
 
-
 function getQueriesSha($queries)
 {
     return hash('SHA256', json_encode_safe($queries));
@@ -94,6 +94,19 @@ function runAllQueries(PDO $pdo, $list_of_migrations_that_need_to_be_run)
 }
 
 
+/**
+ * @param array $migrations
+ * @return Migration[]
+ * @throws \DataType\Exception\ValidationException
+ */
+function convert_to_migrations(array $migrations)
+{
+    $migration_as_types = createArrayOfType(Migration::class, $migrations);
+
+    return $migration_as_types;
+}
+
+
 function findWhichMigrationsNeedToBeRun(PDO $pdo, $max_migration_number)
 {
     $db_query_list = [];
@@ -112,9 +125,26 @@ function findWhichMigrationsNeedToBeRun(PDO $pdo, $max_migration_number)
     $result = $pdo->query("select * from migrations order by id ASC");
     $migrations = $result->fetchAll();
 
-    var_dump($migrations);
+    $migrations_type = convert_to_migrations($migrations);
+    $checksums = array_map(fn(Migration $migration) => $migration->checksum, $migrations_type);
 
-    return $db_query_list;
+    $queries_to_run = [];
+
+    foreach ($db_query_list as $i => $queries) {
+        $sha = getQueriesSha($queries);
+
+        if (array_contains($sha, $checksums) === false) {
+            echo "Need to run $sha \n";
+            $queries_to_run[] = $db_query_list;
+        }
+        else {
+            echo "No need to run $sha \n";
+        }
+    }
+
+    exit(0);
+
+    return $queries_to_run;
 }
 
 class Database
