@@ -8,7 +8,7 @@ fi
 
 touch this_is_prod.txt
 
-# docker-compose build
+docker-compose up --build -d db
 
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up  --build --force-recreate installer
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up  --build --force-recreate js_and_css_prod_builder
