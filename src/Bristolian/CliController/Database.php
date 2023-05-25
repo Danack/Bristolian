@@ -81,6 +81,13 @@ function runAllQueries(PDO $pdo, $list_of_migrations_that_need_to_be_run)
             $sha
         );
 
+        echo "Running migration $i \n";
+
+        foreach ($queries as $query) {
+            echo "Query is: [$query]\n";
+            $pdo->exec($query);
+        }
+
         $statement = $pdo->prepare("insert into migrations (
                         description,
                         checksum
@@ -135,14 +142,12 @@ function findWhichMigrationsNeedToBeRun(PDO $pdo, $max_migration_number)
 
         if (array_contains($sha, $checksums) === false) {
             echo "Need to run $sha \n";
-            $queries_to_run[] = $db_query_list;
+            $queries_to_run[] = $queries;
         }
         else {
             echo "No need to run $sha \n";
         }
     }
-
-    exit(0);
 
     return $queries_to_run;
 }
@@ -190,9 +195,10 @@ class Database
             $max_migration_number
         );
 
+//        var_dump($list_of_migrations_that_need_to_be_run);
+//        exit(0);
+
         runAllQueries($pdo, $list_of_migrations_that_need_to_be_run);
-
-
     }
 }
 

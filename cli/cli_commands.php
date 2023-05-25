@@ -129,15 +129,15 @@ function addMiscCommands(Application $console)
 }
 
 
-//function addAdminAccountCommands(Application $console)
-//{
-//    $command = new Command('admin:create_admin', '\Osf\CliController\Admin::createAdminLogin');
-//    $command->setDescription("Create an admin user");
-//    $command->addArgument('username', InputArgument::REQUIRED, "The username for the account.");
-//    $command->addArgument('password', InputArgument::OPTIONAL, "The password for the account. If not set, a random one will be generated.", null);
-//
-//    $console->add($command);
-//
+function addAdminAccountCommands(Application $console)
+{
+    $command = new Command('admin:create_user', '\Osf\CliController\Admin::createAdminLogin');
+    $command->setDescription("Create an user");
+    $command->addArgument('username', InputArgument::REQUIRED, "The username for the account.");
+    $command->addArgument('password', InputArgument::OPTIONAL, "The password for the account. If not set, a random one will be generated.", null);
+
+    $console->add($command);
+
 //
 //    $command = new Command('admin:create_project', '\Osf\CliController\Admin::createProject');
 //    $command->setDescription("Create a project");
@@ -171,5 +171,5 @@ function addMiscCommands(Application $console)
 //    $command->addArgument('username', InputArgument::REQUIRED, "The username of the admin.");
 //    $command->addArgument('project_name', InputArgument::REQUIRED, "The project name to add remove them from.", null);
 //    $console->add($command);
-//
-//}
+
+}

@@ -1,6 +1,7 @@
 <?php
 
 use Bristolian\InjectionParams;
+use Bristolian\Repo\DbInfo\DbInfo;
 
 function injectionParams()
 {
@@ -28,6 +29,9 @@ function injectionParams()
 
         \Bristolian\MarkdownRenderer\MarkdownRenderer::class =>
             \Bristolian\MarkdownRenderer\CommonMarkRenderer::class,
+
+        \Bristolian\Repo\DbInfo\DbInfo::class =>
+            \Bristolian\Repo\DbInfo\PdoDbInfo::class,
     ];
 
 
