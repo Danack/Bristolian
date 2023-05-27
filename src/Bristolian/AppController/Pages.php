@@ -56,6 +56,10 @@ HTML;
   <a href="https://youtu.be/qMwYwj-aPoU">Committee Model Working Group 28th April - part 2</a>
 </p>
 
+<p>
+  <a href="https://www.youtube.com/watch?v=frD95ozXtRs">Committee Model Working Group 26th May</a>
+</p>
+
 HTML;
 
         return $content;
