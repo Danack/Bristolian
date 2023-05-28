@@ -2,41 +2,75 @@
 
 declare(strict_types = 1);
 
-namespace Osf\Model;
+namespace Bristolian\Model;
 
 use Bristolian\ToArray;
 use DateTime;
-
 
 class AdminUser
 {
     use ToArray;
 
-    protected $id;
+    protected int $id;
 
-    protected $username;
+    protected string $email_address;
 
-    protected $password_hash;
+    protected string $password_hash;
 
 //    protected $google_2fa_secret;
-//
 //    protected $created_at;
-//
 //    protected $updated_at;
-
-
-    public static function fromPartial(
-        string $username,
-        string $password_hash,
-//        ?string $google2FA
-    ) {
+    /**
+     * @param $id
+     * @param $username
+     * @param $password_hash
+     */
+    public static function new($id, $email_address, $password_hash)
+    {
         $instance = new self();
-        $instance->username = $username;
+        $instance->id = $id;
+        $instance->email_address = $email_address;
         $instance->password_hash = $password_hash;
-//        $instance->google_2fa_secret = $google2FA;
 
         return $instance;
     }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailAddress(): string
+    {
+        return $this->email_address;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPasswordHash(): string
+    {
+        return $this->password_hash;
+    }
+
+//    public static function fromPartial(
+//        string $username,
+//        string $password_hash,
+//        //        ?string $google2FA
+//    ) {
+//        $instance = new self();
+//        $instance->username = $username;
+//        $instance->password_hash = $password_hash;
+//        $instance->google_2fa_secret = $google2FA;
+//
+//        return $instance;
+//    }
 
 
 //
@@ -114,6 +148,7 @@ class AdminUser
 //    {
 //        $this->google_2fa_secret = null;
 //    }
+
 
 
 }

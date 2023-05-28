@@ -113,4 +113,3 @@ function createPDOForUser(Config $config)
 
     return $pdo;
 }
-

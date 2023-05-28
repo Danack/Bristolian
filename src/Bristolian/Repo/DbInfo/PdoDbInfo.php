@@ -5,11 +5,11 @@ namespace Bristolian\Repo\DbInfo;
 use PDO;
 use Bristolian\DataType\Table;
 
-
-
 class PdoDbInfo implements DbInfo
 {
-    public function __construct(private PDO $pdo) {}
+    public function __construct(private PDO $pdo)
+    {
+    }
 
     function getTableInfo(): array
     {

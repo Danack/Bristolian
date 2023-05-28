@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace OsfTest\Params;
+namespace BristolianTest\DataType;
 
 use Bristolian\DataType\CreateUserParams;
 use VarMap\ArrayVarMap;
@@ -18,15 +18,15 @@ class CreateUserParamsTest extends BaseTestCase
      */
     public function testWorks()
     {
-        $username = 'Johnathan@example.com';
+        $email_address = 'Johnathan@example.com';
         $password = 'mynameismypassport';
 
         $createAdminParams = CreateUserParams::createFromVarMap(new ArrayVarMap([
-            'username' => $username,
+            'email_address' => $email_address,
             'password' => $password
         ]));
 
-        $this->assertSame($username, $createAdminParams->getEmailaddress());
+        $this->assertSame($email_address, $createAdminParams->getEmailaddress());
         $this->assertSame($password, $createAdminParams->getPassword());
     }
 }

@@ -72,8 +72,7 @@ function getQueriesSha($queries)
 
 function runAllQueries(PDO $pdo, $list_of_migrations_that_need_to_be_run)
 {
-    foreach ($list_of_migrations_that_need_to_be_run as $i => $queries)
-    {
+    foreach ($list_of_migrations_that_need_to_be_run as $i => $queries) {
         $sha = getQueriesSha($queries);
         printf(
             "Query %d sha: %s\n",
@@ -156,8 +155,8 @@ class Database
 {
     public function waitForDBToBeWorking(
         Config $config,
-        int $maxTimeToWait = null)
-    {
+        int $maxTimeToWait = null
+    ) {
         if ($maxTimeToWait === null) {
             $maxTimeToWait = 60;
         }
@@ -201,6 +200,3 @@ class Database
         runAllQueries($pdo, $list_of_migrations_that_need_to_be_run);
     }
 }
-
-
-

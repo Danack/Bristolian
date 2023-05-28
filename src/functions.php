@@ -715,3 +715,45 @@ function array_contains($needle, array $haystack): bool
 {
     return in_array($needle, $haystack, true);
 }
+
+
+/**
+ * @param string $password
+ * @return string
+ */
+function generate_password_hash(string $password): string
+{
+    $options = get_password_options();
+    $hash = password_hash($password, PASSWORD_BCRYPT, $options);
+
+    if ($hash === false) {
+        throw new \Exception('Failed to hash password.');
+    }
+
+    return $hash;
+}
+
+
+/**
+ * Get the options to use when hashing passwords.
+ * The cost should be tuned for the hash to take something like a
+ * quarter of a second of CPU time to hash.
+ *
+ * @return array<mixed>
+ */
+function get_password_options(): array
+{
+    $options = [
+        'cost' => 12,
+    ];
+
+    return $options;
+}
+
+
+function getRandomId(): string
+{
+    $foo = random_bytes(32);
+
+    return hash("sha256", $foo);
+}

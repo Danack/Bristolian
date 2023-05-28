@@ -21,6 +21,8 @@ class CspRulesTest extends TestCase
 
     public function testCspReportEndPointIsWorking()
     {
+        $this->markTestSkipped("api box needs setting up.");
+
         $expectedDocumentUri = "https://example.com/foo/bar";
         $expectedReferrer = "https://www.google.com/";
         $expectedViolatedDirective = "default-src self";

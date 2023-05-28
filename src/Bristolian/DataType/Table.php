@@ -16,7 +16,6 @@ class Table implements DataType
     public function __construct(
         #[BasicInteger('TABLE_ROWS')]
         public readonly int $number_of_rows,
-
         #[BasicString('TABLE_NAME')]
         public readonly string $name,
     ) {

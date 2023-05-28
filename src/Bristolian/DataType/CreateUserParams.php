@@ -11,22 +11,16 @@ use DataType\GetInputTypesFromAttributes;
 
 class CreateUserParams implements DataType
 {
-    private string $email_address;
-
-    private string $password;
-
     use CreateFromVarMap;
     use CreateFromArray;
     use GetInputTypesFromAttributes;
 
     public function __construct(
         #[EmailAddress('email_address')]
-        string $email_address,
+        private string $email_address,
         #[PasswordOrRandom('password')]
-        string $password
+        private string $password
     ) {
-        $this->email_address = $email_address;
-        $this->password = $password;
     }
 
     /**

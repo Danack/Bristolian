@@ -91,37 +91,8 @@ function json_encode_safe($data, $options = 0): string
 }
 
 
-/**
- * Get the options to use when hashing passwords.
- * The cost should be tuned for the hash to take something like a
- * quarter of a second of CPU time to hash.
- *
- * @return array<mixed>
- */
-function get_password_options(): array
-{
-    $options = [
-        'cost' => 12,
-    ];
 
-    return $options;
-}
 
-/**
- * @param string $password
- * @return string
- */
-function generate_password_hash(string $password): string
-{
-    $options = get_password_options();
-    $hash = password_hash($password, PASSWORD_BCRYPT, $options);
-
-    if ($hash === false) {
-        throw new \Exception('Failed to hash password.');
-    }
-
-    return $hash;
-}
 
 
 function getClientIpAddress() : string
@@ -652,14 +623,6 @@ function formatLinesWithCount(array $lines): string
 }
 
 
-
-
-function getRandomId(): string
-{
-    $foo = random_bytes(32);
-
-    return hash("sha256", $foo);
-}
 
 
 

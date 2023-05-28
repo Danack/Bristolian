@@ -2,13 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace Osf\CliController;
+namespace Bristolian\CliController;
 
 //use Osf\Params\CreateAdminUserParams;
 use Bristolian\DataType\CreateUserParams;
-use Osf\Repo\AdminRepo\AdminRepo;
+//use Osf\Repo\AdminRepo\AdminRepo;
+use Bristolian\Repo\AdminRepo\AdminRepo;
 //use Osf\Repo\SkuPriceRepo\SkuPriceRepo;
 use VarMap\VarMap;
+
 //use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 //use Osf\Repo\ManageAdminsRepo\ManageAdminsRepo;
 //use Osf\Repo\ProjectRepo\ProjectRepo;
@@ -23,7 +25,7 @@ class Admin
         $createAdminUserParams = CreateUserParams::createFromVarMap($varMap);
 
         try {
-            $adminUserAddRepo->addAdminUser($createAdminUserParams);
+            $adminUserAddRepo->addUser($createAdminUserParams);
         }
         catch (UniqueConstraintViolationException $ucve) {
             echo "username already exists\n";

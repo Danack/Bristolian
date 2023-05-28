@@ -135,4 +135,3 @@ function share_this_page()
 
     return $content;
 }
-

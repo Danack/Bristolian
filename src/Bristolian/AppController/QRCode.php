@@ -10,7 +10,6 @@ use chillerlan\QRCode\QRCode as QRCodeGenerator;
 use chillerlan\QRCode\QROptions;
 use chillerlan\QRCode\Output\QROutputInterface;
 
-
 class QRCode
 {
     public function get(VarMap $varMap)
