@@ -14,8 +14,8 @@ use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
 class ExceptionToJsonResponseMiddleware implements MiddlewareInterface
 {
     /**
-     *
-     * @var array[{0:class-string, 1:callable}]
+     * @param ResponseFactory $responseFactory
+     * @param array{0:class-string, 1:callable} $exceptionToResponseHandlerList
      * Convert particular exceptions to responses
      *
      * Callable should have the signature:
@@ -28,16 +28,9 @@ class ExceptionToJsonResponseMiddleware implements MiddlewareInterface
      * Where SomeException and the class-string should be the same.
      *
      */
-//    private array $exceptionToResponseHandlerList;
-
-    /**
-     *
-     * @param $exceptionToResponseHandlerList
-     * @param $stubResponseToPSR7ResponseHandlerList
-     */
     public function __construct(
         private ResponseFactory $responseFactory,
-        private $exceptionToResponseHandlerList,
+        private array $exceptionToResponseHandlerList,
     ) {
     }
 
@@ -67,7 +60,7 @@ class ExceptionToJsonResponseMiddleware implements MiddlewareInterface
         }
     }
 
-    private function convertExceptionToResponse(\Throwable $e, Request $request)
+    private function convertExceptionToResponse(\Throwable $e, Request $request): Response|null
     {
         // Find if there is an exception handler for this type of exception
         foreach ($this->exceptionToResponseHandlerList as $type => $exceptionCallable) {
@@ -84,6 +77,12 @@ class ExceptionToJsonResponseMiddleware implements MiddlewareInterface
         return null;
     }
 
+    /**
+     * @param mixed[] $exceptionArray
+     * @param int $statusCode
+     * @return Response
+     * @throws \Exception
+     */
     private function createJsonWithStatusCode(
         array $exceptionArray,
         int $statusCode

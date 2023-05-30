@@ -6,7 +6,6 @@
 
 declare(strict_types = 1);
 
-use Bristolian\SiteHtml\Breadcrumbs;
 use Bristolian\SiteHtml\HeaderLink;
 use Bristolian\SiteHtml\HeaderLinks;
 
@@ -34,10 +33,8 @@ function createPageHeaderHtml(/*HeaderLinks $headerLinks*/) : string
 }
 
 
-function createFooterHtml(
-    //    CopyrightInfo $copyrightInfo,
-    //    EditInfo $editInfo
-): string {
+function createFooterHtml(): string
+{
     $html = <<< HTML
 <span class="system">
   <a href="/system">System</a>
@@ -90,7 +87,6 @@ HTML;
 
 function createPageHtml(
     \Bristolian\AssetLinkEmitter $assetLinkEmitter,
-    //    Page $page
     string $html,
 ): string {
 

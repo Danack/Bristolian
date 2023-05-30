@@ -29,7 +29,7 @@ class Config
 
     /**
      * @param $key
-     * @return int|string|bool|array
+     * @return int|string|bool|mixed[]
      * @throws \Exception
      */
 

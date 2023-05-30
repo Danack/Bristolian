@@ -9,7 +9,7 @@ use PDO;
 use Bristolian\DataType\Migration;
 use function DataType\createArrayOfType;
 
-function require_all_migration_files()
+function require_all_migration_files(): int
 {
     $glob_pattern = __DIR__ . "/../../../db/migrations/*.php";
 
@@ -49,7 +49,7 @@ function require_all_migration_files()
 }
 
 
-function ensureMigrationsTableExists(PDO $pdo)
+function ensureMigrationsTableExists(PDO $pdo): void
 {
     $sql = <<< SQL
 CREATE TABLE IF NOT EXISTS `migrations` (
@@ -65,12 +65,22 @@ SQL;
     $pdo->exec($sql);
 }
 
-function getQueriesSha($queries)
+/**
+ * @param mixed[] $queries
+ * @return string
+ * @throws \Exception
+ */
+function getQueriesSha(array $queries): string
 {
     return hash('SHA256', json_encode_safe($queries));
 }
 
-function runAllQueries(PDO $pdo, $list_of_migrations_that_need_to_be_run)
+/**
+ * @param PDO $pdo
+ * @param mixed[] $list_of_migrations_that_need_to_be_run
+ * @return void
+ */
+function runAllQueries(PDO $pdo, array $list_of_migrations_that_need_to_be_run): void
 {
     foreach ($list_of_migrations_that_need_to_be_run as $i => $queries) {
         $sha = getQueriesSha($queries);
@@ -101,19 +111,24 @@ function runAllQueries(PDO $pdo, $list_of_migrations_that_need_to_be_run)
 
 
 /**
- * @param array $migrations
+ * @param mixed[] $migrations
  * @return Migration[]
  * @throws \DataType\Exception\ValidationException
  */
-function convert_to_migrations(array $migrations)
+function convert_to_migrations(array $migrations): array
 {
     $migration_as_types = createArrayOfType(Migration::class, $migrations);
 
     return $migration_as_types;
 }
 
-
-function findWhichMigrationsNeedToBeRun(PDO $pdo, $max_migration_number)
+/**
+ * @param PDO $pdo
+ * @param int $max_migration_number
+ * @return mixed[]
+ * @throws \DataType\Exception\ValidationException
+ */
+function findWhichMigrationsNeedToBeRun(PDO $pdo, int $max_migration_number): array
 {
     $db_query_list = [];
 
@@ -156,7 +171,7 @@ class Database
     public function waitForDBToBeWorking(
         Config $config,
         int $maxTimeToWait = null
-    ) {
+    ): void {
         if ($maxTimeToWait === null) {
             $maxTimeToWait = 60;
         }

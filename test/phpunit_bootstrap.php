@@ -20,10 +20,11 @@ require_once __DIR__ . "/../cli/cli_injection_params.php";
 //}
 
 /**
- * @param array $testAliases
+ * @param array<string, mixed> $testDoubles
+ * @param array<string, mixed> $shareDoubles
  * @return \DI\Injector
  */
-function createInjector($testDoubles = [], $shareDoubles = [])
+function createInjector(array $testDoubles = [], array $shareDoubles = [])
 {
     $injectionParams = injectionParams($testDoubles);
 

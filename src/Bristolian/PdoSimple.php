@@ -21,17 +21,17 @@ class PdoSimple
         $this->pdo = $pdo;
     }
 
-    public function beginTransaction()
+    public function beginTransaction(): void
     {
         $this->pdo->beginTransaction();
     }
 
-    public function commit()
+    public function commit(): void
     {
         $this->pdo->commit();
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         $this->pdo->rollBack();
     }
@@ -39,6 +39,11 @@ class PdoSimple
     /**
      * Executes some SQL.
      * Returns the number of rows affected
+     *
+     * @param string $query
+     * @param mixed[] $params
+     * @return int
+     * @throws \Exception
      */
     public function execute(string $query, array $params): int
     {
@@ -57,6 +62,12 @@ class PdoSimple
         return $statement->rowCount();
     }
 
+    /**
+     * @param string $query
+     * @param mixed[] $params
+     * @return int
+     * @throws \Exception
+     */
     public function insert(string $query, array $params): int
     {
         $statement = $this->pdo->prepare($query);
@@ -75,6 +86,14 @@ class PdoSimple
     }
 
 
+    /**
+     * @template T of object
+     * @param string $query
+     * @param mixed[] $params
+     * @param class-string<T> $classname
+     * @return T
+     * @throws RowNotFoundException
+     */
     public function fetchOneAsObject(string $query, array $params, string $classname)
     {
         $statement = $this->pdo->prepare($query);
@@ -96,6 +115,14 @@ class PdoSimple
         return $object;
     }
 
+    /**
+     * @template T of object
+     * @param string $query
+     * @param mixed[] $params
+     * @param class-string<T> $classname
+     * @return T|null
+     * @throws \Exception
+     */
     public function fetchOneAsObjectOrNull(string $query, array $params, string $classname)
     {
         $statement = $this->pdo->prepare($query);
@@ -119,8 +146,8 @@ class PdoSimple
 
     /**
      * @param string $query
-     * @param array $params
-     * @return array|null
+     * @param mixed[] $params
+     * @return mixed[]|null
      * @throws \Exception
      */
     public function fetchOneAsDataOrNull(string $query, array $params)
@@ -143,6 +170,14 @@ class PdoSimple
     }
 
 
+    /**
+     * @template T of object
+     * @param string $query
+     * @param mixed[] $params
+     * @param class-string<T> $classname
+     * @return T[]
+     * @throws \Exception
+     */
     public function fetchAllAsObject(string $query, array $params, string $classname)
     {
         $statement = $this->pdo->prepare($query);
@@ -156,10 +191,6 @@ class PdoSimple
         $statement->setFetchMode(PDO::FETCH_CLASS, $classname);
 
         $objects = $statement->fetchAll();
-
-//        if ($object === false) {
-//            throw new RowNotFoundException("The query did not result in a row");
-//        }
 
         return $objects;
     }

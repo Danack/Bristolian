@@ -62,21 +62,13 @@ class InjectionParams
         $this->namedParams = $namedParams;
     }
 
-//    public static function fromParams(array $vars)
-//    {
-//        return new static(
-//            [],
-//            [],
-//            [],
-//            [],
-//            [],
-//            $vars
-//        );
-//    }
-//
-    public static function fromSharedObjects($params)
+    /**
+     * @param mixed[] $params
+     * @return self
+     */
+    public static function fromSharedObjects(array $params): self
     {
-        $instance = new static();
+        $instance = new self();
         foreach ($params as $interface => $object) {
             $class = get_class($object);
             if (strcasecmp($class, $interface) !== 0) {
@@ -89,33 +81,62 @@ class InjectionParams
 
         return $instance;
     }
-    
-    public function alias($original, $alias)
+
+    /**
+     * @param string $original
+     * @param string $alias
+     * @return void
+     */
+    public function alias(string $original, string $alias): void
     {
         $this->aliases[$original] = $alias;
     }
-    
-    public function share($classOrInstance)
+
+    /**
+     * @param class-string|object $classOrInstance
+     * @return void
+     */
+    public function share(string|object $classOrInstance): void
     {
         $this->shares[] = $classOrInstance;
     }
-    
-    public function defineNamedParam($paramName, $value)
+
+    /**
+     * @param string $paramName
+     * @param mixed $value
+     * @return void
+     */
+    public function defineNamedParam(string $paramName, mixed $value): void
     {
         $this->namedParams[$paramName] = $value;
     }
 
-    public function delegate($className, $delegate)
+    /**
+     * @param string $className
+     * @param mixed $delegate
+     * @return void
+     */
+    public function delegate(string $className, mixed $delegate): void
     {
         $this->delegates[$className] = $delegate;
     }
-    
-    public function defineClassParam($className, $params)
+
+    /**
+     * @param string $className
+     * @param mixed[] $params
+     * @return void
+     */
+    public function defineClassParam(string $className, array $params): void
     {
         $this->classParams[$className] = $params;
     }
-    
-    public function prepare($className, $prepareCallable)
+
+    /**
+     * @param string $className
+     * @param mixed $prepareCallable
+     * @return void
+     */
+    public function prepare(string $className, mixed $prepareCallable): void
     {
         $this->prepares[$className] = $prepareCallable;
     }
@@ -168,7 +189,7 @@ class InjectionParams
     /**
      * @param Injector $injector
      */
-    public function addToInjector(Injector $injector)
+    public function addToInjector(Injector $injector): void
     {
         foreach ($this->aliases as $original => $alias) {
             $injector->alias($original, $alias);

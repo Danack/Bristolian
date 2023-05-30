@@ -17,15 +17,12 @@ class AdminUser
 
     protected string $password_hash;
 
-//    protected $google_2fa_secret;
-//    protected $created_at;
-//    protected $updated_at;
     /**
      * @param $id
      * @param $username
      * @param $password_hash
      */
-    public static function new($id, $email_address, $password_hash)
+    public static function new(int $id, string $email_address, string $password_hash): self
     {
         $instance = new self();
         $instance->id = $id;
@@ -59,18 +56,16 @@ class AdminUser
         return $this->password_hash;
     }
 
-//    public static function fromPartial(
-//        string $username,
-//        string $password_hash,
-//        //        ?string $google2FA
-//    ) {
-//        $instance = new self();
-//        $instance->username = $username;
-//        $instance->password_hash = $password_hash;
-//        $instance->google_2fa_secret = $google2FA;
-//
-//        return $instance;
-//    }
+    public static function fromPartial(
+        string $email_address,
+        string $password_hash,
+    ): self {
+        $instance = new self();
+        $instance->email_address = $email_address;
+        $instance->password_hash = $password_hash;
+
+        return $instance;
+    }
 
 
 //

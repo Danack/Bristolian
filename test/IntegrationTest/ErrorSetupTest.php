@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace IntegrationTest;
 
 use BristolianTest\BaseTestCase;
-use Osf\App;
+use Bristolian\App;
 
 /**
  * @coversNothing
@@ -25,7 +25,7 @@ class ErrorSetupTest extends BaseTestCase
     /**
      * @dataProvider providesCaughtExceptionsAreActuallyCaughtForApp
      */
-    public function testCaughtExceptionsAreActuallyCaughtForApp($url)
+    public function testCaughtExceptionsAreActuallyCaughtForApp(string $url)
     {
         [$statusCode, $body, $headers] = fetchUri($url, 'GET');
 
@@ -60,12 +60,12 @@ class ErrorSetupTest extends BaseTestCase
     /**
      * @dataProvider providesUncaughtExceptionsAreActuallyCaughtBySlimForApp
      */
-    public function testUncaughtExceptionsAreActuallyCaughtBySlimForApp($url)
+    public function testUncaughtExceptionsAreActuallyCaughtBySlimForApp(string $url)
     {
         [$statusCode, $body, $headers] = fetchUri($url, 'GET');
 
         $this->assertSame($statusCode, 500);
-        $this->assertStringContainsString('Osf\Exception\DebuggingUncaughtException', $body);
+        $this->assertStringContainsString('Bristolian\Exception\DebuggingUncaughtException', $body);
         $this->assertStringContainsString(
             App::ERROR_CAUGHT_BY_ERROR_HANDLER_MESSAGE,
             $body
@@ -81,7 +81,7 @@ class ErrorSetupTest extends BaseTestCase
         $this->assertSame($statusCode, 500);
         $data = json_decode_safe($body);
         $this->assertSame(
-            "Osf\\Exception\\DebuggingUncaughtException",
+            "Bristolian\\Exception\\DebuggingUncaughtException",
             $data['details'][0]['type']
         );
         $this->assertStringContainsString(

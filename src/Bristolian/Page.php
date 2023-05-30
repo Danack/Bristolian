@@ -6,7 +6,7 @@ class Page
 {
     private static string $qr_message = "Show this QR code to someone, and they can scan it with the camera in their device";
 
-    static function setQrShareMessage(string $string)
+    static function setQrShareMessage(string $string): void
     {
         self::$qr_message = $string;
     }

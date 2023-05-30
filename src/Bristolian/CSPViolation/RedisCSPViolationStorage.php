@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace Bristolian\CSPViolation;
 
 use Bristolian\Data\ContentPolicyViolationReport;
-use Bristolian\Key\ContentSecurityPolicyKey;
 use Redis;
 use Bristolian\App;
+use Key\ContentSecurityPolicyKey;
 
 class RedisCSPViolationStorage implements CSPViolationStorage
 {

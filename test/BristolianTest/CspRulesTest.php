@@ -132,7 +132,7 @@ class CspRulesTest extends TestCase
      * @group slow
      * @dataProvider providesNoOtherPagesGiveACspReport
      */
-    public function testNoOtherPagesGiveACspReport($path)
+    public function testNoOtherPagesGiveACspReport(string $path)
     {
         $this->markTestSkipped("grrr");
 

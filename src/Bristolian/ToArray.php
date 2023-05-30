@@ -6,6 +6,9 @@ namespace Bristolian;
 
 trait ToArray
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $data = [];
@@ -15,7 +18,7 @@ trait ToArray
                 continue;
             }
 
-            $data[$name] = \convertToValue($name, $value);
+            $data[$name] = \convertToValue(/*$name,*/ $value);
         }
 
         return $data;

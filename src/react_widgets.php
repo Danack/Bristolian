@@ -4,6 +4,12 @@ declare(strict_types = 1);
 
 namespace Bristolian;
 
+/**
+ * @param string $type
+ * @param mixed[] $data
+ * @return string
+ * @throws \Exception
+ */
 function createReactWidget(string $type, array $data): string
 {
     $widget_data = [

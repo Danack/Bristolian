@@ -6,22 +6,22 @@ use VarMap\ArrayVarMap;
 use VarMap\VarMap;
 use Bristolian\ToArray;
 
-function hackVarMap($varMap)
-{
-    $params = $varMap->toArray();
-
-    $unwantedParams = ['q', 'time'];
-
-    foreach ($unwantedParams as $unwantedParam) {
-        if (array_key_exists($unwantedParam, $params) === true) {
-            unset($params[$unwantedParam]);
-        }
-    }
-
-    $hackedVarMap = new ArrayVarMap($params);
-
-    return $hackedVarMap;
-}
+//function hackVarMap($varMap)
+//{
+//    $params = $varMap->toArray();
+//
+//    $unwantedParams = ['q', 'time'];
+//
+//    foreach ($unwantedParams as $unwantedParam) {
+//        if (array_key_exists($unwantedParam, $params) === true) {
+//            unset($params[$unwantedParam]);
+//        }
+//    }
+//
+//    $hackedVarMap = new ArrayVarMap($params);
+//
+//    return $hackedVarMap;
+//}
 
 //function purgeExceptionMessage(\Throwable $exception)
 //{
@@ -70,6 +70,9 @@ function hackVarMap($varMap)
  *
  * #0 foo
  * #1 bar
+ *
+ * @param string[] $lines
+ * @return string
  */
 function formatLinesWithCount(array $lines): string
 {
@@ -180,7 +183,7 @@ function checkSignalsForExit()
  * @param int $sleepTime - the time to sleep between runs
  * @param int $maxRunTime - the max time to run for, before returning
  */
-function continuallyExecuteCallable($callable, int $secondsBetweenRuns, int $sleepTime, int $maxRunTime)
+function continuallyExecuteCallable($callable, int $secondsBetweenRuns, int $sleepTime, int $maxRunTime): void
 {
     $startTime = microtime(true);
     $lastRuntime = 0;
@@ -219,12 +222,15 @@ function continuallyExecuteCallable($callable, int $secondsBetweenRuns, int $sle
 }
 
 
-
-
 /**
  * Decode JSON with actual error detection
+ *
+ * @param string|null $json
+ * @return mixed[]
+ * @throws \Bristolian\Exception\JsonException
+ * @throws \Seld\JsonLint\ParsingException
  */
-function json_decode_safe(?string $json)
+function json_decode_safe(?string $json): array
 {
     if ($json === null) {
         throw new \Bristolian\Exception\JsonException("Error decoding JSON: cannot decode null.");
@@ -291,8 +297,11 @@ function json_encode_safe($data, $options = 0): string
 //    return $text;
 //}
 
-
-function getExceptionInfoAsArray(\Throwable $exception)
+/**
+ * @param Throwable $exception
+ * @return mixed[]
+ */
+function getExceptionInfoAsArray(\Throwable $exception): array
 {
     $data = [
         'status' => 'error',
@@ -317,7 +326,7 @@ function getExceptionInfoAsArray(\Throwable $exception)
 }
 
 
-function peak_memory($real_usage = false)
+function peak_memory(bool $real_usage = false): string
 {
     return number_format(memory_get_peak_usage($real_usage));
 }
@@ -489,6 +498,13 @@ function convertToValue(string $name, $value)
 
 /**
  * Fetch data and return statusCode, body and headers
+ *
+ * @param string $uri
+ * @param string $method
+ * @param mixed[] $queryParams
+ * @param string|null $body
+ * @param mixed[] $headers
+ * @return array{0:int, 1:string, 2:mixed[]}
  */
 function fetchUri(string $uri, string $method, array $queryParams = [], string $body = null, array $headers = [])
 {
@@ -527,17 +543,38 @@ function fetchUri(string $uri, string $method, array $queryParams = [], string $
 }
 
 
+/**
+ * Fetch data and only return successful request
+ *
+ * @param string $uri
+ * @param mixed[] $headers
+ * @return mixed[]
+ * @throws JsonException
+ * @throws \Bristolian\Exception\JsonException
+ * @throws \Seld\JsonLint\ParsingException
+ */
+function fetchDataWithHeaders(string $uri, array $headers): array
+{
+    [$statusCode, $body, $responseHeaders] = fetchUri($uri, 'GET', [], null, $headers);
 
-// Define a function that writes a string into the response object.
-function convertStringToHtmlResponse(
-    string $result,
-    \Psr\Http\Message\RequestInterface $request,
-    \Psr\Http\Message\ResponseInterface $response
-): \Psr\Http\Message\ResponseInterface {
-    $response = $response->withHeader('Content-Type', 'text/html');
-    $response->getBody()->write($result);
-    return $response;
+    if ($statusCode === 200) {
+        return json_decode_safe($body);
+    }
+
+    throw new \Exception("Failed to fetch data from " . $uri);
 }
+
+
+//// Define a function that writes a string into the response object.
+//function convertStringToHtmlResponse(
+//    string $result,
+//    \Psr\Http\Message\RequestInterface $request,
+//    \Psr\Http\Message\ResponseInterface $response
+//): \Psr\Http\Message\ResponseInterface {
+//    $response = $response->withHeader('Content-Type', 'text/html');
+//    $response->getBody()->write($result);
+//    return $response;
+//}
 
 
 //function getEyeColorSpaceStringFromValue(int $value)
@@ -620,7 +657,7 @@ function convertStringToHtmlResponse(
 //    );
 //}
 
-function getMask($name)
+function getMask(string $name): int
 {
     if ($name === 'sign') {
         return 0x2;
@@ -635,44 +672,44 @@ function getMask($name)
     throw new \Exception("Unknown type $name");
 }
 
-function twiddleWithShit(FloatTwiddleControl $floatTwiddleControl)
-{
-    /** @var FloatTwiddleControl $floatTwiddleControl */
-    $mask = getMask($floatTwiddleControl->getName());
+//function twiddleWithShit(FloatTwiddleControl $floatTwiddleControl)
+//{
+//    /** @var FloatTwiddleControl $floatTwiddleControl */
+//    $mask = getMask($floatTwiddleControl->getName());
+//
+//    $sign = $floatTwiddleControl->getSign();
+//    $exponent = $floatTwiddleControl->getExponent();
+//    $mantissa = $floatTwiddleControl->getMantissa();
+//
+//    $name = $floatTwiddleControl->getName();
+//    if ($name === 'sign') {
+//        $value = bindec($sign);
+//        $value = ($value + ($mask) + ($floatTwiddleControl->getDelta() << $floatTwiddleControl->getIndex())) % ($mask);
+//        $sign = decbin($value);
+//    }
+//
+//    if ($name === 'mantissa') {
+//        $value = bindec($mantissa);
+////        echo "value = $value\n";
+////        echo "delta = " . $floatTwiddleControl->getDelta() . "\n";
+////        echo "index = " . $floatTwiddleControl->getIndex() . "\n";
+//
+//        $value = ($value + ($mask) + ($floatTwiddleControl->getDelta() << $floatTwiddleControl->getIndex())) % ($mask);
+//        $mantissa = decbin($value);
+//        $mantissa = str_pad($mantissa, 52, '0', STR_PAD_LEFT);
+//    }
+//
+//    if ($name === 'exponent') {
+//        $value = bindec($exponent);
+//        $value = ($value + ($mask) + ($floatTwiddleControl->getDelta() << $floatTwiddleControl->getIndex())) % $mask;
+//        $exponent = decbin($value);
+//        $exponent = str_pad($exponent, 11, '0', STR_PAD_LEFT);
+//    }
+//
+//    return [$sign, $exponent, $mantissa];
+//}
 
-    $sign = $floatTwiddleControl->getSign();
-    $exponent = $floatTwiddleControl->getExponent();
-    $mantissa = $floatTwiddleControl->getMantissa();
-
-    $name = $floatTwiddleControl->getName();
-    if ($name === 'sign') {
-        $value = bindec($sign);
-        $value = ($value + ($mask) + ($floatTwiddleControl->getDelta() << $floatTwiddleControl->getIndex())) % ($mask);
-        $sign = decbin($value);
-    }
-
-    if ($name === 'mantissa') {
-        $value = bindec($mantissa);
-//        echo "value = $value\n";
-//        echo "delta = " . $floatTwiddleControl->getDelta() . "\n";
-//        echo "index = " . $floatTwiddleControl->getIndex() . "\n";
-
-        $value = ($value + ($mask) + ($floatTwiddleControl->getDelta() << $floatTwiddleControl->getIndex())) % ($mask);
-        $mantissa = decbin($value);
-        $mantissa = str_pad($mantissa, 52, '0', STR_PAD_LEFT);
-    }
-
-    if ($name === 'exponent') {
-        $value = bindec($exponent);
-        $value = ($value + ($mask) + ($floatTwiddleControl->getDelta() << $floatTwiddleControl->getIndex())) % $mask;
-        $exponent = decbin($value);
-        $exponent = str_pad($exponent, 11, '0', STR_PAD_LEFT);
-    }
-
-    return [$sign, $exponent, $mantissa];
-}
-
-function showTotalErrorPage(\Throwable $exception)
+function showTotalErrorPage(\Throwable $exception): void
 {
     $exceptionText = null;
 
@@ -704,6 +741,7 @@ function getMemoryLimit()
 {
     $memoryLimit = ini_get('memory_limit');
 
+    /** @phpstan-ignore-next-line better to be correct than brief */
     if ($memoryLimit === false) {
         throw new \Exception("Failed to get memory_limit.");
     }
@@ -744,7 +782,7 @@ function normaliseFilePath(string $file): string
     return $file;
 }
 
-function getEnvString(string $name)
+function getEnvString(string $name): string
 {
     $value = getenv($name);
 
@@ -775,13 +813,13 @@ function array_contains($needle, array $haystack): bool
 function generate_password_hash(string $password): string
 {
     $options = get_password_options();
-    $hash = password_hash($password, PASSWORD_BCRYPT, $options);
+    return password_hash($password, PASSWORD_BCRYPT, $options);
 
-    if ($hash === false) {
-        throw new \Exception('Failed to hash password.');
-    }
-
-    return $hash;
+//    if ($hash === false) {
+//        throw new \Exception('Failed to hash password.');
+//    }
+//
+//    return $hash;
 }
 
 

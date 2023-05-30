@@ -6,12 +6,21 @@ namespace Bristolian\AppErrorHandler;
 
 use Bristolian\App;
 use SlimAuryn\ResponseMapper\ResponseMapper;
-use SlimAuryn\Response\HtmlResponse;
+
+use SlimDispatcher\Response\HtmlResponse;
 use Bristolian\Page;
-use Bristolian\Breadcrumbs;
+use Bristolian\AssetLinkEmitter;
+
+use function SlimDispatcher\mapStubResponseToPsr7;
 
 class HtmlErrorHandlerForLocalDev implements AppErrorHandler
 {
+
+
+    public function __construct(private AssetLinkEmitter $assetLinkEmitter)
+    {
+    }
+
     /**
      * @param mixed $container
      * @return \Closure|mixed
@@ -29,12 +38,12 @@ class HtmlErrorHandlerForLocalDev implements AppErrorHandler
             $text = getTextForException($exception);
             /** This is to allow testing */
             $text .= App::ERROR_CAUGHT_BY_ERROR_HANDLER_MESSAGE;
-            $page = createErrorPage(nl2br($text));
+            $page = nl2br($text);
 
-            $html = createPageHtml(null, $page);
+            $html = createPageHtml($this->assetLinkEmitter, $page);
             $stubResponse = new HtmlResponse($html, [], 500);
             \error_log($text);
-            $response = ResponseMapper::mapStubResponseToPsr7($stubResponse, $response);
+            $response = mapStubResponseToPsr7($stubResponse, $request, $response);
 
             return $response;
         };

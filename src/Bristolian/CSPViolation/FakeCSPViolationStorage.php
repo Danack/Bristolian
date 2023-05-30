@@ -27,6 +27,15 @@ class FakeCSPViolationStorage implements CSPViolationStorage
         return $this->reports;
     }
 
+    /**
+     * @return ContentPolicyViolationReport[]
+     */
+    public function getReportsByPage(int $page)
+    {
+        // TODO - actually implement paging.
+        return $this->reports;
+    }
+
     public function report(ContentPolicyViolationReport $cpvr): void
     {
         $this->reports[] = $cpvr;

@@ -4,11 +4,15 @@ declare(strict_types = 1);
 
 namespace Bristolian\AppErrorHandler;
 
-use Bristolian\Breadcrumbs;
+use Bristolian\AssetLinkEmitter;
 use Bristolian\Page;
 
 class HtmlErrorHandlerForProd implements AppErrorHandler
 {
+    public function __construct(private AssetLinkEmitter $assetLinkEmitter)
+    {
+    }
+
     /**
      * @param mixed $container
      * @return \Closure|mixed
@@ -18,11 +22,10 @@ class HtmlErrorHandlerForProd implements AppErrorHandler
         return function ($request, $response, \Throwable $exception) {
             \error_log("The heck: " . $exception->getMessage());
             \error_log(getTextForException($exception));
-            $text = "Sorry, an error occurred. ";
+            $text = "Sorry, an error occurred.";
 
-            $page = createErrorPage(nl2br($text));
-//            $page = Page::errorPage(nl2br($text));
-            $html = createPageHtml(null, $page);
+            $page = nl2br($text);
+            $html = createPageHtml($this->assetLinkEmitter, $page);
 
             return $response->withStatus(500)
                 ->withHeader('Content-Type', 'text/html')

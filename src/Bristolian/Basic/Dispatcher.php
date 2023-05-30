@@ -16,7 +16,7 @@ class Dispatcher implements DispatcherInterface
     /**
      * Dispatch an incoming request to a controller through an injector
      * @param Request $request
-     * @param array $routeArguments
+     * @param array<string, string> $routeArguments
      * @param mixed $resolvedCallable
      * @return mixed
      * @throws \DI\ConfigException
@@ -39,8 +39,8 @@ class Dispatcher implements DispatcherInterface
     /**
      * Convert a result from a controller, into an actual HTML response.
      *
-     * @param $mapCallable
-     * @param $result mixed Actual type will depend on the callable
+     * @param mixed $mapCallable
+     * @param mixed $result Actual type will depend on the callable
      * @param Request $request
      * @param Response $response
      * @return mixed

@@ -16,7 +16,7 @@ class ExceptionToErrorPageResponseMiddleware implements MiddlewareInterface
 
     /**
      *
-     * @var array[{0:class-string, 1:callable}]
+     * @var array{0:class-string, 1:callable}
      * Convert particular exceptions to responses
      *
      * Callable should have the signature:
@@ -48,19 +48,17 @@ class ExceptionToErrorPageResponseMiddleware implements MiddlewareInterface
 //     */
 //    private array $stubResponseToPSR7ResponseHandlerList;
 
+
     /**
-     *
-     * @param $exceptionToResponseHandlerList
-     * @param $stubResponseToPSR7ResponseHandlerList
+     * @param PageResponseGenerator $pageResponseGenerator
+     * @param mixed[] $exceptionToResponseHandlerList
      */
     public function __construct(
         PageResponseGenerator $pageResponseGenerator,
         array $exceptionToResponseHandlerList,
-        //        array $stubResponseToPSR7ResponseHandlerList
     ) {
         $this->pageResponseGenerator = $pageResponseGenerator;
         $this->exceptionToResponseHandlerList = $exceptionToResponseHandlerList;
-//        $this->stubResponseToPSR7ResponseHandlerList = $stubResponseToPSR7ResponseHandlerList;
     }
 
     /**
@@ -89,7 +87,7 @@ class ExceptionToErrorPageResponseMiddleware implements MiddlewareInterface
         }
     }
 
-    private function convertExceptionToResponse(\Throwable $e, Request $request)
+    private function convertExceptionToResponse(\Throwable $e, Request $request): Response|null
     {
         // Find if there is an exception handler for this type of exception
         foreach ($this->exceptionToResponseHandlerList as $type => $exceptionCallable) {

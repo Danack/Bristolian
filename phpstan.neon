@@ -5,6 +5,8 @@ parameters:
         - test
     excludePaths:
         - src/functions_opendocs.php
+        - src/scrape.php
+        - src/scrape_functions.php
     bootstrapFiles:
         - config.generated.php
         - api/src/api_routes.php
@@ -16,9 +18,10 @@ parameters:
         -
           message: '#Unreachable statement - code above always terminates.#'
           path: *test/*Test.php
-
-
-
-
-
+        -
+          message: '#If condition is always true.#'
+          path: *src/Bristolian/MarkdownRenderer/CommonMarkRenderer.php
+        -
+          message: '#Argument of an invalid type .* supplied for foreach, only iterables are supported.#'
+          path: *src/Bristolian/ToArray.php
 

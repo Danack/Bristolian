@@ -2,22 +2,25 @@
 
 declare(strict_types = 1);
 
-namespace PhpOpenDocs\JsonInput;
+namespace Bristolian\JsonInput;
 
 class FakeJsonInput implements JsonInput
 {
-    /** @var array */
+    /** @var mixed[] */
     private $data;
 
     /**
      *
-     * @param array $data
+     * @param mixed[] $data
      */
     public function __construct(array $data)
     {
         $this->data = $data;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getData(): array
     {
         return $this->data;

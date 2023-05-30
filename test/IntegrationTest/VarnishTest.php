@@ -56,7 +56,7 @@ class VarnishTest extends BaseTestCase
     /**
      * @dataProvider providesCountryLookupBlank
      */
-    public function testCountryLookupBlank($ipAddressToTest)
+    public function testCountryLookupBlank(string $ipAddressToTest)
     {
         $data = fetchDataWithHeaders(
             'http://local.app.opensourcefees.com/debug/headers',
