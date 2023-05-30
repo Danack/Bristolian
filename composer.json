@@ -41,7 +41,9 @@
     },
     "autoload": {
         "psr-0": {
-            "Bristolian\\": "src/"
+            "Bristolian\\": "src/",
+            "Key\\": "src/",
+            "UrlFetcher\\\\": "src/"
         },
         "files": [
             "src/functions.php"

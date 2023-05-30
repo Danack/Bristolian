@@ -4,14 +4,15 @@ declare(strict_types = 1);
 
 namespace Bristolian\AppController;
 
+use Bristolian\Config;
 use Bristolian\CSPViolation\CSPViolationStorage;
 use Bristolian\Repo\DbInfo\DbInfo;
-
 use function Bristolian\createReactWidget;
+
 
 class System
 {
-    public function index(): string
+    public function index(Config $config): string
     {
         $html = <<< HTML
 
@@ -25,6 +26,16 @@ class System
 </ul>
 HTML;
 
+        $deploy_template = <<< HTML
+    <p>Deployed at :html_deploy_time</p>
+    <p>Version is :html_version</p>
+HTML;
+
+        $params = [
+            ':html_deploy_time' => $config->getDeployTime(),
+            ':html_version' => $config->getVersion()
+        ];
+        $html .= esprintf($deploy_template, $params);
         return $html;
     }
 

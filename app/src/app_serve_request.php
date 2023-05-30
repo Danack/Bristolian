@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 error_reporting(E_ALL);
 
-require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/../../vendor/autoload.php";
 
-require_once __DIR__ . '/factories.php';
-require_once __DIR__ . '/functions.php';
-require_once __DIR__ . '/error_functions.php';
-require_once __DIR__ . '/site_html.php';
-require __DIR__ . "/../config.generated.php";
+require_once __DIR__ . '/../../src/factories.php';
+require_once __DIR__ . '/../../src/functions.php';
+require_once __DIR__ . '/../../src/error_functions.php';
+require_once __DIR__ . '/../../src/site_html.php';
+require __DIR__ . "/../../config.generated.php";
 
 set_error_handler('saneErrorHandler');
 
