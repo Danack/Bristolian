@@ -41,7 +41,7 @@ class RandomPasswordIfNullOrEmpty implements ProcessRule
         return ValidationResult::valueResult($value);
     }
 
-    private function generatePassword()
+    private function generatePassword(): ValidationResult
     {
         $generated_string = bin2hex(random_bytes($this->passwordLength));
 

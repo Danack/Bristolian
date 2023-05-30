@@ -4,7 +4,7 @@
 
 use Bristolian\App;
 
-function getAllRoutes()
+function getAllApiRoutes()
 {
 // Each row of this array should return an array of:
 // - The path to match

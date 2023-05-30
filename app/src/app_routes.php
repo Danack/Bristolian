@@ -2,7 +2,7 @@
 
 //namespace Bristolian\Route;
 
-function getAllRoutes()
+function getAllAppRoutes()
 {
 
 // Each row of this array should return an array of:

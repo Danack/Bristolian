@@ -17,8 +17,8 @@ class PageResponseGenerator
     }
 
     public function createPageWithStatusCode(
-        $contentHtml,
-        $statusCode
+        string $contentHtml,
+        int $statusCode
     ): Response {
 
         $page = createPageHtml($this->assetLinkEmitter, $contentHtml);

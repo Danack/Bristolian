@@ -6,7 +6,7 @@ namespace Bristolian\ApiController;
 
 use Bristolian\CSPViolation\CSPViolationStorage;
 
-use SlimAuryn\Response\JsonResponse;
+use SlimDispatcher\Response\JsonResponse;
 
 use VarMap\VarMap;
 
@@ -16,7 +16,7 @@ class Csp
     public function get_reports_for_page(
         VarMap $varMap,
         CSPViolationStorage $cspViolationStorage
-    ) {
+    ): JsonResponse {
 
         $page = (int)$_REQUEST['page'];
 

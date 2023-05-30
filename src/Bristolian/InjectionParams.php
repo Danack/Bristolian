@@ -8,13 +8,44 @@ use DI\Injector;
 
 class InjectionParams
 {
-    public $shares;
-    public $aliases;
-    public $classParams;
-    public $delegates;
-    public $prepares;
-    public $namedParams;
+    /**
+     * @var array<string, mixed>
+     */
+    public array $shares;
 
+    /**
+     * @var array<string, mixed>
+     */
+    public array $aliases;
+
+    /**
+     * @var array<string, mixed>
+     */
+    public array $classParams;
+
+    /**
+     * @var array<string, mixed>
+     */
+    public array $delegates;
+
+    /**
+     * @var array<string, mixed>
+     */
+    public array $prepares;
+
+    /**
+     * @var array<string, mixed>
+     */
+    public array $namedParams;
+
+    /**
+     * @param array<string, mixed> $shares
+     * @param array<string, mixed> $aliases
+     * @param array<string, mixed> $delegates
+     * @param array<string, mixed> $classParams
+     * @param array<string, mixed> $prepares
+     * @param array<string, mixed> $namedParams
+     */
     public function __construct(
         array $shares = [],
         array $aliases = [],
@@ -31,18 +62,18 @@ class InjectionParams
         $this->namedParams = $namedParams;
     }
 
-    public static function fromParams(array $vars)
-    {
-        return new static(
-            [],
-            [],
-            [],
-            [],
-            [],
-            $vars
-        );
-    }
-    
+//    public static function fromParams(array $vars)
+//    {
+//        return new static(
+//            [],
+//            [],
+//            [],
+//            [],
+//            [],
+//            $vars
+//        );
+//    }
+//
     public static function fromSharedObjects($params)
     {
         $instance = new static();

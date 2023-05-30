@@ -40,15 +40,15 @@ function createMemoryWarningCheck(
  */
 function createRedis(Config $config)
 {
-    $redisInfo = $config->getRedisInfo();
+    $redisConfig = $config->getRedisInfo();
 
     $redis = new Redis();
     $redis->connect(
-        $redisInfo['host'],
-        $redisInfo['port'],
+        $redisConfig->host,
+        $redisConfig->port,
         $timeout = 2.0
     );
-    $redis->auth($redisInfo['password']);
+    $redis->auth($redisConfig->password);
     $redis->ping();
 
     return $redis;

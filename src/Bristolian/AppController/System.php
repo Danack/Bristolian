@@ -11,7 +11,7 @@ use function Bristolian\createReactWidget;
 
 class System
 {
-    public function index()
+    public function index(): string
     {
         $html = <<< HTML
 
@@ -28,7 +28,7 @@ HTML;
         return $html;
     }
 
-    public function showDbTables(DbInfo $dbInfo)
+    public function showDbTables(DbInfo $dbInfo): string
     {
         $table_info = <<< HTML
 <h2>Tables in DB</h2>
@@ -67,7 +67,7 @@ HTML;
         return $table_info;
     }
 
-    public function show_csp_reports(CSPViolationStorage $cspViolationStorage)
+    public function show_csp_reports(CSPViolationStorage $cspViolationStorage): string
     {
         $count = $cspViolationStorage->getCount();
         $reports = $cspViolationStorage->getReportsByPage(0);

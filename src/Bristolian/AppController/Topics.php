@@ -6,7 +6,7 @@ namespace Bristolian\AppController;
 
 class Topics
 {
-    public function index()
+    public function index(): string
     {
 //        $list = [
 //            '/bristol_energy', 'Bristol Energy',

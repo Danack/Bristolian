@@ -7,9 +7,12 @@ use SlimDispatcher\Response\StubResponse;
 class SVGResponse implements StubResponse
 {
     /** @var string  */
-    private $body;
+    private string $body;
 
-    private $headers = [];
+    /**
+     * @var array<string, string>
+     */
+    private array $headers = [];
 
     /** @var int  */
     private $status;
@@ -19,6 +22,9 @@ class SVGResponse implements StubResponse
         return $this->status;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getHeaders() : array
     {
         return $this->headers;
@@ -27,7 +33,7 @@ class SVGResponse implements StubResponse
     /**
      * SVGResponse constructor.
      * @param string $xml
-     * @param array $headers
+     * @param array<string, string> $headers
      */
     public function __construct(string $xml, array $headers = [], int $status = 200)
     {

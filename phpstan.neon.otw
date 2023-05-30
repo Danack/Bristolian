@@ -1,0 +1,55 @@
+parameters:
+  bootstrap: null
+  autoload_files:
+    - lib/cli_functions.php
+    - app/src/app_convert_exception_to_html_functions.php
+    - app/src/app_factories.php
+    - app/src/app_injection_params.php
+    - app/src/app_routes.php
+    - src/factories.php
+    - src/functions.php
+    - src/site_html.php
+    - src/slim_functions.php
+
+
+  excludes_analyse:
+    - *lib/birke/*
+#      - *injectionParams/*
+    - *Bristolian/CommonController/CompileError.php
+    - *opcache.php
+    - *Osf/PdoSimple.php
+#      - *Osf/Behat/SiteContext.php
+  ignoreErrors:
+#    -
+#      message: '#Access to an undefined property Twilio\\Rest\\Client::\$messages.#'
+#      path: *Osf/Service/TwilioClient.php
+#    -
+#      message: '#Access to an undefined property Stripe\\ApiResource::\$id.#'
+#      path: *Osf/Service/StripeClient.php
+    -
+      message: '#Strict comparison using === between array<int, string> and false will always evaluate to false.#'
+      path: *functions.php
+    -
+      message: '#Access to an undefined property .*#'
+      path: *StandardPlatformStripeClient.php
+    -
+      message: '#Parameter \#2 $colno|object of method PDOStatement::setFetchMode() expects int|object, string given.#'
+      path: *
+    -
+      message: '#.* for foreach, only iterables are supported.*#'
+      path: *ToArray.php *in context*
+    -
+      message: '#.*supplied for foreach, only iterables are supported.#'
+      path: *InMemoryAdminSession.php
+    -
+      message: '#.*supplied for foreach, only iterables are supported.#'
+      path: *InMemorySuperSession.php
+    -
+      message: '#.*supplied for foreach, only iterables are supported.#'
+      path: *ToString.php *in context*
+    -
+      message: '#.*supplied for foreach, only iterables are supported.#'
+      path: *FromString.php *in context*
+    -
+      message: '#should return .* but returns object.#'
+      path: *FromString.php *in context*

@@ -7,12 +7,12 @@ namespace Bristolian\AppController;
 use Bristolian\SiteHtml\PageStubResponseGenerator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Bristolian\MarkdownRenderer\MarkdownRenderer;
-
 use Bristolian\Page;
+use SlimDispatcher\Response\StubResponse;
 
 class Pages
 {
-    public function index()
+    public function index(): string
     {
         $content = "<h1>Absolute alpha</h1>";
 
@@ -38,7 +38,7 @@ HTML;
     }
 
 
-    public function bcc_committee_meetings()
+    public function bcc_committee_meetings(): string
     {
         $content = "<h1>BCC committee meetings</h1>";
 
@@ -66,7 +66,7 @@ HTML;
     }
 
 
-    public function floating_point_page()
+    public function floating_point_page(): string
     {
         $content = "<h1>Floating point shenanigans</h1>";
 
@@ -75,7 +75,7 @@ HTML;
         return $content;
     }
 
-    public function timeline_page()
+    public function timeline_page(): string
     {
         $content = "<h1>Time line page goes here</h1>";
 
@@ -84,7 +84,7 @@ HTML;
         return $content;
     }
 
-    public function teleprompter_page()
+    public function teleprompter_page(): string
     {
         $content = "<h1>Teleprompter</h1>";
         $content .= "<p>This probably isn't working currently.</p>";
@@ -93,7 +93,7 @@ HTML;
         return $content;
     }
 
-    public function email_link_generator_page()
+    public function email_link_generator_page(): string
     {
         $content = "<h1>Email link generator</h1>";
         $content .= "Email links can be setup to include pre-filled subject, CC, BCC and body text. This is a tool that does the needful to generate appropriate HTML, for embedding in other pages.";
@@ -104,7 +104,7 @@ HTML;
         return $content;
     }
 
-    public function qr_code_generator_page()
+    public function qr_code_generator_page(): string
     {
         $content = "<h1>QR code generator</h1>";
         $content .= "<div class='qr_code_generator_panel'></div>";
@@ -113,7 +113,7 @@ HTML;
         return $content;
     }
 
-    public function tools_page()
+    public function tools_page(): string
     {
         $content = "<h1>Tools page</h1>";
         $content .= <<< HTML
@@ -133,7 +133,7 @@ HTML;
     }
 
 
-    public function notes_page()
+    public function notes_page(): string
     {
         $content = "<h1>Note page goes here</h1>";
 
@@ -142,7 +142,7 @@ HTML;
         return $content;
     }
 
-    public function twitter_splitter_page()
+    public function twitter_splitter_page(): string
     {
         $content = "<h1>Twitter splitter</h1>";
 
@@ -153,7 +153,7 @@ HTML;
         return $content;
     }
 
-    public function homepage()
+    public function homepage(): string
     {
         return "Hello there";
     }
@@ -161,19 +161,19 @@ HTML;
     public function get404Page(
         Request $request,
         PageStubResponseGenerator $pageStubResponseGenerator
-    ) {
+    ): StubResponse {
         $path = $request->getUri()->getPath();
 
         return $pageStubResponseGenerator->create404Page($path);
     }
 
-    public function about(MarkdownRenderer $markdownRenderer)
+    public function about(MarkdownRenderer $markdownRenderer): string
     {
         $fullPath = __DIR__ . "/../../../docs/site/about_page.md";
         return $markdownRenderer->renderFile($fullPath);
     }
 
-    public function triangle_road(MarkdownRenderer $markdownRenderer)
+    public function triangle_road(MarkdownRenderer $markdownRenderer): string
     {
         $fullPath = __DIR__ . "/../../../docs/complaints/triangle_road.md";
 

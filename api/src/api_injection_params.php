@@ -1,8 +1,8 @@
 <?php
 
-use AurynConfig\InjectionParams;
+use Bristolian\InjectionParams;
 
-function injectionParams() : InjectionParams
+function apiInjectionParams() : InjectionParams
 {
     // These classes will only be created once by the injector.
     $shares = [

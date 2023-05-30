@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace BristolianTest\Params;
 
 use Bristolian\DataType\CreateUserParams;
-use BristolianTest\Repo\Testing;
+use BristolianTest\Repo\TestPlaceholders;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
@@ -15,12 +15,12 @@ use Bristolian\Repo\AdminRepo\PdoAdminRepo;
  */
 class PdoAdminRepoTest extends BaseTestCase
 {
-    use Testing;
+    use TestPlaceholders;
 
     /**
      * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo
      */
-    public function testWorks()
+    public function testWorks(): void
     {
         $email_address = 'Johnathan@example.com';
         $password = 'mynameismypassport';

@@ -5,11 +5,11 @@ declare(strict_types = 1);
 namespace Bristolian\AppController;
 
 use Bristolian\Data\ContentPolicyViolationReport;
-use SlimAuryn\Response\JsonNoCacheResponse;
-use SlimAuryn\Response\HtmlResponse;
+use SlimDispatcher\Response\JsonNoCacheResponse;
+use SlimDispatcher\Response\HtmlResponse;
 use Bristolian\CSPViolation\CSPViolationReporter;
 use Bristolian\CSPViolation\CSPViolationStorage;
-use SlimAuryn\Response\TextResponse;
+use SlimDispatcher\Response\TextResponse;
 use Bristolian\JsonInput\JsonInput;
 
 class ContentSecurityPolicy
@@ -17,7 +17,7 @@ class ContentSecurityPolicy
     public function postReport(
         CSPViolationStorage $violationReporter,
         JsonInput $jsonInput
-    ) {
+    ): TextResponse {
         $payload = $jsonInput->getData();
 
         $cspReport = ContentPolicyViolationReport::fromCSPPayload($payload);
@@ -26,7 +26,7 @@ class ContentSecurityPolicy
         return new TextResponse("CSP report accepted.\n", [], 201);
     }
 
-    public function clearReports(CSPViolationStorage $csppvReporter) : TextResponse
+    public function clearReports(CSPViolationStorage $csppvReporter): TextResponse
     {
         $csppvReporter->clearReports();
 //        return new JsonNoCacheResponse(['ok']);
@@ -34,7 +34,7 @@ class ContentSecurityPolicy
         return new TextResponse("Reports cleared.\n", [], 201);
     }
 
-    public function getReports(CSPViolationStorage $csppvStorage) : JsonNoCacheResponse
+    public function getReports(CSPViolationStorage $csppvStorage): JsonNoCacheResponse
     {
         $reports = $csppvStorage->getReports();
 
@@ -46,7 +46,7 @@ class ContentSecurityPolicy
         return new JsonNoCacheResponse($data);
     }
 
-    public function getTestPage() : HtmlResponse
+    public function getTestPage(): HtmlResponse
     {
         $html = <<< HTML
 <html>

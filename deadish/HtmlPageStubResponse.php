@@ -16,7 +16,7 @@ class HtmlPageStubResponse implements StubResponse
         $this->headers['Content-Type'] = 'text/html; charset=UTF-8';
     }
 
-    public static function createErrorPage(string $errorPageHtml)
+    public static function createErrorPage(string $errorPageHtml): self
     {
         return new self(
             501,

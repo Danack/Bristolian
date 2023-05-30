@@ -12,7 +12,7 @@ use chillerlan\QRCode\Output\QROutputInterface;
 
 class QRCode
 {
-    public function get(VarMap $varMap)
+    public function get(VarMap $varMap): SVGResponse
     {
         $qrData = QRData::createFromVarMap($varMap);
 

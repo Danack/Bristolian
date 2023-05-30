@@ -4,7 +4,11 @@ use Bristolian\InjectionParams;
 
 if (function_exists('injectionParams') == false) {
 
-    function injectionParams($testAliases)
+    /**
+     * @param mixed[] $testAliases
+     * @return InjectionParams
+     */
+    function injectionParams(array $testAliases): InjectionParams
     {
         // These classes will only be created once by the injector.
         $shares = [

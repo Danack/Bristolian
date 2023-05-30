@@ -125,7 +125,7 @@ function createPageHtml(
 //    return $output;
 //}
 
-function share_this_page()
+function share_this_page(): string
 {
     $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     $query = http_build_query(['url' => $url]);

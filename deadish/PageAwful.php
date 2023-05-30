@@ -53,44 +53,44 @@ class Page
         $this->section = $section;
     }
 
-    public static function createFromHtml(
-        string $title,
-        string $contentHtml,
-        ?Section $section
-    ): Page {
-        $page = new \Bristolian\SiteHtml\Page(
-            $title,
-            createPHPBristolian\SiteHtmlEditInfo('Edit page', __FILE__, null),
-            [],
-            new PrevNextLinks(null, null),
-            $contentHtml,
-            createDefaultCopyrightInfo(),
-            new Breadcrumbs(),
-            $section
-        );
+//    public static function createFromHtml(
+//        string $title,
+//        string $contentHtml,
+//        ?Section $section
+//    ): Page {
+//        $page = new \Bristolian\SiteHtml\Page(
+//            $title,
+//            createPHPBristolian\SiteHtmlEditInfo('Edit page', __FILE__, null),
+//            [],
+//            new PrevNextLinks(null, null),
+//            $contentHtml,
+//            createDefaultCopyrightInfo(),
+//            new Breadcrumbs(),
+//            $section
+//        );
+//
+//        return $page;
+//    }
 
-        return $page;
-    }
-
-    public static function createFromHtmlEx(
-        string $title,
-        string $contentHtml,
-        EditInfo $editInfo,
-        \Bristolian\SiteHtml\Breadcrumbs $breadcrumbs
-    ): Page {
-        $page = new \Bristolian\SiteHtml\Page(
-            $title,
-            $editInfo,
-            [],
-            new PrevNextLinks(null, null),
-            $contentHtml,
-            createDefaultCopyrightInfo(),
-            $breadcrumbs,
-            null
-        );
-
-        return $page;
-    }
+//    public static function createFromHtmlEx(
+//        string $title,
+//        string $contentHtml,
+//        EditInfo $editInfo,
+//        \Bristolian\SiteHtml\Breadcrumbs $breadcrumbs
+//    ): Page {
+//        $page = new \Bristolian\SiteHtml\Page(
+//            $title,
+//            $editInfo,
+//            [],
+//            new PrevNextLinks(null, null),
+//            $contentHtml,
+//            createDefaultCopyrightInfo(),
+//            $breadcrumbs,
+//            null
+//        );
+//
+//        return $page;
+//    }
 
     public static function createFromHtmlEx2(
         string $title,

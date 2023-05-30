@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Bristolian\SiteHtml;
 
 use Bristolian\AssetLinkEmitter;
-use Bristolian\HtmlPageStubResponse;
 use SlimDispatcher\Response\StubResponse;
+use SlimDispatcher\Response\HtmlResponse;
 
 class PageStubResponseGenerator
 {
@@ -25,37 +25,37 @@ class PageStubResponseGenerator
 
         $pageHtml = createPageHtml($this->assetLinkEmitter, $output);
 
-        return new HtmlPageStubResponse(404, $pageHtml, []);
+        return new HtmlResponse($pageHtml, [], 404);
     }
 
 
-    private function createPageHtml(string $html): string
-    {
-//    $headerLinks = createStandardHeaderLinks();
+//    private function createPageHtml(string $html): string
+//    {
+////    $headerLinks = createStandardHeaderLinks();
+////
+////    $prefix = '/';
+////    if ($section) {
+////        $prefix = $section->getPrefix();
+////    }
 //
-//    $prefix = '/';
-//    if ($section) {
-//        $prefix = $section->getPrefix();
+////    $pageTitle = $page->getTitle() ?? "PHP Bristolian";
+//
+//        $pageTitle = "PHP Bristolian";
+//
+//        $assetSuffix = $this->assetLinkEmitter->getAssetSuffix();
+//
+//        $params = [
+//            ':raw_site_css_link' => '/css/site.css' . $assetSuffix,
+//            ':raw_site_js_link' => '/js/app.bundle.js' . $assetSuffix,
+//            ':html_page_title' => $pageTitle,
+//            ':raw_top_header' => createPageHeaderHtml(/*$headerLinks*/),
+//            ':raw_breadcrumbs' => '', //createBreadcrumbHtml($section, $page->getBreadcrumbs()),
+//            ':raw_prev_next' => '', //createPrevNextHtml($page->getPrevNextLinks()),
+//            ':raw_content' => $html, //$page->getContentHtml(),
+//            ':raw_nav_content' => '', //createContentLinksHtml($prefix, $page->getContentLinks()),
+//            ':raw_footer' => '', //createFooterHtml($page->getCopyrightInfo(), $page->getEditInfo()),
+//        ];
+//
+//        return esprintf(getPageLayoutHtml(), $params);
 //    }
-
-//    $pageTitle = $page->getTitle() ?? "PHP Bristolian";
-
-        $pageTitle = "PHP Bristolian";
-
-        $assetSuffix = $this->assetLinkEmitter->getAssetSuffix();
-
-        $params = [
-            ':raw_site_css_link' => '/css/site.css' . $assetSuffix,
-            ':raw_site_js_link' => '/js/app.bundle.js' . $assetSuffix,
-            ':html_page_title' => $pageTitle,
-            ':raw_top_header' => createPageHeaderHtml(/*$headerLinks*/),
-            ':raw_breadcrumbs' => '', //createBreadcrumbHtml($section, $page->getBreadcrumbs()),
-            ':raw_prev_next' => '', //createPrevNextHtml($page->getPrevNextLinks()),
-            ':raw_content' => $html, //$page->getContentHtml(),
-            ':raw_nav_content' => '', //createContentLinksHtml($prefix, $page->getContentLinks()),
-            ':raw_footer' => '', //createFooterHtml($page->getCopyrightInfo(), $page->getEditInfo()),
-        ];
-
-        return esprintf(getPageLayoutHtml(), $params);
-    }
 }

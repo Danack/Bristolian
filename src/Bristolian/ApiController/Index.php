@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace Bristolian\ApiController;
 
-use SlimAuryn\Response\JsonResponse;
+use SlimDispatcher\Response\JsonResponse;
 
 class Index
 {
-    public function getRouteList()
+    public function getRouteList(): JsonResponse
     {
-        $routes = getAllRoutes();
+        $routes = getAllApiRoutes();
 
         return new JsonResponse($routes);
     }

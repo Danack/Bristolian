@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Bristolian\Key;
+namespace Key;
 
 class UrlCacheKey
 {
@@ -10,11 +10,11 @@ class UrlCacheKey
      * @param string $key
      * @return string
      */
-    public static function getAbsoluteKeyName(string $uri) : string
+    public static function getAbsoluteKeyName(string $key) : string
     {
         // Hash the key to prevent any odd characters from
         // interacting with redis key handling
-        $key = hash("sha256", $uri);
-        return __CLASS__ . '_' . $key;
+        $hash = hash("sha256", $key);
+        return __CLASS__ . '_' . $hash;
     }
 }

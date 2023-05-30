@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace Bristolian\ApiController;
 
-use SlimAuryn\Response\JsonResponse;
+use SlimDispatcher\Response\JsonResponse;
 
 class HealthCheck
 {
-    public function get()
+    public function get(): JsonResponse
     {
         return new JsonResponse(['ok']);
     }

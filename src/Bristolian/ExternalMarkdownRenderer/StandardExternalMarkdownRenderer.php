@@ -6,7 +6,7 @@ namespace Bristolian\ExternalMarkdownRenderer;
 
 use Bristolian\MarkdownRenderer\MarkdownRenderer;
 
-use Bristolian\UrlFetcher\UrlFetcher;
+use UrlFetcher\UrlFetcher;
 
 class StandardExternalMarkdownRenderer implements ExternalMarkdownRenderer
 {

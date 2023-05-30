@@ -6,6 +6,12 @@ namespace Bristolian\JsonInput;
 
 class InputJsonInput implements JsonInput
 {
+    /**
+     * @return array|mixed[]
+     * @throws \Bristolian\Exception\JsonException
+     * @throws \JsonException
+     * @throws \Seld\JsonLint\ParsingException
+     */
     public function getData(): array
     {
         $payload = @file_get_contents("php://input");

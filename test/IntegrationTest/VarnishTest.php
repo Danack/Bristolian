@@ -27,7 +27,7 @@ class VarnishTest extends BaseTestCase
     /**
      * @dataProvider providesCountryLookupWorks
      */
-    public function testCountryLookupWorks($ipAddressToTest, $expectedCountry)
+    public function testCountryLookupWorks(string $ipAddressToTest, string $expectedCountry)
     {
         $data = fetchDataWithHeaders(
             'http://local.app.opensourcefees.com/debug/headers',

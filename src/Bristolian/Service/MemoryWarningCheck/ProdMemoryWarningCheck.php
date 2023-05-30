@@ -25,12 +25,7 @@ class ProdMemoryWarningCheck implements MemoryWarningCheck
         $percentMemoryUsed = getPercentMemoryUsed();
 
         if ($percentMemoryUsed > 50) {
-            $message = sprintf(
-                "Request is using too much memory. Path was [%s]",
-                $request->getUri()->getPath()
-            );
-
-            \error_log($message);
+            $this->tooMuchMemoryNotifier->tooMuchMemory($request);
         }
 
         return $percentMemoryUsed;

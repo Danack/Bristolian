@@ -1,0 +1,24 @@
+parameters:
+    level: 6
+    paths:
+        - src
+        - test
+    excludePaths:
+        - src/functions_opendocs.php
+    bootstrapFiles:
+        - config.generated.php
+        - api/src/api_routes.php
+    ignoreErrors:
+        -
+          message: '#Method .* has no return type specified.#'
+          path: *test/*Test.php
+
+        -
+          message: '#Unreachable statement - code above always terminates.#'
+          path: *test/*Test.php
+
+
+
+
+
+

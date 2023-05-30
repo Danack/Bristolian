@@ -10,7 +10,7 @@ namespace Bristolian;
  */
 class CLIFunction
 {
-    public static function setupErrorHandlers()
+    public static function setupErrorHandlers(): void
     {
         $initialOBLevel = ob_get_level();
         $shutdownFunction = function () use ($initialOBLevel) {
@@ -25,7 +25,7 @@ class CLIFunction
         set_error_handler([\Bristolian\CLIFunction::class, 'errorHandler']);
     }
 
-    public static function fatalErrorShutdownHandler()
+    public static function fatalErrorShutdownHandler(): void
     {
         $fatals = [
             E_ERROR,
@@ -66,7 +66,7 @@ class CLIFunction
         }
     }
 
-    public static function errorHandler($errno, $errstr, $errfile, $errline)
+    public static function errorHandler(int $errno, string $errstr, string $errfile, int $errline): bool
     {
         if (error_reporting() === 0) {
             return true;

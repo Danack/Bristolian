@@ -7,8 +7,6 @@ namespace BristolianTest;
 //use TypeSpec\PropertyRule;
 //use TypeSpec\ValidationResult;
 use PHPUnit\Framework\TestCase;
-use TypeSpec\ProcessedValues;
-use TypeSpec\OpenApi\ParamDescription;
 use Danack\PHPUnitHelper\StringTemplateMatching;
 use function \Danack\PHPUnitHelper\templateStringToRegExp;
 
@@ -22,7 +20,7 @@ class BaseTestCase extends TestCase
 {
     use StringTemplateMatching;
 
-    private $startLevel = null;
+    private int $startLevel = -1;
 
     public function setup(): void
     {
@@ -32,8 +30,8 @@ class BaseTestCase extends TestCase
 
     public function teardown(): void
     {
-        if ($this->startLevel === null) {
-            $this->assertEquals(0, 1, "startLevel was not set, cannot complete teardown");
+        if ($this->startLevel === -1) {
+            $this->fail("startLevel was not set, cannot complete teardown");
         }
         $contents = ob_get_contents();
         ob_end_clean();
@@ -47,7 +45,7 @@ class BaseTestCase extends TestCase
         );
     }
 
-    public function testPHPUnitApparentlyGetsConfused()
+    public function testPHPUnitApparentlyGetsConfused(): void
     {
         //Basically despite having:
         //<exclude>*/BaseTestCase.php</exclude>

@@ -17,20 +17,23 @@ class Config
     const BRISTOLIAN_SQL_USERNAME = 'bristol_org.db.username';
     const BRISTOLIAN_SQL_PASSWORD = 'bristol_org.db.password';
 
-    private $values = [];
+    /**
+     * @var array<string, int|string|bool|mixed>
+     */
+    private array $values = [];
 
     public function __construct()
     {
-//        self::testValuesArePresent();
         $this->values = getGeneratedConfig();
     }
 
     /**
      * @param $key
-     * @return mixed
+     * @return int|string|bool|array
      * @throws \Exception
      */
-    private function get($key)
+
+    private function get(string $key): int|string|bool|array
     {
         if (array_key_exists($key, $this->values) == false) {
             throw new \Exception("No value for " . $key);
@@ -60,9 +63,15 @@ class Config
         return $this->get(self::BRISTOLIAN_ENVIRONMENT) . "_" . self::get(self::BRISTOLIAN_COMMIT_SHA);
     }
 
-    public function getRedisInfo(): array
+    public function getRedisInfo(): \Bristolian\Config\RedisConfig
     {
-        return $this->get(self::BRISTOLIAN_REDIS_INFO);
+        $data = $this->get(self::BRISTOLIAN_REDIS_INFO);
+
+        return new \Bristolian\Config\RedisConfig(
+            $data['host'],
+            $data['password'],
+            $data['port']
+        );
     }
 
     public function getDeployTime(): string

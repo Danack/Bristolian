@@ -6,5 +6,8 @@ namespace Bristolian\JsonInput;
 
 interface JsonInput
 {
+    /**
+     * @return mixed[]
+     */
     public function getData(): array;
 }

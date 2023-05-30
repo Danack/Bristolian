@@ -4,16 +4,13 @@ declare(strict_types = 1);
 
 namespace Bristolian;
 
-use Bristolian\Config;
-
 class AssetLinkEmitter
 {
-
     public function __construct(private Config $config)
     {
     }
 
-    public function getAssetSuffix()
+    public function getAssetSuffix(): string
     {
         $forcesRefresh = $this->config->getForceAssetRefresh();
 

@@ -8,4 +8,4 @@ require_once __DIR__ . '/../src/app_factories.php';
 require_once __DIR__ . '/../src/app_routes.php';
 
 require_once __DIR__ . '/../../src/react_widgets.php';
-require_once __DIR__ . "/../../src/serve_request.php";
+require_once __DIR__ . "/../src/app_serve_request.php";

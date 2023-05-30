@@ -17,7 +17,7 @@ class Dispatcher implements DispatcherInterface
      * Dispatch an incoming request to a controller through an injector
      * @param Request $request
      * @param array $routeArguments
-     * @param $resolvedCallable
+     * @param mixed $resolvedCallable
      * @return mixed
      * @throws \DI\ConfigException
      * @throws \DI\InjectionException
