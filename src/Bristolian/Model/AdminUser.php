@@ -143,7 +143,4 @@ class AdminUser
 //    {
 //        $this->google_2fa_secret = null;
 //    }
-
-
-
 }

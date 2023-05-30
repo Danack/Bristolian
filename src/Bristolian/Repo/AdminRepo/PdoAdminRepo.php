@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Bristolian\Repo\AdminRepo;
 
-
 use Bristolian\PdoSimple;
 use Bristolian\DataType\CreateUserParams;
 use Bristolian\Model\AdminUser;

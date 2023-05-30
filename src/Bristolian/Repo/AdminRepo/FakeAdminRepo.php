@@ -7,7 +7,6 @@ namespace Bristolian\Repo\AdminRepo;
 use Bristolian\DataType\CreateUserParams;
 use Bristolian\Model\AdminUser;
 
-
 class FakeAdminRepo implements AdminRepo
 {
     /**

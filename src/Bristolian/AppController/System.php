@@ -9,7 +9,6 @@ use Bristolian\CSPViolation\CSPViolationStorage;
 use Bristolian\Repo\DbInfo\DbInfo;
 use function Bristolian\createReactWidget;
 
-
 class System
 {
     public function index(Config $config): string

@@ -7,7 +7,7 @@ namespace Bristolian\CSPViolation;
 use Bristolian\CSPViolation\CSPViolationReporter;
 use Bristolian\Data\ContentPolicyViolationReport;
 
-interface CSPViolationStorage  extends CSPViolationReporter
+interface CSPViolationStorage extends CSPViolationReporter
 {
     /**
      * @return ContentPolicyViolationReport[]

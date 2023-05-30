@@ -21,37 +21,30 @@ class FunctionsTest extends BaseTestCase
 
     public function test_hackVarMap()
     {
-
     }
 
     public function test_formatLinesWithCount()
     {
-
     }
 
     public function test_checkSignalsForExit()
     {
-
     }
 
-    public function test_continuallyExecuteCallable ()
+    public function test_continuallyExecuteCallable()
     {
-
     }
 
     public function test_json_decode_safe()
     {
-
     }
 
     public function test_json_encode_safe()
     {
-
     }
 
     public function test_getExceptionInfoAsArray()
     {
-
     }
 
     /**
@@ -66,61 +59,51 @@ class FunctionsTest extends BaseTestCase
 
     public function test_convertToValue()
     {
-
     }
 
 
     public function test_fetchUri()
     {
-
     }
 
 
     public function test_convertStringToHtmlResponse()
     {
-
     }
 
 
     public function test_getMask()
     {
-
     }
 
 
     public function test_twiddleWithShit()
     {
-
     }
 
 
     public function test_showTotalErrorPage()
     {
-
     }
 
 
     public function test_getMemoryLimit()
     {
-
     }
 
 
     public function test_getPercentMemoryUsed()
     {
-
     }
 
 
     public function test_normaliseFilePath()
     {
-
     }
 
 
     public function test_getEnvString()
     {
-
     }
 
 
@@ -148,5 +131,4 @@ class FunctionsTest extends BaseTestCase
         $this->assertArrayHasKey("cost", $options);
         $this->assertGreaterThanOrEqual(12, $options["cost"]);
     }
-
 }
