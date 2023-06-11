@@ -1,7 +1,7 @@
 
 
 
-Q2) This question is related to item 3 "Active Travel Fund"
+Q1) This question is related to item 3 "Active Travel Fund"
 
 My understanding is that the amount of funding approved by Active Travel England for "Active Travel Fund tranche 4" is lower than hoped due to some proposed applications not being of high enough quality, and previously approved schemes not being finished, or constructed to standard.
 

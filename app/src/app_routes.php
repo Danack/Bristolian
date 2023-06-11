@@ -25,7 +25,11 @@ function getAllAppRoutes()
         ['/qr/code', 'GET', '\Bristolian\AppController\QRCode::get'],
 
 
-        ['/questions/1_weca_active_travel', 'GET', '\Bristolian\AppController\Pages::weca_question_q'],
+        ['/questions/1_weca_active_travel', 'GET', '\Bristolian\AppController\Pages::weca_question_active_travel'],
+
+        ['/questions/2_weca_cumberland_basin_tram', 'GET', '\Bristolian\AppController\Pages::weca_question_tram'],
+
+
         ['/questions', 'GET', '\Bristolian\AppController\Pages::questions'],
 
         ['/bcc/committee_meetings', 'GET', '\Bristolian\AppController\Pages::bcc_committee_meetings'],

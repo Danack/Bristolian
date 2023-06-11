@@ -203,6 +203,10 @@ HTML;
     <a href="/questions/1_weca_active_travel">WECA active travel</a>
 </p>
 
+<p>
+    <a href="/questions/2_weca_cumberland_basin_tram">Cumberland Basin trams</a>
+</p>
+
 HTML;
 
 
@@ -210,9 +214,16 @@ HTML;
     }
 
 
-    public function weca_question_q(MarkdownRenderer $markdownRenderer): string
+    public function weca_question_active_travel(MarkdownRenderer $markdownRenderer): string
     {
-        $fullPath = __DIR__ . "/../../../docs/questions/2_active_travel_weca.md";
+        $fullPath = __DIR__ . "/../../../docs/questions/1_active_travel_weca.md";
+
+        return $markdownRenderer->renderFile($fullPath);
+    }
+
+    public function weca_question_tram(MarkdownRenderer $markdownRenderer): string
+    {
+        $fullPath = __DIR__ . "/../../../docs/questions/2_cumberland_basin_weca_road_feasilbity.md";
 
         return $markdownRenderer->renderFile($fullPath);
     }
