@@ -23,6 +23,8 @@ class Pages
         $content .= "<p>Maybe have a look at the <a href='/bcc/committee_meetings'>BCC committee meetings</a> about committees.</p>";
         $content .= "<p>Or why you should object to the <a href='/complaints/triangle_road'>Triangle road change</a>.</p>";
 
+        $content .= "<p>oh, a tiny bit more; <a href='/questions'>questions</a>.</p>";
+
 
         $content .= <<< HTML
 
@@ -36,6 +38,8 @@ HTML;
 
         return $content;
     }
+
+
 
 
     public function bcc_committee_meetings(): string
@@ -74,6 +78,8 @@ HTML;
 
         return $content;
     }
+
+
 
     public function timeline_page(): string
     {
@@ -184,5 +190,30 @@ HTML;
         $html .= share_this_page();
 
         return $html;
+    }
+
+
+
+    public function questions(): string
+    {
+        $content = "<h1>Questions for WECA</h1>";
+
+        $content .= <<< HTML
+<p>
+    <a href="/questions/1_weca_active_travel">WECA active travel</a>
+</p>
+
+HTML;
+
+
+        return $content;
+    }
+
+
+    public function weca_question_q(MarkdownRenderer $markdownRenderer): string
+    {
+        $fullPath = __DIR__ . "/../../../docs/questions/2_active_travel_weca.md";
+
+        return $markdownRenderer->renderFile($fullPath);
     }
 }

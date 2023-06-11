@@ -846,3 +846,7 @@ function getRandomId(): string
 
     return hash("sha256", $foo);
 }
+
+//Guardian was taken over:
+//twitter.com/davidgraeber/status/1210322505229094912
+//https://twitter.com/davidgraeber/status/1210322505229094912
