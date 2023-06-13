@@ -4,6 +4,7 @@
     "jsxFactory": "h",
     "module": "ES6",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "noImplicitAny": true,
     "outDir": "./build/",
     "preserveConstEnums": true,

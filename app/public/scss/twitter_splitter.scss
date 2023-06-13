@@ -1,0 +1,11 @@
+.twitter_splitter_panel_react{
+
+  .split_tweets {
+    tr:nth-child(even) {
+      td {
+        background: rgba(186, 202, 255, 0.25);
+        white-space: pre-line;
+      }
+    }
+  }
+}

@@ -9,7 +9,7 @@ interface Tweet {
   copied: boolean
 }
 
-enum Numbering {
+export enum Numbering {
   None = "None",
   Prefix = "1/ Prefix",
 }
@@ -170,7 +170,7 @@ export class TwitterSplitterPanel extends Component<TwitterSplitterPanelProps, T
     let shown_text = tweet.text;//.replace(/(?:\r\n|\r|\n)/g, '<br>');
 
     return <tr key={index}>
-      <td style="white-space: pre-line">
+      <td>
         {shown_text}
       </td>
       <td onClick={() => { return this.copyTweet(index)}}>
@@ -193,7 +193,7 @@ export class TwitterSplitterPanel extends Component<TwitterSplitterPanelProps, T
       tweets = this.state.tweets.map(this.renderTweet, this);
     }
 
-    return <table>
+    return <table class='split_tweets'>
         {tweets}
     </table>
   }
