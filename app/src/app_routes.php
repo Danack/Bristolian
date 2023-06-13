@@ -20,6 +20,8 @@ function getAllAppRoutes()
         ['/about', 'GET', 'Bristolian\AppController\Pages::about'],
         ['/privacy_policy', 'GET', 'Bristolian\AppController\Pages::privacyPolicy'],
 
+        ['/login', 'GET', '\Bristolian\AppController\Login::showLoginPage'],
+        ['/login', 'POST', '\Bristolian\AppController\Login::processLoginPage'],
         ['/tools', 'GET', '\Bristolian\AppController\Pages::tools_page'],
 
         ['/qr/code', 'GET', '\Bristolian\AppController\QRCode::get'],
@@ -75,6 +77,7 @@ function getAllAppRoutes()
         ['/test/uncaught_exception', 'GET', 'Bristolian\AppController\Debug::testUncaughtException'],
         ['/test/compile_error', 'GET', 'Bristolian\AppController\CompileError::deliberateCompileError'],
 
+        ['/debug', 'GET', 'Bristolian\AppController\Pages::debug_page'],
 
         // TODO - actually make a 404 page
         ['/{any:.*}', 'GET', 'Bristolian\AppController\Pages::get404Page'],

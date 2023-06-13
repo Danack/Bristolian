@@ -14,7 +14,7 @@ function add_console_commands(Application $console)
 //    addTestCommands($console);
     addSeedCommands($console);
     addDatabaseCommands($console);
-//    addAdminAccountCommands($console);
+    addAdminAccountCommands($console);
     addMiscCommands($console);
 }
 
@@ -131,23 +131,15 @@ function addMiscCommands(Application $console)
 
 function addAdminAccountCommands(Application $console)
 {
-    $command = new Command('admin:create_user', '\Osf\CliController\Admin::createAdminLogin');
+    $command = new Command('admin:create_user', 'Bristolian\CliController\Admin::createAdminLogin');
     $command->setDescription("Create an user");
-    $command->addArgument('username', InputArgument::REQUIRED, "The username for the account.");
+    $command->addArgument('email_address', InputArgument::REQUIRED, "The username for the account.");
     $command->addArgument('password', InputArgument::OPTIONAL, "The password for the account. If not set, a random one will be generated.", null);
 
     $console->add($command);
 
-//
-//    $command = new Command('admin:create_project', '\Osf\CliController\Admin::createProject');
-//    $command->setDescription("Create a project");
-//    $command->addArgument('project_name', InputArgument::REQUIRED, "The project name for the account.");
-//    $command->addArgument('visible', InputArgument::REQUIRED, "Whether the project should be visible. 'true' for visible.");
-//
-//    $console->add($command);
-//
-//
-//
+
+
 //    $command = new Command('admin:reset_password', '\Osf\CliController\Admin::resetPassword');
 //    $command->setDescription("Reset password an admin user");
 //    $command->addArgument('username', InputArgument::REQUIRED, "The username for the account.");
@@ -157,19 +149,4 @@ function addAdminAccountCommands(Application $console)
 //    $command->setDescription("Remove google 2fa from admin account");
 //    $command->addArgument('username', InputArgument::REQUIRED, "The username for the account.");
 //    $console->add($command);
-//
-//
-//
-//    $command = new Command('admin:add_to_project', '\Osf\CliController\Admin::addToProject');
-//    $command->setDescription("Gave an admin user access to a project");
-//    $command->addArgument('username', InputArgument::REQUIRED, "The username of the admin.");
-//    $command->addArgument('project_name', InputArgument::REQUIRED, "The project name to add them to.", null);
-//    $console->add($command);
-//
-//    $command = new Command('admin:remove_from_project', '\Osf\CliController\Admin::removeFromProject');
-//    $command->setDescription("Remove access from an admin user for a project");
-//    $command->addArgument('username', InputArgument::REQUIRED, "The username of the admin.");
-//    $command->addArgument('project_name', InputArgument::REQUIRED, "The project name to add remove them from.", null);
-//    $console->add($command);
-
 }

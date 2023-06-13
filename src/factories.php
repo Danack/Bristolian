@@ -54,6 +54,43 @@ function createRedis(Config $config)
     return $redis;
 }
 
+function getRedisConfig(Config $config)
+{
+    $redisConfig = $config->getRedisInfo();
+    $redisConfig = array(
+        "scheme" => "tcp",
+        "host" => $redisConfig->host,
+        "port" => $redisConfig->port,
+        "password" => $redisConfig->password
+    );
+
+    return $redisConfig;
+}
+
+function getRedisOptions()
+{
+    static $unique = null;
+
+    if ($unique == null) {
+        $unique = date("Ymdhis").uniqid();
+    }
+
+    $redisOptions = array(
+        'profile' => '2.6',
+        'prefix' => 'sessionTest'.$unique.':',
+    );
+
+    return $redisOptions;
+}
+
+
+function createPredisClient(Config $config)
+{
+    return new \Predis\Client(getRedisConfig($config), getRedisOptions());
+}
+
+
+
 
 
 /**
@@ -112,4 +149,13 @@ function createPDOForUser(Config $config)
     }
 
     return $pdo;
+}
+
+
+function createSessionConfig()
+{
+    return new \Asm\SessionConfig(
+        "john_is_my_name",
+        3600,
+    );
 }

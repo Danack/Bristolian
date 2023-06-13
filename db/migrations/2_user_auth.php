@@ -22,5 +22,7 @@ CREATE TABLE `user_auth_email_password` (
 
 SQL;
 
+    // TODO - needs unique on email_address
+
     return $sql;
 }

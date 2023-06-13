@@ -1,10 +1,19 @@
 {
     "name": "danack/bristolian",
     "type": "project",
+
+    "repositories": {
+        "danack_asm": {
+            "type": "vcs",
+            "url": "https://github.com/Danack/AdvancedSessionManagement"
+        }
+    },
     "require": {
+        "danack/asm": "dev-feature/psr_and_slim_integration",
         "danack/configurator": "1.1.1",
         "danack/console": "^2.6",
         "danack/esprintf": "^2.0.0",
+        "danack/injector": "^0.5.0",
         "danack/looping-exec": "^0.3.0",
         "danack/json-safe": "^0.1.1",
         "danack/slim-dispatcher": "dev-dev",
@@ -14,7 +23,7 @@
         "justinrainbow/json-schema": "^5.2.7",
         "laminas/laminas-diactoros":"^2.24.0",
         "ramsey/uuid": "^4.7",
-        "danack/injector": "^0.5.0",
+        "predis/predis": "^v1.1.1",
         "seld/jsonlint": "^1.7",
         "slim/slim": "4.10.0",
         "tholu/php-cidr-match": "^0.2.0",

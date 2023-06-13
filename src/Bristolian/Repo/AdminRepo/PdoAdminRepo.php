@@ -73,43 +73,55 @@ SQL;
 //        $this->em->flush($adminUser);
 //    }
 
-//    /**
-//     * Gets the user and validates their password
-//     */
-//    public function getAdminUser(string $username, string $password): ?AdminUser
-//    {
-//        $repo = $this->em->getRepository(\Osf\Model\AdminUser::class);
-//
-//        /** @var \Osf\Model\AdminUser|null $adminUser */
-//        $adminUser = $repo->findOneBy(['username' => mb_strtolower($username)]);
-//
-//        if ($adminUser === null) {
-////            log_admin_login_failed("Unknown username.");
-//            return null;
-//        }
-//
-//        if (password_verify($password, $adminUser->getPasswordHash()) !== true) {
-////            log_admin_login_failed("password_verify failed.");
-//            return null;
-//        }
-//
-//        $options = get_password_options();
-//
+    /**
+     * Gets the user and validates their password
+     */
+    public function getAdminUser(string $username, string $password): ?AdminUser
+    {
+        $sql = <<< SQL
+select
+  user_id,
+  email_address,
+  password_hash
+from
+  user_auth_email_password
+where
+    email_address = :email_address
+SQL;
+
+        $adminUser = $this->pdo->fetchOneAsObject(
+            $sql,
+            [':email_address' => $username],
+            \Bristolian\Model\AdminUser::class
+        );
+
+        if ($adminUser === null) {
+//            log_admin_login_failed("Unknown username.");
+            return null;
+        }
+
+        $password_hash = $adminUser->getPasswordHash();
+
+        if (password_verify($password, $password_hash) !== true) {
+//            log_admin_login_failed("password_verify failed.");
+            return null;
+        }
+
+        $options = get_password_options();
+
 //        // Check if a newer hashing algorithm is available
 //        // or the cost has changed
-//        if (password_needs_rehash($adminUser->getPasswordHash(), PASSWORD_DEFAULT, $options)) {
+//        if (password_needs_rehash($password_hash, PASSWORD_DEFAULT, $options))
+//        {
 //            // If so, create a new hash, and replace the old one
 //            $newHash = password_hash($password, PASSWORD_DEFAULT, $options);
 //
 ////            log_admin_login_failed("Rehashing password.");
 //            $adminUser->setPasswordHash($newHash);
-//
-//            $this->em->persist($adminUser);
-//            $this->em->flush();
 //        }
-//
-//        return $adminUser;
-//    }
+
+        return $adminUser;
+    }
 
 //    public function setGoogle2FaSecret(AdminUser $adminUser, string $secret): AdminUser
 //    {

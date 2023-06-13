@@ -11,6 +11,7 @@ function injectionParams()
         \Slim\App::class,
         \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
         \Bristolian\Service\RequestNonce::class,
+        \Asm\SessionManager::class
     ];
 
     // Alias interfaces (or classes) to the actual types that should be used
@@ -18,6 +19,8 @@ function injectionParams()
     $aliases = [
         \VarMap\VarMap::class =>
           \VarMap\Psr7VarMap::class,
+        \Asm\RequestSessionStorage::class =>
+          \Bristolian\SessionStorage::class,
         \Bristolian\Service\TooMuchMemoryNotifier\TooMuchMemoryNotifier::class =>
           \Bristolian\Service\TooMuchMemoryNotifier\NullTooMuchMemoryNotifier::class,
         \Bristolian\CSPViolation\CSPViolationReporter::class =>
@@ -32,6 +35,11 @@ function injectionParams()
 
         \Bristolian\Repo\DbInfo\DbInfo::class =>
             \Bristolian\Repo\DbInfo\PdoDbInfo::class,
+
+        Asm\Driver::class => \Asm\Predis\PredisDriver::class,
+
+        Bristolian\Repo\AdminRepo\AdminRepo::class =>
+            Bristolian\Repo\AdminRepo\PdoAdminRepo::class
     ];
 
 
@@ -52,6 +60,10 @@ function injectionParams()
           'createApiDomain',
         \Redis::class =>
           'createRedis',
+        \Predis\Client::class =>
+          'createPredisClient',
+        \Asm\SessionConfig::class =>
+            'createSessionConfig',
     ];
 
     // Define some params that can be injected purely by name.

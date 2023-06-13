@@ -11,7 +11,7 @@ class AdminUser
 {
     use ToArray;
 
-    protected int $id;
+    protected string $user_id;
 
     protected string $email_address;
 
@@ -22,10 +22,10 @@ class AdminUser
      * @param $username
      * @param $password_hash
      */
-    public static function new(int $id, string $email_address, string $password_hash): self
+    public static function new(string $user_id, string $email_address, string $password_hash): self
     {
         $instance = new self();
-        $instance->id = $id;
+        $instance->user_id = $user_id;
         $instance->email_address = $email_address;
         $instance->password_hash = $password_hash;
 
@@ -33,11 +33,11 @@ class AdminUser
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getId(): int
+    public function getUserId(): string
     {
-        return $this->id;
+        return $this->user_id;
     }
 
     /**

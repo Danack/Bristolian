@@ -73,6 +73,8 @@ function createSlimAppForApp(
     );
 
     $app->add($injector->make(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class));
+    $app->add($injector->make(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class));
+    $app->add($injector->make(\Asm\Bridge\SlimSessionMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\ContentSecurityPolicyMiddleware::class));
 //    $app->add($injector->make(\Bristolian\Middleware\BadHeaderMiddleware::class));
 //    $app->add($injector->make(\Bristolian\Middleware\AllowedAccessMiddleware::class));
@@ -93,6 +95,9 @@ function getResultMappers(\DI\Injector $injector)
     return [
         \SlimDispatcher\Response\StubResponse::class =>
             'SlimDispatcher\mapStubResponseToPsr7',
+
+        // TODO - add markdown return type
+
 //        \Bristolian\Page::class => 'mapBristolianPageToPsr7',
         ResponseInterface::class =>
             'SlimAuryn\passThroughResponse',

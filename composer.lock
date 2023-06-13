@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "487c816fba5749d66f919db84307235e",
+    "content-hash": "c198c5fed6a8ebaa6bbdef5a4897bc50",
     "packages": [
         {
             "name": "behat/mink",
@@ -266,6 +266,68 @@
                 }
             ],
             "time": "2022-07-05T22:32:14+00:00"
+        },
+        {
+            "name": "danack/asm",
+            "version": "dev-feature/psr_and_slim_integration",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Danack/AdvancedSessionManagement.git",
+                "reference": "67ec814f6ce06c5164e69da2bd4e56c78480e32c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Danack/AdvancedSessionManagement/zipball/67ec814f6ce06c5164e69da2bd4e56c78480e32c",
+                "reference": "67ec814f6ce06c5164e69da2bd4e56c78480e32c",
+                "shasum": ""
+            },
+            "require": {
+                "danack/json-safe": ">=0.1.1",
+                "ext-mbstring": "*",
+                "ext-openssl": "*",
+                "ircmaxell/random-lib": "^1.1.0",
+                "php": "^8.0",
+                "psr/http-server-middleware": "^1.0.2"
+            },
+            "require-dev": {
+                "danack/coding-standard": "0.3.0",
+                "infection/infection": "^0.23.0",
+                "laminas/laminas-diactoros": "^2.6",
+                "mikey179/vfsstream": "1.5.0",
+                "phpstan/phpstan-strict-rules": "^0.12.9",
+                "phpunit/phpunit": "9.5.6",
+                "predis/predis": "^v1.1.1",
+                "psr/http-message": "^1.0",
+                "rdlowrey/auryn": "^v1.4.2",
+                "squizlabs/php_codesniffer": "^3.6.0",
+                "yoast/yoastcs": "1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Asm": "lib/"
+                }
+            },
+            "autoload-dev": {
+                "psr-0": {
+                    "AsmTest": "test/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Danack",
+                    "email": "Danack@basereality.com"
+                }
+            ],
+            "description": "A userland replacement for PHP's session management.",
+            "support": {
+                "source": "https://github.com/Danack/AdvancedSessionManagement/tree/feature/psr_and_slim_integration",
+                "issues": "https://github.com/Danack/AdvancedSessionManagement/issues"
+            },
+            "time": "2023-06-13T18:39:21+00:00"
         },
         {
             "name": "danack/configurator",
@@ -934,6 +996,115 @@
                 "source": "https://gitlab.com/behat-chrome/chrome-mink-driver/-/tree/2.8.1"
             },
             "time": "2022-04-10T07:02:24+00:00"
+        },
+        {
+            "name": "ircmaxell/random-lib",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ircmaxell/RandomLib.git",
+                "reference": "e9e0204f40e49fa4419946c677eccd3fa25b8cf4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ircmaxell/RandomLib/zipball/e9e0204f40e49fa4419946c677eccd3fa25b8cf4",
+                "reference": "e9e0204f40e49fa4419946c677eccd3fa25b8cf4",
+                "shasum": ""
+            },
+            "require": {
+                "ircmaxell/security-lib": "^1.1",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^1.11",
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "^4.8|^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "RandomLib": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Ferrara",
+                    "email": "ircmaxell@ircmaxell.com",
+                    "homepage": "http://blog.ircmaxell.com"
+                }
+            ],
+            "description": "A Library For Generating Secure Random Numbers",
+            "homepage": "https://github.com/ircmaxell/RandomLib",
+            "keywords": [
+                "cryptography",
+                "random",
+                "random-numbers",
+                "random-strings"
+            ],
+            "support": {
+                "issues": "https://github.com/ircmaxell/RandomLib/issues",
+                "source": "https://github.com/ircmaxell/RandomLib/tree/master"
+            },
+            "time": "2016-09-07T15:52:06+00:00"
+        },
+        {
+            "name": "ircmaxell/security-lib",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ircmaxell/SecurityLib.git",
+                "reference": "f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ircmaxell/SecurityLib/zipball/f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5",
+                "reference": "f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "1.1.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "SecurityLib": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Ferrara",
+                    "email": "ircmaxell@ircmaxell.com",
+                    "homepage": "http://blog.ircmaxell.com"
+                }
+            ],
+            "description": "A Base Security Library",
+            "homepage": "https://github.com/ircmaxell/SecurityLib",
+            "support": {
+                "issues": "https://github.com/ircmaxell/SecurityLib/issues",
+                "source": "https://github.com/ircmaxell/SecurityLib/tree/master"
+            },
+            "time": "2015-03-20T14:31:23+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -1709,6 +1880,72 @@
                 "source": "https://github.com/sirn-se/phrity-util-errorhandler/tree/1.0.1"
             },
             "time": "2022-10-27T12:14:42+00:00"
+        },
+        {
+            "name": "predis/predis",
+            "version": "v1.1.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/predis/predis.git",
+                "reference": "a2fb02d738bedadcffdbb07efa3a5e7bd57f8d6e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/predis/predis/zipball/a2fb02d738bedadcffdbb07efa3a5e7bd57f8d6e",
+                "reference": "a2fb02d738bedadcffdbb07efa3a5e7bd57f8d6e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "ext-curl": "Allows access to Webdis when paired with phpiredis",
+                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Predis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net",
+                    "role": "Creator & Maintainer"
+                },
+                {
+                    "name": "Till Krüss",
+                    "homepage": "https://till.im",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
+            "homepage": "http://github.com/predis/predis",
+            "keywords": [
+                "nosql",
+                "predis",
+                "redis"
+            ],
+            "support": {
+                "issues": "https://github.com/predis/predis/issues",
+                "source": "https://github.com/predis/predis/tree/v1.1.10"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/tillkruss",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-01-05T17:46:08+00:00"
         },
         {
             "name": "psr/container",
@@ -6762,6 +6999,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "danack/asm": 20,
         "danack/slim-dispatcher": 20
     },
     "prefer-stable": true,
