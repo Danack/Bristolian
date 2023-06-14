@@ -1,0 +1,63 @@
+<?php
+
+namespace Bristolian\Repo\FoiRequestRepo;
+
+use Bristolian\DataType\FoiRequestParam;
+use Bristolian\Model\FoiRequest;
+use Bristolian\PdoSimple;
+use Ramsey\Uuid\Uuid;
+
+class PdoFoiRequestRepo implements FoiRequestRepo
+{
+    public function __construct(private PdoSimple $pdo_simple)
+    {
+    }
+
+    public function createFoiRequest(FoiRequestParam $foiRequestParam): FoiRequest
+    {
+        $uuid = Uuid::uuid7();
+        $userSQL = <<< SQL
+insert into foi_requests (
+  foi_request_id,
+  text,
+  url,
+  description
+)
+values (
+  :foi_request_id,
+  :text,
+  :url,
+  :description
+)
+SQL;
+
+        $params = [
+            ':foi_request_id' => $uuid->toString(),
+            ':text' => $foiRequestParam->text,
+            ':url' => $foiRequestParam->url,
+            ':description' => $foiRequestParam->description
+        ];
+
+        $this->pdo_simple->insert($userSQL, $params);
+
+        return FoiRequest::fromParam($uuid->toString(), $foiRequestParam);
+    }
+
+    /**
+     * @return \Bristolian\Model\FoiRequest[]
+     */
+    public function getAllFoiRequests(): array
+    {
+        $sql = <<< SQL
+select 
+  foi_request_id,
+  text,
+  url,
+  description
+from
+  foi_requests
+SQL;
+
+        return $this->pdo_simple->fetchAllAsObject($sql, [], FoiRequest::class);
+    }
+}

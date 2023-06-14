@@ -58,7 +58,7 @@ SQL;
         $insert_id = $this->pdo->insert($userAuthSQL, $params);
 
         return AdminUser::new(
-            $insert_id,
+            (string)$insert_id,
             $createUserParams->getEmailAddress(),
             $password_hash
         );

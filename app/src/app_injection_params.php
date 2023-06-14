@@ -39,9 +39,15 @@ function injectionParams()
         Asm\Driver::class => \Asm\Predis\PredisDriver::class,
 
         Bristolian\Repo\AdminRepo\AdminRepo::class =>
-            Bristolian\Repo\AdminRepo\PdoAdminRepo::class
-    ];
+            Bristolian\Repo\AdminRepo\PdoAdminRepo::class,
 
+        \Bristolian\Repo\TagRepo\FoiRequestRepo::class =>
+          \Bristolian\Repo\TagRepo\PdoTagRepo::class,
+
+        \Bristolian\Repo\FoiRequestRepo\FoiRequestRepo::class =>
+          \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::class
+
+    ];
 
 
     // Delegate the creation of types to callables.

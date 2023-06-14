@@ -58,7 +58,14 @@ function getAllAppRoutes()
         ['/system', 'GET', 'Bristolian\AppController\System::index'],
 
 
-//    ['/dramas', 'GET', 'Bristolian\AppController\Dramas::showDramas'],
+        ['/tags/edit', 'POST', 'Bristolian\AppController\Tags::process_add'],
+        ['/tags/edit', 'GET', 'Bristolian\AppController\Tags::edit'],
+        ['/tags', 'GET', 'Bristolian\AppController\Tags::view'],
+
+        ['/foi_requests/edit', 'POST', 'Bristolian\AppController\FoiRequests::process_add'],
+        ['/foi_requests/edit', 'GET', 'Bristolian\AppController\FoiRequests::edit'],
+        ['/foi_requests', 'GET', 'Bristolian\AppController\FoiRequests::view'],
+
 
         // Dynamic pages
         ['/topics', 'GET', 'Bristolian\AppController\Topics::index'],

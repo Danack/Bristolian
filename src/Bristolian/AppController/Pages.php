@@ -23,8 +23,14 @@ class Pages
         $content .= "<p>Maybe have a look at the <a href='/bcc/committee_meetings'>BCC committee meetings</a> about committees.</p>";
         $content .= "<p>Or why you should object to the <a href='/complaints/triangle_road'>Triangle road change</a>.</p>";
 
-        $content .= "<p>oh, a tiny bit more; <a href='/questions'>questions</a>.</p>";
+        $content .= <<< HTML
+<p>Oh, a tiny bit more; <a href='/questions'>questions</a>.</p>
 
+<ul>
+  <li><a href="/tags">Tags on the site</a></li>
+  <li><a href="/foi_requests">Interesting FOI requests</foi></li>
+</ul>
+HTML;
 
         $content .= <<< HTML
 

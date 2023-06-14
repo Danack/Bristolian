@@ -37,6 +37,9 @@ docker update --restart=no my-container
 
 mysql -uroot -pPrJaGpnNSzSLW8p8 -h127.0.0.1
 
+## Resetting the database
+
+Just bring your docker boxes down, delete the directory 
 
 ## Various links
 
