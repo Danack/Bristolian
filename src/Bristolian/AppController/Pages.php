@@ -26,10 +26,14 @@ class Pages
         $content .= <<< HTML
 <p>Oh, a tiny bit more; <a href='/questions'>questions</a>.</p>
 
+<!-- 
+
 <ul>
   <li><a href="/tags">Tags on the site</a></li>
   <li><a href="/foi_requests">Interesting FOI requests</foi></li>
 </ul>
+
+-->
 HTML;
 
         $content .= <<< HTML
