@@ -13,6 +13,28 @@ class PdoFoiRequestRepo implements FoiRequestRepo
     {
     }
 
+    public function getById(string $id): FoiRequest
+    {
+        $sql = <<< SQL
+select 
+  foi_request_id,
+  text,
+  url,
+  description
+from
+  foi_requests
+where 
+  foi_request_id = :foi_request_id
+limit 1
+SQL;
+
+        return $this->pdo_simple->fetchOneAsObject(
+            $sql,
+            [':foi_request_id' => $id],
+            FoiRequest::class
+        );
+    }
+
     public function createFoiRequest(FoiRequestParam $foiRequestParam): FoiRequest
     {
         $uuid = Uuid::uuid7();

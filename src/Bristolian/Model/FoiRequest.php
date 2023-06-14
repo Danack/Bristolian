@@ -2,7 +2,6 @@
 
 namespace Bristolian\Model;
 
-use Bristolian\DataType\TagParam;
 use Bristolian\DataType\FoiRequestParam;
 
 class FoiRequest
@@ -30,7 +29,7 @@ class FoiRequest
 
     public static function fromParam(string $uuid, FoiRequestParam $foiParam)
     {
-        return new self(
+        return self::create(
             $uuid,
             $foiParam->text,
             $foiParam->url,
