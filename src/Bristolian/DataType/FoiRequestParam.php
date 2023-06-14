@@ -14,7 +14,7 @@ class FoiRequestParam implements DataType
     public function __construct(
         #[BasicString('text')]
         public string $text,
-        #[Url('text')]
+        #[Url('url')]
         public string $url,
         #[BasicString('description')]
         public string $description,
