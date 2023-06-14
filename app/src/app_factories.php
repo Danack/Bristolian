@@ -74,7 +74,7 @@ function createSlimAppForApp(
 
     $app->add($injector->make(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class));
-    $app->add($injector->make(\Asm\Bridge\SlimSessionMiddleware::class));
+//    $app->add($injector->make(\Asm\Bridge\SlimSessionMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\ContentSecurityPolicyMiddleware::class));
 //    $app->add($injector->make(\Bristolian\Middleware\BadHeaderMiddleware::class));
 //    $app->add($injector->make(\Bristolian\Middleware\AllowedAccessMiddleware::class));
