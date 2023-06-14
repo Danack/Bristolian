@@ -42,10 +42,6 @@ HTML;
 HTML;
 
         foreach ($foiRequests as $foiRequest) {
-
-            var_dump($foiRequest);
-            exit(0);
-
             $params = [
               ':attr_url' => $foiRequest->getUrl(),
               ':html_text' => $foiRequest->getText(),

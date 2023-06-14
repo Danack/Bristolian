@@ -18,6 +18,24 @@ PHP tests - /test
 
 ```
 docker exec -it bristolian-js_builder-1 bash
+
+npm run test
+```
+
+
+
+or to run PHP Unit tests:
+
+```
+docker exec -it bristolian-php_fpm_debug-1 bash
+
+
+sh runUnitTests.sh
+```
+
+Or
+```
+sh runUnitTests.sh --group wip
 ```
 
 ## Docker sometimes needs cleaning

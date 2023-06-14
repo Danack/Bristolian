@@ -15,7 +15,7 @@ class FoiRequestParamTest extends BaseTestCase
 {
     /**
      * @group wip
-     * @covers \Bristolian\DataType\CreateUserParams
+     * @covers \Bristolian\DataType\FoiRequestParam
      */
     public function testWorks()
     {
