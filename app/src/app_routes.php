@@ -77,7 +77,9 @@ function getAllAppRoutes()
         ['/test/uncaught_exception', 'GET', 'Bristolian\AppController\Debug::testUncaughtException'],
         ['/test/compile_error', 'GET', 'Bristolian\AppController\CompileError::deliberateCompileError'],
 
-        ['/debug', 'GET', 'Bristolian\AppController\Pages::debug_page'],
+
+        ['/debug/redis', 'GET', 'Bristolian\AppController\Debug::debug_redis'],
+        ['/debug', 'GET', 'Bristolian\AppController\Debug::debug_page'],
 
         // TODO - actually make a 404 page
         ['/{any:.*}', 'GET', 'Bristolian\AppController\Pages::get404Page'],

@@ -69,15 +69,16 @@ function getRedisConfig(Config $config)
 
 function getRedisOptions()
 {
-    static $unique = null;
-
-    if ($unique == null) {
-        $unique = date("Ymdhis").uniqid();
-    }
+//    static $unique = null;
+//
+//    if ($unique == null) {
+//        $unique = date("Ymdhis").uniqid();
+//    }
 
     $redisOptions = array(
         'profile' => '2.6',
-        'prefix' => 'sessionTest'.$unique.':',
+        // This should be random for testing
+        'prefix' => 'bristolian:',
     );
 
     return $redisOptions;

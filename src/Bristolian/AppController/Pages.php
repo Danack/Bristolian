@@ -239,27 +239,6 @@ HTML;
     }
 
 
-    public function debug_page(\Predis\Client $redisClient)
-    {
-        $contents = "Redis testing";
 
-        $written = $redisClient->set(
-            "John",
-            "Hello there John",
-            'EX',
-            "3600"
-        );
-
-        /** @var $written \Predis\Response\Status */
-
-        if ($written->getPayload() === 'OK') {
-            $contents .= "Yaay, was written.";
-        }
-        else {
-            $contents .= "Boo was not written.";
-        }
-
-        return $contents;
-    }
 
 }
