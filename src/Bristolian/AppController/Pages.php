@@ -129,7 +129,7 @@ HTML;
         return $content;
     }
 
-    public function tools_page(        \Asm\RequestSessionStorage $rqs): string
+    public function tools_page(\Asm\RequestSessionStorage $rqs): string
     {
         $session = $rqs->get();
 
@@ -247,8 +247,4 @@ HTML;
 
         return $markdownRenderer->renderFile($fullPath);
     }
-
-
-
-
 }

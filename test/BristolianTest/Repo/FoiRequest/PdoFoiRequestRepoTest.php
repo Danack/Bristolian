@@ -12,7 +12,6 @@ use BristolianTest\BaseTestCase;
 use Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo;
 use Bristolian\DataType\FoiRequestParam;
 
-
 /**
  * @group wip
  * @coversNothing
@@ -43,6 +42,5 @@ class PdoFoiRequestRepoTest extends BaseTestCase
         $foiRequest_from_db = $pdo_foi_request_repo->getById($foiRequest->getFoiRequestId());
 
         $this->assertEquals($foiRequest, $foiRequest_from_db);
-
     }
 }

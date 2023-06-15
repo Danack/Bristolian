@@ -5,8 +5,6 @@ namespace Bristolian;
 use Asm\RequestSessionStorage;
 use Asm\Session;
 
-
-
 class SessionStorage implements RequestSessionStorage
 {
     private static Session|null $session = null;

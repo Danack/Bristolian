@@ -7,7 +7,6 @@ use Bristolian\Model\Tag;
 use Bristolian\PdoSimple;
 use Ramsey\Uuid\Uuid;
 
-
 class PdoTagRepo implements TagRepo
 {
     public function __construct(private PdoSimple $pdo_simple)
