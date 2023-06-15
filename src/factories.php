@@ -54,7 +54,10 @@ function createRedis(Config $config)
     return $redis;
 }
 
-function getRedisConfig(Config $config)
+/**
+ * @return array<string, string|int>
+ */
+function getRedisConfig(Config $config): array
 {
     $redisConfig = $config->getRedisInfo();
     $redisConfig = array(
@@ -67,7 +70,10 @@ function getRedisConfig(Config $config)
     return $redisConfig;
 }
 
-function getRedisOptions()
+/**
+ * @return array<string, string>
+ */
+function getRedisOptions(): array
 {
 //    static $unique = null;
 //
@@ -85,7 +91,7 @@ function getRedisOptions()
 }
 
 
-function createPredisClient(Config $config)
+function createPredisClient(Config $config): \Predis\Client
 {
     return new \Predis\Client(getRedisConfig($config), getRedisOptions());
 }
@@ -153,9 +159,9 @@ function createPDOForUser(Config $config)
 }
 
 
-function createSessionConfig()
+function createSessionConfig(): Asm\SessionConfig
 {
-    return new \Asm\SessionConfig(
+    return new Asm\SessionConfig(
         "john_is_my_name",
         3600,
     );

@@ -89,7 +89,7 @@ where
     email_address = :email_address
 SQL;
 
-        $adminUser = $this->pdo->fetchOneAsObject(
+        $adminUser = $this->pdo->fetchOneAsObjectOrNull(
             $sql,
             [':email_address' => $username],
             \Bristolian\Model\AdminUser::class

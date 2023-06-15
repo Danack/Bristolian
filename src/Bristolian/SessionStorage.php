@@ -11,7 +11,7 @@ class SessionStorage implements RequestSessionStorage
 {
     private static Session|null $session = null;
 
-    public function store(Session $session)
+    public function store(Session $session): void
     {
         self::$session = $session;
     }

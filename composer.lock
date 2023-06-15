@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c198c5fed6a8ebaa6bbdef5a4897bc50",
+    "content-hash": "1217e836c655e37922d64d49832ca42d",
     "packages": [
         {
             "name": "behat/mink",
@@ -269,16 +269,16 @@
         },
         {
             "name": "danack/asm",
-            "version": "dev-feature/psr_and_slim_integration",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Danack/AdvancedSessionManagement.git",
-                "reference": "67ec814f6ce06c5164e69da2bd4e56c78480e32c"
+                "reference": "9c84672d38d2a0346aaed25261c2f3039ee1373d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Danack/AdvancedSessionManagement/zipball/67ec814f6ce06c5164e69da2bd4e56c78480e32c",
-                "reference": "67ec814f6ce06c5164e69da2bd4e56c78480e32c",
+                "url": "https://api.github.com/repos/Danack/AdvancedSessionManagement/zipball/9c84672d38d2a0346aaed25261c2f3039ee1373d",
+                "reference": "9c84672d38d2a0346aaed25261c2f3039ee1373d",
                 "shasum": ""
             },
             "require": {
@@ -302,6 +302,7 @@
                 "squizlabs/php_codesniffer": "^3.6.0",
                 "yoast/yoastcs": "1.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -324,10 +325,10 @@
             ],
             "description": "A userland replacement for PHP's session management.",
             "support": {
-                "source": "https://github.com/Danack/AdvancedSessionManagement/tree/feature/psr_and_slim_integration",
+                "source": "https://github.com/Danack/AdvancedSessionManagement/tree/main",
                 "issues": "https://github.com/Danack/AdvancedSessionManagement/issues"
             },
-            "time": "2023-06-13T18:39:21+00:00"
+            "time": "2023-06-14T21:43:37+00:00"
         },
         {
             "name": "danack/configurator",

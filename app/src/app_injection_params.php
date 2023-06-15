@@ -41,7 +41,7 @@ function injectionParams()
         Bristolian\Repo\AdminRepo\AdminRepo::class =>
             Bristolian\Repo\AdminRepo\PdoAdminRepo::class,
 
-        \Bristolian\Repo\TagRepo\FoiRequestRepo::class =>
+        \Bristolian\Repo\TagRepo\TagRepo::class =>
           \Bristolian\Repo\TagRepo\PdoTagRepo::class,
 
         \Bristolian\Repo\FoiRequestRepo\FoiRequestRepo::class =>

@@ -16,7 +16,7 @@ class FoiRequest
         string $text,
         string $url,
         string $description,
-    ) {
+    ): self {
         $instance = new self();
 
         $instance->foi_request_id = $foi_request_id;
@@ -27,7 +27,7 @@ class FoiRequest
         return $instance;
     }
 
-    public static function fromParam(string $uuid, FoiRequestParam $foiParam)
+    public static function fromParam(string $uuid, FoiRequestParam $foiParam): self
     {
         return self::create(
             $uuid,

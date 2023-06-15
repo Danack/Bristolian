@@ -7,8 +7,9 @@ class Debug
     public function debug_page(
         \Predis\Client $redisClient,
         \Redis $redis
-    ) {
+    ): string {
         $contents = "Redis testing";
+
 
         $written = $redisClient->setex(
             "John",
@@ -16,8 +17,7 @@ class Debug
             "Hello there John",
         );
 
-        /** @var $written \Predis\Response\Status */
-
+        /** @var \Predis\Response\Status $written */
         if ($written->getPayload() === 'OK') {
             $contents .= "Yaay, was written.";
         }
@@ -30,7 +30,7 @@ class Debug
         return $contents;
     }
 
-    public function debug_redis(\Predis\Client $redisClient, \Redis $redis)
+    public function debug_redis(\Predis\Client $redisClient, \Redis $redis): string
     {
         $contents = "Lets debug redis";
         $contents .= "Contents of John are: ". $redisClient->get("John");

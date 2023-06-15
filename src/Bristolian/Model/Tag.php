@@ -10,27 +10,15 @@ class Tag
     private string $text;
     private string $description;
 
-    public static function create(
-        string $tag_id,
-        string $text,
-        string $description,
-    ) {
+    public static function fromParam(string $uuid, TagParam $tagParam): self
+    {
         $instance = new self();
 
-        $instance->tag_id = $tag_id;
-        $instance->text = $text;
-        $instance->description = $description;
+        $instance->tag_id = $uuid;
+        $instance->text = $tagParam->text;
+        $instance->description = $tagParam->description;
 
         return $instance;
-    }
-
-    public static function fromParam(string $uuid, TagParam $tagParam)
-    {
-        return new self(
-            $uuid,
-            $tagParam->text,
-            $tagParam->description
-        );
     }
 
     public function getTagId(): string

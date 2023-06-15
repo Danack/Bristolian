@@ -12,7 +12,7 @@ use function esprintf;
 
 class FoiRequests
 {
-    public function view(FoiRequestRepo $foiRequestRepo)
+    public function view(FoiRequestRepo $foiRequestRepo): string
     {
         $content = "<h1>FOI requests</h1>";
 
@@ -58,7 +58,7 @@ HTML;
         return $content;
     }
 
-    public function process_add(FoiRequestRepo $foiRequestRepo, VarMap $varMap)
+    public function process_add(FoiRequestRepo $foiRequestRepo, VarMap $varMap): RedirectResponse
     {
         $foiRequestParam = FoiRequestParam::createFromVarMap($varMap);
 
@@ -67,7 +67,7 @@ HTML;
         return new RedirectResponse('/foi_requests/edit?message=FOI request added');
     }
 
-    public function edit(FoiRequestRepo $tagRepo)
+    public function edit(FoiRequestRepo $tagRepo): string
     {
         $content = "<h1>FOI Request editing page</h1>";
 

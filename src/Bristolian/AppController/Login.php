@@ -9,7 +9,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class Login
 {
-    public function showLoginPage()
+    public function showLoginPage(): string
     {
         $html = <<< HTML
 
@@ -38,7 +38,7 @@ HTML;
         SessionManager $sessionManager,
         Request $request,
         \Asm\RequestSessionStorage $rqs
-    ) {
+    ): RedirectResponse {
         $username = $_POST['username'] ?? null;
         $password = $_POST['password'] ?? null;
 

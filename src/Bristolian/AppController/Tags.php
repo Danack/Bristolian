@@ -2,7 +2,7 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\Repo\TagRepo\FoiRequestRepo;
+use Bristolian\Repo\TagRepo\TagRepo;
 use SlimDispatcher\Response\RedirectResponse;
 use VarMap\VarMap;
 use Bristolian\DataType\TagParam;
@@ -11,7 +11,7 @@ use function esprintf;
 
 class Tags
 {
-    public function view(FoiRequestRepo $tagRepo)
+    public function view(TagRepo $tagRepo): string
     {
         $content = "<h1>Tags</h1>";
 
@@ -56,7 +56,7 @@ HTML;
         return $content;
     }
 
-    public function process_add(FoiRequestRepo $tagRepo, VarMap $varMap)
+    public function process_add(TagRepo $tagRepo, VarMap $varMap): RedirectResponse
     {
         $tagParam = TagParam::createFromVarMap($varMap);
 
@@ -65,7 +65,7 @@ HTML;
         return new RedirectResponse('/tags/edit?message=tag added');
     }
 
-    public function edit(FoiRequestRepo $tagRepo)
+    public function edit(TagRepo $tagRepo): string
     {
         $content = "<h1>Tag editing page</h1>";
 

@@ -9,7 +9,7 @@
         }
     },
     "require": {
-        "danack/asm": "dev-feature/psr_and_slim_integration",
+        "danack/asm": "dev-main",
         "danack/configurator": "1.1.1",
         "danack/console": "^2.6",
         "danack/esprintf": "^2.0.0",
