@@ -22,10 +22,9 @@ function getAllAppRoutes()
 
         ['/login', 'GET', '\Bristolian\AppController\Login::showLoginPage'],
         ['/login', 'POST', '\Bristolian\AppController\Login::processLoginPage'],
-        ['/tools', 'GET', '\Bristolian\AppController\Pages::tools_page'],
+        ['/tools', 'GET', 'Bristolian\AppController\Tools::index'],
 
         ['/qr/code', 'GET', '\Bristolian\AppController\QRCode::get'],
-
 
         ['/questions/1_weca_active_travel', 'GET', '\Bristolian\AppController\Pages::weca_question_active_travel'],
 

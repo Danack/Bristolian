@@ -11,7 +11,8 @@ function injectionParams()
         \Slim\App::class,
         \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
         \Bristolian\Service\RequestNonce::class,
-        \Asm\SessionManager::class
+        \Asm\SessionManager::class,
+        \Bristolian\App\SessionStorage::class
     ];
 
     // Alias interfaces (or classes) to the actual types that should be used
@@ -19,8 +20,6 @@ function injectionParams()
     $aliases = [
         \VarMap\VarMap::class =>
           \VarMap\Psr7VarMap::class,
-        \Asm\RequestSessionStorage::class =>
-          \Bristolian\SessionStorage::class,
         \Bristolian\Service\TooMuchMemoryNotifier\TooMuchMemoryNotifier::class =>
           \Bristolian\Service\TooMuchMemoryNotifier\NullTooMuchMemoryNotifier::class,
         \Bristolian\CSPViolation\CSPViolationReporter::class =>
@@ -45,8 +44,10 @@ function injectionParams()
           \Bristolian\Repo\TagRepo\PdoTagRepo::class,
 
         \Bristolian\Repo\FoiRequestRepo\FoiRequestRepo::class =>
-          \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::class
+          \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::class,
 
+        \Asm\RequestSessionStorage::class =>
+          \Bristolian\App\AppSessionStorage::class
     ];
 
 

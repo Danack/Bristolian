@@ -7,15 +7,15 @@ use Asm\Session;
 
 class SessionStorage implements RequestSessionStorage
 {
-    private static Session|null $session = null;
+    private Session|null $session = null;
 
     public function store(Session $session): void
     {
-        self::$session = $session;
+        $this->session = $session;
     }
 
     public function get(): Session|null
     {
-        return self::$session;
+        return $this->session;
     }
 }

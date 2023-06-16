@@ -31,23 +31,6 @@ class ExceptionToErrorPageResponseMiddleware implements MiddlewareInterface
      */
     private array $exceptionToResponseHandlerList;
 
-//    /**
-//     * @var array[{0:class-string, 1:callable}]
-//     * Map custom results/responses to PSR7Responses
-//     *
-//     * These are called after the exception is converted to a stub response.
-//     *
-//     *
-//     * Handler must have the signature
-//     *
-//     * $mapCallable(
-//     *     $result,
-//     *     Psr\Http\Message\ResponseInterface $request
-//     * ): \Psr\Http\Message\ResponseInterface
-//     *
-//     */
-//    private array $stubResponseToPSR7ResponseHandlerList;
-
 
     /**
      * @param PageResponseGenerator $pageResponseGenerator

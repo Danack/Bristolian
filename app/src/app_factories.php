@@ -23,6 +23,7 @@ function createExceptionToErrorPageResponseMiddleware(Injector $injector): Excep
         \Bristolian\MarkdownRenderer\MarkdownRendererException::class => 'renderMarkdownRendererException',
         \ParseError::class => 'renderParseErrorToHtml',
 
+        DI\InjectionException::class => 'renderInjectionExceptionToHtml',
 
         \Throwable::class => 'genericExceptionHandler' // should be last
     ];
@@ -74,10 +75,8 @@ function createSlimAppForApp(
 
     $app->add($injector->make(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class));
-    $app->add($injector->make(\Asm\Bridge\SlimSessionMiddleware::class));
+    $app->add($injector->make(\Bristolian\Middleware\AppSessionMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\ContentSecurityPolicyMiddleware::class));
-//    $app->add($injector->make(\Bristolian\Middleware\BadHeaderMiddleware::class));
-//    $app->add($injector->make(\Bristolian\Middleware\AllowedAccessMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\MemoryCheckMiddleware::class));
 
     return $app;

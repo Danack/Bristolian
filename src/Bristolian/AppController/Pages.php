@@ -26,14 +26,14 @@ class Pages
         $content .= <<< HTML
 <p>Oh, a tiny bit more; <a href='/questions'>questions</a>.</p>
 
-<!-- 
+
 
 <ul>
   <li><a href="/tags">Tags on the site</a></li>
   <li><a href="/foi_requests">Interesting FOI requests</foi></li>
 </ul>
 
--->
+
 HTML;
 
         $content .= <<< HTML
@@ -129,34 +129,7 @@ HTML;
         return $content;
     }
 
-    public function tools_page(\Asm\RequestSessionStorage $rqs): string
-    {
-        $session = $rqs->get();
 
-        $username = "not logged in";
-        if ($session) {
-            $username = $session->get('username');
-        }
-
-        $content = "<h1>Tools page</h1>";
-        $content .= <<< HTML
-
-Well, hello there '$username' !
-
-<ul>
-  <li><a href="/tools/email_link_generator">Email link generator</a></li>
-  <li><a href="/tools/twitter_splitter">Twitter splitter</a></li>          
-  <!-- <li><a href="/tools/teleprompter">Teleprompter</a></li> -->
-  <!-- <li><a href="/tools/timeline">Timeline</a></li> -->          
-  <!-- <li><a href="/tools/notes">Notes</a></li> -->
-  <li><a href="/tools/qr_code_generator">QR generator</a></li>
-  <li><a href="/tools/floating_point">Floating point visualiser</a></li>
-</ul>
-
-HTML;
-
-        return $content;
-    }
 
 
     public function notes_page(): string

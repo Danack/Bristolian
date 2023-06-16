@@ -30,6 +30,11 @@ try {
 
     $app->run();
 }
+catch (\DI\InjectionException $exception) {
+    [$text, $status] = renderInjectionExceptionToHtml($exception);
+
+    echo $text;
+}
 catch (\Throwable $exception) {
     showTotalErrorPage($exception);
 }

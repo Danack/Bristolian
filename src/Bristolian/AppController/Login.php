@@ -3,14 +3,19 @@
 namespace Bristolian\AppController;
 
 use Asm\SessionManager;
+use Bristolian\AppSession;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use SlimDispatcher\Response\RedirectResponse;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class Login
 {
-    public function showLoginPage(): string
+    public function showLoginPage(AppSession $appSession): string|RedirectResponse
     {
+        if ($appSession->isLoggedIn()) {
+            return new RedirectResponse('/?message=You are logged in');
+        }
+
         $html = <<< HTML
 
 <form method="post">
@@ -36,9 +41,12 @@ HTML;
     public function processLoginPage(
         AdminRepo $adminRepo,
         SessionManager $sessionManager,
-        Request $request,
-        \Asm\RequestSessionStorage $rqs
+        AppSession $appSession
+
     ): RedirectResponse {
+
+
+
         $username = $_POST['username'] ?? null;
         $password = $_POST['password'] ?? null;
 
@@ -57,9 +65,7 @@ HTML;
             return new RedirectResponse('/login?message=login failed');
         }
 
-        $session = $sessionManager->createSession($request);
-        $session->set('username', $username);
-        $rqs->store($session);
+        $appSession->createSessionForUser($username/*$userProfile*/);
 
         return new RedirectResponse('/tools?message=login worked');
     }
