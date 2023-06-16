@@ -1,3 +1,6 @@
+
+import {describe, expect, test, it} from '@jest/globals';
+
 var clearMessages = require('danack-message').clearMessages;
 var getQueuedMessages = require('danack-message').getQueuedMessages;
 var registerMessageListener = require('danack-message').registerMessageListener;
@@ -25,8 +28,8 @@ describe('widgety', function () {
     startMessageProcessing();
     sendMessage(message_foo, {});
 
-    var calledParams = [];
-    const fn = (params) => {
+    var calledParams:Array<any> = [];
+    const fn = (params:Array<any>) => {
       calledParams.push(params);
     };
 
@@ -50,8 +53,8 @@ describe('widgety', function () {
 
     const values = { zok: true, fot: false, pik: 3 };
 
-    var calledParams = [];
-    const fn = (params) => {
+    var calledParams:Array<any> = [];
+    const fn = (params:Array<any>) => {
       calledParams.push(params);
     };
 
