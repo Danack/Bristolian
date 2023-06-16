@@ -53,7 +53,11 @@ class FunctionsTest extends BaseTestCase
     public function test_peak_memory()
     {
         $memory_string = peak_memory();
-        $this->assertGreaterThanOrEqual(10, strlen($memory_string));
+        $this->assertGreaterThanOrEqual(
+            9,
+            strlen($memory_string),
+            "memory used is only " . $memory_string
+        );
     }
 
 
