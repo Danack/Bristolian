@@ -51,6 +51,12 @@ services:
       default_network:
     volumes:
       - .:/var/app
+  installer_npm:
+    build: containers/installer_npm
+    networks:
+      default_network:
+    volumes:
+      - .:/var/app
   js_builder:
     build: containers/js_builder
     volumes:
