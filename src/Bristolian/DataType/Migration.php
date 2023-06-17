@@ -2,6 +2,7 @@
 
 namespace Bristolian\DataType;
 
+use DataType\Create\CreateArrayOfTypeFromArray;
 use DataType\Create\CreateFromArray;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
@@ -9,6 +10,7 @@ use DataType\GetInputTypesFromAttributes;
 class Migration implements DataType
 {
     use CreateFromArray;
+    use CreateArrayOfTypeFromArray;
     use GetInputTypesFromAttributes;
 
     public function __construct(

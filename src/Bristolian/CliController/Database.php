@@ -84,9 +84,15 @@ function runAllQueries(PDO $pdo, array $list_of_migrations_that_need_to_be_run):
 {
     foreach ($list_of_migrations_that_need_to_be_run as $i => $queries) {
         $sha = getQueriesSha($queries);
+
+        $description_fn = "getDescription_" . ($i + 1);
+
+        $description = $description_fn();
+
         printf(
-            "Query %d sha: %s\n",
+            "Query %d description %s sha: %s\n",
             $i,
+            $description,
             $sha
         );
 
@@ -103,7 +109,7 @@ function runAllQueries(PDO $pdo, array $list_of_migrations_that_need_to_be_run):
                     ) values (:description, :checksum)");
 
         $statement->execute([
-            ':description' => "Migration $i",
+            ':description' => "Migration $i: $description",
             ':checksum' => $sha
         ]);
     }

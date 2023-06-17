@@ -2,6 +2,7 @@
 
 namespace Bristolian\Repo\DbInfo;
 
+use Bristolian\DataType\Migration;
 use PDO;
 use Bristolian\DataType\Table;
 
@@ -23,5 +24,22 @@ SQL;
         $tables_in_bristolian = $statement->fetchAll();
 
         return Table::createArrayOfTypeFromArray($tables_in_bristolian);
+    }
+
+    /**
+     * @return Migration[]
+     */
+    function getMigrations(): array
+    {
+        $sql = <<< SQL
+SELECT id, description, checksum, created_at
+    FROM migrations
+    order by created_at
+SQL;
+
+        $statement = $this->pdo->query($sql);
+        $migration_data = $statement->fetchAll();
+
+        return Migration::createArrayOfTypeFromArray($migration_data);
     }
 }

@@ -52,7 +52,7 @@ function getAllAppRoutes()
         ['/system/csp/test', 'GET', 'Bristolian\AppController\ContentSecurityPolicy::getTestPage'],
         ['/system/csp/clear', 'GET', 'Bristolian\AppController\ContentSecurityPolicy::clearReports'],
 
-        ['/system/database_tables', 'GET', 'Bristolian\AppController\System::showDbTables'],
+        ['/system/database_tables', 'GET', 'Bristolian\AppController\System::showDbInfo'],
 
         ['/system', 'GET', 'Bristolian\AppController\System::index'],
 

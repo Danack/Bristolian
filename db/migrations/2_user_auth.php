@@ -26,3 +26,9 @@ SQL;
 
     return $sql;
 }
+
+function getDescription_2(): string
+{
+    return 'user auth';
+}
+

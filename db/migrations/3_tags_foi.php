@@ -3,6 +3,11 @@
 declare(strict_types = 1);
 
 
+function getDescription_3(): string
+{
+    return 'tags foi_requests';
+}
+
 function getAllQueries_3(): array
 {
     $sql = [];

@@ -48,8 +48,9 @@ class RandomPasswordIfNullOrEmpty implements ProcessRule
         return ValidationResult::valueResult($generated_string);
     }
 
-    public function updateParamDescription(ParamDescription $paramDescription): void
-    {
+    public function updateParamDescription(
+        ParamDescription $paramDescription
+    ): void {
         // Nothing to do
     }
 }

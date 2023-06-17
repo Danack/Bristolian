@@ -22,3 +22,8 @@ SQL;
 
     return $sql;
 }
+
+function getDescription_1(): string
+{
+    return 'user';
+}
