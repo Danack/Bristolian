@@ -19,7 +19,7 @@
 
 	@static {
 		file
-		path *.ico *.css *.js *.gif *.jpg *.jpeg *.png *.svg *.woff *.woff2 *.json
+		path *.ico *.css *.js *.gif *.jpg *.jpeg *.png *.svg *.woff *.woff2 *.json *.vtt *.mp4
 	}
 
 	header @static Cache-Control max-age=3600

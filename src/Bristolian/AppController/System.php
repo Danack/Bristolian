@@ -9,6 +9,7 @@ use Bristolian\Config;
 use Bristolian\CSPViolation\CSPViolationStorage;
 use Bristolian\Repo\DbInfo\DbInfo;
 use function Bristolian\createReactWidget;
+use Bristolian\DataType\Migration;
 
 
 class System
@@ -91,50 +92,33 @@ HTML;
         return $table_info;
     }
 
+
     function showMigrationInfo(DbInfo $dbInfo): string
     {
-        $table_info = <<< HTML
-<h2>Migrations</h2>
+        $table_info = "<h2>Migrations</h2>";
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Rows</th>
-    </tr>
-  </thead>
-  <tbody>
-HTML;
+        $headers = [
+            'ID',
+            'Description',
+            'Checksum',
+            'Created at'
+        ];
 
-        $row_template = <<<HTML
-        <tr>
-            <td>:html_id</td>
-            <td>:html_description</td>
-            <td>:html_checksum</td>
-            <td>:html_created_at</td>
-        </tr>
-HTML;
+        $rowFns = [
+            ':html_id' => fn(Migration $migration) => $migration->id,
+            ':html_description' => fn(Migration $migration) => $migration->description,
+            ':html_checksum' => fn(Migration $migration) => $migration->checksum,
+            ':html_created_at' => fn(Migration $migration) => $migration->created_at->format(App::DATE_TIME_FORMAT)
+        ];
 
-
-        foreach ($dbInfo->getMigrations() as $migration) {
-            $params = [
-                ':html_id' => $migration->id,
-                ':html_description' => $migration->description,
-                ':html_checksum' => $migration->checksum,
-                ':html_created_at' => $migration->created_at->format(App::DATE_TIME_FORMAT)
-            ];
-
-            $table_info .= esprintf($row_template, $params);
-        }
-
-        $table_info .= <<< HTML
-  </tbody>
-</table>
-HTML;
+        $table_info .= renderTableHtml(
+            $headers,
+            $dbInfo->getMigrations(),
+            $rowFns
+        );
 
         return $table_info;
     }
-
 
 
     public function show_csp_reports(CSPViolationStorage $cspViolationStorage): string

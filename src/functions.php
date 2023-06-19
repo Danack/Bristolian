@@ -80,7 +80,7 @@ function formatLinesWithCount(array $lines): string
     $count = 0;
 
     foreach ($lines as $line) {
-        $output .= '  #' . $count . ' '. $line . "\n";
+        $output .= '#' . $count . ' '. $line . "\n";
         $count += 1;
     }
 
@@ -254,6 +254,47 @@ function json_decode_safe(?string $json): array
     }
 
     throw new \Bristolian\Exception\JsonException("Error decoding JSON: " . json_last_error_msg());
+}
+
+
+function renderTableHtml(array $headers,
+                          array $items,
+                          array $rowFns
+) {
+    $thead = '';
+    foreach ($headers as $header) {
+        $thead .= esprintf("<th>:html_header</th>\n", [':html_header' => $header]);
+    }
+
+    $trow_template =  "<tr>";
+    foreach ($rowFns as $placeholder => $fn) {
+        $trow_template .= "<td>$placeholder</td>";
+    }
+    $trow_template .= "</tr>";
+
+    $tbody = '';
+    foreach ($items as $item) {
+        $data = [];
+        foreach ($rowFns as $placeholder => $fn) {
+            $data[$placeholder] = $fn($item);
+        }
+        $tbody .= esprintf($trow_template, $data);
+    }
+
+    $table = <<< TABLE
+<table>
+  <thead>
+    <tr>
+$thead
+    </tr>
+  </thead>
+  <tbody>
+$tbody
+  </tbody>
+</table>
+TABLE;
+
+    return $table;
 }
 
 
@@ -850,3 +891,18 @@ function getRandomId(): string
 //Guardian was taken over:
 //twitter.com/davidgraeber/status/1210322505229094912
 //https://twitter.com/davidgraeber/status/1210322505229094912
+
+
+/**
+ * Escape characters that are meaningful in SQL like searches
+ * @param string $string
+ * @return mixed
+ */
+function escapeMySqlLikeString(string $string)
+{
+    return str_replace(
+        ['\\', '_', '%', ],
+        ['\\\\', '\\_', '\\%'],
+        $string
+    );
+}
