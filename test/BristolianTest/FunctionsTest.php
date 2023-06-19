@@ -25,6 +25,13 @@ class FunctionsTest extends BaseTestCase
 
     public function test_formatLinesWithCount()
     {
+        $result = formatLinesWithCount(['foo', 'bar']);
+        $expected = <<<TEXT
+#0 foo
+#1 bar
+
+TEXT;
+        $this->assertSame($expected, $result);
     }
 
     public function test_checkSignalsForExit()

@@ -17,6 +17,7 @@ class CoverageTest extends BaseTestCase
     /**
      * @covers \Bristolian\DataType\BasicInteger
      * @covers \Bristolian\DataType\BasicString
+     * @covers \Bristolian\DataType\BasicDateTime
      * @covers \Bristolian\DataType\Url
      * @covers \Bristolian\DataType\Username
      */
@@ -25,7 +26,7 @@ class CoverageTest extends BaseTestCase
         $integer = 4;
         $string = 'short text';
         $url = "http://www.example.com";
-        $username = "John";
+        $username = "John_the_username";
         $datetime = new DateTimeImmutable();
         $email_address = 'John@example.com';
 
