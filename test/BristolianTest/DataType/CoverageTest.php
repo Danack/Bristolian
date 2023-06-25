@@ -49,6 +49,5 @@ class CoverageTest extends BaseTestCase
             $datetime->format("Y-m-d H:i:s"),
             $coverageParam->getDatetime()->format("Y-m-d H:i:s"),
         );
-
     }
 }

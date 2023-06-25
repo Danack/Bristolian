@@ -17,10 +17,9 @@ class Organisation
     public readonly string $youtube_link;
 
     public static function fromParam(
-        string $uuid, OrganisationParam $organisationParam
-
-    ): self
-    {
+        string $uuid,
+        OrganisationParam $organisationParam
+    ): self {
         $instance = new self();
 
         $instance->organisation_id = $uuid;

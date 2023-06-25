@@ -10,7 +10,6 @@ use BristolianTest\BaseTestCase;
 use Bristolian\Repo\NicknameRepo\PdoNicknameRepo;
 use Ramsey\Uuid\Uuid;
 
-
 /**
  * @group wip
  */

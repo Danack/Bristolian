@@ -11,7 +11,6 @@ use Bristolian\Repo\DbInfo\DbInfo;
 use function Bristolian\createReactWidget;
 use Bristolian\DataType\Migration;
 
-
 class System
 {
     public function index(Config $config): string

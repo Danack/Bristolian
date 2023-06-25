@@ -20,7 +20,6 @@ class OrganisationParam implements DataType
         public readonly string $name,
         #[BasicString('description')]
         public readonly string $description,
-
         #[Url('homepage_link')]
         public readonly string $homepage_link,
         #[FacebookUrlOrNull('facebook_link')]

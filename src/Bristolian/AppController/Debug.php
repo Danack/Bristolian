@@ -45,6 +45,4 @@ class Debug
 
         return $contents;
     }
-
-
 }

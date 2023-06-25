@@ -13,7 +13,6 @@ use Bristolian\DataType\Username;
 use Bristolian\DataType\BasicDateTime;
 use Bristolian\DataType\EmailAddress;
 
-
 class CoverageParam implements DataType
 {
     use CreateFromVarMap;
@@ -22,22 +21,16 @@ class CoverageParam implements DataType
     public function __construct(
         #[BasicString('string')]
         public string $string,
-
         #[BasicInteger('integer')]
         public int $integer,
-
         #[Url('url')]
         public string $url,
-
         #[Username('username')]
         public string $username,
-
         #[BasicDateTime('datetime')]
         public \DateTimeInterface $datetime,
-
         #[EmailAddress('email_address')]
         public string $email_address,
-
     ) {
     }
 

@@ -73,7 +73,6 @@ SQL;
                 ':user_id_2' => $user->getUserId(),
                 ':nickname' => $newNickname
             ],
-
         );
 
 

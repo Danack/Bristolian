@@ -257,9 +257,10 @@ function json_decode_safe(?string $json): array
 }
 
 
-function renderTableHtml(array $headers,
-                          array $items,
-                          array $rowFns
+function renderTableHtml(
+    array $headers,
+    array $items,
+    array $rowFns
 ) {
     $thead = '';
     foreach ($headers as $header) {
