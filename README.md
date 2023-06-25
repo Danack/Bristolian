@@ -13,6 +13,11 @@ Compiled JS - /app/public/js
 PHP source code - /src
 PHP tests - /test
 
+## How to bring the local dev environment up
+
+```
+sh runLocal.sh
+```
 
 ## Bashing into a box:
 

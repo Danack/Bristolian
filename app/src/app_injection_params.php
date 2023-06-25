@@ -12,7 +12,7 @@ function injectionParams()
         \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
         \Bristolian\Service\RequestNonce::class,
         \Asm\SessionManager::class,
-        \Bristolian\App\SessionStorage::class
+//        \Bristolian\App\SessionStorage::class
     ];
 
     // Alias interfaces (or classes) to the actual types that should be used
@@ -35,7 +35,7 @@ function injectionParams()
         \Bristolian\Repo\DbInfo\DbInfo::class =>
             \Bristolian\Repo\DbInfo\PdoDbInfo::class,
 
-        Asm\Driver::class => \Asm\Predis\PredisDriver::class,
+        Asm\Driver::class => \Asm\Redis\RedisDriver::class,
 
         Bristolian\Repo\AdminRepo\AdminRepo::class =>
             Bristolian\Repo\AdminRepo\PdoAdminRepo::class,
@@ -47,7 +47,10 @@ function injectionParams()
           \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::class,
 
         \Asm\RequestSessionStorage::class =>
-          \Bristolian\App\AppSessionStorage::class
+          \Bristolian\App\AppSessionStorage::class,
+
+        \Bristolian\Repo\OrganisationRepo\OrganisationRepo::class =>
+          \Bristolian\Repo\OrganisationRepo\PdoOrganisationRepo::class
     ];
 
 

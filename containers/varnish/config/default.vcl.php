@@ -98,6 +98,9 @@ sub vcl_recv {
      return (synth(200, "Ok"));
   }
 
+  #// Add a Surrogate-Capability header to announce ESI support.
+  #  set req.http.Surrogate-Capability = "abc=ESI/1.0";
+
   
   set req.http.X-IP-original = client.ip;
 

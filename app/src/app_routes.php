@@ -20,6 +20,13 @@ function getAllAppRoutes()
         ['/about', 'GET', 'Bristolian\AppController\Pages::about'],
         ['/privacy_policy', 'GET', 'Bristolian\AppController\Pages::privacyPolicy'],
 
+        ['/lists', 'GET', 'Bristolian\AppController\Lists::index'],
+        ['/rooms', 'GET', 'Bristolian\AppController\Rooms::index'],
+
+        ['/organisations/add', 'GET', 'Bristolian\AppController\Organisations::show_add'],
+        ['/organisations/add', 'POST', 'Bristolian\AppController\Organisations::process_add'],
+        ['/organisations', 'GET', 'Bristolian\AppController\Organisations::index'],
+
         ['/login', 'GET', '\Bristolian\AppController\Login::showLoginPage'],
         ['/login', 'POST', '\Bristolian\AppController\Login::processLoginPage'],
         ['/tools', 'GET', 'Bristolian\AppController\Tools::index'],
@@ -84,6 +91,8 @@ function getAllAppRoutes()
         ['/test/compile_error', 'GET', 'Bristolian\AppController\CompileError::deliberateCompileError'],
 
 
+
+        ['/debug/redis_slow', 'GET', 'Bristolian\AppController\Debug::debug_slow_redis'],
         ['/debug/redis', 'GET', 'Bristolian\AppController\Debug::debug_redis'],
         ['/debug', 'GET', 'Bristolian\AppController\Debug::debug_page'],
 

@@ -15,7 +15,7 @@ let exactly_280_characters = "1234567 ".repeat(35);
 // if the length of the URL would normally be shorter."
 
 // TypeScript
-interface TweetTests{
+interface TweetTests {
     input: string;
     expected: string[];
 }

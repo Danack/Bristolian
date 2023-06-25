@@ -37,4 +37,14 @@ class Debug
 
         return $contents;
     }
+
+    public function debug_slow_redis(\Redis $redis): string
+    {
+        $contents = "Lets debug redis";
+        $contents .= "Contents of slowlog are: ". var_export($redis->slowLog('get', 10), true);
+
+        return $contents;
+    }
+
+
 }

@@ -19,20 +19,4 @@ class TagParam implements DataType
         public string $description,
     ) {
     }
-
-    /**
-     * @return string
-     */
-    public function getText(): string
-    {
-        return $this->text;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
 }

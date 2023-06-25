@@ -43,7 +43,8 @@ function createRedis(Config $config)
     $redisConfig = $config->getRedisInfo();
 
     $redis = new Redis();
-    $redis->connect(
+
+    $redis->pconnect(
         $redisConfig->host,
         $redisConfig->port,
         $timeout = 2.0
@@ -162,7 +163,7 @@ function createPDOForUser(Config $config)
 function createSessionConfig(): Asm\SessionConfig
 {
     return new Asm\SessionConfig(
-        "john_is_my_name",
+        \Bristolian\App::SESSION_NAME,
         3600,
     );
 }

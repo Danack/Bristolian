@@ -23,9 +23,14 @@ function add_console_commands(Application $console)
  */
 function addDebugCommands(Application $console)
 {
-    $command = new Command('debug:hello', 'Bristolian\CliController\Debug::hello');
+    $command = new Command('debug:basic', 'Bristolian\CliController\Debug::basic');
     $command->setDescription("Test cli commands are working.");
     $console->add($command);
+
+    $command = new Command('debug:db', 'Bristolian\CliController\Debug::db');
+    $command->setDescription("Test getting data from database.");
+    $console->add($command);
+
 
 //    $command = new Command('debug:debug', 'Osf\CliController\Debug::debug');
 //    $command->setDescription("Debugging, customise this.");

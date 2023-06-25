@@ -273,12 +273,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Danack/AdvancedSessionManagement.git",
-                "reference": "9c84672d38d2a0346aaed25261c2f3039ee1373d"
+                "reference": "9266f4b9e94ace021f2952d679d1d6db48444084"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Danack/AdvancedSessionManagement/zipball/9c84672d38d2a0346aaed25261c2f3039ee1373d",
-                "reference": "9c84672d38d2a0346aaed25261c2f3039ee1373d",
+                "url": "https://api.github.com/repos/Danack/AdvancedSessionManagement/zipball/9266f4b9e94ace021f2952d679d1d6db48444084",
+                "reference": "9266f4b9e94ace021f2952d679d1d6db48444084",
                 "shasum": ""
             },
             "require": {
@@ -328,7 +328,7 @@
                 "source": "https://github.com/Danack/AdvancedSessionManagement/tree/main",
                 "issues": "https://github.com/Danack/AdvancedSessionManagement/issues"
             },
-            "time": "2023-06-14T21:43:37+00:00"
+            "time": "2023-06-20T08:26:50+00:00"
         },
         {
             "name": "danack/configurator",

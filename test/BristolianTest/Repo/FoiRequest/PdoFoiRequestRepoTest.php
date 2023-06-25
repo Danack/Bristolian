@@ -8,12 +8,11 @@ use Bristolian\DataType\CreateUserParams;
 use BristolianTest\Repo\TestPlaceholders;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
-//use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo;
 use Bristolian\DataType\FoiRequestParam;
 
 /**
- * @group wip
+ * @group db
  * @coversNothing
  */
 class PdoFoiRequestRepoTest extends BaseTestCase

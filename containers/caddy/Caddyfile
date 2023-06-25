@@ -1,15 +1,8 @@
 {
+	# debug
 	auto_https off
 }
 
-#@static {
-#	file
-#
-#	# Maybe add more of these?
-#	# bmp|bz2|css|gif|doc|gz|html|ico|jpg|jpeg|js|map|mid|midi|pcap|png|rtf|rar|
-#	# pdf|ppt|tar|tgz|txt|wav|xls|zip
-#	path *.ico *.css *.js *.gif *.jpg *.jpeg *.png *.svg *.woff
-#}
 
 
 *.bristolian.org:80, bristolian.org:80 {
@@ -22,7 +15,7 @@
 		path *.ico *.css *.js *.gif *.jpg *.jpeg *.png *.svg *.woff *.woff2 *.json *.vtt *.mp4
 	}
 
-	header @static Cache-Control max-age=3600
+	header @static Cache-Control public, max-age=3600, stale-while-revalidate=600
 
 	encode {
 		gzip

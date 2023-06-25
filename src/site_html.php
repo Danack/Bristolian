@@ -13,8 +13,11 @@ function createPageHeaderHtml(/*HeaderLinks $headerLinks*/) : string
 {
     $headerLinks = new HeaderLinks([
         new HeaderLink('/', 'Home'),
+        new HeaderLink('/rooms', 'Rooms'),
+        new HeaderLink('/lists', 'Lists'),
         new HeaderLink('/tools', 'Tools'),
-        new HeaderLink('/about', "About")
+        new HeaderLink('/about', "About"),
+        new HeaderLink('/login', "Login")
     ]);
 
 

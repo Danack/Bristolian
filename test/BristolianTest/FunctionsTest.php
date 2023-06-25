@@ -73,6 +73,9 @@ TEXT;
     }
 
 
+    /**
+     * @group slow
+     */
     public function test_fetchUri()
     {
     }

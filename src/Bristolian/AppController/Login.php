@@ -40,12 +40,8 @@ HTML;
 
     public function processLoginPage(
         AdminRepo $adminRepo,
-        SessionManager $sessionManager,
         AppSession $appSession
-
     ): RedirectResponse {
-
-
 
         $username = $_POST['username'] ?? null;
         $password = $_POST['password'] ?? null;

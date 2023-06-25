@@ -23,6 +23,8 @@ class App
 
     const ADMIN_PROJECT_SELECTED = 'admin_project_selected';
 
+    const SESSION_NAME = 'session_name';
+
     const ADMIN_USERNAME = 'admin_username';
 
     const YAY_PAGE_OK = '<!-- yay, page is done. -->';

@@ -18,8 +18,6 @@ CREATE TABLE `user` (
 
 SQL;
 
-//  CONSTRAINT `user_links_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-
     return $sql;
 }
 

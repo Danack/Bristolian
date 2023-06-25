@@ -38,7 +38,6 @@ function paramsValidationExceptionMapperApi(
 function pdoExceptionMapperApi(\PDOException $pdoe, ResponseInterface $response)
 {
     $text = getTextForException($pdoe);
-    \error_log($text);
 
     $statusMessage = 'Unknown error';
     $knownStatusCodes = [
@@ -70,7 +69,7 @@ function debuggingCaughtExceptionExceptionMapperForApi(
     ResponseInterface $response
 ) {
     $text = getTextForException($pdoe);
-    \error_log($text);
+
 
     $data = [];
     $data['status'] = App::ERROR_CAUGHT_BY_MIDDLEWARE_API_MESSAGE;

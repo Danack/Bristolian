@@ -26,9 +26,11 @@ services:
   js_builder:
     environment:
       - BRISTOLIAN_API_BASE_URL=http://local.api.bristolian.org
-#  php_fpm:
-#    env_file:
-#      - env_local_dev.env
+  php_fpm:
+    cap_add:
+      - SYS_ADMIN
+      - SYS_PTRACE
+
 #  php_fpm_debug:
 #    env_file:
 #      - env_local_dev.env
