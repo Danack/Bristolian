@@ -1,5 +1,5 @@
 
-# Bristol Rovers planning application factoids
+# Bristol Rovers planning application F.A.Q.
 
 Recently there was a political hit piece written by Tom Renhard trying to blame the Green party as the cause of why the new Bristol Rovers stand isn't ready yet.
 
