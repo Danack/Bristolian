@@ -65,7 +65,7 @@ No idea. You'd have to ask them. At least Labour Councillor Renhard [now knows w
 
 Maybe they are trying [to make the new owner](https://www.business-live.co.uk/retail-consumer/bristol-rovers-confirm-new-ownership-27458321) be angry at the Greens.
 
-This sentence is also interesting:
+This sentence from that article is also interesting:
 
 > "This week the club also issued an update to confirm the development of a new South Stand at its home ground The Memorial Stadium would not be completed in time for the start of the new season, “due to issues outside of the club’s control”."
 
