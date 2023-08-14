@@ -51,6 +51,8 @@ Probably not, and even if it did, it probably wouldn't be a major delay.
 
 There is are considerable amounts of paperwork, consultation and apparently basic health and safety considerations, that Bristol Rovers appear to have just not done yet, that they need to do for the planning application to be approved.
 
+All of that work is still being done in the background, the only difference is in how the final approval would be given, by officers (a.k.a. council employees) or by the elected councillors when 'called in'.
+
 
 ## Nothing has been built yet, why are people complaining?
 
