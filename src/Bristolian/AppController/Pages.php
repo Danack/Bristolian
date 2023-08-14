@@ -184,7 +184,18 @@ HTML;
         return $html;
     }
 
+    public function bristol_rovers(MarkdownRenderer $markdownRenderer): string
+    {
+        $fullPath = __DIR__ . "/../../../docs/complaints/bristol_rovers.md";
 
+        Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
+
+        $html = $markdownRenderer->renderFile($fullPath);
+        $html .= "<hr/>";
+        $html .= share_this_page();
+
+        return $html;
+    }
 
     public function questions(): string
     {

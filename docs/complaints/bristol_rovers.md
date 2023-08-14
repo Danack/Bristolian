@@ -1,9 +1,11 @@
+
+# Bristol Rovers planning application factoids
+
 Recently there was a political hit piece written by Tom Renhard trying to blame the Green party as the cause of why the new Bristol Rovers stand isn't ready yet.
 
 That article is almost complete gibberish, and bears little resemblance to reality.
 
-Here is an attempt to explain the actual problems.
-
+Here is an attempt to explain the actual situation with the planning application for the new stand.
 
 ## Why hasn't the planning application been approved?
 
@@ -26,9 +28,7 @@ She does share concerns of local residents that the legal process needs to be fo
 
 > Like may residents have comment, there is no objection to a larger and improved stand, but there are many serious concerns about how the club has operated so far. Removing trees without an  EIA, a poorly managed and unsafe building site. Ignored calls to stop work while the proper impact assessments are carried out, not engaging with residents properly, not having the correct persons on sight, contractors working unsafely without PPE, concrete and detritus washing down residential streets. Working at antisocial hours. And not having the correct impact assessments and consultations in place before putting in the planning application or indeed starting work.
 
-
 The planning application process is a process. It's not just "fill in the forms and get a yes/no answer".
-
 
 ## Why do planning applications take so long in Bristol?
 
@@ -72,7 +72,7 @@ This sentence is also interesting:
 I'm not sure that hoping that submitting an incomplete planning application, and not having done all the consultation required is actually outside of Bristol Rovers' control.
 
 
-# What rule change does Councillor Eddy want to see?
+## What rule change does Councillor Eddy want to see?
 
 Councillor Eddy wants the chair of the 'Development Control A Committee' to have the power to 'filter' whether Councillors are allowed to 'call in' planning applications to have them discussed at that committee.
 
