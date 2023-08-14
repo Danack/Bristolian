@@ -42,7 +42,7 @@ Another part of the problem is that the planning department is having some shena
 
 * The Mayor backing a hit piece on the Greens, when planning is meant to be an apolitical process.
 
-There is a petition for a loss of confidence in Bristol planning system](https://you.38degrees.org.uk/petitions/loss-of-confidence-in-bristol-s-planning-system), as the lack of timely planning decisions is hurting the city.
+There is a petition for a loss of confidence in [Bristol's planning system](https://you.38degrees.org.uk/petitions/loss-of-confidence-in-bristol-s-planning-system), as the lack of timely planning decisions is hurting the city.
 
 
 ## Will the application being 'called in' delay it?
@@ -78,7 +78,7 @@ Councillor Eddy wants the chair of the 'Development Control A Committee' to have
 
 As he's the chair, he is backing giving himself a large amount of power and removing power from local councillors.
 
-And apparently not giving them that causes him to call people names.
+And apparently not giving him that power causes him to call people names.
 
 Seeing as Councillor Eddy [is a terrible person](https://metro.co.uk/2020/06/09/edward-colston-was-hero-says-golliwog-loving-bristol-councillor-12827969/) he can jog on.
 
