@@ -60,6 +60,17 @@ Even 'just' site clearance needs to follow proper regulations.
 
 Having heavy machinery operating in your street, with mud and debris being allowed to wash away, rather than being contained is a horrible experience of the people living there.
 
+## When will the planning application be approved?
+
+If I had to guess, I'd say somewhere between December 2023 and June 2024.
+
+Just filling out the rest of the required details, undertaking the legally required consultations and actually working out a project plan, seems likely to take a couple of months. 
+
+Then there will be a bit more time for officers to do all the work they need to do to make sure the application is legal, and as mentioned, they are overworked due to a lack of staff.
+
+## Is there anything that can be done to speed up the process?
+
+Well, maybe being nicer to the lovely Councillor who is helping Rovers understand what they actually need to do to get planning permission might be an idea?
 
 ## Why did the Bristol Labour party blame the Greens for delay?
 
@@ -73,6 +84,15 @@ This sentence from that article is also interesting:
 
 I'm not sure that hoping that submitting an incomplete planning application, and not having done all the consultation required is actually outside of Bristol Rovers' control.
 
+## Was there a change in plans that caused a delay?
+
+Not that I can see. The original 'DESIGN AND ACCESS STATEMENT' submitted is still there, and there haven't been any updates.
+
+However the original 'hoped for' timeline is in that document: 
+
+> The works are scheduled to commence in May 2023 (initial ground preparation / site clearance), with a target handover for the new grandstand in time for the start of the 2023/24 EFL season (beginning of August 2023).
+
+It looks very much like planning permission was just not thought about.
 
 ## What rule change does Councillor Eddy want to see?
 
@@ -86,4 +106,8 @@ Seeing as Councillor Eddy [is a terrible person](https://metro.co.uk/2020/06/09/
 
 
 
+### Notes
 
+The planning application number is 23/01441/F and can be found at [pa.bristol.gov.uk/online-applications/](https://pa.bristol.gov.uk/online-applications/)
+
+Apparently it's not possible to link directly to planning applications.
