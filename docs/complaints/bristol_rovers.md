@@ -44,6 +44,8 @@ Another part of the problem is that the planning department is having some shena
 
 There is a petition for a loss of confidence in [Bristol's planning system](https://you.38degrees.org.uk/petitions/loss-of-confidence-in-bristol-s-planning-system), as the lack of timely planning decisions is hurting the city.
 
+Here is a reasonable article on how ["Bristol City Council's planning backlog is badly 'impacting city's economy'"](https://www.bristolpost.co.uk/news/bristol-news/bristol-city-councils-planning-backlog-8004341).
+
 
 ## Will the application being 'called in' delay it?
 
