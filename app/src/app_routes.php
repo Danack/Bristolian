@@ -38,6 +38,9 @@ function getAllAppRoutes()
         ['/complaints/triangle_road', 'GET', '\Bristolian\AppController\Pages::triangle_road'],
 
         ['/explanations/bristol_rovers', 'GET', '\Bristolian\AppController\Pages::bristol_rovers'],
+        ['/explanations/avon_crescent', 'GET', '\\Bristolian\AppController\Pages::avon_crescent'],
+
+
 
         ['/tools/floating_point', 'GET', '\Bristolian\AppController\Pages::floating_point_page'],
         ['/tools/timeline', 'GET', '\Bristolian\AppController\Pages::timeline_page'],

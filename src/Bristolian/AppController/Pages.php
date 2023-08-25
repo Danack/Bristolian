@@ -26,6 +26,12 @@ class Pages
         $content .= <<< HTML
 <p>Oh, a tiny bit more; <a href='/questions'>questions</a>.</p>
 
+<h3>Explanations / F.A.Q.s</h3>
+
+<a href='/explanations/bristol_rovers'>Bristol Rovers</a><br/>
+<a href='/explanations/avon_crescent'>Avon Crescent</a><br/>
+
+
 <!--
 <ul>
   <li><a href="/tags">Tags on the site</a></li>
@@ -187,6 +193,19 @@ HTML;
     public function bristol_rovers(MarkdownRenderer $markdownRenderer): string
     {
         $fullPath = __DIR__ . "/../../../docs/complaints/bristol_rovers.md";
+
+        Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
+
+        $html = $markdownRenderer->renderFile($fullPath);
+        $html .= "<hr/>";
+        $html .= share_this_page();
+
+        return $html;
+    }
+
+    public function avon_crescent(MarkdownRenderer $markdownRenderer): string
+    {
+        $fullPath = __DIR__ . "/../../../docs/complaints/avon_crescent_spike_island.md";
 
         Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
 
