@@ -30,7 +30,7 @@ class Pages
 
 <a href='/explanations/bristol_rovers'>Bristol Rovers</a><br/>
 <a href='/explanations/avon_crescent'>Avon Crescent</a><br/>
-
+<a href='/explanations/advice_for_speaking_at_council'>Advice for speaking at council</a><br/>
 
 <!--
 <ul>
@@ -193,6 +193,20 @@ HTML;
     public function bristol_rovers(MarkdownRenderer $markdownRenderer): string
     {
         $fullPath = __DIR__ . "/../../../docs/complaints/bristol_rovers.md";
+
+        Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
+
+        $html = $markdownRenderer->renderFile($fullPath);
+        $html .= "<hr/>";
+        $html .= share_this_page();
+
+        return $html;
+    }
+
+
+    public function advice_for_speaking_at_council(MarkdownRenderer $markdownRenderer): string
+    {
+        $fullPath = __DIR__ . "/../../../docs/explanations/advice_for_speaking_at_council.md";
 
         Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
 
