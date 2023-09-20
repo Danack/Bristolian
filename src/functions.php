@@ -926,6 +926,23 @@ function render_markdown_file(Bristolian\Model\UserDocument $document): string
     return $renderer->renderFile($filename);
 }
 
+function get_external_source_link(string $raw)
+{
+    $raw_position = strpos($raw, '/raw/');
+
+    if ($raw_position === false) {
+        return "External source is: " . $raw;
+    }
+
+    $link = substr($raw, 0, $raw_position);
+
+    return sprintf(
+        "External source is: <a href='%s'>%s</a>",
+        $link,
+        $raw
+    );
+}
+
 function render_markdown_url(Bristolian\Model\UserDocument $document): string
 {
     global $injector;
@@ -936,7 +953,9 @@ function render_markdown_url(Bristolian\Model\UserDocument $document): string
 
     $contents .= "<hr/>";
 
-    $contents .= "External source is: " . $document->source;
+
+
+    $contents .= get_external_source_link($document->source);
 
     return $contents;
 }
