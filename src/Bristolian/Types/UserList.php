@@ -4,5 +4,5 @@ namespace Bristolian\Types;
 
 enum UserList: string
 {
-    case sid = 'Sid Ryan';
+    case sid = 'John';
 }
