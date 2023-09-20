@@ -37,6 +37,12 @@ function injectionParams()
 
         Asm\Driver::class => \Asm\Predis\PredisDriver::class,
 
+        UrlFetcher\UrlFetcher::class =>
+          UrlFetcher\RedisCachedUrlFetcher::class,
+
+        Bristolian\ExternalMarkdownRenderer\ExternalMarkdownRenderer::class =>
+          \Bristolian\ExternalMarkdownRenderer\StandardExternalMarkdownRenderer::class,
+
         Bristolian\Repo\AdminRepo\AdminRepo::class =>
             Bristolian\Repo\AdminRepo\PdoAdminRepo::class,
 
@@ -47,7 +53,13 @@ function injectionParams()
           \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::class,
 
         \Asm\RequestSessionStorage::class =>
-          \Bristolian\App\AppSessionStorage::class
+          \Bristolian\App\AppSessionStorage::class,
+
+        Bristolian\Repo\UserRepo\UserRepo::class =>
+          Bristolian\Repo\UserRepo\HardcodedUserRepo::class,
+
+        Bristolian\Repo\UserDocumentRepo\UserDocumentRepo::class =>
+          Bristolian\Repo\UserDocumentRepo\HardcodedUserDocumentRepo::class
     ];
 
 

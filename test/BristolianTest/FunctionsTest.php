@@ -142,4 +142,33 @@ TEXT;
         $this->assertArrayHasKey("cost", $options);
         $this->assertGreaterThanOrEqual(12, $options["cost"]);
     }
+
+    public function provides_slugify()
+    {
+        yield ['Cómo hablar en sílabas', 'como-hablar-en-silabas'];
+        yield ['Álix Ãxel', 'alix-axel'];
+        yield ['Álix----_Ãxel!?!?', 'alix-axel'];
+        yield [
+            'FOIA Section 12 and the 18-hour time/cost limit',
+            'foia-section-12-and-the-18-hour-time-cost-limit'
+        ];
+
+        yield [
+            'co-ordinate',
+            'co-ordinate'
+        ];
+    }
+
+    /**
+     * @dataProvider provides_slugify
+     * @group wip
+     * @param string $input
+     * @param string $expected
+     * @return void
+     */
+    public function test_slugify(string $input, string $expected)
+    {
+        $result = slugify($input);
+        $this->assertSame($expected, $result);
+    }
 }

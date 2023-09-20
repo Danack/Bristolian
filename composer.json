@@ -52,7 +52,7 @@
         "psr-0": {
             "Bristolian\\": "src/",
             "Key\\": "src/",
-            "UrlFetcher\\\\": "src/"
+            "UrlFetcher\\": "src/"
         },
         "files": [
             "src/functions.php"

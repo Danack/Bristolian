@@ -47,11 +47,11 @@ function renderInjectionExceptionToHtml(
         $text .= "&nbsp;&nbsp;" . $dependency . "<br/>";
     }
 
-//    $text .= "<hr/>";
-//    $text .= $injectionException->getMessage();
-//
-//    $text .= "<hr/>";
-//    $text .= "Stacktrace: <br/>";
+    $text .= "<hr/>";
+    $text .= $injectionException->getMessage();
+
+    $text .= "<hr/>";
+    $text .= "Stacktrace: <br/>";
 //
 //
 //    $text .= "<br/>";

@@ -42,9 +42,9 @@ class AppSessionMiddleware implements MiddlewareInterface
             $headersArrays = $session->getHeaders(
                 \Asm\SessionManager::CACHE_PRIVATE,
                 '/'
-            //        $domain = false,
-            //        $secure = false,
-            //        $httpOnly = true
+                //        $domain = false,
+                //        $secure = false,
+                //        $httpOnly = true
             );
 
             foreach ($headersArrays as $nameAndValue) {

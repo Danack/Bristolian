@@ -14,6 +14,7 @@ require __DIR__ . "/../../config.generated.php";
 
 set_error_handler('saneErrorHandler');
 
+
 $injector = new DI\Injector();
 $injectionParams = injectionParams();
 $injectionParams->addToInjector($injector);

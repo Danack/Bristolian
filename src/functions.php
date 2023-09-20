@@ -2,9 +2,12 @@
 
 declare(strict_types = 1);
 
+use Bristolian\Types\DocumentType;
 use VarMap\ArrayVarMap;
 use VarMap\VarMap;
 use Bristolian\ToArray;
+
+$injector = null;
 
 //function hackVarMap($varMap)
 //{
@@ -257,9 +260,10 @@ function json_decode_safe(?string $json): array
 }
 
 
-function renderTableHtml(array $headers,
-                          array $items,
-                          array $rowFns
+function renderTableHtml(
+    array $headers,
+    array $items,
+    array $rowFns
 ) {
     $thead = '';
     foreach ($headers as $header) {
@@ -905,4 +909,87 @@ function escapeMySqlLikeString(string $string)
         ['\\\\', '\\_', '\\%'],
         $string
     );
+}
+
+
+function render_markdown_file(Bristolian\Model\UserDocument $document): string
+{
+    global $injector;
+
+    $renderer = $injector->make(\Bristolian\MarkdownRenderer\MarkdownRenderer::class);
+
+    // TODO - escaper needs a file path type.
+    $path = normalise_filename($document->getUser()->username);
+
+    $filename = __DIR__ . '/../user_data/' . $path . '/' . $document->source;
+
+    return $renderer->renderFile($filename);
+}
+
+function render_markdown_url(Bristolian\Model\UserDocument $document): string
+{
+    global $injector;
+
+    $renderer = $injector->make(\Bristolian\ExternalMarkdownRenderer\ExternalMarkdownRenderer::class);
+
+    $contents = $renderer->renderUrl($document->source);
+
+    $contents .= "<hr/>";
+
+    $contents .= "External source is: " . $document->source;
+
+    return $contents;
+}
+
+
+function render_user_document(Bristolian\Model\UserDocument $document)
+{
+    global $injector;
+
+    if ($injector === null) {
+        return "Oops, injector is null.";
+    }
+
+    return match ($document->type) {
+        DocumentType::markdown_file => render_markdown_file($document),
+        DocumentType::markdown_url => render_markdown_url($document)
+    };
+}
+
+
+/**
+ * @param string $string
+ * @return string
+ *
+ * Code taken from
+ * https://ourcodeworld.com/articles/read/253/creating-url-slugs-properly-in-php-including-transliteration-support-for-utf-8
+ * and assumed to be http://creativecommons.org/publicdomain/zero/1.0/
+ */
+function slugify(string $string): string
+{
+    $entities_removed = htmlentities($string, ENT_QUOTES, 'UTF-8');
+
+    $accents_removed = preg_replace(
+        '~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
+        '$1',
+        $entities_removed
+    );
+
+    $something = html_entity_decode($accents_removed, ENT_QUOTES, 'UTF-8');
+
+    $normalised_to_ascii = preg_replace(
+        '~[^0-9a-z]+~i', '-', $something
+    );
+
+    $trimmed = trim(
+        $normalised_to_ascii,
+        '-'
+    );
+
+    return strtolower($trimmed);
+}
+
+function normalise_filename(string $filename): string
+{
+    return str_replace(' ', '_', strtolower($filename));
 }
