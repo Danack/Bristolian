@@ -20,3 +20,4 @@ ignore
 tmp
 delete_this_to_update_npm_modules.txt
 .deptrac.cache
+swagger

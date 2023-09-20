@@ -218,19 +218,7 @@ function fetchData(string $uri)
 }
 
 
-/**
- * Escape characters that are meaningful in SQL like searches
- * @param string $string
- * @return mixed
- */
-function escapeMySqlLikeString(string $string)
-{
-    return str_replace(
-        ['\\', '_', '%', ],
-        ['\\\\', '\\_', '\\%'],
-        $string
-    );
-}
+
 
 // Docker IP addresses are apparently "172.XX.X.X",
 // Which should be in an IPV4 PRIVATE ADDRESS SPACE
