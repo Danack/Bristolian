@@ -18,14 +18,16 @@
 
 .bristolian_header {
   grid-area: hd;
-  padding: var(--page_padding_left);
+  padding-left: var(--page_padding_left);
+  padding-right: var(--page_padding_right);
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
 .bristolian_breadcrumbs {
   grid-area: bc;
-  padding: var(--page_padding_left);
+  padding-left: var(--page_padding_left);
+  padding-right: var(--page_padding_right);
 }
 
 .bristolian_prev_next {
@@ -41,8 +43,8 @@
 .bristolian_content {
   grid-area: mc;
   padding-left: var(--page_padding_left);
+  padding-right: var(--page_padding_right);
   overflow-x: auto;
-  //overflow-y: auto;
 }
 
 .bristolian_content_links {
