@@ -1,13 +1,15 @@
-[
-  {
-    "type": "markdown_file",
-    "title": "FOIA Section 12 and the 18-hour time/cost limit",
-    "source": "FOIA Section 12 and the 18-hour time_cost limit.md"
-  },
-  {
-    "type": "markdown_url",
-    "title": "Example external file",
-    "source": "https://gist.githubusercontent.com/Danack/89e8d9b25dac35e1a68cd3b576a17a36/raw/fb924a43a241d151ba5e659e21a272647658d4e7/words.md"
-  }
-]
+{
+  "documents": [
+    {
+      "type": "markdown_file",
+      "title": "FOIA Section 12 and the 18-hour time/cost limit",
+      "source": "FOIA Section 12 and the 18-hour time_cost limit.md"
+    },
+    {
+      "type": "markdown_url",
+      "title": "Example external file",
+      "source": "https://gist.githubusercontent.com/Danack/89e8d9b25dac35e1a68cd3b576a17a36/raw/fb924a43a241d151ba5e659e21a272647658d4e7/words.md"
+    }
+  ]
+}
 

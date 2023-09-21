@@ -19,8 +19,13 @@ class HardcodedUserDocumentRepo implements UserDocumentRepo
 
         $filepath = __DIR__ . "/../../../../user_data/" . $filename . "/documents.json";
         $documents_json = \Safe\file_get_contents($filepath);
-        $documents_data = json_decode_safe($documents_json);
+        $user_data = json_decode_safe($documents_json);
 
+        if (array_key_exists("documents", $user_data) === false) {
+            return [];
+        }
+
+        $documents_data = $user_data["documents"];
         $documents = UserDocument::createArrayOfTypeFromArray($documents_data);
 
         return $documents;
