@@ -79,6 +79,23 @@ HTML;
   <a href="https://www.youtube.com/watch?v=frD95ozXtRs">Committee Model Working Group 26th May</a>
 </p>
 
+
+<p>
+  <a href="https://www.youtube.com/watch?v=DhNLwdJ8PpM&ab_channel=Danack">Committee Model Working Group - Friday, 8th September</a>
+</p>
+
+
+<p>
+  <a href="https://www.youtube.com/watch?v=o0-bkxgpbG4&ab_channel=Danack">Value and ethics committee 25th September 2023</a>
+</p>
+
+
+
+<p>
+  <a href="https://www.youtube.com/watch?v=Pput1nMMbu8&ab_channel=Danack">Audit committee 25th September 2023</a>
+</p>
+
+
 HTML;
 
         return $content;
