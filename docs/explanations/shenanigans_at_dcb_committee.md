@@ -77,7 +77,7 @@ The Judicial Review the campaigners are trying to bring against the terrible Bro
 
 ## What is going to happen next?
 
-¯\_(ツ)_/¯
+¯\\_(ツ)_/¯
 
 The Monitoring Officer will need to make a decision about how he is going to interpret the events that occurred. He's going to be under a huge amount of pressure from the interests that managed to persuade four councillors to change their mind between DCA planning meetings.
 
