@@ -32,6 +32,10 @@ class Pages
 <a href='/explanations/avon_crescent'>Avon Crescent</a><br/>
 <a href='/explanations/advice_for_speaking_at_council'>Advice for speaking at council</a><br/>
 
+<a href='/explanations/shenanigans_planning'>Shenanigans at Development Committee B</a><br/>
+
+
+
 <!--
 <ul>
   <li><a href="/tags">Tags on the site</a></li>
@@ -94,6 +98,12 @@ HTML;
 <p>
   <a href="https://www.youtube.com/watch?v=Pput1nMMbu8&ab_channel=Danack">Audit committee 25th September 2023</a>
 </p>
+
+
+<p>
+  <a href="https://www.youtube.com/watch?v=Kv4SiFCzLaA&ab_channel=Danack">Growth and Regeneration Scrutiny Commission 28th September 2023</a>
+</p>
+
 
 
 HTML;
@@ -237,6 +247,20 @@ HTML;
     public function avon_crescent(MarkdownRenderer $markdownRenderer): string
     {
         $fullPath = __DIR__ . "/../../../docs/complaints/avon_crescent_spike_island.md";
+
+        Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
+
+        $html = $markdownRenderer->renderFile($fullPath);
+        $html .= "<hr/>";
+        $html .= share_this_page();
+
+        return $html;
+    }
+
+
+    public function shenanigans_planning(MarkdownRenderer $markdownRenderer): string
+    {
+        $fullPath = __DIR__ . "/../../../docs/explanations/shenanigans_at_dcb_committee.md";
 
         Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
 

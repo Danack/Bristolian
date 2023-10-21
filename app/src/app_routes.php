@@ -55,6 +55,8 @@ function getAllAppRoutes()
         ['/explanations/advice_for_speaking_at_council', 'GET', 'Bristolian\AppController\Pages::advice_for_speaking_at_council'],
 
 
+        ['/explanations/shenanigans_planning', 'GET', 'Bristolian\AppController\Pages::shenanigans_planning'],
+
 
         ['/tools/floating_point', 'GET', '\Bristolian\AppController\Pages::floating_point_page'],
         ['/tools/timeline', 'GET', '\Bristolian\AppController\Pages::timeline_page'],
