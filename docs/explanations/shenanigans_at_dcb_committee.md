@@ -85,5 +85,4 @@ I think he'll either have to either say that the decision taken at DCA on the 5t
 
 Either way, this is just not good enough governance.
 
-The planning process and having well-thought through planning applications make a huge difference to how pleasant a city is to live in. Bristolians deserve better, and it's not surprising that the petition for ["
-Loss of confidence in Bristol's planning system"](https://you.38degrees.org.uk/petitions/loss-of-confidence-in-bristol-s-planning-system) has passed 3,500 signatures, which means it now needs to be brought before the Council.
+The planning process and having well-thought through planning applications make a huge difference to how pleasant a city is to live in. Bristolians deserve better, and it's not surprising that the petition for ["Loss of confidence in Bristol's planning system"](https://you.38degrees.org.uk/petitions/loss-of-confidence-in-bristol-s-planning-system) has passed 3,500 signatures, which means it now needs to be brought before the Council.
