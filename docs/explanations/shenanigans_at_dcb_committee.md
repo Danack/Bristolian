@@ -18,9 +18,9 @@ The committee voted unanimously to reject the proposal to remove the planning co
 
 Councillor Poultney questioned the Chair and Simone Wilding, the senior planning officer present, very closely as to whether the committee could vote to refuse or whether they were required to vote to defer.
 
-The officer tried to persuade the Councillors that the reasons for refusal needed to "come back the next time with worked up reasons for refusal".
+The officer tried to persuade the Councillors that the reasons for refusal needed to "come back the next time with worked up reasons for refusal" i.e. that a refusal decision could not be taken at the current committee meeting as the reasons need to be given to the officers to write up, before being confirmed at the next meeting.
 
-The Councillors all agreed that they had been very clear in the meeting for the reasons for refusal, and the junior planning officer even helpfully said something along the lines of "you can just use the reasons why those conditions were added to the planning application in the first place".
+The Councillors all agreed that they had been very clear in the meeting for the reasons for refusal, and the junior planning officer even helpfully said something along the lines of "you can just use the reasons why those conditions were added to the planning application in the first place as the reasons for refusal".
 
 The meeting ended shortly after the unanimous vote of refusal took place.
 
@@ -83,5 +83,7 @@ The Monitoring Officer will need to make a decision about how he is going to int
 
 I think he'll either have to either say that the decision taken at DCA on the 5th July was unlawful, or he might try to persuade Councillors that the decision taken at DCB on the 18th of October was unlawful.
 
-Either way, this is just not good enough governance. The planning process and having well-thought through planning applications make a huge difference to how pleasant a city is to live in. Bristolians deserve better, and it's not surprising that the petition for ["
+Either way, this is just not good enough governance.
+
+The planning process and having well-thought through planning applications make a huge difference to how pleasant a city is to live in. Bristolians deserve better, and it's not surprising that the petition for ["
 Loss of confidence in Bristol's planning system"](https://you.38degrees.org.uk/petitions/loss-of-confidence-in-bristol-s-planning-system) has passed 3,500 signatures, which means it now needs to be brought before the Council.
