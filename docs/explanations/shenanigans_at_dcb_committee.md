@@ -55,6 +55,29 @@ The minutes of the previous two meetings were not agreed at this meeting.
 
 Councillor Ed Plowden says he will be resigning from the committee due to the events being so disreputable. Yet again, the minutes of the previous meetings are not agreed, due to ongoing disputes about what was said.
 
+### 12th September
+
+Mayor Rees and Councillor Eddy had a really odd interaction where [they had obviously scripted the mayor's response to Councillor Eddy's question.](https://www.youtube.com/watch?v=da3VU2HDz8k&ab_channel=Danack)
+
+Mayor Rees:
+> As an organisation that should be committed to the good of Bristol and making sure that our departments are really facing outward to meet the needs of the city and not being subjected to political gaming, I agree.
+> 
+> I'm going to say something and it's hard to say it, Councillor Eddie, and it's even more hard because I don't think 
+> it's the second I don't think it's the first time I said it, but. Just to say to congratulate you on the way you've 
+> chaired planning Committee. And I did watch the video at the beginning of the summer as well, where you had to deal 
+> with a very theatrical moment that was less about the welfare of Bristol and more about leaflet material.
+> 
+> the further we can get away from political opportunism around the need to develop the city, the sooner we'll be able to really make sure that our planning officers full efforts are directed towards making sure that we get the scale and kind of development Bristol needs.
+
+Councillor Eddy:
+>  Could I impress the mayor one step further? Could I ask him his opinion of those who may respond with need your composition to development and regeneration and seek to actually misuse the member referral scheme to delay development?
+
+Mayor Rees:
+> We've got quite a bit of that going on now, members, really. I would suggest misusing council 
+> processes to delay us meeting the needs of the city in the right way, and I think very dimly of it.
+
+It was weird because it's so ham-fisted. No-one in the room would alter their behaviour because of it, so which audience was the mayor saying it for?
+
 ### 20th September
 
 The chair of DCA committee brings a senior council lawyer to try to influence members to accept the inaccurate minutes. The chair also tried to prevent one of the members from voting on whether to accept the minutes.
