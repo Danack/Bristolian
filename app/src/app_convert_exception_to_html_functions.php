@@ -25,7 +25,7 @@ function renderParseErrorToHtml(
 ) {
     $string = sprintf(
         "Parse error at %s:%d\n\n%s",
-        normaliseFilePath($parseError->getFile()),
+        remove_install_prefix_from_path($parseError->getFile()),
         $parseError->getLine(),
         $parseError->getMessage(),
     );
@@ -88,7 +88,7 @@ function renderMarkdownRendererException(
 ) {
     $string = sprintf(
         "MarkdownRendererException at %s:%d\n\n%s",
-        normaliseFilePath($markdownRendererException->getFile()),
+        remove_install_prefix_from_path($markdownRendererException->getFile()),
         $markdownRendererException->getLine(),
         $markdownRendererException->getMessage(),
     );
