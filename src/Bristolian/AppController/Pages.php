@@ -35,6 +35,8 @@ class Pages
 <a href='/explanations/shenanigans_planning'>Shenanigans at Development Committee B</a><br/>
 
 
+<a href='/explanations/monitoring_officer_notes'>Monitoring Officer shenanigans</a><br/>
+
 
 <!--
 <ul>
@@ -261,6 +263,19 @@ HTML;
     public function shenanigans_planning(MarkdownRenderer $markdownRenderer): string
     {
         $fullPath = __DIR__ . "/../../../docs/explanations/shenanigans_at_dcb_committee.md";
+
+        Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
+
+        $html = $markdownRenderer->renderFile($fullPath);
+        $html .= "<hr/>";
+        $html .= share_this_page();
+
+        return $html;
+    }
+
+    public function monitoring_officer_notes(MarkdownRenderer $markdownRenderer): string
+    {
+        $fullPath = __DIR__ . "/../../../docs/explanations/monitoring_officer_problem.md";
 
         Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
 
