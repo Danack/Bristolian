@@ -81,8 +81,11 @@ To ensure the integrity of the complaints procedures, the identify of the Indepe
 
 ## Questions
 
-*TODO* We should put a list of remaining questions here.
+* Are the Independent Persons proposed to be ratified at the November the 14th Full Council the same people who have already been appointed by the M.O. and consulted with?
 
+* Were any Independent Persons appointed between 2017 and 2023?
+
+* Why have _none_ of the complaints of Councillors breaking the Member Code of Conduct made it past the Monitoring Officer's gatekeeping?  
 
 ## Relevant legislation
 
@@ -144,33 +147,5 @@ The agenda item "Appointment of Independent Persons" listed for the [Full Counci
 * [Welcome to the National Monitoring Officers and Governance Group of LLG](https://llg.org.uk/national-interest-groups/monitoring-officers-and-governance/)
 * [What is a monitoring officer and what do they do? Here are the answers](https://lgiu.org/blog-article/what-is-a-monitoring-officer-and-what-do-they-do-here-are-the-answers/)
 * [Nonfeasance-in-public-office](https://uollb.com/blog/law/nonfeasance-in-public-office)
-
-* 
-Adverts
-
-[](https://www.linkedin.com/posts/bristol-city-council_job-alert-are-you-interested-in-activity-7098324598613504000-qmGe)
-
-
-[On Bristol](https://ce0389li.webitrent.com/ce0389li_webrecruitment/wrd/run/ETREC107GF.open?VACANCY_ID=045280Qqqm&WVID=5153023bMp&LANG=USA&utm_source=LinkedIn&utm_medium=social&utm_campaign=Orlo)
-
-Date posted 21/07/2023 Application closing date 24/08/2023
-
-
-Date posted
-21/07/2023
-Application closing date
-24/08/2023
-
-
-
-
-## Spare words
-
-These should fit in somewhere eventually...
-
-* The Monitoring Officer mislead the Values and Ethics committee about this requirement, confidently stating it wasn't needed.
-* The Monitoring Officer is refusing to give clear answers about what is going on to the Values & Ethics committee. Some of his answers contradict some of this other answers.
-* The Monitoring Officer failed to attend the Values and Ethics committee on the 3rd of November. Members of the public were hoping to put supplementary questions to the Monitoring Officer to explain his contradictory answers.
-
-
-
+* Known advert 1 - [On LinkedIn](https://www.linkedin.com/posts/bristol-city-council_job-alert-are-you-interested-in-activity-7098324598613504000-qmGe) "Applications close on Thursday 24 August."
+* Known advert 2 - [On BCC's job portal](https://ce0389li.webitrent.com/ce0389li_webrecruitment/wrd/run/ETREC107GF.open?VACANCY_ID=045280Qqqm&WVID=5153023bMp&LANG=USA&utm_source=LinkedIn&utm_medium=social&utm_campaign=Orlo)
