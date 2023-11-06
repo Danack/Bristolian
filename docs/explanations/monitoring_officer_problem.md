@@ -10,17 +10,78 @@ As the situation is a bit complicated, here is a simple version.
 * It is also a legal requirement that the appointment of 'Independent Persons' is ratified by a majority of the members of the Council.
 * Bristol City Council has appointed three 'Independent Persons' recently. They have already been consulted in some of the complaints that have been handled this year. 
 * None of those appointments has come to Full Council to be voted on, so those people have not been appointed lawfully.
+* The only known Independent Person appointed lawfully was appointed in 2013 for a four year term.
 * Which means that none of the complaints against members made since 2017 have been handled lawfully.
 * Anyone who is a Monitoring Officer, has a personal public duty to report any unlawfulness at a Council.
-* The current Monitoring Officer is refusing to write that report, which is 'non-feasance in a public office' which is a criminal offence.
+* The current Monitoring Officer is refusing to write that report, and is refusing to explain why he doesn't need to write that report, or explain clearly what has been going on with independent persons.
 * Due to data protection laws, passing personal information to anyone without a lawful basis is unlawful. 
 
 So...yeah, we have 'quite' the situation.
 
+Below you will find some 'provable things' of what has happened, but there is also a list of questions outstanding that we just aren't sure about, and the M.O. is refusing to clarify.
 
-## Evidence
+We had hoped to get some answers from the M.O. at the Values and Ethics committee on the 9th of November, but the written answers were non-responsive to the questions asked, and the M.O. failed to attend the meeting so members of the public were not able to ask verbal supplementary questions.
 
-TODO - extract relevant bits from minutes.
+## Provable things 
+
+This section contains things that we are able to 'know' (reasonably for sure) of what has happened.
+
+### The Monitoring Officer appointed 3 independent persons
+
+From public forum [25th September](https://democracy.bristol.gov.uk/documents/s87687/VE%20bundle%209%20Oct%20-%20Qus%20responses%20for%2025%20Sept.pdf)
+
+> Q. How is V&E committee involved in appointment of IPs? Is this purely the decision of the MO?
+>
+> A. The appointment of the Independent Persons is carried out by the Monitoring Officer and the Head of Legal Services.
+>
+> Q. Other Council's publish the criteria for appointment of the IPs, their names and CVS. Will BCC commit to this?
+> 
+> The Council has appointed 3 Independent Persons from outside the Council to assist the Monitoring Officer in considering complaints. This is statutory requirement under S28 of the Localism Act 2011 to appoint at least 1 independent person.
+
+
+### The Monitoring Officer mislead the Values and Ethics Committee
+
+During the Values & Ethics committee meeting on the 9th of October the MO claimed he has already appointed Independent Persons and that they didn't need to be appointed by Full Council.
+
+> The process to appoint the independent members was carried out by myself and the head of Legal Services. We advertised those roles, we undertook an interview process and we appointed a pool of independent persons.
+>
+> __There's no requirement in the legislation. In fact, I think it would be complete misreading of the legislation to think that that appointment would need to be made by full council.__
+
+[Video is here](https://www.youtube.com/watch?v=i4tMbXX_Icc&ab_channel=Danack)
+
+Or you can read [the minutes of the meeting](https://democracy.bristol.gov.uk/documents/s89331/9%20Oct%20VE%20mins.pdf):
+
+> Supplementary Question – Mike Oldreive – ‘Have all requirements of Section 28 of the Localism Act 2011
+been met?’
+> 
+> The Chair asked the MO to respond. The MO stated that Independent members were appointed by the
+> MO and Head of Legal Services and there was no requirement in the legislation stating that the
+> appointment was made by Full Council. *
+>
+>* Post-meeting clarification dated 20 October 2023 - The recent recruitment process for Independent
+>  Persons will require the ratification of those appointments by Full Council and it is anticipated that this
+>  will be at the next ordinary meeting of Full Council on 14 November.
+
+The 'clarification' came after a member of the public contact BCC's Chief Executive. It is entirely possible the Monitoring Officer made an honest mistake in understanding the law.
+
+### No complaints have made it past the Monitoring Officer's gatekeeping
+
+> The Council consults an independent person to provide advice on the assessment of
+complaints. There have been no complaints that have required an investigation in the last 5 years.
+
+### Monitoring Officer making up his own rules
+
+Examples of Joanna Booth and Danack cases
+
+### Making up his own confidential rules
+
+e.g. Is the identity of the IP kept confidential? How does this square with transparency?
+To ensure the integrity of the complaints procedures, the identify of the Independent Persons is kept confidential.
+
+
+## Questions
+
+*TODO* We should put a list of remaining questions here.
 
 
 ## Relevant legislation
@@ -64,11 +125,17 @@ One part of it gives legal opinion of whether these types of report are 'optiona
 
 ### The last known appointment of Independent Person at BCC
 
-The last time that the appointment of an Independent Person was ratified was at [Full Council 10th september 2013](https://democracy.bristol.gov.uk/Data/Full%20Council/201309101800/Agenda/0910_9e.pdf). From that agenda item:
+The last time that the appointment of an Independent Person was ratified was at [Full Council 10th september 2013](https://democracy.bristol.gov.uk/Data/Full%20Council/201309101800/Agenda/0910_9e.pdf). 
+
+It's worth noting that the appointment was for a limited time:
+
+> It was agreed that the appointee would serve for a 4 year term
+
+It's also worth noting that the ratification happened after the proposed Independent Person was interviewed by members of the Audit Committee:
 
 > "Interviews for a position of “Independent Member (Standards)” of the Audit Committee were undertaken on 10 May by representatives of the Audit Committee and Officers and it was decided to appoint Mr Christopher Eskell to the position."
 
-It's worth noting that the agenda item "Appointment of Independent Persons" listed for the [Full Council meeting on the 14th of November](https://democracy.bristol.gov.uk/documents/s89580/FC%20Report%20-%20IP%20Appointment.pdf) does not include any mention of the proposed Independent Persons being interview by a committee, so that would be a change in Council Policy.
+The agenda item "Appointment of Independent Persons" listed for the [Full Council meeting on the 14th of November](https://democracy.bristol.gov.uk/documents/s89580/FC%20Report%20-%20IP%20Appointment.pdf) does not include any mention of the proposed Independent Persons being interview by a committee, so that would be a change in Council Policy.
 
 
 ## Random notes
@@ -77,6 +144,25 @@ It's worth noting that the agenda item "Appointment of Independent Persons" list
 * [Welcome to the National Monitoring Officers and Governance Group of LLG](https://llg.org.uk/national-interest-groups/monitoring-officers-and-governance/)
 * [What is a monitoring officer and what do they do? Here are the answers](https://lgiu.org/blog-article/what-is-a-monitoring-officer-and-what-do-they-do-here-are-the-answers/)
 * [Nonfeasance-in-public-office](https://uollb.com/blog/law/nonfeasance-in-public-office)
+
+* 
+Adverts
+
+[](https://www.linkedin.com/posts/bristol-city-council_job-alert-are-you-interested-in-activity-7098324598613504000-qmGe)
+
+
+[On Bristol](https://ce0389li.webitrent.com/ce0389li_webrecruitment/wrd/run/ETREC107GF.open?VACANCY_ID=045280Qqqm&WVID=5153023bMp&LANG=USA&utm_source=LinkedIn&utm_medium=social&utm_campaign=Orlo)
+
+Date posted 21/07/2023 Application closing date 24/08/2023
+
+
+Date posted
+21/07/2023
+Application closing date
+24/08/2023
+
+
+
 
 ## Spare words
 
