@@ -47,9 +47,9 @@ We had hoped to get some answers from the M.O. at the Values and Ethics committe
 * Why have _none_ of the complaints of Councillors breaking the Member Code of Conduct made it past the Monitoring Officer's initial check and so none have been sent to the Values & Ethics committee for an actual investigation?
 
 
-## Provable things 
+## Evidence of wrongdoing
 
-This section contains things that we are able to 'know' (reasonably for sure) of what has happened.
+This section contains things that we are able to 'know' (reasonably for sure) of what has happened. Individually, none of them are particular damning, but taken together they show that the Monitoring Officer is 
 
 ### The Monitoring Officer appointed 3 independent persons
 
@@ -63,18 +63,17 @@ From public forum [25th September](https://democracy.bristol.gov.uk/documents/s8
 > 
 > The Council has appointed 3 Independent Persons from outside the Council to assist the Monitoring Officer in considering complaints. This is statutory requirement under S28 of the Localism Act 2011 to appoint at least 1 independent person.
 
+As the appointment of Independent Persons is unlawful unless ratified by the Full Council, that would appear to make the Monitoring Officers actions unlawful.
 
-### The Monitoring Officer mislead the Values and Ethics Committee
+### The Monitoring Officer misled the Values and Ethics Committee
 
-During the Values & Ethics committee meeting on the 9th of October the MO claimed he has already appointed Independent Persons and that they didn't need to be appointed by Full Council.
+During the Values & Ethics committee meeting on the 9th of October the M.O. claimed he has already appointed Independent Persons and that they didn't need to be appointed by Full Council.
 
 > The process to appoint the independent members was carried out by myself and the head of Legal Services. We advertised those roles, we undertook an interview process and we appointed a pool of independent persons.
 >
 > __There's no requirement in the legislation. In fact, I think it would be complete misreading of the legislation to think that that appointment would need to be made by full council.__
 
-[Video is here](https://www.youtube.com/watch?v=i4tMbXX_Icc&ab_channel=Danack)
-
-Or you can read [the minutes of the meeting](https://democracy.bristol.gov.uk/documents/s89331/9%20Oct%20VE%20mins.pdf):
+[Video is here](https://www.youtube.com/watch?v=i4tMbXX_Icc&ab_channel=Danack) or you can read [the minutes of the meeting](https://democracy.bristol.gov.uk/documents/s89331/9%20Oct%20VE%20mins.pdf).
 
 > Supplementary Question – Mike Oldreive – ‘Have all requirements of Section 28 of the Localism Act 2011
 been met?’
@@ -94,6 +93,29 @@ The 'clarification' came after a member of the public contact BCC's Chief Execut
 *TODO* add video.
 
 
+### The M.O. failed to attend the Value & Ethics committee on the 3rd of November
+
+The Monitoring Officer failed to attend the last Value and Ethics committee, which was disappointing as we'd hoped to get some clear answers at last.
+
+Not only did he not attend, but the [written answers to questions](https://democracy.bristol.gov.uk/documents/s89544/1%20-%20VE%20PF%20Bundle.pdf) were non-responsive to the questions asked. E.g.
+
+> Q. How many Independent Persons have been involved in complaints cases since 2013? Does the Monitoring Officer consider that these appointments of Independent Persons carried out by the Head of Legal Services and the Monitoring Officer were made lawfully?
+> 
+> If YES, under what specific powers? Please provide a clear reference and justification.
+>
+> A. There is a requirement to appoint an IP and consult with them where a complaint is investigated. There is a discretion to consult with an IP in all other circumstances, including initial analysis of a  complaint. The Council consults an independent person to provide advice on the assessment of complaints. There have been no complaints that have required an investigation in the last 5 years.
+
+That did not answer how many people were appointed, or if the M.O. thinks they were appointed lawfully.
+
+
+> Q. Can the Monitoring Officer explain how the members' complaints process and decisions made since 2013 if the appointments of Independent Persons are unlawful?
+>
+> A. See Answer to Q1
+
+Although we have come to expect politicians to give non-responsive answers, it is intolerable that the Monitoring Officer is doing so.
+
+
+
 ### No complaints have made it past the Monitoring Officer's gatekeeping
 
 > The Council consults an independent person to provide advice on the assessment of
@@ -101,12 +123,14 @@ complaints. There have been no complaints that have required an investigation in
 
 ### Monitoring Officer making up his own rules
 
-Examples of Joanna Booth and Danack cases
+Examples of Joanna Booth and Danack cases *TODO* fill out
 
 ### Making up his own confidential rules
 
 e.g. Is the identity of the IP kept confidential? How does this square with transparency?
 To ensure the integrity of the complaints procedures, the identify of the Independent Persons is kept confidential.
+
+*TODO* fill out
 
 
 
