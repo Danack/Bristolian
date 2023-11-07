@@ -1,6 +1,6 @@
 
 # The shenanigans of Bristol City Council's Monitoring Officer
-
+ 
 
 ## TL:DR version
 
@@ -18,9 +18,34 @@ As the situation is a bit complicated, here is a simple version.
 
 So...yeah, we have 'quite' the situation.
 
-Below you will find some 'provable things' of what has happened, but there is also a list of questions outstanding that we just aren't sure about, and the M.O. is refusing to clarify.
+Below you will find a list of questions outstanding that we just aren't sure about, and the M.O. is refusing to clarify.
 
-We had hoped to get some answers from the M.O. at the Values and Ethics committee on the 9th of November, but the written answers were non-responsive to the questions asked, and the M.O. failed to attend the meeting so members of the public were not able to ask verbal supplementary questions.
+There is also a list of 'provable things' of what we've seen, any one of which call into doubt the integrity of the Monitoring Officer, but altogether show that he is failing in his duty.
+
+We had hoped to get some answers from the M.O. at the Values and Ethics committee on the 3rd of November but the M.O. failed to attend the meeting so members of the public were not able to ask verbal supplementary questions, and the written answers were non-responsive to the questions asked.
+
+
+## Questions Councillors should be asking
+
+
+* SZ1 - Please provide the names and dates of appointment of all Bristol City Council Independent Persons since September 2013.
+
+* SZ2 - Please explain why the appointment of Independent Persons has not been ratified by Bristol City Council Full Council in the ten years since September 2013.
+
+* JS1 - Can the Monitoring Officer confirm that there has been no breach of data protection regulations by himself and the Head of Legal Services?
+
+* JS2- The Independent Person appointed in 2013 had a term limit of 4 years so they are no longer a lawfully appointed Independent Person. Any "Independent" Persons appointed directly by the MO & HOLS are not appointed in accordance with the Localism Act 2011 so they are not lawfully appointed. Under what legal authority has the Monitoring Officer and Head of Legal Services been sharing the personal information of complainants with those Independent Persons?
+
+* JB1 - Have any of the Independent Persons proposed for ratification today, already been consulted with as Independent Persons?
+
+* JB2 - Have the Independent Persons who have already been appointed and consulted with been made aware that they may have been consulted as Independent Persons unlawfully, and that they may have received personal information without legal authorisation?
+
+* MO1 - The Monitoring Officer has said in a written answer to Values & Ethics Committee that during his tenure (2018 onwards) ”The appointment of Independent Persons was done through a formal recruitment and selection process carried out by the Monitoring Officer and the Head of Legal Services.” Can the Monitoring Officer confirm that this approach, (where he and the Head of Legal Services appointed Independent Persons,apparently without Member approval) was lawful and fully met the requirements of 28 of the Localism Act 2011 for all ”IPs” used in complaints handling?
+
+* MO2 - Since 2018 how much has been paid as allowances to Independent Persons ”appointed” by the Monitoring Officerand Head of Legal Services, and on what basis are these payments considered to be lawful?
+
+* Why have _none_ of the complaints of Councillors breaking the Member Code of Conduct made it past the Monitoring Officer's initial check and so none have been sent to the Values & Ethics committee for an actual investigation?
+
 
 ## Provable things 
 
@@ -64,6 +89,11 @@ been met?’
 
 The 'clarification' came after a member of the public contact BCC's Chief Executive. It is entirely possible the Monitoring Officer made an honest mistake in understanding the law.
 
+### The M.O. mislead the chair of the V&E committee multiple times to avoid Public Forum
+
+*TODO* add video.
+
+
 ### No complaints have made it past the Monitoring Officer's gatekeeping
 
 > The Council consults an independent person to provide advice on the assessment of
@@ -79,13 +109,13 @@ e.g. Is the identity of the IP kept confidential? How does this square with tran
 To ensure the integrity of the complaints procedures, the identify of the Independent Persons is kept confidential.
 
 
-## Questions
 
-* Are the Independent Persons proposed to be ratified at the November the 14th Full Council the same people who have already been appointed by the M.O. and consulted with?
+## Thanks for reading
 
-* Were any Independent Persons appointed between 2017 and 2023?
+Everything below here is background information. If you're very interested in this topic you might find it interesting, otherwise all the good stuff is above.
 
-* Why have _none_ of the complaints of Councillors breaking the Member Code of Conduct made it past the Monitoring Officer's gatekeeping?  
+----------
+
 
 ## Relevant legislation
 
@@ -106,7 +136,6 @@ It includes this part:
 
 > it shall be the duty of a relevant authority’s monitoring officer, if it at any time appears to him that any proposal, decision or omission by the authority, by any committee, or sub-committee of the authority, by any person holding any office or employment under the authority, has given rise to or is likely to or would give rise to—
 (a)a contravention by the authority, by any committee, or sub-committee of the authority, by any person holding any office or employment under the authority or by any such joint committee of any enactment or rule of law...to prepare a report to the authority with respect to that proposal, decision or omission.
-
 
 Which basically says that Monitoring Officer has a public duty to say when the Council either has or will act unlawfully, either through taking some action that is not lawful, or failing to take some action that is mandated to be done.
 
