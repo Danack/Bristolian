@@ -108,6 +108,35 @@ HTML;
 
 
 
+<p>
+  <a href="https://www.youtube.com/watch?v=sKnCNL6jgII&ab_channel=Danack">Bristol Full Council 10th of October</a>
+</p>
+
+
+<p>
+  <a href="https://www.youtube.com/watch?v=bSrrOTtMM6A&feature=youtu.be&ab_channel=Danack">Committee Model Working Group - Friday, 27th October</a>
+</p>
+
+
+
+<p>
+  <a href="https://www.youtube.com/watch?v=TfkLIxog2xM&ab_channel=Danack">Overview and Scrutiny Management Board - Thursday, 2nd November, 2023</a>
+</p>
+
+<p>
+  <a href="https://www.youtube.com/watch?v=dQoFH4b2C7Y&ab_channel=Danack">Values and Ethics Sub-Committee - Friday, 3rd November, 2023</a>
+</p>
+
+
+<p>
+  <a href="https://www.youtube.com/watch?v=0biS6hwEjO8&ab_channel=Danack">Audit Committee - Monday, 20th November</a>
+</p>
+
+<p>
+  <a href="https://www.youtube.com/watch?v=3JTSMgQUv9o&ab_channel=Danack">Committee Model Working Group - Friday, 24th November</a>
+</p>
+
+
 HTML;
 
         return $content;

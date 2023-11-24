@@ -28,23 +28,25 @@ We had hoped to get some answers from the M.O. at the Values and Ethics committe
 ## Questions Councillors should be asking
 
 
-* SZ1 - Please provide the names and dates of appointment of all Bristol City Council Independent Persons since September 2013.
+* Please provide the names and dates of appointment of all Bristol City Council Independent Persons since September 2013.
 
-* SZ2 - Please explain why the appointment of Independent Persons has not been ratified by Bristol City Council Full Council in the ten years since September 2013.
+* Please explain why the appointment of Independent Persons has not been ratified by Bristol City Council Full Council in the ten years since September 2013.
 
-* JS1 - Can the Monitoring Officer confirm that there has been no breach of data protection regulations by himself and the Head of Legal Services?
+* Can the Monitoring Officer confirm that there has been no breach of data protection regulations by himself and the Head of Legal Services?
 
-* JS2- The Independent Person appointed in 2013 had a term limit of 4 years so they are no longer a lawfully appointed Independent Person. Any "Independent" Persons appointed directly by the MO & HOLS are not appointed in accordance with the Localism Act 2011 so they are not lawfully appointed. Under what legal authority has the Monitoring Officer and Head of Legal Services been sharing the personal information of complainants with those Independent Persons?
+* The Independent Person appointed in 2013 had a term limit of 4 years so they are no longer a lawfully appointed Independent Person. Any "Independent" Persons appointed directly by the MO & HOLS are not appointed in accordance with the Localism Act 2011 so they are not lawfully appointed. Under what legal authority has the Monitoring Officer and Head of Legal Services been sharing the personal information of complainants with those Independent Persons?
 
-* JB1 - Have any of the Independent Persons proposed for ratification today, already been consulted with as Independent Persons?
+* Have any of the Independent Persons proposed for ratification today, already been consulted with as Independent Persons?
 
-* JB2 - Have the Independent Persons who have already been appointed and consulted with been made aware that they may have been consulted as Independent Persons unlawfully, and that they may have received personal information without legal authorisation?
+* Have the Independent Persons who have already been appointed and consulted with been made aware that they may have been consulted as Independent Persons unlawfully, and that they may have received personal information without legal authorisation?
 
-* MO1 - The Monitoring Officer has said in a written answer to Values & Ethics Committee that during his tenure (2018 onwards) ”The appointment of Independent Persons was done through a formal recruitment and selection process carried out by the Monitoring Officer and the Head of Legal Services.” Can the Monitoring Officer confirm that this approach, (where he and the Head of Legal Services appointed Independent Persons,apparently without Member approval) was lawful and fully met the requirements of 28 of the Localism Act 2011 for all ”IPs” used in complaints handling?
+* The Monitoring Officer has said in a written answer to Values & Ethics Committee that during his tenure (2018 onwards) ”The appointment of Independent Persons was done through a formal recruitment and selection process carried out by the Monitoring Officer and the Head of Legal Services.” Can the Monitoring Officer confirm that this approach, (where he and the Head of Legal Services appointed Independent Persons,apparently without Member approval) was lawful and fully met the requirements of 28 of the Localism Act 2011 for all ”IPs” used in complaints handling?
 
-* MO2 - Since 2018 how much has been paid as allowances to Independent Persons ”appointed” by the Monitoring Officerand Head of Legal Services, and on what basis are these payments considered to be lawful?
+* Since 2018 how much has been paid as allowances to Independent Persons ”appointed” by the Monitoring Officerand Head of Legal Services, and on what basis are these payments considered to be lawful?
 
-* Why have _none_ of the complaints of Councillors breaking the Member Code of Conduct made it past the Monitoring Officer's initial check and so none have been sent to the Values & Ethics committee for an actual investigation?
+* This is a yes or no question. Has the council’s Member Code of Conduct complaints process been carried out in full accordance with the law (Localism Act 2011) at all times during the Mayor’s period in office?
+
+* Why have _none_ of the complaints of Councillors breaking the Member Code of Conduct made it past the Monitoring Officer's initial triaging and so none have been sent to the Values & Ethics committee for an actual investigation?
 
 
 ## Evidence of wrongdoing
@@ -114,6 +116,25 @@ That did not answer how many people were appointed, or if the M.O. thinks they w
 
 Although we have come to expect politicians to give non-responsive answers, it is intolerable that the Monitoring Officer is doing so.
 
+> Q. Section 5 of the Local Government & Housing Act 1989 requires the Council to appoint an
+> Officer to act as the Council's Monitoring Officer. The Act provides that it is the personal
+> duty of the Monitoring Officer to report formally to the Council on any proposal, decision or
+> omission by the Council, which has given rise to, or is likely to, or would, give rise to, the
+> contravention of any enactment, rule of law or statutory code of practice.
+> 
+> The appointment of Independent Persons by the Monitoring Officer and the Head of Legal
+> Services is a breach of section 28 of the Localism Act 2011, Will the Monitoring Officer
+> report formally the unlawful appointment of Independent Persons to all members of the
+> Council, as required by statute?
+>
+> A. The MO will not be preparing a S5 report. However, there will be a report to Full Council
+> on the 14th November recommending the appointment of 3 Independent persons
+
+The supplementary question that was going to be asked verbally, but had to be submitted in writing due to the no-show of the M.O. is:
+
+> Please can you say in very simple terms, why you believe you don’t need to write a Section 5 report?
+
+An answer has not been provided yet.
 
 
 ### No complaints have made it past the Monitoring Officer's gatekeeping
