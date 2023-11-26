@@ -34,7 +34,7 @@ The current rules can be found on page 11 of this part of the constitution [Part
 Audit Committee
   </td>
   <td>
-     As part of the [Updating the Constitution](https://democracy.bristol.gov.uk/documents/s34767/13%20-%20Report%20to%20Audit%20re%20plan%20and%20timetable%20for%20changes%20to%20constitution%20v1.3.pdf) agenda item, there is a suggestion for a "Cooling off period for the determination of planning decisions"
+As part of the <a href="https://democracy.bristol.gov.uk/documents/s34767/13%20-%20Report%20to%20Audit%20re%20plan%20and%20timetable%20for%20changes%20to%20constitution%20v1.3.pdf">Updating the Constitution</a> agenda item, there is a suggestion for a "Cooling off period for the determination of planning decisions"
 
 The [minutes of this meeting](https://democracy.bristol.gov.uk/documents/s41802/29.7.19.pdf) say that:
 
@@ -53,13 +53,13 @@ and
 <tr>
   <td>
 26th September, 2019  
-[Growth and Regeneration Scrutiny Commission](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=133&MId=5930&Ver=4)
+<a href="https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=133&MId=5930&Ver=4">Growth and Regeneration Scrutiny Commission</a>
   </td>
   <td>
 
-Clive Stevens made a [public forum statement](https://democracy.bristol.gov.uk/documents/b31766/Public%20Forum%2026%20Sept%2019%2026th-Sep-2019%2018.00%20Growth%20and%20Regeneration%20Scrutiny%20Commission.pdf?T=9) which I'm going to quote at length as it accurately describes the problem:
+Clive Stevens made a <a href="https://democracy.bristol.gov.uk/documents/b31766/Public%20Forum%2026%20Sept%2019%2026th-Sep-2019%2018.00%20Growth%20and%20Regeneration%20Scrutiny%20Commission.pdf?T=9">public forum statement</a> which I'm going to quote at length as it accurately describes the problem:
 
-> I was horrified to see on page 31 that a key measure of success of this administration is the percentage of major applications approved. [(See DGR313a).](https://democracy.bristol.gov.uk/documents/s41563/Performance%20Report%20Quarter%201.pdf)
+> I was horrified to see on page 31 that a key measure of success of this administration is the percentage of major applications approved. <a href="https://democracy.bristol.gov.uk/documents/s41563/Performance%20Report%20Quarter%201.pdf">(See DGR313a).</a>
 > Major applications are generally approved by Development Committees which are supposed to be independent decisions taken by Councillors based off independent Officer advice.
 > 
 > My horror comes from the possibility that this measure is putting Planning Officers in a conflict of interest situation. They are supposed to be assessing whether a development meets planning policy but in the back of their mind they know one of the department’s measures of success and possibly even their own personal objective is influencing them to favour approval over and above the principle of sustainable development.
@@ -74,8 +74,8 @@ Clive Stevens made a [public forum statement](https://democracy.bristol.gov.uk/d
 
 
 <tr>
-  <td>21st May 2020 
-[Full Council](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=142&MId=8366)
+  <td>21st May 2020  
+<a href="https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=142&MId=8366">Full Council</a>
   </td>
   <td>
 There are three documents for this item:
@@ -95,7 +95,7 @@ The first document is the overview. It is meant to tell Councillors what the age
 <tr>
   <td>
     5th August 2020  
-    [Development Control A Committee](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=138&MId=8473&Ver=4)
+<a href="https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=138&MId=8473&Ver=4">Development Control A Committee</a>
   </td>
   <td>
      This meeting chaired by Councillor Donald Alexander uses the new 'Planning Committee Diagram v0.6' for the first time.
@@ -107,7 +107,7 @@ The first document is the overview. It is meant to tell Councillors what the age
 <tr>
   <td>
     19th August 2020  
-    [Development Control B Committee](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=141&MId=8451&Ver=4)
+<a href="https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=141&MId=8451&Ver=4">Development Control B Committee</a>
   </td>
   <td>
     This meeting, chaired by Councillor Tom Brook with vice-chair Councillor Richard Eddy, uses the new 'Planning Committee Diagram v0.6' for the first time.
@@ -119,7 +119,7 @@ The first document is the overview. It is meant to tell Councillors what the age
 <tr>
   <td>
     18th October, 2023
-[Development Control B](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=141&MId=10706&Ver=4)
+<a href="https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=141&MId=10706&Ver=4">Development Control B</a>
   </td>
   <td>
     Councillor Poultney pushes back <a href="https://www.youtube.com/watch?v=4fKW8rcI08c&ab_channel=Danack">on the "refusal needs deferral"</a> suggestion from an Officer.
