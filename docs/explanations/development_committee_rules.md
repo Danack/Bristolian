@@ -1,61 +1,28 @@
 
+## TL:DR
+
+In 2019, there was a proposal from the chairs of the Development Committees [to require a deferral](https://democracy.bristol.gov.uk/documents/s34769/13%20-%20Appendix%202%202.pdf) rather than outright refusal.  
+
+That proposal didn't reach the BCC constitution.
+
+In 2020, there was a [proposal to strongly push Councillors to defer rather than refuse](https://democracy.bristol.gov.uk/documents/s49010/3_App2%20-%20DC%20CoC.pdf) (see page 16), but it doesn't appear to require that deferral. 
+
+The planning department has been acting as if the proposal that was abandoned is actually the rule.
+
+I suspect people just misremembered which one was actually implemented.
+
+
 ## Summary
 
 Some people think that Development Control committees aren't allowed to give a refusal to a planning application in a meeting, instead those committees need to 'defer' refusals for the next meeting.
 
-That does not appear to be borne out by fact, and instead the 'debate and decision process' for development committees is the same as it was in 2019.
-
-
 * At some point in 2019, the chairs of the Development Committees (Don Alexander and Tom Brook) proposed that there should be a 'cooling off' period when a development committee refuses an application.
 * A draft of the [proposed changes can be found here](https://democracy.bristol.gov.uk/documents/s34769/13%20-%20Appendix%202%202.pdf).
-* This change was proposed to the Audit committee on the 29th July 2019, who said it was a matter for the development committees to decide, so the Audit Committee referred it back to the Development Committees.
-* Multiple people have failed to find any evidence the change was considered by the Development Committees. If you find any please say so.
-* At Full Council on the 21st May 2020, a single reference to some 'debate and decision process' change was made in the agenda item that "Updates member code of conduct". However that agenda item is missing a clear description of what the change is, and there are no details in the other documents for that agenda item.
+* This change was proposed to the Audit committee on the 29th July 2019, who said it was a matter for the development committees to decide, so the Audit Committee referred it back to the Development Committees but it's not clear it ever reached them.
+* At the (Audit Committee 16 March 2020](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=134&MId=5915&Ver=4) there [was a similar proposal](https://democracy.bristol.gov.uk/documents/s47309/13%20App2%20-%20DC%20CoC.pdf) that strongly encourages a refusal to be deferred to the next meeting, but does not require it.
+* At Full Council on the 21st May 2020, the Audit Committee proposal was recommended and approved.
 
-So currently, I believe the 'refusal needs deferral until next meeting' is not part of Bristol City Council's constitution as it wasn't submitted to Full Council, but also because the proposed change hasn't been debated or decided by any committee.
-
-The actual current rules can be found on page 11 of this part of the constitution [Part 5 (D) Code of conduct for members and officers: planning matters ](https://www.bristol.gov.uk/files/documents/3364-part-5-d-code-of-conduct-for-members-and-officers-planning-matters/file)
-
-<img src="/images/development_committee/current_process.png" class='thumb_image' alt="12.5 to 12.7 of Bristol's Constitution"/>
-
-## Questions
-
-### Did any committee approved the alleged changes?
-
-My understanding is that changes to the constitution need to be debated and approved at a committee other than Full Council, before being sent to Full Council for formal agreement, so did any committee discuss and approve the changes?
-
-Although the Audit Committee said the change was to be referred back to the Development Control Committees, I can't see any meetings where it was formally discussed.
-
-### Did the Monitoring Officer mislead the full council?
-
-Is there a falsehood in [the overview document](https://democracy.bristol.gov.uk/documents/s49008/1_Members%20CoC%20for%20DC%20Committees%2013%20FC%20AGM%20report.pdf):
-
-> The updated Code was considered by the Audit Committee on 16 March 2020 where it was endorsed and recommended to Full Council for adoption.
-
-Although it's true that the updated "Member code of conduct" was discussed at the [Audit Committee on the 16th of March 2020](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=134&MId=5915&Ver=4), that debate did not include any changes in 'debate and decision process', so those haven't been 'endorsed and recommended to Full Council'.
-
-### Did someone forget to attach documents?
-
-It seems the intention was to 'slip in' the changes to the 'debate and decision process' at the full council on 21st May 2020, as the overview documents does imply that it should be there.
-
-Did the Monitoring Officer simply forget to attach the documents for that particular change?
-
-To be fair, he would have been very busy at the time, as it was the time when the Bristol Energy scandal was being hushed-up, despite [Geoff Gollops best efforts](https://democracy.bristol.gov.uk/documents/s49408/CS03%20-%20Councillor%20Geoff%20Gollop_Redacted.pdf) to shed light on it.
-
-### Have the Officers in BCC's planning department been misled?
-
-In the draft minutes for the [18th October 2023 Development Control B Committee](https://democracy.bristol.gov.uk/documents/s90064/DCB%20Minutes%2018th%20October%202023%20v2%20AH%20Edit.pdf) is this line:
-
-> The Chief Planner and Head of Planning reminded Members that should they be minded to refuse the application, they would need to provide Officers with a steer on the reasons for refusal. Officers could then bring the suggested reasons back to a future Meeting of the Committee for agreement, or for the Committee to reconsider.
-
-I'm sure the Chief Planner and Head of Planning didn't do this intentionally, but they have misled the committee here. Although that might be the Officer's understanding of the rules, those are not actually the rules.
-
-### Were the chairs of DCA and DCB aware?
-
-Both development committees started using the new 'debate and decision process' within three months of the Full Council meeting of the 21st May 2020.
-
-Were the committee chairs aware that the new process hadn't been approved? Were they surprised to see it?
-
+The actual current rules can be found on page 16 of this part of the constitution [Part 5 (D) Code of conduct for members and officers: planning matters ](https://www.bristol.gov.uk/files/documents/3364-part-5-d-code-of-conduct-for-members-and-officers-planning-matters/file)
 
 ## Timeline
 
@@ -86,6 +53,13 @@ Clive Stevens made a <a href="https://democracy.bristol.gov.uk/documents/b31766/
 > 
 > There are huge amounts of money to be made by YTL, L&G and lots of other developers with so much to gain from “subtle” changes to policy. Indeed some in Bristol would be justified in wondering whether both land and now democracy seems to be being sold off to the highest bidder.
 
+
+
+### 16th March 2020 - <a href="https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=134&MId=5915">Audit Committee</a> 
+
+There [was a proposal](https://democracy.bristol.gov.uk/documents/s47309/13%20App2%20-%20DC%20CoC.pdf) that strongly encourages a refusal to be deferred to the next meeting, but does not require it.
+
+
 ### 21st May 2020 - <a href="https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=142&MId=8366">Full Council</a>
   
 There are three documents for this item:
@@ -94,11 +68,12 @@ There are three documents for this item:
 * [Appendix 1 Part 5(d) Code of conduct for members and officers - planning matters](https://democracy.bristol.gov.uk/documents/s49009/2_App%201%20Part%205d%20Code%20of%20conduct%20for%20members%20and%20officers%20-%20planning%20matters.pdf)
 * [Appendix 2 - Good practice protocol for planning](https://democracy.bristol.gov.uk/documents/s49010/3_App2%20-%20DC%20CoC.pdf)
 
-The first document is the overview. It is meant to tell Councillors what the agenda item is about. The vast majority of the document talks about "Member Code of Conduct ", however right at the bottom of the second page, there is a single sentence that refers to "The addition of a new appendix 2 detailing the debate and decision process."
+The first document is the overview, near the bottom of the second page, there is:
 
-This alleged change to the 'debate and decision process' is not detailed in any of the other documents.
+> - Changes to appendix 1 of the Code concerning the situation where the decision of the Committee is to overturn officer recommendations
+> - The addition of a new appendix 2 detailing the debate and decision process
 
-The BCC constitution published in May 2020 does not contain any reference to the 'refusal needs deferral'.
+The [BCC constitution published in May 2020](https://www.bristol.gov.uk/files/documents/3364-part-5-d-code-of-conduct-for-members-and-officers-planning-matters/file) contains the new wording as proposed in the 16th March 2020 Audit Committee, not the change proposed by the chairs of the Development Committees.
 
 ### 5th August 2020 - <a href="https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=138&MId=8473&Ver=4">Development Control A Committee</a>
   
