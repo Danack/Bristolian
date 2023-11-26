@@ -70,8 +70,7 @@ and
 
 > That the proposal from the Chairs of the Development Control Committees to amend the Committee Procedure Rules to include a ‘cooling off period’ where the Committee was minded to decide a matter otherwise than in accordance with officer recommendations be referred to Development Control Committee members for consideration.
 
-  a.k.a. no decision was made about the proposed 'cooling off' period.
-
+a.k.a. no decision was made about the proposed 'cooling off' period.
 
 ### 26th September, 2019 - <a href="https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=133&MId=5930&Ver=4">Growth and Regeneration Scrutiny Commission</a>
 
@@ -96,6 +95,9 @@ There are three documents for this item:
 
 The first document is the overview. It is meant to tell Councillors what the agenda item is about. The vast majority of the document talks about "Member Code of Conduct ", however right at the bottom of the second page, there is a single sentence that refers to "The addition of a new appendix 2 detailing the debate and decision process."
 
+This alleged change to the 'debate and decision process' is not detailed in any of the other documents.
+
+The BCC constitution published in May 2020 does not contain any reference to the 'refusal needs deferral'.
 
 ### 5th August 2020 - <a href="https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=138&MId=8473&Ver=4">Development Control A Committee</a>
   
@@ -107,6 +109,4 @@ This meeting, chaired by Councillor Tom Brook with vice-chair Councillor Richard
 
 ### 18th October, 2023 - <a href="https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=141&MId=10706&Ver=4">Development Control B</a>
 
- Councillor Poultney pushes back <a href="https://www.youtube.com/watch?v=4fKW8rcI08c&ab_channel=Danack">on the "refusal needs deferral"</a> suggestion from an Officer.
-
-
+Councillor Poultney pushes back <a href="https://www.youtube.com/watch?v=4fKW8rcI08c&ab_channel=Danack">on the "refusal needs deferral"</a> suggestion from an Officer.
