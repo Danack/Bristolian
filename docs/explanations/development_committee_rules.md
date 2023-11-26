@@ -32,11 +32,11 @@ Is there a falsehood in [the overview document](https://democracy.bristol.gov.uk
 
 > The updated Code was considered by the Audit Committee on 16 March 2020 where it was endorsed and recommended to Full Council for adoption.
 
-Although it's true that the updated "Member code of conduct" was discussed at the [Audit Committee on the 16th of March 2020](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=134&MId=5915&Ver=4), that debate did not include any changes in 'debate and decision process'.
+Although it's true that the updated "Member code of conduct" was discussed at the [Audit Committee on the 16th of March 2020](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=134&MId=5915&Ver=4), that debate did not include any changes in 'debate and decision process', so those haven't been 'endorsed and recommended to Full Council'.
 
 ### Did someone forget to attach documents?
 
-It seems the intention was to 'slip in' the changes to the 'debate and decision process' at the full council on 21st May 2020, as the overview does say that they should be there
+It seems the intention was to 'slip in' the changes to the 'debate and decision process' at the full council on 21st May 2020, as the overview documents does imply that it should be there.
 
 Did the Monitoring Officer simply forget to attach the documents for that particular change?
 
@@ -48,7 +48,7 @@ In the draft minutes for the [18th October 2023 Development Control B Committee]
 
 > The Chief Planner and Head of Planning reminded Members that should they be minded to refuse the application, they would need to provide Officers with a steer on the reasons for refusal. Officers could then bring the suggested reasons back to a future Meeting of the Committee for agreement, or for the Committee to reconsider.
 
-I'm sure the Chief Planner and Head of Planning didn't do this intentionally, but they have misled the committee here. Although that might be the common understanding of the rules, those are not actually the rules.
+I'm sure the Chief Planner and Head of Planning didn't do this intentionally, but they have misled the committee here. Although that might be the Officer's understanding of the rules, those are not actually the rules.
 
 ### Were the chairs of DCA and DCB aware?
 
