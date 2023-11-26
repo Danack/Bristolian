@@ -2,7 +2,7 @@
 
 ## Summary
 
-* At some point in 2019, the chairs of the Development Committees (Don Alexander and Richard Eddy) proposed that there should be a 'cooling off' period when a development committee refuses an application.
+* At some point in 2019, the chairs of the Development Committees (Don Alexander and Tom Brook) proposed that there should be a 'cooling off' period when a development committee refuses an application.
 * A draft of the [proposed changes can be found here](https://democracy.bristol.gov.uk/documents/s34769/13%20-%20Appendix%202%202.pdf).
 * It was proposed to the Audit committee on the 29th July 2019, who said it was a matter for the development committees to decide, so the referred it back.
 * A tiny reference to it was made in the agenda item that "Updates member code of conduct" on the 21st May 2020. However that agenda item is missing a clear description of what the change is.
