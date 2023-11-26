@@ -90,10 +90,13 @@ been met?’
 
 The 'clarification' came after a member of the public contact BCC's Chief Executive. It is entirely possible the Monitoring Officer made an honest mistake in understanding the law.
 
-### The M.O. mislead the chair of the V&E committee multiple times to avoid Public Forum
+### The M.O. misled the chair of the V&E committee multiple times to avoid Public Forum
 
-*TODO* add video.
+At the Values and Ethics committee on the 25th of September, the Monitoring Officer misled the chair of the committee (who is an independent member not a councillor, and so unfamiliar with the rules) into thinking that it was acceptable to skip public forum without formally moving a motion to do so.
 
+A member of the [public interrupted the meeting and insisted the Constitution of Bristol be followed](https://www.youtube.com/watch?v=tPZbvQ9qu8o&ab_channel=Danack). 
+
+People shouldn't have to shout down the Monitoring Officer into following the rules.
 
 ### The M.O. failed to attend the Value & Ethics committee on the 3rd of November
 
