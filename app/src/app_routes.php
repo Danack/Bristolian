@@ -58,6 +58,8 @@ function getAllAppRoutes()
         ['/explanations/shenanigans_planning', 'GET', 'Bristolian\AppController\Pages::shenanigans_planning'],
         ['/explanations/monitoring_officer_notes', 'GET', 'Bristolian\AppController\Pages::monitoring_officer_notes'],
 
+        ['/explanations/development_committee_rules', 'GET', 'Bristolian\AppController\Pages::development_committee_rules'],
+
         ['/tools/floating_point', 'GET', '\Bristolian\AppController\Pages::floating_point_page'],
         ['/tools/timeline', 'GET', '\Bristolian\AppController\Pages::timeline_page'],
         ['/tools/notes', 'GET', '\Bristolian\AppController\Pages::notes_page'],

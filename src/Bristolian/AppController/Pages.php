@@ -37,6 +37,8 @@ class Pages
 
 <a href='/explanations/monitoring_officer_notes'>Monitoring Officer shenanigans</a><br/>
 
+<a href='/explanations/development_committee_rules'>Development Committee Made Up Rules</a><br/>
+
 
 <!--
 <ul>
@@ -305,6 +307,20 @@ HTML;
     public function monitoring_officer_notes(MarkdownRenderer $markdownRenderer): string
     {
         $fullPath = __DIR__ . "/../../../docs/explanations/monitoring_officer_problem.md";
+
+        Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
+
+        $html = $markdownRenderer->renderFile($fullPath);
+        $html .= "<hr/>";
+        $html .= share_this_page();
+
+        return $html;
+    }
+
+
+    public function development_committee_rules(MarkdownRenderer $markdownRenderer): string
+    {
+        $fullPath = __DIR__ . "/../../../docs/explanations/development_committee_rules.md";
 
         Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
 
