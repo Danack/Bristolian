@@ -12,7 +12,7 @@ function injectionParams()
         \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
         \Bristolian\Service\RequestNonce::class,
         \Asm\SessionManager::class,
-        \Bristolian\App\SessionStorage::class
+        \Bristolian\SessionStorage::class
     ];
 
     // Alias interfaces (or classes) to the actual types that should be used
