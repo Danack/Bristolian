@@ -13,7 +13,7 @@ The change in 'debate and decision process' is not lawful.
 
 The current rules can be found on page 11 of this part of the constitution [Part 5 (D) Code of conduct for members and officers: planning matters ](https://www.bristol.gov.uk/files/documents/3364-part-5-d-code-of-conduct-for-members-and-officers-planning-matters/file)
 
-<img src="/images/development_committee/current_process.png" alt="12.5 to 12.7 of Bristol's Constitution"/>
+<img src="/images/development_committee/current_process.png" class='thumb_image' alt="12.5 to 12.7 of Bristol's Constitution"/>
 
 ## Timeline
 
@@ -30,7 +30,8 @@ The current rules can be found on page 11 of this part of the constitution [Part
 
 <tr>
   <td>
-    29th July 2019 <br/>Audit Committee
+    29th July 2019
+Audit Committee
   </td>
   <td>
      As part of the [Updating the Constitution](https://democracy.bristol.gov.uk/documents/s34767/13%20-%20Report%20to%20Audit%20re%20plan%20and%20timetable%20for%20changes%20to%20constitution%20v1.3.pdf) agenda item, there is a suggestion for a "Cooling off period for the determination of planning decisions"
@@ -51,9 +52,11 @@ and
 
 <tr>
   <td>
-26th September, 2019<br/>[Growth and Regeneration Scrutiny Commission](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=133&MId=5930&Ver=4)
+26th September, 2019  
+[Growth and Regeneration Scrutiny Commission](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=133&MId=5930&Ver=4)
   </td>
   <td>
+
 Clive Stevens made a [public forum statement](https://democracy.bristol.gov.uk/documents/b31766/Public%20Forum%2026%20Sept%2019%2026th-Sep-2019%2018.00%20Growth%20and%20Regeneration%20Scrutiny%20Commission.pdf?T=9) which I'm going to quote at length as it accurately describes the problem:
 
 > I was horrified to see on page 31 that a key measure of success of this administration is the percentage of major applications approved. [(See DGR313a).](https://democracy.bristol.gov.uk/documents/s41563/Performance%20Report%20Quarter%201.pdf)
@@ -71,7 +74,8 @@ Clive Stevens made a [public forum statement](https://democracy.bristol.gov.uk/d
 
 
 <tr>
-  <td>21st May 2020<br/>[Full Council](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=142&MId=8366)
+  <td>21st May 2020 
+[Full Council](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=142&MId=8366)
   </td>
   <td>
 There are three documents for this item:
@@ -90,7 +94,7 @@ The first document is the overview. It is meant to tell Councillors what the age
 
 <tr>
   <td>
-    5th August 2020<br/>
+    5th August 2020  
     [Development Control A Committee](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=138&MId=8473&Ver=4)
   </td>
   <td>
@@ -102,7 +106,7 @@ The first document is the overview. It is meant to tell Councillors what the age
 
 <tr>
   <td>
-    19th August 2020<br/>
+    19th August 2020  
     [Development Control B Committee](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=141&MId=8451&Ver=4)
   </td>
   <td>
@@ -115,6 +119,7 @@ The first document is the overview. It is meant to tell Councillors what the age
 <tr>
   <td>
     18th October, 2023
+[Development Control B](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=141&MId=10706&Ver=4)
   </td>
   <td>
     Councillor Poultney pushes back <a href="https://www.youtube.com/watch?v=4fKW8rcI08c&ab_channel=Danack">on the "refusal needs deferral"</a> suggestion from an Officer.
