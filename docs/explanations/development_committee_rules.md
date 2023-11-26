@@ -9,10 +9,10 @@ That does not appear to be borne out by fact, and instead the 'debate and decisi
 * At some point in 2019, the chairs of the Development Committees (Don Alexander and Tom Brook) proposed that there should be a 'cooling off' period when a development committee refuses an application.
 * A draft of the [proposed changes can be found here](https://democracy.bristol.gov.uk/documents/s34769/13%20-%20Appendix%202%202.pdf).
 * This change was proposed to the Audit committee on the 29th July 2019, who said it was a matter for the development committees to decide, so the Audit Committee referred it back to the Development Committees.
-* Multiple people have failed to find any evidence they were considered by the Development Committees.
+* Multiple people have failed to find any evidence the change was considered by the Development Committees. If you find any please say so.
 * At Full Council on the 21st May 2020, a single reference to some 'debate and decision process' change was made in the agenda item that "Updates member code of conduct". However that agenda item is missing a clear description of what the change is, and there are no details in the other documents for that agenda item.
 
-So currently, I believe the 'refusal needs deferral until next meeting' is not part of Bristol City Council's constitution as it wasn't submitted properly, and the constitution wasn't updated, but also because the proposed change hasn't been debated or decided by any committee.
+So currently, I believe the 'refusal needs deferral until next meeting' is not part of Bristol City Council's constitution as it wasn't submitted to Full Council, but also because the proposed change hasn't been debated or decided by any committee.
 
 The actual current rules can be found on page 11 of this part of the constitution [Part 5 (D) Code of conduct for members and officers: planning matters ](https://www.bristol.gov.uk/files/documents/3364-part-5-d-code-of-conduct-for-members-and-officers-planning-matters/file)
 
