@@ -89,6 +89,10 @@ HTML;
 
 
 <p>
+  <a href="https://www.youtube.com/watch?v=LjnQMKDVFA0&ab_channel=Danack">Committee Model Working Group - 28th July</a>
+</p>
+
+<p>
   <a href="https://www.youtube.com/watch?v=DhNLwdJ8PpM&ab_channel=Danack">Committee Model Working Group - Friday, 8th September</a>
 </p>
 
@@ -126,16 +130,20 @@ HTML;
 </p>
 
 <p>
-  <a href="https://www.youtube.com/watch?v=dQoFH4b2C7Y&ab_channel=Danack">Values and Ethics Sub-Committee - Friday, 3rd November, 2023</a>
+  <a href="https://www.youtube.com/watch?v=dQoFH4b2C7Y&ab_channel=Danack">Values and Ethics Sub-Committee, 3rd November, 2023</a>
 </p>
 
 
 <p>
-  <a href="https://www.youtube.com/watch?v=0biS6hwEjO8&ab_channel=Danack">Audit Committee - Monday, 20th November</a>
+  <a href="https://www.youtube.com/watch?v=0biS6hwEjO8&ab_channel=Danack">Audit Committee 20th November</a>
 </p>
 
 <p>
-  <a href="https://www.youtube.com/watch?v=3JTSMgQUv9o&ab_channel=Danack">Committee Model Working Group - Friday, 24th November</a>
+  <a href="https://www.youtube.com/watch?v=3JTSMgQUv9o&ab_channel=Danack">Committee Model Working Group - 24th November, 2023</a>
+</p>
+
+<p>
+  <a href="https://www.youtube.com/watch?v=BpQyjhjTV3s&ab_channel=Danack">Growth and Regeneration Scrutiny Commission, 27th November, 2023</a>
 </p>
 
 
