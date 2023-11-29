@@ -147,6 +147,11 @@ HTML;
 </p>
 
 
+<p>
+  <a href="https://www.youtube.com/watch?v=dgooVwQ-gQg&ab_channel=Danack">Bristol Schools Forum, 28th November, 2023</a>
+</p>
+
+
 HTML;
 
         return $content;
