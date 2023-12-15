@@ -1,0 +1,18 @@
+{
+  "short_name": "Bristolian",
+  "name": "Bristolian",
+  "icons": [
+    {
+      "src": "https://bristolian.org/images/icons/pwa_logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "id": "/",
+  "start_url": "/",
+  "background_color": "#FFFFFF",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#FFFFFF",
+  "description": "Bristolian PWA"
+}
