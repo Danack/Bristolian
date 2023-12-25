@@ -3,7 +3,7 @@
   "name": "Bristolian",
   "icons": [
     {
-      "src": "https://bristolian.org/images/icons/pwa_logo.png",
+      "src": "https://bristolian.org/images/icons/pwa-icon.png",
       "type": "image/png",
       "sizes": "512x512"
     }

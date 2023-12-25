@@ -23,6 +23,9 @@ class FunctionsTest extends BaseTestCase
     {
     }
 
+    /**
+     * @covers ::formatLinesWithCount
+     */
     public function test_formatLinesWithCount()
     {
         $result = formatLinesWithCount(['foo', 'bar']);
@@ -34,16 +37,19 @@ TEXT;
         $this->assertSame($expected, $result);
     }
 
-    public function test_checkSignalsForExit()
-    {
-    }
-
     public function test_continuallyExecuteCallable()
     {
     }
 
+    /**
+     * @covers json_decode_safe
+     */
     public function test_json_decode_safe()
     {
+        $data = ['foo' => 'bar'];
+        $output = json_decode_safe(json_encode($data));
+
+        $this->assertSame($data, $output);
     }
 
     public function test_json_encode_safe()
@@ -107,14 +113,25 @@ TEXT;
     {
     }
 
-
+    /**
+     * @covers ::remove_install_prefix_from_path
+     */
     public function test_normaliseFilePath()
     {
+        $result = remove_install_prefix_from_path("/var/app/test");
+        $this->assertSame('test', $result);
     }
 
 
+    /**
+     * @return void
+     */
     public function test_getEnvString()
     {
+        putenv("FOO=BAR");
+
+        $result = getEnvString("FOO");
+        $this->assertSame("BAR", $result);
     }
 
 
@@ -161,7 +178,7 @@ TEXT;
 
     /**
      * @dataProvider provides_slugify
-     * @group wip
+     * @covers slugify
      * @param string $input
      * @param string $expected
      * @return void
@@ -170,5 +187,99 @@ TEXT;
     {
         $result = slugify($input);
         $this->assertSame($expected, $result);
+    }
+
+
+
+
+
+    public function provides_sanitise_filename()
+    {
+        yield ['John..Anyman', 'john_anyman'];
+        yield ['John/Anyman', 'john_anyman'];
+        yield ['John\\Anyman', 'john_anyman'];
+    }
+
+    /**
+     * @covers ::sanitise_filename
+     * @dataProvider provides_sanitise_filename
+     * @param string $input
+     * @param string $expected
+     * @return void
+     */
+    public function test_sanitise_filename(string $input, string $expected)
+    {
+        $result = sanitise_filename($input);
+        $this->assertSame($expected, $result);
+    }
+
+    public function provides_standardise_username_to_filename()
+    {
+        yield ['John Anyman', 'john_anyman'];
+        yield ['John..Anyman', 'john_anyman'];
+        yield ['John/Anyman', 'john_anyman'];
+        yield ['John\\Anyman', 'john_anyman'];
+    }
+
+    /**
+     * @covers ::standardise_username_to_filename
+     * @dataProvider provides_standardise_username_to_filename
+     * @param string $input
+     * @param string $expected
+     * @return void
+     */
+    public function test_standardise_username_to_filename(string $input, string $expected)
+    {
+        $result = standardise_username_to_filename($input);
+        $this->assertSame($expected, $result);
+    }
+
+    public function provides_escapeMySqlLikeString()
+    {
+        yield ['foo\\bar', 'foo\\\\bar'];
+        yield ['foo_bar', 'foo\\_bar'];
+        yield ['foo%bar', 'foo\\%bar'];
+    }
+
+    /**
+     * @dataProvider provides_escapeMySqlLikeString
+     * @covers ::escapeMySqlLikeString
+     */
+    public function test_escapeMySqlLikeString(string $input, string $expected)
+    {
+        $result = escapeMySqlLikeString($input);
+        $this->assertSame($expected, $result);
+    }
+
+
+    /**
+     * @covers ::get_external_source_link
+     */
+    public function test_get_external_source_link()
+    {
+        $result = get_external_source_link('https://gist.githubusercontent.com/Danack/89e8d9b25dac35e1a68cd3b576a17a36/raw/fb924a43a241d151ba5e659e21a272647658d4e7/words.md');
+
+        $expected = "External source is: <a href='https://gist.githubusercontent.com/Danack/89e8d9b25dac35e1a68cd3b576a17a36'>https://gist.githubusercontent.com/Danack/89e8d9b25dac35e1a68cd3b576a17a36/raw/fb924a43a241d151ba5e659e21a272647658d4e7/words.md</a>";
+
+        $this->assertSame($expected, $result);
+    }
+
+
+    public function test_render_markdown_file()
+    {
+        $document = new \Bristolian\Model\UserDocument(
+            \Bristolian\Types\DocumentType::markdown_file->value,
+            "Some title",
+            "FOIA Section 12 and the 18-hour time_cost limit.md"
+        );
+        $user = new \Bristolian\Model\User(\Bristolian\Types\UserList::sid->value);
+
+        $document->setUser($user);
+
+        $result = render_markdown_file($document);
+        $this->assertStringStartsWith(
+            '<h1>FOIA Section 12 and the 18-hour time/cost limit<a id="user-content-foia-section-12-and-the-18-hour-timecost-limit" href="#content-foia-section-12-and-the-18-hour-timecost-limit" class="h',
+            $result
+        );
     }
 }

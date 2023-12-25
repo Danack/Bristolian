@@ -5,6 +5,7 @@ import initByClass from "./widgety/widgety";
 import type { WidgetClassBinding } from "./widgety/widgety";
 import { startMessageProcessing } from "./message/message";
 
+import { NotificationRegistrationPanel } from "./NotificationRegistrationPanel";
 import { NotesPanel } from "./NotesPanel";
 import { TimeLinePanel } from "./TimeLinePanel";
 import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
@@ -29,7 +30,10 @@ let panels: WidgetClassBinding[] = [
         class: 'notes_panel',
         component: NotesPanel
     },
-
+    {
+        class: 'notification_panel',
+        component: NotificationRegistrationPanel
+    },
     {
         class: 'twitter_splitter_panel',
         component: TwitterSplitterPanel
@@ -52,6 +56,21 @@ let panels: WidgetClassBinding[] = [
 initByClass(panels, h, render);
 
 startMessageProcessing();
+
+function registerServiceWorker() {
+
+  if (!('serviceWorker' in navigator)) {
+    console.log('Service Worker isn\'t supported on this browser.');
+    return;
+  }
+
+  navigator.serviceWorker.
+    // The file needs to be in root, because of scope
+    register("/serviceWorker.js").
+    then(() => {console.log("service worker registered?")});
+}
+
+registerServiceWorker();
 
 console.log("Bootstrap finished");
 

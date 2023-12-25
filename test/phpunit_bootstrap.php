@@ -4,37 +4,42 @@ require_once __DIR__ . "/../vendor/autoload.php";
 require_once __DIR__ . "/fixtures.php";
 require_once __DIR__ . "/../config.generated.php";
 require_once __DIR__ . "/../src/factories.php";
-require_once __DIR__ . "/../cli/cli_injection_params.php";
+require_once __DIR__ . "/test_injection_params.php";
 
-//function createProcessedValuesFromArray(array $keyValues): ProcessedValues
-//{
-//    $processedValues = [];
-//
-//    foreach ($keyValues as $key => $value) {
-//        $extractRule = new GetInt();
-//        $inputParameter = new InputTypeSpec($key, $extractRule);
-//        $processedValues[] = new ProcessedValue($inputParameter, $value);
-//    }
-//
-//    return ProcessedValues::fromArray($processedValues);
-//}
+use Bristolian\Repo\AdminRepo\PdoAdminRepo;
+use Bristolian\UserSession;
+use Bristolian\MockUserSession;
+
+
+function getTestingUserSession(PdoAdminRepo $pdoAdminRepo): UserSession
+{
+    $user = $pdoAdminRepo->getAdminUser("testing@example.com", 'testing');
+
+    return new MockUserSession(
+        true,
+        $user->getUserId(),
+        $user->getEmailAddress()
+    );
+}
 
 /**
- * @param array<string, mixed> $testDoubles
- * @param array<string, mixed> $shareDoubles
  * @return \DI\Injector
  */
-function createInjector(array $testDoubles = [], array $shareDoubles = [])
+function createTestInjector()
 {
-    $injectionParams = injectionParams($testDoubles);
+    $injectionParams = testInjectionParams();
 
     $injector = new \DI\Injector();
     $injectionParams->addToInjector($injector);
 
-    foreach ($shareDoubles as $shareDouble) {
-        $injector->share($shareDouble);
-    }
+//    foreach ($shareDoubles as $shareDouble) {
+//        $injector->share($shareDouble);
+//    }
 
     $injector->share($injector); //Yolo ServiceLocator
     return $injector;
 }
+
+
+$injector = createTestInjector();
+

@@ -99,7 +99,6 @@ function createPredisClient(Config $config): \Predis\Client
 
 
 
-
 /**
  * This is a generic (i.e. not app or api specific) function.
  *

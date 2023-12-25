@@ -10,29 +10,28 @@ use Psr\Http\Message\ServerRequestInterface as ServerRequest;
 use Asm\RequestSessionStorage;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Di\Injector;
+use DI\Injector;
 
 class AppSessionMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        Injector $injector,
+        //        Injector $injector,
         private RequestSessionStorage $sessionStorage
     ) {
     }
 
     /**
      * @param ServerRequest $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \Auryn\ConfigException
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
      */
-
     public function process(Request $request, RequestHandlerInterface $handler): ResponseInterface
     {
+
         // We don't open the session by default. Instead anything that needs
         // access to the session will init it.
         $response = $handler->handle($request);
+//        time_it();
 
         // Session could have been opened inside request
         $session = $this->sessionStorage->get();

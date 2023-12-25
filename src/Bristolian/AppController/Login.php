@@ -44,8 +44,6 @@ HTML;
         AppSession $appSession
     ): RedirectResponse {
 
-
-
         $username = $_POST['username'] ?? null;
         $password = $_POST['password'] ?? null;
 
@@ -64,7 +62,7 @@ HTML;
             return new RedirectResponse('/login?message=login failed');
         }
 
-        $appSession->createSessionForUser($username/*$userProfile*/);
+        $appSession->createSessionForUser($adminUser);// $username/*$userProfile*/);
 
         return new RedirectResponse('/tools?message=login worked');
     }

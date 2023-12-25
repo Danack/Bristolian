@@ -37,24 +37,13 @@ class FakeAdminRepo implements AdminRepo
         return $adminUser;
     }
 
-//    public function setPasswordForAdminUser(AdminUser $adminUser, string $newPassword)
-//    {
-//        foreach ($this->usernamesPasswordsAndUsers as &$userInfo) {
-//            if ($userInfo[0] === $adminUser->getUsername()) {
-//                $userInfo[1] = $newPassword;
-//            }
-//        }
-//    }
-
     /**
      * @param string $email_address
-     * @param string $password
      * @param mixed[] $usernamesPasswordsAndUser
      * @return AdminUser|null
      */
     private function matchUser(
         string $email_address,
-        string $password,
         array $usernamesPasswordsAndUser
     ): ?AdminUser {
 
@@ -62,32 +51,38 @@ class FakeAdminRepo implements AdminRepo
             return null;
         }
 
-        if ($password !== $usernamesPasswordsAndUser[1]) {
-            return null;
-        }
-
         return $usernamesPasswordsAndUser[2];
     }
 
-    public function getAdminUser(string $email_address, string $password): ?AdminUser
+    public function getAdminUserId(string $username): ?string
     {
         foreach ($this->email_addresses_PasswordsAndUsers as $usernamesPasswordsAndUser) {
-            $user = $this->matchUser($email_address, $password, $usernamesPasswordsAndUser);
+            $user = $this->matchUser($username, $usernamesPasswordsAndUser);
             if ($user !== null) {
-                return $user;
+                return $user->getEmailAddress();
             }
         }
 
         return null;
     }
-//
-//    public function setGoogle2FaSecret(AdminUser $adminUser, string $secret): AdminUser
-//    {
-//        throw new \Exception("setGoogle2FaSecret not implemented yet.");
-//    }
-//
-//    public function removeGoogle2FaSecret(AdminUser $adminUser)
-//    {
-//        throw new \Exception("removeGoogle2FaSecret not implemented yet.");
-//    }
+
+
+    /**
+     * @param string $email_address
+     * @param string $password
+     * @return AdminUser|null
+     */
+    public function getAdminUser(string $email_address, string $password): ?AdminUser
+    {
+        foreach ($this->email_addresses_PasswordsAndUsers as $usernamesPasswordsAndUser) {
+            $user = $this->matchUser($email_address, $usernamesPasswordsAndUser);
+            if ($user !== null) {
+                if ($password === $usernamesPasswordsAndUser[1]) {
+                    return $user;
+                }
+            }
+        }
+
+        return null;
+    }
 }

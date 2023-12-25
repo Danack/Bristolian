@@ -13,5 +13,5 @@ interface UserDocumentRepo
      */
     public function getUserDocuments(User $user);
 
-    public function renderUserDocument(User $user, string $title);
+    public function renderUserDocument(User $user, string $title): string;
 }

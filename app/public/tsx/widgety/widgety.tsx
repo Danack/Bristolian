@@ -7,7 +7,7 @@ export type WidgetClassBinding = {
 const setupWidgetForElement = (element: HTMLOrSVGElement, component: object, h: any, render: any) => {
   let params = {};
 
-  if (Object.prototype.hasOwnProperty.call(element.dataset, 'widgety_json') !== true) {
+  if (Object.prototype.hasOwnProperty.call(element.dataset, 'widgety_json') === true) {
     const json = element.dataset.widgety_json;
     // This check is redundant.
     if (json !== undefined) {

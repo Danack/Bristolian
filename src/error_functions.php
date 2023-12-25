@@ -59,7 +59,7 @@ function getTextForException(\Throwable $exception): string
             "Exception type: %s\nMessage:  %s\nFile:  %s \n\nStack trace:\n%s\n",
             get_class($currentException),
             purgeExceptionMessage($currentException),
-            normaliseFilePath($currentException->getFile()) . ':' . $currentException->getLine(),
+            remove_install_prefix_from_path($currentException->getFile()) . ':' . $currentException->getLine(),
             formatLinesWithCount(getExceptionStackAsArray($currentException))
         );
 

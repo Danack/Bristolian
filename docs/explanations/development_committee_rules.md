@@ -11,7 +11,6 @@ The planning department has been acting as if the proposal that was abandoned is
 
 I suspect people just misremembered which one was actually implemented.
 
-
 ## Summary
 
 Some people think that Development Control committees aren't allowed to give a refusal to a planning application in a meeting, instead those committees need to 'defer' refusals for the next meeting.
@@ -19,7 +18,7 @@ Some people think that Development Control committees aren't allowed to give a r
 * At some point in 2019, the chairs of the Development Committees (Don Alexander and Tom Brook) proposed that there should be a 'cooling off' period when a development committee refuses an application.
 * A draft of the [proposed changes can be found here](https://democracy.bristol.gov.uk/documents/s34769/13%20-%20Appendix%202%202.pdf).
 * This change was proposed to the Audit committee on the 29th July 2019, who said it was a matter for the development committees to decide, so the Audit Committee referred it back to the Development Committees but it's not clear it ever reached them.
-* At the (Audit Committee 16 March 2020](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=134&MId=5915&Ver=4) there [was a similar proposal](https://democracy.bristol.gov.uk/documents/s47309/13%20App2%20-%20DC%20CoC.pdf) that strongly encourages a refusal to be deferred to the next meeting, but does not require it.
+* At the [Audit Committee 16 March 2020](https://democracy.bristol.gov.uk/ieListDocuments.aspx?CId=134&MId=5915&Ver=4) there [was a similar proposal](https://democracy.bristol.gov.uk/documents/s47309/13%20App2%20-%20DC%20CoC.pdf) that strongly encourages a refusal to be deferred to the next meeting, but does not require it.
 * At Full Council on the 21st May 2020, the Audit Committee proposal was recommended and approved.
 
 The actual current rules can be found on page 16 of this part of the constitution [Part 5 (D) Code of conduct for members and officers: planning matters ](https://www.bristol.gov.uk/files/documents/3364-part-5-d-code-of-conduct-for-members-and-officers-planning-matters/file)

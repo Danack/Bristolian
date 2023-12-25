@@ -46,7 +46,5 @@ php cli.php db:wait_for_db
 
 php cli.php db:migrate_to_latest
 
-# php vendor/bin/phinx migrate -e development
-# php cli.php seed:initial
 
 echo "Installer is finished."

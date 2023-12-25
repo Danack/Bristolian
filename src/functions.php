@@ -152,6 +152,8 @@ function formatLinesWithCount(array $lines): string
  *
  * We don't listen for SIGKILL as that needs to be an immediate exit,
  * which PHP already provides.
+ *
+ * @codeCoverageIgnore
  * @return bool
  */
 function checkSignalsForExit()
@@ -259,12 +261,18 @@ function json_decode_safe(?string $json): array
     throw new \Bristolian\Exception\JsonException("Error decoding JSON: " . json_last_error_msg());
 }
 
-
+/**
+ * @param string[] $headers
+ * @param mixed[] $items
+ * @param callable[] $rowFns
+ * @return string
+ * @throws \Esprintf\EsprintfException
+ */
 function renderTableHtml(
     array $headers,
     array $items,
     array $rowFns
-) {
+): string {
     $thead = '';
     foreach ($headers as $header) {
         $thead .= esprintf("<th>:html_header</th>\n", [':html_header' => $header]);
@@ -818,7 +826,7 @@ function getPercentMemoryUsed() : int
 /**
  * Remove the installation directory prefix from a filename
  */
-function normaliseFilePath(string $file): string
+function remove_install_prefix_from_path(string $file): string
 {
     if (strpos($file, "/var/app/") === 0) {
         $file = substr($file, strlen("/var/app/"));
@@ -899,8 +907,9 @@ function getRandomId(): string
 
 /**
  * Escape characters that are meaningful in SQL like searches
+ *
  * @param string $string
- * @return mixed
+ * @return string
  */
 function escapeMySqlLikeString(string $string)
 {
@@ -919,14 +928,20 @@ function render_markdown_file(Bristolian\Model\UserDocument $document): string
     $renderer = $injector->make(\Bristolian\MarkdownRenderer\MarkdownRenderer::class);
 
     // TODO - escaper needs a file path type.
-    $path = normalise_filename($document->getUser()->username);
+    $path = standardise_username_to_filename($document->getUser()->username);
 
     $filename = __DIR__ . '/../user_data/' . $path . '/' . $document->source;
 
     return $renderer->renderFile($filename);
 }
 
-function get_external_source_link(string $raw)
+/**
+ * Extracts a link to a Github gist from the link to a raw file
+ * held in a gist. And then renders it as a link.
+ * @param string $raw
+ * @return string
+ */
+function get_external_source_link(string $raw): string
 {
     $raw_position = strpos($raw, '/raw/');
 
@@ -961,7 +976,11 @@ function render_markdown_url(Bristolian\Model\UserDocument $document): string
 }
 
 
-function render_user_document(Bristolian\Model\UserDocument $document)
+/**
+ * @param \Bristolian\Model\UserDocument $document
+ * @return string
+ */
+function render_user_document(Bristolian\Model\UserDocument $document): string
 {
     global $injector;
 
@@ -1008,7 +1027,55 @@ function slugify(string $string): string
     return strtolower($trimmed);
 }
 
-function normalise_filename(string $filename): string
+/**
+ * Sanitises a file name to remove any directory escaping
+ * character sequences i.e. '/', '\' or '..'
+ *
+ * @param string $filename
+ * @return string
+ */
+function sanitise_filename(string $filename): string
 {
+    $search = [
+        '/',
+        '\\',
+        '..',
+    ];
+
+    return str_replace($search, '_', strtolower($filename));
+}
+
+/**
+ * Helper function to convert user name to safe file name
+ * to allow hard-coded data to be served safely from the
+ * user_data directory.
+ *
+ * @param string $username
+ * @return string
+ */
+function standardise_username_to_filename(string $username)
+{
+    $filename  = sanitise_filename($username);
+
     return str_replace(' ', '_', strtolower($filename));
+}
+
+/**
+ * @param \DataType\ValidationProblem[] $validation_problems
+ * @return \SlimDispatcher\Response\JsonResponse|null
+ * @throws \SlimDispatcher\Response\InvalidDataException
+ */
+function createErrorJsonResponse(array $validation_problems): SlimDispatcher\Response\JsonResponse|null
+{
+    if (count($validation_problems) === 0) {
+        return null;
+    }
+
+    $data = ['success' => false];
+    $data['errors'] = [];
+    foreach ($validation_problems as $validation_problem) {
+        $data['errors'][] = $validation_problem->toString();
+    }
+
+    return new SlimDispatcher\Response\JsonResponse($data, [], 400);
 }

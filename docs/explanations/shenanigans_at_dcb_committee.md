@@ -90,6 +90,17 @@ Councillor Tim Kent and other Knowle Liberal Democrats write ['quite' a letter](
 
 The Monitoring Officer has a personal public duty to report any decisions, actions, proposals or failures to act by the Council that would be unlawful. This report needs to be made to the Council, possibly at a Full Council meeting.
 
+
+
+### 1st December, 2023 - The barrister for Broadwalk protestors<a href="https://drive.google.com/file/d/1ZXZlK8Gj-NabuHu4yQiWt4ClDwoImoWx/view">writes to Bristol Council to layout why BCC will lose a Judicial Review</a>.
+And provides <a href="https://drive.google.com/file/d/1QFoHHmpAvU_LJgqcj1gdICmGQbzQfC0S/view?fbclid=IwAR2Z7pTu4wUgKYRodn9cUb2h1EkHcYHZYaniFqWOUPzu4LyUWS-uiVWvFSI">a nice PDF that shows the timeline</a> which presumably the barrister will be using as part of the Judicial Review. 
+
+
+https://drive.google.com/file/d/1ZXZlK8Gj-NabuHu4yQiWt4ClDwoImoWx/view
+
+https://drive.google.com/file/d/1QFoHHmpAvU_LJgqcj1gdICmGQbzQfC0S/view?fbclid=IwAR2Z7pTu4wUgKYRodn9cUb2h1EkHcYHZYaniFqWOUPzu4LyUWS-uiVWvFSI
+
+
 ## So....why does the DCB on the 18th of October meeting matter?
 
 Courts and other quasi-judicial decision makers do not like to try to parse and interpret the rules or constitutions of other organisations. They much prefer to look at precedent to determine what is and isn't allowed at that organisation.

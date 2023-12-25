@@ -11,6 +11,7 @@ if (function_exists('injectionParams') == false) {
     function injectionParams(array $testAliases): InjectionParams
     {
         // These classes will only be created once by the injector.
+        /** @var array<int, string> $shares */
         $shares = [
 //            \Doctrine\ORM\EntityManager::class,
         ];

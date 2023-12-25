@@ -36,7 +36,8 @@
         "spatie/yaml-front-matter": "^2.0",
         "ext-pdo": "*",
         "chillerlan/php-qrcode": "^4.3",
-        "danack/php-unit-helper": "^0.5.0"
+        "danack/php-unit-helper": "^0.5.0",
+        "minishlink/web-push": "^8.0"
     },
     "require-dev": {
         "danack/coding-standard": "0.3.0",

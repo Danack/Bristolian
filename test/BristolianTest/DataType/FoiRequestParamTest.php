@@ -14,7 +14,6 @@ use BristolianTest\BaseTestCase;
 class FoiRequestParamTest extends BaseTestCase
 {
     /**
-     * @group wip
      * @covers \Bristolian\DataType\FoiRequestParam
      */
     public function testWorks()

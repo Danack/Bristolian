@@ -9,7 +9,7 @@ use DI\Injector;
 class InjectionParams
 {
     /**
-     * @var array<string, mixed>
+     * @var array<int, mixed>
      */
     public array $shares;
 
@@ -39,7 +39,7 @@ class InjectionParams
     public array $namedParams;
 
     /**
-     * @param array<string, mixed> $shares
+     * @param array<int, mixed> $shares
      * @param array<string, mixed> $aliases
      * @param array<string, mixed> $delegates
      * @param array<string, mixed> $classParams

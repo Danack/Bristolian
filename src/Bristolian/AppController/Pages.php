@@ -152,6 +152,15 @@ HTML;
 </p>
 
 
+<p>
+  <a href="https://www.youtube.com/watch?v=-ifujuYXCU8&ab_channel=Danack">Committee Model Working Group - 1st December 2023</a> continued from  24th November 2023
+</p>
+
+<p>
+  <a href="https://www.youtube.com/watch?v=WWejBZQrJkc&ab_channel=Danack">People Scrutiny Commission - 6th December, 2023</a>
+</p>
+
+
 HTML;
 
         return $content;
@@ -376,5 +385,24 @@ HTML;
         $fullPath = __DIR__ . "/../../../docs/questions/2_cumberland_basin_weca_road_feasilbity.md";
 
         return $markdownRenderer->renderFile($fullPath);
+    }
+
+    public function experimental(): string
+    {
+        $content = "This is a page for experimenting with. Current experiement is notifications.";
+        $data = [
+            'public_key' => getVapidPublicKey()
+        ];
+
+        $widget_json = json_encode_safe($data);
+        $widget_data = htmlspecialchars($widget_json);
+
+        $content .= "<div class='notification_panel' data-widgety_json='$widget_data'></div>";
+
+
+        $content .= "chrome://serviceworker-internals/";
+
+
+        return $content;
     }
 }

@@ -14,8 +14,7 @@ require __DIR__ . '/src/error_functions.php';
 require __DIR__ . '/cli/exception_mappers_cli.php';
 require __DIR__ . "/cli/cli_commands.php";
 require __DIR__ . '/config.generated.php';
-
-
+require __DIR__ . '/credentials.php';
 
 set_time_limit(20);
 

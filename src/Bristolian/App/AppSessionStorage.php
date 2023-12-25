@@ -14,7 +14,7 @@ class AppSessionStorage implements RequestSessionStorage
         return self::$session;
     }
 
-    public function store(\Asm\Session $session)
+    public function store(\Asm\Session $session): void
     {
         self::$session = $session;
     }

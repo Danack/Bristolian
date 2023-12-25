@@ -88,6 +88,14 @@ function getAllAppRoutes()
         ['/foi_requests/edit', 'GET', 'Bristolian\AppController\FoiRequests::edit'],
         ['/foi_requests', 'GET', 'Bristolian\AppController\FoiRequests::view'],
 
+        ['/experimental', 'GET', 'Bristolian\AppController\Pages::experimental'],
+
+
+        ['/notifications_keys', 'GET', 'Bristolian\AppController\Notifications::generate_keys'],
+
+
+        ['/api/save-subscription/', 'POST', 'Bristolian\AppController\Notifications::save_subscription'],
+
 
         // Dynamic pages
         ['/topics', 'GET', 'Bristolian\AppController\Topics::index'],

@@ -40,7 +40,7 @@ services:
       - "8002:8080"
   varnish:
     depends_on:
-#      - caddy
+      - caddy
       - php_fpm
       - php_fpm_debug
     ports:

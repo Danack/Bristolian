@@ -30,3 +30,4 @@ Here is a brief summary of the Code of Conduct in musical form:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/HivxFBB87-Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
+Experimental stuff is <a href="/experimental">here.</a>

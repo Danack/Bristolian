@@ -11,11 +11,11 @@ function add_console_commands(Application $console)
 {
     addDebugCommands($console);
 //    addProcessCommands($console);
-//    addTestCommands($console);
     addSeedCommands($console);
     addDatabaseCommands($console);
     addAdminAccountCommands($console);
     addMiscCommands($console);
+    addTestCommands($console);
 }
 
 /**
@@ -25,6 +25,18 @@ function addDebugCommands(Application $console)
 {
     $command = new Command('debug:hello', 'Bristolian\CliController\Debug::hello');
     $command->setDescription("Test cli commands are working.");
+    $console->add($command);
+
+
+    $command = new Command('debug:send_webpush', 'Bristolian\CliController\Debug::send_webpush');
+    $command->setDescription(
+        "Send a webpush to a user, if they are registered for webpushes"
+    );
+
+    $command->addArgument('email_address', InputArgument::REQUIRED, "The username for the account.");
+    $command->addArgument('message', InputArgument::REQUIRED, "The message to send");
+
+
     $console->add($command);
 
 //    $command = new Command('debug:debug', 'Osf\CliController\Debug::debug');
@@ -125,6 +137,17 @@ function addMiscCommands(Application $console)
         'Bristolian\Config::testValuesArePresent'
     );
     $command->setDescription("Check the config has values for all known config.");
+    $console->add($command);
+}
+
+function addTestCommands(Application $console)
+{
+
+    $command = new Command(
+        'test:push_notification',
+        '\Bristolian\AppController\Notifications::test_push'
+    );
+    $command->setDescription("Send a test notification.");
     $console->add($command);
 }
 

@@ -14,7 +14,6 @@ use BristolianTest\BaseTestCase;
 class TagParamTest extends BaseTestCase
 {
     /**
-     * @group wip
      * @covers \Bristolian\DataType\TagParam
      */
     public function testWorks()

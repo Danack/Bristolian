@@ -3,6 +3,7 @@
 use Bristolian\InjectionParams;
 
 
+
 function injectionParams() : InjectionParams
 {
     // These classes will only be created once by the injector.
@@ -13,13 +14,14 @@ function injectionParams() : InjectionParams
     // Alias interfaces (or classes) to the actual types that should be used
     // where they are required.
     $aliases = [
-//            \Bristolian\Repo\PhpBugsFetcher\PhpBugsFetcher::class =>
-//              \Bristolian\Repo\PhpBugsFetcher\CurlPhpBugsFetcher::class,
-//            \Bristolian\Repo\PhpBugsStorage\PhpBugsStorage::class =>
-//              \Bristolian\Repo\PhpBugsStorage\RedisPhpBugsStorage::class,
-
         Bristolian\Repo\AdminRepo\AdminRepo::class =>
-            Bristolian\Repo\AdminRepo\PdoAdminRepo::class
+            Bristolian\Repo\AdminRepo\PdoAdminRepo::class,
+
+        \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::class =>
+          \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::class,
+
+        \Bristolian\Service\WebPushService\WebPushService::class =>
+          \Bristolian\Service\WebPushService\StandardWebPushService::class,
 
     ];
 

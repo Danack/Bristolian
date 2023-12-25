@@ -13,7 +13,6 @@ use Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo;
 use Bristolian\DataType\FoiRequestParam;
 
 /**
- * @group wip
  * @coversNothing
  */
 class PdoFoiRequestRepoTest extends BaseTestCase
@@ -22,6 +21,8 @@ class PdoFoiRequestRepoTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo
+     * @group slow
+     * This is really slow for some reason...
      */
     public function testWorks(): void
     {

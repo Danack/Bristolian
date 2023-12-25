@@ -2,11 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace BristolianTest\Params;
+namespace BristolianTest\Repo\AdminRepo;
 
 use Bristolian\DataType\CreateUserParams;
 use BristolianTest\Repo\TestPlaceholders;
-use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 
@@ -19,22 +18,26 @@ class PdoAdminRepoTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo
+     * @group slow
      */
     public function testWorks(): void
     {
-        $email_address = 'Johnathan@example.com';
-        $password = 'mynameismypassport';
+        $username = 'username' . time() . '_' . random_int(1000, 9999) . "@example.com";
+        $password = 'password_' . time() . '_' . random_int(1000, 9999);
 
-        $createAdminParams = CreateUserParams::createFromVarMap(new ArrayVarMap([
-            'email_address' => $email_address,
+        $createAdminUserParams = CreateUserParams::createFromArray([
+            'email_address' => $username,
             'password' => $password
-        ]));
-
-//        $this->assertSame($username, $createAdminParams->getEmailaddress());
-//        $this->assertSame($password, $createAdminParams->getPassword());
+        ]);
 
         $pdo_admin_repo = $this->injector->make(PdoAdminRepo::class);
+        $adminUser = $pdo_admin_repo->addUser($createAdminUserParams);
 
-        $result = $pdo_admin_repo->addUser($createAdminParams);
+        $adminUserFromDB = $pdo_admin_repo->getAdminUser($username, $password);
+
+        $this->assertSame(
+            $createAdminUserParams->getEmailaddress(),
+            $adminUserFromDB->getEmailAddress()
+        );
     }
 }

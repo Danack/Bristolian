@@ -7,7 +7,7 @@ use Bristolian\Repo\UserDocumentRepo\UserDocumentRepo;
 
 class Users
 {
-    public function index(UserRepo $userRepo)
+    public function index(UserRepo $userRepo): string
     {
         $contents = "<h1>User list</h1>";
 
@@ -29,7 +29,7 @@ class Users
         UserRepo $userRepo,
         UserDocumentRepo $userDocumentRepo,
         string $username
-    ) {
+    ): string {
         $user = $userRepo->findUser($username);
 
         if ($user === null) {
@@ -61,7 +61,7 @@ class Users
         UserDocumentRepo $userDocumentRepo,
         string $username,
         string $title
-    ) {
+    ): string {
         $user = $userRepo->findUser($username);
 
         if ($user === null) {

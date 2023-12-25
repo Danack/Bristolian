@@ -15,7 +15,7 @@ class HardcodedUserDocumentRepo implements UserDocumentRepo
             return [];
         }
 
-        $filename = normalise_filename(UserList::sid->value);
+        $filename = standardise_username_to_filename(UserList::sid->value);
 
         $filepath = __DIR__ . "/../../../../user_data/" . $filename . "/documents.json";
         $documents_json = \Safe\file_get_contents($filepath);
@@ -32,7 +32,7 @@ class HardcodedUserDocumentRepo implements UserDocumentRepo
     }
 
 
-    public function renderUserDocument(User $user, string $title)
+    public function renderUserDocument(User $user, string $title): string
     {
         if ($user->username !== UserList::sid->value) {
             return "User not found";

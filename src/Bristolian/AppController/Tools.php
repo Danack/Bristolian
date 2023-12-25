@@ -4,11 +4,12 @@ namespace Bristolian\AppController;
 
 use Asm\RequestSessionStorage;
 use Bristolian\AppSession;
+use Bristolian\UserSession;
 
 class Tools
 {
     public function index(
-        AppSession $appSession
+        UserSession $appSession
     ): string {
 
         $username = "not logged in";

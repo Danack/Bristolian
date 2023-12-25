@@ -26,8 +26,15 @@ function injectionParams()
           \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
         \Bristolian\CSPViolation\CSPViolationStorage::class =>
           \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
+
         Psr\Http\Message\ResponseFactoryInterface::class =>
           \Laminas\Diactoros\ResponseFactory::class,
+
+        \Bristolian\JsonInput\JsonInput::class =>
+          \Bristolian\JsonInput\InputJsonInput::class,
+
+        \Bristolian\UserSession::class =>
+            \Bristolian\AppSession::class,
 
         \Bristolian\MarkdownRenderer\MarkdownRenderer::class =>
             \Bristolian\MarkdownRenderer\CommonMarkRenderer::class,
@@ -59,7 +66,10 @@ function injectionParams()
           Bristolian\Repo\UserRepo\HardcodedUserRepo::class,
 
         Bristolian\Repo\UserDocumentRepo\UserDocumentRepo::class =>
-          Bristolian\Repo\UserDocumentRepo\HardcodedUserDocumentRepo::class
+          Bristolian\Repo\UserDocumentRepo\HardcodedUserDocumentRepo::class,
+
+        \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::class =>
+        \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::class
     ];
 
 

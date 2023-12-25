@@ -24,6 +24,7 @@ class ErrorSetupTest extends BaseTestCase
 
     /**
      * @dataProvider providesCaughtExceptionsAreActuallyCaughtForApp
+     * @group slow
      */
     public function testCaughtExceptionsAreActuallyCaughtForApp(string $url)
     {
@@ -37,6 +38,9 @@ class ErrorSetupTest extends BaseTestCase
         );
     }
 
+    /**
+     * @group slow
+     */
     public function testCaughtExceptionsAreActuallyCaughtForApi()
     {
         $url = 'http://local.api.opensourcefees.com/test/caught_exception';
@@ -72,6 +76,9 @@ class ErrorSetupTest extends BaseTestCase
         );
     }
 
+    /**
+     * @group slow
+     */
     public function testUncaughtExceptionsAreActuallyCaughtBySlimForApi()
     {
         $url = 'http://local.api.opensourcefees.com/test/uncaught_exception';

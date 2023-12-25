@@ -171,6 +171,28 @@ class PdoSimple
 
 
     /**
+     * @param string $query
+     * @param mixed[] $params
+     * @return mixed[]
+     * @throws \Exception
+     */
+    public function fetchAllAsData(string $query, array $params)
+    {
+        $statement = $this->pdo->prepare($query);
+
+        $result = $statement->execute($params);
+
+        if ($result === false) {
+            throw new \Exception("Executing statement failed");
+        }
+
+        $objects = $statement->fetchAll();
+
+        return $objects;
+    }
+
+
+    /**
      * @template T of object
      * @param string $query
      * @param mixed[] $params

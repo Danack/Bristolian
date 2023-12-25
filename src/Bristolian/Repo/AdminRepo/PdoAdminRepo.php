@@ -55,10 +55,10 @@ SQL;
             ':password_hash' => $password_hash,
         ];
 
-        $insert_id = $this->pdo->insert($userAuthSQL, $params);
+        $this->pdo->insert($userAuthSQL, $params);
 
         return AdminUser::new(
-            (string)$insert_id,
+            $user_id,
             $createUserParams->getEmailAddress(),
             $password_hash
         );
@@ -72,6 +72,38 @@ SQL;
 //        $this->em->persist($adminUser);
 //        $this->em->flush($adminUser);
 //    }
+
+
+    /**
+     * For security reasons (for now) if you only have the username, you
+     * can only get the user_id
+     * @param string $username
+     * @return string|null
+     * @throws \Exception
+     */
+    public function getAdminUserId(string $username): ?string
+    {
+        $sql = <<< SQL
+select
+  user_id,
+  email_address
+from
+  user_auth_email_password
+where
+    email_address = :email_address
+SQL;
+
+        $data = $this->pdo->fetchOneAsDataOrNull(
+            $sql,
+            [':email_address' => $username]
+        );
+
+        if ($data === null) {
+            return null;
+        }
+
+        return $data['user_id'];
+    }
 
     /**
      * Gets the user and validates their password
