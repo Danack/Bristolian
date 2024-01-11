@@ -11,14 +11,16 @@
     "require": {
         "danack/asm": "dev-main",
         "danack/configurator": "1.1.1",
-        "danack/console": "^2.6",
+        "danack/console": "^2.6.2",
         "danack/esprintf": "^2.0.0",
         "danack/injector": "^0.5.0",
         "danack/looping-exec": "^0.3.0",
+        "danack/php-unit-helper": "^0.5.0",
         "danack/json-safe": "^0.1.1",
         "danack/slim-dispatcher": "dev-dev",
-        "danack/datatype": "0.5.2",
+        "danack/datatype": "0.6.0",
         "dmore/chrome-mink-driver": "2.8.1",
+        "hashids/hashids": "5.0.2",
         "ext-redis": "*",
         "justinrainbow/json-schema": "^5.2.7",
         "laminas/laminas-diactoros":"^2.24.0",
@@ -36,8 +38,10 @@
         "spatie/yaml-front-matter": "^2.0",
         "ext-pdo": "*",
         "chillerlan/php-qrcode": "^4.3",
-        "danack/php-unit-helper": "^0.5.0",
-        "minishlink/web-push": "^8.0"
+
+        "minishlink/web-push": "^8.0",
+        "league/flysystem": "^3.0",
+        "league/flysystem-aws-s3-v3": "^3.0"
     },
     "require-dev": {
         "danack/coding-standard": "0.3.0",

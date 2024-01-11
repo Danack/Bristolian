@@ -27,6 +27,8 @@ class App
 
     const YAY_PAGE_OK = '<!-- yay, page is done. -->';
 
+    const MAX_MEME_FILE_SIZE = 50 * 1024 * 1024;
+
     const ERROR_CAUGHT_BY_MIDDLEWARE_MESSAGE = "<!-- This is caught in the exception mapper -->";
 
     const ERROR_CAUGHT_BY_MIDDLEWARE_API_MESSAGE = "Correctly caught DebuggingCaughtException";

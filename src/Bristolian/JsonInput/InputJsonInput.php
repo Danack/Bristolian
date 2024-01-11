@@ -7,6 +7,9 @@ namespace Bristolian\JsonInput;
 class InputJsonInput implements JsonInput
 {
     /**
+     * @codeCoverageIgnore
+     * TODO - make a standalone test for this?
+     *
      * @return array|mixed[]
      * @throws \Bristolian\Exception\JsonException
      * @throws \JsonException

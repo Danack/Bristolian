@@ -5,6 +5,7 @@
 
 @import "layout.scss";
 @import "breadcrumbs.scss";
+@import "button.scss";
 @import "content.scss";
 @import "content_links.scss";
 @import "footer.scss";
@@ -17,11 +18,14 @@
 @import "merch.scss";
 
 // todo move this to it's own repo
+@import "meme_upload_panel.scss";
+@import "modal.scss";
 @import "naming_things.scss";
 @import "notifications_panel.scss";
 @import "funding.scss";
 @import "floating_point.scss";
 
+@import "table.scss";
 @import "teleprompter.scss";
 @import "qr_code_generator.scss";
 @import "twitter_splitter.scss";

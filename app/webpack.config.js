@@ -35,10 +35,10 @@ module.exports = {
                 loader: 'ts-loader',
                 options: { allowTsInNodeModules: true }
             },
-            {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
-            },
+            // {
+            //     test: /\.css$/i,
+            //     use: ['style-loader', 'css-loader'],
+            // },
             {
                 enforce: "pre",
                 test: /\.js$/,

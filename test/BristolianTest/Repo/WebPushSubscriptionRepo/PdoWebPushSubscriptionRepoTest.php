@@ -15,7 +15,6 @@ use BristolianTest\BaseTestCase;
 use Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 
-
 /**
  * @coversNothing
  */
@@ -26,7 +25,6 @@ class PdoWebPushSubscriptionRepoTest extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo
      * @group db
-     * @group wip
      */
     public function testWorks(): void
     {
@@ -51,6 +49,9 @@ class PdoWebPushSubscriptionRepoTest extends BaseTestCase
         $this->assertSame($endpoint, $subscription->getEndpoint());
         $this->assertSame($expiration_time, $subscription->getExpirationTime());
         $this->assertSame($raw, $subscription->getRaw());
+
+        $this->expectException(UserConstraintFailedException::class);
+        $webpush_repo->save('invalid_user_id', $webPushSubParams, $raw);
     }
 
     public function testExceptionOnInvalidUser()

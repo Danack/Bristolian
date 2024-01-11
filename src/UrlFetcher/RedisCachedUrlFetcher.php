@@ -10,14 +10,14 @@ class RedisCachedUrlFetcher implements UrlFetcher
 {
     private \Redis $redis;
 
-    private CurlUrlFetcher $urlFetcher;
+    private UrlFetcher $urlFetcher;
 
     /**
      * RedisCachedUrlFetcher constructor.
      * @param \Redis $redis
-     * @param CurlUrlFetcher $urlFetcher
+     * @param UrlFetcher $urlFetcher
      */
-    public function __construct(\Redis $redis, CurlUrlFetcher $urlFetcher)
+    public function __construct(\Redis $redis, UrlFetcher $urlFetcher)
     {
         $this->redis = $redis;
         $this->urlFetcher = $urlFetcher;

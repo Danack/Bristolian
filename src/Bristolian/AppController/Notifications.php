@@ -23,6 +23,11 @@ class Notifications
         return $content;
     }
 
+    function save_subscription_get(): string
+    {
+        return "You probably meant to do a POST to this endpoint.";
+    }
+
     function save_subscription(
         JsonInput $jsonInput,
         UserSession $appSession,

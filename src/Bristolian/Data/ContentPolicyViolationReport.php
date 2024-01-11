@@ -85,7 +85,7 @@ class ContentPolicyViolationReport
     }
 
     /**
-     * @param array<string, string|int> $report
+     * @param array<string, array<string, string>> $report
      * @return self
      * @throws \Exception
      */

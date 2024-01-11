@@ -32,11 +32,8 @@ function addDebugCommands(Application $console)
     $command->setDescription(
         "Send a webpush to a user, if they are registered for webpushes"
     );
-
     $command->addArgument('email_address', InputArgument::REQUIRED, "The username for the account.");
     $command->addArgument('message', InputArgument::REQUIRED, "The message to send");
-
-
     $console->add($command);
 
 //    $command = new Command('debug:debug', 'Osf\CliController\Debug::debug');
@@ -51,6 +48,9 @@ function addDebugCommands(Application $console)
 //    $command->setDescription("Debugging invoice rendering.");
 //    $console->add($command);
 
+    $command = new Command('debug:files', '\Bristolian\CliController\Debug::upload_file');
+    $command->setDescription("Test file stuff is work.");
+    $console->add($command);
 }
 
 

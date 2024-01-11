@@ -62,7 +62,7 @@ HTML;
             return new RedirectResponse('/login?message=login failed');
         }
 
-        $appSession->createSessionForUser($adminUser);// $username/*$userProfile*/);
+        $appSession->createSessionForUser($adminUser);
 
         return new RedirectResponse('/tools?message=login worked');
     }

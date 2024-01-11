@@ -14,7 +14,8 @@
     "js:build:dev:watch": "webpack --watch --mode development",
     "js:build:prod": "webpack --mode production",
     "js:build:prod:watch": "webpack --watch --mode production",
-    "stats": "webpack --profile",
+    "stats_old": "webpack --profile",
+    "stats": "webpack --stats=detailed --json",
     "sass:build:dev": "sass public/scss/site.scss public/css/site.css",
     "sass:build:prod": "sass public/scss/site.scss public/css/site.css --style=compressed",
     "sass:build:watch": "sass public/scss/site.scss public/css/site.css --watch"
@@ -35,7 +36,6 @@
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
-    "argv": "0.0.2",
     "command-line-args": "^5.2.0",
     "compression-webpack-plugin": "^10.0.0",
     "css-loader": "^6.7.2",
@@ -44,7 +44,6 @@
     "sass": "^1.56.1",
     "script-loader": "^0.7.2",
     "source-map-loader": "^4.0.1",
-    "style-loader": "^3.3.1",
     "timestamp-webpack-plugin": "^0.2.3",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.1",

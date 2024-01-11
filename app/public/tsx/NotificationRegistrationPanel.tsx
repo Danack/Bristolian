@@ -1,6 +1,4 @@
 import {h, Component} from "preact";
-import {types} from "sass";
-import Error = types.Error;
 
 export interface NotificationPanelProps {
   // no properties currently

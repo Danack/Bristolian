@@ -14,7 +14,7 @@ class StringToHtmlPageConverter
     }
 
     // Define a function that writes a string into the response object.
-    function convertStringToHtmlResponse(
+    public function convertStringToHtmlResponse(
         string $result,
         \Psr\Http\Message\RequestInterface $request,
         \Psr\Http\Message\ResponseInterface $response

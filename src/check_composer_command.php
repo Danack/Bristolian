@@ -2,8 +2,10 @@
 
 declare(strict_types = 1);
 
-$env = getenv();
+// Used in containers/installer/entrypoint.sh to figure out what type of
+// composer update/install to run.
 
+$env = getenv();
 
 if (array_key_exists('ENV_DESCRIPTION', $env) === false) {
     echo "env description not set.\n";

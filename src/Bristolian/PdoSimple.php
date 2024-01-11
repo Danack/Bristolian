@@ -216,4 +216,33 @@ class PdoSimple
 
         return $objects;
     }
+
+
+    public function fetchAllAsScalar(string $query, array $params)
+    {
+        $statement = $this->pdo->prepare($query);
+
+        $statement->setFetchMode(PDO::FETCH_NUM);
+
+        $result = $statement->execute($params);
+
+        if ($result === false) {
+            throw new \Exception("Executing statement failed");
+        }
+
+        $rows = $statement->fetchAll();
+        $data = [];
+
+
+        foreach ($rows as $row) {
+            $number_of_rows = count($row);
+            if ($number_of_rows > 1) {
+                throw PdoSimpleException::tooManyColumns($number_of_rows);
+            }
+
+            $data[] = $row[0];
+        }
+
+        return $data;
+    }
 }

@@ -25,18 +25,14 @@ function injectionParams() : InjectionParams
 
     ];
 
-//        $environment = getConfig(Config::OSF_ENVIRONMENT);
-//        if ($environment !== 'production') {
-//            $aliases[\Osf\Service\NotificationSender\NotificationSender::class] =
-//                \Osf\Service\NotificationSender\LocalDevNotificationSender::class;
-//        }
-
     // Delegate the creation of types to callables.
     $delegates = [
         \PDO::class => 'createPDOForUser',
-//            \Redis::class => 'createRedis',
-//            \Doctrine\ORM\EntityManager::class => 'createDoctrineEntityManager',
 
+        \Bristolian\Filesystem\LocalFilesystem::class =>
+            'createLocalFilesystem',
+        \Bristolian\Filesystem\MemeFilesystem::class =>
+            'createMemeFilesystem',
     ];
 
     // Define some params that can be injected purely by name.

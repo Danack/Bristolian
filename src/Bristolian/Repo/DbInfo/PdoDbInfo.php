@@ -12,6 +12,10 @@ class PdoDbInfo implements DbInfo
     {
     }
 
+    /**
+     * @return array|Table[]
+     * @throws \DataType\Exception\ValidationException
+     */
     function getTableInfo(): array
     {
         $sql = <<< SQL

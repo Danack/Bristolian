@@ -10,8 +10,13 @@ declare (strict_types = 1);
  * as that would make it harder to read, not easier.
  */
 
+use Aws\S3\S3Client;
 use DI\Injector;
 use Bristolian\Config;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
+use League\Flysystem\AwsS3V3\PortableVisibilityConverter;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Visibility;
 use Psr\Http\Message\ResponseInterface;
 use SlimAuryn\AurynCallableResolver;
 use Laminas\Diactoros\ResponseFactory;
@@ -53,6 +58,14 @@ function createRedis(Config $config)
 
     return $redis;
 }
+
+function createRedisCachedUrlFetcher(\Redis $redis): \UrlFetcher\RedisCachedUrlFetcher
+{
+    $urlFetcher = new \UrlFetcher\CurlUrlFetcher();
+
+    return new \UrlFetcher\RedisCachedUrlFetcher($redis, $urlFetcher);
+}
+
 
 /**
  * @return array<string, string|int>
@@ -164,4 +177,61 @@ function createSessionConfig(): Asm\SessionConfig
         "john_is_my_name",
         3600,
     );
+}
+
+function createLocalFilesystem(): \Bristolian\Filesystem\LocalFilesystem
+{
+    // SETUP
+    $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(__DIR__ . "/../temp");
+    $filesystem = new \Bristolian\Filesystem\LocalFilesystem($adapter);
+
+    return $filesystem;
+}
+
+
+function createLocalCacheFilesystem(): \Bristolian\Filesystem\LocalCacheFilesystem
+{
+    // SETUP
+    $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(__DIR__ . "/../data/cache");
+    $filesystem = new \Bristolian\Filesystem\LocalCacheFilesystem($adapter);
+
+    return $filesystem;
+}
+
+
+function createMemeFilesystem(Config $config): \Bristolian\Filesystem\MemeFilesystem
+{
+    $bucketName = 'bristolian-memes';
+
+    if ($config->isProductionEnv() !== true) {
+        $bucketName = 'bristolian-memes-dev';
+    }
+
+    // SETUP
+    $client = new S3Client([
+        'credentials' => [
+            'key' => getScalewayApiKey(),
+            'secret' => getScalewayApiSecret(),
+        ],
+        'region' => 'nl-ams',
+        'endpoint' => 'https://s3.nl-ams.scw.cloud'
+    ]);
+
+    // The internal adapter
+    $adapter = new AwsS3V3Adapter(
+        $client,
+        $bucketName,
+        // Optional path prefix
+        '', //'path/prefix',
+        new PortableVisibilityConverter(
+            Visibility::PRIVATE // or ::PRIVATE
+        )
+    );
+
+    $config = [];
+
+    // The FilesystemOperator
+    $filesystem = new \Bristolian\Filesystem\MemeFilesystem($adapter, $config);
+
+    return $filesystem;
 }

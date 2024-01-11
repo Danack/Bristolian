@@ -456,6 +456,42 @@ function convertToValue(mixed $value)
     ];
 }
 
+
+//function convertToValue($name, $value)
+//{
+//    if (is_scalar($value) === true) {
+//        return $value;
+//    }
+//    if ($value === null) {
+//        return null;
+//    }
+//
+//    $callable = [$value, 'toArray'];
+//    if (is_object($value) === true && is_callable($callable)) {
+//        return $callable();
+//    }
+//    if (is_object($value) === true && $value instanceof \DateTime) {
+//        return $value->format(\Bristolian\App::DATE_TIME_EXACT_FORMAT);
+//    }
+//
+//    if (is_array($value) === true) {
+//        $values = [];
+//        foreach ($value as $key => $entry) {
+//            $values[$key] = convertToValue($key, $entry);
+//        }
+//
+//        return $values;
+//    }
+//
+//    $message = "Unsupported type [" . gettype($value) . "] for toArray for property $name.";
+//
+//    if (is_object($value) === true) {
+//        $message = "Unsupported type [" . gettype($value) . "] of class [" . get_class($value) . "] for toArray for property $name.";
+//    }
+//
+//    throw new \Exception($message);
+//}
+
 /*
   TODO - is this convertToValue better?
 

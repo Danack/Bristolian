@@ -8,31 +8,14 @@ use DataType\GetInputTypesFromAttributes;
 
 class TagParam implements DataType
 {
-
     use CreateFromVarMap;
     use GetInputTypesFromAttributes;
 
     public function __construct(
         #[BasicString('text')]
-        public string $text,
+        public readonly string $text,
         #[BasicString('description')]
-        public string $description,
+        public readonly string $description,
     ) {
-    }
-
-    /**
-     * @return string
-     */
-    public function getText(): string
-    {
-        return $this->text;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
     }
 }

@@ -69,7 +69,22 @@ function injectionParams()
           Bristolian\Repo\UserDocumentRepo\HardcodedUserDocumentRepo::class,
 
         \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::class =>
-        \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::class
+          \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::class,
+
+        \Bristolian\Service\MemeStorage\MemeStorage::class =>
+          \Bristolian\Service\MemeStorage\StandardMemeStorage::class,
+
+        \Bristolian\Repo\FileStorageRepo\FileStorageInfoRepo::class =>
+          \Bristolian\Repo\FileStorageRepo\PdoFileStorageInfoRepo::class,
+
+        \Bristolian\Repo\MemeTagRepo\MemeTagRepo::class =>
+            \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class,
+
+        \Bristolian\Repo\UserSearch\UserSearch::class =>
+            \Bristolian\Repo\UserSearch\PdoUserSearch::class,
+
+        \Bristolian\UserNotifier\UserNotifier::class =>
+          \Bristolian\UserNotifier\StandardUserNotifier::class
     ];
 
 
@@ -89,10 +104,23 @@ function injectionParams()
           'createApiDomain',
         \Redis::class =>
           'createRedis',
+
+        \UrlFetcher\RedisCachedUrlFetcher::class => 'createRedisCachedUrlFetcher',
+
         \Predis\Client::class =>
           'createPredisClient',
         \Asm\SessionConfig::class =>
             'createSessionConfig',
+
+        \Bristolian\Filesystem\LocalFilesystem::class =>
+          'createLocalFilesystem',
+        \Bristolian\Filesystem\MemeFilesystem::class =>
+            'createMemeFilesystem',
+        \Bristolian\Filesystem\LocalCacheFilesystem::class =>
+            'createLocalCacheFilesystem',
+
+
+
     ];
 
     // Define some params that can be injected purely by name.

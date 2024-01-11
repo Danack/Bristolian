@@ -20,7 +20,6 @@ use Bristolian\JsonInput\FakeJsonInput;
 use SlimDispatcher\Response\JsonResponse;
 
 /**
- * @group wip
  * @coversNothing
  */
 class NotificationsTest extends BaseTestCase

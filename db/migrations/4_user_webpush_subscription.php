@@ -5,7 +5,7 @@ declare(strict_types = 1);
 
 function getDescription_4(): string
 {
-    return 'tags foi_requests';
+    return 'Web Push notifications.';
 }
 
 function getAllQueries_4(): array

@@ -401,8 +401,16 @@ HTML;
 
 
         $content .= "chrome://serviceworker-internals/";
+        $content .= "<div></div><hr/>";
+        $content .= "<div></div><hr/>";
 
+        $content .= "Meme upload panel:";
+        $content .= "<div class='meme_upload_panel' ></div>";
 
+        $content .= "Notification test panel:";
+        $content .= "<div class='notification_test_panel' ></div>";
+
+        $content .= "<p>wtf.</p>";
         return $content;
     }
 }

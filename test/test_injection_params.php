@@ -37,7 +37,9 @@ function testInjectionParams() : InjectionParams
     // Delegate the creation of types to callables.
     $delegates = [
         \PDO::class => 'createPDOForUser',
-//            \Redis::class => 'createRedis',
+        \Redis::class =>
+            'createRedis',
+
 //            \Doctrine\ORM\EntityManager::class => 'createDoctrineEntityManager',
 
     ];

@@ -18,7 +18,7 @@ class PdoAdminRepoTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo
-     * @group slow
+     * @group db
      */
     public function testWorks(): void
     {
@@ -39,5 +39,20 @@ class PdoAdminRepoTest extends BaseTestCase
             $createAdminUserParams->getEmailaddress(),
             $adminUserFromDB->getEmailAddress()
         );
+
+        $adminUserId = $pdo_admin_repo->getAdminUserId($username);
+        $this->assertSame(
+            $adminUserFromDB->getUserId(),
+            $adminUserId
+        );
+
+        $nullUserId = $pdo_admin_repo->getAdminUserId('non_existent_user');
+        $this->assertNull($nullUserId);
+
+        $nullUserFromDB = $pdo_admin_repo->getAdminUser('non_existent_user', 'foo');
+        $this->assertNull($nullUserFromDB);
+
+        $nullUserFromDB = $pdo_admin_repo->getAdminUser($username, 'bad_password');
+        $this->assertNull($nullUserFromDB);
     }
 }

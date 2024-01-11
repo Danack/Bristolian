@@ -30,9 +30,11 @@ function getAllAppRoutes()
             'Bristolian\AppController\Users::showUserDocument'
         ],
 
+
         ['/users/{username:.*}', 'GET', 'Bristolian\AppController\Users::showUser'],
 
         ['/users', 'GET', 'Bristolian\AppController\Users::index'],
+
 
 
 
@@ -95,7 +97,32 @@ function getAllAppRoutes()
 
 
         ['/api/save-subscription/', 'POST', 'Bristolian\AppController\Notifications::save_subscription'],
+        ['/api/save-subscription/', 'GET', 'Bristolian\AppController\Notifications::save_subscription_get'],
 
+        ['/api/search_users', 'GET', 'Bristolian\AppController\Admin::search_users'],
+
+        ['/api/ping_user', 'GET', 'Bristolian\AppController\Admin::ping_user'],
+
+
+        ['/api/meme-upload/', 'POST', 'Bristolian\AppController\MemeUpload::handleFileUpload'],
+        ['/api/meme-upload/', 'GET', 'Bristolian\AppController\MemeUpload::handleFileUpload_get'],
+
+
+        ['/api/meme-tag-add/', 'POST', 'Bristolian\AppController\User::handleMemeTagAdd'],
+        ['/api/meme-tag-add/', 'GET', 'Bristolian\AppController\User::handleMemeTagAdd_get'],
+
+
+        ['/api/meme-tag-delete/', 'DELETE', 'Bristolian\AppController\User::handleMemeTagDelete'],
+        ['/api/meme-tag-delete/', 'GET', 'Bristolian\AppController\User::handleMemeTagDelete_get'],
+
+        ['/api/memes', 'GET', 'Bristolian\AppController\User::listMemes'],
+        ['/api/memes/{meme_id:.+}/tags', 'GET', 'Bristolian\AppController\User::getTagsForMeme'],
+
+        ['/user/memes', 'GET', 'Bristolian\AppController\User::manageMemes'],
+
+        ["/images/memes/{id:.+}.jpg", 'GET', 'Bristolian\AppController\Images::show_meme'],
+
+        ["/admin/notification_test", 'GET', '\Bristolian\AppController\Admin::showNotificationTestPage'],
 
         // Dynamic pages
         ['/topics', 'GET', 'Bristolian\AppController\Topics::index'],

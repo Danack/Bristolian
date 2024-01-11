@@ -7,7 +7,6 @@ use Bristolian\DataType\WebPushSubscriptionParam;
 
 /**
  * @covers \Bristolian\DataType\WebPushSubscriptionParam
- * @group wip
  */
 class WebPushSubscriptionParamTest extends BaseTestCase
 {
@@ -38,7 +37,7 @@ class WebPushSubscriptionParamTest extends BaseTestCase
         $this->assertSame($raw, $params->getRaw());
     }
 
-    public function testWorksWithTimestampe()
+    public function testWorksWithTimestamp()
     {
         $endpoint = "https://www.example.com/?time=" . microtime();
         $expiration_time = '12th of whenever. This is a timestamp';

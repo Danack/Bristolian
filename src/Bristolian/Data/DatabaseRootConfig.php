@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Bristolian\Data;
 
+/**
+ * @codeCoverageIgnore
+ */
 class DatabaseRootConfig
 {
     public function __construct(

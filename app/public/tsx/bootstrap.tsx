@@ -1,11 +1,15 @@
 import { h, render } from "preact";
+
+import initByClass from "./widgety/widgety";
+import { startMessageProcessing } from "./message/message";
+import type { WidgetClassBinding } from "./widgety/widgety";
+
 import { CSPViolationReportsPanel } from "./CSPViolationReportsPanel";
 import { FloatingPointPanel } from "./FloatingPointPanel";
-import initByClass from "./widgety/widgety";
-import type { WidgetClassBinding } from "./widgety/widgety";
-import { startMessageProcessing } from "./message/message";
-
+import { MemeManagementPanel } from "./MemeManagementPanel";
+import { MemeUploadPanel } from "./MemeUploadPanel";
 import { NotificationRegistrationPanel } from "./NotificationRegistrationPanel";
+import { NotificationTestPanel } from "./NotificationTestPanel";
 import { NotesPanel } from "./NotesPanel";
 import { TimeLinePanel } from "./TimeLinePanel";
 import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
@@ -27,12 +31,25 @@ let panels: WidgetClassBinding[] = [
         component: TimeLinePanel
     },
     {
+        class: 'meme_management_panel',
+        component: MemeManagementPanel
+    },
+    {
+        class: 'meme_upload_panel',
+        component: MemeUploadPanel
+    },
+    {
         class: 'notes_panel',
         component: NotesPanel
     },
     {
         class: 'notification_panel',
         component: NotificationRegistrationPanel
+    },
+
+    {
+        class: 'notification_test_panel',
+        component: NotificationTestPanel
     },
     {
         class: 'twitter_splitter_panel',

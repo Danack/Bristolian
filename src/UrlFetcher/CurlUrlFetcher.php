@@ -8,9 +8,6 @@ class CurlUrlFetcher implements UrlFetcher
 {
     public function getUrl(string $uri): string
     {
-//        echo "$uri";
-//        exit(0);
-
         [$statusCode, $body, $headers] = \fetchUri(
             $uri,
             $method = 'GET',
@@ -18,8 +15,6 @@ class CurlUrlFetcher implements UrlFetcher
             $body = null,
             $headers = []
         );
-
-
 
         if ($statusCode !== 200) {
             throw UrlFetcherException::notOk($statusCode, $uri);

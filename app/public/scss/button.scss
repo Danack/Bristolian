@@ -1,0 +1,20 @@
+.button {
+
+  /* clicking buttons leads to accidental text selection far too often */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+
+  border: 1px solid #000;
+  cursor: pointer;
+  border-radius: 3px;
+  background-color: #003286;
+  color: white;
+  padding: 3px;
+  margin: 3px;
+  &:hover {
+    background: #d2e3ff;
+    color: black;
+  }
+}
