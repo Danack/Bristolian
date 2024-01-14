@@ -92,7 +92,7 @@ HTML;
     }
 
 
-    function showMigrationInfo(DbInfo $dbInfo): string
+    public function showMigrationInfo(DbInfo $dbInfo): string
     {
         $table_info = "<h2>Migrations</h2>";
 

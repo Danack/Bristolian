@@ -23,7 +23,7 @@ class Admin
         AppSession $appSession,
         VarMap $varMap,
         UserNotifier $user_notifier
-    ) {
+    ): JsonResponse {
         if ($appSession->isLoggedIn()) {
             return new JsonResponse([]);
         }

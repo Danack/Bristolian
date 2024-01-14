@@ -15,7 +15,7 @@ use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 
 class Notifications
 {
-    function generate_keys(): string
+    public function generate_keys(): string
     {
         $content = "Here are some keys that can be used for webpushes.";
         $content .= var_export(VAPID::createVapidKeys(), true);
@@ -23,12 +23,12 @@ class Notifications
         return $content;
     }
 
-    function save_subscription_get(): string
+    public function save_subscription_get(): string
     {
         return "You probably meant to do a POST to this endpoint.";
     }
 
-    function save_subscription(
+    public function save_subscription(
         JsonInput $jsonInput,
         UserSession $appSession,
         WebPushSubscriptionRepo $webPushSubscriptionRepo

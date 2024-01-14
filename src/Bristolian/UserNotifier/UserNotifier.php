@@ -4,5 +4,9 @@ namespace Bristolian\UserNotifier;
 
 interface UserNotifier
 {
-    public function notify(string $user);
+    /**
+     * @param string $user
+     * @return array<string, string>
+     */
+    public function notify(string $user): array;
 }

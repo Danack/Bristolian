@@ -218,7 +218,13 @@ class PdoSimple
     }
 
 
-    public function fetchAllAsScalar(string $query, array $params)
+    /**
+     * @param string $query
+     * @param mixed[] $params
+     * @return int[]|string[]
+     * @throws PdoSimpleException
+     */
+    public function fetchAllAsScalar(string $query, array $params): array
     {
         $statement = $this->pdo->prepare($query);
 

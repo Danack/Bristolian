@@ -9,6 +9,9 @@
         <!-- Need to find a way to turn this off for text, before re-enabling -->
         <exclude name="Generic.Files.LineLength.TooLong"/>
 
+        <!-- I like camel caps -->
+        <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps"/>
+
         <!-- I just don't agree with these. -->
         <exclude name="PSR2.ControlStructures.ElseIfDeclaration"/>
         <exclude name="Squiz.ControlStructures.ElseIfDeclaration"/>

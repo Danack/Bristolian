@@ -10,7 +10,7 @@ use SlimDispatcher\Response\HtmlResponse;
 
 class PageStubResponseGenerator
 {
-    function __construct(private AssetLinkEmitter $assetLinkEmitter)
+    public function __construct(private AssetLinkEmitter $assetLinkEmitter)
     {
     }
 

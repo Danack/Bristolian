@@ -5,17 +5,19 @@ namespace Bristolian\Repo\DbInfo;
 use Bristolian\DataType\Table;
 use Bristolian\DataType\Migration;
 
+/**
+ * Interface for getting simple DB schema info.
+ */
 interface DbInfo
 {
     /**
      * @return Table[]
      */
-    function getTableInfo(): array;
-
+    public function getTableInfo(): array;
 
 
     /**
      * @return Migration[]
      */
-    function getMigrations(): array;
+    public function getMigrations(): array;
 }

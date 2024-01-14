@@ -16,7 +16,7 @@ class PdoDbInfo implements DbInfo
      * @return array|Table[]
      * @throws \DataType\Exception\ValidationException
      */
-    function getTableInfo(): array
+    public function getTableInfo(): array
     {
         $sql = <<< SQL
 SELECT table_name, table_rows
@@ -33,7 +33,7 @@ SQL;
     /**
      * @return Migration[]
      */
-    function getMigrations(): array
+    public function getMigrations(): array
     {
         $sql = <<< SQL
 SELECT id, description, checksum, created_at
