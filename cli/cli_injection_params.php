@@ -23,6 +23,8 @@ function injectionParams() : InjectionParams
         \Bristolian\Service\WebPushService\WebPushService::class =>
           \Bristolian\Service\WebPushService\StandardWebPushService::class,
 
+        \Bristolian\Repo\RoomRepo\RoomRepo::class =>
+          \Bristolian\Repo\RoomRepo\PdoRoomRepo::class,
     ];
 
     // Delegate the creation of types to callables.

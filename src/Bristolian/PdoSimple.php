@@ -116,6 +116,9 @@ class PdoSimple
     }
 
     /**
+     * This version assigns the properties magically, before calling the constructor.
+     *
+     *
      * @template T of object
      * @param string $query
      * @param mixed[] $params
@@ -143,6 +146,42 @@ class PdoSimple
 
         return $object;
     }
+
+
+    /**
+     *
+     * This version calls the class constructor properly.
+     *
+     * @param string $query
+     * @param array $params
+     * @param string $classname
+     * @return mixed|object|string|null
+     * @throws \ReflectionException
+     */
+    public function fetchOneAsObjectOrNullConstructor(string $query, array $params, string $classname)
+    {
+        $statement = $this->pdo->prepare($query);
+
+        $result = $statement->execute($params);
+
+        if ($result === false) {
+            throw new \Exception("Executing statement failed");
+        }
+
+        $statement->setFetchMode(PDO::FETCH_ASSOC);
+
+        $row = $statement->fetch();
+
+        if ($row === false) {
+            return null;
+        }
+
+        $reflection = new \ReflectionClass($classname);
+        $instance = $reflection->newInstanceArgs($row);
+
+        return $instance;
+    }
+
 
     /**
      * @param string $query

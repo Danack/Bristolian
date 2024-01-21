@@ -2,8 +2,10 @@
 
 namespace Bristolian\AppController;
 
+use Bristolian\AppSession;
 use Bristolian\Service\MemeStorage\MemeStorage;
 use Bristolian\UserSession;
+use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
 use Bristolian\Repo\FileStorageRepo\FileStorageInfoRepo;
@@ -128,5 +130,21 @@ class User
     public function handleMemeTagDelete_get(): string
     {
         return "This is a GET only end-point";
+    }
+
+
+    public function get_login_status(AppSession $appSession): JsonNoCacheResponse
+    {
+        $data = [
+            'logged_in' => false,
+        ];
+
+        if ($appSession->isLoggedIn() === true) {
+            $data = [
+                'logged_in' => true,
+            ];
+        }
+
+        return new JsonNoCacheResponse($data);
     }
 }

@@ -6,6 +6,7 @@ import type { WidgetClassBinding } from "./widgety/widgety";
 
 import { CSPViolationReportsPanel } from "./CSPViolationReportsPanel";
 import { FloatingPointPanel } from "./FloatingPointPanel";
+import { LoginStatusPanel } from "./LoginStatusPanel";
 import { MemeManagementPanel } from "./MemeManagementPanel";
 import { MemeUploadPanel } from "./MemeUploadPanel";
 import { NotificationRegistrationPanel } from "./NotificationRegistrationPanel";
@@ -29,6 +30,10 @@ let panels: WidgetClassBinding[] = [
     {
         class: 'time_line_panel',
         component: TimeLinePanel
+    },
+    {
+        class: 'login_status_panel',
+        component: LoginStatusPanel
     },
     {
         class: 'meme_management_panel',

@@ -18,8 +18,7 @@ function createPageHeaderHtml(/*HeaderLinks $headerLinks*/) : string
         new HeaderLink('/about', "About")
     ]);
 
-
-    $template = '<span><a href=":attr_path">:html_description</a></span>';
+    $template = '<span class="heading"><a href=":attr_path">:html_description</a></span>';
     $html = "";
 
     foreach ($headerLinks->getHeaderLinks() as $headerLink) {
@@ -29,6 +28,8 @@ function createPageHeaderHtml(/*HeaderLinks $headerLinks*/) : string
         ];
         $html .= esprintf($template, $params);
     }
+
+    $html .= "<span class='login_status_panel'></span>";
 
     return $html;
 }

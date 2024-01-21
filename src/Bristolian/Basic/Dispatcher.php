@@ -24,6 +24,8 @@ class Dispatcher implements DispatcherInterface
      */
     public function dispatch_route(Request $request, array $routeArguments, $resolvedCallable)
     {
+
+
         $this->injector->alias(Request::class, get_class($request));
         $this->injector->share($request);
         foreach ($routeArguments as $key => $value) {

@@ -21,7 +21,8 @@ docker-compose up --build \
  php_fpm php_fpm_debug \
  sass_dev_builder \
  js_builder \
- redis
+ redis \
+ --remove-orphans
 
 
 docker-compose down

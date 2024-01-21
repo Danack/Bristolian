@@ -16,11 +16,38 @@ class AppSession implements UserSession
 
     public function __construct(private AppSessionManager $appSessionManager)
     {
+        static $count = 0;
+
+        \error_log("Session created");
+        if ($count > 0) {
+            \error_log("again");
+        }
+
+        $count += 1;
     }
 
     private function initSession(): void
     {
+        // we delay initialising the session so that requests
+        // that don't need access to it have lower overhead.
         $this->session = $this->appSessionManager->getCurrentSession();
+
+        // TODO - isn't this an early optimisation?
+    }
+
+    public function destroy_session(): void
+    {
+        // make sure session has been created from cookie
+        $this->initSession();
+        // delete it.
+        $this->appSessionManager->deleteSession();
+
+//        // TODO - wat?
+//        $this->initSession();
+//        if ($this->session !== null) {
+//            $this->session->delete();
+//        }
+        $this->session = null;
     }
 
     public function createSessionForUser(AdminUser $user): void

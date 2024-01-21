@@ -3,42 +3,44 @@
 
 .bristolian_header {
 
-  background-color: var(--header_panel_background);
-  color: var(--header_panel_text_color);
+  .heading {
+    background-color: var(--header_panel_background);
+    color: var(--header_panel_text_color);
 
-  font-weight: bold;
-  font-size: 36px;
+    font-weight: bold;
+    font-size: 36px;
 
-  @media (max-width: $screen_break_large) {
-    font-size: 30px;
-  }
-
-  @media (max-width: $screen_break_medium) {
-    font-size: 24px;
-  }
-
-  @media (max-width: $screen_break_small) {
-    font-size: 18px;
-  }
-
-  span {
-    list-style-type: none;
-    float: left;
-    font-weight: 400;
-    padding-left: 12px;
-
-    a {
-      text-decoration: none;
-      color: var(--header_link_color);
-      border:0;
+    @media (max-width: $screen_break_large) {
+      font-size: 30px;
     }
 
-    a:hover, a:focus {
-      color: var(--header_link_hover_color);
+    @media (max-width: $screen_break_medium) {
+      font-size: 24px;
     }
-  }
 
-  span:first-child {
-    padding-left: 0px;
+    @media (max-width: $screen_break_small) {
+      font-size: 18px;
+    }
+
+
+      list-style-type: none;
+      float: left;
+      font-weight: 400;
+      padding-left: 12px;
+
+      a {
+        text-decoration: none;
+        color: var(--header_link_color);
+        border: 0;
+      }
+
+      a:hover, a:focus {
+        color: var(--header_link_hover_color);
+      }
+
+
+    span:first-child {
+      padding-left: 0px;
+    }
   }
 }

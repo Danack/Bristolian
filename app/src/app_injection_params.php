@@ -12,7 +12,8 @@ function injectionParams()
         \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
         \Bristolian\Service\RequestNonce::class,
         \Asm\SessionManager::class,
-        \Bristolian\SessionStorage::class
+        \Bristolian\SessionStorage::class,
+        \Bristolian\AppSessionManager::class,
     ];
 
     // Alias interfaces (or classes) to the actual types that should be used
@@ -60,7 +61,7 @@ function injectionParams()
           \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::class,
 
         \Asm\RequestSessionStorage::class =>
-          \Bristolian\App\AppSessionStorage::class,
+          \Bristolian\App\StandardRequestSessionStorage::class,
 
         Bristolian\Repo\UserRepo\UserRepo::class =>
           Bristolian\Repo\UserRepo\HardcodedUserRepo::class,

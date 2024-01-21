@@ -18,6 +18,8 @@ require __DIR__ . '/credentials.php';
 
 set_time_limit(20);
 
+$start_time = microtime(true);
+
 $injector = new DI\Injector();
 
 CLIFunction::setupErrorHandlers();
@@ -41,6 +43,8 @@ catch (\Exception $e) {
     exit(-1);
 }
 
+
+//time_it();
 
 $exceptionMappers = [
     Auryn\InjectionException::class => 'cliHandleInjectionException',

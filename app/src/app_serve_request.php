@@ -18,24 +18,7 @@ require __DIR__ . "/../../credentials.php";
 
 set_error_handler('saneErrorHandler');
 
-$start_time = microtime(true);
 
-function time_it()
-{
-    global $start_time;
-
-    $end_time = microtime(true);
-
-    $time_taken = ($end_time - $start_time);
-
-    if ($time_taken < 0.00001) {
-        echo "Basically nothing.";
-        exit(0);
-    }
-
-    echo "Time taken = " . $time_taken  . " m'kay.";
-    exit(0);
-}
 
 $injector = new DI\Injector();
 $injectionParams = injectionParams();

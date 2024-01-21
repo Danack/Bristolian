@@ -10,6 +10,14 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class Login
 {
+    public function logout(AppSession $appSession)
+    {
+        $appSession->destroy_session();
+
+        return new RedirectResponse('/?message=You should be logged out.');
+    }
+
+
     public function showLoginPage(AppSession $appSession): string|RedirectResponse
     {
         if ($appSession->isLoggedIn()) {
@@ -40,20 +48,22 @@ HTML;
 
     public function processLoginPage(
         AdminRepo $adminRepo,
-        SessionManager $sessionManager,
         AppSession $appSession
     ): RedirectResponse {
 
+        // TODO - replace with DataType
         $username = $_POST['username'] ?? null;
         $password = $_POST['password'] ?? null;
 
         if ($username === null) {
-            echo "Username is null.";
-            exit(0);
+//            echo "Username is null.";
+//            exit(0);
+            return new RedirectResponse('/login?message=login failed');
         }
         if ($password === null) {
-            echo "password is null.";
-            exit(0);
+//            echo "password is null.";
+//            exit(0);
+            return new RedirectResponse('/login?message=login failed');
         }
 
         $adminUser = $adminRepo->getAdminUser($username, $password);

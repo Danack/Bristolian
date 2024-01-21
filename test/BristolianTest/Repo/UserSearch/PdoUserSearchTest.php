@@ -20,7 +20,7 @@ class PdoUserSearchTest extends BaseTestCase
 
     public function testWorks()
     {
-        $prefix = 'username' . time();
+        $prefix = 'username_testWorks' . time();
 
         $username = $prefix . '_' . random_int(1000, 9999) . "@example.com";
         $password = 'password_' . time() . '_' . random_int(1000, 9999);

@@ -22,6 +22,8 @@ function getAllAppRoutes()
 
         ['/login', 'GET', '\Bristolian\AppController\Login::showLoginPage'],
         ['/login', 'POST', '\Bristolian\AppController\Login::processLoginPage'],
+        ['/logout', 'GET', '\Bristolian\AppController\Login::logout'],
+
         ['/tools', 'GET', 'Bristolian\AppController\Tools::index'],
 
         [
@@ -102,6 +104,8 @@ function getAllAppRoutes()
         ['/api/search_users', 'GET', 'Bristolian\AppController\Admin::search_users'],
 
         ['/api/ping_user', 'GET', 'Bristolian\AppController\Admin::ping_user'],
+
+        ['/api/login-status', 'GET', 'Bristolian\AppController\User::get_login_status'],
 
 
         ['/api/meme-upload/', 'POST', 'Bristolian\AppController\MemeUpload::handleFileUpload'],

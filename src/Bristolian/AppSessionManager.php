@@ -7,6 +7,10 @@ use Asm\SessionManager;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Asm\RequestSessionStorage;
 
+
+/**
+ * ONLY A SINGLE INSTANCE OF THIS CLASS SHOULD BE CREATED PER REQUEST
+ */
 class AppSessionManager
 {
     private Session|null $session = null;
@@ -18,36 +22,73 @@ class AppSessionManager
     ) {
     }
 
-    public function getCurrentSession(): Session|null
+    /**
+     * @return void
+     */
+    public function deleteSession()
     {
-        if ($this->session) {
-            return $this->session;
+        $session = $this->sessionStorage->get();
+
+        if ($session !== null) {
+            $this->sessionManager->deleteSession($session);
+            $this->sessionStorage->markDeleted();
         }
-
-        // TODO - add optimisation to prevent this happening multiple times?
-        $this->session = $this->sessionManager->openSessionFromCookie($this->request);
-
-        if ($this->session) {
-            $this->sessionStorage->store($this->session);
-        }
-
-        return $this->session;
     }
 
-    public function createSession(): Session
+    /**
+     * If the user has already started a session, recreate it from
+     * the cookie they will have sent the server.
+     * @return Session|null
+     */
+    public function getCurrentSession(): Session|null
     {
-        if ($this->session) {
-            return $this->session;
+        $session = $this->sessionStorage->get();
+
+        // If the session has already been opened,
+        // just return it.
+        if ($session) {
+            return $session;
         }
 
-        $this->session = $this->sessionManager->createSession($this->request);
-        $this->sessionStorage->store($this->session);
-        return $this->session;
+        // Try to open an already created session from the cookie
+        // a user may have sent us.
+        // TODO - add optimisation to prevent this happening multiple times?
+        $session = $this->sessionManager->openSessionFromCookie($this->request);
+
+        if ($session) {
+            $this->sessionStorage->store($session);
+        }
+
+        return $session;
+    }
+
+    /**
+     * Creates a new session. To be used when a user is
+     * logging in.
+     *
+     * @return Session
+     */
+    public function createSession(): Session
+    {
+        $session = $this->sessionStorage->get();
+
+        if ($session) {
+            // TODO - why would this happen? Maybe throw an error here
+            // as it indicates "double-login" ?
+            return $session;
+        }
+
+        $session = $this->sessionManager->createSession($this->request);
+        if ($session) {
+            $this->sessionStorage->store($session);
+        }
+        return $session;
     }
 
     public function get(): Session|null
     {
-        error_log('getting session');
-        return $this->session;
+        $session = $this->sessionStorage->get();
+
+        return $session;
     }
 }

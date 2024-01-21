@@ -146,11 +146,9 @@ HTML;
   <a href="https://www.youtube.com/watch?v=BpQyjhjTV3s&ab_channel=Danack">Growth and Regeneration Scrutiny Commission, 27th November, 2023</a>
 </p>
 
-
 <p>
   <a href="https://www.youtube.com/watch?v=dgooVwQ-gQg&ab_channel=Danack">Bristol Schools Forum, 28th November, 2023</a>
 </p>
-
 
 <p>
   <a href="https://www.youtube.com/watch?v=-ifujuYXCU8&ab_channel=Danack">Committee Model Working Group - 1st December 2023</a> continued from  24th November 2023
@@ -160,6 +158,21 @@ HTML;
   <a href="https://www.youtube.com/watch?v=WWejBZQrJkc&ab_channel=Danack">People Scrutiny Commission - 6th December, 2023</a>
 </p>
 
+<p>
+  <a href="https://www.youtube.com/watch?v=PDYTB4PcgVE&ab_channel=Danack">Budget scrutiny - Part 1, Resources Scrutiny Commission - Friday, 8th December, 2023</a>
+</p>
+
+<p>
+  <a href="https://www.youtube.com/watch?v=OtpZnkam95c&ab_channel=Danack">Bristol Full Council 9th January 2024</a>
+</p>
+
+<p>
+  <a href="https://www.youtube.com/watch?v=nIvNGxXwUAk&ab_channel=Danack">Bristol Full Council 9th January 2024 - police </a>
+</p>
+
+<p>
+  <a href="https://www.youtube.com/watch?v=kWEfaCoaP3g&feature=youtu.be&ab_channel=Danack">Bristol City council - Overview and Scrutiny Management Board 18th January</a>
+</p>
 
 HTML;
 

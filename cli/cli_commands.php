@@ -16,6 +16,7 @@ function add_console_commands(Application $console)
     addAdminAccountCommands($console);
     addMiscCommands($console);
     addTestCommands($console);
+    addRoomCommands($console);
 }
 
 /**
@@ -161,8 +162,6 @@ function addAdminAccountCommands(Application $console)
 
     $console->add($command);
 
-
-
 //    $command = new Command('admin:reset_password', '\Osf\CliController\Admin::resetPassword');
 //    $command->setDescription("Reset password an admin user");
 //    $command->addArgument('username', InputArgument::REQUIRED, "The username for the account.");
@@ -172,4 +171,15 @@ function addAdminAccountCommands(Application $console)
 //    $command->setDescription("Remove google 2fa from admin account");
 //    $command->addArgument('username', InputArgument::REQUIRED, "The username for the account.");
 //    $console->add($command);
+}
+
+function addRoomCommands(Application $console)
+{
+    $command = new Command('room:create', 'Bristolian\CliController\Rooms::createFromCli');
+    $command->setDescription("Create a room");
+
+    $command->addArgument('name', InputArgument::REQUIRED, "The name of the room.");
+    $command->addArgument('purpose', InputArgument::REQUIRED, "The purpose/description of the room.");
+
+    $console->add($command);
 }
