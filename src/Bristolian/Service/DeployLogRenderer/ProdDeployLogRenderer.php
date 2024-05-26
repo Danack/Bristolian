@@ -28,11 +28,15 @@ class ProdDeployLogRenderer implements DeployLogRenderer
 
         $lines = explode("\n", $contents);
 
-        $html = "Log opened. Last 1000 characters are:";
+        $html = "<p>Log opened. Last 1000 characters are:</p>";
+
+        $html .= "<p>";
 
         foreach ($lines as $line) {
-            $html = "<p>$line</p>";
+            $html .= "$line <br/>";
         }
+
+        $html .= "</p>";
 
         return $html;
     }
