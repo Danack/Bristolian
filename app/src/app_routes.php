@@ -81,6 +81,9 @@ function getAllAppRoutes()
 
         ['/system/database_tables', 'GET', 'Bristolian\AppController\System::showDbInfo'],
 
+        ['/system/deploy_log', 'GET', 'Bristolian\AppController\System::deploy_log'],
+
+
         ['/system', 'GET', 'Bristolian\AppController\System::index'],
 
 

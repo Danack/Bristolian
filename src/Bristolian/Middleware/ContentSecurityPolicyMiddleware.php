@@ -40,12 +40,14 @@ class ContentSecurityPolicyMiddleware implements MiddlewareInterface
 
         $scriptSrcDomains = [
 //            'https://js.stripe.com/'
+              'https://pol.is/',
+              'http://pol.is/'
         ];
 
         $frameSrcDomains = [
             'https://youtube.com',
             'https://www.youtube.com',
-//            'https://hooks.stripe.com',
+            'http://pol.is/',
         ];
 
         $cspLines = [];
@@ -70,6 +72,12 @@ class ContentSecurityPolicyMiddleware implements MiddlewareInterface
         $cspLines[] = "object-src *";
         $cspLines[] = "style-src 'self'";
         $cspLines[] = "report-uri " . $this->apiDomain->getDomain() . App::CSP_REPORT_PATH;
+
+
+
+////        script-src-elem
+//        script-src 'self'
+
 
         $response = $response->withHeader(
             'Content-Security-Policy',

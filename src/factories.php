@@ -235,3 +235,19 @@ function createMemeFilesystem(Config $config): \Bristolian\Filesystem\MemeFilesy
 
     return $filesystem;
 }
+
+
+/**
+ * This is a generic (i.e. not app or api specific) function.
+ *
+ * @param Config $config
+ * @return \Bristolian\Data\ApiDomain
+ */
+function createDeployLogRenderer(Config $config)
+{
+    if ($config->isProductionEnv()) {
+        return new \Bristolian\Service\DeployLogRenderer\ProdDeployLogRenderer();
+    }
+
+    return new \Bristolian\Service\DeployLogRenderer\LocalDeployLogRenderer();
+}

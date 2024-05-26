@@ -10,6 +10,7 @@ use Bristolian\CSPViolation\CSPViolationStorage;
 use Bristolian\Repo\DbInfo\DbInfo;
 use function Bristolian\createReactWidget;
 use Bristolian\DataType\Migration;
+use Bristolian\Service\DeployLogRenderer\DeployLogRenderer;
 
 class System
 {
@@ -24,6 +25,7 @@ class System
 <ul>
   <li><a href="/system/csp/reports">CSP reports</a></li>
   <li><a href="/system/database_tables">Database tables</a></li>
+  <li><a href="/system/deploy_log">Deploy log</a></li>
 </ul>
 HTML;
 
@@ -49,6 +51,12 @@ HTML;
 
         return $content;
     }
+
+    public function deploy_log(DeployLogRenderer $deployLogRenderer): string
+    {
+        return $deployLogRenderer->render();
+    }
+
 
     public function showDbTables(DbInfo $dbInfo): string
     {
