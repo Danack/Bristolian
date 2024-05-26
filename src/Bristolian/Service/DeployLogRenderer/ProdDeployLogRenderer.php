@@ -6,7 +6,7 @@ class ProdDeployLogRenderer implements DeployLogRenderer
 {
     public function render(): string
     {
-        $prod_log_filename = "/var/log/deployer/bristolian.log";
+        $prod_log_filename = "/var/app/deployer.log";
 
         if (file_exists($prod_log_filename) !== true){
             return "Deploy log file does not exist of is not readable.";

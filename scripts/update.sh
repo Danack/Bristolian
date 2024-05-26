@@ -7,6 +7,11 @@
 #
 # If someone does a manual pull, use this to restore file permissions
 # chown deployer -R .
+#
+# ln -s /var/log/deployer/bristolian.log /var/home/Bristolian/Bristolian/deployer.log
+#
+# su - deployer -c "ln /var/log/deployer/bristolian.log /var/home/Bristolian/Bristolian/deployer.log"
+
 
 cd /var/home/Bristolian/Bristolian
 
