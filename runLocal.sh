@@ -10,7 +10,17 @@ touch this_is_local.txt
 
 docker-compose up --build -d db
 
-docker-compose up --build installer
+docker-compose up --build installer --exit-code-from installer
+
+INSTALLER_EXIT_CODE=$?
+echo "Installer exit code"
+echo $INSTALLER_EXIT_CODE
+
+if [ $INSTALLER_EXIT_CODE -ne 0 ]
+then
+  echo "Installer failed, aborting build"
+  exit $INSTALLER_EXIT_CODE
+fi
 
 docker-compose up --build installer_npm
 
