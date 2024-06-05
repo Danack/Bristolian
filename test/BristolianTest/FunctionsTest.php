@@ -107,9 +107,19 @@ TEXT;
     {
     }
 
-
+    /**
+     * @covers ::getPercentMemoryUsed
+     */
     public function test_getPercentMemoryUsed()
     {
+        $memoryLimit = ini_get('memory_limit');
+        if ($memoryLimit === "-1") {
+            $this->markTestSkipped("No memory limit, cannot test getPercentMemoryUsed");
+        }
+
+        $percentMemoryUsed = getPercentMemoryUsed();
+        $this->assertGreaterThanOrEqual(0, $percentMemoryUsed);
+        $this->assertLessThanOrEqual(100, $percentMemoryUsed);
     }
 
     /**

@@ -854,7 +854,8 @@ function showTotalErrorPage(\Throwable $exception): void
  * @return int
  * @throws Exception
  */
-function getMemoryLimit()
+// @codeCoverageIgnoreStart
+function getMemoryLimit(): int
 {
     $memoryLimit = ini_get('memory_limit');
 
@@ -875,8 +876,10 @@ function getMemoryLimit()
 
     return $memoryLimitValue;
 }
+// @codeCoverageIgnoreEnd
 
-function getPercentMemoryUsed() : int
+// @codeCoverageIgnoreStart
+function getPercentMemoryUsed(): int
 {
     $maxMemory = memory_get_peak_usage();
 
@@ -886,6 +889,7 @@ function getPercentMemoryUsed() : int
 
     return $percentMemoryUsed;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Remove the installation directory prefix from a filename
@@ -902,7 +906,7 @@ function remove_install_prefix_from_path(string $file): string
 /**
  * Gets a environment variable and checks that the value is a string.
  * throws an exception if value is not a string.
- * 
+ *
  * @param string $name
  * @return string
  * @throws \Bristolian\BristolianException
