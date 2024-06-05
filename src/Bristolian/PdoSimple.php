@@ -6,6 +6,7 @@ namespace Bristolian;
 
 use PDO;
 use Bristolian\Exception\RowNotFoundException;
+use function DataType\createArrayOfType;
 
 class PdoSimple
 {
@@ -249,11 +250,12 @@ class PdoSimple
             throw new \Exception("Executing statement failed");
         }
 
-        $statement->setFetchMode(PDO::FETCH_CLASS, $classname);
+        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        $objects = $statement->fetchAll();
+        return convertToArrayOfObjects($classname, $data);
 
-        return $objects;
+//        $objects = createArrayOfType($classname, $data);
+//        return $objects;
     }
 
 

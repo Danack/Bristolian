@@ -42,4 +42,18 @@ function createTestInjector()
 
 
 $injector = createTestInjector();
+$pdoAdminRepo = $injector->make(\Bristolian\Repo\AdminRepo\PdoAdminRepo::class);
+$user = $pdoAdminRepo->getAdminUser("testing@example.com", 'testing');
+
+if ($user === null) {
+    $data = [
+        'email_address' => "testing@example.com",
+        'password' => 'testing',
+    ];
+
+    $createUserParams = \Bristolian\DataType\CreateUserParams::createFromArray($data);
+
+    $pdoAdminRepo->addUser($createUserParams);
+}
+
 

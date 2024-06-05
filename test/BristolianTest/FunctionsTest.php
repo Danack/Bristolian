@@ -282,4 +282,29 @@ TEXT;
             $result
         );
     }
+
+    /**
+     * @group wip
+     */
+    public function test_convertToArrayOfObjects()
+    {
+        $data = [[
+            'test_string' => 'foobar',
+            'test_int' => 12345
+        ]];
+
+        $objects = convertToArrayOfObjects(\BristolianTest\PdoSimpleTestObject::class, $data);
+        $this->assertCount(1, $objects);
+
+        $object = $objects[0];
+        $this->assertInstanceOf(\BristolianTest\PdoSimpleTestObject::class, $object);
+        $this->assertSame('foobar', $object->test_string);
+        $this->assertSame(12345, $object->test_int);
+
+        $this->expectException(\Bristolian\BristolianException::class);
+        $this->expectExceptionMessage(\Bristolian\BristolianException::CANNOT_INSTANTIATE);
+
+        convertToArrayOfObjects(\StdClass::class, []);
+    }
 }
+

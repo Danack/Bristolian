@@ -20,7 +20,7 @@ class PdoRoomRepoTest extends BaseTestCase
     use TestPlaceholders;
 
     /**
-     * @covers PdoRoomRepo
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo
      * @return void
      * @throws \DI\InjectionException
      */
