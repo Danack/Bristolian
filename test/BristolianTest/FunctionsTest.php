@@ -146,7 +146,7 @@ TEXT;
 
 
     /**
-     * @return void
+     * @covers ::getEnvString
      */
     public function test_getEnvString()
     {
@@ -154,8 +154,10 @@ TEXT;
 
         $result = getEnvString("FOO");
         $this->assertSame("BAR", $result);
-    }
 
+        $this->expectException(\Bristolian\BristolianException::class);
+        getEnvString("NONEXISTENT");
+    }
 
     /**
      * @covers ::array_contains
@@ -311,7 +313,6 @@ TEXT;
     }
 
     /**
-     * @group wip
      * @covers ::convertToArrayOfObjects
      */
     public function test_convertToArrayOfObjects()

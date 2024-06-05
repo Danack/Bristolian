@@ -899,13 +899,20 @@ function remove_install_prefix_from_path(string $file): string
     return $file;
 }
 
+/**
+ * Gets a environment variable and checks that the value is a string.
+ * throws an exception if value is not a string.
+ * 
+ * @param string $name
+ * @return string
+ * @throws \Bristolian\BristolianException
+ */
 function getEnvString(string $name): string
 {
     $value = getenv($name);
 
     if (is_string($value) !== true) {
-        echo "Getting env variable $name resulted in " . var_export($value, true) . " which is not a string.";
-        exit(-1);
+        throw \Bristolian\BristolianException::env_variable_is_not_string($name, $value);
     }
 
     return $value;

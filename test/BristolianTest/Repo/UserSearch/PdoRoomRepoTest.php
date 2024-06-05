@@ -13,7 +13,6 @@ use Bristolian\Repo\RoomRepo\PdoRoomRepo;
 
 /**
  * @coversNothing
- * @group wip
  */
 class PdoRoomRepoTest extends BaseTestCase
 {

@@ -10,4 +10,10 @@ class BristolianException extends \Exception
     {
         return new self(self::CANNOT_INSTANTIATE);
     }
+
+    public static function env_variable_is_not_string(string $name, mixed $value)
+    {
+        $message = "Getting env variable $name resulted in " . var_export($value, true) . " which is not a string.";
+        return new self($message);
+    }
 }

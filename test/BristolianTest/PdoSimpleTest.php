@@ -13,9 +13,7 @@ use BristolianTest\PdoSimpleTestObject;
  */
 class  PdoSimpleTest extends BaseTestCase
 {
-    /**
-     * @group wip
-     */
+
     public function testWorks()
     {
 
