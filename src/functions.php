@@ -492,6 +492,34 @@ function convertToValue(mixed $value)
 //    throw new \Exception($message);
 //}
 
+
+/**
+ * @throws \DataType\Exception\ValidationException
+ * @throws \Bristolian\BristolianException
+ */
+function convertToArrayOfObjects(string $classname, array $data)
+{
+//    $callable = [$classname, 'fromArray'];
+//    if (is_callable($callable)) {
+//        return call_user_func($callable, $args);
+//    }
+
+    $interfaces = class_implements($classname);
+
+    if (isset($interfaces[\DataType\DataType::class])) {
+        $objects = \DataType\createArrayOfType($classname, $data);
+        return $objects;
+    }
+
+    throw \Bristolian\BristolianException::cannot_instantiate();
+}
+
+
+
+
+
+
+
 /*
   TODO - is this convertToValue better?
 
@@ -973,7 +1001,10 @@ function render_markdown_file(Bristolian\Model\UserDocument $document): string
 
 /**
  * Extracts a link to a Github gist from the link to a raw file
- * held in a gist. And then renders it as a link.
+ * held in a gist, and then renders it as a href.
+ *
+ * If the url does not contain the string '/raw/' a string is rendered
+ * without a href
  * @param string $raw
  * @return string
  */
@@ -1097,6 +1128,11 @@ function standardise_username_to_filename(string $username)
 }
 
 /**
+ * Creates a JsonResponse with appropriate error status code set
+ * if validations_problems are not empty.
+ * Returns null if there are no problems.
+ *
+ *
  * @param \DataType\ValidationProblem[] $validation_problems
  * @return \SlimDispatcher\Response\JsonResponse|null
  * @throws \SlimDispatcher\Response\InvalidDataException

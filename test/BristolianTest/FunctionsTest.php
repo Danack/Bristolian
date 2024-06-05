@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace BristolianTest;
 
+use DataType\DataStorage\TestArrayDataStorage;
+use SlimDispatcher\Response\JsonResponse;
+
 /**
  * @coversNothing
  */
@@ -18,10 +21,6 @@ class FunctionsTest extends BaseTestCase
         $this->assertSame(64, strlen($id));
     }
 
-
-    public function test_hackVarMap()
-    {
-    }
 
     /**
      * @covers ::formatLinesWithCount
@@ -112,6 +111,29 @@ TEXT;
     public function test_getPercentMemoryUsed()
     {
     }
+
+    /**
+     * @covers ::createErrorJsonResponse
+     */
+    public function test_createErrorJsonResponse()
+    {
+        $result = createErrorJsonResponse([]);
+        $this->assertNull($result, "No errors should have returned null.");
+
+
+        $dataStorage = TestArrayDataStorage::fromSingleValueAndSetCurrentPosition(
+            'foo',
+            'bar'
+        );
+
+        $validation_problem = new \DataType\ValidationProblem($dataStorage, "Test error");
+
+        $response = createErrorJsonResponse([$validation_problem]);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertSame(400, $response->getStatus());
+    }
+
 
     /**
      * @covers ::remove_install_prefix_from_path
@@ -257,6 +279,11 @@ TEXT;
      */
     public function test_get_external_source_link()
     {
+        // Case without /raw/
+        $result = get_external_source_link('www.google.com');
+        $this->assertSame("External source is: www.google.com", $result);
+
+        // Case with /raw/
         $result = get_external_source_link('https://gist.githubusercontent.com/Danack/89e8d9b25dac35e1a68cd3b576a17a36/raw/fb924a43a241d151ba5e659e21a272647658d4e7/words.md');
 
         $expected = "External source is: <a href='https://gist.githubusercontent.com/Danack/89e8d9b25dac35e1a68cd3b576a17a36'>https://gist.githubusercontent.com/Danack/89e8d9b25dac35e1a68cd3b576a17a36/raw/fb924a43a241d151ba5e659e21a272647658d4e7/words.md</a>";
@@ -285,6 +312,7 @@ TEXT;
 
     /**
      * @group wip
+     * @covers ::convertToArrayOfObjects
      */
     public function test_convertToArrayOfObjects()
     {

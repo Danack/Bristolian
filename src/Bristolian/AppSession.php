@@ -18,9 +18,9 @@ class AppSession implements UserSession
     {
         static $count = 0;
 
-        \error_log("Session created");
+//        \error_log("Session created");
         if ($count > 0) {
-            \error_log("again");
+            \error_log("Session created again");
         }
 
         $count += 1;

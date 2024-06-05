@@ -16,9 +16,8 @@ trait FromArray
         $reflection = new \ReflectionClass(__CLASS__);
         $instance = $reflection->newInstanceWithoutConstructor();
 
-
-
         foreach ($instance as $key => &$property) {
+            echo "setting key $key \n";
             $property = $data[$key];
         }
 

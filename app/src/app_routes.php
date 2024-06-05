@@ -87,6 +87,12 @@ function getAllAppRoutes()
         ['/system', 'GET', 'Bristolian\AppController\System::index'],
 
 
+        ['/files', 'GET', '\Bristolian\AppController\Docs::files'],
+        ['/memes', 'GET', '\Bristolian\AppController\Docs::memes'],
+
+        ['/docs', 'GET', '\Bristolian\AppController\Docs::index'],
+
+
         ['/tags/edit', 'POST', 'Bristolian\AppController\Tags::process_add'],
         ['/tags/edit', 'GET', 'Bristolian\AppController\Tags::edit'],
         ['/tags', 'GET', 'Bristolian\AppController\Tags::view'],

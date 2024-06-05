@@ -52,7 +52,6 @@ if ($user === null) {
     ];
 
     $createUserParams = \Bristolian\DataType\CreateUserParams::createFromArray($data);
-
     $pdoAdminRepo->addUser($createUserParams);
 }
 

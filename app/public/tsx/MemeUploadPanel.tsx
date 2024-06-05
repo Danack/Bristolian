@@ -32,18 +32,6 @@ function getDefaultState(/*initialControlParams: object*/): MemeUploadPanelState
 
 export class MemeUploadPanel extends Component<MemeUploadPanelProps, MemeUploadPanelState> {
 
-    // How often to check for new comments in seconds
-    // refresh_rate:number = 20;
-
-    // Store the callback so it can be cancelled on manual refresh
-    // fetchMaxCommentCallback:NodeJS.Timeout = null;
-    // TODO - clearTimeout(this.connectInterval);
-
-    // restoreStateFn: Function;
-
-    // maxCommentId: number|null = null;
-    // maxLoadedCommentId: number|null = null;
-
     constructor(props: MemeUploadPanelProps) {
         super(props);
         this.state = getDefaultState(/*props.initialControlParams*/);
@@ -183,9 +171,7 @@ export class MemeUploadPanel extends Component<MemeUploadPanelProps, MemeUploadP
 
 
         return  <div class='meme_upload_panel_react'>
-            I am file upload block.
-
-            <h3>File Upload using React!</h3>
+            <h3>Drag a file here to upload a meme.</h3>
             <div
                  onDragEnter={(something:any) => this.handleDragEnter(something)}
                  onDragOver={(something:any) => this.handleDragOver(something)}

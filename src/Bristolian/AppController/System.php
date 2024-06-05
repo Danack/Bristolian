@@ -44,8 +44,7 @@ HTML;
 
     public function showDbInfo(DbInfo $dbInfo): string
     {
-        $content = "";
-
+        $content = "<h1>Database info</h1>";
         $content .= $this->showDbTables($dbInfo);
         $content .= $this->showMigrationInfo($dbInfo);
 
@@ -54,9 +53,10 @@ HTML;
 
     public function deploy_log(DeployLogRenderer $deployLogRenderer): string
     {
-        return $deployLogRenderer->render();
+        $html = "<h1>Deploy log</h1>";
+        $html .= $deployLogRenderer->render();
+        return $html;
     }
-
 
     public function showDbTables(DbInfo $dbInfo): string
     {
