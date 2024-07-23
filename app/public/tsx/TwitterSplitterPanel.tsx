@@ -75,6 +75,7 @@ function remove_text(remaining_text: string, numbering: Numbering, tweet_index: 
 
   if (best_break_point !== 0) {
     let tweet_text = remaining_text.substring(0, best_break_point + 1);
+    tweet_text = tweet_text.trim();
     remaining_text = remaining_text.substring(best_break_point + 1);
     return [remaining_text, number_prefix + tweet_text + number_postfix];
   }
@@ -94,6 +95,8 @@ export function split_tweets(input_text: string, numbering: Numbering): Array<st
 
   while (remaining_text.length > 0) {
     [remaining_text, tweet_text] = remove_text(remaining_text, numbering, tweets.length + 1);
+    // Any remaining tweets shouldn't start with a space.
+    remaining_text = remaining_text.trimStart();
     tweets.push(tweet_text);
   }
 
