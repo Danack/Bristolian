@@ -1,13 +1,15 @@
 
 import {describe, expect, test, it} from '@jest/globals';
 
-var clearMessages = require('danack-message').clearMessages;
-var getQueuedMessages = require('danack-message').getQueuedMessages;
-var registerMessageListener = require('danack-message').registerMessageListener;
-var startMessageProcessing = require('danack-message').startMessageProcessing;
-var stopMessageProcessing = require('danack-message').stopMessageProcessing;
-var sendMessage = require('danack-message').sendMessage;
-var unregisterListener = require('danack-message').unregisterListener;
+import {
+  clearMessages,
+  getQueuedMessages,
+  registerMessageListener,
+  startMessageProcessing,
+  stopMessageProcessing,
+  sendMessage,
+  unregisterListener
+} from "./message";
 
 const message_foo = 'foo';
 const message_unknown = 'unknown';
