@@ -29,6 +29,7 @@ class System
   <li><a href="/system/database_tables">Database tables</a></li>
   <li><a href="/system/deploy_log">Deploy log</a></li>
   <li><a href="/system/route_explorer">Route explorer</a></li>
+  <li><a href="/system/debugging">Debugging</a></li>
 </ul>
 HTML;
 
@@ -138,6 +139,20 @@ HTML;
         return $table_info;
     }
 
+    public function debugging()
+    {
+        $output = null;
+        $result_code = 0;
+        $result = exec('whoami', $output,  $result_code);
+
+        $output = "Output is [". implode("\n", $output) . "]<br/><br/>";
+
+        $result = @file_put_contents(__DIR__ . "/../../../data/cache/foo.txt", "Hello world");
+
+        $output .= "file_put_result is " . var_export($result, true);
+
+        return $output;
+    }
 
     public function show_csp_reports(CSPViolationStorage $cspViolationStorage): string
     {

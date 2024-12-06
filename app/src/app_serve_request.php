@@ -16,6 +16,14 @@ require __DIR__ . "/../../credentials.php";
 
 set_error_handler('saneErrorHandler');
 
+// TODO - detect startup errors and error out immediately.
+//ob_get_contents();
+//ob_end_clean();
+
+// TODO - sort out file permissions properly
+// sudo usermod -a -G deployer www-data
+
+
 $injector = new DI\Injector();
 $injectionParams = injectionParams();
 $injectionParams->addToInjector($injector);
