@@ -81,7 +81,16 @@ function saneErrorHandler(
     string $errorFile,
     int $errorLine
 ): bool {
-    if (error_reporting() === 0) {
+
+    $someFineConstant = E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR | E_PARSE;
+
+    // TODO - wtf.
+    // Prior to PHP 8.0.0, the error_reporting() called inside the custom
+    // error handler always returned 0 if the error was suppressed by
+    // the @ operator. As of PHP 8.0.0, it returns the value of this
+    // (bitwise) expression: E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR |
+    // E_USER_ERROR | E_RECOVERABLE_ERROR | E_PARSE.
+    if (error_reporting() === 0 || error_reporting() === $someFineConstant) {
         // Error reporting has been silenced
         if ($errorNumber !== E_USER_DEPRECATED) {
             // Check it isn't this value, as this is used by twig, with error suppression. :-/
