@@ -5,7 +5,6 @@ namespace Bristolian\CliController;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
 
-
 class Rooms
 {
     public function createFromCli(
@@ -15,7 +14,7 @@ class Rooms
         string $purpose
     ): void {
 
-        $user_id = $adminRepo->getAdminUserId('danack@example.com');
+        $user_id = $adminRepo->getAdminUserId('testing@example.com');
         if ($user_id === null) {
             echo "Failed to find admin user";
             exit(-1);

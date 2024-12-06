@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\CliController;
 
-use Bristolian\Config;
+use Bristolian\Config\Config;
 use PDO;
 use Bristolian\DataType\Migration;
 use function DataType\createArrayOfType;

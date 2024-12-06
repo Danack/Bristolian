@@ -1,10 +1,11 @@
 <?php
 
-namespace Bristolian;
+namespace Bristolian\Config;
 
+use Bristolian\App;
 use Bristolian\Data\DatabaseUserConfig;
 
-class Config
+class Config implements GetCommitSha, ForceAssetRefresh
 {
     const BRISTOLIAN_ASSETS_FORCE_REFRESH = 'bristol_org.force_assets_refresh';
     const BRISTOLIAN_COMMIT_SHA = 'bristol_org.sha';
@@ -16,6 +17,9 @@ class Config
     const BRISTOLIAN_SQL_DATABASE = 'bristol_org.db.schema';
     const BRISTOLIAN_SQL_USERNAME = 'bristol_org.db.username';
     const BRISTOLIAN_SQL_PASSWORD = 'bristol_org.db.password';
+
+    const BRISTOLIAN_MAILGUN_API_KEY = 'bristol_org.mailgun.api_key';
+
 
     /**
      * @var array<string, int|string|bool|mixed>
@@ -84,6 +88,11 @@ class Config
         return $this->get(self::BRISTOLIAN_ENVIRONMENT);
     }
 
+    public function getMailgunApiKey(): string
+    {
+        return $this->get(self::BRISTOLIAN_MAILGUN_API_KEY);
+    }
+
     public function isProductionEnv(): bool
     {
         if ($this->getEnvironment() === App::ENVIRONMENT_LOCAL) {
@@ -111,5 +120,10 @@ class Config
             $this->get(self::BRISTOLIAN_SQL_PASSWORD),
             $this->get(self::BRISTOLIAN_SQL_DATABASE)
         );
+    }
+
+    public function getDatabaseSchema()
+    {
+        return $this->get(self::BRISTOLIAN_SQL_DATABASE);
     }
 }

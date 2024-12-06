@@ -23,6 +23,4 @@ class StandardRequestSessionStorage implements RequestSessionStorage
     {
         self::$session = null;
     }
-
-
 }

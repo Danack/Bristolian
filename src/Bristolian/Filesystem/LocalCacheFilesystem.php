@@ -6,5 +6,8 @@ use League\Flysystem\Filesystem;
 
 class LocalCacheFilesystem extends Filesystem
 {
+    public function getFullPath()
+    {
 
+    }
 }

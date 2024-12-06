@@ -5,9 +5,14 @@ declare(strict_types = 1);
 namespace Bristolian\AppErrorHandler;
 
 use Bristolian\App;
+use Bristolian\Basic\ErrorLogger;
 
 class JsonErrorHandlerForLocalDev implements AppErrorHandler
 {
+    public function __construct(private ErrorLogger $errorLogger)
+    {
+    }
+
     /**
      * @param mixed $container
      * @return \Closure|mixed
@@ -19,7 +24,7 @@ class JsonErrorHandlerForLocalDev implements AppErrorHandler
 
             $data['info'] = App::ERROR_CAUGHT_BY_ERROR_HANDLER_API_MESSAGE;
 
-            \error_log(json_encode_safe($data));
+            $this->errorLogger->log(json_encode_safe($data));
 
             return $response->withStatus(500)
                 ->withHeader('Content-Type', 'application/json')

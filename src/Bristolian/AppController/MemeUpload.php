@@ -11,6 +11,8 @@ use Bristolian\Service\MemeStorage\MemeStorage;
 
 class MemeUpload
 {
+    public const MEME_FILE_UPLOAD_FORM_NAME = "meme_file";
+
     public function handleFileUpload_get(): string
     {
         return "You probably meant to do a POST to this endpoint.";

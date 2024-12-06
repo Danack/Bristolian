@@ -14,8 +14,9 @@ function createPageHeaderHtml(/*HeaderLinks $headerLinks*/) : string
     $headerLinks = new HeaderLinks([
         new HeaderLink('/', 'Home'),
         new HeaderLink('/tools', 'Tools'),
-        new HeaderLink('/docs', 'Docs'),
-        new HeaderLink('/users', 'Users'),
+        new HeaderLink('/rooms', 'Rooms'),
+//        new HeaderLink('/docs', 'Docs'),
+//        new HeaderLink('/users', 'Users'),
         new HeaderLink('/about', "About")
     ]);
 

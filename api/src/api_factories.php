@@ -3,7 +3,7 @@
 declare(strict_types = 1);
 
 use Auryn\Injector;
-use Bristolian\Config;
+use Bristolian\Config\Config;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use SlimAuryn\AurynCallableResolver;

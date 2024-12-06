@@ -3,7 +3,6 @@
 
 namespace Bristolian\AppController;
 
-
 use Bristolian\AppSession;
 use SlimDispatcher\Response\RedirectResponse;
 
@@ -54,4 +53,3 @@ HTML;
         return $content;
     }
 }
-

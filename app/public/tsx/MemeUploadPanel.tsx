@@ -1,17 +1,15 @@
 import {h, Component} from "preact";
 
+import {MEME_FILE_UPLOAD_FORM_NAME} from "./generated/constants";
+
+
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
 export interface MemeUploadPanelProps {
     // no properties currently
 }
 
-// interface Comment {
-//     comment_id: number;
-//     bug_id: number;
-//     error: string|null;
-//     email: string|null;
-// }
+
 
 interface MemeUploadPanelState {
     // max_comment_id: number|null;
@@ -20,7 +18,7 @@ interface MemeUploadPanelState {
     selectedFile: File|null,
 }
 
-function getDefaultState(/*initialControlParams: object*/): MemeUploadPanelState {
+function getDefaultState(): MemeUploadPanelState {
     return {
         selectedFile: null,
         // comments: [],
@@ -108,9 +106,9 @@ export class MemeUploadPanel extends Component<MemeUploadPanelProps, MemeUploadP
 
         // Update the formData object
         formData.append(
-           "myFile", // this is the file index?
-           this.state.selectedFile,
-           this.state.selectedFile.name
+            MEME_FILE_UPLOAD_FORM_NAME,
+            this.state.selectedFile,
+            this.state.selectedFile.name
         );
 
         // Request made to the backend api

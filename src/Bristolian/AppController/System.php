@@ -5,12 +5,14 @@ declare(strict_types = 1);
 namespace Bristolian\AppController;
 
 use Bristolian\App;
-use Bristolian\Config;
+use Bristolian\Config\Config;
 use Bristolian\CSPViolation\CSPViolationStorage;
 use Bristolian\Repo\DbInfo\DbInfo;
+use SlimDispatcher\Response\JsonResponse;
 use function Bristolian\createReactWidget;
 use Bristolian\DataType\Migration;
 use Bristolian\Service\DeployLogRenderer\DeployLogRenderer;
+use OpenApi\OpenApiGenerator;
 
 class System
 {
@@ -26,6 +28,7 @@ class System
   <li><a href="/system/csp/reports">CSP reports</a></li>
   <li><a href="/system/database_tables">Database tables</a></li>
   <li><a href="/system/deploy_log">Deploy log</a></li>
+  <li><a href="/system/route_explorer">Route explorer</a></li>
 </ul>
 HTML;
 
@@ -57,6 +60,14 @@ HTML;
         $html .= $deployLogRenderer->render();
         return $html;
     }
+
+    public function display_swagger(OpenApiGenerator $openApiGenerator): JsonResponse
+    {
+        return new JsonResponse(
+            $openApiGenerator->getApiData()
+        );
+    }
+
 
     public function showDbTables(DbInfo $dbInfo): string
     {

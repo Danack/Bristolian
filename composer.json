@@ -5,7 +5,11 @@
     "repositories": {
         "danack_asm": {
             "type": "vcs",
-            "url": "https://github.com/Danack/AdvancedSessionManagement"
+            "url": "git@github.com:Danack/AdvancedSessionManagement.git"
+        },
+        "danack_injector": {
+            "type": "vcs",
+            "url": "git@github.com:danack/Injector.git"
         }
     },
     "require": {
@@ -13,7 +17,7 @@
         "danack/configurator": "1.1.1",
         "danack/console": "^2.6.2",
         "danack/esprintf": "^2.0.0",
-        "danack/injector": "^0.5.0",
+        "danack/injector": "dev-static-factories-are-nice",
         "danack/looping-exec": "^0.3.0",
         "danack/php-unit-helper": "^0.5.0",
         "danack/json-safe": "^0.1.1",
@@ -25,7 +29,7 @@
         "justinrainbow/json-schema": "^5.2.7",
         "laminas/laminas-diactoros":"^2.24.0",
         "ramsey/uuid": "^4.7",
-        "predis/predis": "^v1.1.1",
+        "predis/predis": "^v2.3.0",
         "seld/jsonlint": "^1.7",
         "slim/slim": "4.10.0",
         "tholu/php-cidr-match": "^0.2.0",
@@ -41,7 +45,12 @@
 
         "minishlink/web-push": "^8.0",
         "league/flysystem": "^3.0",
-        "league/flysystem-aws-s3-v3": "^3.0"
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "sendgrid/sendgrid": "^8.1",
+        "mailgun/mailgun-php": "^4.3",
+        "symfony/http-client": "^7.1",
+        "nyholm/psr7": "^1.8",
+        "ext-xmlreader": "*"
     },
     "require-dev": {
         "danack/coding-standard": "0.3.0",
@@ -57,7 +66,11 @@
         "psr-0": {
             "Bristolian\\": "src/",
             "Key\\": "src/",
+            "OpenApi\\": "src/",
             "UrlFetcher\\": "src/"
+        },
+        "psr-4": {
+            "Bristolian\\Database\\": "src/Bristolian/Database"
         },
         "files": [
             "src/functions.php"
@@ -71,11 +84,12 @@
     },
     "config": {
         "platform": {
-            "php": "8.1"
+            "php": "8.2"
         },
         "platform-check": false,
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": false
+            "dealerdirect/phpcodesniffer-composer-installer": false,
+            "php-http/discovery": false
         }
     },
     "minimum-stability": "dev",

@@ -5,8 +5,7 @@ declare(strict_types = 1);
 namespace Bristolian\AppErrorHandler;
 
 use Bristolian\App;
-use SlimAuryn\ResponseMapper\ResponseMapper;
-
+use Bristolian\Basic\ErrorLogger;
 use SlimDispatcher\Response\HtmlResponse;
 use Bristolian\Page;
 use Bristolian\AssetLinkEmitter;
@@ -15,17 +14,17 @@ use function SlimDispatcher\mapStubResponseToPsr7;
 
 class HtmlErrorHandlerForLocalDev implements AppErrorHandler
 {
-
-
-    public function __construct(private AssetLinkEmitter $assetLinkEmitter)
-    {
+    public function __construct(
+        private AssetLinkEmitter $assetLinkEmitter,
+        private ErrorLogger $errorLogger
+    ) {
     }
 
     /**
      * @param mixed $container
      * @return \Closure|mixed
      */
-    public function __invoke($container)
+    public function __invoke(mixed $container)
     {
         /**
          * @param mixed $request
@@ -42,7 +41,7 @@ class HtmlErrorHandlerForLocalDev implements AppErrorHandler
 
             $html = createPageHtml($this->assetLinkEmitter, $page);
             $stubResponse = new HtmlResponse($html, [], 500);
-            \error_log($text);
+            $this->errorLogger->log($text);
             $response = mapStubResponseToPsr7($stubResponse, $request, $response);
 
             return $response;

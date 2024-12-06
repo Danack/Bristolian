@@ -6,6 +6,7 @@ use Bristolian\Model\AdminUser;
 use Bristolian\Model\Room;
 use Bristolian\PdoSimple;
 use Ramsey\Uuid\Uuid;
+use Bristolian\BristolianException;
 
 class PdoRoomRepo implements RoomRepo
 {
@@ -15,9 +16,9 @@ class PdoRoomRepo implements RoomRepo
     }
 
 
-    public function createRoom(string $created_by, string $name, string $purpose): Room
+    public function createRoom(string $owner_user_id, string $name, string $purpose): Room
     {
-$sql = <<< SQL
+        $sql = <<< SQL
 insert into room (
   id,
   owner_user_id,
@@ -36,7 +37,7 @@ SQL;
 
         $params = [
             ':id' => $id,
-             ':owner_user_id' => $created_by,
+             ':owner_user_id' => $owner_user_id,
              ':name' => $name,
              ':purpose' => $purpose
         ];
@@ -45,14 +46,17 @@ SQL;
 
         $room = $this->getRoomById($id);
         if ($room === null) {
+            // @codeCoverageIgnoreStart
             throw new BristolianException("This should never happen.");
+            // @codeCoverageIgnoreEnd
         }
 
         return $room;
     }
 
 
-    public function getRoomById(string $room_id): Room|null {
+    public function getRoomById(string $room_id): Room|null
+    {
         $sql = <<< SQL
 select
   id,
@@ -71,6 +75,29 @@ SQL;
         return $this->pdoSimple->fetchOneAsObjectOrNullConstructor(
             $sql,
             $params,
+            Room::class
+        );
+    }
+
+    /**
+     * @return Room[]
+     * @throws \Exception
+     */
+    public function getAllRooms(): array
+    {
+        $sql = <<< SQL
+select
+  id,
+  owner_user_id,
+  name,
+  purpose
+from
+  room
+SQL;
+
+        return $this->pdoSimple->fetchAllAsObjectConstructor(
+            $sql,
+            [],
             Room::class
         );
     }

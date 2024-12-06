@@ -289,7 +289,6 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
               </span>
               <span>
                   <textarea
-                    type='text'
                     rows={4}
                     cols={80}
                     value={this.state.meme_edit_text}

@@ -5,31 +5,30 @@ import { startMessageProcessing } from "./message/message";
 import type { WidgetClassBinding } from "./widgety/widgety";
 
 import { CSPViolationReportsPanel } from "./CSPViolationReportsPanel";
+import { EmailLinkGeneratorPanel } from "./EmailLinkGenerator";
 import { FloatingPointPanel } from "./FloatingPointPanel";
 import { LoginStatusPanel } from "./LoginStatusPanel";
 import { MemeManagementPanel } from "./MemeManagementPanel";
 import { MemeUploadPanel } from "./MemeUploadPanel";
+import { NotesPanel } from "./NotesPanel";
 import { NotificationRegistrationPanel } from "./NotificationRegistrationPanel";
 import { NotificationTestPanel } from "./NotificationTestPanel";
-import { NotesPanel } from "./NotesPanel";
+import { QrCodeGeneratorPanel } from "./QrCodeGenerator";
+import { RoomFilesPanel } from "./RoomFilesPanel";
+import { RoomFileUploadPanel } from "./RoomFileUploadPanel";
+import { TeleprompterPanel } from "./TeleprompterPanel";
 import { TimeLinePanel } from "./TimeLinePanel";
 import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
-import { TeleprompterPanel } from "./TeleprompterPanel";
-import { EmailLinkGeneratorPanel } from "./EmailLinkGenerator";
-import { QrCodeGeneratorPanel } from "./QrCodeGenerator";
 
 let panels: WidgetClassBinding[] = [
+
+    {
+        class: 'email_link_generator_panel',
+        component: EmailLinkGeneratorPanel
+    },
     {
          class: 'floating_point_panel',
          component: FloatingPointPanel
-    },
-    {
-        class: 'widget_csp_violation_reports',
-        component: CSPViolationReportsPanel
-    },
-    {
-        class: 'time_line_panel',
-        component: TimeLinePanel
     },
     {
         class: 'login_status_panel',
@@ -51,26 +50,39 @@ let panels: WidgetClassBinding[] = [
         class: 'notification_panel',
         component: NotificationRegistrationPanel
     },
-
     {
         class: 'notification_test_panel',
         component: NotificationTestPanel
     },
     {
-        class: 'twitter_splitter_panel',
-        component: TwitterSplitterPanel
+        class: 'qr_code_generator_panel',
+        component: QrCodeGeneratorPanel
+    },
+    {
+        class: 'room_files_panel',
+        component: RoomFilesPanel
+    },
+    {
+        class: 'room_file_upload_panel',
+        component: RoomFileUploadPanel
     },
     {
         class: 'teleprompter_panel',
         component: TeleprompterPanel
     },
     {
-        class: 'email_link_generator_panel',
-        component: EmailLinkGeneratorPanel
+        class: 'time_line_panel',
+        component: TimeLinePanel
     },
     {
-        class: 'qr_code_generator_panel',
-        component: QrCodeGeneratorPanel
+        class: 'twitter_splitter_panel',
+        component: TwitterSplitterPanel
+    },
+
+
+    {
+        class: 'widget_csp_violation_reports',
+        component: CSPViolationReportsPanel
     },
 ];
 

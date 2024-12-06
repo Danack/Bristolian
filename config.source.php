@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-use Bristolian\Config;
+use Bristolian\Config\Config;
+
+require_once __DIR__ . "/credentials.php";
 
 $sha = `git rev-parse HEAD`;
 
@@ -36,6 +38,8 @@ $default = [
         'password' => 'ePvDZpYTXzT5N9xAPu24',
         'port' => 6379
     ],
+
+    Config::BRISTOLIAN_MAILGUN_API_KEY => getMailgunApiKey(),
 
 //    'brsitolian.allowed_access_cidrs' => [
 //        '86.7.192.0/24',

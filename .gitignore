@@ -24,3 +24,5 @@ swagger
 site.css.gz
 app/womens_coin
 university_road
+/app/public/tsx/generated/constants.tsx
+composer_oauth_token.txt

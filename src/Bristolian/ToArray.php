@@ -18,7 +18,13 @@ trait ToArray
                 continue;
             }
 
-            $data[$name] = \convertToValue(/*$name,*/ $value);
+            [$error, $result] = \convertToValue(/*$name,*/ $value);
+
+            if ($error !== null) {
+                throw new BristolianException("Failed to convert object to array on item [$name]");
+            }
+
+            $data[$name] = $result;
         }
 
         return $data;

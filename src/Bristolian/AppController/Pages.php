@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Bristolian\MarkdownRenderer\MarkdownRenderer;
 use Bristolian\Page;
 use SlimDispatcher\Response\StubResponse;
+use Bristolian\DataType\DebugParam;
 
 class Pages
 {
@@ -400,7 +401,12 @@ HTML;
         return $markdownRenderer->renderFile($fullPath);
     }
 
-    public function experimental(): string
+    public function experimental(DebugParam $debugParam): string
+    {
+        return "Hello world: " . $debugParam->message;
+    }
+
+    public function experimental_notifications(): string
     {
         $content = "This is a page for experimenting with. Current experiment is notifications.";
         $data = [

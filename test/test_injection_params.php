@@ -41,7 +41,8 @@ function testInjectionParams() : InjectionParams
             'createRedis',
 
 //            \Doctrine\ORM\EntityManager::class => 'createDoctrineEntityManager',
-
+        \Bristolian\Filesystem\RoomFileFilesystem::class =>
+            'createRoomFileFilesystem',
     ];
 
     // Define some params that can be injected purely by name.

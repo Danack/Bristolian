@@ -2,10 +2,7 @@
 
 namespace BristolianTest;
 
-//use TypeSpec\Exception\LogicException;
-//use TypeSpec\OpenApi\OpenApiV300ParamDescription;
-//use TypeSpec\PropertyRule;
-//use TypeSpec\ValidationResult;
+use DI\Injector;
 use PHPUnit\Framework\TestCase;
 use Danack\PHPUnitHelper\StringTemplateMatching;
 use function \Danack\PHPUnitHelper\templateStringToRegExp;
@@ -22,8 +19,11 @@ class BaseTestCase extends TestCase
 
     private int $startLevel = -1;
 
+    protected \DI\Injector $injector;
+
     public function setup(): void
     {
+        $this->injector = createTestInjector();
         $this->startLevel = ob_get_level();
         ob_start();
     }
@@ -52,6 +52,17 @@ class BaseTestCase extends TestCase
         //in the phpunit.xml file it still thinks this file is a test class.
         //and then complains about it not having any tests.
         $this->assertTrue(true);
+    }
+
+    /**
+     * @template T of object
+     * @param class-string<T> $classname
+     *
+     * @return T
+     */
+    public function make(string $classname): object
+    {
+        return $this->injector->make($classname);
     }
 
 

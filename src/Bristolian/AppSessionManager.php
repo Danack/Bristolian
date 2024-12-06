@@ -7,7 +7,6 @@ use Asm\SessionManager;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Asm\RequestSessionStorage;
 
-
 /**
  * ONLY A SINGLE INSTANCE OF THIS CLASS SHOULD BE CREATED PER REQUEST
  */

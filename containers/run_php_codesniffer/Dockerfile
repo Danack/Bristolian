@@ -1,7 +1,7 @@
 
 ## Runs code sniffer on our code.
 
-FROM debian:10
+FROM debian:11-slim
 
 USER root
 

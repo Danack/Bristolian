@@ -12,7 +12,7 @@ declare (strict_types = 1);
 
 use Aws\S3\S3Client;
 use DI\Injector;
-use Bristolian\Config;
+use Bristolian\Config\Config;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use League\Flysystem\AwsS3V3\PortableVisibilityConverter;
 use League\Flysystem\Filesystem;
@@ -182,7 +182,7 @@ function createSessionConfig(): Asm\SessionConfig
 function createLocalFilesystem(): \Bristolian\Filesystem\LocalFilesystem
 {
     // SETUP
-    $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(__DIR__ . "/../temp");
+    $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(__DIR__ . "/../data/temp");
     $filesystem = new \Bristolian\Filesystem\LocalFilesystem($adapter);
 
     return $filesystem;
@@ -194,6 +194,7 @@ function createLocalCacheFilesystem(): \Bristolian\Filesystem\LocalCacheFilesyst
     // SETUP
     $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(__DIR__ . "/../data/cache");
     $filesystem = new \Bristolian\Filesystem\LocalCacheFilesystem($adapter);
+
 
     return $filesystem;
 }
@@ -224,7 +225,7 @@ function createMemeFilesystem(Config $config): \Bristolian\Filesystem\MemeFilesy
         // Optional path prefix
         '', //'path/prefix',
         new PortableVisibilityConverter(
-            Visibility::PRIVATE // or ::PRIVATE
+            Visibility::PRIVATE
         )
     );
 
@@ -235,6 +236,57 @@ function createMemeFilesystem(Config $config): \Bristolian\Filesystem\MemeFilesy
 
     return $filesystem;
 }
+
+
+function createRoomFileFilesystem(Config $config): \Bristolian\Filesystem\RoomFileFilesystem
+{
+    $bucketName = 'bristolian-room-files';
+
+    if ($config->isProductionEnv() !== true) {
+        $bucketName = 'bristolian-room-files-dev';
+    }
+
+    // SETUP
+    $client = new S3Client([
+        'credentials' => [
+            'key' => getScalewayApiKey(),
+            'secret' => getScalewayApiSecret(),
+        ],
+        'region' => 'nl-ams',
+        'endpoint' => 'https://s3.nl-ams.scw.cloud'
+    ]);
+
+    // The internal adapter
+    $adapter = new AwsS3V3Adapter(
+        $client,
+        $bucketName,
+        // Optional path prefix
+        '', //'path/prefix',
+        new PortableVisibilityConverter(
+            Visibility::PRIVATE // or ::PRIVATE
+        )
+    );
+
+    $config = [];
+
+    // The FilesystemOperator
+    $filesystem = new \Bristolian\Filesystem\RoomFileFilesystem($adapter, $config);
+
+    return $filesystem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /**
@@ -250,4 +302,17 @@ function createDeployLogRenderer(Config $config)
     }
 
     return new \Bristolian\Service\DeployLogRenderer\LocalDeployLogRenderer();
+}
+
+
+
+
+function createMailgun(Config $config)
+{
+    $mg = \Mailgun\Mailgun::create(
+        $config->getMailgunApiKey(),
+        'https://api.eu.mailgun.net'
+    );
+
+    return $mg;
 }

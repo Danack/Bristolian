@@ -31,6 +31,15 @@ tl:dr code re-use is a lie.
 
 I think Sandi Metz's talk + blog post on "duplication is cheaper than the wrong abstraction" also explains how 'wrong' thinking about abstraction can have a high cost: https://sandimetz.com/blog/2016/1/20/the-wrong-abstraction`;
 
+
+// This tweet should be split into three.
+let multi_tweet_three = `It never seems either entirely appropriate or wise for a politician to comment on the sentences received by individuals. The reasons for the sentencing are here, if you're bold enough to comment on which part you think is wrong: https://twitter.com/BarristerSecret/status/1835673864614887851
+
+But if you are going to be speaking on how awful our legal system is, perhaps you should say something about the massive backlog in trials. Apparently serious crimes are taking multiple years to come to trial, and the backlog is getting worse: https://x.com/BarristerSecret/status/1833781105490534706
+
+I have a strong suspicion that the court backlog is going to block the governments ability to pass the Renters Rights Bill, as the property owners are going to raise a massive stink, and it's not clear that the courts would even be able to cope. https://centralhousinggroup.com/worse-court-delays-after-labour-renters-rights-bill/`;
+
+
 let cases: TweetTests[] = [
     {
         input: "This is just over 280 characters. This is just over 280 characters. This is just over 280 characters. This is just over 280 characters. This is just over 280 characters. This is just over 280 characters. This is just over 280 characters. This is just over 280 characters. This is just over 280 characters.",
@@ -58,6 +67,18 @@ let cases: TweetTests[] = [
       "\n" +
       "tl:dr code re-use is a lie.",
       "I think Sandi Metz's talk + blog post on \"duplication is cheaper than the wrong abstraction\" also explains how 'wrong' thinking about abstraction can have a high cost: https://sandimetz.com/blog/2016/1/20/the-wrong-abstraction"
+    ]
+  },
+
+
+  {
+    input: multi_tweet_three,
+    expected: [
+      "It never seems either entirely appropriate or wise for a politician to comment on the sentences received by individuals. The reasons for the sentencing are here, if you're bold enough to comment on which part you think is wrong: https://twitter.com/BarristerSecret/status/1835673864614887851",
+
+      "But if you are going to be speaking on how awful our legal system is, perhaps you should say something about the massive backlog in trials. Apparently serious crimes are taking multiple years to come to trial, and the backlog is getting worse: https://x.com/BarristerSecret/status/1833781105490534706",
+
+      "I have a strong suspicion that the court backlog is going to block the governments ability to pass the Renters Rights Bill, as the property owners are going to raise a massive stink, and it's not clear that the courts would even be able to cope. https://centralhousinggroup.com/worse-court-delays-after-labour-renters-rights-bill/"
     ]
   }
 ]

@@ -3,8 +3,50 @@
 namespace Bristolian\Service\MemeStorage;
 
 use Bristolian\Filesystem\MemeFilesystem;
-use Bristolian\Repo\FileStorageRepo\FileStorageInfoRepo;
-use Bristolian\Repo\FileStorageRepo\FileType;
+use Bristolian\John\UserUploadedFile;
+use Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo;
+use Bristolian\Repo\FileStorageInfoRepo\FileType;
+
+function get_supported_file_extensions()
+{
+    return [
+        'gif',
+        'jpg',
+        'jpeg',
+        'mp4',
+        'png',
+        'pdf',
+        'webp'
+    ];
+}
+
+/**
+ *
+ * Normalizes a supported extension to lower case or returns null if the extension
+ * is not supported.
+ *
+ * @param string $original_name
+ * @param string $contents
+ * @return array|string|string[]|null
+ */
+function normalize_file_extension(string $original_name, string $contents)
+{
+    $extension = pathinfo($original_name, PATHINFO_EXTENSION);
+
+    if (strlen($extension) === 0) {
+        return null;
+    }
+
+    $supported_file_extensions = get_supported_file_extensions();
+
+    $lower_case_extension = strtolower($extension);
+
+    if (array_contains($lower_case_extension, $supported_file_extensions) === true) {
+        return $supported_file_extensions;
+    }
+
+    return null;
+}
 
 class StandardMemeStorage implements MemeStorage
 {
@@ -23,26 +65,20 @@ class StandardMemeStorage implements MemeStorage
      */
     public function storeMemeForUser(
         string $user_id,
-        string $tmp_path,
-        int $filesize,
-        string $original_name
+        UserUploadedFile $file
     ): array {
-        $contents = file_get_contents($tmp_path);
+        $contents = file_get_contents($file->getTmpName());
         if ($contents === false) {
             return [false, "Failed to read temp uploaded file."];
         }
 
-        $filename = $user_id . '-' . microtime();
+        // Extension needs to be calculated through a function.
+        $extension = normalize_file_extension($file->getName(), $contents);
 
-        $extension = pathinfo($original_name, PATHINFO_EXTENSION);
-        if (strlen($extension) > 0) {
-            $filename = $filename . '.' . $extension;
-        }
-
-        $fileStorageId = $this->fileStorageInfoRepo->createEntry(
+        [$fileStorageId, $filename] = $this->fileStorageInfoRepo->storeFileInfo(
             $user_id,
-            $filename,
-            FileType::Meme
+            $extension
+            //            FileType::Meme
         );
 
         $this->memeFilesystem->write($filename, $contents);
@@ -50,22 +86,4 @@ class StandardMemeStorage implements MemeStorage
 
         return [true, null];
     }
-
-
-
-
-    // TODO - use stream copying
-
-//      $manager = new Flysystem\MountManager(array(
-//    'local'  => $local,
-//    'remote' => $remote,
-//));
-//
-//$isCopied = $manager->copy('local://'. $filename, 'remote://test.bin');
-
-//        $stream = $manager->readStream('local://'. $filename);
-//        if ( ! $stream) {
-//            // handle failure
-//        }
-//        $manager->writeStream('remote://test.bin', $stream);
 }

@@ -183,6 +183,43 @@ class PdoSimple
         return $instance;
     }
 
+    /**
+     *
+     * This version calls the class constructor properly.
+     *
+     * @param string $query
+     * @param array $params
+     * @param string $classname
+     * @return mixed|object|string|null
+     * @throws \ReflectionException
+     */
+    public function fetchAllAsObjectConstructor(string $query, array $params, string $classname)
+    {
+        $statement = $this->pdo->prepare($query);
+        $result = $statement->execute($params);
+
+        if ($result === false) {
+            throw new \Exception("Executing statement failed");
+        }
+
+        $statement->setFetchMode(PDO::FETCH_ASSOC);
+        $result = $statement->execute($params);
+
+        if ($result === false) {
+            throw new \Exception("Executing statement failed");
+        }
+
+        $rows = $statement->fetchAll();
+
+        $objects = [];
+
+        foreach ($rows as $row) {
+            $reflection = new \ReflectionClass($classname);
+            $objects[] = $reflection->newInstanceArgs($row);
+        }
+
+        return $objects;
+    }
 
     /**
      * @param string $query
@@ -208,6 +245,8 @@ class PdoSimple
 
         return $result;
     }
+
+
 
 
     /**
@@ -253,9 +292,6 @@ class PdoSimple
         $data = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         return convertToArrayOfObjects($classname, $data);
-
-//        $objects = createArrayOfType($classname, $data);
-//        return $objects;
     }
 
 

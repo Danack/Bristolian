@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 
 use Bristolian\DataType\BasicString;
-use Bristolian\Repo\FileStorageRepo\FileType;
+use Bristolian\Repo\FileStorageInfoRepo\FileType;
 
 function getAllQueries_6(): array
 {

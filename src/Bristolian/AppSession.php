@@ -2,7 +2,6 @@
 
 namespace Bristolian;
 
-use Asm\RequestSessionStorage;
 use Asm\Session;
 use Bristolian\Model\AdminUser;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -18,7 +17,6 @@ class AppSession implements UserSession
     {
         static $count = 0;
 
-//        \error_log("Session created");
         if ($count > 0) {
             \error_log("Session created again");
         }
@@ -76,6 +74,8 @@ class AppSession implements UserSession
 
     public function getUserId(): string
     {
+        $this->initSession();
+
         return $this->session->get(self::USER_ID);
     }
 

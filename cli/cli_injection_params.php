@@ -9,6 +9,7 @@ function injectionParams() : InjectionParams
     // These classes will only be created once by the injector.
     $shares = [
         \Redis::class,
+        \Mailgun\Mailgun::class,
     ];
 
     // Alias interfaces (or classes) to the actual types that should be used
@@ -35,6 +36,8 @@ function injectionParams() : InjectionParams
             'createLocalFilesystem',
         \Bristolian\Filesystem\MemeFilesystem::class =>
             'createMemeFilesystem',
+        \Mailgun\Mailgun::class => 'createMailgun',
+
     ];
 
     // Define some params that can be injected purely by name.

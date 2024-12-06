@@ -1,0 +1,1858 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://moderngov.co.uk/namespaces" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://moderngov.co.uk/namespaces" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <wsdl:types>
+        <s:schema elementFormDefault="qualified" targetNamespace="http://moderngov.co.uk/namespaces">
+            <s:element name="GetMeeting">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="lMeetingId" type="s:int" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetMeetingResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetMeetingResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetAllMeetingsByDate">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="lCommitteeId" type="s:int" />
+                        <s:element minOccurs="0" maxOccurs="1" name="sFromDate" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="sToDate" type="s:string" />
+                        <s:element minOccurs="1" maxOccurs="1" name="bIsAscendingDateOrder" type="s:boolean" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetAllMeetingsByDateResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetAllMeetingsByDateResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetWebCastMeetings">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="lCommitteeId" type="s:int" />
+                        <s:element minOccurs="0" maxOccurs="1" name="sFromDate" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="sToDate" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetWebCastMeetingsResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetWebCastMeetingsResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetMeetings">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="lCommitteeId" type="s:int" />
+                        <s:element minOccurs="0" maxOccurs="1" name="sFromDate" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="sToDate" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetMeetingsResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetMeetingsResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetDeletedWebcastMeetings">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sFromDate" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="sToDate" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetDeletedWebcastMeetingsResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetDeletedWebcastMeetingsResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetMemberGroup">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sShortName" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="sOrder" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetMemberGroupResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetMemberGroupResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetParishCouncils">
+                <s:complexType />
+            </s:element>
+            <s:element name="GetParishCouncilsResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetParishCouncilsResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetCommittees">
+                <s:complexType />
+            </s:element>
+            <s:element name="GetCommitteesResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetCommitteesResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetCalendarEvents">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="bGlobalCalendar" type="s:boolean" />
+                        <s:element minOccurs="0" maxOccurs="1" name="sDateStart" type="s:string" />
+                        <s:element minOccurs="0" maxOccurs="1" name="sDateEnd" type="s:string" />
+                        <s:element minOccurs="1" maxOccurs="1" name="lUserId" type="s:int" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetCalendarEventsResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetCalendarEventsResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetCommitteesByUser">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="lUserId" type="s:int" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetCommitteesByUserResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetCommitteesByUserResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetElectionResults">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="lElectionId" type="s:int" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetElectionResultsResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetElectionResultsResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetElectionResultsRdf">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="lType" type="s:int" />
+                        <s:element minOccurs="1" maxOccurs="1" name="lId" type="s:int" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetElectionResultsRdfResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetElectionResultsRdfResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetMpOrMepsAndWards">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="bIsMPs" type="s:boolean" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetMpOrMepsAndWardsResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetMpOrMepsAndWardsResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetMpOrMepAndWardsByPostcode">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sPostCode" type="s:string" />
+                        <s:element minOccurs="1" maxOccurs="1" name="bIsMPs" type="s:boolean" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetMpOrMepAndWardsByPostcodeResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetMpOrMepAndWardsByPostcodeResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetCouncillorsByWard">
+                <s:complexType />
+            </s:element>
+            <s:element name="GetCouncillorsByWardResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetCouncillorsByWardResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetCouncillorsByWardId">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="lWardId" type="s:int" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetCouncillorsByWardIdResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetCouncillorsByWardIdResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetCouncillorsByPostcode">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sPostcode" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetCouncillorsByPostcodeResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetCouncillorsByPostcodeResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetAttachment">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="lAttachmentId" type="s:int" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetAttachmentResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetAttachmentResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetAttachmentByPath">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sAttachmentPath" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetAttachmentByPathResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetAttachmentByPathResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CheckComms">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sRid" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CheckCommsResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="CheckCommsResult" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetServerDiagnostics">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="sSecurityId" type="s:string" />
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetServerDiagnosticsResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetServerDiagnosticsResult">
+                            <s:complexType mixed="true">
+                                <s:sequence>
+                                    <s:any />
+                                </s:sequence>
+                            </s:complexType>
+                        </s:element>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="string" nillable="true" type="s:string" />
+        </s:schema>
+    </wsdl:types>
+    <wsdl:message name="GetMeetingSoapIn">
+        <wsdl:part name="parameters" element="tns:GetMeeting" />
+    </wsdl:message>
+    <wsdl:message name="GetMeetingSoapOut">
+        <wsdl:part name="parameters" element="tns:GetMeetingResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetAllMeetingsByDateSoapIn">
+        <wsdl:part name="parameters" element="tns:GetAllMeetingsByDate" />
+    </wsdl:message>
+    <wsdl:message name="GetAllMeetingsByDateSoapOut">
+        <wsdl:part name="parameters" element="tns:GetAllMeetingsByDateResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetWebCastMeetingsSoapIn">
+        <wsdl:part name="parameters" element="tns:GetWebCastMeetings" />
+    </wsdl:message>
+    <wsdl:message name="GetWebCastMeetingsSoapOut">
+        <wsdl:part name="parameters" element="tns:GetWebCastMeetingsResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetMeetingsSoapIn">
+        <wsdl:part name="parameters" element="tns:GetMeetings" />
+    </wsdl:message>
+    <wsdl:message name="GetMeetingsSoapOut">
+        <wsdl:part name="parameters" element="tns:GetMeetingsResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetDeletedWebcastMeetingsSoapIn">
+        <wsdl:part name="parameters" element="tns:GetDeletedWebcastMeetings" />
+    </wsdl:message>
+    <wsdl:message name="GetDeletedWebcastMeetingsSoapOut">
+        <wsdl:part name="parameters" element="tns:GetDeletedWebcastMeetingsResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetMemberGroupSoapIn">
+        <wsdl:part name="parameters" element="tns:GetMemberGroup" />
+    </wsdl:message>
+    <wsdl:message name="GetMemberGroupSoapOut">
+        <wsdl:part name="parameters" element="tns:GetMemberGroupResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetParishCouncilsSoapIn">
+        <wsdl:part name="parameters" element="tns:GetParishCouncils" />
+    </wsdl:message>
+    <wsdl:message name="GetParishCouncilsSoapOut">
+        <wsdl:part name="parameters" element="tns:GetParishCouncilsResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetCommitteesSoapIn">
+        <wsdl:part name="parameters" element="tns:GetCommittees" />
+    </wsdl:message>
+    <wsdl:message name="GetCommitteesSoapOut">
+        <wsdl:part name="parameters" element="tns:GetCommitteesResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetCalendarEventsSoapIn">
+        <wsdl:part name="parameters" element="tns:GetCalendarEvents" />
+    </wsdl:message>
+    <wsdl:message name="GetCalendarEventsSoapOut">
+        <wsdl:part name="parameters" element="tns:GetCalendarEventsResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetCommitteesByUserSoapIn">
+        <wsdl:part name="parameters" element="tns:GetCommitteesByUser" />
+    </wsdl:message>
+    <wsdl:message name="GetCommitteesByUserSoapOut">
+        <wsdl:part name="parameters" element="tns:GetCommitteesByUserResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetElectionResultsSoapIn">
+        <wsdl:part name="parameters" element="tns:GetElectionResults" />
+    </wsdl:message>
+    <wsdl:message name="GetElectionResultsSoapOut">
+        <wsdl:part name="parameters" element="tns:GetElectionResultsResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetElectionResultsRdfSoapIn">
+        <wsdl:part name="parameters" element="tns:GetElectionResultsRdf" />
+    </wsdl:message>
+    <wsdl:message name="GetElectionResultsRdfSoapOut">
+        <wsdl:part name="parameters" element="tns:GetElectionResultsRdfResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetMpOrMepsAndWardsSoapIn">
+        <wsdl:part name="parameters" element="tns:GetMpOrMepsAndWards" />
+    </wsdl:message>
+    <wsdl:message name="GetMpOrMepsAndWardsSoapOut">
+        <wsdl:part name="parameters" element="tns:GetMpOrMepsAndWardsResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetMpOrMepAndWardsByPostcodeSoapIn">
+        <wsdl:part name="parameters" element="tns:GetMpOrMepAndWardsByPostcode" />
+    </wsdl:message>
+    <wsdl:message name="GetMpOrMepAndWardsByPostcodeSoapOut">
+        <wsdl:part name="parameters" element="tns:GetMpOrMepAndWardsByPostcodeResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByWardSoapIn">
+        <wsdl:part name="parameters" element="tns:GetCouncillorsByWard" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByWardSoapOut">
+        <wsdl:part name="parameters" element="tns:GetCouncillorsByWardResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByWardIdSoapIn">
+        <wsdl:part name="parameters" element="tns:GetCouncillorsByWardId" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByWardIdSoapOut">
+        <wsdl:part name="parameters" element="tns:GetCouncillorsByWardIdResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByPostcodeSoapIn">
+        <wsdl:part name="parameters" element="tns:GetCouncillorsByPostcode" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByPostcodeSoapOut">
+        <wsdl:part name="parameters" element="tns:GetCouncillorsByPostcodeResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetAttachmentSoapIn">
+        <wsdl:part name="parameters" element="tns:GetAttachment" />
+    </wsdl:message>
+    <wsdl:message name="GetAttachmentSoapOut">
+        <wsdl:part name="parameters" element="tns:GetAttachmentResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetAttachmentByPathSoapIn">
+        <wsdl:part name="parameters" element="tns:GetAttachmentByPath" />
+    </wsdl:message>
+    <wsdl:message name="GetAttachmentByPathSoapOut">
+        <wsdl:part name="parameters" element="tns:GetAttachmentByPathResponse" />
+    </wsdl:message>
+    <wsdl:message name="CheckCommsSoapIn">
+        <wsdl:part name="parameters" element="tns:CheckComms" />
+    </wsdl:message>
+    <wsdl:message name="CheckCommsSoapOut">
+        <wsdl:part name="parameters" element="tns:CheckCommsResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetServerDiagnosticsSoapIn">
+        <wsdl:part name="parameters" element="tns:GetServerDiagnostics" />
+    </wsdl:message>
+    <wsdl:message name="GetServerDiagnosticsSoapOut">
+        <wsdl:part name="parameters" element="tns:GetServerDiagnosticsResponse" />
+    </wsdl:message>
+    <wsdl:message name="GetMeetingHttpGetIn">
+        <wsdl:part name="lMeetingId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetMeetingHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetAllMeetingsByDateHttpGetIn">
+        <wsdl:part name="lCommitteeId" type="s:string" />
+        <wsdl:part name="sFromDate" type="s:string" />
+        <wsdl:part name="sToDate" type="s:string" />
+        <wsdl:part name="bIsAscendingDateOrder" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetAllMeetingsByDateHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetWebCastMeetingsHttpGetIn">
+        <wsdl:part name="lCommitteeId" type="s:string" />
+        <wsdl:part name="sFromDate" type="s:string" />
+        <wsdl:part name="sToDate" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetWebCastMeetingsHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetMeetingsHttpGetIn">
+        <wsdl:part name="lCommitteeId" type="s:string" />
+        <wsdl:part name="sFromDate" type="s:string" />
+        <wsdl:part name="sToDate" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetMeetingsHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetDeletedWebcastMeetingsHttpGetIn">
+        <wsdl:part name="sFromDate" type="s:string" />
+        <wsdl:part name="sToDate" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetDeletedWebcastMeetingsHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetMemberGroupHttpGetIn">
+        <wsdl:part name="sShortName" type="s:string" />
+        <wsdl:part name="sOrder" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetMemberGroupHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetParishCouncilsHttpGetIn" />
+    <wsdl:message name="GetParishCouncilsHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetCommitteesHttpGetIn" />
+    <wsdl:message name="GetCommitteesHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetCalendarEventsHttpGetIn">
+        <wsdl:part name="bGlobalCalendar" type="s:string" />
+        <wsdl:part name="sDateStart" type="s:string" />
+        <wsdl:part name="sDateEnd" type="s:string" />
+        <wsdl:part name="lUserId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetCalendarEventsHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetCommitteesByUserHttpGetIn">
+        <wsdl:part name="lUserId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetCommitteesByUserHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetElectionResultsHttpGetIn">
+        <wsdl:part name="lElectionId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetElectionResultsHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetElectionResultsRdfHttpGetIn">
+        <wsdl:part name="lType" type="s:string" />
+        <wsdl:part name="lId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetElectionResultsRdfHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetMpOrMepsAndWardsHttpGetIn">
+        <wsdl:part name="bIsMPs" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetMpOrMepsAndWardsHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetMpOrMepAndWardsByPostcodeHttpGetIn">
+        <wsdl:part name="sPostCode" type="s:string" />
+        <wsdl:part name="bIsMPs" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetMpOrMepAndWardsByPostcodeHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByWardHttpGetIn" />
+    <wsdl:message name="GetCouncillorsByWardHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByWardIdHttpGetIn">
+        <wsdl:part name="lWardId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByWardIdHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByPostcodeHttpGetIn">
+        <wsdl:part name="sPostcode" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByPostcodeHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetAttachmentHttpGetIn">
+        <wsdl:part name="lAttachmentId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetAttachmentHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetAttachmentByPathHttpGetIn">
+        <wsdl:part name="sAttachmentPath" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetAttachmentByPathHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="CheckCommsHttpGetIn">
+        <wsdl:part name="sRid" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="CheckCommsHttpGetOut">
+        <wsdl:part name="Body" element="tns:string" />
+    </wsdl:message>
+    <wsdl:message name="GetServerDiagnosticsHttpGetIn">
+        <wsdl:part name="sSecurityId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetServerDiagnosticsHttpGetOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetMeetingHttpPostIn">
+        <wsdl:part name="lMeetingId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetMeetingHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetAllMeetingsByDateHttpPostIn">
+        <wsdl:part name="lCommitteeId" type="s:string" />
+        <wsdl:part name="sFromDate" type="s:string" />
+        <wsdl:part name="sToDate" type="s:string" />
+        <wsdl:part name="bIsAscendingDateOrder" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetAllMeetingsByDateHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetWebCastMeetingsHttpPostIn">
+        <wsdl:part name="lCommitteeId" type="s:string" />
+        <wsdl:part name="sFromDate" type="s:string" />
+        <wsdl:part name="sToDate" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetWebCastMeetingsHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetMeetingsHttpPostIn">
+        <wsdl:part name="lCommitteeId" type="s:string" />
+        <wsdl:part name="sFromDate" type="s:string" />
+        <wsdl:part name="sToDate" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetMeetingsHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetDeletedWebcastMeetingsHttpPostIn">
+        <wsdl:part name="sFromDate" type="s:string" />
+        <wsdl:part name="sToDate" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetDeletedWebcastMeetingsHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetMemberGroupHttpPostIn">
+        <wsdl:part name="sShortName" type="s:string" />
+        <wsdl:part name="sOrder" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetMemberGroupHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetParishCouncilsHttpPostIn" />
+    <wsdl:message name="GetParishCouncilsHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetCommitteesHttpPostIn" />
+    <wsdl:message name="GetCommitteesHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetCalendarEventsHttpPostIn">
+        <wsdl:part name="bGlobalCalendar" type="s:string" />
+        <wsdl:part name="sDateStart" type="s:string" />
+        <wsdl:part name="sDateEnd" type="s:string" />
+        <wsdl:part name="lUserId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetCalendarEventsHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetCommitteesByUserHttpPostIn">
+        <wsdl:part name="lUserId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetCommitteesByUserHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetElectionResultsHttpPostIn">
+        <wsdl:part name="lElectionId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetElectionResultsHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetElectionResultsRdfHttpPostIn">
+        <wsdl:part name="lType" type="s:string" />
+        <wsdl:part name="lId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetElectionResultsRdfHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetMpOrMepsAndWardsHttpPostIn">
+        <wsdl:part name="bIsMPs" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetMpOrMepsAndWardsHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetMpOrMepAndWardsByPostcodeHttpPostIn">
+        <wsdl:part name="sPostCode" type="s:string" />
+        <wsdl:part name="bIsMPs" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetMpOrMepAndWardsByPostcodeHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByWardHttpPostIn" />
+    <wsdl:message name="GetCouncillorsByWardHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByWardIdHttpPostIn">
+        <wsdl:part name="lWardId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByWardIdHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByPostcodeHttpPostIn">
+        <wsdl:part name="sPostcode" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetCouncillorsByPostcodeHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetAttachmentHttpPostIn">
+        <wsdl:part name="lAttachmentId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetAttachmentHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="GetAttachmentByPathHttpPostIn">
+        <wsdl:part name="sAttachmentPath" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetAttachmentByPathHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:message name="CheckCommsHttpPostIn">
+        <wsdl:part name="sRid" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="CheckCommsHttpPostOut">
+        <wsdl:part name="Body" element="tns:string" />
+    </wsdl:message>
+    <wsdl:message name="GetServerDiagnosticsHttpPostIn">
+        <wsdl:part name="sSecurityId" type="s:string" />
+    </wsdl:message>
+    <wsdl:message name="GetServerDiagnosticsHttpPostOut">
+        <wsdl:part name="Body" />
+    </wsdl:message>
+    <wsdl:portType name="mgWebServiceSoap">
+        <wsdl:operation name="GetMeeting">
+            <wsdl:input message="tns:GetMeetingSoapIn" />
+            <wsdl:output message="tns:GetMeetingSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetAllMeetingsByDate">
+            <wsdl:input message="tns:GetAllMeetingsByDateSoapIn" />
+            <wsdl:output message="tns:GetAllMeetingsByDateSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetWebCastMeetings">
+            <wsdl:input message="tns:GetWebCastMeetingsSoapIn" />
+            <wsdl:output message="tns:GetWebCastMeetingsSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetMeetings">
+            <wsdl:input message="tns:GetMeetingsSoapIn" />
+            <wsdl:output message="tns:GetMeetingsSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetDeletedWebcastMeetings">
+            <wsdl:input message="tns:GetDeletedWebcastMeetingsSoapIn" />
+            <wsdl:output message="tns:GetDeletedWebcastMeetingsSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetMemberGroup">
+            <wsdl:input message="tns:GetMemberGroupSoapIn" />
+            <wsdl:output message="tns:GetMemberGroupSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetParishCouncils">
+            <wsdl:input message="tns:GetParishCouncilsSoapIn" />
+            <wsdl:output message="tns:GetParishCouncilsSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCommittees">
+            <wsdl:input message="tns:GetCommitteesSoapIn" />
+            <wsdl:output message="tns:GetCommitteesSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCalendarEvents">
+            <wsdl:input message="tns:GetCalendarEventsSoapIn" />
+            <wsdl:output message="tns:GetCalendarEventsSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCommitteesByUser">
+            <wsdl:input message="tns:GetCommitteesByUserSoapIn" />
+            <wsdl:output message="tns:GetCommitteesByUserSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetElectionResults">
+            <wsdl:input message="tns:GetElectionResultsSoapIn" />
+            <wsdl:output message="tns:GetElectionResultsSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetElectionResultsRdf">
+            <wsdl:input message="tns:GetElectionResultsRdfSoapIn" />
+            <wsdl:output message="tns:GetElectionResultsRdfSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetMpOrMepsAndWards">
+            <wsdl:input message="tns:GetMpOrMepsAndWardsSoapIn" />
+            <wsdl:output message="tns:GetMpOrMepsAndWardsSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetMpOrMepAndWardsByPostcode">
+            <wsdl:input message="tns:GetMpOrMepAndWardsByPostcodeSoapIn" />
+            <wsdl:output message="tns:GetMpOrMepAndWardsByPostcodeSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByWard">
+            <wsdl:input message="tns:GetCouncillorsByWardSoapIn" />
+            <wsdl:output message="tns:GetCouncillorsByWardSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByWardId">
+            <wsdl:input message="tns:GetCouncillorsByWardIdSoapIn" />
+            <wsdl:output message="tns:GetCouncillorsByWardIdSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByPostcode">
+            <wsdl:input message="tns:GetCouncillorsByPostcodeSoapIn" />
+            <wsdl:output message="tns:GetCouncillorsByPostcodeSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachment">
+            <wsdl:input message="tns:GetAttachmentSoapIn" />
+            <wsdl:output message="tns:GetAttachmentSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachmentByPath">
+            <wsdl:input message="tns:GetAttachmentByPathSoapIn" />
+            <wsdl:output message="tns:GetAttachmentByPathSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="CheckComms">
+            <wsdl:input message="tns:CheckCommsSoapIn" />
+            <wsdl:output message="tns:CheckCommsSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetServerDiagnostics">
+            <wsdl:input message="tns:GetServerDiagnosticsSoapIn" />
+            <wsdl:output message="tns:GetServerDiagnosticsSoapOut" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="mgWebServiceHttpGet">
+        <wsdl:operation name="GetMeeting">
+            <wsdl:input message="tns:GetMeetingHttpGetIn" />
+            <wsdl:output message="tns:GetMeetingHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetAllMeetingsByDate">
+            <wsdl:input message="tns:GetAllMeetingsByDateHttpGetIn" />
+            <wsdl:output message="tns:GetAllMeetingsByDateHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetWebCastMeetings">
+            <wsdl:input message="tns:GetWebCastMeetingsHttpGetIn" />
+            <wsdl:output message="tns:GetWebCastMeetingsHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetMeetings">
+            <wsdl:input message="tns:GetMeetingsHttpGetIn" />
+            <wsdl:output message="tns:GetMeetingsHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetDeletedWebcastMeetings">
+            <wsdl:input message="tns:GetDeletedWebcastMeetingsHttpGetIn" />
+            <wsdl:output message="tns:GetDeletedWebcastMeetingsHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetMemberGroup">
+            <wsdl:input message="tns:GetMemberGroupHttpGetIn" />
+            <wsdl:output message="tns:GetMemberGroupHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetParishCouncils">
+            <wsdl:input message="tns:GetParishCouncilsHttpGetIn" />
+            <wsdl:output message="tns:GetParishCouncilsHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCommittees">
+            <wsdl:input message="tns:GetCommitteesHttpGetIn" />
+            <wsdl:output message="tns:GetCommitteesHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCalendarEvents">
+            <wsdl:input message="tns:GetCalendarEventsHttpGetIn" />
+            <wsdl:output message="tns:GetCalendarEventsHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCommitteesByUser">
+            <wsdl:input message="tns:GetCommitteesByUserHttpGetIn" />
+            <wsdl:output message="tns:GetCommitteesByUserHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetElectionResults">
+            <wsdl:input message="tns:GetElectionResultsHttpGetIn" />
+            <wsdl:output message="tns:GetElectionResultsHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetElectionResultsRdf">
+            <wsdl:input message="tns:GetElectionResultsRdfHttpGetIn" />
+            <wsdl:output message="tns:GetElectionResultsRdfHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetMpOrMepsAndWards">
+            <wsdl:input message="tns:GetMpOrMepsAndWardsHttpGetIn" />
+            <wsdl:output message="tns:GetMpOrMepsAndWardsHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetMpOrMepAndWardsByPostcode">
+            <wsdl:input message="tns:GetMpOrMepAndWardsByPostcodeHttpGetIn" />
+            <wsdl:output message="tns:GetMpOrMepAndWardsByPostcodeHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByWard">
+            <wsdl:input message="tns:GetCouncillorsByWardHttpGetIn" />
+            <wsdl:output message="tns:GetCouncillorsByWardHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByWardId">
+            <wsdl:input message="tns:GetCouncillorsByWardIdHttpGetIn" />
+            <wsdl:output message="tns:GetCouncillorsByWardIdHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByPostcode">
+            <wsdl:input message="tns:GetCouncillorsByPostcodeHttpGetIn" />
+            <wsdl:output message="tns:GetCouncillorsByPostcodeHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachment">
+            <wsdl:input message="tns:GetAttachmentHttpGetIn" />
+            <wsdl:output message="tns:GetAttachmentHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachmentByPath">
+            <wsdl:input message="tns:GetAttachmentByPathHttpGetIn" />
+            <wsdl:output message="tns:GetAttachmentByPathHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="CheckComms">
+            <wsdl:input message="tns:CheckCommsHttpGetIn" />
+            <wsdl:output message="tns:CheckCommsHttpGetOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetServerDiagnostics">
+            <wsdl:input message="tns:GetServerDiagnosticsHttpGetIn" />
+            <wsdl:output message="tns:GetServerDiagnosticsHttpGetOut" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="mgWebServiceHttpPost">
+        <wsdl:operation name="GetMeeting">
+            <wsdl:input message="tns:GetMeetingHttpPostIn" />
+            <wsdl:output message="tns:GetMeetingHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetAllMeetingsByDate">
+            <wsdl:input message="tns:GetAllMeetingsByDateHttpPostIn" />
+            <wsdl:output message="tns:GetAllMeetingsByDateHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetWebCastMeetings">
+            <wsdl:input message="tns:GetWebCastMeetingsHttpPostIn" />
+            <wsdl:output message="tns:GetWebCastMeetingsHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetMeetings">
+            <wsdl:input message="tns:GetMeetingsHttpPostIn" />
+            <wsdl:output message="tns:GetMeetingsHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetDeletedWebcastMeetings">
+            <wsdl:input message="tns:GetDeletedWebcastMeetingsHttpPostIn" />
+            <wsdl:output message="tns:GetDeletedWebcastMeetingsHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetMemberGroup">
+            <wsdl:input message="tns:GetMemberGroupHttpPostIn" />
+            <wsdl:output message="tns:GetMemberGroupHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetParishCouncils">
+            <wsdl:input message="tns:GetParishCouncilsHttpPostIn" />
+            <wsdl:output message="tns:GetParishCouncilsHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCommittees">
+            <wsdl:input message="tns:GetCommitteesHttpPostIn" />
+            <wsdl:output message="tns:GetCommitteesHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCalendarEvents">
+            <wsdl:input message="tns:GetCalendarEventsHttpPostIn" />
+            <wsdl:output message="tns:GetCalendarEventsHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCommitteesByUser">
+            <wsdl:input message="tns:GetCommitteesByUserHttpPostIn" />
+            <wsdl:output message="tns:GetCommitteesByUserHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetElectionResults">
+            <wsdl:input message="tns:GetElectionResultsHttpPostIn" />
+            <wsdl:output message="tns:GetElectionResultsHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetElectionResultsRdf">
+            <wsdl:input message="tns:GetElectionResultsRdfHttpPostIn" />
+            <wsdl:output message="tns:GetElectionResultsRdfHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetMpOrMepsAndWards">
+            <wsdl:input message="tns:GetMpOrMepsAndWardsHttpPostIn" />
+            <wsdl:output message="tns:GetMpOrMepsAndWardsHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetMpOrMepAndWardsByPostcode">
+            <wsdl:input message="tns:GetMpOrMepAndWardsByPostcodeHttpPostIn" />
+            <wsdl:output message="tns:GetMpOrMepAndWardsByPostcodeHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByWard">
+            <wsdl:input message="tns:GetCouncillorsByWardHttpPostIn" />
+            <wsdl:output message="tns:GetCouncillorsByWardHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByWardId">
+            <wsdl:input message="tns:GetCouncillorsByWardIdHttpPostIn" />
+            <wsdl:output message="tns:GetCouncillorsByWardIdHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByPostcode">
+            <wsdl:input message="tns:GetCouncillorsByPostcodeHttpPostIn" />
+            <wsdl:output message="tns:GetCouncillorsByPostcodeHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachment">
+            <wsdl:input message="tns:GetAttachmentHttpPostIn" />
+            <wsdl:output message="tns:GetAttachmentHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachmentByPath">
+            <wsdl:input message="tns:GetAttachmentByPathHttpPostIn" />
+            <wsdl:output message="tns:GetAttachmentByPathHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="CheckComms">
+            <wsdl:input message="tns:CheckCommsHttpPostIn" />
+            <wsdl:output message="tns:CheckCommsHttpPostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetServerDiagnostics">
+            <wsdl:input message="tns:GetServerDiagnosticsHttpPostIn" />
+            <wsdl:output message="tns:GetServerDiagnosticsHttpPostOut" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="mgWebServiceSoap" type="tns:mgWebServiceSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="GetMeeting">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetMeeting" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAllMeetingsByDate">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetAllMeetingsByDate" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetWebCastMeetings">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetWebCastMeetings" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMeetings">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetMeetings" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeletedWebcastMeetings">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetDeletedWebcastMeetings" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMemberGroup">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetMemberGroup" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetParishCouncils">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetParishCouncils" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCommittees">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetCommittees" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCalendarEvents">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetCalendarEvents" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCommitteesByUser">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetCommitteesByUser" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetElectionResults">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetElectionResults" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetElectionResultsRdf">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetElectionResultsRdf" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMpOrMepsAndWards">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetMpOrMepsAndWards" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMpOrMepAndWardsByPostcode">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetMpOrMepAndWardsByPostcode" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByWard">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetCouncillorsByWard" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByWardId">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetCouncillorsByWardId" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByPostcode">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetCouncillorsByPostcode" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachment">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetAttachment" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachmentByPath">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetAttachmentByPath" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckComms">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/CheckComms" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetServerDiagnostics">
+            <soap:operation soapAction="http://moderngov.co.uk/namespaces/GetServerDiagnostics" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="mgWebServiceSoap12" type="tns:mgWebServiceSoap">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="GetMeeting">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetMeeting" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAllMeetingsByDate">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetAllMeetingsByDate" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetWebCastMeetings">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetWebCastMeetings" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMeetings">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetMeetings" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeletedWebcastMeetings">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetDeletedWebcastMeetings" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMemberGroup">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetMemberGroup" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetParishCouncils">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetParishCouncils" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCommittees">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetCommittees" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCalendarEvents">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetCalendarEvents" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCommitteesByUser">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetCommitteesByUser" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetElectionResults">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetElectionResults" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetElectionResultsRdf">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetElectionResultsRdf" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMpOrMepsAndWards">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetMpOrMepsAndWards" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMpOrMepAndWardsByPostcode">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetMpOrMepAndWardsByPostcode" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByWard">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetCouncillorsByWard" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByWardId">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetCouncillorsByWardId" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByPostcode">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetCouncillorsByPostcode" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachment">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetAttachment" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachmentByPath">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetAttachmentByPath" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckComms">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/CheckComms" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetServerDiagnostics">
+            <soap12:operation soapAction="http://moderngov.co.uk/namespaces/GetServerDiagnostics" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="mgWebServiceHttpGet" type="tns:mgWebServiceHttpGet">
+        <http:binding verb="GET" />
+        <wsdl:operation name="GetMeeting">
+            <http:operation location="/GetMeeting" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAllMeetingsByDate">
+            <http:operation location="/GetAllMeetingsByDate" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetWebCastMeetings">
+            <http:operation location="/GetWebCastMeetings" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMeetings">
+            <http:operation location="/GetMeetings" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeletedWebcastMeetings">
+            <http:operation location="/GetDeletedWebcastMeetings" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMemberGroup">
+            <http:operation location="/GetMemberGroup" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetParishCouncils">
+            <http:operation location="/GetParishCouncils" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCommittees">
+            <http:operation location="/GetCommittees" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCalendarEvents">
+            <http:operation location="/GetCalendarEvents" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCommitteesByUser">
+            <http:operation location="/GetCommitteesByUser" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetElectionResults">
+            <http:operation location="/GetElectionResults" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetElectionResultsRdf">
+            <http:operation location="/GetElectionResultsRdf" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMpOrMepsAndWards">
+            <http:operation location="/GetMpOrMepsAndWards" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMpOrMepAndWardsByPostcode">
+            <http:operation location="/GetMpOrMepAndWardsByPostcode" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByWard">
+            <http:operation location="/GetCouncillorsByWard" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByWardId">
+            <http:operation location="/GetCouncillorsByWardId" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByPostcode">
+            <http:operation location="/GetCouncillorsByPostcode" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachment">
+            <http:operation location="/GetAttachment" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachmentByPath">
+            <http:operation location="/GetAttachmentByPath" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckComms">
+            <http:operation location="/CheckComms" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:mimeXml part="Body" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetServerDiagnostics">
+            <http:operation location="/GetServerDiagnostics" />
+            <wsdl:input>
+                <http:urlEncoded />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="mgWebServiceHttpPost" type="tns:mgWebServiceHttpPost">
+        <http:binding verb="POST" />
+        <wsdl:operation name="GetMeeting">
+            <http:operation location="/GetMeeting" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAllMeetingsByDate">
+            <http:operation location="/GetAllMeetingsByDate" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetWebCastMeetings">
+            <http:operation location="/GetWebCastMeetings" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMeetings">
+            <http:operation location="/GetMeetings" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetDeletedWebcastMeetings">
+            <http:operation location="/GetDeletedWebcastMeetings" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMemberGroup">
+            <http:operation location="/GetMemberGroup" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetParishCouncils">
+            <http:operation location="/GetParishCouncils" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCommittees">
+            <http:operation location="/GetCommittees" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCalendarEvents">
+            <http:operation location="/GetCalendarEvents" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCommitteesByUser">
+            <http:operation location="/GetCommitteesByUser" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetElectionResults">
+            <http:operation location="/GetElectionResults" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetElectionResultsRdf">
+            <http:operation location="/GetElectionResultsRdf" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMpOrMepsAndWards">
+            <http:operation location="/GetMpOrMepsAndWards" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetMpOrMepAndWardsByPostcode">
+            <http:operation location="/GetMpOrMepAndWardsByPostcode" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByWard">
+            <http:operation location="/GetCouncillorsByWard" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByWardId">
+            <http:operation location="/GetCouncillorsByWardId" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetCouncillorsByPostcode">
+            <http:operation location="/GetCouncillorsByPostcode" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachment">
+            <http:operation location="/GetAttachment" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachmentByPath">
+            <http:operation location="/GetAttachmentByPath" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckComms">
+            <http:operation location="/CheckComms" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:mimeXml part="Body" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetServerDiagnostics">
+            <http:operation location="/GetServerDiagnostics" />
+            <wsdl:input>
+                <mime:content type="application/x-www-form-urlencoded" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content part="Body" type="text/xml" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="mgWebService">
+        <wsdl:port name="mgWebServiceSoap" binding="tns:mgWebServiceSoap">
+            <soap:address location="https://democracy.bristol.gov.uk/mgWebService.asmx" />
+        </wsdl:port>
+        <wsdl:port name="mgWebServiceSoap12" binding="tns:mgWebServiceSoap12">
+            <soap12:address location="https://democracy.bristol.gov.uk/mgWebService.asmx" />
+        </wsdl:port>
+        <wsdl:port name="mgWebServiceHttpGet" binding="tns:mgWebServiceHttpGet">
+            <http:address location="https://democracy.bristol.gov.uk/mgWebService.asmx" />
+        </wsdl:port>
+        <wsdl:port name="mgWebServiceHttpPost" binding="tns:mgWebServiceHttpPost">
+            <http:address location="https://democracy.bristol.gov.uk/mgWebService.asmx" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

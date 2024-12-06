@@ -8,7 +8,7 @@ class ProdDeployLogRenderer implements DeployLogRenderer
     {
         $prod_log_filename = "/var/app/deployer.log";
 
-        if (file_exists($prod_log_filename) !== true){
+        if (file_exists($prod_log_filename) !== true) {
             return "Deploy log file does not exist of is not readable.";
         }
 

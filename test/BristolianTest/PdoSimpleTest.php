@@ -11,9 +11,8 @@ use BristolianTest\PdoSimpleTestObject;
  *
  *
  */
-class  PdoSimpleTest extends BaseTestCase
+class PdoSimpleTest extends BaseTestCase
 {
-
     public function testWorks()
     {
 

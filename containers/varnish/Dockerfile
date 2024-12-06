@@ -1,4 +1,4 @@
-FROM debian:10-slim
+FROM debian:11-slim
 
 
 
@@ -30,9 +30,9 @@ RUN apt-get update -qq \
 # RUN  apt-get update -qq && \
 #      apt-get dist-upgrade -y && \
 #      DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-#      php8.1 php8.1-common php8.1-cli \
-#      php8.1-mbstring \
-#      php8.1-intl php8.1-zip
+#      php8.2 php8.2-common php8.2-cli \
+#      php8.2-mbstring \
+#      php8.2-intl php8.2-zip
 
 # RUN  apt-get update -qq && \
 #   apt-get dist-upgrade -y && \

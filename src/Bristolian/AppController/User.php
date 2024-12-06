@@ -8,7 +8,7 @@ use Bristolian\UserSession;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
-use Bristolian\Repo\FileStorageRepo\FileStorageInfoRepo;
+use Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo;
 use Bristolian\DataType\MemeTagParam;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Bristolian\Repo\MemeTagRepo\MemeTagRepo;

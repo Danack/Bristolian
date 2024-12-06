@@ -5,12 +5,15 @@ declare(strict_types = 1);
 namespace Bristolian\AppErrorHandler;
 
 use Bristolian\AssetLinkEmitter;
+use Bristolian\Basic\ErrorLogger;
 use Bristolian\Page;
 
 class HtmlErrorHandlerForProd implements AppErrorHandler
 {
-    public function __construct(private AssetLinkEmitter $assetLinkEmitter)
-    {
+    public function __construct(
+        private AssetLinkEmitter $assetLinkEmitter,
+        private ErrorLogger $errorLogger
+    ) {
     }
 
     /**
@@ -20,8 +23,8 @@ class HtmlErrorHandlerForProd implements AppErrorHandler
     public function __invoke($container)
     {
         return function ($request, $response, \Throwable $exception) {
-            \error_log("The heck: " . $exception->getMessage());
-            \error_log(getTextForException($exception));
+            $this->errorLogger->log("The heck: " . $exception->getMessage());
+            $this->errorLogger->log(getTextForException($exception));
             $text = "Sorry, an error occurred.";
 
             $page = nl2br($text);

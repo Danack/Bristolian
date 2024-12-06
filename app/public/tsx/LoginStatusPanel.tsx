@@ -40,7 +40,7 @@ export class LoginStatusPanel extends Component<LoginStatusPanelProps, LoginStat
   }
 
   triggerDataFetch() {
-    console.log('triggerDataFetch');
+    // console.log('triggerDataFetch');
     let callback = () => this.setTimeout();
 
     fetch('/api/login-status').

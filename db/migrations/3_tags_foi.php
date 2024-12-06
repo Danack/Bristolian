@@ -14,7 +14,7 @@ function getAllQueries_3(): array
 
     $sql[] = <<< SQL
 
-CREATE TABLE `tags` (
+CREATE TABLE `tag` (
   `tag_id` varchar(36) NOT NULL,
   `text` varchar(2048) NOT NULL,
   `description` varchar(2048) NOT NULL,

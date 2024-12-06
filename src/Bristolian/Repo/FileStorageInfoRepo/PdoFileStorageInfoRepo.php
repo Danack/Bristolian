@@ -1,13 +1,12 @@
 <?php
 
-namespace Bristolian\Repo\FileStorageRepo;
+namespace Bristolian\Repo\FileStorageInfoRepo;
 
-use Bristolian\Repo\FileStorageRepo\FileType;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
+use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
-use Bristolian\Repo\FileStorageRepo\FileState;
 use Bristolian\PdoSimple;
-use Bristolian\Model\Meme;
+use Bristolian\Database\stored_file;
 
 class PdoFileStorageInfoRepo implements FileStorageInfoRepo
 {
@@ -15,71 +14,52 @@ class PdoFileStorageInfoRepo implements FileStorageInfoRepo
     {
     }
 
-    /**
-     * @return Meme[]
-     */
-    public function listMemesForUser(string $user_id): array
-    {
-        $sql = <<< SQL
-select 
-  id,
-  user_id, 
-  filename,
-  filetype,
-  filestate
-from
-  file_storage_info
-where
-  user_id = :user_id and 
-  filetype = :filetype and
-  filestate = :filestate
-SQL;
+//    /**
+//     * @return Meme[]
+//     */
+//    public function listMemesForUser(string $user_id): array
+//    {
+//        $sql = file_storage_info::SELECT . <<< SQL
+//where
+//  user_id = :user_id and
+//
+//  filestate = :filestate
+//SQL;
+//        echo "This is broken. Memes for users needs a need table setting up to store that info.";
+//        exit(0);
+//        $params = [
+//            ':user_id' => $user_id,
+//            ':filetype' => FileType::Meme->value,
+////            ':filestate' => FileState::UPLOADED->value
+//        ];
+//
+//        $memes = $this->pdo_simple->fetchAllAsObject(
+//            $sql,
+//            $params,
+//            Meme::class
+//        );
+//        return $memes;
+//    }
 
-        $params = [
-            ':user_id' => $user_id,
-            ':filetype' => FileType::Meme->value,
-            ':filestate' => FileState::UPLOADED->value
-        ];
 
-        $memes = $this->pdo_simple->fetchAllAsObject(
-            $sql,
-            $params,
-            Meme::class
-        );
-        return $memes;
-    }
-
-    public function createEntry(
+    public function storeFileInfo(
         string $user_id,
-        string $filename,
-        FileType $filetype
+        string $normalized_filename,
+        UploadedFile $uploadedFile,
     ): string {
 
-        $sql = <<< SQL
-insert into file_storage_info (
-  id,
-  user_id, 
-  filename,
-  filetype,
-  filestate
-)
-values (
-  :id,
-  :user_id, 
-  :filename,
-  :filetype,
-  :filestate
-)
-SQL;
+        $sql = stored_file::INSERT;
+
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
 
         $params = [
-            'id' => $id,
-            'user_id' => $user_id,
-            'filename' => $filename,
-            'filetype' => $filetype->value,
-            'filestate' => FileState::INITIAL->value,
+            ':id' => $id,
+            ':user_id' => $user_id,
+            ':normalized_name' => $normalized_filename,
+            ':original_filename' => $uploadedFile->getOriginalName(),
+            ':state' => FileState::INITIAL->value,
+            ':size' => $uploadedFile->getSize(),
         ];
 
         try {
@@ -106,9 +86,9 @@ SQL;
     {
         $sql = <<< SQL
 update
-  file_storage_info 
+  stored_file 
 set
-  filestate = :filestate
+  state = :filestate
 where
   id = :id
 SQL;

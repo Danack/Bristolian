@@ -4,6 +4,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
 require_once __DIR__ . "/fixtures.php";
 require_once __DIR__ . "/../config.generated.php";
 require_once __DIR__ . "/../src/factories.php";
+require_once __DIR__ . "/../src/react_widgets.php";
+require_once __DIR__ . "/../credentials.php";
 require_once __DIR__ . "/test_injection_params.php";
 
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;

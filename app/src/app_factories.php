@@ -3,7 +3,7 @@
 declare(strict_types = 1);
 
 use DI\Injector;
-use Bristolian\Config;
+use Bristolian\Config\Config;
 use Psr\Http\Message\ResponseInterface;
 use SlimDispatcher\DispatchingResolver;
 use Laminas\Diactoros\ResponseFactory;

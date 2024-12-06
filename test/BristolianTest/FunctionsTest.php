@@ -6,6 +6,7 @@ namespace BristolianTest;
 
 use DataType\DataStorage\TestArrayDataStorage;
 use SlimDispatcher\Response\JsonResponse;
+use BristolianTest\TestFixtures\ToArrayClass;
 
 /**
  * @coversNothing
@@ -345,5 +346,89 @@ TEXT;
 
         convertToArrayOfObjects(\StdClass::class, []);
     }
-}
 
+    private function provides_normalize_file_extension_works()
+    {
+        yield ["sample.pdf", ['pdf']];
+        yield ["sample.pdf", ['pdf', 'txt', 'jpg']];
+    }
+
+    /**
+     * @covers ::normalize_file_extension
+     * @dataProvider provides_normalize_file_extension_works
+     */
+    public function test_normalize_file_extension_works($original_filename, $allowed_extensions)
+    {
+        $result = normalize_file_extension(
+            $original_filename,
+            "Currently unused",
+            $allowed_extensions
+        );
+
+        $this->assertSame('pdf', $result);
+    }
+
+    /**
+     * @covers ::normalize_file_extension
+     */
+    public function test_normalize_file_extension_throws()
+    {
+        $this->expectException(\Bristolian\BristolianException::class);
+        normalize_file_extension(
+            "sample.pdf",
+            "Currently unused",
+            ['PDF'] // incorrect upper case
+        );
+    }
+
+    private function provides_normalize_file_extension_null()
+    {
+        // file type is not allowed
+        yield ["sample.pdf", ['txt']];
+        // file name has no extension
+        yield ["pdf", ['pdf']];
+    }
+
+    /**
+     * @covers ::normalize_file_extension
+     * @dataProvider provides_normalize_file_extension_null
+     */
+    public function test_normalize_file_extension_null($original_filename, $allowed_extensions)
+    {
+        $result = normalize_file_extension(
+            $original_filename,
+            "Currently unused",
+            $allowed_extensions
+        );
+
+        $this->assertNull($result);
+    }
+
+
+
+    private function provides_convertToValue_works()
+    {
+        yield ['foo', 'foo'];
+        yield [null, null];
+        yield [['foo' => 'bar'], ['foo' => 'bar']];
+
+        $string_value = "John";
+        $int_value = 1234;
+        $toArrayClass = new ToArrayClass($string_value, $int_value);
+
+        yield [$toArrayClass, ['foo' => $string_value, 'bar' => $int_value]];
+    }
+
+    /**
+     * @group wip
+     * @covers ::convertToValue
+     * @dataProvider provides_convertToValue_works
+     */
+    public function test_convertToValue_works($input, $expected_value)
+    {
+        [$error, $value] = convertToValue($input);
+
+        $this->assertNull($error);
+        $this->assertSame($expected_value, $value);
+    }
+}

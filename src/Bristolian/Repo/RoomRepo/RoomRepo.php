@@ -10,4 +10,9 @@ interface RoomRepo
     public function createRoom(string $user_id, string $name, string $purpose): Room;
 
     public function getRoomById(string $id): Room|null;
+
+    /**
+     * @return Room[]
+     */
+    public function getAllRooms(): array;
 }

@@ -3,6 +3,7 @@
 namespace BristolianTest\Repo\UserSearch;
 
 use Bristolian\DataType\CreateUserParams;
+use Bristolian\Model\Room;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use Bristolian\Repo\DbInfo\PdoDbInfo;
 use BristolianTest\BaseTestCase;
@@ -28,8 +29,9 @@ class PdoRoomRepoTest extends BaseTestCase
         $adminUser = $this->createTestAdminUser();
 
         $pdoRoomRepo = $this->injector->make(PdoRoomRepo::class);
-        $room_name = 'test_room' . time() . '_' . random_int(1000, 9999);
-        $room_description = 'test_room_description' . time() . '_' . random_int(1000, 9999);
+
+        $room_name = $this->getTestRoomName();
+        $room_description = $this->getTestRoomDescription();
 
         $room_created = $pdoRoomRepo->createRoom(
             $adminUser->getUserId(),
@@ -39,5 +41,10 @@ class PdoRoomRepoTest extends BaseTestCase
 
         $room_from_db = $pdoRoomRepo->getRoomById($room_created->getRoomId());
         $this->assertEquals($room_created, $room_from_db);
+
+        $rooms = $pdoRoomRepo->getAllRooms();
+        foreach ($rooms as $room) {
+            $this->assertInstanceOf(Room::class, $room);
+        }
     }
 }

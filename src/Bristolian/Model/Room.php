@@ -11,7 +11,7 @@ class Room
 {
     use ToArray;
 
-    public  function __construct(
+    public function __construct(
         public readonly string $id,
         public readonly string $owner_user_id,
         public readonly string $name,

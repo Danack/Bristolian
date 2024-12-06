@@ -1,5 +1,6 @@
 <?php
 
+use Bristolian\Config\Config;
 use Bristolian\InjectionParams;
 use Bristolian\Repo\DbInfo\DbInfo;
 
@@ -27,6 +28,18 @@ function injectionParams()
           \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
         \Bristolian\CSPViolation\CSPViolationStorage::class =>
           \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
+
+        \Bristolian\Config\ForceAssetRefresh::class =>
+            \Bristolian\Config\Config::class,
+
+        Bristolian\Basic\ErrorLogger::class =>
+            \Bristolian\Basic\StandardErrorLogger::class,
+
+        \Bristolian\Service\FileStorageProcessor\FileStorageProcessor::class =>
+            \Bristolian\Service\FileStorageProcessor\StandardFileStorageProcessor::class,
+
+        \Bristolian\Service\ObjectStore\RoomFileObjectStore::class =>
+            \Bristolian\Service\ObjectStore\StandardRoomFileObjectStore::class,
 
         Psr\Http\Message\ResponseFactoryInterface::class =>
           \Laminas\Diactoros\ResponseFactory::class,
@@ -60,6 +73,9 @@ function injectionParams()
         \Bristolian\Repo\FoiRequestRepo\FoiRequestRepo::class =>
           \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::class,
 
+        \Bristolian\Repo\RoomFileRepo\RoomFileRepo::class =>
+            \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class,
+
         \Asm\RequestSessionStorage::class =>
           \Bristolian\App\StandardRequestSessionStorage::class,
 
@@ -75,8 +91,14 @@ function injectionParams()
         \Bristolian\Service\MemeStorage\MemeStorage::class =>
           \Bristolian\Service\MemeStorage\StandardMemeStorage::class,
 
-        \Bristolian\Repo\FileStorageRepo\FileStorageInfoRepo::class =>
-          \Bristolian\Repo\FileStorageRepo\PdoFileStorageInfoRepo::class,
+        \Bristolian\Service\RoomFileStorage\RoomFileStorage::class =>
+            \Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::class,
+
+        \Bristolian\UploadedFiles\UploadedFiles::class =>
+            \Bristolian\UploadedFiles\ServerFilesUploadedFiles::class,
+
+        \Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo::class =>
+          \Bristolian\Repo\FileStorageInfoRepo\PdoFileStorageInfoRepo::class,
 
         \Bristolian\Repo\MemeTagRepo\MemeTagRepo::class =>
             \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class,
@@ -85,7 +107,10 @@ function injectionParams()
             \Bristolian\Repo\UserSearch\PdoUserSearch::class,
 
         \Bristolian\UserNotifier\UserNotifier::class =>
-          \Bristolian\UserNotifier\StandardUserNotifier::class
+          \Bristolian\UserNotifier\StandardUserNotifier::class,
+
+        \Bristolian\Repo\RoomRepo\RoomRepo::class =>
+            \Bristolian\Repo\RoomRepo\PdoRoomRepo::class,
     ];
 
 
@@ -117,6 +142,10 @@ function injectionParams()
           'createLocalFilesystem',
         \Bristolian\Filesystem\MemeFilesystem::class =>
             'createMemeFilesystem',
+
+        \Bristolian\Filesystem\RoomFileFilesystem::class =>
+            'createRoomFileFilesystem',
+
         \Bristolian\Filesystem\LocalCacheFilesystem::class =>
             'createLocalCacheFilesystem',
 

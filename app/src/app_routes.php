@@ -64,6 +64,35 @@ function getAllAppRoutes()
 
         ['/explanations/development_committee_rules', 'GET', 'Bristolian\AppController\Pages::development_committee_rules'],
 
+        [
+            '/rooms/{room_id:.*}/file/{file_id:.*}/{original_filename:.*}',
+            'GET',
+            'Bristolian\AppController\Rooms::serveFileForRoom'
+        ],
+
+        ['/rooms', 'GET', 'Bristolian\AppController\Rooms::index'],
+
+        // TODO - limit the allowed characters for files
+        ['/rooms/{room_id:.*}', 'GET', 'Bristolian\AppController\Rooms::showRoom'],
+
+
+        ['/api/rooms/{room_id:.*}/files', 'GET', 'Bristolian\AppController\Rooms::getFiles'],
+
+        [
+            '/api/rooms/{room_id:.*}/file-upload',
+            'POST',
+            'Bristolian\AppController\Rooms::handleFileUpload'
+        ],
+
+        [
+            '/api/rooms/{room_id:.*}/file-upload',
+            'GET',
+            '\Bristolian\AppController\Rooms::handleFileUpload_get'
+        ],
+
+
+
+
         ['/tools/floating_point', 'GET', '\Bristolian\AppController\Pages::floating_point_page'],
         ['/tools/timeline', 'GET', '\Bristolian\AppController\Pages::timeline_page'],
         ['/tools/notes', 'GET', '\Bristolian\AppController\Pages::notes_page'],
@@ -83,6 +112,8 @@ function getAllAppRoutes()
 
         ['/system/deploy_log', 'GET', 'Bristolian\AppController\System::deploy_log'],
 
+
+        ['/system/swagger', 'GET', 'Bristolian\AppController\System::display_swagger'],
 
         ['/system', 'GET', 'Bristolian\AppController\System::index'],
 
@@ -145,6 +176,7 @@ function getAllAppRoutes()
         // ['/system', 'GET', 'Bristolian\AppController\System::indexPage'],
         ['/system/htmltest', 'GET', 'Bristolian\AppController\Pages::htmlTest'],
         // ['/system/csp_reports', 'GET', 'Bristolian\AppController\System::getReports'],
+
 
 
 //    ['/css/{any:.*}', 'GET', 'Bristolian\AppController\Pages::get404Page'],

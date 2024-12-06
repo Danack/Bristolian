@@ -17,6 +17,15 @@ function add_console_commands(Application $console)
     addMiscCommands($console);
     addTestCommands($console);
     addRoomCommands($console);
+    addEmailCommands($console);
+    addGenerateCommands($console);
+}
+
+function addEmailCommands(Application $console)
+{
+    $command = new Command('email:test', 'Bristolian\CliController\Email::testEmail');
+    $command->setDescription("Send a test email.");
+    $console->add($command);
 }
 
 /**
@@ -132,7 +141,6 @@ function addDatabaseCommands(Application $console)
 
 function addMiscCommands(Application $console)
 {
-
     $command = new Command(
         'misc:check_config_complete',
         'Bristolian\Config::testValuesArePresent'
@@ -141,9 +149,28 @@ function addMiscCommands(Application $console)
     $console->add($command);
 }
 
+function addGenerateCommands(Application $console)
+{
+    $command = new Command(
+        'generate:javascript_constants',
+        'Bristolian\CliController\GenerateFiles::generateJavaScriptConstants'
+    );
+    $command->setDescription("Generate JavaScript constants from PHP source values.");
+    $console->add($command);
+
+
+    $command = new Command(
+        'generate:php_table_helper_classes',
+        'Bristolian\CliController\GenerateFiles::generateTableHelperClasses'
+    );
+    $command->setDescription("Generate Helper classes, to avoid having to type column names out.");
+    $console->add($command);
+}
+
+
+
 function addTestCommands(Application $console)
 {
-
     $command = new Command(
         'test:push_notification',
         '\Bristolian\AppController\Notifications::test_push'

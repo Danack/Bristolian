@@ -14,15 +14,12 @@ require __DIR__ . "/../../config.generated.php";
 
 require __DIR__ . "/../../credentials.php";
 
-
-
 set_error_handler('saneErrorHandler');
-
-
 
 $injector = new DI\Injector();
 $injectionParams = injectionParams();
 $injectionParams->addToInjector($injector);
+$injector->staticFactory(\Bristolian\StaticFactory::class, 'createFromRequest');
 $injector->share($injector);
 
 try {
@@ -35,12 +32,10 @@ try {
     }
 
     $app->run();
-}
-catch (\DI\InjectionException $exception) {
+} catch (\DI\InjectionException $exception) {
     [$text, $status] = renderInjectionExceptionToHtml($exception);
 
     echo $text;
-}
-catch (\Throwable $exception) {
+} catch (\Throwable $exception) {
     showTotalErrorPage($exception);
 }

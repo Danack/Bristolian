@@ -3,69 +3,12 @@
 declare(strict_types = 1);
 
 use Bristolian\Types\DocumentType;
+use SlimDispatcher\Response\JsonNoCacheResponse;
 use VarMap\ArrayVarMap;
 use VarMap\VarMap;
 use Bristolian\ToArray;
 
 $injector = null;
-
-//function hackVarMap($varMap)
-//{
-//    $params = $varMap->toArray();
-//
-//    $unwantedParams = ['q', 'time'];
-//
-//    foreach ($unwantedParams as $unwantedParam) {
-//        if (array_key_exists($unwantedParam, $params) === true) {
-//            unset($params[$unwantedParam]);
-//        }
-//    }
-//
-//    $hackedVarMap = new ArrayVarMap($params);
-//
-//    return $hackedVarMap;
-//}
-
-//function purgeExceptionMessage(\Throwable $exception)
-//{
-//    $rawMessage = $exception->getMessage();
-//
-//    $purgeAfterPhrases = [
-//        'with params'
-//    ];
-//
-//    $message = $rawMessage;
-//
-//    foreach ($purgeAfterPhrases as $purgeAfterPhrase) {
-//        $matchPosition = strpos($message, $purgeAfterPhrase);
-//        if ($matchPosition !== false) {
-//            $message = substr($message, 0, $matchPosition + strlen($purgeAfterPhrase));
-//            $message .= '**PURGED**';
-//        }
-//    }
-//
-//    return $message;
-//}
-
-//function getTextForException(\Throwable $exception)
-//{
-//    $currentException = $exception;
-//    $text = '';
-//
-//    do {
-//        $text .= sprintf(
-//            "Exception type:\n  %s\n\nMessage:\n  %s \n\nStack trace:\n%s\n",
-//            get_class($currentException),
-//            purgeExceptionMessage($currentException),
-//            formatLinesWithCount(getExceptionStackAsArray($currentException))
-//        );
-//
-//
-//        $currentException = $currentException->getPrevious();
-//    } while ($currentException !== null);
-//
-//    return $text;
-//}
 
 /**
  * Format an array of strings to have a count at the start
@@ -89,62 +32,6 @@ function formatLinesWithCount(array $lines): string
 
     return $output;
 }
-
-
-///**
-// * @param Throwable $exception
-// * @return string[]
-// */
-//function getExceptionStackAsArray(\Throwable $exception)
-//{
-//    $lines = [];
-//    foreach ($exception->getTrace() as $trace) {
-//        $lines[] = formatTraceLine($trace);
-//    }
-//
-//    return $lines;
-//}
-
-
-//function formatTraceLine(array $trace)
-//{
-//    $location = '??';
-//    $function = 'unknown';
-//
-//    if (isset($trace["file"]) && isset($trace["line"])) {
-//        $location = $trace["file"]. ':' . $trace["line"];
-//    }
-//    else if (isset($trace["file"])) {
-//        $location = $trace["file"] . ':??';
-//    }
-//
-//    $baseDir = realpath(__DIR__ . '/../');
-//    if ($baseDir === false) {
-//        throw new \Exception("Couldn't find parent directory from " . __DIR__);
-//    }
-//
-//    $location = str_replace($baseDir, '', $location);
-//
-//    if (isset($trace["class"]) && isset($trace["type"]) && isset($trace["function"])) {
-//        $function = $trace["class"] . $trace["type"] . $trace["function"];
-//    }
-//    else if (isset($trace["class"]) && isset($trace["function"])) {
-//        $function = $trace["class"] . '_' . $trace["function"];
-//    }
-//    else if (isset($trace["function"])) {
-//        $function = $trace["function"];
-//    }
-//    else {
-//        $function = "Function is weird: " . json_encode(var_export($trace, true));
-//    }
-//
-//    return sprintf(
-//        "%s %s",
-//        $location,
-//        $function
-//    );
-//}
-
 
 /**
  * Self-contained monitoring system for system signals
@@ -327,29 +214,6 @@ function json_encode_safe($data, $options = 0): string
     return $result;
 }
 
-
-//function getExceptionText(\Throwable $exception): string
-//{
-//    $text = "";
-//    do {
-//        $text .= get_class($exception) . ":" . $exception->getMessage() . "\n\n";
-//
-//        if ($exception instanceof Auryn\InjectionException) {
-//            $text .= "DependencyChains is:\n";
-//            foreach ($exception->getDependencyChain() as $item) {
-//                $text .= "  " . $item . "\n";
-//            }
-//        }
-//
-//        $text .= $exception->getTraceAsString();
-//
-//
-//        $exception = $exception->getPrevious();
-//    } while ($exception !== null);
-//
-//    return $text;
-//}
-
 /**
  * @param Throwable $exception
  * @return mixed[]
@@ -413,7 +277,7 @@ function convertToValue(mixed $value)
         ];
     }
     if (is_object($value) === true) {
-        if ($value instanceof \DateTime) {
+        if ($value instanceof \DateTimeInterface) {
             // Format as Atom time with microseconds
             return [
                 null,
@@ -515,104 +379,6 @@ function convertToArrayOfObjects(string $classname, array $data)
 }
 
 
-
-
-
-
-
-/*
-  TODO - is this convertToValue better?
-
-/**
- * @param string $name
- * @param mixed $value
- * @return mixed
- * @throws Exception
- * /
-function convertToValue(string $name, $value)
-{
-    if (is_scalar($value) === true) {
-        return $value;
-    }
-    if ($value === null) {
-        return null;
-    }
-
-    $callable = [$value, 'toArray'];
-    if (is_object($value) === true && is_callable($callable)) {
-        return $callable();
-    }
-    if (is_object($value) === true && $value instanceof \DateTime) {
-        return $value->format(\Bristolian\App::DATE_TIME_EXACT_FORMAT);
-    }
-
-    if (is_array($value) === true) {
-        $values = [];
-        foreach ($value as $key => $entry) {
-            $values[$key] = convertToValue($key, $entry);
-        }
-
-        return $values;
-    }
-
-    $message = "Unknown error converting to param '$name' to value.";
-
-    if (is_object($value) === true) {
-        $message = "Unsupported type [" . gettype($value) . "] of class [" . get_class($value) . "] for toArray for property $name.";
-    }
-
-    throw new \Exception($message);
-}
-
-*/
-
-
-
-
-
-
-
-///**
-// * @param string $name
-// * @param mixed $value
-// * @return mixed
-// * @throws Exception
-// */
-//function convertToValue(string $name, $value)
-//{
-//    if (is_scalar($value) === true) {
-//        return $value;
-//    }
-//    if ($value === null) {
-//        return null;
-//    }
-//
-//    $callable = [$value, 'toArray'];
-//    if (is_object($value) === true && is_callable($callable)) {
-//        return $callable();
-//    }
-//    if (is_object($value) === true && $value instanceof \DateTime) {
-//        return $value->format(\Bristolian\App::DATE_TIME_EXACT_FORMAT);
-//    }
-//
-//    if (is_array($value) === true) {
-//        $values = [];
-//        foreach ($value as $key => $entry) {
-//            $values[$key] = convertToValue($key, $entry);
-//        }
-//
-//        return $values;
-//    }
-//
-//    $message = "Unknown error converting to param '$name' to value.";
-//
-//    if (is_object($value) === true) {
-//        $message = "Unsupported type [" . gettype($value) . "] of class [" . get_class($value) . "] for toArray for property $name.";
-//    }
-//
-//    throw new \Exception($message);
-//}
-
 /**
  * Fetch data and return statusCode, body and headers
  *
@@ -681,99 +447,6 @@ function fetchDataWithHeaders(string $uri, array $headers): array
     throw new \Exception("Failed to fetch data from " . $uri);
 }
 
-
-//// Define a function that writes a string into the response object.
-//function convertStringToHtmlResponse(
-//    string $result,
-//    \Psr\Http\Message\RequestInterface $request,
-//    \Psr\Http\Message\ResponseInterface $response
-//): \Psr\Http\Message\ResponseInterface {
-//    $response = $response->withHeader('Content-Type', 'text/html');
-//    $response->getBody()->write($result);
-//    return $response;
-//}
-
-
-//function getEyeColorSpaceStringFromValue(int $value)
-//{
-//    $colorspaceOptions = getEyeColourSpaceOptions();
-//
-//    foreach ($colorspaceOptions as $string => $int) {
-//        if ($value === $int) {
-//            return $string;
-//        }
-//    }
-//
-//    throw new \Exception("Bad option for getEyeColorSpaceStringFromValue $value");
-//}
-
-
-//function getImagePathForOption(string $selected_option)
-//{
-//    $imageOptions = getImagePathOptions();
-//
-//    foreach ($imageOptions as $path => $option) {
-//        if ($option === $selected_option) {
-//            return $path;
-//        }
-//    }
-//
-//    foreach ($imageOptions as $key => $value) {
-//        return $key;
-//    }
-//
-//
-//    return array_key_first($imageOptions);
-//}
-
-
-//function image(
-//    ?string $activeCategory,
-//    ?string $activeExample,
-//    array $values,
-//    Example $example
-//) {
-//    $imgUrl = sprintf(
-//        "/image/%s/%s",
-//        $activeCategory,
-//        $activeExample
-//    );
-//    $pageBaseUrl = sprintf("/%s/%s",
-//        $activeCategory,
-//        $activeExample
-//    );
-//
-//    return createReactImagePanel(
-//        $imgUrl,
-//        $pageBaseUrl,
-//        $example
-//    );
-//
-//}
-
-//function customImage(
-//    ?string $activeCategory,
-//    ?string $activeExample,
-//    array $values,
-//    Example $example
-//) {
-//    $imgUrl = sprintf(
-//        "/customImage/%s/%s",
-//        $activeCategory,
-//        $activeExample
-//    );
-//    $pageBaseUrl = sprintf("/%s/%s",
-//        $activeCategory,
-//        $activeExample
-//    );
-//
-//    return createReactImagePanel(
-//        $imgUrl,
-//        $pageBaseUrl,
-//        $example
-//    );
-//}
-
 function getMask(string $name): int
 {
     if ($name === 'sign') {
@@ -789,42 +462,6 @@ function getMask(string $name): int
     throw new \Exception("Unknown type $name");
 }
 
-//function twiddleWithShit(FloatTwiddleControl $floatTwiddleControl)
-//{
-//    /** @var FloatTwiddleControl $floatTwiddleControl */
-//    $mask = getMask($floatTwiddleControl->getName());
-//
-//    $sign = $floatTwiddleControl->getSign();
-//    $exponent = $floatTwiddleControl->getExponent();
-//    $mantissa = $floatTwiddleControl->getMantissa();
-//
-//    $name = $floatTwiddleControl->getName();
-//    if ($name === 'sign') {
-//        $value = bindec($sign);
-//        $value = ($value + ($mask) + ($floatTwiddleControl->getDelta() << $floatTwiddleControl->getIndex())) % ($mask);
-//        $sign = decbin($value);
-//    }
-//
-//    if ($name === 'mantissa') {
-//        $value = bindec($mantissa);
-////        echo "value = $value\n";
-////        echo "delta = " . $floatTwiddleControl->getDelta() . "\n";
-////        echo "index = " . $floatTwiddleControl->getIndex() . "\n";
-//
-//        $value = ($value + ($mask) + ($floatTwiddleControl->getDelta() << $floatTwiddleControl->getIndex())) % ($mask);
-//        $mantissa = decbin($value);
-//        $mantissa = str_pad($mantissa, 52, '0', STR_PAD_LEFT);
-//    }
-//
-//    if ($name === 'exponent') {
-//        $value = bindec($exponent);
-//        $value = ($value + ($mask) + ($floatTwiddleControl->getDelta() << $floatTwiddleControl->getIndex())) % $mask;
-//        $exponent = decbin($value);
-//        $exponent = str_pad($exponent, 11, '0', STR_PAD_LEFT);
-//    }
-//
-//    return [$sign, $exponent, $mantissa];
-//}
 
 function showTotalErrorPage(\Throwable $exception): void
 {
@@ -1182,4 +819,113 @@ function time_it()
 
     echo "Time taken = " . $time_taken  . " m'kay.\n";
     exit(0);
+}
+
+function encodeWidgetyData(array $data)
+{
+    $widget_json = json_encode_safe($data);
+    $widget_data = htmlspecialchars($widget_json);
+
+    return $widget_data;
+}
+
+
+
+
+
+function get_supported_file_extensions()
+{
+    return [
+        'gif',
+        'jpg',
+        'jpeg',
+        'mp4',
+        'png',
+        'pdf',
+        'webp'
+    ];
+}
+
+function get_supported_room_file_extensions()
+{
+    return [
+        'docx',
+        'jpg',
+        'md',
+        'pdf',
+        'png',
+        'txt',
+        'xls'
+    ];
+}
+
+
+/**
+ * Normalizes a supported extension to lower case or returns null if the extension
+ * is not supported.
+ *
+ * @param string $original_name
+ * @param string $contents
+ * @param string[] $supported_file_extensions
+ * @return string
+ */
+function normalize_file_extension(
+    string $original_name,
+    string $contents, // TODO - use this, and change it to a filestream
+    array $supported_file_extensions
+) {
+    foreach ($supported_file_extensions as $supported_file_extension) {
+        if (strcmp($supported_file_extension, strtolower($supported_file_extension))) {
+            $message = sprintf(
+                "Supported file extension must be lower case. [%s]",
+                implode(", ", $supported_file_extensions)
+            );
+
+            throw new \Bristolian\BristolianException($message);
+        }
+    }
+
+    $extension = pathinfo($original_name, PATHINFO_EXTENSION);
+
+    if (strlen($extension) === 0) {
+        return null;
+    }
+
+    $lower_case_extension = strtolower($extension);
+
+    // Contents is passed to allow mime type magic checking
+    if (array_contains($lower_case_extension, $supported_file_extensions) === true) {
+        return $lower_case_extension;
+    }
+
+    return null;
+}
+
+
+/**
+ * @param $name
+ * @param $values
+ * @return JsonNoCacheResponse
+ * @throws \SlimDispatcher\Response\InvalidDataException
+ */
+function createJsonResponse($name, $values): JsonNoCacheResponse
+{
+    [$error, $data] = convertToValue($values);
+
+    if ($error !== null) {
+        $response_error = [
+            'error' => $error
+        ];
+        return new JsonNoCacheResponse(
+            $response_error,
+            [],
+            500
+        );
+    }
+
+    $response_ok = [
+        $name => $data
+    ];
+
+    return new JsonNoCacheResponse($response_ok);
 }

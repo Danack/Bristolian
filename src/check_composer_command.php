@@ -3,7 +3,11 @@
 declare(strict_types = 1);
 
 // Used in containers/installer/entrypoint.sh to figure out what type of
-// composer update/install to run.
+// composer update/install to run. Could probably be changed to bash if
+// anyone cares to do so.
+
+// @codeCoverageIgnoreEnd
+// This code is not unit tested.
 
 $env = getenv();
 
@@ -22,3 +26,5 @@ if (in_array('local', $env_parts, true) === true) {
 
 echo "prod";
 exit(0);
+
+// @codeCoverageIgnoreEnd
