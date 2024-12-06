@@ -14,7 +14,7 @@ class Rooms
         string $purpose
     ): void {
 
-        $user_id = $adminRepo->getAdminUserId('testing@example.com');
+        $user_id = $adminRepo->getAdminUserId(getAdminEmailAddress());
         if ($user_id === null) {
             echo "Failed to find admin user";
             exit(-1);

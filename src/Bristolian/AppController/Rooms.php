@@ -6,6 +6,7 @@ use Bristolian\App;
 use Bristolian\BristolianException;
 use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Filesystem\RoomFileFilesystem;
+use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Service\FileStorageProcessor\UploadError;
 use Bristolian\Service\RoomFileStorage\RoomFileStorage;
@@ -51,6 +52,35 @@ class Rooms
     {
         return "You probably meant to do a POST to this endpoint.";
     }
+
+
+//    public function createRoom(
+//        AdminRepo $adminRepo,
+//        RoomRepo $roomRepo,
+//        UserSession $appSession,
+//        string $name,
+//        string $purpose
+//    ) {
+//
+//        // TODO - check user logged in
+//        if ($appSession->isLoggedIn() !== true) {
+//            $data = ['not logged in' => true];
+//            return new JsonResponse($data, [], 400);
+//        }
+//
+//        $result = $roomRepo->createRoom(
+//            $appSession->getUserId(),
+//            $name,
+//            $purpose
+//        );
+//
+//        return createJsonResponse('room', $result);
+//    }
+
+
+
+
+
 
     public function handleFileUpload(
         RoomFileStorage $roomFileStorage,
@@ -135,8 +165,6 @@ class Rooms
                 "Failed to retrieve file from object store [" . $normalized_name . "]."
             );
         }
-
-//
 
         // check file is available locally
         return new BristolianFileResponse(
