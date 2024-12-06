@@ -7,8 +7,22 @@
     background-color: var(--header_panel_background);
     color: var(--header_panel_text_color);
 
-    font-weight: bold;
     font-size: 36px;
+
+    list-style-type: none;
+    float: left;
+    font-weight: 400;
+    padding-left: 12px;
+
+    a {
+      text-decoration: none;
+      color: var(--header_link_color);
+      border: 0;
+    }
+
+    a:hover, a:focus {
+      color: var(--header_link_hover_color);
+    }
 
     @media (max-width: $screen_break_large) {
       font-size: 30px;
@@ -21,23 +35,6 @@
     @media (max-width: $screen_break_small) {
       font-size: 18px;
     }
-
-
-      list-style-type: none;
-      float: left;
-      font-weight: 400;
-      padding-left: 12px;
-
-      a {
-        text-decoration: none;
-        color: var(--header_link_color);
-        border: 0;
-      }
-
-      a:hover, a:focus {
-        color: var(--header_link_hover_color);
-      }
-
 
     span:first-child {
       padding-left: 0px;
