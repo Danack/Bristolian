@@ -123,7 +123,8 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             return <span>No files.</span>
         }
 
-        return <div>Files
+        return <div>
+            <h2>Files</h2>
             <table>
                 <tr>
                     <td>Name</td>
@@ -142,7 +143,6 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         }
 
         let length = this.state.files.length;
-        console.log("length is ", this.state.files);
 
         let number_block = <div>There are {length} files</div>;
 
@@ -150,9 +150,9 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
 
         return  <div class='room_files_panel_react'>
             {error_block}
+            {files_block}
             {number_block}
             <button onClick={() => this.refreshFiles()}>Refresh</button>
-            {files_block}
         </div>;
     }
 }

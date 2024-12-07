@@ -189,8 +189,6 @@ class Rooms
         $template = <<< HTML
     <h1>:html_room_name</h1>
     <p>:html_room_description</p>
-    <h2>Files</h2>
-    <div>File list next</div>
     <div class='room_files_panel' data-widgety_json='$widget_data'></div>
 
     <div class='room_file_upload_panel' data-widgety_json='$widget_data'></div>

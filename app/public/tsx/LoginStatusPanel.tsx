@@ -1,4 +1,5 @@
 import {h, Component} from "preact";
+import {global} from "./globals";
 
 export interface LoginStatusPanelProps {
   // no properties currently
@@ -28,6 +29,7 @@ export class LoginStatusPanel extends Component<LoginStatusPanelProps, LoginStat
   constructor(props: LoginStatusPanelProps) {
     super(props);
     this.state = getDefaultState(/*props.initialControlParams*/);
+    global.logged_in = false;
     // this.user_search_timeout = null;
   }
 
@@ -60,6 +62,8 @@ export class LoginStatusPanel extends Component<LoginStatusPanelProps, LoginStat
   }
 
   processLoggedInResponse(data: LoggedInInfo) {
+    global.logged_in = data.logged_in;
+
     this.setState({
       logged_in: data.logged_in
     });
