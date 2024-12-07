@@ -32,6 +32,8 @@ WORKDIR /var/app
 
 #CMD tail -f README.md
 
+RUN usermod -u 1000 www-data
+
 RUN echo 'alias cli="php cli.php"' >> ~/.bashrc
 
 CMD sh /var/app/containers/php_fpm/entrypoint.sh
