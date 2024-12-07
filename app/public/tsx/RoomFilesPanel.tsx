@@ -1,7 +1,9 @@
 import {h, Component} from "preact";
-import {isUndefined} from "util";
+import {humanFileSize} from "./functions";
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
+
+
 
 export interface RoomFilesPanelProps {
     room_id: string
@@ -113,7 +115,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                 </a>
             </td>
             <td>
-                {file.size}
+                {humanFileSize(file.size)}
             </td>
         </tr>
     }

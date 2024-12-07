@@ -2,6 +2,7 @@ import {h, Component} from "preact";
 import {global} from "./globals";
 
 import {ROOM_FILE_UPLOAD_FORM_NAME} from "./generated/constants";
+import {registerMessageListener} from "./message/message";
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
@@ -21,6 +22,23 @@ function getDefaultState(): RoomFileUploadPanelState {
     };
 }
 
+// // Handler for the proxy
+// const variableHandler = {
+//     set(target, property, value) {
+//         console.log(`Variable "${property}" changed from ${target[property]} to ${value}`);
+//         target[property] = value;
+//         return true;
+//     },
+// };
+//
+// // Create a proxy for the variable
+// const monitoredVariable = new Proxy({ value: variable }, variableHandler);
+//
+// // Access the variable through the proxy
+// console.log(monitoredVariable.value); // Output: 10
+//
+// // Modify the variable through the proxy
+// monitoredVariable.value = 20; // Output: Variable "value" changed from 10 to 20
 
 
 export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, RoomFileUploadPanelState> {
@@ -32,6 +50,8 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, Roo
     }
 
     componentDidMount() {
+
+
         // this.restoreStateFn = (event:any) => this.restoreState(event.state);
         // @ts-ignore: I don't understand that error message.
         // window.addEventListener('popstate', this.restoreStateFn);
@@ -161,9 +181,10 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, Roo
         // {/*onDragEnd={onDragEnd}*/}
         // {/*onDragStart={() => setDraggedIndex(index)}*/}
 
-        if (global.logged_in === false) {
-            return <span></span>
-        }
+        // debugger;
+        // if (global.logged_in === false) {
+        //     return <span></span>
+        // }
 
         return  <div class='room_file_upload_panel_react'>
             <h3>Drag a file here to upload</h3>
