@@ -1,5 +1,5 @@
 
-@import "variables.scss";
+@use "variables.scss";
 
 // We use abbreviations in the template areas, so that we can
 // lay them out in a grid evenly, rather than having wildly
@@ -72,7 +72,7 @@
   align-items: stretch;
 }
 
-@media (max-width: $screen_break_large) {
+@media (max-width: variables.$screen_break_large) {
   .bristolian_wrapper {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
@@ -86,7 +86,7 @@
   }
 }
 
-@media (max-width: $screen_break_medium) {
+@media (max-width: variables.$screen_break_medium) {
   .bristolian_wrapper {
     grid-template-areas:
             "hd hd hd hd hd hd hd hd hd"
@@ -100,7 +100,7 @@
 }
 
 
-@media (max-width: $screen_break_small) {
+@media (max-width: variables.$screen_break_small) {
   .bristolian_wrapper {
     grid-template-areas:
             "hd hd hd hd hd hd hd hd hd"

@@ -1,6 +1,7 @@
 
 
-@import "colors.scss";
+@use "colors.scss";
+@use "variables";
 
 pre {
   margin: 0px;
@@ -21,19 +22,19 @@ pre {
     border: 1px solid var(--code_border_color);
     font-size: 0.9em;
 
-    @media (min-width: $screen_break_medium) {
+    @media (min-width: variables.$screen_break_medium) {
       padding: 6px 24px 6px 6px;
     }
 
-    @media (min-width: $screen_break_small) {
+    @media (min-width: variables.$screen_break_small) {
       padding: 3px 12px 3px 3px;
     }
 
-    @media (max-width: $screen_break_small) {
+    @media (max-width: variables.$screen_break_small) {
       padding: 2px;
     }
 
-    @media (min-width: $screen_break_large) {
+    @media (min-width: variables.$screen_break_large) {
       padding: 8px 24px 8px 8px;
     }
   }

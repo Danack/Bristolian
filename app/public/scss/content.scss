@@ -1,3 +1,5 @@
+@use "variables";
+
 
 .bristolian_content {
   background-color: var(--content_panel_background_color);
@@ -55,7 +57,7 @@
     font-size: 1.0em;
   }
 
-  @media (min-width: $screen_break_large) {
+  @media (min-width: variables.$screen_break_large) {
     // Customise margin on larger devices.
     h1 {
     }

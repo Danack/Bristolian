@@ -1,5 +1,5 @@
 
-@import "variables.scss";
+@use "variables.scss";
 
 .bristolian_header {
 
@@ -24,15 +24,15 @@
       color: var(--header_link_hover_color);
     }
 
-    @media (max-width: $screen_break_large) {
+    @media (max-width: variables.$screen_break_large) {
       font-size: 30px;
     }
 
-    @media (max-width: $screen_break_medium) {
+    @media (max-width: variables.$screen_break_medium) {
       font-size: 24px;
     }
 
-    @media (max-width: $screen_break_small) {
+    @media (max-width: variables.$screen_break_small) {
       font-size: 18px;
     }
 

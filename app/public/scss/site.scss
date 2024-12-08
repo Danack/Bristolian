@@ -1,34 +1,34 @@
 
-@import "colors.scss";
-@import "variables.scss";
-@import "fonts.scss";
+@use "colors.scss";
+@use "variables.scss";
+@use "fonts.scss";
 
-@import "layout.scss";
-@import "breadcrumbs.scss";
-@import "button.scss";
-@import "content.scss";
-@import "content_links.scss";
-@import "footer.scss";
-@import "header.scss";
-@import "images.scss";
-@import "prev_next.scss";
-@import "basic.scss";
-@import "comments_panel.scss";
-@import "code.scss";
-@import "merch.scss";
+@use "layout.scss";
+@use "breadcrumbs.scss";
+@use "button.scss";
+@use "content.scss";
+@use "content_links.scss";
+@use "footer.scss";
+@use "header.scss";
+@use "images.scss";
+@use "prev_next.scss";
+@use "basic.scss";
+@use "comments_panel.scss";
+@use "code.scss";
+@use "merch.scss";
 
 // todo move this to it's own repo
-@import "meme_upload_panel.scss";
-@import "modal.scss";
-@import "naming_things.scss";
-@import "notifications_panel.scss";
-@import "funding.scss";
-@import "floating_point.scss";
+@use "meme_upload_panel.scss";
+@use "modal.scss";
+@use "naming_things.scss";
+@use "notifications_panel.scss";
+@use "funding.scss";
+@use "floating_point.scss";
 
-@import "table.scss";
-@import "teleprompter.scss";
-@import "qr_code_generator.scss";
-@import "twitter_splitter.scss";
+@use "table.scss";
+@use "teleprompter.scss";
+@use "qr_code_generator.scss";
+@use "twitter_splitter.scss";
 
 body {
   font-family: SourceSansPro-Regular, Arial, x-locale-body, sans-serif;
@@ -71,29 +71,29 @@ blockquote {
   display: none;
 }
 
-@media (min-width: $screen_break_large) {
+@media (min-width: variables.$screen_break_large) {
   .width_above_large {
     display: inline-block;
   }
 }
 
-@media (max-width: $screen_break_large) {
-  @media (min-width: $screen_break_medium) {
+@media (max-width: variables.$screen_break_large) {
+  @media (min-width: variables.$screen_break_medium) {
     .width_medium_to_large {
       display: inline-block;
     }
   }
 }
 
-@media (max-width: $screen_break_medium) {
-  @media (min-width: $screen_break_small) {
+@media (max-width: variables.$screen_break_medium) {
+  @media (min-width: variables.$screen_break_small) {
     .width_small_to_medium {
       display: inline-block;
     }
   }
 }
 
-@media (max-width: $screen_break_small) {
+@media (max-width: variables.$screen_break_small) {
   .width_below_small {
     display: inline-block;
   }

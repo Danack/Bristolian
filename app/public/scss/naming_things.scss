@@ -1,5 +1,6 @@
 
-@import "colors.scss";
+@use "colors.scss";
+@use "variables";
 
 .nouns_table,
 .verbs_table {
@@ -17,7 +18,7 @@
   }
 
 
-  @media (max-width: $screen_break_small) {
+  @media (max-width: variables.$screen_break_small) {
     th,
     td {
       padding-top: 0px;
