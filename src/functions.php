@@ -463,28 +463,6 @@ function getMask(string $name): int
 }
 
 
-function showTotalErrorPage(\Throwable $exception): void
-{
-    $exceptionText = null;
-
-    $exceptionText = "Failed to get exception text.";
-
-    try {
-        $exceptionText = getExceptionText($exception);
-
-        \error_log("Exception in code and Slim error handler failed also: " . get_class($exception) . " " . $exceptionText);
-    }
-    catch (\Throwable $exception) {
-        // Does nothing.
-    }
-
-    http_response_code(503);
-
-    if ($exceptionText !== null) {
-        var_dump(get_class($exception));
-        echo nl2br($exceptionText);
-    }
-}
 
 
 /**
@@ -850,6 +828,7 @@ function get_supported_room_file_extensions()
 {
     return [
         'docx',
+        'jpeg',
         'jpg',
         'md',
         'pdf',
@@ -929,3 +908,24 @@ function createJsonResponse($name, $values): JsonNoCacheResponse
 
     return new JsonNoCacheResponse($response_ok);
 }
+
+
+/**
+ * Get a standard 'reason phrase' for a HTTP status code.
+ *
+ * TODO - probably should be an enum since PHP has enums.
+ *
+ * @param int $status
+ * @return string
+ */
+function getReasonPhrase(int $status): string
+{
+    $knownStatusReasons = [
+        420 => 'Enhance Your Calm',
+        421 => 'what the heck',
+        512 => 'Server known limitation',
+    ];
+
+    return $knownStatusReasons[$status] ?? '';
+}
+
