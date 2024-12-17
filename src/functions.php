@@ -883,16 +883,17 @@ function normalize_file_extension(
 
 /**
  * @param $name
- * @param $values
+ * @param $values array{0:string, 1:mixed}
  * @return JsonNoCacheResponse
  * @throws \SlimDispatcher\Response\InvalidDataException
  */
-function createJsonResponse($name, $values): JsonNoCacheResponse
+function createJsonResponse($values): JsonNoCacheResponse
 {
     [$error, $data] = convertToValue($values);
 
     if ($error !== null) {
         $response_error = [
+            'result' => 'failure',
             'error' => $error
         ];
         return new JsonNoCacheResponse(
@@ -903,7 +904,8 @@ function createJsonResponse($name, $values): JsonNoCacheResponse
     }
 
     $response_ok = [
-        $name => $data
+        'result' => 'success',
+        'data' => $data
     ];
 
     return new JsonNoCacheResponse($response_ok);
@@ -928,4 +930,3 @@ function getReasonPhrase(int $status): string
 
     return $knownStatusReasons[$status] ?? '';
 }
-

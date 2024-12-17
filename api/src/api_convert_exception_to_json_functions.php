@@ -2,15 +2,29 @@
 
 declare(strict_types = 1);
 
-
-use Psr\Http\Message\ResponseInterface;
-
 // Holds functions that convert exceptions into command
-// line output for use in the command line tools.
+// line output for use in the api environment.
 
+use Bristolian\App;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use DataType\Exception\ValidationException;
+use SlimDispatcher\Response\JsonResponse;
+
+/**
+ * @param ResponseInterface $response
+ * @param array $data
+ * @param int $statusCode
+ * @return ResponseInterface
+ * @throws \SlimDispatcher\Response\InvalidDataException
+ */
 function fillJsonResponseData(ResponseInterface $response, array $data, int $statusCode)
 {
-    $builtResponse = new \SlimAuryn\Response\JsonResponse($data, [], $statusCode);
+    if (array_key_exists('status_code', $data) === false) {
+        $data['status_code'] = $statusCode;
+    }
+
+    $builtResponse = new JsonResponse($data, [], $statusCode);
     $reasonPhrase = getReasonPhrase($statusCode);
     $response = $response->withStatus($builtResponse->getStatus(), $reasonPhrase);
     foreach ($builtResponse->getHeaders() as $key => $value) {
@@ -22,21 +36,64 @@ function fillJsonResponseData(ResponseInterface $response, array $data, int $sta
     return $response;
 }
 
-function paramsValidationExceptionMapperApi(
-    \TypeSpec\Exception\ValidationException $ve,
+function convertValidationExceptionMapperApi(
+    ValidationException $ve,
+    RequestInterface $request,
     ResponseInterface $response
-) {
+): ResponseInterface {
     $data = [];
-    $data['status'] = 'There were validation errors';
-    $data['errors'] = $ve->getValidationProblems();
+
+    // JSON Responses are inspired by:
+    // https://github.com/omniti-labs/jsend
+
+    $data['status'] = 'fail'; ;
+    $data['message'] = 'There were validation errors';
+    $data['data'] = [];
+
+    foreach ($ve->getValidationProblems() as $validationProblem) {
+        $name = $validationProblem->getInputStorage()->getPath();
+        $data['data'][$name] = $validationProblem->getProblemMessage();
+    }
 
     $response = fillJsonResponseData($response, $data, 400);
 
     return $response;
 }
 
-function pdoExceptionMapperApi(\PDOException $pdoe, ResponseInterface $response)
-{
+
+function convertHttpNotFoundExceptionToResponse(
+    \Slim\Exception\HttpNotFoundException $hnfe,
+    RequestInterface $request,
+    ResponseInterface $response
+): ResponseInterface {
+    $data = [];
+    $data['status'] = 'Route not found';
+    // TODO - match for closest route?
+    // $data['errors'] = $hnfe->getValidationProblems();
+
+    $response = fillJsonResponseData($response, $data, 404);
+
+    return $response;
+}
+
+//function paramsValidationExceptionMapperApi(
+//    ValidationException $ve,
+//    ResponseInterface $response
+//) {
+//    $data = [];
+//    $data['status'] = 'There were validation errors';
+//    $data['errors'] = $ve->getValidationProblems();
+//
+//    $response = fillJsonResponseData($response, $data, 400);
+//
+//    return $response;
+//}
+
+function pdoExceptionMapperApi(
+    \PDOException $pdoe,
+    RequestInterface $request,
+    ResponseInterface $response
+): ResponseInterface {
     $text = getTextForException($pdoe);
     \error_log($text);
 
@@ -54,7 +111,7 @@ function pdoExceptionMapperApi(\PDOException $pdoe, ResponseInterface $response)
     $data['status'] = $statusMessage;
     $data['errors'] = 'PDOException code is ' . $pdoe->getCode();
 
-    $data['stack'] = $pdoe->getTraceAsString();
+    $data['stack'] = $pdoe->getTrace();
 
     $response = fillJsonResponseData($response, $data, 500);
 
@@ -67,6 +124,7 @@ function pdoExceptionMapperApi(\PDOException $pdoe, ResponseInterface $response)
 // Duplicate?
 function debuggingCaughtExceptionExceptionMapperForApi(
     \Bristolian\Exception\DebuggingCaughtException $pdoe,
+    RequestInterface $request,
     ResponseInterface $response
 ) {
     $text = getTextForException($pdoe);

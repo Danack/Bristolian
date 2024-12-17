@@ -8,11 +8,23 @@ require_once __DIR__ . "/../src/react_widgets.php";
 require_once __DIR__ . "/../credentials.php";
 require_once __DIR__ . "/test_injection_params.php";
 
+require_once __DIR__ . "/../api/src/api_convert_exception_to_json_functions.php";
+require_once __DIR__ . "/../api/src/api_factories.php";
+require_once __DIR__ . "/../api/src/api_functions.php";
+require_once __DIR__ . "/../api/src/api_injection_params.php";
+require_once __DIR__ . "/../api/src/api_routes.php";
+
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use Bristolian\UserSession;
 use Bristolian\MockUserSession;
 
 
+/**
+ * Creates a UserSession from the test user account stored in the database.
+ *
+ * @param PdoAdminRepo $pdoAdminRepo
+ * @return UserSession
+ */
 function getTestingUserSession(PdoAdminRepo $pdoAdminRepo): UserSession
 {
     $user = $pdoAdminRepo->getAdminUser("testing@example.com", 'testing');

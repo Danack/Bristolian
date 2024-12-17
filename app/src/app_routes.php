@@ -19,174 +19,102 @@ function getAllAppRoutes()
         ['/', 'GET', 'Bristolian\AppController\Pages::index'],
         ['/about', 'GET', 'Bristolian\AppController\Pages::about'],
         ['/privacy_policy', 'GET', 'Bristolian\AppController\Pages::privacyPolicy'],
-
         ['/login', 'GET', '\Bristolian\AppController\Login::showLoginPage'],
         ['/login', 'POST', '\Bristolian\AppController\Login::processLoginPage'],
         ['/logout', 'GET', '\Bristolian\AppController\Login::logout'],
-
         ['/tools', 'GET', 'Bristolian\AppController\Tools::index'],
-
         [
             '/users/{username:.*}/docs/{title:.*}',
             'GET',
             'Bristolian\AppController\Users::showUserDocument'
         ],
-
-
         ['/users/{username:.*}', 'GET', 'Bristolian\AppController\Users::showUser'],
-
         ['/users', 'GET', 'Bristolian\AppController\Users::index'],
-
-
-
-
-
         ['/qr/code', 'GET', '\Bristolian\AppController\QRCode::get'],
-
-        ['/questions/1_weca_active_travel', 'GET', '\Bristolian\AppController\Pages::weca_question_active_travel'],
-
-        ['/questions/2_weca_cumberland_basin_tram', 'GET', '\Bristolian\AppController\Pages::weca_question_tram'],
-
-
+        [
+            '/questions/1_weca_active_travel',
+            'GET',
+            '\Bristolian\AppController\Pages::weca_question_active_travel'
+        ],
+        [
+            '/questions/2_weca_cumberland_basin_tram',
+            'GET',
+            '\Bristolian\AppController\Pages::weca_question_tram'
+        ],
         ['/questions', 'GET', '\Bristolian\AppController\Pages::questions'],
-
         ['/bcc/committee_meetings', 'GET', '\Bristolian\AppController\Pages::bcc_committee_meetings'],
-
         ['/complaints/triangle_road', 'GET', '\Bristolian\AppController\Pages::triangle_road'],
-
         ['/explanations/bristol_rovers', 'GET', '\Bristolian\AppController\Pages::bristol_rovers'],
         ['/explanations/avon_crescent', 'GET', 'Bristolian\AppController\Pages::avon_crescent'],
-        ['/explanations/advice_for_speaking_at_council', 'GET', 'Bristolian\AppController\Pages::advice_for_speaking_at_council'],
-
+        [
+            '/explanations/advice_for_speaking_at_council',
+            'GET',
+            'Bristolian\AppController\Pages::advice_for_speaking_at_council'
+        ],
 
         ['/explanations/shenanigans_planning', 'GET', 'Bristolian\AppController\Pages::shenanigans_planning'],
-        ['/explanations/monitoring_officer_notes', 'GET', 'Bristolian\AppController\Pages::monitoring_officer_notes'],
-
-        ['/explanations/development_committee_rules', 'GET', 'Bristolian\AppController\Pages::development_committee_rules'],
-
+        [
+            '/explanations/monitoring_officer_notes',
+            'GET',
+            'Bristolian\AppController\Pages::monitoring_officer_notes'
+        ],
+        [
+            '/explanations/development_committee_rules',
+            'GET',
+            'Bristolian\AppController\Pages::development_committee_rules'
+        ],
         [
             '/rooms/{room_id:.*}/file/{file_id:.*}/{original_filename:.*}',
             'GET',
             'Bristolian\AppController\Rooms::serveFileForRoom'
         ],
-
         ['/rooms', 'GET', 'Bristolian\AppController\Rooms::index'],
 
         // TODO - limit the allowed characters for files
         ['/rooms/{room_id:.*}', 'GET', 'Bristolian\AppController\Rooms::showRoom'],
-
-
-        ['/api/rooms/{room_id:.*}/files', 'GET', 'Bristolian\AppController\Rooms::getFiles'],
-
-        [
-            '/api/rooms/{room_id:.*}/file-upload',
-            'POST',
-            'Bristolian\AppController\Rooms::handleFileUpload'
-        ],
-
-        [
-            '/api/rooms/{room_id:.*}/file-upload',
-            'GET',
-            '\Bristolian\AppController\Rooms::handleFileUpload_get'
-        ],
-
-
-
-
         ['/tools/floating_point', 'GET', '\Bristolian\AppController\Pages::floating_point_page'],
         ['/tools/timeline', 'GET', '\Bristolian\AppController\Pages::timeline_page'],
         ['/tools/notes', 'GET', '\Bristolian\AppController\Pages::notes_page'],
-
         ['/tools/twitter_splitter', 'GET', '\Bristolian\AppController\Pages::twitter_splitter_page'],
         ['/tools/teleprompter', 'GET', '\Bristolian\AppController\Pages::teleprompter_page'],
         ['/tools/email_link_generator', 'GET', '\Bristolian\AppController\Pages::email_link_generator_page'],
-
         ['/tools/qr_code_generator', 'GET', '\Bristolian\AppController\Pages::qr_code_generator_page'],
-
         // System pages
         ['/system/csp/reports', 'GET', '\Bristolian\AppController\System::show_csp_reports'],
         ['/system/csp/test', 'GET', 'Bristolian\AppController\ContentSecurityPolicy::getTestPage'],
         ['/system/csp/clear', 'GET', 'Bristolian\AppController\ContentSecurityPolicy::clearReports'],
-
         ['/system/database_tables', 'GET', 'Bristolian\AppController\System::showDbInfo'],
-
         ['/system/deploy_log', 'GET', 'Bristolian\AppController\System::deploy_log'],
         ['/system/debugging', 'GET', 'Bristolian\AppController\System::debugging'],
-
-
         ['/system/swagger', 'GET', 'Bristolian\AppController\System::display_swagger'],
-
         ['/system', 'GET', 'Bristolian\AppController\System::index'],
-
-
         ['/files', 'GET', '\Bristolian\AppController\Docs::files'],
         ['/memes', 'GET', '\Bristolian\AppController\Docs::memes'],
-
         ['/docs', 'GET', '\Bristolian\AppController\Docs::index'],
-
-
         ['/tags/edit', 'POST', 'Bristolian\AppController\Tags::process_add'],
         ['/tags/edit', 'GET', 'Bristolian\AppController\Tags::edit'],
         ['/tags', 'GET', 'Bristolian\AppController\Tags::view'],
-
         ['/foi_requests/edit', 'POST', 'Bristolian\AppController\FoiRequests::process_add'],
         ['/foi_requests/edit', 'GET', 'Bristolian\AppController\FoiRequests::edit'],
         ['/foi_requests', 'GET', 'Bristolian\AppController\FoiRequests::view'],
-
         ['/experimental', 'GET', 'Bristolian\AppController\Pages::experimental'],
-
-
         ['/notifications_keys', 'GET', 'Bristolian\AppController\Notifications::generate_keys'],
-
-
-        ['/api/save-subscription/', 'POST', 'Bristolian\AppController\Notifications::save_subscription'],
-        ['/api/save-subscription/', 'GET', 'Bristolian\AppController\Notifications::save_subscription_get'],
-
-        ['/api/search_users', 'GET', 'Bristolian\AppController\Admin::search_users'],
-
-        ['/api/ping_user', 'GET', 'Bristolian\AppController\Admin::ping_user'],
-
-        ['/api/login-status', 'GET', 'Bristolian\AppController\User::get_login_status'],
-
-
-        ['/api/meme-upload/', 'POST', 'Bristolian\AppController\MemeUpload::handleFileUpload'],
-        ['/api/meme-upload/', 'GET', 'Bristolian\AppController\MemeUpload::handleFileUpload_get'],
-
-
-        ['/api/meme-tag-add/', 'POST', 'Bristolian\AppController\User::handleMemeTagAdd'],
-        ['/api/meme-tag-add/', 'GET', 'Bristolian\AppController\User::handleMemeTagAdd_get'],
-
-
-        ['/api/meme-tag-delete/', 'DELETE', 'Bristolian\AppController\User::handleMemeTagDelete'],
-        ['/api/meme-tag-delete/', 'GET', 'Bristolian\AppController\User::handleMemeTagDelete_get'],
-
-        ['/api/memes', 'GET', 'Bristolian\AppController\User::listMemes'],
-        ['/api/memes/{meme_id:.+}/tags', 'GET', 'Bristolian\AppController\User::getTagsForMeme'],
-
         ['/user/memes', 'GET', 'Bristolian\AppController\User::manageMemes'],
-
         ["/images/memes/{id:.+}.jpg", 'GET', 'Bristolian\AppController\Images::show_meme'],
-
         ["/admin/notification_test", 'GET', '\Bristolian\AppController\Admin::showNotificationTestPage'],
-
         // Dynamic pages
         ['/topics', 'GET', 'Bristolian\AppController\Topics::index'],
-
-
         // System pages
         // ['/system', 'GET', 'Bristolian\AppController\System::indexPage'],
         ['/system/htmltest', 'GET', 'Bristolian\AppController\Pages::htmlTest'],
         // ['/system/csp_reports', 'GET', 'Bristolian\AppController\System::getReports'],
 
-
-
-//    ['/css/{any:.*}', 'GET', 'Bristolian\AppController\Pages::get404Page'],
+        //    ['/css/{any:.*}', 'GET', 'Bristolian\AppController\Pages::get404Page'],
 
         // Testing
         ['/test/caught_exception', 'GET', 'Bristolian\AppController\Debug::testCaughtException'],
         ['/test/uncaught_exception', 'GET', 'Bristolian\AppController\Debug::testUncaughtException'],
         ['/test/compile_error', 'GET', 'Bristolian\AppController\CompileError::deliberateCompileError'],
-
 
         ['/debug/redis', 'GET', 'Bristolian\AppController\Debug::debug_redis'],
         ['/debug', 'GET', 'Bristolian\AppController\Debug::debug_page'],

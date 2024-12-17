@@ -8,31 +8,31 @@ class room_file
 {
     const INSERT = <<< SQL
 insert into room_file (
-    description,
-    document_timestamp,
-    note,
     room_id,
+    stored_file_id,
+    description,
+    note,
     src_url,
-    stored_file_id
+    document_timestamp
 )
 values (
-    :description,
-    :document_timestamp,
-    :note,
     :room_id,
+    :stored_file_id,
+    :description,
+    :note,
     :src_url,
-    :stored_file_id
+    :document_timestamp
 )
 SQL;
 
     const SELECT = <<< SQL
 select  
-    description,
-    document_timestamp,
-    note,
     room_id,
+    stored_file_id,
+    description,
+    note,
     src_url,
-    stored_file_id
+    document_timestamp
 from
   room_file
 SQL;

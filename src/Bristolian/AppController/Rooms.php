@@ -11,14 +11,15 @@ use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Service\FileStorageProcessor\UploadError;
 use Bristolian\Service\RoomFileStorage\RoomFileStorage;
 use Bristolian\UserSession;
-use SlimDispatcher\Response\ImageResponse;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
 use Bristolian\John\UserSessionFileUploaderHandler;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
-use SlimDispatcher\Response\FileResponse;
 use Bristolian\BristolianFileResponse;
+use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
+use Bristolian\DataType\LinkParam;
+use VarMap\VarMap;
 
 class Rooms
 {
@@ -79,9 +80,6 @@ class Rooms
 
 
 
-
-
-
     public function handleFileUpload(
         RoomFileStorage $roomFileStorage,
         UserSession $appSession,
@@ -127,16 +125,83 @@ class Rooms
         return $response;
     }
 
-
+    /**
+     * @param RoomFileRepo $roomfileRepo
+     * @param string $room_id
+     * @return JsonNoCacheResponse
+     * @throws \SlimDispatcher\Response\InvalidDataException
+     */
     public function getFiles(
         RoomFileRepo $roomfileRepo,
         string $room_id
     ) {
         $files = $roomfileRepo->getFilesForRoom($room_id);
 
-        return createJsonResponse('files', $files);
+        return createJsonResponse(['files' => $files]);
     }
 
+    /**
+     * @param RoomLinkRepo $roomLinkRepo
+     * @param string $room_id
+     * @return JsonNoCacheResponse
+     * @throws \SlimDispatcher\Response\InvalidDataException
+     */
+    public function getLinks(
+        RoomLinkRepo $roomLinkRepo,
+        string $room_id
+    ) {
+        $links = $roomLinkRepo->getLinksForRoom($room_id);
+
+        return createJsonResponse(['links' => $links]);
+    }
+
+    /**
+     */
+    public function addLink(
+        UserSession $appSession,
+        RoomLinkRepo $roomLinkRepo,
+        VarMap $varMap,
+        string $room_id
+    ) {
+        // TODO - check user logged in
+        if ($appSession->isLoggedIn() !== true) {
+            $data = ['not logged in' => true];
+            return new JsonResponse($data, [], 400);
+        }
+
+        $linkParam = LinkParam::createFromVarMap($varMap);
+
+        // TODO - there needs to be a security check that
+        // the user has write access to the room.
+        $room_link_id = $roomLinkRepo->addLinkToRoomFromParam(
+            $appSession->getUserId(),
+            $room_id,
+            $linkParam
+        );
+
+        $response = [
+            'status' => 'success',
+            'data' => [
+                'room_link_id' => $room_link_id,
+            ]
+        ];
+
+        return new JsonResponse($response);
+    }
+
+
+    /**
+     * @param RoomFileFilesystem $roomFilesystem
+     * @param LocalCacheFilesystem $localCacheFilesystem
+     * @param RoomRepo $roomRepo
+     * @param RoomFileRepo $roomFileRepo
+     * @param string $room_id
+     * @param string $file_id
+     * @return BristolianFileResponse
+     * @throws BristolianException
+     * @throws \League\Flysystem\FilesystemException
+     * @throws \SlimDispatcher\Response\ResponseException
+     */
     public function serveFileForRoom(
         RoomFileFilesystem $roomFilesystem,
         LocalCacheFilesystem $localCacheFilesystem,
@@ -190,8 +255,8 @@ class Rooms
     <h1>:html_room_name</h1>
     <p>:html_room_description</p>
     <div class='room_files_panel' data-widgety_json='$widget_data'></div>
-
     <div class='room_file_upload_panel' data-widgety_json='$widget_data'></div>
+    <div class='room_links_panel' data-widgety_json='$widget_data'></div>
 HTML;
         $params = [
             ':html_room_name' => $room->getName(),

@@ -8,6 +8,5 @@ class LocalCacheFilesystem extends Filesystem
 {
     public function getFullPath()
     {
-
     }
 }

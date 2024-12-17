@@ -8,22 +8,22 @@ class tag
 {
     const INSERT = <<< SQL
 insert into tag (
-    description,
     tag_id,
-    text
+    text,
+    description
 )
 values (
-    :description,
     :tag_id,
-    :text
+    :text,
+    :description
 )
 SQL;
 
     const SELECT = <<< SQL
 select  
-    description,
     tag_id,
-    text
+    text,
+    description
 from
   tag
 SQL;

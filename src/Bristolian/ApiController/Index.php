@@ -12,6 +12,8 @@ class Index
     {
         $routes = getAllApiRoutes();
 
+        \Safe\error_log("sdfsdpfjpsdofj");
+
         return new JsonResponse($routes);
     }
 }

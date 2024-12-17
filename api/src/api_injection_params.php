@@ -6,7 +6,7 @@ function apiInjectionParams() : InjectionParams
 {
     // These classes will only be created once by the injector.
     $shares = [
-        \Auryn\Injector::class,
+        \Di\Injector::class,
 //        \Doctrine\ORM\EntityManager::class,
     ];
 
@@ -14,29 +14,64 @@ function apiInjectionParams() : InjectionParams
     // where they are required.
     $aliases = [
         \VarMap\VarMap::class => \VarMap\Psr7VarMap::class,
+
         \Bristolian\Service\TooMuchMemoryNotifier\TooMuchMemoryNotifier::class =>
           \Bristolian\Service\TooMuchMemoryNotifier\NullTooMuchMemoryNotifier::class,
+
         \Bristolian\CSPViolation\CSPViolationStorage::class =>
           \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
-        Psr\Http\Message\ResponseFactoryInterface::class =>
+
+        \Asm\RequestSessionStorage::class =>
+            \Bristolian\App\StandardRequestSessionStorage::class,
+
+        \Psr\Http\Message\ResponseFactoryInterface::class =>
           \Laminas\Diactoros\ResponseFactory::class,
+
         \Bristolian\JsonInput\JsonInput::class =>
           \Bristolian\JsonInput\InputJsonInput::class,
-    ];
 
+        \Bristolian\Basic\ErrorLogger::class =>
+            \Bristolian\Basic\StandardErrorLogger::class,
+
+        Asm\Driver::class => \Asm\Predis\PredisDriver::class,
+
+        \Bristolian\Repo\RoomFileRepo\RoomFileRepo::class =>
+            \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class,
+
+        \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::class =>
+            \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::class,
+
+        \Bristolian\UserSession::class =>
+            \Bristolian\AppSession::class,
+
+        \Bristolian\Repo\LinkRepo\LinkRepo::class =>
+            \Bristolian\Repo\LinkRepo\PdoLinkRepo::class,
+    ];
     // Delegate the creation of types to callables.
     $delegates = [
         \Redis::class =>
           'createRedis',
+
         \Bristolian\Service\MemoryWarningCheck\MemoryWarningCheck::class
           => 'createMemoryWarningCheck',
+
         \Slim\App::class =>
           'createSlimAppForApi',
 
         \Bristolian\AppErrorHandler\AppErrorHandler::class
           => 'createJsonAppErrorHandler',
+
         \Bristolian\Middleware\ExceptionToJsonResponseMiddleware::class =>
             'createExceptionMiddlewareForApi',
+
+        \Asm\SessionConfig::class =>
+            'createSessionConfig',
+
+        \Predis\Client::class =>
+            'createPredisClient',
+
+        \PDO::class =>
+            'createPDOForUser',
     ];
 
     // Define some params that can be injected purely by name.

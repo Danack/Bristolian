@@ -15,6 +15,19 @@ function getExceptionText(\Throwable $exception): string
     return $text;
 }
 
+function getExceptionArray(\Throwable $exception): array
+{
+    $details = [];
+    do {
+        $details []= get_class($exception) . ":" . $exception->getMessage() . "\n\n";
+        $details []= $exception->getTrace();
+
+        $exception = $exception->getPrevious();
+    } while ($exception !== null);
+
+    return $details;
+}
+
 function purgeExceptionMessage(\Throwable $exception): string
 {
     $rawMessage = $exception->getMessage();

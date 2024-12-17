@@ -16,6 +16,7 @@ import { NotificationTestPanel } from "./NotificationTestPanel";
 import { QrCodeGeneratorPanel } from "./QrCodeGenerator";
 import { RoomFilesPanel } from "./RoomFilesPanel";
 import { RoomFileUploadPanel } from "./RoomFileUploadPanel";
+import { RoomLinksPanel } from "./RoomLinksPanel";
 import { TeleprompterPanel } from "./TeleprompterPanel";
 import { TimeLinePanel } from "./TimeLinePanel";
 import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
@@ -65,6 +66,10 @@ let panels: WidgetClassBinding[] = [
     {
         class: 'room_file_upload_panel',
         component: RoomFileUploadPanel
+    },
+    {
+        class: 'room_links_panel',
+        component: RoomLinksPanel
     },
     {
         class: 'teleprompter_panel',

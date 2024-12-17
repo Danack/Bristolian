@@ -18,7 +18,6 @@ use BristolianTest\TestFixtures\ToArrayClassWithDatetime;
 class ToArrayTest extends BaseTestCase
 {
     /**
-     * @group wip
      * @covers \Bristolian\ToArray
      */
     public function test_works()

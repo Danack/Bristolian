@@ -111,6 +111,10 @@ function injectionParams()
 
         \Bristolian\Repo\RoomRepo\RoomRepo::class =>
             \Bristolian\Repo\RoomRepo\PdoRoomRepo::class,
+
+        \Bristolian\Repo\LinkRepo\LinkRepo::class =>
+            \Bristolian\Repo\LinkRepo\PdoLinkRepo::class,
+
     ];
 
 
@@ -135,11 +139,13 @@ function injectionParams()
 
         \Predis\Client::class =>
           'createPredisClient',
+
         \Asm\SessionConfig::class =>
             'createSessionConfig',
 
         \Bristolian\Filesystem\LocalFilesystem::class =>
           'createLocalFilesystem',
+
         \Bristolian\Filesystem\MemeFilesystem::class =>
             'createMemeFilesystem',
 

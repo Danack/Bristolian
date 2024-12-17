@@ -13,6 +13,8 @@ use Bristolian\Model\Room;
 use Bristolian\Repo\RoomRepo\PdoRoomRepo;
 use Bristolian\Repo\FileStorageInfoRepo\PdoFileStorageInfoRepo;
 use Bristolian\UploadedFiles\UploadedFile;
+use VarMap\VarMap;
+use Bristolian\UserSession;
 
 /**
  * Trait to make write tests easier.
@@ -28,9 +30,10 @@ trait TestPlaceholders
      * @throws \DI\ConfigException
      * @throws \DI\InjectionException
      */
-    protected function initLoggedInUser(array $testDoubles): void
+    protected function initLoggedInUser(array $testDoubles): UserSession
     {
         $placeholders = [
+            \VarMap\VarMap::class,
             JsonInput::class
         ];
 
@@ -50,6 +53,8 @@ trait TestPlaceholders
             \Bristolian\MockUserSession::class
         );
         $this->injector->share($session);
+
+        return $session;
     }
 
     public function setup(): void
@@ -58,12 +63,41 @@ trait TestPlaceholders
         $this->injector = createTestInjector();
     }
 
-    private function createInjector()
+    public function initInMemoryFakes()
     {
-        if ($this->injector === null) {
-            $this->injector = createTestInjector();
+        $testDoubles = [
+            \Bristolian\Repo\LinkRepo\LinkRepo::class =>
+                \Bristolian\Repo\LinkRepo\FakeLinkRepo::class,
+
+            \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::class =>
+                \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::class,
+
+        ];
+
+        foreach ($testDoubles as $interface => $fake) {
+            $this->injector->alias($interface, $fake);
+            $this->injector->share($fake);
         }
     }
+
+    public function initPdoTestObjects()
+    {
+        $testDoubles = [
+            \Bristolian\Repo\LinkRepo\LinkRepo::class =>
+                \Bristolian\Repo\LinkRepo\PdoLinkRepo::class,
+
+            \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::class =>
+                \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::class,
+        ];
+
+        foreach ($testDoubles as $interface => $fake) {
+            $this->injector->alias($interface, $fake);
+            $this->injector->share($fake);
+        }
+    }
+
+
+
 
     public function createTestAdminUser(): AdminUser
     {
@@ -100,7 +134,6 @@ trait TestPlaceholders
             $room_description
         );
 
-
         return [$room, $user];
     }
 
@@ -134,6 +167,13 @@ trait TestPlaceholders
         static $count = 0;
         $count += 1;
         return 'test_file' . time() . '_' . $count;
+    }
+
+    public function getTestLink(): string
+    {
+        static $count = 0;
+        $count += 1;
+        return 'http://www.example.com/' . time() . '/' . $count;
     }
 
     public function getTestObjectName(): string

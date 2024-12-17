@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Bristolian\Middleware;
 
+use Bristolian\BristolianException;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
@@ -60,38 +62,49 @@ class ExceptionToJsonResponseMiddleware implements MiddlewareInterface
         }
     }
 
+    /**
+     * @throws BristolianException
+     */
     private function convertExceptionToResponse(\Throwable $e, Request $request): Response|null
     {
         // Find if there is an exception handler for this type of exception
         foreach ($this->exceptionToResponseHandlerList as $type => $exceptionCallable) {
             if ($e instanceof $type) {
-                [$exceptionArray, $statusCode] = $exceptionCallable($e, $request);
+                $response = $this->responseFactory->createResponse();
+                $response = $response->withHeader('Content-Type', 'application/json');
+                $response = $exceptionCallable($e, $request, $response);
+                if (!($response instanceof ResponseInterface)) {
+                    $message = sprintf(
+                        "Exception handler for exception type %s failed to return a ResponseInterface object
+                        instead got a [%s]",
+                        get_class($e),
+                        get_class($response)
+                    );
+                    throw new BristolianException($message);
+                }
 
-                return $this->createJsonWithStatusCode(
-                    $exceptionArray,
-                    $statusCode
-                );
+                return $response;
             }
         }
 
         return null;
     }
 
-    /**
-     * @param mixed[] $exceptionArray
-     * @param int $statusCode
-     * @return Response
-     * @throws \Exception
-     */
-    private function createJsonWithStatusCode(
-        array $exceptionArray,
-        int $statusCode
-    ): Response {
-        $response = $this->responseFactory->createResponse();
-        $response = $response->withHeader('Content-Type', 'application/json');
-        $response->getBody()->write(json_encode_safe($exceptionArray));
-        $response = $response->withStatus($statusCode);
-
-        return $response;
-    }
+//    /**
+//     * @param mixed[] $exceptionArray
+//     * @param int $statusCode
+//     * @return Response
+//     * @throws \Exception
+//     */
+//    private function createJsonWithStatusCode(
+//        array $exceptionArray,
+//        int $statusCode
+//    ): Response {
+//        $response = $this->responseFactory->createResponse();
+//        $response = $response->withHeader('Content-Type', 'application/json');
+//        $response->getBody()->write(json_encode_safe($exceptionArray));
+//        $response = $response->withStatus($statusCode);
+//
+//        return $response;
+//    }
 }

@@ -61,7 +61,7 @@ function createSlimAppForApp(
 
     $callableResolver = new DispatchingResolver(
         $dispatcher,
-        $resultMappers = getResultMappers($injector)
+        $resultMappers = getAppResultMappers($injector)
     );
 
     $app = new \Slim\App(
@@ -73,7 +73,7 @@ function createSlimAppForApp(
         /* ?MiddlewareDispatcherInterface */ $middlewareDispatcher = null
     );
 
-    $app->add($injector->make(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class));
+//    $app->add($injector->make(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\AppSessionMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\ContentSecurityPolicyMiddleware::class));
@@ -84,22 +84,25 @@ function createSlimAppForApp(
 
 
 
-
 /**
  * Creates the objects that map StubResponse into PSR7 responses
  * @return mixed
  */
-function getResultMappers(\DI\Injector $injector)
+function getAppResultMappers(\DI\Injector $injector)
 {
     return [
+        // Convert a Stub Response to a PSR-7 response.
         \SlimDispatcher\Response\StubResponse::class =>
             'SlimDispatcher\mapStubResponseToPsr7',
 
         // TODO - add markdown return type
-
 //        \Bristolian\Page::class => 'mapBristolianPageToPsr7',
+
+        // Response is already a PSR-7 response, just pass it through.
         ResponseInterface::class =>
-            'SlimAuryn\passThroughResponse',
+            '\SlimDispatcher\passThroughResponse',
+
+        // Some controllers just want to return a chunk of HTML
         'string' =>
             'Bristolian\StringToHtmlPageConverter::convertStringToHtmlResponse',
     ];

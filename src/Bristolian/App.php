@@ -31,6 +31,7 @@ class App
 
     const ERROR_CAUGHT_BY_MIDDLEWARE_MESSAGE = "<!-- This is caught in the exception mapper -->";
 
+    // This is used by the tests to check that exception handling is working properly
     const ERROR_CAUGHT_BY_MIDDLEWARE_API_MESSAGE = "Correctly caught DebuggingCaughtException";
 
     const ERROR_CAUGHT_BY_ERROR_HANDLER_MESSAGE = "<!-- This is caught in the AppErrorHandler -->";
@@ -44,6 +45,6 @@ class App
     public const ENVIRONMENT_LOCAL = 'local';
     public const ENVIRONMENT_PROD = 'prod';
 
-    const CSP_REPORT_PATH = '/csp/violation';
+    const CSP_REPORT_PATH = '/api/csp/violation';
     const CSP_REPORTS_SHOWN_PER_PAGE = 10;
 }

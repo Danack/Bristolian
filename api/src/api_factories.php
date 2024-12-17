@@ -2,18 +2,22 @@
 
 declare(strict_types = 1);
 
-use Auryn\Injector;
+// Holds the functions used in creating objects for the
+// API environment.
+
 use Bristolian\Config\Config;
+use DI\Injector;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
-use SlimAuryn\AurynCallableResolver;
 use Laminas\Diactoros\ResponseFactory;
-
+use SlimDispatcher\DispatchingResolver;
+use Bristolian\AppErrorHandler\AppErrorHandler;
+use DataType\Exception\ValidationException;
 
 function createJsonAppErrorHandler(
     Config $config,
-    \Auryn\Injector $injector
-) : \Bristolian\AppErrorHandler\AppErrorHandler {
+    DI\Injector $injector
+): AppErrorHandler {
     if ($config->isProductionEnv() === true) {
         return $injector->make(\Bristolian\AppErrorHandler\JsonErrorHandlerForProd::class);
     }
@@ -21,24 +25,27 @@ function createJsonAppErrorHandler(
     return $injector->make(\Bristolian\AppErrorHandler\JsonErrorHandlerForLocalDev::class);
 }
 
-//function createRoutesForApi()
-//{
-//    return new \SlimAuryn\Routes(__DIR__ . '/../api/src/api_routes.php');
-//}
-
 
 
 /**
  * Creates the ExceptionMiddleware that converts all known app exceptions
  * to nicely formatted pages for the api
  */
-function createExceptionMiddlewareForApi(\Auryn\Injector $injector)
+function    createExceptionMiddlewareForApi(\Di\Injector $injector)
 {
     $exceptionHandlers = [
-        \TypeSpec\Exception\ValidationException::class => 'paramsValidationExceptionMapperApi',
+//    \TypeSpec\Exception\ValidationException::class =>
+//           'paramsValidationExceptionMapperApi',
+
+    \DataType\Exception\ValidationException::class => 'convertValidationExceptionMapperApi',
+
 //        \Bristolian\Exception\DebuggingCaughtException::class => 'debuggingCaughtExceptionExceptionMapperForApi',
+
         //        \ParseError::class => 'parseErrorMapper',
-//        \PDOException::class => 'pdoExceptionMapper',
+
+        \PDOException::class => 'pdoExceptionMapper',
+
+        Slim\Exception\HttpNotFoundException::class => 'convertHttpNotFoundExceptionToResponse',
     ];
 
     $responseFactory = $injector->make(ResponseFactoryInterface::class);
@@ -49,18 +56,26 @@ function createExceptionMiddlewareForApi(\Auryn\Injector $injector)
     );
 }
 
+/**
+ * @param Injector $injector
+ * @param \Bristolian\AppErrorHandler\AppErrorHandler $appErrorHandler
+ * @return \Slim\App
+ * @throws \Auryn\InjectionException
+ */
 function createSlimAppForApi(
     Injector $injector,
     \Bristolian\AppErrorHandler\AppErrorHandler $appErrorHandler
-) {
+): \Slim\App {
 
-    $callableResolver = new AurynCallableResolver(
-        $injector,
-        $resultMappers = getResultMappers($injector)
+    $dispatcher = new \Bristolian\Basic\Dispatcher($injector);
+
+    $callableResolver = new DispatchingResolver(
+        $dispatcher,
+        $resultMappers = getApiResultMappers($injector)
     );
 
     $app = new \Slim\App(
-        /* ResponseFactoryInterface */ $responseFactory = new ResponseFactory(),
+    /* ResponseFactoryInterface */ $responseFactory = new ResponseFactory(),
         /* ?ContainerInterface */ $container = null,
         /* ?CallableResolverInterface */ $callableResolver,
         /* ?RouteCollectorInterface */ $routeCollector = null,
@@ -75,19 +90,19 @@ function createSlimAppForApi(
     return $app;
 }
 
-
 /**
  * Creates the objects that map StubResponse into PSR7 responses
  * @return mixed
  */
-function getResultMappers(\Auryn\Injector $injector)
+function getApiResultMappers(\DI\Injector $injector)
 {
     return [
-        \SlimAuryn\Response\JsonResponse::class =>
-            'SlimAuryn\mapStubResponseToPsr7',
-        SlimAuryn\Response\TextResponse::class =>
-            'SlimAuryn\mapStubResponseToPsr7',
+        \SlimDispatcher\Response\StubResponse::class =>
+            'SlimDispatcher\mapStubResponseToPsr7',
         ResponseInterface::class =>
-          'SlimAuryn\passThroughResponse'
+            '\SlimDispatcher\passThroughResponse',
+        // Some controllers just want to return a chunk of HTML
+        'string' =>
+            'Bristolian\StringToHtmlPageConverter::convertStringToHtmlResponse',
     ];
 }

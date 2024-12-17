@@ -12,7 +12,7 @@
 #}
 
 
-*.bristolian.org:80, bristolian.org:80 {
+*.api.bristolian.org:80, *.bristolian.org:80, bristolian.org:80 {
 	root * /var/app/app/public
 	php_fastcgi php_fpm:9000
 	file_server

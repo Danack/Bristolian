@@ -420,7 +420,6 @@ TEXT;
     }
 
     /**
-     * @group wip
      * @covers ::convertToValue
      * @dataProvider provides_convertToValue_works
      */

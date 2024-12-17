@@ -143,7 +143,7 @@ HTML;
     {
         $output = null;
         $result_code = 0;
-        $result = exec('whoami', $output,  $result_code);
+        $result = exec('whoami', $output, $result_code);
 
         $output = "Output is [". implode("\n", $output) . "]<br/><br/>";
 

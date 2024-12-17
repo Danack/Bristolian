@@ -374,16 +374,6 @@ function str_putcsv(array $dataHeaders, array $dataRows): string
     return $csv;
 }
 
-function getReasonPhrase(int $status): string
-{
-    $knownStatusReasons = [
-        420 => 'Enhance Your Calm',
-        421 => 'what the heck',
-        512 => 'Server known limitation',
-    ];
-
-    return $knownStatusReasons[$status] ?? '';
-}
 
 function createId(): string
 {

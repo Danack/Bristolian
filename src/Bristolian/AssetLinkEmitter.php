@@ -14,12 +14,13 @@ class AssetLinkEmitter
 
     public function getAssetSuffix(): string
     {
+        // If $forcesRefresh is true - assets are refreshed every page load
         $forcesRefresh = $this->config->getForceAssetRefresh();
-
         if ($forcesRefresh) {
             return '?time=' . time();
         }
 
+        // If $forcesRefresh is true - assets are refreshed every deploy
         $sha = $this->config->getCommitSha();
 
         return "?version=" . $sha;

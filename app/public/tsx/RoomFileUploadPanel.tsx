@@ -181,10 +181,6 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, Roo
         // {/*onDragEnd={onDragEnd}*/}
         // {/*onDragStart={() => setDraggedIndex(index)}*/}
 
-        // debugger;
-        // if (global.logged_in === false) {
-        //     return <span></span>
-        // }
 
         return  <div class='room_file_upload_panel_react'>
             <h3>Drag a file here to upload</h3>

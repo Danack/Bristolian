@@ -6,6 +6,7 @@ use \Bristolian\UploadedFiles\UploadedFile;
 
 /**
  * Stores information about a file in the local database.
+ * The actual file will be stored in an object store.
  */
 interface FileStorageInfoRepo
 {
