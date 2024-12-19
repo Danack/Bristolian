@@ -74,13 +74,12 @@ class ExceptionToJsonResponseMiddleware implements MiddlewareInterface
                 $response = $response->withHeader('Content-Type', 'application/json');
                 $response = $exceptionCallable($e, $request, $response);
                 if (!($response instanceof ResponseInterface)) {
-                    $message = sprintf(
-                        "Exception handler for exception type %s failed to return a ResponseInterface object
-                        instead got a [%s]",
-                        get_class($e),
-                        get_class($response)
+
+                    throw MiddlewareException::errorHandlerFailedToReturnResponse(
+                        $e,
+                        $response
                     );
-                    throw new BristolianException($message);
+
                 }
 
                 return $response;
@@ -89,22 +88,4 @@ class ExceptionToJsonResponseMiddleware implements MiddlewareInterface
 
         return null;
     }
-
-//    /**
-//     * @param mixed[] $exceptionArray
-//     * @param int $statusCode
-//     * @return Response
-//     * @throws \Exception
-//     */
-//    private function createJsonWithStatusCode(
-//        array $exceptionArray,
-//        int $statusCode
-//    ): Response {
-//        $response = $this->responseFactory->createResponse();
-//        $response = $response->withHeader('Content-Type', 'application/json');
-//        $response->getBody()->write(json_encode_safe($exceptionArray));
-//        $response = $response->withStatus($statusCode);
-//
-//        return $response;
-//    }
 }

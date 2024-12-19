@@ -15,7 +15,6 @@ class PdoRoomLinkRepoTest extends TestCase
 
     /**
      * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo
-     * @group wip
      */
     public function testAddLinkToRoom()
     {

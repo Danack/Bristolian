@@ -13,6 +13,7 @@ require_once __DIR__ . "/../api/src/api_factories.php";
 require_once __DIR__ . "/../api/src/api_functions.php";
 require_once __DIR__ . "/../api/src/api_injection_params.php";
 require_once __DIR__ . "/../api/src/api_routes.php";
+require_once __DIR__ . "/../src/site_html.php";
 
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use Bristolian\UserSession;

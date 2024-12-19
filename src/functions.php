@@ -930,3 +930,34 @@ function getReasonPhrase(int $status): string
 
     return $knownStatusReasons[$status] ?? '';
 }
+
+
+/**
+ * Returns an easy to read string describing the type of
+ * the variable.
+ *
+ * @param mixed $value
+ * @return string
+ */
+function get_readable_variable_type(mixed $value)
+{
+    if (is_object($value) === true) {
+        return "an object of type [" . get_class($value). "]";
+    }
+
+    $debug_type = get_debug_type($value);
+    $known_types = [
+        'null' => 'null',
+        'bool' => 'a bool',
+        'int' => 'an int',
+        'float' => 'a float',
+        'string' => 'a string',
+        'array' => 'an array',
+    ];
+
+    if (array_key_exists($debug_type, $known_types) === true) {
+        return $known_types[$debug_type];
+    }
+
+    return $debug_type;
+}

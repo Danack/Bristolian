@@ -59,6 +59,7 @@ function createRedis(Config $config)
     return $redis;
 }
 
+
 function createRedisCachedUrlFetcher(\Redis $redis): \UrlFetcher\RedisCachedUrlFetcher
 {
     $urlFetcher = new \UrlFetcher\CurlUrlFetcher();

@@ -430,4 +430,25 @@ TEXT;
         $this->assertNull($error);
         $this->assertSame($expected_value, $value);
     }
+
+    public function provides_get_readable_variable_type_works()
+    {
+        yield ['some string', "a string"];
+        yield [5, "an int"];
+        yield [new \StdClass, "an object of type [stdClass]"];
+    }
+
+    /**
+     * @group wip
+     * @dataProvider provides_get_readable_variable_type_works
+     */
+    public function test_get_readable_variable_type($value, $expected_message)
+    {
+        $result = get_readable_variable_type($value);
+
+        $this->assertStringContainsString(
+            $expected_message,
+            $result
+        );
+    }
 }
