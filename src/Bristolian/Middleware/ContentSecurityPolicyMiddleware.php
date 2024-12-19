@@ -4,62 +4,44 @@ declare(strict_types = 1);
 
 namespace Bristolian\Middleware;
 
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Bristolian\App;
 use Bristolian\Service\RequestNonce;
 use Bristolian\Data\ApiDomain;
-use Bristolian\App;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 class ContentSecurityPolicyMiddleware implements MiddlewareInterface
 {
-    /** @var RequestNonce */
-    private $requestNonce;
-
-    /** @var ApiDomain */
-    private $apiDomain;
-
     public function __construct(
-        RequestNonce $requestNonce,
-        ApiDomain $apiDomain
+        private RequestNonce $requestNonce,
+        private array $connectSrcDomains,
+        private array $scriptSrcDomains,
+        private array $frameSrcDomains,
     ) {
-        $this->requestNonce = $requestNonce;
-        $this->apiDomain = $apiDomain;
     }
 
     public function process(Request $request, RequestHandler $handler): Response
     {
         $response = $handler->handle($request);
 
-        $connectSrcDomains = [
-//            'https://checkout.stripe.com',
-//            'https://api.stripe.com',
-            $this->apiDomain->getDomain()
-        ];
-
-        $scriptSrcDomains = [
-//            'https://js.stripe.com/'
-              'https://pol.is/',
-              'http://pol.is/'
-        ];
-
-        $frameSrcDomains = [
-            'https://youtube.com',
-            'https://www.youtube.com',
-            'http://pol.is/',
-        ];
-
         $cspLines = [];
         $cspLines[] = "default-src 'self'";
-        $cspLines[] = sprintf(
-            "connect-src 'self' %s",
-            implode(' ', $connectSrcDomains)
-        );
+
+        if (count($this->connectSrcDomains) !== 0) {
+            $cspLines[] = sprintf(
+                "connect-src 'self' %s",
+                implode(' ', $this->connectSrcDomains)
+            );
+        }
+        else {
+            $cspLines[] = "connect-src 'self'";
+        }
 
         $cspLines[] = sprintf(
             "frame-src 'self' %s",
-            implode(' ', $frameSrcDomains)
+            implode(' ', $this->frameSrcDomains)
         );
 
         $cspLines[] = "img-src * data:";
@@ -67,17 +49,12 @@ class ContentSecurityPolicyMiddleware implements MiddlewareInterface
             // TODO - remove the unsafe eval
             "script-src 'self' 'nonce-%s' %s 'unsafe-eval'",
             $this->requestNonce->getRandom(),
-            implode(' ', $scriptSrcDomains)
+            implode(' ', $this->scriptSrcDomains)
         );
         $cspLines[] = "object-src *";
         $cspLines[] = "style-src 'self'";
-        $cspLines[] = "report-uri " . $this->apiDomain->getDomain() . App::CSP_REPORT_PATH;
-
-
-
-////        script-src-elem
-//        script-src 'self'
-
+//        $cspLines[] = "report-uri " . $this->apiDomain->getDomain() . App::CSP_REPORT_PATH;
+        $cspLines[] = "report-uri " . App::CSP_REPORT_PATH;
 
         $response = $response->withHeader(
             'Content-Security-Policy',

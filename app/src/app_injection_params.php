@@ -132,6 +132,7 @@ function injectionParams()
           'createHtmlAppErrorHandler',
         \Bristolian\Data\ApiDomain::class =>
           'createApiDomain',
+
         \Redis::class =>
           'createRedis',
 

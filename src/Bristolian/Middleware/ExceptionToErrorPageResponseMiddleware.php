@@ -75,6 +75,8 @@ class ExceptionToErrorPageResponseMiddleware implements MiddlewareInterface
         // Find if there is an exception handler for this type of exception
         foreach ($this->exceptionToResponseHandlerList as $type => $exceptionCallable) {
             if ($e instanceof $type) {
+                // TODO - this doesn't pass in the response, so the handler can't
+                // add headers. Which is probably okay for HTML pages?
                 [$exceptionHtml, $statusCode] = $exceptionCallable($e, $request);
 
                 return $this->pageResponseGenerator->createPageWithStatusCode(

@@ -439,7 +439,6 @@ TEXT;
     }
 
     /**
-     * @group wip
      * @dataProvider provides_get_readable_variable_type_works
      */
     public function test_get_readable_variable_type($value, $expected_message)

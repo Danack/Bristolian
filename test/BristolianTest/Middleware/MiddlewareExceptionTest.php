@@ -21,7 +21,6 @@ class MiddlewareExceptionTest extends BaseTestCase
     /**
      * @covers \Bristolian\Middleware\MiddlewareException
      * @dataProvider provides_works
-     * @group wip
      */
     public function testWorks($value, $expected_contents)
     {

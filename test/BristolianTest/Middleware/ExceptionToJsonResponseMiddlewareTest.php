@@ -14,7 +14,6 @@ use Bristolian\Middleware\MiddlewareException;
 
 /**
  * @covers \Bristolian\Middleware\ExceptionToJsonResponseMiddleware
- * @group wip
  */
 class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
 {
@@ -142,7 +141,7 @@ class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
         $middleware = new ExceptionToJsonResponseMiddleware($responseFactory, $handlers);
         $request = new ServerRequest();
 
-        $foo = new class($message) implements RequestHandler {
+        $request_handler = new class($message) implements RequestHandler {
             public function __construct(private string $message) {}
 
             public function handle(ServerRequestInterface $request): ResponseInterface
@@ -156,6 +155,6 @@ class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
         );
 
         // Call the code
-        $middleware->process($request, $foo);
+        $middleware->process($request, $request_handler);
     }
 }
