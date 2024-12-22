@@ -34,7 +34,7 @@ export class LoginStatusPanel extends Component<LoginStatusPanelProps, LoginStat
   }
 
   componentDidMount() {
-    console.log('componentDidMount');
+    // console.log('componentDidMount');
     this.triggerDataFetch()
   }
 
@@ -53,7 +53,7 @@ export class LoginStatusPanel extends Component<LoginStatusPanelProps, LoginStat
 
   setTimeout() {
 
-    console.log('setTimeout');
+    // console.log('setTimeout');
     setTimeout(
       () => this.triggerDataFetch(),
       // 10 *  // every ten minutes

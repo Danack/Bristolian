@@ -8,6 +8,8 @@
  * @param dp Number of decimal places to display.
  *
  * @return Formatted string.
+ *
+ * @copyright https://stackoverflow.com/a/14919494/778719
  */
 export function humanFileSize(bytes:number, si=false, dp=1) {
   const thresh = si ? 1000 : 1024;
@@ -33,3 +35,44 @@ export function humanFileSize(bytes:number, si=false, dp=1) {
 
 
 
+/**
+ *
+ * @param value
+ *
+ * @copyright https://github.com/segmentio/is-url/blob/master/index.js
+ */
+export function isUrl(value: string) {
+
+  /**
+   * RegExps.
+   * A URL must match #1 and then at least one of #2/#3.
+   * Use two levels of REs to avoid REDOS.
+   */
+
+  var protocolAndDomainRE = /^(?:\w+:)?\/\/(\S+)$/;
+
+  var localhostDomainRE = /^localhost[\:?\d]*(?:[^\:?\d]\S*)?$/
+  var nonLocalhostDomainRE = /^[^\s\.]+\.\S{2,}$/;
+
+
+  if (typeof value !== 'string') {
+    return false;
+  }
+
+  var match = value.match(protocolAndDomainRE);
+  if (!match) {
+    return false;
+  }
+
+  var everythingAfterProtocol = match[1];
+  if (!everythingAfterProtocol) {
+    return false;
+  }
+
+  if (localhostDomainRE.test(everythingAfterProtocol) ||
+    nonLocalhostDomainRE.test(everythingAfterProtocol)) {
+    return true;
+  }
+
+  return false;
+}

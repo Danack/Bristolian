@@ -45,6 +45,22 @@ function createHtmlAppErrorHandler(
     return $injector->make(\Bristolian\AppErrorHandler\HtmlErrorHandlerForLocalDev::class);
 }
 
+/**
+ * @param \Bristolian\Data\ApiDomain $apiDomain
+ * @param \Bristolian\Service\RequestNonce $requestNonce
+ * @return \Bristolian\Middleware\ContentSecurityPolicyMiddleware
+ */
+function createContentSecurityPolicyMiddleware(
+    \Bristolian\Service\RequestNonce $requestNonce
+) {
+    return new \Bristolian\Middleware\ContentSecurityPolicyMiddleware(
+        $requestNonce,
+        [],
+        [],
+        []
+    );
+}
+
 
 /**
  * @param Injector $injector

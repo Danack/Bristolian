@@ -157,7 +157,12 @@ function injectionParams()
             'createLocalCacheFilesystem',
 
         \Bristolian\Service\DeployLogRenderer\DeployLogRenderer::class =>
-            'createDeployLogRenderer'
+            'createDeployLogRenderer',
+
+
+        \Bristolian\Middleware\ContentSecurityPolicyMiddleware::class =>
+            'createContentSecurityPolicyMiddleware'
+
     ];
 
     // Define some params that can be injected purely by name.

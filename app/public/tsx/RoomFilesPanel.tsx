@@ -66,7 +66,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
     }
 
     processData(data:any) {
-        if (data.files === undefined) {
+        if (data.data.files === undefined) {
             this.setState({error: "Server response did not contains 'files'."})
         }
 
@@ -81,8 +81,10 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
 
         let files:RoomFile[] = [];
 
-        for(let i=0; i<data.files.length; i++) {
-            const entry = data.files[i]
+
+
+        for(let i=0; i<data.data.files.length; i++) {
+            const entry = data.data.files[i]
 
             // @ts-ignore: any ...
             const file:RoomFile = {

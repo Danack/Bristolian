@@ -128,21 +128,6 @@ function createApiDomain(Config $config)
     return new \Bristolian\Data\ApiDomain("http://local.api.bristolian.org");
 }
 
-/**
- * @param \Bristolian\Data\ApiDomain $apiDomain
- * @param \Bristolian\Service\RequestNonce $requestNonce
- * @return \Bristolian\Middleware\ContentSecurityPolicyMiddleware
- */
-function createContentSecurityPolicyMiddleware(
-    \Bristolian\Service\RequestNonce $requestNonce
-) {
-    return new \Bristolian\Middleware\ContentSecurityPolicyMiddleware(
-        $requestNonce,
-        [],
-        [],
-        []
-    );
-}
 
 /**
  * @return PDO

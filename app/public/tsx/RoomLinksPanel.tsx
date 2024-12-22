@@ -81,6 +81,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
             const roomLink:RoomLink = {
                 id: entry.id,
                 url: entry.url,
+                title: entry.title,
                 description: entry.description,
             };
 
@@ -107,7 +108,12 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
 
     renderRoomLink(link: RoomLink) {
 
-        let resolved_title = link.title ?? link.url;
+        debugger;
+        let resolved_title = link.url;
+
+        if (link.title) {
+            resolved_title = link.title;
+        }
 
         // if (this.state.linkBeingEdited !== null &&
         //     this.state.linkBeingEdited.id == link.id) {
@@ -131,7 +137,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         return <tr key={link.id}>
             <td>
                 <a href={link.url} target="_blank">
-                    {resolved_title} title
+                    {resolved_title}
                 </a>
             </td>
             {/*<td>*/}
