@@ -24,36 +24,4 @@ class Migration implements DataType
         public readonly \DateTimeInterface $created_at // "2023-05-24 11:29:37"
     ) {
     }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @return string
-     */
-    public function getChecksum(): string
-    {
-        return $this->checksum;
-    }
-
-    /**
-     * @return \DateTimeInterface
-     */
-    public function getCreatedAt(): \DateTimeInterface
-    {
-        return $this->created_at;
-    }
 }

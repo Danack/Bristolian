@@ -49,9 +49,6 @@ class ContentSecurityPolicyMiddlewareTest extends BaseTestCase
         $this->assertInstanceOf(ResponseInterface::class, $result);
     }
 
-    /**
-     * @group wip
-     */
     public function testWorks_with_api_domain()
     {
         $nonce = $this->injector->make(RequestNonce::class);

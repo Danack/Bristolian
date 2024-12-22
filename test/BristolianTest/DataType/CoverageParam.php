@@ -12,7 +12,19 @@ use Bristolian\DataType\Url;
 use Bristolian\DataType\Username;
 use Bristolian\DataType\BasicDateTime;
 use Bristolian\DataType\EmailAddress;
+use Bristolian\DataType\LinkDescription;
+use Bristolian\DataType\LinkTitle;
+use Bristolian\DataType\WebPushEndPoint;
+use Bristolian\DataType\WebPushExpirationTime;
+use Bristolian\DataType\PasswordOrRandom;
 
+
+
+
+/**
+ * This is a class solely used for adding coverage to
+ * InputTypes.
+ */
 class CoverageParam implements DataType
 {
     use CreateFromVarMap;
@@ -31,6 +43,18 @@ class CoverageParam implements DataType
         public \DateTimeInterface $datetime,
         #[EmailAddress('email_address')]
         public string $email_address,
+
+        #[LinkTitle('link_title')]
+        public string $link_title,
+
+        #[LinkDescription('link_description')]
+        public string $link_description,
+        #[WebPushEndPoint('web_push_end_point')]
+        public string $web_push_end_point,
+        #[WebPushExpirationTime('web_push_expiration_time')]
+        public string $web_push_expiration_time,
+        #[PasswordOrRandom('password')]
+        public string $passwordOrRandom,
     ) {
     }
 

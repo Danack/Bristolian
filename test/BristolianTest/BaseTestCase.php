@@ -2,6 +2,10 @@
 
 namespace BristolianTest;
 
+use DataType\OpenApi\OpenApiV300ParamDescription;
+use DataType\OpenApi\ParamDescription;
+use DataType\Rule;
+use DataType\ValidationResult;
 use DI\Injector;
 use PHPUnit\Framework\TestCase;
 use Danack\PHPUnitHelper\StringTemplateMatching;
@@ -65,6 +69,36 @@ class BaseTestCase extends TestCase
         return $this->injector->make($classname);
     }
 
+    public function assertNoProblems(ValidationResult $validationResult)
+    {
+        $validationProblems = $validationResult->getValidationProblems();
+        $this->assertNoValidationProblems($validationProblems);
+    }
+
+    /**
+     * @param \DataType\ValidationProblem[] $validationProblems
+     */
+    public function assertNoValidationProblems(array $validationProblems)
+    {
+        if (count($validationProblems) === 0) {
+            return;
+        }
+
+        $message = "Failed asserting no validation problems. Actually found:";
+        foreach ($validationProblems as $validationProblem) {
+            $message .= "\n  " . $validationProblem->toString();
+        }
+
+        $this->fail($message);
+    }
+
+    public function applyRuleToDescription(Rule $rule): ParamDescription
+    {
+        $description = new OpenApiV300ParamDescription('John');
+        $rule->updateParamDescription($description);
+
+        return $description;
+    }
 
 //    protected function assertProblems(
 //        ValidationResult $validationResult,

@@ -4,7 +4,7 @@ namespace Bristolian\DataType;
 
 use DataType\InputType;
 use DataType\HasInputType;
-use Bristolian\DataType\ExtractRule\GetStringOrNull;
+use DataType\ExtractRule\GetStringOrNull;
 
 #[\Attribute]
 class WebPushExpirationTime implements HasInputType
@@ -14,6 +14,8 @@ class WebPushExpirationTime implements HasInputType
     ) {
     }
 
+    // TODO - this needs tightening to actually check the allowed
+    // values
     public function getInputType(): InputType
     {
         return new InputType(

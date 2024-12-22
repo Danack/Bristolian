@@ -2,7 +2,7 @@
 
 namespace Bristolian\DataType;
 
-use Bristolian\DataType\ExtractRule\GetStringOrNull;
+use DataType\ExtractRule\GetStringOrNull;
 use DataType\ExtractRule\GetInt;
 use DataType\ExtractRule\GetStringOrDefault;
 use DataType\InputType;

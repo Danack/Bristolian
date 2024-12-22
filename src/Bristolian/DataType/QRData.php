@@ -2,13 +2,14 @@
 
 namespace Bristolian\DataType;
 
+use DataType\Create\CreateFromArray;
 use DataType\DataType;
 use DataType\Create\CreateFromVarMap;
 use DataType\GetInputTypesFromAttributes;
 
 class QRData implements DataType
 {
-
+    use CreateFromArray;
     use CreateFromVarMap;
     use GetInputTypesFromAttributes;
 

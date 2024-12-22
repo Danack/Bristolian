@@ -7,6 +7,7 @@ use DataType\HasInputType;
 use DataType\ExtractRule\GetString;
 use DataType\ProcessRule\MinLength;
 use DataType\ProcessRule\MaxLength;
+use Bristolian\DataType\ProcessRule\RandomPasswordIfNullOrEmpty;
 
 #[\Attribute]
 class PasswordOrRandom implements HasInputType
