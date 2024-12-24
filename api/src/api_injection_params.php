@@ -41,6 +41,21 @@ function apiInjectionParams() : InjectionParams
         \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::class =>
             \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::class,
 
+        \Bristolian\Service\RoomFileStorage\RoomFileStorage::class =>
+            \Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::class,
+
+        \Bristolian\Service\FileStorageProcessor\FileStorageProcessor::class =>
+            \Bristolian\Service\FileStorageProcessor\StandardFileStorageProcessor::class,
+
+        \Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo::class =>
+            \Bristolian\Repo\FileStorageInfoRepo\PdoFileStorageInfoRepo::class,
+
+        \Bristolian\Service\ObjectStore\RoomFileObjectStore::class =>
+            \Bristolian\Service\ObjectStore\StandardRoomFileObjectStore::class,
+
+        \Bristolian\UploadedFiles\UploadedFiles::class =>
+            \Bristolian\UploadedFiles\ServerFilesUploadedFiles::class,
+
         \Bristolian\UserSession::class =>
             \Bristolian\AppSession::class,
 
@@ -72,6 +87,18 @@ function apiInjectionParams() : InjectionParams
 
         \PDO::class =>
             'createPDOForUser',
+
+        \Bristolian\Filesystem\LocalFilesystem::class =>
+            'createLocalFilesystem',
+
+        \Bristolian\Filesystem\MemeFilesystem::class =>
+            'createMemeFilesystem',
+
+        \Bristolian\Filesystem\RoomFileFilesystem::class =>
+            'createRoomFileFilesystem',
+
+        \Bristolian\Filesystem\LocalCacheFilesystem::class =>
+            'createLocalCacheFilesystem',
     ];
 
     // Define some params that can be injected purely by name.

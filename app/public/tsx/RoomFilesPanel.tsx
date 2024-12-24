@@ -70,19 +70,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             this.setState({error: "Server response did not contains 'files'."})
         }
 
-
-        // data.files
-        //     id: string, //"01939c6d-42ef-706a-87d1-83313443d34b",
-        //       normalized_name: string, // "01939c6d-42ee-71c3-a90b-e9c943ea704c.pdf",
-        //       original_filename: string, //"sample.pdf",
-        //       state: string, // "uploaded",
-        //       size: number, // "18810",
-        //       // created_a
-
         let files:RoomFile[] = [];
-
-
-
         for(let i=0; i<data.data.files.length; i++) {
             const entry = data.data.files[i]
 
@@ -99,6 +87,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
 
         this.setState({files: files})
     }
+
     processError (data:any) {
         console.log("something went wrong.");
         console.log(data)
@@ -108,16 +97,23 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
     }
 
     renderRoomFile(file: RoomFile) {
-        let url = `/rooms/${this.props.room_id}/file/${file.id}/${file.original_filename}`
+        let file_url = `/rooms/${this.props.room_id}/file/${file.id}/${file.original_filename}`
+
+        let annotate_url = `/rooms/${this.props.room_id}/file_annotate/${file.id}`
 
         return <tr key={file.id}>
             <td>
-                <a href={url} target="_blank">
+                <a href={file_url} target="_blank">
                     {file.original_filename}
                 </a>
             </td>
             <td>
                 {humanFileSize(file.size)}
+            </td>
+            <td>
+                <a href={annotate_url}>
+                  Annotate
+                </a>
             </td>
         </tr>
     }
@@ -133,6 +129,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                 <tr>
                     <td>Name</td>
                     <td>Size</td>
+                    <td></td>
                 </tr>
                 {Object.values(this.state.files).
                 map((roomFile: RoomFile) => this.renderRoomFile(roomFile))}

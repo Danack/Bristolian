@@ -21,6 +21,8 @@ require __DIR__ . "/../../config.generated.php";
 
 set_error_handler('saneErrorHandler');
 
+require __DIR__ . "/../../credentials.php";
+
 $injector = new DI\Injector();
 $injectionParams = apiInjectionParams();
 

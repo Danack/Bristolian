@@ -116,9 +116,9 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
 
     let add_button = <div>not valid</div>
 
-    // if (isValidUrl) {
+    if (isValidUrl) {
       add_button = <button type="submit" onClick={() => this.addLink()}>Add link</button>
-    // }
+    }
 
     let result = <span></span>;
 
@@ -131,53 +131,58 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
     let error_url = <span></span>
     let error_title = <span></span>
     let error_description = <span></span>
-    {if (this.state.error_url !== null) {
-      error_url = <span class="error">{this.state.error_url}</span>
-    }
-    {if (this.state.error_title !== null) {
-      error_title = <span class="error">{this.state.error_title}</span>
-    }
-    {if (this.state.error_description !== null) {
-      error_description = <span class="error">{this.state.error_description}</span>
-    }
+    {
+      if (this.state.error_url !== null) {
+        error_url = <span class="error">{this.state.error_url}</span>
+      }
 
-    // @ts-ignore
-    return  <div class='room_links_add_panel_react'>
-      {result}
-      <div>
-        <label>
+      if (this.state.error_title !== null) {
+        error_title = <span class="error">{this.state.error_title}</span>
+      }
 
-          Url <input name="url" size={100} onChange={
+
+        if (this.state.error_description !== null) {
+          error_description = <span class="error">{this.state.error_description}</span>
+        }
+
           // @ts-ignore
-            e => this.setState({url: e.target.value})
-          } />
-        <br/>
-          {error_url}
-        </label>
+        return <div class='room_links_add_panel_react'>
+          {result}
+          <div>
+            <label>
 
-        <label>
+              Url <input name="url" size={100} onChange={
+              // @ts-ignore
+              e => this.setState({url: e.target.value})
+            }/>
+              <br/>
+              {error_url}
+            </label>
 
-          Title <input name="title" size={100} onChange={
-          // @ts-ignore
-          e => this.setState({title: e.target.value})
-        } />
-          {error_title}
-          <br/>
-        </label>
+            <label>
 
-        <label>
+              Title <input name="title" size={100} onChange={
+              // @ts-ignore
+              e => this.setState({title: e.target.value})
+            }/>
+              {error_title}
+              <br/>
+            </label>
 
-          Description <input name="description" onChange={
-          // @ts-ignore
-          e => this.setState({description: e.target.value})
-        } />
-          {error_description}
-          <br/>
-        </label>
+            <label>
 
-        {add_button}
+              Description <input name="description" onChange={
+              // @ts-ignore
+              e => this.setState({description: e.target.value})
+            }/>
+              {error_description}
+              <br/>
+            </label>
 
-      </div>
-    </div>;
+            {add_button}
+
+          </div>
+        </div>;
+      }
+    }
   }
-}

@@ -187,7 +187,6 @@ export class NotificationRegistrationPanel extends Component<NotificationPanelPr
 
     let process_unsubscribe_callback = function(pushSubscription: PushSubscription) {
       console.log('Inside process_unsubscribe_callback');
-      debugger;
       // Check we have a subscription to unsubscribe
       if (!pushSubscription) {
         // "No subscription object, so set the state

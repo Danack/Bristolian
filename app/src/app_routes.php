@@ -68,6 +68,13 @@ function getAllAppRoutes()
             'GET',
             'Bristolian\AppController\Rooms::serveFileForRoom'
         ],
+
+        [
+            '/rooms/{room_id:.*}/file_annotate/{file_id:.*}',
+            'GET',
+            'Bristolian\AppController\Rooms::annotate_file'
+        ],
+
         ['/rooms', 'GET', 'Bristolian\AppController\Rooms::index'],
 
         // TODO - limit the allowed characters for files
@@ -87,6 +94,8 @@ function getAllAppRoutes()
         ['/system/deploy_log', 'GET', 'Bristolian\AppController\System::deploy_log'],
         ['/system/debugging', 'GET', 'Bristolian\AppController\System::debugging'],
         ['/system/swagger', 'GET', 'Bristolian\AppController\System::display_swagger'],
+        ['/system/route_explorer', 'GET', 'Bristolian\AppController\System::route_explorer'],
+
         ['/system', 'GET', 'Bristolian\AppController\System::index'],
         ['/files', 'GET', '\Bristolian\AppController\Docs::files'],
         ['/memes', 'GET', '\Bristolian\AppController\Docs::memes'],

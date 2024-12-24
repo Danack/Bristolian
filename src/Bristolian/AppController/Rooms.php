@@ -9,6 +9,7 @@ use Bristolian\Filesystem\RoomFileFilesystem;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Service\FileStorageProcessor\UploadError;
+use Bristolian\Service\RequestNonce;
 use Bristolian\Service\RoomFileStorage\RoomFileStorage;
 use Bristolian\UserSession;
 use SlimDispatcher\Response\JsonNoCacheResponse;
@@ -266,5 +267,30 @@ HTML;
         $content = esprintf($template, $params);
 
         return $content;
+    }
+
+
+    function annotate_file(RequestNonce $requestNonce): string
+    {
+        $html = "This is the happy fun-time pdf annotation page.";
+
+
+
+        $html .= <<< HTML
+<script src="/js/pdf/pdf.mjs" type="module"></script>
+<script src="/js/pdf_view.js" type="module"></script>
+<link rel="stylesheet" href="/css/pdf_viewer.css">
+
+<div id="viewer" class="pdfViewer">
+
+<canvas id="the-canvas"></canvas>
+<div id="text-layer" class="textLayer"></div>
+
+</div>
+
+HTML;
+
+
+        return $html;
     }
 }

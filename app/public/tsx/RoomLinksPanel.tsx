@@ -107,8 +107,6 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
     }
 
     renderRoomLink(link: RoomLink) {
-
-        debugger;
         let resolved_title = link.url;
 
         if (link.title) {

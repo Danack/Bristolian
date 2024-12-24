@@ -92,7 +92,7 @@ function createSlimAppForApp(
 //    $app->add($injector->make(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\AppSessionMiddleware::class));
-    $app->add($injector->make(\Bristolian\Middleware\ContentSecurityPolicyMiddleware::class));
+//    $app->add($injector->make(\Bristolian\Middleware\ContentSecurityPolicyMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\MemoryCheckMiddleware::class));
 
     return $app;

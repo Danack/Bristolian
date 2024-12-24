@@ -175,4 +175,35 @@ HTML;
 
         return $html;
     }
+
+
+    function route_explorer()
+    {
+
+
+        $app_routes = getAllAppRoutes();
+
+
+        $html = "<h2>Routes</h2>";
+
+        $headers = [
+            'Path',
+            'Method',
+            'Controller'
+        ];
+
+        $rowFns = [
+            ':html_path' => fn($route) => $route[0],
+            ':html_method' => fn($route) => $route[1],
+            ':html_controller' => fn($route) => $route[2],
+        ];
+
+        $html .= renderTableHtml(
+            $headers,
+            $app_routes,
+            $rowFns
+        );
+
+        return $html;
+    }
 }
