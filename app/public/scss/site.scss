@@ -99,8 +99,18 @@ blockquote {
   }
 }
 
+.text_note_layout {
+  display: flex;
+}
 
-.textLayer {
-  position: absolute;
-  //background-color: red;
+
+.text_note_iframe {
+  flex: 0 0 65%;
+  min-width: 816px;
+  min-height: 900px;
+  text-align: center;
+}
+
+.text_note_panel {
+  flex: 1;
 }

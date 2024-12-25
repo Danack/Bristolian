@@ -63,10 +63,10 @@ describe('widgety', function () {
     clearMessages();
     stopMessageProcessing();
 
-    // Check foo message does reach our callback.
+    // Setup a message listener
     let id = registerMessageListener(message_foo, fn);
 
-    // Check an message doesn't reach our callback when processing
+    // Check a message doesn't reach our callback when processing
     // isn't running
     sendMessage(message_foo, values);
     expect(calledParams).toHaveLength(0);

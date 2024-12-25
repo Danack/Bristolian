@@ -75,6 +75,14 @@ function getAllAppRoutes()
             'Bristolian\AppController\Rooms::annotate_file'
         ],
 
+        [
+            '/iframe/rooms/{room_id:.*}/file_annotate/{file_id:.*}',
+            'GET',
+            'Bristolian\AppController\Rooms::iframe_show_file'
+        ],
+
+
+
         ['/rooms', 'GET', 'Bristolian\AppController\Rooms::index'],
 
         // TODO - limit the allowed characters for files

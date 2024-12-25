@@ -21,6 +21,7 @@ use Bristolian\BristolianFileResponse;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use Bristolian\DataType\LinkParam;
 use VarMap\VarMap;
+use Bristolian\Response\IframeHtmlResponse;
 
 class Rooms
 {
@@ -268,29 +269,69 @@ HTML;
 
         return $content;
     }
-
-
-    function annotate_file(RequestNonce $requestNonce): string
+    function annotate_file(
+        RequestNonce $requestNonce,
+        RoomRepo $roomRepo,
+        string $room_id,
+        string $file_id,
+    ): string
     {
-        $html = "This is the happy fun-time pdf annotation page.";
+        $html = "<h1>Need to place iframe here</h1>";
 
+        $url = "/iframe/rooms/$room_id/file_annotate/$file_id";
 
+        $html .= "";
+        $html .= "<iframe class='text_note_iframe' src='$url' title='a file to note text in'></iframe>";
+        $room = $roomRepo->getRoomById($room_id);
 
-        $html .= <<< HTML
-<script src="/js/pdf/pdf.mjs" type="module"></script>
-<script src="/js/pdf_view.js" type="module"></script>
-<link rel="stylesheet" href="/css/pdf_viewer.css">
+        $widget_data = encodeWidgetyData([
+            'room_id' => $room_id,
+            'file_id' => $file_id,
+        ]);
 
-<div id="viewer" class="pdfViewer">
-
-<canvas id="the-canvas"></canvas>
-<div id="text-layer" class="textLayer"></div>
-
+        $template = <<< HTML
+<h1>:html_room_name</h1>
+<div class="text_note_layout">
+  <span>
+    <iframe class='text_note_iframe' src='$url' title='A file to note text in'></iframe>
+  </span>
+  <span>
+    <div class='text_note_panel' data-widgety_json='$widget_data'></div>
+  </span>
 </div>
-
 HTML;
 
+        $params = [
+            ':html_room_name' => $room->getName(),
+        ];
 
-        return $html;
+        $content = esprintf($template, $params);
+
+        return $content;
+    }
+
+    function iframe_show_file(
+        RequestNonce $requestNonce,
+        string $room_id,
+        string $file_id,
+
+    ): IframeHtmlResponse
+    {
+        $html = "";
+
+        $html .= <<< HTML
+<!DOCTYPE html>
+
+<html lang="en">
+  <body>
+    <script src="/js/pdf/pdf.mjs" type="module"></script>
+    <script src="/js/pdf_view.js" type="module"></script>
+    <link rel="stylesheet" href="/css/pdf_viewer.css">
+    <div id="viewer" class="pdfViewer" />
+  </body>
+</html>
+HTML;
+
+        return new IframeHtmlResponse($html);
     }
 }

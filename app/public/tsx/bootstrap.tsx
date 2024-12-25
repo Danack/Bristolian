@@ -17,9 +17,11 @@ import { QrCodeGeneratorPanel } from "./QrCodeGenerator";
 import { RoomFilesPanel } from "./RoomFilesPanel";
 import { RoomFileUploadPanel } from "./RoomFileUploadPanel";
 import { RoomLinksPanel } from "./RoomLinksPanel";
+import { TextNotePanel } from "./TextNote";
 import { TeleprompterPanel } from "./TeleprompterPanel";
 import { TimeLinePanel } from "./TimeLinePanel";
 import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
+import {receiveSelectionMessage} from "./TextNote";
 
 let panels: WidgetClassBinding[] = [
 
@@ -75,6 +77,12 @@ let panels: WidgetClassBinding[] = [
         class: 'teleprompter_panel',
         component: TeleprompterPanel
     },
+
+    {
+        class: 'text_note_panel',
+        component: TextNotePanel
+    },
+
     {
         class: 'time_line_panel',
         component: TimeLinePanel
@@ -110,6 +118,10 @@ function registerServiceWorker() {
 }
 
 registerServiceWorker();
+
+
+// Add an event listener to receive messages
+window.addEventListener("message", receiveSelectionMessage);
 
 console.log("Bootstrap finished");
 

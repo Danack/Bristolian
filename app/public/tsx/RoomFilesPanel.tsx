@@ -98,7 +98,6 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
 
     renderRoomFile(file: RoomFile) {
         let file_url = `/rooms/${this.props.room_id}/file/${file.id}/${file.original_filename}`
-
         let annotate_url = `/rooms/${this.props.room_id}/file_annotate/${file.id}`
 
         return <tr key={file.id}>
