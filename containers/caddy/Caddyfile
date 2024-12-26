@@ -1,16 +1,8 @@
 {
 	auto_https off
+	# http_port 80,8001
+	# debug
 }
-
-#@static {
-#	file
-#
-#	# Maybe add more of these?
-#	# bmp|bz2|css|gif|doc|gz|html|ico|jpg|jpeg|js|map|mid|midi|pcap|png|rtf|rar|
-#	# pdf|ppt|tar|tgz|txt|wav|xls|zip
-#	path *.ico *.css *.js *.gif *.jpg *.jpeg *.png *.svg *.woff
-#}
-
 
 *.api.bristolian.org:80, *.bristolian.org:80, bristolian.org:80 {
 	root * /var/app/app/public
@@ -27,15 +19,23 @@
 	encode {
 		gzip
 		zstd
+	}
+}
 
-		# minimum_length <length>
+http://*.api.bristolian.org:8001, http://*.bristolian.org:8001, http://bristolian.org:8001 {
+	root * /var/app/app/public
+	php_fastcgi php_fpm_debug:9000
+	file_server
 
-		# response matcher single line syntax
-		# match [header <field> [<value>]] | [status <code...>]
-		# or response matcher block for multiple conditions
-		# match {
-		#	status <code...>
-		#	header <field> [<value>]
-		# }
+	@static {
+		file
+		path *.ico *.css *.js *.gif *.jpg *.jpeg *.png *.svg *.woff *.woff2 *.json *.vtt *.mp4
+	}
+
+	header @static Cache-Control max-age=3600
+
+	encode {
+		gzip
+		zstd
 	}
 }
