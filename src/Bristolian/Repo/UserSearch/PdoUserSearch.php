@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\UserSearch;
 
-use Bristolian\PdoSimple;
+use Bristolian\PdoSimple\PdoSimple;
 
 class PdoUserSearch implements UserSearch
 {
@@ -13,7 +13,7 @@ class PdoUserSearch implements UserSearch
     /**
      * @param string $username_prefix
      * @return array<string>|array<int>
-     * @throws \Bristolian\PdoSimpleException
+     * @throws \Bristolian\PdoSimple\PdoSimpleException
      */
     public function searchUsernamesByPrefix(string $username_prefix): array
     {

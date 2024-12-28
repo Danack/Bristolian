@@ -16,7 +16,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 class AppSessionMiddleware implements MiddlewareInterface
 {
     public function __construct(
-
         private RequestSessionStorage $sessionStorage
     ) {
     }

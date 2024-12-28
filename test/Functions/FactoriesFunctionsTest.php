@@ -13,7 +13,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::forbidden
      */
-    function test_forbidden()
+    public function test_forbidden()
     {
         $this->expectException(\DI\InjectionException::class);
         forbidden($this->injector);
@@ -22,7 +22,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createMemoryWarningCheck
      */
-    function test_createMemoryWarningCheck()
+    public function test_createMemoryWarningCheck()
     {
         $this->injector->execute(createMemoryWarningCheck(...));
     }
@@ -30,7 +30,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createRedis
      */
-    function test_createRedis()
+    public function test_createRedis()
     {
         $result = $this->injector->execute('createRedis');
     }
@@ -38,7 +38,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createRedisCachedUrlFetcher
      */
-    function test_createRedisCachedUrlFetcher()
+    public function test_createRedisCachedUrlFetcher()
     {
         $this->injector->execute(createRedisCachedUrlFetcher(...));
     }
@@ -47,7 +47,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::getRedisConfig
      */
-    function test_getRedisConfig()
+    public function test_getRedisConfig()
     {
         $this->injector->execute(getRedisConfig(...));
     }
@@ -55,7 +55,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::getRedisOptions
      */
-    function test_getRedisOptions()
+    public function test_getRedisOptions()
     {
         $this->injector->execute(getRedisOptions(...));
     }
@@ -63,7 +63,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createPredisClient
      */
-    function test_createPredisClient()
+    public function test_createPredisClient()
     {
         $this->injector->execute(createPredisClient(...));
     }
@@ -72,7 +72,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createApiDomain
      */
-    function test_createApiDomain()
+    public function test_createApiDomain()
     {
         $this->injector->execute(createApiDomain(...));
     }
@@ -80,7 +80,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createPDOForUser
      */
-    function test_createPDOForUser()
+    public function test_createPDOForUser()
     {
         $this->injector->execute(createPDOForUser(...));
     }
@@ -88,7 +88,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createSessionConfig
      */
-    function test_createSessionConfig()
+    public function test_createSessionConfig()
     {
         $this->injector->execute(createSessionConfig(...));
     }
@@ -96,7 +96,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createLocalFilesystem
      */
-    function test_createLocalFilesystem()
+    public function test_createLocalFilesystem()
     {
         $this->injector->execute(createLocalFilesystem(...));
     }
@@ -104,7 +104,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createLocalCacheFilesystem
      */
-    function test_createLocalCacheFilesystem()
+    public function test_createLocalCacheFilesystem()
     {
         $this->injector->execute(createLocalCacheFilesystem(...));
     }
@@ -112,7 +112,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createMemeFilesystem
      */
-    function test_createMemeFilesystem()
+    public function test_createMemeFilesystem()
     {
         $this->injector->execute(createMemeFilesystem(...));
     }
@@ -120,7 +120,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createRoomFileFilesystem
      */
-    function test_createRoomFileFilesystem()
+    public function test_createRoomFileFilesystem()
     {
         $this->injector->execute(createRoomFileFilesystem(...));
     }
@@ -128,7 +128,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createDeployLogRenderer
      */
-    function test_createDeployLogRenderer()
+    public function test_createDeployLogRenderer()
     {
         $this->injector->execute(createDeployLogRenderer(...));
     }
@@ -136,7 +136,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createMailgun
      */
-    function test_createMailgun()
+    public function test_createMailgun()
     {
         $this->injector->execute(createMailgun(...));
     }

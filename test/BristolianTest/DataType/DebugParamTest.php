@@ -2,7 +2,6 @@
 
 namespace BristolianTest\DataType;
 
-
 use BristolianTest\BaseTestCase;
 use Bristolian\DataType\DebugParam;
 use VarMap\ArrayVarMap;

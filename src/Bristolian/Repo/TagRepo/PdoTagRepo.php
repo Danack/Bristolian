@@ -4,7 +4,7 @@ namespace Bristolian\Repo\TagRepo;
 
 use Bristolian\DataType\TagParam;
 use Bristolian\Model\Tag;
-use Bristolian\PdoSimple;
+use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 
 class PdoTagRepo implements TagRepo

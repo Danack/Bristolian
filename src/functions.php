@@ -7,6 +7,7 @@ use SlimDispatcher\Response\JsonNoCacheResponse;
 use VarMap\ArrayVarMap;
 use VarMap\VarMap;
 use Bristolian\ToArray;
+use Bristolian\Model\StoredFile;
 
 $injector = null;
 
@@ -778,26 +779,25 @@ function createErrorJsonResponse(array $validation_problems): SlimDispatcher\Res
     return new SlimDispatcher\Response\JsonResponse($data, [], 400);
 }
 
-//$start_time = microtime(true);
 
-function time_it()
-{
-    global $start_time;
-
-    $end_time = microtime(true);
-
-    var_dump($end_time, $start_time);
-
-    $time_taken = ($end_time - $start_time);
-
-    if ($time_taken < 0.001) {
-        echo "Basically nothing.";
-        exit(0);
-    }
-
-    echo "Time taken = " . $time_taken  . " m'kay.\n";
-    exit(0);
-}
+//function time_it()
+//{
+//    global $start_time;
+//
+//    $end_time = microtime(true);
+//
+//    var_dump($end_time, $start_time);
+//
+//    $time_taken = ($end_time - $start_time);
+//
+//    if ($time_taken < 0.001) {
+//        echo "Basically nothing.";
+//        exit(0);
+//    }
+//
+//    echo "Time taken = " . $time_taken  . " m'kay.\n";
+//    exit(0);
+//}
 
 function encodeWidgetyData(array $data)
 {
@@ -960,4 +960,17 @@ function get_readable_variable_type(mixed $value)
     }
 
     return $debug_type;
+}
+
+
+function getRouteForStoredFile(string $room_id, StoredFile $storedFile)
+{
+    $template = '/rooms/:uri_room_id/file/:uri_file_id/:uri_filename';
+    $params = [
+        ':uri_room_id' => $room_id,
+        ':uri_file_id' => $storedFile->id,
+        ':uri_filename' => $storedFile->original_filename,
+    ];
+
+    return esprintf($template, $params);
 }

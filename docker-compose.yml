@@ -35,7 +35,6 @@ services:
     networks:
       default_network:
     volumes:
-      - ./docker/mysql/config/my.cnf:/etc/mysql/my.cnf
       - ./data/mysql:/var/lib/mysql
       - ./data/mysql_import:/docker-entrypoint-initdb.d
   installer:

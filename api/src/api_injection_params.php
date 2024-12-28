@@ -59,6 +59,9 @@ function apiInjectionParams() : InjectionParams
         \Bristolian\UserSession::class =>
             \Bristolian\AppSession::class,
 
+        \Bristolian\Repo\RoomRepo\RoomRepo::class =>
+            \Bristolian\Repo\RoomRepo\PdoRoomRepo::class,
+
         \Bristolian\Repo\LinkRepo\LinkRepo::class =>
             \Bristolian\Repo\LinkRepo\PdoLinkRepo::class,
     ];

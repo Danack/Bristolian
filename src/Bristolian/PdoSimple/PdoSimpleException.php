@@ -1,6 +1,6 @@
 <?php
 
-namespace Bristolian;
+namespace Bristolian\PdoSimple;
 
 class PdoSimpleException extends \Exception
 {

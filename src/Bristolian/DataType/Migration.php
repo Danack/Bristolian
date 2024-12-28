@@ -14,7 +14,7 @@ class Migration implements DataType
     use GetInputTypesFromAttributes;
 
     public function __construct(
-        #[BasicInteger('id')]
+        #[SourceLinkPositionValue('id')]
         public readonly int $id,
         #[BasicString('description')]
         public readonly string $description, // "Migration 1"

@@ -33,7 +33,9 @@ class AppSessionMiddlewareTest extends BaseTestCase
 
         $request = new ServerRequest();
         $request_handler = new class() implements RequestHandler {
-            public function __construct() {}
+            public function __construct()
+            {
+            }
 
             public function handle(ServerRequestInterface $request): ResponseInterface
             {

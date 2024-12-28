@@ -89,11 +89,16 @@ function createSlimAppForApp(
         /* ?MiddlewareDispatcherInterface */ $middlewareDispatcher = null
     );
 
-//    $app->add($injector->make(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class));
-    $app->add($injector->make(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class));
+
+    // Slim processes middleware in a Last In, First Out (LIFO) order.
+    // This means the last middleware added is the first one to be executed.
+    // If you add multiple middleware components, they will be executed
+    // in the reverse order of their addition.
+    $app->add($injector->make(\Bristolian\Middleware\PermissionsCheckHtmlMiddleware::class));
+    $app->add($injector->make(\Bristolian\Middleware\MemoryCheckMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\AppSessionMiddleware::class));
 //    $app->add($injector->make(\Bristolian\Middleware\ContentSecurityPolicyMiddleware::class));
-    $app->add($injector->make(\Bristolian\Middleware\MemoryCheckMiddleware::class));
+    $app->add($injector->make(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class));
 
     return $app;
 }

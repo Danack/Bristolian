@@ -74,12 +74,10 @@ class ExceptionToJsonResponseMiddleware implements MiddlewareInterface
                 $response = $response->withHeader('Content-Type', 'application/json');
                 $response = $exceptionCallable($e, $request, $response);
                 if (!($response instanceof ResponseInterface)) {
-
                     throw MiddlewareException::errorHandlerFailedToReturnResponse(
                         $e,
                         $response
                     );
-
                 }
 
                 return $response;

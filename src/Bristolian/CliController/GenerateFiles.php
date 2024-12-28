@@ -86,6 +86,11 @@ class GenerateFiles
         $constants = [
             'MEME_FILE_UPLOAD_FORM_NAME' => \Bristolian\AppController\MemeUpload::MEME_FILE_UPLOAD_FORM_NAME,
             'ROOM_FILE_UPLOAD_FORM_NAME' => \Bristolian\AppController\Rooms::ROOM_FILE_UPLOAD_FORM_NAME,
+
+            'SOURCE_LINK_MINIMUM_LENGTH' => \Bristolian\DataType\SourceLinkHighlightsJson::MINIMUM_LENGTH,
+            'SOURCE_LINK_MAXIMUM_LENGTH' => \Bristolian\DataType\SourceLinkHighlightsJson::MAXIMUM_LENGTH,
+
+            'SOURCE_LINK_MAX_PAGES' => \Bristolian\DataType\SourceLinkPage::MAX_PAGES,
         ];
 
         $template = <<< TEMPLATE

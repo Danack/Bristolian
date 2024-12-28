@@ -12,7 +12,6 @@ class FakeSession implements Session
      */
     public function __construct(private array $headers)
     {
-
     }
 
 
@@ -105,5 +104,4 @@ class FakeSession implements Session
     {
         // TODO: Implement get() method.
     }
-
 }

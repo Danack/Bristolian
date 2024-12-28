@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Bristolian;
+namespace Bristolian\PdoSimple;
 
 use PDO;
 use Bristolian\Exception\RowNotFoundException;

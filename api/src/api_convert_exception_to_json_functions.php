@@ -61,6 +61,20 @@ function convertValidationExceptionMapperApi(
 }
 
 
+function convertInvalidPermissionsExceptionToResponse(
+    \Bristolian\Exception\InvalidPermissionsException $ipe,
+    RequestInterface $request,
+    ResponseInterface $response
+) {
+    $data['status'] = 'fail'; ;
+    $data['message'] = 'Insufficient permissions to perform action';
+
+    $response = fillJsonResponseData($response, $data, 403);
+
+    return $response;
+}
+
+
 function convertHttpNotFoundExceptionToResponse(
     \Slim\Exception\HttpNotFoundException $hnfe,
     RequestInterface $request,

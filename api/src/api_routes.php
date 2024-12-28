@@ -70,6 +70,13 @@ function getAllApiRoutes()
             'Bristolian\AppController\Rooms::getLinks'
         ],
 
+        [
+            '/api/rooms/{room_id:.*}/source_link/{file_id:.*}',
+            'POST',
+            '\Bristolian\AppController\Rooms::handleAddSourceLink'
+        ],
+
+
         ['/api/system/csp/reports_for_page', 'GET', 'Bristolian\ApiController\Csp::get_reports_for_page'],
         ['/api/test/caught_exception', 'GET', 'Bristolian\ApiController\Debug::testCaughtException'],
         ['/api/test/uncaught_exception', 'GET', 'Bristolian\ApiController\Debug::testUncaughtException'],

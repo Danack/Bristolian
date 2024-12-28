@@ -26,7 +26,9 @@ class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
         $request = new ServerRequest();
 
         $foo = new class($message) implements RequestHandler {
-            public function __construct() {}
+            public function __construct()
+            {
+            }
 
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
@@ -49,7 +51,8 @@ class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
         $exception_handler = function (
             BristolianException $be,
             ServerRequestInterface $request,
-            ResponseInterface $response) use ($message) {
+            ResponseInterface $response
+        ) use ($message) {
 
             $data = [
                 'status' => 'fail',
@@ -67,7 +70,9 @@ class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
         $request = new ServerRequest();
 
         $foo = new class($message) implements RequestHandler {
-            public function __construct(private string $message) {}
+            public function __construct(private string $message)
+            {
+            }
 
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
@@ -103,7 +108,9 @@ class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
         $request = new ServerRequest();
 
         $foo = new class($message) implements RequestHandler {
-            public function __construct(private string $message) {}
+            public function __construct(private string $message)
+            {
+            }
 
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
@@ -122,13 +129,15 @@ class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
     /**
      * @return void
      */
-    public function testWorks_exception_handler_fails_to_return_a_response_object() {
+    public function testWorks_exception_handler_fails_to_return_a_response_object()
+    {
         $message = "This isn't going to be handled properly.";
 
         $exception_handler = function (
             BristolianException $be,
             ServerRequestInterface $request,
-            ResponseInterface $response) {
+            ResponseInterface $response
+) {
 
             return new \StdClass;
         };
@@ -142,7 +151,9 @@ class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
         $request = new ServerRequest();
 
         $request_handler = new class($message) implements RequestHandler {
-            public function __construct(private string $message) {}
+            public function __construct(private string $message)
+            {
+            }
 
             public function handle(ServerRequestInterface $request): ResponseInterface
             {

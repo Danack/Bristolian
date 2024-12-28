@@ -2,11 +2,9 @@
 
 namespace BristolianTest\Middleware;
 
-
 use BristolianTest\BaseTestCase;
 use Bristolian\Middleware\AllowAllCors;
 use Laminas\Diactoros\ServerRequest;
-
 
 /**
  * @coversNothing

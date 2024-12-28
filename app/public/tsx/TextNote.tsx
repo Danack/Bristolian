@@ -9,9 +9,17 @@ export interface SelectionPosition {
   right: number;
 }
 
+interface Rectangle {
+  page: number;
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}
+
 export interface SelectionData {
-  position: SelectionPosition;
-  text: string
+  text: string;
+  rectangles: Rectangle[]
 }
 
 export interface SelectionMessage {
@@ -36,12 +44,16 @@ export interface TextNotePanelProps {
 
 interface TextNotePanelState {
   selection_data: SelectionData|null,
+  title: string,
+  text: string,
   error: string|null,
 }
 
 function getDefaultState(): TextNotePanelState {
   return {
     selection_data: null,
+    title: "",
+    text: "",
     error: null,
   };
 }
@@ -67,8 +79,7 @@ export class TextNotePanel extends Component<TextNotePanelProps, TextNotePanelSt
   }
 
   receiveTextSelected(selection_data: SelectionData) {
-    // console.log("text selected asdad");
-    // console.log(message)
+    debugger;
     this.setState({selection_data:selection_data});
   }
 
@@ -89,29 +100,146 @@ export class TextNotePanel extends Component<TextNotePanelProps, TextNotePanelSt
   restoreState(state_to_restore: object) {
   }
 
+  sendRectsToDraw() {
+    let iframe = document.getElementById('pdf_iframe');
+
+    // @ts-ignore:content window does exist
+    if (iframe && iframe.contentWindow) {
+      // @ts-ignore:content window does exist
+      iframe.contentWindow.postMessage({
+        type: 'draw_rects',
+        rects: this.state.selection_data.rectangles
+      }, '*',);
+    }
+  }
+
+  // renderRectangle(rect:Rectangle, i:number) {
+  //   return <tr key={i}>
+  //     <td>
+  //       {rect.page}
+  //     </td>
+  //     <td>
+  //       {rect.left}
+  //     </td>
+  //     <td>
+  //       {rect.top}
+  //     </td>
+  //     <td>
+  //       {rect.right}
+  //     </td>
+  //     <td>
+  //       {rect.bottom}
+  //     </td>
+  //   </tr>
+  // }
+  //
+  // renderRectanglesBlock() {
+  //   return <table>
+  //     <tr key={"header"}>
+  //       <th>Page</th>
+  //       <th>Left</th>
+  //       <th>Top</th>
+  //       <th>Right</th>
+  //       <th>Bottom</th>
+  //     </tr>
+  //     {Object.values(this.state.selection_data.rectangles).map((rect, i) => this.renderRectangle(rect, i))}
+  //   </table>
+  // }
+
+  // SpotlightText
+
+  addSourceLink() {
+
+    let rectangles_json = JSON.stringify(this.state.selection_data.rectangles);
+
+    const formData = new FormData();
+
+    // formData.append("room_id", this.props.room_id);
+    // formData.append("file_id", this.props.file_id);
+    formData.append("title", this.state.title);
+    formData.append("highlights_json", rectangles_json);
+    formData.append("text", this.state.text);
+
+    let url = `/api/rooms/${this.props.room_id}/source_link/${this.props.file_id}`
+
+    let params = {
+      method: 'POST',
+      body: formData
+    }
+    fetch(url, params).
+    then((response:Response) => response.json()).
+    then((data:any) => this.processAddSourceLinkResponse(data));
+  }
+
+  processAddSourceLinkResponse(data: any) {
+      console.log("Source link Response");
+      console.log(data);
+  }
+
+
   render(props: TextNotePanelProps, state: TextNotePanelState) {
 
-    let select_text_block = <span>No text selected</span>
-    if (this.state.selection_data !== null) {
-        let position = this.state.selection_data.position;
-
-      select_text_block = <div>
-        Position <br/>
-         top: {position.top} <br/>
-         left: {position.left}<br/>
-         bottom: {position.bottom}<br/>
-         right: {position.right}<br/>
-
-        Text <br/>
-        <pre>
-        {this.state.selection_data.text}
-        </pre>
+    if (this.state.selection_data === null) {
+      return <div>
+      <h3>This is the text note panel.</h3>
+        <div>
+         <span>No text Selected</span>
+        </div>
       </div>
     }
 
+    let validToSubmit = true;
+
+    //   let rectangles = this.renderRectanglesBlock();
+    // {rectangles}
+
+    let json = JSON.stringify(this.state.selection_data.rectangles);
+
+    if (json.length > 16 * 1024) {
+      return <div>
+        <h3>This is the text note panel.</h3>
+        <div>
+          <span>Too many lines selected. Please select fewer.</span>
+        </div>
+      </div>
+    }
+
+
+
+
+    let error_title = <span></span>
+
+    let add_button = <span></span>
+
+    if (validToSubmit === true) {
+      add_button = <button type="submit" onClick={() => this.addSourceLink()}>Add source link</button>
+    }
+
+
     return  <div class='text_note_panel_react'>
-      <h3>This is the text note panel.</h3>
-      {select_text_block}
+      <h3>Source Link panel.</h3>
+      <div>
+        <button onClick={() => this.sendRectsToDraw()}>Send back to draw</button>
+      </div>
+
+      <div>
+      <label>
+
+        Title <input name="title" size={100} onChange={
+        // @ts-ignore
+        e => this.setState({title: e.target.value})
+      }/>
+        <br/>
+        {error_title}
+      </label>
+
+
+      </div>
+
+
+      {add_button}
+
+
     </div>;
   }
 }

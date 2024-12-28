@@ -2,10 +2,8 @@
 
 namespace BristolianTest\Middleware;
 
-
 use BristolianTest\BaseTestCase;
 use Bristolian\Middleware\MiddlewareException;
-
 
 /**
  * @coversNothing

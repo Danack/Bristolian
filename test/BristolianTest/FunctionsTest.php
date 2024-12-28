@@ -328,9 +328,10 @@ TEXT;
      */
     public function test_convertToArrayOfObjects()
     {
+        $int_value = 1234;
         $data = [[
             'test_string' => 'foobar',
-            'test_int' => 12345
+            'test_int' => $int_value
         ]];
 
         $objects = convertToArrayOfObjects(\BristolianTest\PdoSimpleTestObject::class, $data);
@@ -339,7 +340,7 @@ TEXT;
         $object = $objects[0];
         $this->assertInstanceOf(\BristolianTest\PdoSimpleTestObject::class, $object);
         $this->assertSame('foobar', $object->test_string);
-        $this->assertSame(12345, $object->test_int);
+        $this->assertSame($int_value, $object->test_int);
 
         $this->expectException(\Bristolian\BristolianException::class);
         $this->expectExceptionMessage(\Bristolian\BristolianException::CANNOT_INSTANTIATE);

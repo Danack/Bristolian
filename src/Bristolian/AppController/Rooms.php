@@ -2,12 +2,19 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\App;
 use Bristolian\BristolianException;
+use Bristolian\BristolianFileResponse;
+use Bristolian\DataType\LinkParam;
+use Bristolian\DataType\SourceLinkParam;
+use Bristolian\DataType\SourceLinkHighlightParam;
+use Bristolian\DataType\SourceLinkHighlightsAsdasds;
 use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Filesystem\RoomFileFilesystem;
-use Bristolian\Repo\AdminRepo\AdminRepo;
+use Bristolian\UserUploadedFile\UserSessionFileUploaderHandler;
+use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
+use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
+use Bristolian\Response\IframeHtmlResponse;
 use Bristolian\Service\FileStorageProcessor\UploadError;
 use Bristolian\Service\RequestNonce;
 use Bristolian\Service\RoomFileStorage\RoomFileStorage;
@@ -15,13 +22,11 @@ use Bristolian\UserSession;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
-use Bristolian\John\UserSessionFileUploaderHandler;
-use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
-use Bristolian\BristolianFileResponse;
-use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
-use Bristolian\DataType\LinkParam;
 use VarMap\VarMap;
-use Bristolian\Response\IframeHtmlResponse;
+use function DataType\createArrayOfType;
+use function DataType\createArrayOfTypeOrError;
+use Bristolian\Repo\SourceLinkRepo\SourceLinkRepo;
+use Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo;
 
 class Rooms
 {
@@ -269,20 +274,16 @@ HTML;
 
         return $content;
     }
-    function annotate_file(
+
+    public function annotate_file(
         RequestNonce $requestNonce,
         RoomRepo $roomRepo,
         string $room_id,
         string $file_id,
-    ): string
-    {
-        $html = "<h1>Need to place iframe here</h1>";
+    ): string {
 
-        $url = "/iframe/rooms/$room_id/file_annotate/$file_id";
-
-        $html .= "";
-        $html .= "<iframe class='text_note_iframe' src='$url' title='a file to note text in'></iframe>";
         $room = $roomRepo->getRoomById($room_id);
+        // TODO - check for null room
 
         $widget_data = encodeWidgetyData([
             'room_id' => $room_id,
@@ -293,7 +294,9 @@ HTML;
 <h1>:html_room_name</h1>
 <div class="text_note_layout">
   <span>
-    <iframe class='text_note_iframe' src='$url' title='A file to note text in'></iframe>
+    <iframe class='text_note_iframe' id="pdf_iframe"
+      src='/iframe/rooms/:attr_room_id/file_annotate/:attr_file_id' 
+      title='A file to note text in'></iframe>
   </span>
   <span>
     <div class='text_note_panel' data-widgety_json='$widget_data'></div>
@@ -303,6 +306,8 @@ HTML;
 
         $params = [
             ':html_room_name' => $room->getName(),
+            ':attr_file_id' => $file_id,
+            ':attr_room_id' => $room_id
         ];
 
         $content = esprintf($template, $params);
@@ -310,16 +315,27 @@ HTML;
         return $content;
     }
 
-    function iframe_show_file(
+    public function iframe_show_file(
         RequestNonce $requestNonce,
+        RoomRepo $roomRepo,
+        RoomFileRepo $roomFileRepo,
         string $room_id,
-        string $file_id,
+        string $file_id
+    ): IframeHtmlResponse|string {
+//        $room = $roomRepo->getRoomById($room_id);
+        $storedFile = $roomFileRepo->getFileDetails($room_id, $file_id);
 
-    ): IframeHtmlResponse
-    {
-        $html = "";
+        if ($storedFile === null) {
+            return "File not found.";
+        }
 
-        $html .= <<< HTML
+        $stored_file_url = getRouteForStoredFile($room_id, $storedFile);
+
+        $widget_data = encodeWidgetyData([
+            'stored_file_url' => $stored_file_url
+        ]);
+
+        $html = <<< HTML
 <!DOCTYPE html>
 
 <html lang="en">
@@ -327,11 +343,48 @@ HTML;
     <script src="/js/pdf/pdf.mjs" type="module"></script>
     <script src="/js/pdf_view.js" type="module"></script>
     <link rel="stylesheet" href="/css/pdf_viewer.css">
-    <div id="viewer" class="pdfViewer" />
+    <div id="viewer" class="pdfViewer" data-widgety_json='$widget_data' />
   </body>
 </html>
 HTML;
 
         return new IframeHtmlResponse($html);
+    }
+
+
+    public function handleAddSourceLink(
+        RoomRepo $roomRepo,
+        RoomFileRepo $roomFileRepo,
+        RoomSourceLinkRepo $roomSourceLinkRepo,
+        UserSession $appSession,
+        VarMap $varMap,
+        string $room_id,
+        string $file_id
+    ) {
+        $highLightParam = SourceLinkParam::createFromVarMap($varMap);
+
+        if ($appSession->isLoggedIn() !== true) {
+            $data = ['not logged in' => true];
+            return new JsonResponse($data, [], 400);
+        }
+
+        $data = json_decode_safe($highLightParam->highlights_json);
+
+        // We are just creating these objects to validate the data looks correct.
+        [$highlights, $validation_errors] = createArrayOfTypeOrError(SourceLinkHighlightParam::class, $data);
+
+        if ($validation_errors !== null) {
+            return createErrorJsonResponse($validation_errors);
+        }
+
+        $source_link_id = $roomSourceLinkRepo->addSourceLink(
+            $appSession->getUserId(),
+            $room_id,
+            $file_id,
+            $highLightParam->title,
+            $highLightParam->highlights_json
+        );
+
+        return $source_link_id;
     }
 }

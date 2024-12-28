@@ -3,7 +3,7 @@
 namespace Bristolian\Service\MemeStorage;
 
 use Bristolian\Filesystem\MemeFilesystem;
-use Bristolian\John\UserUploadedFile;
+use Bristolian\UserUploadedFile\UserUploadedFile;
 use Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo;
 use Bristolian\Repo\FileStorageInfoRepo\FileType;
 

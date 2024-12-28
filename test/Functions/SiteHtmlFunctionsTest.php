@@ -13,7 +13,7 @@ class SiteHtmlFunctionsTest extends BaseTestCase
     /**
      * @covers ::createPageHeaderHtml
      */
-    function test_createPageHeaderHtml()
+    public function test_createPageHeaderHtml()
     {
         $result = createPageHeaderHtml();
     }
@@ -21,7 +21,7 @@ class SiteHtmlFunctionsTest extends BaseTestCase
     /**
      * @covers ::createFooterHtml
      */
-    function test_createFooterHtml()
+    public function test_createFooterHtml()
     {
         $result = createFooterHtml();
     }
@@ -29,7 +29,7 @@ class SiteHtmlFunctionsTest extends BaseTestCase
     /**
      * @covers ::getPageLayoutHtml
      */
-    function test_getPageLayoutHtml()
+    public function test_getPageLayoutHtml()
     {
         $result = getPageLayoutHtml();
     }
@@ -37,7 +37,7 @@ class SiteHtmlFunctionsTest extends BaseTestCase
     /**
      * @covers ::createPageHtml
      */
-    function test_createPageHtml()
+    public function test_createPageHtml()
     {
         $assetLinkConfig = new \Bristolian\Config\HardCodedAssetLinkConfig(true, "abdefg");
         $assetLinkEmitter = new \Bristolian\AssetLinkEmitter($assetLinkConfig);
@@ -51,7 +51,7 @@ class SiteHtmlFunctionsTest extends BaseTestCase
     /**
      * @covers ::share_this_page
      */
-    function test_share_this_page()
+    public function test_share_this_page()
     {
         $_SERVER['HTTP_HOST']  = "www.example.com";
         $_SERVER['REQUEST_URI'] = "/hello";

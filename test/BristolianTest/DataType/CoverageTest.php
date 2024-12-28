@@ -14,18 +14,13 @@ use Bristolian\DataType\PasswordOrRandom;
 use Bristolian\DataType\QRData;
 use Bristolian\DataType\Table;
 
-
-
-
-
-
 /**
  * @coversNothing
  */
 class CoverageTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\DataType\BasicInteger
+     * @covers \Bristolian\DataType\SourceLinkPositionValue
      * @covers \Bristolian\DataType\BasicString
      * @covers \Bristolian\DataType\BasicDateTime
      * @covers \Bristolian\DataType\EmailAddress

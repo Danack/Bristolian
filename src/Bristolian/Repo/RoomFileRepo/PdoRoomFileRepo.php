@@ -4,7 +4,7 @@ namespace Bristolian\Repo\RoomFileRepo;
 
 use Bristolian\Model\AdminUser;
 use Bristolian\Model\StoredFile;
-use Bristolian\PdoSimple;
+use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 use Bristolian\BristolianException;
 use Bristolian\Database\room_file;

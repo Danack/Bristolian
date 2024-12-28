@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\MemeTagRepo;
 
 use Bristolian\DataType\MemeTagParam;
-use Bristolian\PdoSimple;
+use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 
 class PdoMemeTagRepo implements MemeTagRepo

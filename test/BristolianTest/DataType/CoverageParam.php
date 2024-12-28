@@ -6,7 +6,7 @@ use DataType\DataType;
 use DataType\Create\CreateFromVarMap;
 use DataType\GetInputTypesFromAttributes;
 
-use Bristolian\DataType\BasicInteger;
+use Bristolian\DataType\SourceLinkPositionValue;
 use Bristolian\DataType\BasicString;
 use Bristolian\DataType\Url;
 use Bristolian\DataType\Username;
@@ -18,12 +18,11 @@ use Bristolian\DataType\WebPushEndPoint;
 use Bristolian\DataType\WebPushExpirationTime;
 use Bristolian\DataType\PasswordOrRandom;
 
-
-
-
 /**
  * This is a class solely used for adding coverage to
  * InputTypes.
+ *
+ * @coversNothing
  */
 class CoverageParam implements DataType
 {
@@ -33,7 +32,7 @@ class CoverageParam implements DataType
     public function __construct(
         #[BasicString('string')]
         public string $string,
-        #[BasicInteger('integer')]
+        #[SourceLinkPositionValue('integer')]
         public int $integer,
         #[Url('url')]
         public string $url,
@@ -43,10 +42,8 @@ class CoverageParam implements DataType
         public \DateTimeInterface $datetime,
         #[EmailAddress('email_address')]
         public string $email_address,
-
         #[LinkTitle('link_title')]
         public string $link_title,
-
         #[LinkDescription('link_description')]
         public string $link_description,
         #[WebPushEndPoint('web_push_end_point')]

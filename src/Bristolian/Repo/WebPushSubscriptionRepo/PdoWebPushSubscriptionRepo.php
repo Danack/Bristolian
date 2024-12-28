@@ -4,7 +4,7 @@ namespace Bristolian\Repo\WebPushSubscriptionRepo;
 
 use Bristolian\DataType\WebPushSubscriptionParam;
 //use Bristolian\Model\User;
-use Bristolian\PdoSimple;
+use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Model\UserWebPushSubscription;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 

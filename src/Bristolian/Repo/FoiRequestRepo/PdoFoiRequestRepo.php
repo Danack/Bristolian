@@ -4,7 +4,7 @@ namespace Bristolian\Repo\FoiRequestRepo;
 
 use Bristolian\DataType\FoiRequestParam;
 use Bristolian\Model\FoiRequest;
-use Bristolian\PdoSimple;
+use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 
 class PdoFoiRequestRepo implements FoiRequestRepo

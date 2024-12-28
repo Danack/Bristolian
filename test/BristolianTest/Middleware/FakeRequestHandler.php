@@ -13,5 +13,4 @@ class FakeRequestHandler implements RequestHandlerInterface
     {
         return $response = new Response();
     }
-
 }

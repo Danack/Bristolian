@@ -1,6 +1,6 @@
 <?php
 
-namespace Bristolian\John;
+namespace Bristolian\UserUploadedFile;
 
 use Bristolian\App;
 use Bristolian\UserSession;

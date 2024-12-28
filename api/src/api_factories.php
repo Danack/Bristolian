@@ -34,17 +34,9 @@ function createJsonAppErrorHandler(
 function    createExceptionMiddlewareForApi(\Di\Injector $injector)
 {
     $exceptionHandlers = [
-//    \TypeSpec\Exception\ValidationException::class =>
-//           'paramsValidationExceptionMapperApi',
-
-    \DataType\Exception\ValidationException::class => 'convertValidationExceptionMapperApi',
-
-//        \Bristolian\Exception\DebuggingCaughtException::class => 'debuggingCaughtExceptionExceptionMapperForApi',
-
-        //        \ParseError::class => 'parseErrorMapper',
-
+        \DataType\Exception\ValidationException::class => 'convertValidationExceptionMapperApi',
+        \Bristolian\Exception\InvalidPermissionsException::class => 'convertInvalidPermissionsExceptionToResponse',
         \PDOException::class => 'pdoExceptionMapper',
-
         Slim\Exception\HttpNotFoundException::class => 'convertHttpNotFoundExceptionToResponse',
     ];
 
@@ -83,9 +75,14 @@ function createSlimAppForApi(
         /* ?MiddlewareDispatcherInterface */ $middlewareDispatcher = null
     );
 
+    // Slim processes middleware in a Last In, First Out (LIFO) order.
+    // This means the last middleware added is the first one to be executed.
+    // If you add multiple middleware components, they will be executed
+    // in the reverse order of their addition.
+    $app->add($injector->make(\Bristolian\Middleware\PermissionsCheckHtmlMiddleware::class));
+    $app->add($injector->make(\Bristolian\Middleware\AllowAllCors::class));
     $app->add($injector->make(\Bristolian\Middleware\ExceptionToJsonResponseMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\MemoryCheckMiddleware::class));
-    $app->add($injector->make(\Bristolian\Middleware\AllowAllCors::class));
 
     return $app;
 }

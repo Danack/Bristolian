@@ -3,7 +3,7 @@
 namespace BristolianTest;
 
 use Bristolian\CSPViolation\RedisCSPViolationStorage;
-use Bristolian\PdoSimple;
+use Bristolian\PdoSimple\PdoSimple;
 use BristolianTest\PdoSimpleTestObject;
 
 /**

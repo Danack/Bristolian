@@ -177,7 +177,7 @@ HTML;
     }
 
 
-    function route_explorer()
+    public function route_explorer()
     {
 
 

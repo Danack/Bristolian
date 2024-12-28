@@ -36,7 +36,9 @@ class ExceptionToErrorPageResponseMiddlewareTest extends BaseTestCase
         $request = new ServerRequest();
 
         $foo = new class($message) implements RequestHandler {
-            public function __construct() {}
+            public function __construct()
+            {
+            }
 
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
@@ -81,7 +83,9 @@ class ExceptionToErrorPageResponseMiddlewareTest extends BaseTestCase
         $request = new ServerRequest();
 
         $foo = new class($message) implements RequestHandler {
-            public function __construct(private string $message) {}
+            public function __construct(private string $message)
+            {
+            }
 
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
@@ -122,7 +126,9 @@ class ExceptionToErrorPageResponseMiddlewareTest extends BaseTestCase
         $request = new ServerRequest();
 
         $foo = new class($message) implements RequestHandler {
-            public function __construct(private string $message) {}
+            public function __construct(private string $message)
+            {
+            }
 
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
