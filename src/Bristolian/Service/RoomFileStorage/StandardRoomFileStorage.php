@@ -27,10 +27,9 @@ class StandardRoomFileStorage implements RoomFileStorage
 
     /**
      * @param string $user_id
-     * @param string $tmp_path
-     * @param int $filesize
-     * @param string $original_name
-     * @return array{0: true, 1: null}|array{0:false, 1:string}
+     * @param string $room_id
+     * @param UploadedFile $uploadedFile
+     * @return ObjectStoredFileInfo|UploadError
      */
     public function storeFileForRoomAndUser(
         string $user_id,

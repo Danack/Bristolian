@@ -6,7 +6,13 @@ use Bristolian\Config\Config;
 use Bristolian\BristolianException;
 use PDO;
 
-function generate_table_helper_class($tableName, $columns)
+/**
+ * @param string $tableName
+ * @param array $columns
+ * @return void
+ * @throws \Safe\Exceptions\FilesystemException
+ */
+function generate_table_helper_class(string $tableName, array $columns): void
 {
     $output_filename = __DIR__ . "/../../Bristolian/Database/" . $tableName . ".php";
 
@@ -53,16 +59,6 @@ function generate_table_helper_class($tableName, $columns)
 
     $contents .= "}\n";
 
-
-
-
-
-
-
-
-
-
-
     \Safe\file_put_contents($output_filename, $contents);
 }
 
@@ -79,7 +75,7 @@ class GenerateFiles
      * between the front and backend e.g. the name for the field on a form that uploads
      * a file.
      */
-    public function generateJavaScriptConstants()
+    public function generateJavaScriptConstants(): void
     {
         $output_filename = __DIR__ . "/../../../app/public/tsx/generated/constants.tsx";
 
@@ -87,8 +83,10 @@ class GenerateFiles
             'MEME_FILE_UPLOAD_FORM_NAME' => \Bristolian\AppController\MemeUpload::MEME_FILE_UPLOAD_FORM_NAME,
             'ROOM_FILE_UPLOAD_FORM_NAME' => \Bristolian\AppController\Rooms::ROOM_FILE_UPLOAD_FORM_NAME,
 
-            'SOURCE_LINK_MINIMUM_LENGTH' => \Bristolian\DataType\SourceLinkHighlightsJson::MINIMUM_LENGTH,
-            'SOURCE_LINK_MAXIMUM_LENGTH' => \Bristolian\DataType\SourceLinkHighlightsJson::MAXIMUM_LENGTH,
+            'SOURCELINK_JSON_MINIMUM_LENGTH' => \Bristolian\DataType\SourceLinkHighlightsJson::MINIMUM_LENGTH,
+            'SOURCELINK_JSON_MAXIMUM_LENGTH' => \Bristolian\DataType\SourceLinkHighlightsJson::MAXIMUM_LENGTH,
+
+            'SOURCELINK_TEX_MAXIMUM_LENGTH' => \Bristolian\DataType\SourceLinkText::MAXIMUM_LENGTH,
 
             'SOURCE_LINK_MAX_PAGES' => \Bristolian\DataType\SourceLinkPage::MAX_PAGES,
         ];

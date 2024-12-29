@@ -11,7 +11,7 @@ class FakeRequestSessionStorage implements RequestSessionStorage
     {
     }
 
-    public function store(\Asm\Session $session)
+    public function store(\Asm\Session $session): void
     {
         $this->session = $session;
     }

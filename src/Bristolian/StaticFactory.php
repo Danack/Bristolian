@@ -6,5 +6,5 @@ use Psr\Http\Message\ServerRequestInterface;
 
 interface StaticFactory
 {
-    public static function createFromRequest(ServerRequestInterface $request);
+    public static function createFromRequest(ServerRequestInterface $request): object;
 }

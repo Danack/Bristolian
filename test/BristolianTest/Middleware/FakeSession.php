@@ -15,6 +15,14 @@ class FakeSession implements Session
     }
 
 
+    /**
+     * @param string $privacy
+     * @param string|null $path
+     * @param string|null $domain
+     * @param bool $secure
+     * @param bool $httpOnly
+     * @return array{0:string, 1:string}
+     */
     public function getHeaders(
         string $privacy,
         ?string $path = null,

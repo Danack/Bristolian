@@ -30,7 +30,7 @@ class FakeLinkRepoTest extends BaseTestCase
         // Check adding link works
         $link_id_1 = $linkRepo->store_link($user_id, $url_1);
         $link_id_2 = $linkRepo->store_link($user_id, $url_2);
-        $links = $linkRepo->getStoredLinks($room_id);
+        $links = $linkRepo->getStoredLinks();
         $this->assertCount(2, $links);
 
         $expected_1 = [

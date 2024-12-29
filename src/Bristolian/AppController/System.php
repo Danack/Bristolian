@@ -139,7 +139,7 @@ HTML;
         return $table_info;
     }
 
-    public function debugging()
+    public function debugging(): string
     {
         $output = null;
         $result_code = 0;
@@ -177,13 +177,9 @@ HTML;
     }
 
 
-    public function route_explorer()
+    public function route_explorer(): string
     {
-
-
         $app_routes = getAllAppRoutes();
-
-
         $html = "<h2>Routes</h2>";
 
         $headers = [

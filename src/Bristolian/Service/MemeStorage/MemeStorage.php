@@ -8,9 +8,7 @@ interface MemeStorage
 {
     /**
      * @param string $user_id
-     * @param string $tmp_path
-     * @param int $filesize
-     * @param string $original_name
+     * @param UserUploadedFile $file
      * @return array{0: true, 1: null}|array{0:false, 1:string}
      */
     public function storeMemeForUser(

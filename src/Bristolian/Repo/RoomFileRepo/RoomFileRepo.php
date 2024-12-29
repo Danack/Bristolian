@@ -9,8 +9,12 @@ use Bristolian\Model\StoredFile;
  */
 interface RoomFileRepo
 {
-    public function addFileToRoom(string $fileStorageId, string $room_id);
+    public function addFileToRoom(string $fileStorageId, string $room_id): void;
 
+    /**
+     * @param string $room_id
+     * @return string[]
+     */
     public function getFilesForRoom(string $room_id);
 
     /**

@@ -15,13 +15,16 @@ class SourceLinkParam implements DataType
 
     /**
      * @param string $title
-     * @param SourceLinkHighlightParam[] $highlights
+     * @param string $highlights_json
+     * @param string $text
      */
     public function __construct(
         #[SourceLinkTitle('title')]
         public readonly string $title,
         #[SourceLinkHighlightsJson('highlights_json')]
         public readonly string $highlights_json,
+        #[SourceLinkText('text')]
+        public readonly string $text,
     ) {
     }
 }

@@ -14,6 +14,12 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 class ContentSecurityPolicyMiddleware implements MiddlewareInterface
 {
+    /**
+     * @param RequestNonce $requestNonce
+     * @param string[] $connectSrcDomains
+     * @param string[] $scriptSrcDomains
+     * @param string[] $frameSrcDomains
+     */
     public function __construct(
         private RequestNonce $requestNonce,
         private array $connectSrcDomains,

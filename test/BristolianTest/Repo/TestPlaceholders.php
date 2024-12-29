@@ -13,6 +13,8 @@ use Bristolian\Model\Room;
 use Bristolian\Repo\RoomRepo\PdoRoomRepo;
 use Bristolian\Repo\FileStorageInfoRepo\PdoFileStorageInfoRepo;
 use Bristolian\UploadedFiles\UploadedFile;
+use DI\ConfigException;
+use DI\InjectionException;
 use VarMap\VarMap;
 use Bristolian\UserSession;
 
@@ -26,9 +28,9 @@ trait TestPlaceholders
 {
     /**
      * @param Object[] $testDoubles
-     * @return void
-     * @throws \DI\ConfigException
-     * @throws \DI\InjectionException
+     * @return UserSession
+     * @throws ConfigException
+     * @throws InjectionException
      */
     protected function initLoggedInUser(array $testDoubles): UserSession
     {

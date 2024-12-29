@@ -6,7 +6,7 @@ use Mailgun\Mailgun;
 
 class Email
 {
-    public function testEmail(Mailgun $mailgun)
+    public function testEmail(Mailgun $mailgun): void
     {
         $params = [
             'from'    => 'test@mail.bristolian.org',

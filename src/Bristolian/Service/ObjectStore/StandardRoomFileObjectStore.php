@@ -13,7 +13,7 @@ class StandardRoomFileObjectStore implements RoomFileObjectStore
     {
     }
 
-    public function upload(string $filename, string $contents)
+    public function upload(string $filename, string $contents): void
     {
         $this->roomFileFilesystem->write($filename, $contents);
     }

@@ -4,6 +4,9 @@ namespace Bristolian\Basic;
 
 class FakeErrorLogger implements ErrorLogger
 {
+    /**
+     * @var array string[]
+     */
     private array $log_lines = [];
 
     public function log(string $string): void
@@ -12,7 +15,7 @@ class FakeErrorLogger implements ErrorLogger
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getLogLines(): array
     {

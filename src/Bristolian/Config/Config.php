@@ -5,7 +5,7 @@ namespace Bristolian\Config;
 use Bristolian\App;
 use Bristolian\Data\DatabaseUserConfig;
 
-class Config implements GetCommitSha, ForceAssetRefresh
+class Config implements AssetLinkEmitterConfig
 {
     const BRISTOLIAN_ASSETS_FORCE_REFRESH = 'bristol_org.force_assets_refresh';
     const BRISTOLIAN_COMMIT_SHA = 'bristol_org.sha';
@@ -122,7 +122,7 @@ class Config implements GetCommitSha, ForceAssetRefresh
         );
     }
 
-    public function getDatabaseSchema()
+    public function getDatabaseSchema(): string
     {
         return $this->get(self::BRISTOLIAN_SQL_DATABASE);
     }

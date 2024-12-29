@@ -8,5 +8,5 @@ namespace Bristolian\Service\ObjectStore;
  */
 interface FileObjectStore
 {
-    public function upload(string $filename, string $contents);
+    public function upload(string $filename, string $contents): void;
 }

@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class Login
 {
-    public function logout(AppSession $appSession)
+    public function logout(AppSession $appSession): RedirectResponse
     {
         $appSession->destroy_session();
 

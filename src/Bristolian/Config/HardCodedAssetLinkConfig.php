@@ -2,7 +2,7 @@
 
 namespace Bristolian\Config;
 
-class HardCodedAssetLinkConfig implements ForceAssetRefresh, GetCommitSha
+class HardCodedAssetLinkConfig implements AssetLinkEmitterConfig
 {
     public function __construct(
         private bool $forceAssetRefresh,

@@ -12,7 +12,7 @@ use SlimDispatcher\Response\JsonResponse;
 class OpenApiGenerator
 {
     // https://swagger.io/docs/specification/basic-structure/
-    public function getApiData()
+    public function getApiData(): array
     {
         $basicData = [
             'openapi' => '3.1.0',
@@ -29,7 +29,7 @@ class OpenApiGenerator
     }
 
 
-    public function getPathsData()
+    public function getPathsData(): array
     {
         $data = [
         '/users/{id}' => [
@@ -77,7 +77,7 @@ class OpenApiGenerator
 
 
 
-    public function getComponentsData()
+    public function getComponentsData(): array
     {
         $apiData = [
 //  # Reusable schemas (data models)

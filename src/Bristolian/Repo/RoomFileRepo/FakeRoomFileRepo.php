@@ -6,14 +6,21 @@ use Bristolian\Model\StoredFile;
 
 class FakeRoomFileRepo implements RoomFileRepo
 {
+    /**
+     * @var {0:string, 1:string}
+     */
     private $filesAndRooms = [];
 
-    public function addFileToRoom(string $fileStorageId, string $room_id)
+    public function addFileToRoom(string $fileStorageId, string $room_id): void
     {
         $this->filesAndRooms[] = [$fileStorageId, $room_id];
     }
 
-    public function getFilesForRoom(string $room_id)
+    /**
+     * @param string $room_id
+     * @return string[]
+     */
+    public function getFilesForRoom(string $room_id): array
     {
         $filesForRoom = [];
 

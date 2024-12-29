@@ -23,7 +23,7 @@ class PdoRoomLinkRepo implements RoomLinkRepo
     }
 
     // TODO - why are we passing IDs around and not objects?
-    public function addLinkToRoom(string $link_id, string $room_id)
+    public function addLinkToRoom(string $link_id, string $room_id): void
     {
         $sql = room_link::SELECT;
         $params = [
@@ -98,7 +98,7 @@ SQL;
 
     /**
      * @param string $room_id
-     * @return RoomLink[]
+     * @return array
      * @throws \ReflectionException
      */
     public function getLinksForRoom(string $room_id): array

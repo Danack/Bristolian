@@ -57,7 +57,7 @@ class PdoSimple
      * @return {0:bool, 1:false|PdoStatement}
      * @throws \Bristolian\PdoSimple\PdoSimpleException
      */
-    private function prepareAndExecute(string $query, array $params)
+    private function prepareAndExecute(string $query, array $params): array
     {
         try {
             $statement = $this->pdo->prepare($query);

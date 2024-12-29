@@ -13,7 +13,7 @@ TEXT;
     public static function errorHandlerFailedToReturnResponse(
         \Throwable $e,
         mixed $response
-    ) {
+    ): self {
         $message = sprintf(
             self::ERROR_HANDLER_FAILED_TO_RETURN_RESPONSE,
             get_class($e),

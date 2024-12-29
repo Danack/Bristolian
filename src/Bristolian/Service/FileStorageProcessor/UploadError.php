@@ -8,12 +8,12 @@ class UploadError
     {
     }
 
-    public static function uploadedFileUnreadable()
+    public static function uploadedFileUnreadable(): self
     {
         return new self("Failed to read temp uploaded file.");
     }
 
-    public static function unsupportedFileType()
+    public static function unsupportedFileType(): self
     {
         return new self("File type is unsupported.");
     }

@@ -7,7 +7,7 @@ class MailgunEmailHandler
 
     // https://bristolian.org/api/mail
 
-    public function handleIncomingEmail()
+    public function handleIncomingEmail(): void
     {
     }
 

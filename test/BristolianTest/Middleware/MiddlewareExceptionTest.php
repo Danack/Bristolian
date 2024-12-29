@@ -20,7 +20,7 @@ class MiddlewareExceptionTest extends BaseTestCase
      * @covers \Bristolian\Middleware\MiddlewareException
      * @dataProvider provides_works
      */
-    public function testWorks($value, $expected_contents)
+    public function testWorks(mixed $value, string $expected_contents)
     {
         $e = new \Exception("not used");
         $result = MiddlewareException::errorHandlerFailedToReturnResponse(

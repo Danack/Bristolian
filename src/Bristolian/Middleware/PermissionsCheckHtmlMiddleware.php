@@ -14,6 +14,9 @@ use function PHPUnit\Framework\stringStartsWith;
 
 class PermissionsCheckHtmlMiddleware
 {
+    /**
+     * @var string[]
+     */
     private $allowed_paths = [
         '/login',
         '/api/login-status'

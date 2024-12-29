@@ -11,6 +11,7 @@ declare (strict_types = 1);
  */
 
 use Aws\S3\S3Client;
+use Bristolian\Service\DeployLogRenderer\DeployLogRenderer;
 use DI\Injector;
 use Bristolian\Config\Config;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
@@ -296,10 +297,8 @@ function createRoomFileFilesystem(Config $config): \Bristolian\Filesystem\RoomFi
 /**
  * This is a generic (i.e. not app or api specific) function.
  *
- * @param Config $config
- * @return \Bristolian\Data\ApiDomain
  */
-function createDeployLogRenderer(Config $config)
+function createDeployLogRenderer(Config $config): DeployLogRenderer
 {
     if ($config->isProductionEnv()) {
         return new \Bristolian\Service\DeployLogRenderer\ProdDeployLogRenderer();
@@ -309,9 +308,11 @@ function createDeployLogRenderer(Config $config)
 }
 
 
-
-
-function createMailgun(Config $config)
+/**
+ * @param Config $config
+ * @return \Mailgun\Mailgun
+ */
+function createMailgun(Config $config): \Mailgun\Mailgun
 {
     $mg = \Mailgun\Mailgun::create(
         $config->getMailgunApiKey(),

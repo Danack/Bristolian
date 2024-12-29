@@ -33,7 +33,7 @@ class Rooms
 
     public const ROOM_FILE_UPLOAD_FORM_NAME = "room_file";
 
-    public function index(RoomRepo $roomRepo)
+    public function index(RoomRepo $roomRepo): string
     {
         $content = "<h1>List of rooms</h1>";
 
@@ -169,7 +169,7 @@ class Rooms
         RoomLinkRepo $roomLinkRepo,
         VarMap $varMap,
         string $room_id
-    ) {
+    ): JsonResponse {
         // TODO - check user logged in
         if ($appSession->isLoggedIn() !== true) {
             $data = ['not logged in' => true];
@@ -216,7 +216,7 @@ class Rooms
         RoomFileRepo $roomFileRepo,
         string $room_id,
         string $file_id
-    ) {
+    ): BristolianFileResponse {
         // TODO - validate room, probably
 
         $fileDetails = $roomFileRepo->getFileDetails($room_id, $file_id);
@@ -242,12 +242,12 @@ class Rooms
 
         // check file is available locally
         return new BristolianFileResponse(
-            $filenameToServe,
-            $fileDetails->original_filename
+            $filenameToServe
+//            $fileDetails->original_filename
         );
     }
 
-    public function showRoom(RoomRepo $roomRepo, $room_id)
+    public function showRoom(RoomRepo $roomRepo, string $room_id): string
     {
         $room = $roomRepo->getRoomById($room_id);
 
@@ -362,7 +362,7 @@ HTML;
         VarMap $varMap,
         string $room_id,
         string $file_id
-    ) {
+    ): StubResponse {
         $highLightParam = SourceLinkParam::createFromVarMap($varMap);
 
         if ($appSession->isLoggedIn() !== true) {
@@ -387,6 +387,10 @@ HTML;
             $highLightParam->highlights_json
         );
 
-        return $source_link_id;
+        $data = [
+            'sourcelink_id' => $source_link_id
+            ];
+
+        return createJsonResponse($data);
     }
 }

@@ -5,11 +5,10 @@ namespace BristolianTest\Repo\RoomLinkRepo;
 use Bristolian\DataType\LinkParam;
 use Bristolian\Model\RoomLink;
 use Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo;
+use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
-use PHPUnit\Framework\TestCase;
-use VarMap\ArrayVarMap;
 
-class PdoRoomLinkRepoTest extends TestCase
+class PdoRoomLinkRepoTest extends BaseTestCase
 {
     use TestPlaceholders;
 

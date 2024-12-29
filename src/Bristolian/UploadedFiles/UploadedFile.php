@@ -20,7 +20,7 @@ class UploadedFile
         // user control, and so neither should be used.
     }
 
-    public static function fromFile(string $filename)
+    public static function fromFile(string $filename): self
     {
         $fullpath = \Safe\realpath($filename);
         return new self(

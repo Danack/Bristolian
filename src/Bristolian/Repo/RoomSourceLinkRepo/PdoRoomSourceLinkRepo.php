@@ -23,13 +23,10 @@ class PdoRoomSourceLinkRepo implements RoomSourceLinkRepo
         $sql = \Bristolian\Database\sourcelink::INSERT;
 
         $params = [
-        ':id',
-        ':user_id',
-        ':file_id',
-        ':highlights_json'
-
-
-
+            ':id',
+            ':user_id',
+            ':file_id',
+            ':highlights_json'
         ];
 
 

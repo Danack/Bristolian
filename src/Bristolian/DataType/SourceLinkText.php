@@ -11,8 +11,10 @@ use DataType\ProcessRule\MaxLength;
 use DataType\ProcessRule\RangeStringLength;
 
 #[\Attribute]
-class SourceLinkHighlight implements HasInputType
+class SourceLinkText implements HasInputType
 {
+    public const MAXIMUM_LENGTH = 16 * 1024;
+
     public function __construct(
         private string $name
     ) {
@@ -23,7 +25,10 @@ class SourceLinkHighlight implements HasInputType
         return new InputType(
             $this->name,
             new GetString(),
-            new RangeStringLength(self::MINIMUM_LENGTH, self::MAXIMUM_LENGTH)
+            new RangeStringLength(
+                0,  // highlight could be a diagram?
+                self::MAXIMUM_LENGTH
+            )
         );
     }
 }

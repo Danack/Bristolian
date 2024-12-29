@@ -10,9 +10,8 @@ interface RoomFileStorage
 {
     /**
      * @param string $user_id
-     * @param string $tmp_path
-     * @param int $filesize
-     * @param string $original_name
+     * @param string $room_id
+     * @param UploadedFile $uploadedFile
      * @return ObjectStoredFileInfo|UploadError
      */
     public function storeFileForRoomAndUser(

@@ -7,10 +7,22 @@ parameters:
         - src/functions_opendocs.php
         - src/scrape.php
         - src/scrape_functions.php
+        - src/ModernGov/generate_types.php
+        - src/OpenApi/OpenApiGenerator.php
+        - src/Bristolian/CliController/GenerateFiles.php
     bootstrapFiles:
         - config.generated.php
         - credentials.php
+        - api/src/api_convert_exception_to_json_functions.php
+        - api/src/api_factories.php
+        - api/src/api_functions.php
+        - api/src/api_injection_params.php
         - api/src/api_routes.php
+        - app/src/app_convert_exception_to_html_functions.php
+        - app/src/app_factories.php
+        - app/src/app_functions.php
+        - app/src/app_injection_params.php
+        - app/src/app_routes.php
     ignoreErrors:
         -
           message: '#Method .* has no return type specified.#'

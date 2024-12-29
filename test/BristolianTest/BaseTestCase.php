@@ -69,7 +69,7 @@ class BaseTestCase extends TestCase
         return $this->injector->make($classname);
     }
 
-    public function assertNoProblems(ValidationResult $validationResult)
+    public function assertNoProblems(ValidationResult $validationResult): void
     {
         $validationProblems = $validationResult->getValidationProblems();
         $this->assertNoValidationProblems($validationProblems);
@@ -78,7 +78,7 @@ class BaseTestCase extends TestCase
     /**
      * @param \DataType\ValidationProblem[] $validationProblems
      */
-    public function assertNoValidationProblems(array $validationProblems)
+    public function assertNoValidationProblems(array $validationProblems): void
     {
         if (count($validationProblems) === 0) {
             return;

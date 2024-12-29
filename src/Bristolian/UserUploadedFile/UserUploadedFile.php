@@ -6,16 +6,16 @@ class UserUploadedFile
 {
     private string $tmp_name;
 
-    private $size;
+    private int $size;
 
-    private $name;
+    private string $name;
 
     /**
      * @param string $tmp_name
-     * @param $size
-     * @param $name
+     * @param int $size
+     * @param string $name
      */
-    public function __construct(string $tmp_name, $size, $name)
+    public function __construct(string $tmp_name, int $size, string $name)
     {
         $this->tmp_name = $tmp_name;
         $this->size = $size;
@@ -31,17 +31,17 @@ class UserUploadedFile
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getSize()
+    public function getSize(): int
     {
         return $this->size;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

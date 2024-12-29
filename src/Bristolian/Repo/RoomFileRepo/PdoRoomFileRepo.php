@@ -18,7 +18,7 @@ class PdoRoomFileRepo implements RoomFileRepo
     }
 
     // TODO - why are we passing IDs around and not objects?
-    public function addFileToRoom(string $fileStorageId, string $room_id)
+    public function addFileToRoom(string $fileStorageId, string $room_id): void
     {
         $sql = <<< SQL
 insert into room_file (

@@ -5,10 +5,11 @@ declare(strict_types = 1);
 namespace Bristolian;
 
 use Bristolian\Config\ForceAssetRefresh;
+use Bristolian\Config\AssetLinkEmitterConfig;
 
 class AssetLinkEmitter
 {
-    public function __construct(private ForceAssetRefresh $config)
+    public function __construct(private AssetLinkEmitterConfig $config)
     {
     }
 

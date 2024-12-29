@@ -17,7 +17,7 @@ class LocalCacheFilesystem extends Filesystem
         parent::__construct($adapter);
     }
 
-    public function getFullPath()
+    public function getFullPath(): string
     {
         return $this->rootLocation;
     }

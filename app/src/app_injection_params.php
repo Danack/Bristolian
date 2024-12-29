@@ -29,7 +29,10 @@ function injectionParams()
         \Bristolian\CSPViolation\CSPViolationStorage::class =>
           \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
 
-        \Bristolian\Config\ForceAssetRefresh::class =>
+//        \Bristolian\Config\ForceAssetRefresh::class =>
+//            \Bristolian\Config\Config::class,
+
+        \Bristolian\Config\AssetLinkEmitterConfig::class =>
             \Bristolian\Config\Config::class,
 
         Bristolian\Basic\ErrorLogger::class =>

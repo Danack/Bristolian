@@ -8,6 +8,13 @@ use Ramsey\Uuid\Uuid;
 
 class FakeWorksFileStorageProcessor implements FileStorageProcessor
 {
+    /**
+     * @param string $user_id
+     * @param UploadedFile $UploadedFile
+     * @param string[] $allowedExtensions
+     * @param FileObjectStore $fileObjectStore
+     * @return ObjectStoredFileInfo|UploadError
+     */
     public function storeFileForUser(
         string $user_id,
         UploadedFile $UploadedFile,

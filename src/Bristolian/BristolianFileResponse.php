@@ -10,9 +10,12 @@ use SlimDispatcher\Response\StubResponse;
 
 class BristolianFileResponse implements StubResponse
 {
-    /** @var array  */
+    /** @var array{0:string, 1:string}  */
     private $headers;
 
+    /**
+     * @var false|resource
+     */
     private $filehandle;
 
     /** @var string */
@@ -20,7 +23,7 @@ class BristolianFileResponse implements StubResponse
 
     public function __construct(
         string $filenameToServe,
-        string $userFacingFilename,
+//        string $userFacingFilename,
         array $headers = []
     ) {
         $standardHeaders = [
@@ -67,12 +70,15 @@ class BristolianFileResponse implements StubResponse
         return $contents;
     }
 
-    public function getHeaders() : array
+    /**
+     * @return array{0:string, 1:string}
+     */
+    public function getHeaders(): array
     {
         return $this->headers;
     }
 
-    public static function getMimeTypeFromFilename($filename)
+    public static function getMimeTypeFromFilename($filename): string
     {
         $contentTypesByExtension = [
             'jpg'  => 'image/jpg',
