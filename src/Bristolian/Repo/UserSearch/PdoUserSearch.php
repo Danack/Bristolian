@@ -33,6 +33,6 @@ SQL;
             ':limit_number' => UserSearch::MAX_SEARCH_RESULTS
         ];
 
-        return $this->pdoSimple->fetchAllAsScalar($sql, $params);
+        return $this->pdoSimple->fetchAllRowsAsScalar($sql, $params);
     }
 }

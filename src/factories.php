@@ -191,10 +191,14 @@ function createLocalFilesystem(): \Bristolian\Filesystem\LocalFilesystem
 
 function createLocalCacheFilesystem(): \Bristolian\Filesystem\LocalCacheFilesystem
 {
-    // SETUP
-    $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(__DIR__ . "/../data/cache");
-    $filesystem = new \Bristolian\Filesystem\LocalCacheFilesystem($adapter);
 
+    $rootLocation = __DIR__ . "/../data/cache";
+    $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter($rootLocation);
+
+    // LocalFilesystemAdapter has no way of reporting the location
+    // as we're just reading directly from disk in some places in the code
+    // we use an extension class to make life easier.
+    $filesystem = new \Bristolian\Filesystem\LocalCacheFilesystem($adapter, $rootLocation);
 
     return $filesystem;
 }

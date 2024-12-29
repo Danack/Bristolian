@@ -230,7 +230,9 @@ class Rooms
             $localCacheFilesystem->write($normalized_name, $contents);
         }
 
-        $filenameToServe = realpath(__DIR__ . "/../../../data/cache/" . $normalized_name);
+        $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;
+
+        $filenameToServe = realpath($localCacheFilename);
 
         if ($filenameToServe === false) {
             throw new BristolianException(

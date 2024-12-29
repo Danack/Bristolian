@@ -6,7 +6,9 @@ use Bristolian\DataType\WebPushSubscriptionParam;
 //use Bristolian\Model\User;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Model\UserWebPushSubscription;
+use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
+use Bristolian\PdoSimple\PdoSimpleException;
 
 class PdoWebPushSubscriptionRepo implements WebPushSubscriptionRepo
 {
@@ -86,7 +88,9 @@ SQL;
         try {
             $this->pdo_simple->insert($sql, $params);
         }
-        catch (\PDOException $pdoException) {
+        catch (PdoSimpleWithPreviousException $pswpe) {
+            $pdoException = $pswpe->getPreviousPdoException();
+
             // TODO - technically, this should check the message also.
             if ((int)$pdoException->getCode() === 23000) {
                 throw new UserConstraintFailedException(
@@ -97,7 +101,7 @@ SQL;
             }
 
             // Rethrow original exception as it wasn't a failure to insert.
-            throw $pdoException;
+            throw $pswpe;
         }
     }
 }

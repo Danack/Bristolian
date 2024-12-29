@@ -223,4 +223,12 @@ trait TestPlaceholders
 //
 //        return ContentPolicyViolationReport::fromCSPPayload($input);
 //    }
+
+
+    public function getTestString(): string
+    {
+        static $count = 0;
+        $count += 1;
+        return 'a test string: ' . time() . '_' . $count;
+    }
 }

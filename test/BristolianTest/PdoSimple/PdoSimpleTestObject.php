@@ -1,12 +1,11 @@
 <?php
 
-namespace BristolianTest;
+namespace BristolianTest\PdoSimple;
 
-use Bristolian\DataType\SourceLinkPositionValue;
 use Bristolian\DataType\BasicString;
-use Bristolian\FromArray;
-use DataType\Create\CreateFromRequest;
+use Bristolian\DataType\SourceLinkPositionValue;
 use DataType\Create\CreateFromArray;
+use DataType\Create\CreateFromRequest;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 

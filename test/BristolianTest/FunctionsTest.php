@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace BristolianTest;
 
+use BristolianTest\TestFixtures\ToArrayClass;
 use DataType\DataStorage\TestArrayDataStorage;
 use SlimDispatcher\Response\JsonResponse;
-use BristolianTest\TestFixtures\ToArrayClass;
 
 /**
  * @coversNothing
@@ -334,11 +334,11 @@ TEXT;
             'test_int' => $int_value
         ]];
 
-        $objects = convertToArrayOfObjects(\BristolianTest\PdoSimpleTestObject::class, $data);
+        $objects = convertToArrayOfObjects(PdoSimple\PdoSimpleTestObject::class, $data);
         $this->assertCount(1, $objects);
 
         $object = $objects[0];
-        $this->assertInstanceOf(\BristolianTest\PdoSimpleTestObject::class, $object);
+        $this->assertInstanceOf(PdoSimple\PdoSimpleTestObject::class, $object);
         $this->assertSame('foobar', $object->test_string);
         $this->assertSame($int_value, $object->test_int);
 
