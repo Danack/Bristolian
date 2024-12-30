@@ -2,6 +2,7 @@
 
 namespace Bristolian\UserUploadedFile;
 
+// TODO - this should be dead.
 class UserUploadedFile
 {
     private string $tmp_name;

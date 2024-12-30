@@ -379,17 +379,16 @@ HTML;
             return createErrorJsonResponse($validation_errors);
         }
 
-        $source_link_id = $roomSourceLinkRepo->addSourceLink(
+        $room_sourcelink_id = $roomSourceLinkRepo->addSourceLink(
             $appSession->getUserId(),
             $room_id,
             $file_id,
-            $highLightParam->title,
-            $highLightParam->highlights_json
+            $highLightParam
         );
 
         $data = [
-            'sourcelink_id' => $source_link_id
-            ];
+            'room_sourcelink_id' => $room_sourcelink_id
+        ];
 
         return createJsonResponse($data);
     }

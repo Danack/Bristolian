@@ -2,6 +2,7 @@
 
 namespace Bristolian\DataType;
 
+use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromRequest;
 use DataType\DataType;
 use DataType\Create\CreateFromVarMap;
@@ -9,6 +10,7 @@ use DataType\GetInputTypesFromAttributes;
 
 class SourceLinkParam implements DataType
 {
+    use CreateFromArray;
     use CreateFromRequest;
     use CreateFromVarMap;
     use GetInputTypesFromAttributes;

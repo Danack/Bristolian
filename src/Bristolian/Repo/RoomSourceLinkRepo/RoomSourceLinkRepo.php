@@ -3,6 +3,7 @@
 namespace Bristolian\Repo\RoomSourceLinkRepo;
 
 use Bristolian\DataType\SourceLinkHighlightParam;
+use Bristolian\DataType\SourceLinkParam;
 
 interface RoomSourceLinkRepo
 {
@@ -10,7 +11,6 @@ interface RoomSourceLinkRepo
         string $user_id,
         string $room_id,
         string $file_id,
-        string $title,
-        string $highlights_json
+        SourceLinkParam $sourceLinkParam
     ): string;
 }

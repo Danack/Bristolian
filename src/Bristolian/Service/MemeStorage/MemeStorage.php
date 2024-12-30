@@ -3,6 +3,7 @@
 namespace Bristolian\Service\MemeStorage;
 
 use Bristolian\UserUploadedFile\UserUploadedFile;
+use Bristolian\UploadedFiles\UploadedFile;
 
 interface MemeStorage
 {
@@ -13,6 +14,6 @@ interface MemeStorage
      */
     public function storeMemeForUser(
         string $user_id,
-        UserUploadedFile $file
+        UploadedFile $file
     ): array;
 }

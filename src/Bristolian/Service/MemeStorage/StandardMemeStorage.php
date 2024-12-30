@@ -5,7 +5,8 @@ namespace Bristolian\Service\MemeStorage;
 use Bristolian\Filesystem\MemeFilesystem;
 use Bristolian\UserUploadedFile\UserUploadedFile;
 use Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo;
-use Bristolian\Repo\FileStorageInfoRepo\FileType;
+//use Bristolian\Repo\FileStorageInfoRepo\FileType;
+use Bristolian\UploadedFiles\UploadedFile;
 
 function get_supported_file_extensions()
 {
@@ -65,7 +66,7 @@ class StandardMemeStorage implements MemeStorage
      */
     public function storeMemeForUser(
         string $user_id,
-        UserUploadedFile $file
+        UploadedFile $file
     ): array {
         $contents = file_get_contents($file->getTmpName());
         if ($contents === false) {
