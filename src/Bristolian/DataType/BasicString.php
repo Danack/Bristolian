@@ -2,12 +2,9 @@
 
 namespace Bristolian\DataType;
 
-use DataType\ExtractRule\GetInt;
-use DataType\InputType;
-use DataType\HasInputType;
 use DataType\ExtractRule\GetString;
-use DataType\ProcessRule\MinLength;
-use DataType\ProcessRule\MaxLength;
+use DataType\HasInputType;
+use DataType\InputType;
 
 #[\Attribute]
 class BasicString implements HasInputType

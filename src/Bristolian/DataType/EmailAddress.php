@@ -2,12 +2,12 @@
 
 namespace Bristolian\DataType;
 
-use DataType\InputType;
-use DataType\HasInputType;
 use DataType\ExtractRule\GetString;
-use DataType\ProcessRule\MinLength;
-use DataType\ProcessRule\MaxLength;
+use DataType\HasInputType;
+use DataType\InputType;
 use DataType\ProcessRule\IsEmail;
+use DataType\ProcessRule\MaxLength;
+use DataType\ProcessRule\MinLength;
 
 #[\Attribute]
 class EmailAddress implements HasInputType

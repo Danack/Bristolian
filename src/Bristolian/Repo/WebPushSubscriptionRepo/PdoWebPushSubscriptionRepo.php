@@ -3,12 +3,11 @@
 namespace Bristolian\Repo\WebPushSubscriptionRepo;
 
 use Bristolian\DataType\WebPushSubscriptionParam;
-//use Bristolian\Model\User;
-use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Model\UserWebPushSubscription;
+use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
-use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
-use Bristolian\PdoSimple\PdoSimpleException;
+
+//use Bristolian\Model\User;
 
 class PdoWebPushSubscriptionRepo implements WebPushSubscriptionRepo
 {

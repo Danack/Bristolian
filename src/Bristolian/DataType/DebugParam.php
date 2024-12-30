@@ -3,8 +3,8 @@
 namespace Bristolian\DataType;
 
 use DataType\Create\CreateFromRequest;
-use DataType\DataType;
 use DataType\Create\CreateFromVarMap;
+use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 
 class DebugParam implements DataType, \Bristolian\StaticFactory

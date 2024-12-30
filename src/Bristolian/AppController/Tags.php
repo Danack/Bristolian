@@ -2,11 +2,10 @@
 
 namespace Bristolian\AppController;
 
+use Bristolian\DataType\TagParam;
 use Bristolian\Repo\TagRepo\TagRepo;
 use SlimDispatcher\Response\RedirectResponse;
 use VarMap\VarMap;
-use Bristolian\DataType\TagParam;
-
 use function esprintf;
 
 class Tags

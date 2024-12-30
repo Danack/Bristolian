@@ -2,12 +2,12 @@
 
 namespace Bristolian\DataType;
 
-use DataType\InputType;
-use DataType\HasInputType;
-use DataType\ExtractRule\GetString;
-use DataType\ProcessRule\MinLength;
-use DataType\ProcessRule\MaxLength;
 use Bristolian\DataType\ProcessRule\RandomPasswordIfNullOrEmpty;
+use DataType\ExtractRule\GetString;
+use DataType\HasInputType;
+use DataType\InputType;
+use DataType\ProcessRule\MaxLength;
+use DataType\ProcessRule\MinLength;
 
 #[\Attribute]
 class PasswordOrRandom implements HasInputType

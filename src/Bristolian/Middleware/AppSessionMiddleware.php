@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Bristolian\Middleware;
 
+use Asm\RequestSessionStorage;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ServerRequestInterface as ServerRequest;
-use Asm\RequestSessionStorage;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 

@@ -2,11 +2,11 @@
 
 namespace Bristolian\DataType;
 
-use DataType\Create\CreateFromJson;
 use DataType\Create\CreateFromArray;
+use DataType\Create\CreateFromJson;
+use DataType\Create\CreateFromVarMap;
 use DataType\Create\CreateOrErrorFromArray;
 use DataType\DataType;
-use DataType\Create\CreateFromVarMap;
 use DataType\GetInputTypesFromAttributes;
 
 class WebPushSubscriptionParam implements DataType

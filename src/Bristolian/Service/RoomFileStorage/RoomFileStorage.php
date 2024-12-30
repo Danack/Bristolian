@@ -2,9 +2,9 @@
 
 namespace Bristolian\Service\RoomFileStorage;
 
-use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\Service\FileStorageProcessor\ObjectStoredFileInfo;
 use Bristolian\Service\FileStorageProcessor\UploadError;
+use Bristolian\UploadedFiles\UploadedFile;
 
 interface RoomFileStorage
 {

@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Bristolian\SiteHtml;
 
 use Bristolian\AssetLinkEmitter;
-use SlimDispatcher\Response\StubResponse;
 use SlimDispatcher\Response\HtmlResponse;
+use SlimDispatcher\Response\StubResponse;
 
 class PageStubResponseGenerator
 {

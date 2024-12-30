@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Bristolian\AppController;
 
-use Bristolian\SiteHtml\PageStubResponseGenerator;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Bristolian\DataType\DebugParam;
 use Bristolian\MarkdownRenderer\MarkdownRenderer;
 use Bristolian\Page;
+use Bristolian\SiteHtml\PageStubResponseGenerator;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use SlimDispatcher\Response\StubResponse;
-use Bristolian\DataType\DebugParam;
 
 class Pages
 {

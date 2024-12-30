@@ -5,9 +5,7 @@ declare(strict_types = 1);
 namespace Bristolian\ApiController;
 
 use Bristolian\CSPViolation\CSPViolationStorage;
-
 use SlimDispatcher\Response\JsonResponse;
-
 use VarMap\VarMap;
 
 class Csp

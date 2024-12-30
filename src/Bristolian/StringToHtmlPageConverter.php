@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Bristolian;
 
-use Bristolian\AssetLinkEmitter;
-
 // TODO - this needs an interface
 class StringToHtmlPageConverter
 {

@@ -2,9 +2,8 @@
 
 namespace Bristolian\Service\FileStorageProcessor;
 
-use Bristolian\UploadedFiles\UploadedFile;
-
 use Bristolian\Service\ObjectStore\FileObjectStore;
+use Bristolian\UploadedFiles\UploadedFile;
 
 /**
  * Processes a file, by checking it is valid, stores information

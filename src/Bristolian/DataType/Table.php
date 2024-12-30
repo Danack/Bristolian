@@ -2,10 +2,10 @@
 
 namespace Bristolian\DataType;
 
+use DataType\Create\CreateArrayOfTypeFromArray;
 use DataType\Create\CreateFromArray;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
-use DataType\Create\CreateArrayOfTypeFromArray;
 
 class Table implements DataType
 {

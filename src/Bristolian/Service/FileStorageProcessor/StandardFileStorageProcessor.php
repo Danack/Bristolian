@@ -2,9 +2,9 @@
 
 namespace Bristolian\Service\FileStorageProcessor;
 
-use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo;
 use Bristolian\Service\ObjectStore\FileObjectStore;
+use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
 
 class StandardFileStorageProcessor implements FileStorageProcessor

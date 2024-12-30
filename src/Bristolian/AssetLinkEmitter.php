@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Bristolian;
 
-use Bristolian\Config\ForceAssetRefresh;
 use Bristolian\Config\AssetLinkEmitterConfig;
 
 class AssetLinkEmitter

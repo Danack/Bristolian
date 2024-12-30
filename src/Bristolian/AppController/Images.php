@@ -2,8 +2,8 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\Filesystem\MemeFilesystem;
 use Bristolian\Filesystem\LocalCacheFilesystem;
+use Bristolian\Filesystem\MemeFilesystem;
 use SlimDispatcher\Response\ImageResponse;
 use SlimDispatcher\Response\StubResponse;
 

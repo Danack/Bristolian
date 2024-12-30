@@ -2,7 +2,6 @@
 
 namespace Bristolian\Repo\RoomSourceLinkRepo;
 
-use Bristolian\DataType\SourceLinkHighlightParam;
 use Bristolian\DataType\SourceLinkParam;
 
 interface RoomSourceLinkRepo

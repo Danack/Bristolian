@@ -2,8 +2,6 @@
 
 namespace Bristolian\PdoSimple;
 
-use PDOException;
-
 class PdoSimpleException extends \Exception
 {
     const TOO_MANY_COLUMNS_MESSAGE = "When using PdoSimple::fetchAllAsScalar one column only may be selected. You have %s selected in your query.";

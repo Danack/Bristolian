@@ -2,8 +2,6 @@
 
 namespace Bristolian\Model;
 
-use Bristolian\ToArray;
-
 class Meme
 {
     private string $id;

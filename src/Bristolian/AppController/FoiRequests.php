@@ -6,8 +6,6 @@ use Bristolian\DataType\FoiRequestParam;
 use Bristolian\Repo\FoiRequestRepo\FoiRequestRepo;
 use SlimDispatcher\Response\RedirectResponse;
 use VarMap\VarMap;
-use Bristolian\DataType\TagParam;
-
 use function esprintf;
 
 class FoiRequests

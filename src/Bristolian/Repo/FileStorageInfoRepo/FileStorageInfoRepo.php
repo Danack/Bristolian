@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\FileStorageInfoRepo;
 
-use \Bristolian\UploadedFiles\UploadedFile;
+use Bristolian\UploadedFiles\UploadedFile;
 
 /**
  * Stores information about a file in the local database.

@@ -2,16 +2,12 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\UserSession;
-use Bristolian\AppSession;
+use Bristolian\DataType\WebPushSubscriptionParam;
 use Bristolian\JsonInput\JsonInput;
-use DataType\Create\CreateOrErrorFromJson;
-use Minishlink\WebPush\WebPush;
-use Minishlink\WebPush\Subscription;
+use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
+use Bristolian\UserSession;
 use Minishlink\WebPush\VAPID;
 use SlimDispatcher\Response\JsonResponse;
-use Bristolian\DataType\WebPushSubscriptionParam;
-use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 
 class Notifications
 {

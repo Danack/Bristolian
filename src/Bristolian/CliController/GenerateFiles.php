@@ -2,8 +2,8 @@
 
 namespace Bristolian\CliController;
 
-use Bristolian\Config\Config;
 use Bristolian\BristolianException;
+use Bristolian\Config\Config;
 use PDO;
 
 /**

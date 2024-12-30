@@ -2,8 +2,8 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\Repo\UserRepo\UserRepo;
 use Bristolian\Repo\UserDocumentRepo\UserDocumentRepo;
+use Bristolian\Repo\UserRepo\UserRepo;
 
 class Users
 {

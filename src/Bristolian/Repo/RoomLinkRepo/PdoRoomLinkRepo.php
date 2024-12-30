@@ -2,17 +2,13 @@
 
 namespace Bristolian\Repo\RoomLinkRepo;
 
-use Bristolian\App;
-use Bristolian\DataType\LinkParam;
-use Bristolian\Model\AdminUser;
-use Bristolian\Model\StoredFile;
-use Bristolian\PdoSimple\PdoSimple;
-use Ramsey\Uuid\Uuid;
 use Bristolian\BristolianException;
 use Bristolian\Database\room_link;
-use Bristolian\Database\link as link;
+use Bristolian\DataType\LinkParam;
 use Bristolian\Model\RoomLink;
+use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\LinkRepo\LinkRepo;
+use Ramsey\Uuid\Uuid;
 
 class PdoRoomLinkRepo implements RoomLinkRepo
 {

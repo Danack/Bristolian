@@ -2,8 +2,8 @@
 
 namespace Bristolian\DataType;
 
-use DataType\DataType;
 use DataType\Create\CreateFromVarMap;
+use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 
 class FoiRequestParam implements DataType

@@ -2,12 +2,9 @@
 
 declare(strict_types = 1);
 
+use Bristolian\Model\StoredFile;
 use Bristolian\Types\DocumentType;
 use SlimDispatcher\Response\JsonNoCacheResponse;
-use VarMap\ArrayVarMap;
-use VarMap\VarMap;
-use Bristolian\ToArray;
-use Bristolian\Model\StoredFile;
 
 $injector = null;
 

@@ -2,7 +2,6 @@
 
 namespace Bristolian\Repo\WebPushSubscriptionRepo;
 
-use Bristolian\Model\User;
 use Bristolian\DataType\WebPushSubscriptionParam;
 
 interface WebPushSubscriptionRepo

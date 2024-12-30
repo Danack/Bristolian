@@ -2,7 +2,6 @@
 
 namespace Bristolian\Repo\LinkRepo;
 
-use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
 
 class FakeLinkRepo implements LinkRepo

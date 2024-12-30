@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Bristolian\Middleware;
 
 use Bristolian\BristolianException;
+use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Bristolian\SiteHtml\PageResponseGenerator;
-use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
 
 class ExceptionToJsonResponseMiddleware implements MiddlewareInterface
 {

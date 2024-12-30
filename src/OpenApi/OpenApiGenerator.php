@@ -2,8 +2,6 @@
 
 namespace OpenApi;
 
-use SlimDispatcher\Response\JsonResponse;
-
 /**
  * @codeCoverageIgnore
  *

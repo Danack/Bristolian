@@ -2,13 +2,11 @@
 
 namespace Bristolian\AppController;
 
-use VarMap\VarMap;
-
 use Bristolian\DataType\QRData;
 use Bristolian\Response\SVGResponse;
 use chillerlan\QRCode\QRCode as QRCodeGenerator;
 use chillerlan\QRCode\QROptions;
-use chillerlan\QRCode\Output\QROutputInterface;
+use VarMap\VarMap;
 
 class QRCode
 {

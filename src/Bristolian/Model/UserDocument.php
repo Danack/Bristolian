@@ -2,15 +2,14 @@
 
 namespace Bristolian\Model;
 
-use Bristolian\Types\DocumentType;
-
-use Bristolian\Types\UserList;
-use DataType\SafeAccess;
-use DataType\Create\CreateFromVarMap;
-use DataType\Create\CreateArrayOfTypeFromArray;
-use DataType\GetInputTypesFromAttributes;
 use Bristolian\DataType\BasicString;
+use Bristolian\Types\DocumentType;
+use Bristolian\Types\UserList;
+use DataType\Create\CreateArrayOfTypeFromArray;
+use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
+use DataType\GetInputTypesFromAttributes;
+use DataType\SafeAccess;
 
 class UserDocument implements DataType
 {

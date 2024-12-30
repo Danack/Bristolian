@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Bristolian\Model;
 
 use Bristolian\ToArray;
-use DateTime;
 
 class AdminUser
 {

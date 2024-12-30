@@ -3,16 +3,15 @@
 namespace Bristolian\AppController;
 
 use Bristolian\AppSession;
-use Bristolian\Service\MemeStorage\MemeStorage;
+use Bristolian\DataType\MemeTagDeleteParam;
+use Bristolian\DataType\MemeTagParam;
+use Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo;
+use Bristolian\Repo\MemeTagRepo\MemeTagRepo;
 use Bristolian\UserSession;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
-use Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo;
-use Bristolian\DataType\MemeTagParam;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Bristolian\Repo\MemeTagRepo\MemeTagRepo;
-use Bristolian\DataType\MemeTagDeleteParam;
 
 class User
 {

@@ -4,13 +4,12 @@ declare(strict_types = 1);
 
 namespace Bristolian\AppController;
 
-use Bristolian\Data\ContentPolicyViolationReport;
-use SlimDispatcher\Response\JsonNoCacheResponse;
-use SlimDispatcher\Response\HtmlResponse;
-use Bristolian\CSPViolation\CSPViolationReporter;
 use Bristolian\CSPViolation\CSPViolationStorage;
-use SlimDispatcher\Response\TextResponse;
+use Bristolian\Data\ContentPolicyViolationReport;
 use Bristolian\JsonInput\JsonInput;
+use SlimDispatcher\Response\HtmlResponse;
+use SlimDispatcher\Response\JsonNoCacheResponse;
+use SlimDispatcher\Response\TextResponse;
 
 class ContentSecurityPolicy
 {

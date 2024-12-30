@@ -3,11 +3,10 @@
 namespace Bristolian\AppController;
 
 use Bristolian\AppSession;
-use SlimDispatcher\Response\JsonResponse;
 use Bristolian\Repo\UserSearch\UserSearch;
-use SlimDispatcher\Response\RedirectResponse;
-use VarMap\VarMap;
 use Bristolian\UserNotifier\UserNotifier;
+use SlimDispatcher\Response\JsonResponse;
+use VarMap\VarMap;
 
 class Admin
 {

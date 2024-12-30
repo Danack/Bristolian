@@ -2,8 +2,8 @@
 
 namespace Bristolian\App;
 
-use Asm\Session;
 use Asm\RequestSessionStorage;
+use Asm\Session;
 
 class StandardRequestSessionStorage implements RequestSessionStorage
 {

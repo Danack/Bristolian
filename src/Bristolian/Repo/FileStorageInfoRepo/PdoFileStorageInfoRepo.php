@@ -2,11 +2,11 @@
 
 namespace Bristolian\Repo\FileStorageInfoRepo;
 
+use Bristolian\Database\stored_file;
+use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
-use Bristolian\PdoSimple\PdoSimple;
-use Bristolian\Database\stored_file;
 
 class PdoFileStorageInfoRepo implements FileStorageInfoRepo
 {

@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Bristolian\SiteHtml;
 
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
 use Bristolian\AssetLinkEmitter;
+use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
+use Psr\Http\Message\ResponseInterface as Response;
 
 class PageResponseGenerator
 {

@@ -2,16 +2,21 @@
 
 namespace Bristolian;
 
+use Asm\RequestSessionStorage;
 use Asm\Session;
 use Asm\SessionManager;
+use Bristolian\Model\AdminUser;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Asm\RequestSessionStorage;
 
 /**
  * ONLY A SINGLE INSTANCE OF THIS CLASS SHOULD BE CREATED PER REQUEST
  */
 class AppSessionManager
 {
+    /**
+     * The underlying 'raw' session that is not aware of the application
+     * @var Session|null
+     */
     private Session|null $session = null;
 
     public function __construct(
@@ -24,7 +29,7 @@ class AppSessionManager
     /**
      * @return void
      */
-    public function deleteSession()
+    public function deleteSession(): void
     {
         $session = $this->sessionStorage->get();
 
@@ -90,4 +95,15 @@ class AppSessionManager
 
         return $session;
     }
+
+
+    public function createSessionForUser(AdminUser $user): void
+    {
+        $this->session = $this->createSession();
+
+        $this->session->set(self::USER_ID, $user_id);
+        $this->session->set(self::USERNAME, $username);
+
+    }
+
 }

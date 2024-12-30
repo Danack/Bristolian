@@ -6,7 +6,6 @@ namespace Bristolian\Middleware;
 
 use Bristolian\App;
 use Bristolian\Service\RequestNonce;
-use Bristolian\Data\ApiDomain;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;

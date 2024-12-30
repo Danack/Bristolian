@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Bristolian\ApiController;
 
-use Bristolian\Exception\DebuggingUncaughtException;
 use Bristolian\Exception\DebuggingCaughtException;
+use Bristolian\Exception\DebuggingUncaughtException;
 use SlimDispatcher\Response\JsonResponse;
 
 class Debug

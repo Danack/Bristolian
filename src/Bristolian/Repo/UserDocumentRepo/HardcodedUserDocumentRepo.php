@@ -4,7 +4,6 @@ namespace Bristolian\Repo\UserDocumentRepo;
 
 use Bristolian\Model\User;
 use Bristolian\Model\UserDocument;
-use Bristolian\Types\DocumentType;
 use Bristolian\Types\UserList;
 
 class HardcodedUserDocumentRepo implements UserDocumentRepo

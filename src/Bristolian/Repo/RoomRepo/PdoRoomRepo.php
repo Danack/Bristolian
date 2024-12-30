@@ -2,11 +2,10 @@
 
 namespace Bristolian\Repo\RoomRepo;
 
-use Bristolian\Model\AdminUser;
+use Bristolian\BristolianException;
 use Bristolian\Model\Room;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
-use Bristolian\BristolianException;
 
 class PdoRoomRepo implements RoomRepo
 {

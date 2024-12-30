@@ -4,7 +4,6 @@ namespace Bristolian;
 
 use Asm\Session;
 use Bristolian\Model\AdminUser;
-use Psr\Http\Message\ServerRequestInterface as Request;
 
 class AppSession implements UserSession
 {

@@ -6,7 +6,6 @@ namespace BristolianTest\AppController;
 
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
-use Bristolian\AppSession;
 use Bristolian\JsonInput\JsonInput;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use BristolianTest\Repo\TestPlaceholders;

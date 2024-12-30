@@ -2,9 +2,9 @@
 
 namespace Bristolian\DataType;
 
-use DataType\InputType;
-use DataType\HasInputType;
 use DataType\ExtractRule\GetStringOrNull;
+use DataType\HasInputType;
+use DataType\InputType;
 
 #[\Attribute]
 class WebPushExpirationTime implements HasInputType

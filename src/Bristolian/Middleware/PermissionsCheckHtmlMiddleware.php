@@ -5,12 +5,11 @@ declare(strict_types = 1);
 namespace Bristolian\Middleware;
 
 use Asm\RequestSessionStorage;
-use Bristolian\AppSession;
+use Bristolian\AppSessionManager;
+use Bristolian\Exception\InvalidPermissionsException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Bristolian\Exception\InvalidPermissionsException;
-use function PHPUnit\Framework\stringStartsWith;
 
 class PermissionsCheckHtmlMiddleware
 {
@@ -22,8 +21,10 @@ class PermissionsCheckHtmlMiddleware
         '/api/login-status'
     ];
 
-    public function __construct(private RequestSessionStorage $sessionStorage)
-    {
+    public function __construct(
+        private RequestSessionStorage $sessionStorage,
+        private AppSessionManager $appSessionManager
+    ) {
     }
 
     /**
@@ -46,7 +47,8 @@ class PermissionsCheckHtmlMiddleware
         }
 
         if ($check_logged_in === true) {
-            $session = $this->sessionStorage->get();
+            $this->appSessionManager->getCurrentSession();
+//            $session = $this->sessionStorage->get();
             if ($session === null) {
                 throw new InvalidPermissionsException();
             }

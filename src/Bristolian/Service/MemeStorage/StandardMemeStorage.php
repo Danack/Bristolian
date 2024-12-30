@@ -3,10 +3,10 @@
 namespace Bristolian\Service\MemeStorage;
 
 use Bristolian\Filesystem\MemeFilesystem;
-use Bristolian\UserUploadedFile\UserUploadedFile;
 use Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo;
-//use Bristolian\Repo\FileStorageInfoRepo\FileType;
 use Bristolian\UploadedFiles\UploadedFile;
+
+//use Bristolian\Repo\FileStorageInfoRepo\FileType;
 
 function get_supported_file_extensions()
 {

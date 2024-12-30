@@ -4,19 +4,18 @@ declare(strict_types = 1);
 
 namespace Bristolian\MarkdownRenderer;
 
-use League\CommonMark\Extension\Autolink\AutolinkExtension;
+use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\Autolink\UrlAutolinkParser;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\DisallowedRawHtml\DisallowedRawHtmlExtension;
+use League\CommonMark\Extension\Footnote\FootnoteExtension;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
+use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
 use League\CommonMark\Extension\Strikethrough\StrikethroughExtension;
 use League\CommonMark\Extension\Table\TableExtension;
 use League\CommonMark\Extension\TaskList\TaskListExtension;
-use League\CommonMark\Environment\Environment;
-use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
-use League\CommonMark\Normalizer\SlugNormalizer;
 use League\CommonMark\MarkdownConverter;
-use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
-use League\CommonMark\Extension\Footnote\FootnoteExtension;
+use League\CommonMark\Normalizer\SlugNormalizer;
 
 class CommonMarkRenderer implements MarkdownRenderer
 {

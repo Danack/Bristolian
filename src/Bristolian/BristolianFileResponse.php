@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Bristolian;
 
-use SlimDispatcher\SlimDispatcherException;
 use SlimDispatcher\Response\ResponseException;
 use SlimDispatcher\Response\StubResponse;
 

@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Bristolian\CliController;
 
 use Bristolian\Config\Config;
-use PDO;
 use Bristolian\DataType\Migration;
+use PDO;
 use function DataType\createArrayOfType;
 
 function require_all_migration_files(): int

@@ -5,11 +5,9 @@ declare(strict_types = 1);
 namespace Bristolian\AppErrorHandler;
 
 use Bristolian\App;
+use Bristolian\AssetLinkEmitter;
 use Bristolian\Basic\ErrorLogger;
 use SlimDispatcher\Response\HtmlResponse;
-use Bristolian\Page;
-use Bristolian\AssetLinkEmitter;
-
 use function SlimDispatcher\mapStubResponseToPsr7;
 
 class HtmlErrorHandlerForLocalDev implements AppErrorHandler

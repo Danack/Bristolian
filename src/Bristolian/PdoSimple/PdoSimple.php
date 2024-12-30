@@ -4,11 +4,8 @@ declare(strict_types = 1);
 
 namespace Bristolian\PdoSimple;
 
-use Bristolian\PdoSimple\PdoSimpleException;
 use PDO;
-use Bristolian\PdoSimple\RowNotFoundException;
 use PDOException;
-use function DataType\createArrayOfType;
 
 class PdoSimple
 {

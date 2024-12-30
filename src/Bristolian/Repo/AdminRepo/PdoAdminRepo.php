@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Bristolian\Repo\AdminRepo;
 
-use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\DataType\CreateUserParams;
 use Bristolian\Model\AdminUser;
+use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 
 class PdoAdminRepo implements AdminRepo

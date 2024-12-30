@@ -6,7 +6,6 @@ namespace Bristolian\AppErrorHandler;
 
 use Bristolian\AssetLinkEmitter;
 use Bristolian\Basic\ErrorLogger;
-use Bristolian\Page;
 
 class HtmlErrorHandlerForProd implements AppErrorHandler
 {

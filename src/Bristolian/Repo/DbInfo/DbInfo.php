@@ -2,8 +2,8 @@
 
 namespace Bristolian\Repo\DbInfo;
 
-use Bristolian\DataType\Table;
 use Bristolian\DataType\Migration;
+use Bristolian\DataType\Table;
 
 /**
  * Interface for getting simple DB schema info.

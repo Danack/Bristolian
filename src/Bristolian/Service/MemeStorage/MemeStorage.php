@@ -2,8 +2,8 @@
 
 namespace Bristolian\Service\MemeStorage;
 
-use Bristolian\UserUploadedFile\UserUploadedFile;
 use Bristolian\UploadedFiles\UploadedFile;
+use Bristolian\UserUploadedFile\UserUploadedFile;
 
 interface MemeStorage
 {

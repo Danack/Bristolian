@@ -6,8 +6,8 @@ namespace Bristolian\CliController;
 
 use Bristolian\DataType\CreateUserParams;
 use Bristolian\Repo\AdminRepo\AdminRepo;
-use VarMap\VarMap;
 use Bristolian\Repo\AdminRepo\DuplicateEntryException;
+use VarMap\VarMap;
 
 class Admin
 {

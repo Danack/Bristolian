@@ -2,11 +2,9 @@
 
 namespace Bristolian\AppController;
 
-use Asm\SessionManager;
 use Bristolian\AppSession;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use SlimDispatcher\Response\RedirectResponse;
-use Psr\Http\Message\ServerRequestInterface as Request;
 
 class Login
 {

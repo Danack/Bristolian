@@ -2,11 +2,10 @@
 
 namespace Bristolian\Repo\LinkRepo;
 
-use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
-use Bristolian\UploadedFiles\UploadedFile;
-use Ramsey\Uuid\Uuid;
-use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Database\link;
+use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
+use Ramsey\Uuid\Uuid;
 
 class PdoLinkRepo implements LinkRepo
 {

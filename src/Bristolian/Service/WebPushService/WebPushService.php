@@ -2,8 +2,8 @@
 
 namespace Bristolian\Service\WebPushService;
 
-use Bristolian\Model\WebPushNotification;
 use Bristolian\Model\UserWebPushSubscription;
+use Bristolian\Model\WebPushNotification;
 
 interface WebPushService
 {

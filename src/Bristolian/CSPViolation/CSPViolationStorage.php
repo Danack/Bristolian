@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Bristolian\CSPViolation;
 
-use Bristolian\CSPViolation\CSPViolationReporter;
 use Bristolian\Data\ContentPolicyViolationReport;
 
 interface CSPViolationStorage extends CSPViolationReporter

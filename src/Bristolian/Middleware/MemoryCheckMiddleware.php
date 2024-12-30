@@ -6,11 +6,11 @@ namespace Bristolian\Middleware;
 
 //use Psr\Http\Message\ResponseInterface;
 use Bristolian\Service\MemoryWarningCheck\MemoryWarningCheck;
-//use Psr\Http\Message\ServerRequestInterface as Request;
-
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+
+//use Psr\Http\Message\ServerRequestInterface as Request;
 
 // Check to make sure that not too much memory is being used.
 // in dev, just return an error.

@@ -3,8 +3,8 @@
 namespace Bristolian\Repo\DbInfo;
 
 use Bristolian\DataType\Migration;
-use PDO;
 use Bristolian\DataType\Table;
+use PDO;
 
 class PdoDbInfo implements DbInfo
 {

@@ -2,8 +2,6 @@
 
 namespace Bristolian\Model;
 
-use Bristolian\DataType\TagParam;
-
 //class MemeTag
 //{
 //    private string $tag_id;
