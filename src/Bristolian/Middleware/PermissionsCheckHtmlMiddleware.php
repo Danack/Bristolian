@@ -22,8 +22,8 @@ class PermissionsCheckHtmlMiddleware
     ];
 
     public function __construct(
-//        private \DI\Injector $injector,
-//        private RequestSessionStorage $sessionStorage,
+        //        private \DI\Injector $injector,
+        //        private RequestSessionStorage $sessionStorage,
         private AppSessionManager $appSessionManager
     ) {
     }

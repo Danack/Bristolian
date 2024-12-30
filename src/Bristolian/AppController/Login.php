@@ -10,10 +10,9 @@ use SlimDispatcher\Response\RedirectResponse;
 class Login
 {
     public function logout(
-    //    AppSession $appSession
+        //    AppSession $appSession
         AppSessionManager $appSessionManager
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         // $appSession->destroy_session();
         $appSessionManager->deleteSession();
 

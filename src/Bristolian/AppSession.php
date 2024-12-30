@@ -61,7 +61,7 @@ class AppSession implements UserSession
 //    }
 
     public static function createSessionForUser(
-//        AppSessionManager $appSessionManager,
+        //        AppSessionManager $appSessionManager,
         RawSession $rawSession,
         AdminUser $user
     ) {

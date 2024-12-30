@@ -134,10 +134,9 @@ class User
 
 
     public function get_login_status(
-//      AppSession $appSession
+        //      AppSession $appSession
         AppSessionManager $appSessionManager
-    ): JsonNoCacheResponse
-    {
+    ): JsonNoCacheResponse {
         $data = [
             'logged_in' => false,
         ];
