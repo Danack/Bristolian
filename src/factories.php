@@ -318,3 +318,12 @@ function createMailgun(Config $config): \Mailgun\Mailgun
 
     return $mg;
 }
+
+function createOptionalUserSession(
+    \Bristolian\AppSessionManager $appSessionManager
+): \Bristolian\Session\StandardOptionalUserSession
+{
+    return new \Bristolian\Session\StandardOptionalUserSession(
+        $appSessionManager->getCurrentAppSession()
+    );
+}

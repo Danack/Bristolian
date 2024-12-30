@@ -3,6 +3,7 @@
 namespace Bristolian\AppController;
 
 use Bristolian\AppSession;
+use Bristolian\AppSessionManager;
 use Bristolian\DataType\MemeTagDeleteParam;
 use Bristolian\DataType\MemeTagParam;
 use Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo;
@@ -132,17 +133,22 @@ class User
     }
 
 
-    public function get_login_status(AppSession $appSession): JsonNoCacheResponse
+    public function get_login_status(
+//      AppSession $appSession
+        AppSessionManager $appSessionManager
+    ): JsonNoCacheResponse
     {
         $data = [
             'logged_in' => false,
         ];
 
-        if ($appSession->isLoggedIn() === true) {
+        $appSession = $appSessionManager->getCurrentAppSession();
+        if ($appSession && $appSession->isLoggedIn()) {
             $data = [
                 'logged_in' => true,
             ];
         }
+
 
         return new JsonNoCacheResponse($data);
     }

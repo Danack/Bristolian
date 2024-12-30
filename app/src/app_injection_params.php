@@ -1,8 +1,7 @@
 <?php
 
-use Bristolian\Config\Config;
 use Bristolian\InjectionParams;
-use Bristolian\Repo\DbInfo\DbInfo;
+
 
 function injectionParams()
 {
@@ -13,7 +12,7 @@ function injectionParams()
         \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
         \Bristolian\Service\RequestNonce::class,
         \Asm\SessionManager::class,
-        \Bristolian\SessionStorage::class,
+//        \Bristolian\SessionStorage::class,
         \Bristolian\AppSessionManager::class,
     ];
 
@@ -59,6 +58,9 @@ function injectionParams()
         \Bristolian\Repo\DbInfo\DbInfo::class =>
             \Bristolian\Repo\DbInfo\PdoDbInfo::class,
 
+        \Bristolian\Session\OptionalUserSession::class =>
+            \Bristolian\Session\StandardOptionalUserSession::class,
+
         Asm\Driver::class => \Asm\Predis\PredisDriver::class,
 
         UrlFetcher\UrlFetcher::class =>
@@ -80,7 +82,7 @@ function injectionParams()
             \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class,
 
         \Asm\RequestSessionStorage::class =>
-          \Bristolian\App\StandardRequestSessionStorage::class,
+          \StandardRequestSessionStorage::class,
 
         Bristolian\Repo\UserRepo\UserRepo::class =>
           Bristolian\Repo\UserRepo\HardcodedUserRepo::class,
@@ -164,7 +166,10 @@ function injectionParams()
 
 
         \Bristolian\Middleware\ContentSecurityPolicyMiddleware::class =>
-            'createContentSecurityPolicyMiddleware'
+            'createContentSecurityPolicyMiddleware',
+
+        \Bristolian\Session\StandardOptionalUserSession::class => 'createOptionalUserSession',
+
 
     ];
 

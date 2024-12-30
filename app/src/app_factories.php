@@ -19,7 +19,7 @@ function createExceptionToErrorPageResponseMiddleware(Injector $injector): Excep
     // type of exception could be done via reflection.
     $exceptionHandlers = [
         \Bristolian\Exception\DebuggingCaughtException::class => 'renderDebuggingCaughtExceptionToHtml',
-        \Auryn\InjectionException::class => 'renderAurynInjectionExceptionToHtml',
+//        \Auryn\InjectionException::class => 'renderAurynInjectionExceptionToHtml',
         \Bristolian\MarkdownRenderer\MarkdownRendererException::class => 'renderMarkdownRendererException',
         \ParseError::class => 'renderParseErrorToHtml',
 

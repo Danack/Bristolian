@@ -3,15 +3,16 @@
 namespace Bristolian\AppController;
 
 use Bristolian\UserSession;
+use Bristolian\Session\OptionalUserSession;
 
 class Tools
 {
     public function index(
-        UserSession $appSession
+        OptionalUserSession $optionalUserSessionSession
     ): string {
 
         $username = "not logged in";
-        if ($appSession->isLoggedIn()) {
+        if ($appSession = $optionalUserSessionSession->getAppSession()) {
             $username = $appSession->getUsername();
         }
 

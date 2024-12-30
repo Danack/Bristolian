@@ -2,8 +2,7 @@
 
 
 function renderInjectionExceptionToHtml(
-    \Di\InjectionException $injectionException/*,
-    \Psr\Http\Message\RequestInterface $request */
+    \Di\InjectionException $injectionException
 ) {
     $text = 'Error creating dependency:<br/>';
     foreach ($injectionException->dependencyChain as $dependency) {
@@ -15,10 +14,9 @@ function renderInjectionExceptionToHtml(
 
     $text .= "<hr/>";
     $text .= "Stacktrace: <br/>";
-//
-//
-//    $text .= "<br/>";
-//    $text .= getStacktraceForException($injectionException);
+
+    $text .= "<br/>";
+    $text .= getStacktraceForException($injectionException);
 
     return [nl2br($text), 500];
 }

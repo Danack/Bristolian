@@ -1,6 +1,5 @@
 <?php
 
-namespace Bristolian\App;
 
 use Asm\RequestSessionStorage;
 use Asm\Session;

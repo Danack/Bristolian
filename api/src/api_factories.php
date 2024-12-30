@@ -83,6 +83,7 @@ function createSlimAppForApi(
     $app->add($injector->make(\Bristolian\Middleware\AllowAllCors::class));
     $app->add($injector->make(\Bristolian\Middleware\ExceptionToJsonResponseMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\MemoryCheckMiddleware::class));
+    $app->add($injector->make(\Bristolian\Middleware\AppSessionMiddleware::class));
 
     return $app;
 }

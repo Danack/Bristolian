@@ -40,27 +40,27 @@ function renderParseErrorToHtml(
 
 
 
-function renderAurynInjectionExceptionToHtml(
-    \Auryn\InjectionException $injectionException,
-    \Psr\Http\Message\RequestInterface $request
-) {
-    $text = 'Error creating dependency:<br/>';
-    foreach ($injectionException->dependencyChain as $dependency) {
-        $text .= "&nbsp;&nbsp;" . $dependency . "<br/>";
-    }
-
-    $text .= "<hr/>";
-    $text .= $injectionException->getMessage();
-
-    $text .= "<hr/>";
-    $text .= "Stacktrace: <br/>";
-
-
-    $text .= "<br/>";
-    $text .= getStacktraceForException($injectionException);
-
-    return [nl2br($text), 500];
-}
+//function renderAurynInjectionExceptionToHtml(
+//    \Auryn\InjectionException $injectionException,
+//    \Psr\Http\Message\RequestInterface $request
+//) {
+//    $text = 'Error creating dependency:<br/>';
+//    foreach ($injectionException->dependencyChain as $dependency) {
+//        $text .= "&nbsp;&nbsp;" . $dependency . "<br/>";
+//    }
+//
+//    $text .= "<hr/>";
+//    $text .= $injectionException->getMessage();
+//
+//    $text .= "<hr/>";
+//    $text .= "Stacktrace: <br/>";
+//
+//
+//    $text .= "<br/>";
+//    $text .= getStacktraceForException($injectionException);
+//
+//    return [nl2br($text), 500];
+//}
 
 function renderMarkdownRendererException(
     \Bristolian\MarkdownRenderer\MarkdownRendererException $markdownRendererException,

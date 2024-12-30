@@ -3,22 +3,29 @@
 namespace Bristolian\AppController;
 
 use Bristolian\AppSession;
+use Bristolian\AppSessionManager;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use SlimDispatcher\Response\RedirectResponse;
 
 class Login
 {
-    public function logout(AppSession $appSession): RedirectResponse
+    public function logout(
+    //    AppSession $appSession
+        AppSessionManager $appSessionManager
+    ): RedirectResponse
     {
-        $appSession->destroy_session();
+        // $appSession->destroy_session();
+        $appSessionManager->deleteSession();
 
         return new RedirectResponse('/?message=You should be logged out.');
     }
 
 
-    public function showLoginPage(AppSession $appSession): string|RedirectResponse
+    public function showLoginPage(AppSessionManager $appSessionManager): string|RedirectResponse
     {
-        if ($appSession->isLoggedIn()) {
+        $appSession = $appSessionManager->getCurrentAppSession();
+
+        if ($appSession && $appSession->isLoggedIn()) {
             return new RedirectResponse('/?message=You are logged in');
         }
 
@@ -46,7 +53,8 @@ HTML;
 
     public function processLoginPage(
         AdminRepo $adminRepo,
-        AppSession $appSession
+        // AppSession $appSession
+        AppSessionManager $appSessionManager
     ): RedirectResponse {
 
         // TODO - replace with DataType
@@ -70,7 +78,13 @@ HTML;
             return new RedirectResponse('/login?message=login failed');
         }
 
-        $appSession->createSessionForUser($adminUser);
+        $rawSession = $appSessionManager->createRawSession();
+
+        AppSession::createSessionForUser(
+            $rawSession,
+            $adminUser
+        );
+
 
         return new RedirectResponse('/tools?message=login worked');
     }

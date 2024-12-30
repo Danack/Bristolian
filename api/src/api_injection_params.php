@@ -7,7 +7,8 @@ function apiInjectionParams() : InjectionParams
     // These classes will only be created once by the injector.
     $shares = [
         \Di\Injector::class,
-//        \Doctrine\ORM\EntityManager::class,
+        \Asm\SessionManager::class,
+        \Bristolian\AppSessionManager::class,
     ];
 
     // Alias interfaces (or classes) to the actual types that should be used
@@ -22,7 +23,7 @@ function apiInjectionParams() : InjectionParams
           \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
 
         \Asm\RequestSessionStorage::class =>
-            \Bristolian\App\StandardRequestSessionStorage::class,
+            \StandardRequestSessionStorage::class,
 
         \Psr\Http\Message\ResponseFactoryInterface::class =>
           \Laminas\Diactoros\ResponseFactory::class,
@@ -64,6 +65,9 @@ function apiInjectionParams() : InjectionParams
 
         \Bristolian\Repo\LinkRepo\LinkRepo::class =>
             \Bristolian\Repo\LinkRepo\PdoLinkRepo::class,
+
+        \Bristolian\Session\OptionalUserSession::class =>
+            \Bristolian\Session\StandardOptionalUserSession::class,
     ];
     // Delegate the creation of types to callables.
     $delegates = [
@@ -102,6 +106,9 @@ function apiInjectionParams() : InjectionParams
 
         \Bristolian\Filesystem\LocalCacheFilesystem::class =>
             'createLocalCacheFilesystem',
+
+        \Bristolian\Session\StandardOptionalUserSession::class =>
+            'createOptionalUserSession',
     ];
 
     // Define some params that can be injected purely by name.

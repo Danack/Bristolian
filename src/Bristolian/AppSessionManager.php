@@ -10,6 +10,10 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * ONLY A SINGLE INSTANCE OF THIS CLASS SHOULD BE CREATED PER REQUEST
+ *
+ * It is used by the middleware, but the request object is only available
+ * after the middleware is setup, so we have some unfortunate state in
+ * this class.
  */
 class AppSessionManager
 {
@@ -19,11 +23,29 @@ class AppSessionManager
      */
     private Session|null $session = null;
 
-    public function __construct(
-        private Request $request,
-        private RequestSessionStorage $sessionStorage,
-        private SessionManager $sessionManager
-    ) {
+    private Request|null $request = null;
+
+    public function __construct(private SessionManager $sessionManager)
+    {
+    }
+
+    private function checkInitialised(): void
+    {
+        if ($this->request === null) {
+            throw new BristolianException("AppSessionManager is not initialized.");
+        }
+    }
+
+    /**
+     * @throws BristolianException
+     */
+    public function initialize(Request $request)
+    {
+        if ($this->request !== null) {
+            throw new BristolianException("AppSessionManager is already initialized.");
+        }
+
+        $this->request = $request;
     }
 
     /**
@@ -31,39 +53,49 @@ class AppSessionManager
      */
     public function deleteSession(): void
     {
-        $session = $this->sessionStorage->get();
+        $this->checkInitialised();
+        // Make sure session has been read from cookie if not
+        // otherwise initialised.
+        $this->getCurrentAppSession();
 
-        if ($session !== null) {
-            $this->sessionManager->deleteSession($session);
-            $this->sessionStorage->markDeleted();
+        if ($this->session) {
+            $this->session->delete();
         }
+        $this->session = null;
+    }
+
+    public function getRawSession(): Session|null
+    {
+        $this->checkInitialised();
+
+        return $this->session;
     }
 
     /**
      * If the user has already started a session, recreate it from
      * the cookie they will have sent the server.
      * @return Session|null
+     * @throws BristolianException
      */
-    public function getCurrentSession(): Session|null
+    public function getCurrentAppSession(): AppSession|null
     {
-        $session = $this->sessionStorage->get();
+        $this->checkInitialised();
 
         // If the session has already been opened,
         // just return it.
-        if ($session) {
-            return $session;
+        if ($this->session) {
+            return new AppSession($this->session);
         }
 
         // Try to open an already created session from the cookie
         // a user may have sent us.
-        // TODO - add optimisation to prevent this happening multiple times?
-        $session = $this->sessionManager->openSessionFromCookie($this->request);
+        $this->session = $this->sessionManager->openSessionFromCookie($this->request);
 
-        if ($session) {
-            $this->sessionStorage->store($session);
+        if ($this->session) {
+            return new AppSession($this->session);
         }
 
-        return $session;
+        return null;
     }
 
     /**
@@ -71,39 +103,30 @@ class AppSessionManager
      * logging in.
      *
      * @return Session
+     * @throws BristolianException
      */
-    public function createSession(): Session
+    public function createRawSession(): Session
     {
-        $session = $this->sessionStorage->get();
+        $this->checkInitialised();
 
-        if ($session) {
+        if ($this->session) {
             // TODO - why would this happen? Maybe throw an error here
             // as it indicates "double-login" ?
-            return $session;
+            return $this->session;
         }
 
-        $session = $this->sessionManager->createSession($this->request);
-        if ($session) {
-            $this->sessionStorage->store($session);
+        $this->session = $this->sessionManager->createSession($this->request);
+        return $this->session;
+    }
+
+    public function get(): AppSession|null
+    {
+        $this->checkInitialised();
+
+        if ($this->session) {
+            return new AppSession($this->session);
         }
-        return $session;
+
+        return null;
     }
-
-    public function get(): Session|null
-    {
-        $session = $this->sessionStorage->get();
-
-        return $session;
-    }
-
-
-    public function createSessionForUser(AdminUser $user): void
-    {
-        $this->session = $this->createSession();
-
-        $this->session->set(self::USER_ID, $user_id);
-        $this->session->set(self::USERNAME, $username);
-
-    }
-
 }
