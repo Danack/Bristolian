@@ -53,7 +53,9 @@ function removeTrailingZeroes(exact: string)
 
 function getState(string_value: string): FloatingPointPanelState
 {
-    let value = eval(string_value);
+    let body = "return (" + string_value + ")";
+    let string_value_fn1 = new Function(body);
+    let value = string_value_fn1();
     let parsed_value = parseFloat(value);
 
     if (parsed_value == Infinity) {
