@@ -64,7 +64,7 @@ function getAllAppRoutes()
             'Bristolian\AppController\Pages::development_committee_rules'
         ],
         [
-            '/rooms/{room_id:.*}/file/{file_id:.*}/{original_filename:.*}',
+            '/rooms/{room_id}/file/{file_id}/{original_filename}',
             'GET',
             'Bristolian\AppController\Rooms::serveFileForRoom'
         ],
@@ -73,6 +73,12 @@ function getAllAppRoutes()
             '/rooms/{room_id:.*}/file_annotate/{file_id:.*}',
             'GET',
             'Bristolian\AppController\Rooms::annotate_file'
+        ],
+
+        [
+            '/rooms/{room_id:.*}/file/{file_id:.*}/sourcelinks/{sourcelink_id:.*}',
+            'GET',
+            '\Bristolian\AppController\Rooms::viewSourcelink'
         ],
 
         [

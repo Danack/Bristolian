@@ -10,9 +10,11 @@ use Bristolian\Model\RoomLink;
  */
 interface RoomLinkRepo
 {
-//    public function addLinkToRoom(string $link_id, string $room_id);
-
-    public function getLinksForRoom(string $room_id);
+    /**
+     * @param string $room_id
+     * @return RoomLink[]
+     */
+    public function getLinksForRoom(string $room_id): array;
 
     public function addLinkToRoomFromParam(
         string $user_id,

@@ -3,7 +3,7 @@
 namespace Bristolian\AppController;
 
 use Bristolian\BristolianException;
-use Bristolian\BristolianFileResponse;
+use Bristolian\Response\BristolianFileResponse;
 use Bristolian\DataType\LinkParam;
 use Bristolian\DataType\SourceLinkHighlightParam;
 use Bristolian\DataType\SourceLinkHighlightsAsdasds;
@@ -18,7 +18,7 @@ use Bristolian\Response\IframeHtmlResponse;
 use Bristolian\Service\FileStorageProcessor\UploadError;
 use Bristolian\Service\RequestNonce;
 use Bristolian\Service\RoomFileStorage\RoomFileStorage;
-use Bristolian\UserSession;
+use Bristolian\Session\UserSession;
 use Bristolian\UserUploadedFile\UserSessionFileUploaderHandler;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
@@ -160,6 +160,21 @@ class Rooms
         return createJsonResponse(['links' => $links]);
     }
 
+
+
+
+    public function getSourcelinks(
+        RoomSourceLinkRepo $roomLinkRepo,
+        string $room_id
+    ): JsonNoCacheResponse {
+        $sourcelinks = $roomLinkRepo->getSourceLinksForRoom($room_id);
+
+        return createJsonResponse(['sourcelinks' => $sourcelinks]);
+    }
+
+
+
+
     /**
      */
     public function addLink(
@@ -218,6 +233,9 @@ class Rooms
         // TODO - validate room, probably
 
         $fileDetails = $roomFileRepo->getFileDetails($room_id, $file_id);
+        if ($fileDetails === null) {
+            throw new BristolianException("File not found.");
+        }
 
         $normalized_name = $fileDetails->normalized_name;
         if ($localCacheFilesystem->fileExists($normalized_name) === true) {
@@ -241,7 +259,6 @@ class Rooms
         // check file is available locally
         return new BristolianFileResponse(
             $filenameToServe
-            //            $fileDetails->original_filename
         );
     }
 
@@ -264,6 +281,7 @@ class Rooms
     <div class='room_files_panel' data-widgety_json='$widget_data'></div>
     <div class='room_file_upload_panel' data-widgety_json='$widget_data'></div>
     <div class='room_links_panel' data-widgety_json='$widget_data'></div>
+    <div class='room_sourcelinks_panel' data-widgety_json='$widget_data'></div>
 HTML;
         $params = [
             ':html_room_name' => $room->getName(),
@@ -275,20 +293,25 @@ HTML;
         return $content;
     }
 
-    public function annotate_file(
-        RequestNonce $requestNonce,
+    private function render_annotate_file(
         RoomRepo $roomRepo,
         string $room_id,
         string $file_id,
+        string|null $sourcelink_id
     ): string {
-
         $room = $roomRepo->getRoomById($room_id);
         // TODO - check for null room
 
-        $widget_data = encodeWidgetyData([
+        $params = [
             'room_id' => $room_id,
             'file_id' => $file_id,
-        ]);
+        ];
+
+        if($sourcelink_id !== null) {
+            $params['selected_sourcelink_ids'] = [$sourcelink_id];
+        }
+
+        $widget_data = encodeWidgetyData($params);
 
         $template = <<< HTML
 <h1>:html_room_name</h1>
@@ -315,6 +338,19 @@ HTML;
         return $content;
     }
 
+    public function annotate_file(
+        RoomRepo $roomRepo,
+        string $room_id,
+        string $file_id,
+    ): string {
+        return $this->render_annotate_file(
+            $roomRepo,
+            $room_id,
+            $file_id,
+            null
+        );
+    }
+
     public function iframe_show_file(
         RequestNonce $requestNonce,
         RoomRepo $roomRepo,
@@ -322,7 +358,6 @@ HTML;
         string $room_id,
         string $file_id
     ): IframeHtmlResponse|string {
-//        $room = $roomRepo->getRoomById($room_id);
         $storedFile = $roomFileRepo->getFileDetails($room_id, $file_id);
 
         if ($storedFile === null) {
@@ -389,5 +424,19 @@ HTML;
         ];
 
         return createJsonResponse($data);
+    }
+
+    public function viewSourcelink(
+        RoomRepo $roomRepo,
+        string $room_id,
+        string $file_id,
+        string $sourcelink_id
+    ): string {
+        return $this->render_annotate_file(
+            $roomRepo,
+            $room_id,
+            $file_id,
+            $sourcelink_id
+        );
     }
 }

@@ -3,7 +3,7 @@
 namespace Bristolian\AppController;
 
 use Bristolian\Service\MemeStorage\MemeStorage;
-use Bristolian\UserSession;
+use Bristolian\Session\UserSession;
 use Bristolian\UserUploadedFile\UserSessionFileUploaderHandler;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;

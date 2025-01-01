@@ -19,13 +19,11 @@ class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
 {
     public function testWorks_no_exception()
     {
-        $message = "This is a normal response.";
-
         $responseFactory = new ResponseFactory();
         $middleware = new ExceptionToJsonResponseMiddleware($responseFactory, []);
         $request = new ServerRequest();
 
-        $foo = new class($message) implements RequestHandler {
+        $foo = new class() implements RequestHandler {
             public function __construct()
             {
             }
@@ -137,8 +135,7 @@ class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
             BristolianException $be,
             ServerRequestInterface $request,
             ResponseInterface $response
-) {
-
+        ) {
             return new \StdClass;
         };
 

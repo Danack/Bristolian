@@ -50,8 +50,8 @@ class PdoSimple
 
     /**
      * @param string $query
-     * @param array $params
-     * @return {0:bool, 1:false|PdoStatement}
+     * @param array<string, string|int> $params
+     * @return array{0:bool, 1:\PdoStatement}
      * @throws \Bristolian\PdoSimple\PdoSimpleException
      */
     private function prepareAndExecute(string $query, array $params): array
@@ -70,6 +70,7 @@ class PdoSimple
             throw PdoSimpleWithPreviousException::errorExecutingSql($pdoe);
         }
 
+        // TODO - can result ever be false?
         return [$result, $statement];
     }
 
@@ -78,7 +79,7 @@ class PdoSimple
      * Returns the number of rows affected
      *
      * @param string $query
-     * @param mixed[] $params
+     * @param array<string, string|int> $params
      * @return int
      * @throws \Exception
      */
@@ -91,7 +92,7 @@ class PdoSimple
 
     /**
      * @param string $query
-     * @param mixed[] $params
+     * @param array<string, string|int> $params
      * @return int
      * @throws \Exception
      */
@@ -106,7 +107,7 @@ class PdoSimple
     /**
      * @template T of object
      * @param string $query
-     * @param mixed[] $params
+     * @param array<string, string|int> $params
      * @param class-string<T> $classname
      * @return T
      * @throws RowNotFoundException
@@ -131,7 +132,7 @@ class PdoSimple
      *
      * @template T of object
      * @param string $query
-     * @param mixed[] $params
+     * @param array<string, string|int> $params
      * @param class-string<T> $classname
      * @return T|null
      * @throws \Exception
@@ -156,10 +157,11 @@ class PdoSimple
      *
      * This version calls the class constructor properly.
      *
+     * @template T of object
      * @param string $query
-     * @param array $params
-     * @param string $classname
-     * @return mixed|object|string|null
+     * @param array<string, string|int> $params
+     * @param class-string<T> $classname
+     * @return T|null
      * @throws \ReflectionException
      */
     public function fetchOneAsObjectOrNullConstructor(string $query, array $params, string $classname)
@@ -184,13 +186,14 @@ class PdoSimple
      *
      * This version calls the class constructor properly.
      *
+     * @template T of object
      * @param string $query
-     * @param array $params
-     * @param string $classname
-     * @return mixed|object|string|null
+     * @param array<string, string|int> $params
+     * @param class-string<T> $classname
+     * @return T[]
      * @throws \ReflectionException
      */
-    public function fetchAllAsObjectConstructor(string $query, array $params, string $classname)
+    public function fetchAllAsObjectConstructor(string $query, array $params, string $classname): array
     {
         [$result, $statement] = $this->prepareAndExecute($query, $params);
 
@@ -209,11 +212,11 @@ class PdoSimple
 
     /**
      * @param string $query
-     * @param mixed[] $params
+     * @param array<string, string|int> $params
      * @return mixed[]|null
      * @throws \Exception
      */
-    public function fetchOneAsDataOrNull(string $query, array $params)
+    public function fetchOneAsDataOrNull(string $query, array $params): array|null
     {
         [$result, $statement] = $this->prepareAndExecute($query, $params);
         $result = $statement->fetch();
@@ -225,20 +228,26 @@ class PdoSimple
         return $result;
     }
 
-    public function fetchAllAsData(string $query, array $params)
+    /**
+     * @param string $query
+     * @param array<string, string|int> $params
+     * @return array<array<string, int|string|float|bool>>
+     * @throws PdoSimpleException
+     */
+    public function fetchAllAsData(string $query, array $params): array
     {
         [$result, $statement] = $this->prepareAndExecute($query, $params);
 
-        $objects = $statement->fetchAll();
+        $rows = $statement->fetchAll();
 
-        return $objects;
+        return $rows;
     }
 
 
     /**
      * @template T of object
      * @param string $query
-     * @param mixed[] $params
+     * @param array<string, string|int> $params
      * @param class-string<T> $classname
      * @return T[]
      * @throws \Exception

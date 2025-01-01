@@ -5,8 +5,10 @@ namespace Bristolian\Repo\RoomSourceLinkRepo;
 use Bristolian\Database\room_sourcelink;
 use Bristolian\Database\sourcelink;
 use Bristolian\DataType\SourceLinkParam;
+use Bristolian\Model\StoredFile;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Model\RoomSourceLink;
 
 class PdoRoomSourceLinkRepo implements RoomSourceLinkRepo
 {
@@ -47,4 +49,42 @@ class PdoRoomSourceLinkRepo implements RoomSourceLinkRepo
 
         return $room_sourcelink_id;
     }
+
+    /**
+     * @param string $room_id
+     * @return RoomSourceLink[]
+     */
+    public function getSourceLinksForRoom(string $room_id): array
+    {
+        $sql = <<< SQL
+select  
+    sl.id,
+    sl.user_id,
+    sl.file_id,
+    sl.highlights_json,
+    sl.text,
+    rs.title,
+    rs.id as room_sourcelink_id
+from
+  sourcelink sl
+left join
+  room_sourcelink rs
+on 
+ sl.id = rs.sourcelink_id
+where
+  room_id = :room_id
+SQL;
+
+        $params = [
+            ':room_id' => $room_id
+        ];
+
+        return $this->pdoSimple->fetchAllAsObjectConstructor(
+            $sql,
+            $params,
+            RoomSourceLink::class
+        );
+    }
+
+
 }

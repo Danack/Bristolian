@@ -16,8 +16,8 @@ require_once __DIR__ . "/../api/src/api_routes.php";
 require_once __DIR__ . "/../src/site_html.php";
 
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
-use Bristolian\UserSession;
-use Bristolian\MockUserSession;
+use Bristolian\Session\UserSession;
+use Bristolian\Session\MockUserSession;
 
 
 /**

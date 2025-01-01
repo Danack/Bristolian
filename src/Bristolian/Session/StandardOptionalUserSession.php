@@ -2,7 +2,7 @@
 
 namespace Bristolian\Session;
 
-use Bristolian\AppSession;
+use Bristolian\Session\AppSession;
 
 class StandardOptionalUserSession implements OptionalUserSession
 {

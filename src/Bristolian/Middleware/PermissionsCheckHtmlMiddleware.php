@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Bristolian\Middleware;
 
 use Asm\RequestSessionStorage;
-use Bristolian\AppSessionManager;
+use Bristolian\Session\AppSessionManager;
 use Bristolian\Exception\InvalidPermissionsException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;

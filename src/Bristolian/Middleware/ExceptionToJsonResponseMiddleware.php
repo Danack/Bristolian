@@ -16,7 +16,7 @@ class ExceptionToJsonResponseMiddleware implements MiddlewareInterface
 {
     /**
      * @param ResponseFactory $responseFactory
-     * @param array{0:class-string, 1:callable} $exceptionToResponseHandlerList
+     * @param array<class-string, callable> $exceptionToResponseHandlerList
      * Convert particular exceptions to responses
      *
      * Callable should have the signature:

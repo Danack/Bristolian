@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest;
 
+use Bristolian\BristolianException;
 use BristolianTest\TestFixtures\ToArrayClass;
 use DataType\DataStorage\TestArrayDataStorage;
 use SlimDispatcher\Response\JsonResponse;
@@ -348,7 +349,7 @@ TEXT;
         convertToArrayOfObjects(\StdClass::class, []);
     }
 
-    private function provides_normalize_file_extension_works()
+    public function provides_normalize_file_extension_works()
     {
         yield ["sample.pdf", ['pdf']];
         yield ["sample.pdf", ['pdf', 'txt', 'jpg']];
@@ -357,8 +358,11 @@ TEXT;
     /**
      * @covers ::normalize_file_extension
      * @dataProvider provides_normalize_file_extension_works
+     * @param string $original_filename
+     * @param string[] $allowed_extensions
+     * @throws BristolianException
      */
-    public function test_normalize_file_extension_works($original_filename, $allowed_extensions)
+    public function test_normalize_file_extension_works(string $original_filename, array $allowed_extensions)
     {
         $result = normalize_file_extension(
             $original_filename,
@@ -382,7 +386,7 @@ TEXT;
         );
     }
 
-    private function provides_normalize_file_extension_null()
+    public function provides_normalize_file_extension_null()
     {
         // file type is not allowed
         yield ["sample.pdf", ['txt']];
@@ -393,8 +397,11 @@ TEXT;
     /**
      * @covers ::normalize_file_extension
      * @dataProvider provides_normalize_file_extension_null
+     * @param string $original_filename
+     * @param string[] $allowed_extensions
+     * @throws BristolianException
      */
-    public function test_normalize_file_extension_null($original_filename, $allowed_extensions)
+    public function test_normalize_file_extension_null(string $original_filename, $allowed_extensions)
     {
         $result = normalize_file_extension(
             $original_filename,
@@ -407,7 +414,7 @@ TEXT;
 
 
 
-    private function provides_convertToValue_works()
+    public function provides_convertToValue_works()
     {
         yield ['foo', 'foo'];
         yield [null, null];
@@ -424,7 +431,7 @@ TEXT;
      * @covers ::convertToValue
      * @dataProvider provides_convertToValue_works
      */
-    public function test_convertToValue_works($input, $expected_value)
+    public function test_convertToValue_works(mixed $input, mixed $expected_value)
     {
         [$error, $value] = convertToValue($input);
 
@@ -442,7 +449,7 @@ TEXT;
     /**
      * @dataProvider provides_get_readable_variable_type_works
      */
-    public function test_get_readable_variable_type($value, $expected_message)
+    public function test_get_readable_variable_type(mixed $value, string $expected_message)
     {
         $result = get_readable_variable_type($value);
 

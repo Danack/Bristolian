@@ -17,6 +17,7 @@ import { QrCodeGeneratorPanel } from "./QrCodeGenerator";
 import { RoomFilesPanel } from "./RoomFilesPanel";
 import { RoomFileUploadPanel } from "./RoomFileUploadPanel";
 import { RoomLinksPanel } from "./RoomLinksPanel";
+import { RoomSourcelinksPanel } from "./RoomSourcelinksPanel";
 import { TextNotePanel } from "./TextNote";
 import { TeleprompterPanel } from "./TeleprompterPanel";
 import { TimeLinePanel } from "./TimeLinePanel";
@@ -73,6 +74,13 @@ let panels: WidgetClassBinding[] = [
         class: 'room_links_panel',
         component: RoomLinksPanel
     },
+    {
+        class: 'room_sourcelinks_panel',
+        component: RoomSourcelinksPanel
+    },
+
+
+
     {
         class: 'teleprompter_panel',
         component: TeleprompterPanel

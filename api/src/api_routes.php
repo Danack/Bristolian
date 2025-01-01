@@ -76,6 +76,13 @@ function getAllApiRoutes()
             '\Bristolian\AppController\Rooms::handleAddSourceLink'
         ],
 
+        [
+            '/api/rooms/{room_id:.*}/sourcelinks',
+            'GET',
+            '\Bristolian\AppController\Rooms::getSourcelinks'
+        ],
+
+
 
         ['/api/system/csp/reports_for_page', 'GET', 'Bristolian\ApiController\Csp::get_reports_for_page'],
         ['/api/test/caught_exception', 'GET', 'Bristolian\ApiController\Debug::testCaughtException'],

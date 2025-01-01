@@ -94,7 +94,7 @@ SQL;
 
     /**
      * @param string $room_id
-     * @return array
+     * @return RoomLink[]
      * @throws \ReflectionException
      */
     public function getLinksForRoom(string $room_id): array

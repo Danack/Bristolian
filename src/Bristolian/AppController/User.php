@@ -2,13 +2,13 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\AppSession;
-use Bristolian\AppSessionManager;
+use Bristolian\Session\AppSession;
+use Bristolian\Session\AppSessionManager;
 use Bristolian\DataType\MemeTagDeleteParam;
 use Bristolian\DataType\MemeTagParam;
 use Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo;
 use Bristolian\Repo\MemeTagRepo\MemeTagRepo;
-use Bristolian\UserSession;
+use Bristolian\Session\UserSession;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;

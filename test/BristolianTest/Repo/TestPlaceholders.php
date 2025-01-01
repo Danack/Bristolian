@@ -16,7 +16,7 @@ use Bristolian\UploadedFiles\UploadedFile;
 use DI\ConfigException;
 use DI\InjectionException;
 use VarMap\VarMap;
-use Bristolian\UserSession;
+use Bristolian\Session\UserSession;
 
 /**
  * Trait to make write tests easier.
@@ -51,8 +51,8 @@ trait TestPlaceholders
         $session = $this->injector->execute('getTestingUserSession');
 
         $this->injector->alias(
-            \Bristolian\UserSession::class,
-            \Bristolian\MockUserSession::class
+            \Bristolian\Session\UserSession::class,
+            \Bristolian\Session\MockUserSession::class
         );
         $this->injector->share($session);
 

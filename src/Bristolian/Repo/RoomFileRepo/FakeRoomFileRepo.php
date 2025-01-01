@@ -7,7 +7,7 @@ use Bristolian\Model\StoredFile;
 class FakeRoomFileRepo implements RoomFileRepo
 {
     /**
-     * @var {0:string, 1:string}
+     * @var array<array{0:string, 1:string}>
      */
     private $filesAndRooms = [];
 

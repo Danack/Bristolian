@@ -1,11 +1,13 @@
 <?php
 
-namespace Bristolian;
+namespace Bristolian\Session;
 
 use Asm\RequestSessionStorage;
 use Asm\Session;
 use Asm\SessionManager;
+use Bristolian\BristolianException;
 use Bristolian\Model\AdminUser;
+use Bristolian\Session\AppSession;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
@@ -39,7 +41,7 @@ class AppSessionManager
     /**
      * @throws BristolianException
      */
-    public function initialize(Request $request)
+    public function initialize(Request $request): void
     {
         if ($this->request !== null) {
             throw new BristolianException("AppSessionManager is already initialized.");
@@ -74,7 +76,7 @@ class AppSessionManager
     /**
      * If the user has already started a session, recreate it from
      * the cookie they will have sent the server.
-     * @return Session|null
+     * @return AppSession|null
      * @throws BristolianException
      */
     public function getCurrentAppSession(): AppSession|null

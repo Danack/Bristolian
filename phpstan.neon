@@ -10,6 +10,7 @@ parameters:
         - src/ModernGov/generate_types.php
         - src/OpenApi/OpenApiGenerator.php
         - src/Bristolian/CliController/GenerateFiles.php
+        - test/BristolianTest/Middleware/FakeSession.php
     bootstrapFiles:
         - config.generated.php
         - credentials.php

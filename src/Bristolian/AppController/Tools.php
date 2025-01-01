@@ -2,7 +2,7 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\UserSession;
+use Bristolian\Session\UserSession;
 use Bristolian\Session\OptionalUserSession;
 
 class Tools

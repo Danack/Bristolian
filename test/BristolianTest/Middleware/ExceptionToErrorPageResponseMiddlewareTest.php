@@ -22,8 +22,6 @@ class ExceptionToErrorPageResponseMiddlewareTest extends BaseTestCase
 {
     public function testWorks_no_exception()
     {
-        $message = "This is a normal response.";
-
         $responseFactory = new ResponseFactory();
         $assetLinkConfig = new HardCodedAssetLinkConfig(false, $sha = 'abcdefg');
         $linkEmitter = new AssetLinkEmitter($assetLinkConfig);
@@ -35,7 +33,7 @@ class ExceptionToErrorPageResponseMiddlewareTest extends BaseTestCase
         );
         $request = new ServerRequest();
 
-        $foo = new class($message) implements RequestHandler {
+        $foo = new class() implements RequestHandler {
             public function __construct()
             {
             }

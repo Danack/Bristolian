@@ -1,6 +1,6 @@
 <?php
 
-namespace Bristolian;
+namespace Bristolian\Session;
 
 interface UserSession
 {

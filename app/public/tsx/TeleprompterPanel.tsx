@@ -81,7 +81,6 @@ export class TeleprompterPanel extends Component<TeleprompterPanelProps, Telepro
 
   componentDidMount() {
     document.addEventListener("keydown", this.keyKeyDownFn, false);
-    console.log("component mounted");
   }
 
   componentWillUnmount() {

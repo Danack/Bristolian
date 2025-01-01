@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Bristolian;
+namespace Bristolian\Response;
 
 use SlimDispatcher\Response\ResponseException;
 use SlimDispatcher\Response\StubResponse;
 
 class BristolianFileResponse implements StubResponse
 {
-    /** @var array{0:string, 1:string}  */
+    /** @var array<string, string>  */
     private $headers;
 
     /**
@@ -20,14 +20,17 @@ class BristolianFileResponse implements StubResponse
     /** @var string */
     private $filenameToServe;
 
+    /**
+     * @param string $filenameToServe
+     * @param array<string, string> $headers
+     * @throws ResponseException
+     */
     public function __construct(
         string $filenameToServe,
-        //        string $userFacingFilename,
         array $headers = []
     ) {
         $standardHeaders = [
             'Content-Type' => self::getMimeTypeFromFilename($filenameToServe),
-//            'Content-Disposition' => 'attachment; filename="' . $userFacingFilename . '"'
         ];
 
         $this->headers = array_merge($standardHeaders, $headers);
@@ -38,8 +41,7 @@ class BristolianFileResponse implements StubResponse
             throw new ResponseException("Failed to open file [$filenameToServe] for serving.");
         }
 
-
-        $contents = stream_get_contents($this->filehandle);
+//        $contents = stream_get_contents($this->filehandle);
 
         $this->filenameToServe = $filenameToServe;
     }
@@ -70,14 +72,14 @@ class BristolianFileResponse implements StubResponse
     }
 
     /**
-     * @return array{0:string, 1:string}
+     * @return array<string, string>
      */
     public function getHeaders(): array
     {
         return $this->headers;
     }
 
-    public static function getMimeTypeFromFilename($filename): string
+    public static function getMimeTypeFromFilename(string $filename): string
     {
         $contentTypesByExtension = [
             'jpg'  => 'image/jpg',

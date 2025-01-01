@@ -5,7 +5,7 @@ namespace Bristolian\AppController;
 use Bristolian\DataType\WebPushSubscriptionParam;
 use Bristolian\JsonInput\JsonInput;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
-use Bristolian\UserSession;
+use Bristolian\Session\UserSession;
 use Minishlink\WebPush\VAPID;
 use SlimDispatcher\Response\JsonResponse;
 

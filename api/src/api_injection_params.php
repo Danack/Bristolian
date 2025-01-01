@@ -8,7 +8,8 @@ function apiInjectionParams() : InjectionParams
     $shares = [
         \Di\Injector::class,
         \Asm\SessionManager::class,
-        \Bristolian\AppSessionManager::class,
+        \Bristolian\Session\AppSessionManager::class,
+        \Bristolian\Session\AppSession::class
     ];
 
     // Alias interfaces (or classes) to the actual types that should be used
@@ -57,8 +58,8 @@ function apiInjectionParams() : InjectionParams
         \Bristolian\UploadedFiles\UploadedFiles::class =>
             \Bristolian\UploadedFiles\ServerFilesUploadedFiles::class,
 
-        \Bristolian\UserSession::class =>
-            \Bristolian\AppSession::class,
+        \Bristolian\Session\UserSession::class =>
+            \Bristolian\Session\AppSession::class,
 
         \Bristolian\Repo\RoomRepo\RoomRepo::class =>
             \Bristolian\Repo\RoomRepo\PdoRoomRepo::class,
@@ -68,6 +69,10 @@ function apiInjectionParams() : InjectionParams
 
         \Bristolian\Session\OptionalUserSession::class =>
             \Bristolian\Session\StandardOptionalUserSession::class,
+
+        \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::class =>
+            \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::class
+
     ];
     // Delegate the creation of types to callables.
     $delegates = [
@@ -109,6 +114,9 @@ function apiInjectionParams() : InjectionParams
 
         \Bristolian\Session\StandardOptionalUserSession::class =>
             'createOptionalUserSession',
+
+        \Bristolian\Session\AppSession::class =>
+            'createAppSession',
     ];
 
     // Define some params that can be injected purely by name.

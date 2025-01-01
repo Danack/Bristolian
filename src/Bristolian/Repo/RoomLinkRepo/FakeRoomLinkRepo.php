@@ -28,7 +28,7 @@ class FakeRoomLinkRepo implements RoomLinkRepo
      * @param string $room_id
      * @return string[]
      */
-    public function getLinksForRoom(string $room_id)
+    public function getLinksForRoom(string $room_id): array
     {
         $linksForRoom = [];
 

@@ -9,7 +9,7 @@ export interface SelectionPosition {
   right: number;
 }
 
-interface Rectangle {
+interface Highlight {
   page: number;
   left: number;
   top: number;
@@ -19,7 +19,7 @@ interface Rectangle {
 
 export interface SelectionData {
   text: string;
-  rectangles: Rectangle[]
+  highlights: Highlight[]
 }
 
 export interface SelectionMessage {
@@ -37,38 +37,40 @@ export function receiveSelectionMessage(event: MessageEvent) {
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
-export interface TextNotePanelProps {
-  room_id: string
-  file_id: string
+export interface SourceLinkPanelProps {
+  room_id: string,
+  file_id: string,
+  selected_sourcelink_ids: null|string[],
 }
 
-interface TextNotePanelState {
+interface SourceLinkPanelState {
   selection_data: SelectionData|null,
   title: string,
   text: string,
+  selected_sourcelink_ids: string[]
   error: string|null,
 }
 
-function getDefaultState(): TextNotePanelState {
+function getDefaultState(props: SourceLinkPanelProps): SourceLinkPanelState {
   return {
     selection_data: null,
     title: "",
     text: "",
+    selected_sourcelink_ids: props.selected_sourcelink_ids || [],
     error: null,
   };
 }
 
-export class TextNotePanel extends Component<TextNotePanelProps, TextNotePanelState> {
+export class TextNotePanel extends Component<SourceLinkPanelProps, SourceLinkPanelState> {
 
   message_listener:null|number = null;
 
-  constructor(props: TextNotePanelProps) {
+  constructor(props: SourceLinkPanelProps) {
     super(props);
-    this.state = getDefaultState(/*props.initialControlParams*/);
+    this.state = getDefaultState(props);
   }
 
   componentDidMount() {
-    // this.refreshFiles();
     this.message_listener = registerMessageListener(
       "text_selected",
       (selection_data: SelectionData) => this.receiveTextSelected(selection_data)
@@ -79,7 +81,6 @@ export class TextNotePanel extends Component<TextNotePanelProps, TextNotePanelSt
   }
 
   receiveTextSelected(selection_data: SelectionData) {
-    debugger;
     this.setState({selection_data:selection_data});
   }
 
@@ -108,12 +109,12 @@ export class TextNotePanel extends Component<TextNotePanelProps, TextNotePanelSt
       // @ts-ignore:content window does exist
       iframe.contentWindow.postMessage({
         type: 'draw_rects',
-        rects: this.state.selection_data.rectangles
+        rects: this.state.selection_data.highlights
       }, '*',);
     }
   }
 
-  // renderRectangle(rect:Rectangle, i:number) {
+  // renderRectangle(rect:Highlight, i:number) {
   //   return <tr key={i}>
   //     <td>
   //       {rect.page}
@@ -150,7 +151,7 @@ export class TextNotePanel extends Component<TextNotePanelProps, TextNotePanelSt
 
   addSourceLink() {
 
-    let rectangles_json = JSON.stringify(this.state.selection_data.rectangles);
+    let rectangles_json = JSON.stringify(this.state.selection_data.highlights);
 
     const formData = new FormData();
 
@@ -177,33 +178,13 @@ export class TextNotePanel extends Component<TextNotePanelProps, TextNotePanelSt
   }
 
 
-  render(props: TextNotePanelProps, state: TextNotePanelState) {
+  render(props: SourceLinkPanelProps, state: SourceLinkPanelState) {
 
-    if (this.state.selection_data === null) {
-      return <div>
-      <h3>This is the text note panel.</h3>
-        <div>
-         <span>No text Selected</span>
-        </div>
-      </div>
-    }
 
     let validToSubmit = true;
 
     //   let rectangles = this.renderRectanglesBlock();
     // {rectangles}
-
-    let json = JSON.stringify(this.state.selection_data.rectangles);
-
-    if (json.length > 16 * 1024) {
-      return <div>
-        <h3>This is the text note panel.</h3>
-        <div>
-          <span>Too many lines selected. Please select fewer.</span>
-        </div>
-      </div>
-    }
-
 
 
 
@@ -215,29 +196,55 @@ export class TextNotePanel extends Component<TextNotePanelProps, TextNotePanelSt
       add_button = <button type="submit" onClick={() => this.addSourceLink()}>Add source link</button>
     }
 
+    let text_selected_box = <div>
+      <span>No text selected</span>
+    </div>
 
-    return  <div class='text_note_panel_react'>
-      <h3>Source Link panel.</h3>
-      <div>
-        <button onClick={() => this.sendRectsToDraw()}>Send back to draw</button>
+    if (this.state.selection_data !== null) {
+
+      let json = JSON.stringify(this.state.selection_data.highlights);
+
+      if (json.length > 16 * 1024) {
+        return <div>
+          <h3>This is the text note panel.</h3>
+          <div>
+            <span>Too many lines selected. Please select fewer.</span>
+          </div>
+        </div>
+      }
+
+
+      text_selected_box = <div>
+        <div>
+          <button onClick={() => this.sendRectsToDraw()}>Send back to draw</button>
+        </div>
+
+        <div>
+          <label>
+
+            Title <input name="title" size={100} onChange={
+            // @ts-ignore
+            e => this.setState({title: e.target.value})
+          }/>
+            <br/>
+            {error_title}
+          </label>
+        </div>
       </div>
-
-      <div>
-      <label>
-
-        Title <input name="title" size={100} onChange={
-        // @ts-ignore
-        e => this.setState({title: e.target.value})
-      }/>
-        <br/>
-        {error_title}
-      </label>
-
-
-      </div>
-
 
       {add_button}
+
+    }
+
+
+    return <div class='text_note_panel_react'>
+      <h3>Source Link panel.</h3>
+
+      selected_sourcelink_ids = {this.state.selected_sourcelink_ids}
+
+
+      {text_selected_box}
+
 
 
     </div>;

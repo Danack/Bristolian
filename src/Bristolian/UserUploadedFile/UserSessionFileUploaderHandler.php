@@ -5,7 +5,7 @@ namespace Bristolian\UserUploadedFile;
 use Bristolian\App;
 use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\UploadedFiles\UploadedFiles;
-use Bristolian\UserSession;
+use Bristolian\Session\UserSession;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;

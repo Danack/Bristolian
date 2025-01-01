@@ -11,6 +11,7 @@ declare (strict_types = 1);
  */
 
 use Aws\S3\S3Client;
+use Bristolian\Session\AppSession;
 use Bristolian\Config\Config;
 use Bristolian\Service\DeployLogRenderer\DeployLogRenderer;
 use DI\Injector;
@@ -320,9 +321,25 @@ function createMailgun(Config $config): \Mailgun\Mailgun
 }
 
 function createOptionalUserSession(
-    \Bristolian\AppSessionManager $appSessionManager
+    \Bristolian\Session\AppSessionManager $appSessionManager
 ): \Bristolian\Session\StandardOptionalUserSession {
     return new \Bristolian\Session\StandardOptionalUserSession(
         $appSessionManager->getCurrentAppSession()
     );
+}
+
+
+
+
+function createAppSession(
+    \Bristolian\Session\AppSessionManager $appSessionManager
+): \Bristolian\Session\AppSession {
+
+    $app_session = $appSessionManager->getCurrentAppSession();
+
+    if ($app_session === null) {
+        throw new \Bristolian\BristolianException("Something depends on AppSession");
+    }
+
+    return $app_session;
 }

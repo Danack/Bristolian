@@ -13,7 +13,7 @@ function injectionParams()
         \Bristolian\Service\RequestNonce::class,
         \Asm\SessionManager::class,
 //        \Bristolian\SessionStorage::class,
-        \Bristolian\AppSessionManager::class,
+        \Bristolian\Session\AppSessionManager::class,
     ];
 
     // Alias interfaces (or classes) to the actual types that should be used
@@ -49,8 +49,8 @@ function injectionParams()
         \Bristolian\JsonInput\JsonInput::class =>
           \Bristolian\JsonInput\InputJsonInput::class,
 
-        \Bristolian\UserSession::class =>
-            \Bristolian\AppSession::class,
+        \Bristolian\Session\UserSession::class =>
+            \Bristolian\Session\AppSession::class,
 
         \Bristolian\MarkdownRenderer\MarkdownRenderer::class =>
             \Bristolian\MarkdownRenderer\CommonMarkRenderer::class,

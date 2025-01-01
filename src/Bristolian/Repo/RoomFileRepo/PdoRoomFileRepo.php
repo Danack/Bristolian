@@ -36,7 +36,7 @@ SQL;
 
     /**
      * @param string $room_id
-     * @return array
+     * @return StoredFile[]
      * @throws \ReflectionException
      */
     public function getFilesForRoom(string $room_id): array

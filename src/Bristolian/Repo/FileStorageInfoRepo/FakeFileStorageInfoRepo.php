@@ -7,13 +7,15 @@ use Ramsey\Uuid\Uuid;
 
 class FakeFileStorageInfoRepo implements FileStorageInfoRepo
 {
-    private $storedFileInfo = [];
+    /**
+     * @var array<string, array<string, string|int>>
+     */
+    private array $storedFileInfo = [];
 
     public function storeFileInfo(
         string $user_id,
         string $normalized_filename,
-        string $original_filename,
-        UploadedFile $uploadedFile
+        UploadedFile $uploadedFile,
     ): string {
 
         $uuid = Uuid::uuid7();
@@ -27,6 +29,8 @@ class FakeFileStorageInfoRepo implements FileStorageInfoRepo
         ];
 
         $this->storedFileInfo[$id] = $params;
+
+        return $id;
     }
 
     public function setUploaded(string $file_storage_id): void

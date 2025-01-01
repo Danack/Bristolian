@@ -319,45 +319,13 @@ function convertToValue(mixed $value)
 }
 
 
-//function convertToValue($name, $value)
-//{
-//    if (is_scalar($value) === true) {
-//        return $value;
-//    }
-//    if ($value === null) {
-//        return null;
-//    }
-//
-//    $callable = [$value, 'toArray'];
-//    if (is_object($value) === true && is_callable($callable)) {
-//        return $callable();
-//    }
-//    if (is_object($value) === true && $value instanceof \DateTime) {
-//        return $value->format(\Bristolian\App::DATE_TIME_EXACT_FORMAT);
-//    }
-//
-//    if (is_array($value) === true) {
-//        $values = [];
-//        foreach ($value as $key => $entry) {
-//            $values[$key] = convertToValue($key, $entry);
-//        }
-//
-//        return $values;
-//    }
-//
-//    $message = "Unsupported type [" . gettype($value) . "] for toArray for property $name.";
-//
-//    if (is_object($value) === true) {
-//        $message = "Unsupported type [" . gettype($value) . "] of class [" . get_class($value) . "] for toArray for property $name.";
-//    }
-//
-//    throw new \Exception($message);
-//}
-
-
 /**
- * @throws \DataType\Exception\ValidationException
+ * @template T of object
+ * @param class-string<T> $classname
+ * @param array<mixed> $data
+ * @return T[]
  * @throws \Bristolian\BristolianException
+ * @throws \DataType\Exception\ValidationException
  */
 function convertToArrayOfObjects(string $classname, array $data)
 {
@@ -796,7 +764,12 @@ function createErrorJsonResponse(array $validation_problems): SlimDispatcher\Res
 //    exit(0);
 //}
 
-function encodeWidgetyData(array $data)
+/**
+ * @param array<mixed> $data
+ * @return string
+ * @throws Exception
+ */
+function encodeWidgetyData(array $data): string
 {
     $widget_json = json_encode_safe($data);
     $widget_data = htmlspecialchars($widget_json);
@@ -805,9 +778,9 @@ function encodeWidgetyData(array $data)
 }
 
 
-
-
-
+/**
+ * @return string[]
+ */
 function get_supported_file_extensions()
 {
     return [
@@ -821,6 +794,9 @@ function get_supported_file_extensions()
     ];
 }
 
+/**
+ * @return string[]
+ */
 function get_supported_room_file_extensions()
 {
     return [
@@ -849,7 +825,7 @@ function normalize_file_extension(
     string $original_name,
     string $contents, // TODO - use this, and change it to a filestream
     array $supported_file_extensions
-) {
+): string|null {
     foreach ($supported_file_extensions as $supported_file_extension) {
         if (strcmp($supported_file_extension, strtolower($supported_file_extension))) {
             $message = sprintf(
@@ -880,11 +856,11 @@ function normalize_file_extension(
 
 /**
  * @param $name
- * @param $values array{0:string, 1:mixed}
+ * @param array<string, mixed> $values
  * @return JsonNoCacheResponse
  * @throws \SlimDispatcher\Response\InvalidDataException
  */
-function createJsonResponse($values): JsonNoCacheResponse
+function createJsonResponse(array $values): JsonNoCacheResponse
 {
     [$error, $data] = convertToValue($values);
 
@@ -936,7 +912,7 @@ function getReasonPhrase(int $status): string
  * @param mixed $value
  * @return string
  */
-function get_readable_variable_type(mixed $value)
+function get_readable_variable_type(mixed $value): string
 {
     if (is_object($value) === true) {
         return "an object of type [" . get_class($value). "]";
@@ -960,7 +936,7 @@ function get_readable_variable_type(mixed $value)
 }
 
 
-function getRouteForStoredFile(string $room_id, StoredFile $storedFile)
+function getRouteForStoredFile(string $room_id, StoredFile $storedFile): string
 {
     $template = '/rooms/:uri_room_id/file/:uri_file_id/:uri_filename';
     $params = [

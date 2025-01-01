@@ -3,6 +3,7 @@
 namespace Bristolian\Repo\RoomSourceLinkRepo;
 
 use Bristolian\DataType\SourceLinkParam;
+use Bristolian\Model\RoomSourceLink;
 
 interface RoomSourceLinkRepo
 {
@@ -12,4 +13,11 @@ interface RoomSourceLinkRepo
         string $file_id,
         SourceLinkParam $sourceLinkParam
     ): string;
+
+
+    /**
+     * @param string $room_id
+     * @return RoomSourceLink[]
+     */
+    public function getSourceLinksForRoom(string $room_id): array;
 }

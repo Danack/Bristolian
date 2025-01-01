@@ -2,8 +2,8 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\AppSession;
-use Bristolian\AppSessionManager;
+use Bristolian\Session\AppSession;
+use Bristolian\Session\AppSessionManager;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use SlimDispatcher\Response\RedirectResponse;
 

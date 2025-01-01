@@ -5,10 +5,11 @@ namespace BristolianTest\Middleware;
 use Asm\AsmException;
 use \Asm\Session;
 
+What even is this? Why are we implementing an external type?
 class FakeSession implements Session
 {
     /**
-     * @param array{0:string, 1:string} $headers
+     * @param array<string, string> $headers
      */
     public function __construct(private array $headers)
     {

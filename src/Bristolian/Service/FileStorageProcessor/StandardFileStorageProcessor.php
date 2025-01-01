@@ -14,6 +14,14 @@ class StandardFileStorageProcessor implements FileStorageProcessor
     ) {
     }
 
+    /**
+     * @param string $user_id
+     * @param UploadedFile $uploadedFile
+     * @param string[] $allowedExtensions
+     * @param FileObjectStore $fileObjectStore
+     * @return ObjectStoredFileInfo|UploadError
+     * @throws \Bristolian\BristolianException
+     */
     public function storeFileForUser(
         string $user_id,
         UploadedFile $uploadedFile,
@@ -30,7 +38,7 @@ class StandardFileStorageProcessor implements FileStorageProcessor
         $extension = normalize_file_extension(
             $uploadedFile->getOriginalName(),
             $contents,
-            get_supported_room_file_extensions()
+            $allowedExtensions
         );
 
         if ($extension === null) {

@@ -15,18 +15,18 @@ function getExceptionText(\Throwable $exception): string
     return $text;
 }
 
-function getExceptionArray(\Throwable $exception): array
-{
-    $details = [];
-    do {
-        $details []= get_class($exception) . ":" . $exception->getMessage() . "\n\n";
-        $details []= $exception->getTrace();
-
-        $exception = $exception->getPrevious();
-    } while ($exception !== null);
-
-    return $details;
-}
+//function getExceptionArray(\Throwable $exception): array
+//{
+//    $details = [];
+//    do {
+//        $details[] = get_class($exception) . ":" . $exception->getMessage() . "\n\n";
+//        $details[] = $exception->getTrace();
+//
+//        $exception = $exception->getPrevious();
+//    } while ($exception !== null);
+//
+//    return $details;
+//}
 
 function purgeExceptionMessage(\Throwable $exception): string
 {
@@ -44,19 +44,6 @@ function purgeExceptionMessage(\Throwable $exception): string
             $message .= '**PURGED**';
         }
     }
-
-    $file = $exception->getFile();
-
-//    // normaliseFilePath
-//    if (strpos($file, "/var/app/") === 0) {
-//        $file = substr($file, strlen("/var/app/"));
-//    }
-
-//    $message .= sprintf(
-//        "file %s:%s",
-//        $file,
-//        $exception->getLine()
-//    );
 
     return $message;
 }
