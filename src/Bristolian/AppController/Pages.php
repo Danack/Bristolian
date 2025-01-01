@@ -401,12 +401,12 @@ HTML;
         return $markdownRenderer->renderFile($fullPath);
     }
 
-    public function experimental(DebugParam $debugParam): string
+    public function experimental_debug_param(DebugParam $debugParam): string
     {
         return "Hello world: " . $debugParam->message;
     }
 
-    public function experimental_notifications(): string
+    public function experimental(): string
     {
         $content = "This is a page for experimenting with. Current experiment is notifications.";
         $data = [

@@ -22,24 +22,6 @@ function getDefaultState(): RoomFileUploadPanelState {
     };
 }
 
-// // Handler for the proxy
-// const variableHandler = {
-//     set(target, property, value) {
-//         console.log(`Variable "${property}" changed from ${target[property]} to ${value}`);
-//         target[property] = value;
-//         return true;
-//     },
-// };
-//
-// // Create a proxy for the variable
-// const monitoredVariable = new Proxy({ value: variable }, variableHandler);
-//
-// // Access the variable through the proxy
-// console.log(monitoredVariable.value); // Output: 10
-//
-// // Modify the variable through the proxy
-// monitoredVariable.value = 20; // Output: Variable "value" changed from 10 to 20
-
 
 export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, RoomFileUploadPanelState> {
 
@@ -50,8 +32,6 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, Roo
     }
 
     componentDidMount() {
-
-
         // this.restoreStateFn = (event:any) => this.restoreState(event.state);
         // @ts-ignore: I don't understand that error message.
         // window.addEventListener('popstate', this.restoreStateFn);
@@ -137,50 +117,12 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, Roo
 
 
 
-//     const handleChange = (event) => {
-//         const file = event.target.files[0]
-// //console.log(file)
-//         setFile({
-//             picturePreview: URL.createObjectURL(event.target.files[0]),
-//             pictureAsFile: event.target.files[0]
-//         })}
-
-    // const upload = () => {
-    //     setProgress(0);
-    //     if (!currentFile) return;
-    //
-    //     UploadService.upload(currentFile, (event: any) => {
-    //         setProgress(Math.round((100 * event.loaded) / event.total));
-    //     })
-    //       .then((response) => {
-    //           setMessage(response.data.message);
-    //           return UploadService.getFiles();
-    //       })
-    //       .then((files) => {
-    //           setFileInfos(files.data);
-    //       })
-    //       .catch((err) => {
-    //           setProgress(0);
-    //
-    //           if (err.response && err.response.data && err.response.data.message) {
-    //               setMessage(err.response.data.message);
-    //           } else {
-    //               setMessage("Could not upload the File!");
-    //           }
-    //
-    //           setCurrentFile(undefined);
-    //       });
-    // };
 
     render(props: RoomFileUploadPanelProps, state: RoomFileUploadPanelState) {
          let error_block = <span>&nbsp;</span>;
          if (this.state.error != null) {
              error_block = <div class="error">Error: {this.state.error}</div>
          }
-
-        // {/*onDragEnd={onDragEnd}*/}
-        // {/*onDragStart={() => setDraggedIndex(index)}*/}
-
 
         return  <div class='room_file_upload_panel_react'>
             <h3>Drag a file here to upload</h3>
@@ -203,27 +145,6 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, Roo
     }
 }
 
-
-
-// // On file upload (click the upload button)
-// onFileUpload = () => {
-//     // Create an object of formData
-//     const formData = new FormData();
-//
-//     // Update the formData object
-//     formData.append(
-//       "myFile",
-//       this.state.selectedFile,
-//       this.state.selectedFile.name
-//     );
-//
-//     // Details of the uploaded file
-//     console.log(this.state.selectedFile);
-//
-//     // Request made to the backend api
-//     // Send formData object
-//     axios.post("api/uploadfile", formData);
-// };
 
 
 
