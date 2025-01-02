@@ -13,7 +13,7 @@ class StoredFile
         public readonly string $normalized_name,
         public readonly string $original_filename,
         public readonly string $state,
-        public readonly string $size,
+        public readonly int $size,
         public readonly string $user_id,
         public readonly string $created_at
     ) {

@@ -24,13 +24,13 @@ values (
 SQL;
 
     const SELECT = <<< SQL
-select  
+select
     id,
     user_id,
     meme_id,
     type,
     text
 from
-  meme_tag
+  meme_tag 
 SQL;
 }

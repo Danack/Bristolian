@@ -307,7 +307,7 @@ HTML;
             'file_id' => $file_id,
         ];
 
-        if($sourcelink_id !== null) {
+        if ($sourcelink_id !== null) {
             $params['selected_sourcelink_ids'] = [$sourcelink_id];
         }
 

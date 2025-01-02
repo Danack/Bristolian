@@ -40,7 +40,7 @@ class SiteHtmlFunctionsTest extends BaseTestCase
     public function test_createPageHtml()
     {
         $assetLinkConfig = new \Bristolian\Config\HardCodedAssetLinkConfig(true, "abdefg");
-        $assetLinkEmitter = new \Bristolian\AssetLinkEmitter($assetLinkConfig);
+        $assetLinkEmitter = new \Bristolian\SiteHtml\AssetLinkEmitter($assetLinkConfig);
 
         $html = "<div>I am great webpage.</div>";
 

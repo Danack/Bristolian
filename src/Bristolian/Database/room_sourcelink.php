@@ -22,12 +22,12 @@ values (
 SQL;
 
     const SELECT = <<< SQL
-select  
+select
     id,
     room_id,
     sourcelink_id,
     title
 from
-  room_sourcelink
+  room_sourcelink 
 SQL;
 }

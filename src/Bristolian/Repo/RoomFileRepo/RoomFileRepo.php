@@ -13,7 +13,7 @@ interface RoomFileRepo
 
     /**
      * @param string $room_id
-     * @return string[]
+     * @return StoredFile[]
      */
     public function getFilesForRoom(string $room_id);
 

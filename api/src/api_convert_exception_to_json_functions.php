@@ -75,6 +75,22 @@ function convertInvalidPermissionsExceptionToResponse(
 }
 
 
+function convertStringToResponse(
+    string $string,
+    RequestInterface $request,
+    ResponseInterface $response
+): ResponseInterface {
+    $data = [];
+    $data['status'] = 'fail';
+    $data['message'] = $string;
+
+    $response = fillJsonResponseData($response, $data, 404);
+
+    return $response;
+}
+
+
+
 function convertHttpNotFoundExceptionToResponse(
     \Slim\Exception\HttpNotFoundException $hnfe,
     RequestInterface $request,
@@ -90,18 +106,35 @@ function convertHttpNotFoundExceptionToResponse(
     return $response;
 }
 
-//function paramsValidationExceptionMapperApi(
-//    ValidationException $ve,
-//    ResponseInterface $response
-//) {
-//    $data = [];
-//    $data['status'] = 'There were validation errors';
-//    $data['errors'] = $ve->getValidationProblems();
-//
-//    $response = fillJsonResponseData($response, $data, 400);
-//
-//    return $response;
-//}
+function convertUnauthorisedExceptionToResponse(
+    \Throwable $e,
+    RequestInterface $request,
+    ResponseInterface $response
+): ResponseInterface {
+    $data = [];
+    $data['status'] = 'Unauthorized';
+    $data['errors'] = $e->getMessage();
+
+    $response = fillJsonResponseData($response, $data, 401);
+
+    return $response;
+}
+
+function convertGenericThrowableToResponse(
+    \Throwable $e,
+    RequestInterface $request,
+    ResponseInterface $response
+): ResponseInterface {
+    $data = [];
+    $data['status'] = 'Exception processing request';
+    $data['errors'] = $e->getMessage();
+    $data['stack'] = \getExceptionInfoAsArray($e);
+
+
+    $response = fillJsonResponseData($response, $data, 500);
+
+    return $response;
+}
 
 function pdoExceptionMapperApi(
     \PDOException $pdoe,

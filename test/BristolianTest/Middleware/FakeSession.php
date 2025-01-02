@@ -5,7 +5,7 @@ namespace BristolianTest\Middleware;
 use Asm\AsmException;
 use \Asm\Session;
 
-What even is this? Why are we implementing an external type?
+// What even is this? Why are we implementing an external type?
 class FakeSession implements Session
 {
     /**

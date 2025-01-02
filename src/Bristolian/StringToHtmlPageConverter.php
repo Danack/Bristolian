@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Bristolian;
 
 // TODO - this needs an interface
+use Bristolian\SiteHtml\AssetLinkEmitter;
+
 class StringToHtmlPageConverter
 {
     public function __construct(private AssetLinkEmitter $assetLinkEmitter)

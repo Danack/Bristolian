@@ -13,12 +13,14 @@ export interface RoomFileUploadPanelProps {
 interface RoomFileUploadPanelState {
     error: string|null,
     selectedFile: File|null,
+    uploadProgress: number | null,
 }
 
 function getDefaultState(): RoomFileUploadPanelState {
     return {
         error: null,
         selectedFile: null,
+        uploadProgress: null,
     };
 }
 
@@ -43,35 +45,40 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, Roo
     restoreState(state_to_restore: object) {
     }
 
-    handleDragEnter(event: any) { //DragEvent<HTMLDivElement>) {
+    handleDragEnter(event: DragEvent) {
         event.preventDefault();
-        console.log("handleDragEnter");
+        event.stopPropagation();
+        console.log("File dragged into the area");
     }
 
-    handleDragOver(event: any) { //DragEvent<HTMLDivElement>) {
+    handleDragOver(event: DragEvent) {
         event.preventDefault();
-        console.log("handleDragOver");
+        event.stopPropagation();
+        console.log("File being dragged over the area");
     }
 
-    handleDragLeave(event: any) { //DragEvent<HTMLDivElement>) {
+    handleDragLeave(event: DragEvent) {
         event.preventDefault();
-        console.log("handleDragLeave");
+        event.stopPropagation();
+        console.log("File left the drop area");
     }
 
-    handleDrop  (event: any) { //DragEvent<HTMLDivElement>){
+    handleDrop(event: DragEvent) {
         event.preventDefault();
-        console.log("Here we'll handle the dropped files");
+        event.stopPropagation();
+
+        if (event.dataTransfer && event.dataTransfer.files.length > 0) {
+            const file = event.dataTransfer.files[0];
+            console.log("Dropped file: ", file);
+            this.setState({ selectedFile: file });
+
+            // Clear drag data to avoid duplicate events
+            event.dataTransfer.clearData();
+        }
     }
 
     // On file select (from the pop up)
     onFileChange = (event: any) => {
-
-        // preview file here?
-        // name "0HjGvBW.jpeg"
-        // size 210806
-        // type "image/jpeg"
-        // webkitRelativePath ""
-
 
         // Update the state
         this.setState({
@@ -90,7 +97,10 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, Roo
             return;
         }
 
-        this.setState({error: null})
+        this.setState({
+            error: null,
+            uploadProgress: 0
+        });
 
         // Details of the uploaded file
         console.log("selectedFile ", this.state.selectedFile);
@@ -111,37 +121,89 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, Roo
         }
 
         let endpoint = `/api/rooms/${this.props.room_id}/file-upload`
+        const xhr = new XMLHttpRequest();
 
-        fetch(endpoint, params);
+        xhr.open("POST", endpoint, true);
+
+        xhr.upload.onprogress = (event) => {
+            if (event.lengthComputable) {
+                const progress = Math.round((event.loaded / event.total) * 100);
+                this.setState({ uploadProgress: progress });
+                console.log(`Upload progress: ${progress}%`);
+            }
+        };
+
+        xhr.onload = () => {
+            if (xhr.status === 200) {
+                console.log("File uploaded successfully");
+                this.setState({ uploadProgress: null, selectedFile: null });
+            } else {
+                this.setState({
+                    uploadProgress: null,
+                    error: "Upload failed"
+                });
+            }
+        };
+
+        xhr.onerror = () => {
+            this.setState({
+                uploadProgress: null,
+                error: "An error occurred during the upload"
+            });
+        };
+
+        xhr.send(formData);
     };
 
 
 
 
     render(props: RoomFileUploadPanelProps, state: RoomFileUploadPanelState) {
-         let error_block = <span>&nbsp;</span>;
-         if (this.state.error != null) {
-             error_block = <div class="error">Error: {this.state.error}</div>
-         }
+        let error_block = <span>&nbsp;</span>;
+        if (this.state.error != null) {
+            error_block = <div class="error">Error: {this.state.error}</div>;
+        }
 
-        return  <div class='room_file_upload_panel_react'>
-            <h3>Drag a file here to upload</h3>
-            <div
-                 onDragEnter={(something:any) => this.handleDragEnter(something)}
-                 onDragOver={(something:any) => this.handleDragOver(something)}
-                 onDrop={(something:any) => this.handleDrop(something)}>
-                <input
-                  type="file"
-                  onChange={this.onFileChange}
-                />
-                <button onClick={this.onFileUpload}>
-                    Upload!
-                </button>
-            </div>
+        return (
+          <div class="room_file_upload_panel_react">
+              <h3>Drag a file here to upload</h3>
+              <div
+                class="drop-area"
+                onDragEnter={(e) => this.handleDragEnter(e as DragEvent)}
+                onDragOver={(e) => this.handleDragOver(e as DragEvent)}
+                onDragLeave={(e) => this.handleDragLeave(e as DragEvent)}
+                onDrop={(e) => this.handleDrop(e as DragEvent)}
+                style={{border: "2px dashed #ccc", padding: "20px", borderRadius: "5px"}}
+              >
 
-            {error_block}
+                  <p>{state.selectedFile ? `Selected file: ${state.selectedFile.name}` : "Drop files here or click to select files."}</p>
+                  <input
+                    type="file"
+                    onChange={this.onFileChange}
+                    style={{display: "block", marginTop: "10px"}}
+                  />
 
-        </div>;
+
+                  <button onClick={this.onFileUpload}>Upload</button>
+              </div>
+
+              {state.uploadProgress !== null && (
+                <div class="progress-bar" style={{ marginTop: "10px" }}>
+                    <div
+                      style={{
+                          width: `${state.uploadProgress}%`,
+                          backgroundColor: "#4caf50",
+                          height: "10px",
+                      }}
+                    ></div>
+                    <p>{state.uploadProgress}%</p>
+                </div>
+              )}
+
+
+              {error_block}
+          </div>
+        );
     }
 }
 

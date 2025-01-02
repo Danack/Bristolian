@@ -16,9 +16,9 @@ values (
 SQL;
 
     const SELECT = <<< SQL
-select  
+select
     id
 from
-  user
+  user 
 SQL;
 }

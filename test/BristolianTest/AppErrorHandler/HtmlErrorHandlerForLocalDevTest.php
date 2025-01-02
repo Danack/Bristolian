@@ -6,7 +6,7 @@ use Bristolian\Basic\FakeErrorLogger;
 use BristolianTest\BaseTestCase;
 use Bristolian\AppErrorHandler\HtmlErrorHandlerForLocalDev;
 use Bristolian\Config\HardCodedAssetLinkConfig;
-use Bristolian\AssetLinkEmitter;
+use Bristolian\SiteHtml\AssetLinkEmitter;
 
 /**
  * @coversNothing

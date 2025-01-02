@@ -11,9 +11,6 @@ interface LoggedInInfo {
 
 interface LoginStatusPanelState {
   logged_in: boolean;
-  // user_search: string;
-  // users_found: Array<string>|null;
-  // message_sent_info: MessageSentInfo
 }
 
 function getDefaultState(/*initialControlParams: object*/): LoginStatusPanelState {
@@ -79,6 +76,7 @@ export class LoginStatusPanel extends Component<LoginStatusPanelProps, LoginStat
 
     return <div class='login_status_panel_react'>
       <a href="/logout">Logout</a>
+      <a href="/user/memes">Memes</a>
     </div>;
   }
 }

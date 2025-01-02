@@ -24,13 +24,13 @@ values (
 SQL;
 
     const SELECT = <<< SQL
-select  
+select
     id,
     user_id,
     file_id,
     highlights_json,
     text
 from
-  sourcelink
+  sourcelink 
 SQL;
 }

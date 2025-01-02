@@ -811,6 +811,24 @@ function get_supported_room_file_extensions()
     ];
 }
 
+/**
+ * @return string[]
+ */
+function get_supported_meme_file_extensions(): array
+{
+    return [
+        'gif',
+        'jpg',
+        'jpeg',
+        'mp4',
+        'png',
+        'pdf',
+        'webp'
+    ];
+}
+
+
+
 
 /**
  * Normalizes a supported extension to lower case or returns null if the extension

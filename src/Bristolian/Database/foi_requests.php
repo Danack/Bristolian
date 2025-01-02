@@ -22,12 +22,12 @@ values (
 SQL;
 
     const SELECT = <<< SQL
-select  
+select
     foi_request_id,
     text,
     url,
     description
 from
-  foi_requests
+  foi_requests 
 SQL;
 }

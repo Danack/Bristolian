@@ -22,8 +22,6 @@ class PermissionsCheckHtmlMiddleware
     ];
 
     public function __construct(
-        //        private \DI\Injector $injector,
-        //        private RequestSessionStorage $sessionStorage,
         private AppSessionManager $appSessionManager
     ) {
     }
@@ -49,7 +47,6 @@ class PermissionsCheckHtmlMiddleware
 
         if ($check_logged_in === true) {
             $appSession = $this->appSessionManager->getCurrentAppSession();
-//            $session = $this->sessionStorage->get();
             if ($appSession === null) {
                 throw new InvalidPermissionsException();
             }

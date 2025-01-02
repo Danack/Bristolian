@@ -3,10 +3,14 @@
 namespace Bristolian\Repo\LinkRepo;
 
 use Ramsey\Uuid\Uuid;
+use Bristolian\Model\Link;
 
 class FakeLinkRepo implements LinkRepo
 {
-    private $storedLinks = [];
+    /**
+     * @var Link[]
+     */
+    private array $storedLinks = [];
 
     public function store_link(
         string $user_id,
@@ -15,27 +19,36 @@ class FakeLinkRepo implements LinkRepo
 
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
-        $params = [
-            'id' => $id,
-            'user_id' => $user_id,
-            'url' => $url,
-        ];
 
-        $this->storedLinks[$id] = $params;
+        $datetime = new \DateTimeImmutable();
+
+        $this->storedLinks[$id] = new Link(
+            $id,
+            $user_id,
+            $url,
+            $created_at = $datetime->format("Y-m-d H:i:s")
+        );
 
         return $id;
     }
 
     /**
-     * @return array
+     * @return Link[]
      */
     public function getStoredLinks(): array
     {
         return $this->storedLinks;
     }
 
-    public function getLastAddedLink()
+    /**
+     * @return Link|null
+     */
+    public function getLastAddedLink(): Link|null
     {
+        if (count($this->storedLinks) === 0) {
+            return null;
+        }
+
         return end($this->storedLinks);
     }
 }

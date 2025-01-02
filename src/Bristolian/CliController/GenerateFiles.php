@@ -53,7 +53,7 @@ function generate_table_helper_class(string $tableName, array $columns): void
     $contents .= "    const SELECT = <<< SQL\n";
     $contents .= "select\n";
     $contents .= $columns_separated_by_comma_new_line;
-    $contents .= "from\n  $tableName\n";
+    $contents .= "from\n  $tableName \n"; //trailing space to avoid errors
 
     $contents .= "SQL;\n";
 

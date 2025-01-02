@@ -31,13 +31,17 @@ function createJsonAppErrorHandler(
  * Creates the ExceptionMiddleware that converts all known app exceptions
  * to nicely formatted pages for the api
  */
-function    createExceptionMiddlewareForApi(\Di\Injector $injector)
+function createExceptionMiddlewareForApi(\Di\Injector $injector)
 {
     $exceptionHandlers = [
         \DataType\Exception\ValidationException::class => 'convertValidationExceptionMapperApi',
         \Bristolian\Exception\InvalidPermissionsException::class => 'convertInvalidPermissionsExceptionToResponse',
         \PDOException::class => 'pdoExceptionMapper',
         Slim\Exception\HttpNotFoundException::class => 'convertHttpNotFoundExceptionToResponse',
+
+        \Bristolian\Exception\UnauthorisedException::class => 'convertUnauthorisedExceptionToResponse',
+
+        \Throwable::class =>'convertGenericThrowableToResponse',
     ];
 
     $responseFactory = $injector->make(ResponseFactoryInterface::class);
@@ -94,13 +98,19 @@ function createSlimAppForApi(
  */
 function getApiResultMappers(\DI\Injector $injector)
 {
+
+
     return [
         \SlimDispatcher\Response\StubResponse::class =>
             'SlimDispatcher\mapStubResponseToPsr7',
         ResponseInterface::class =>
             '\SlimDispatcher\passThroughResponse',
-        // Some controllers just want to return a chunk of HTML
-        'string' =>
-            'Bristolian\StringToHtmlPageConverter::convertStringToHtmlResponse',
+        // Some controllers just want to return a chunk of JSON...do they?
+        // seems bogus in an API environment.
+        'string' => 'convertStringToResponse',
+
+
+//        'string' =>
+//            'Bristolian\StringToHtmlPageConverter::convertStringToHtmlResponse',
     ];
 }

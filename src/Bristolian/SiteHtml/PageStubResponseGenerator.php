@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\SiteHtml;
 
-use Bristolian\AssetLinkEmitter;
+use Bristolian\SiteHtml\AssetLinkEmitter;
 use SlimDispatcher\Response\HtmlResponse;
 use SlimDispatcher\Response\StubResponse;
 

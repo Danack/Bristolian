@@ -4,11 +4,12 @@ namespace Bristolian\Repo\FileStorageInfoRepo;
 
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Model\StoredFile;
 
 class FakeFileStorageInfoRepo implements FileStorageInfoRepo
 {
     /**
-     * @var array<string, array<string, string|int>>
+     * @var StoredFile[]
      */
     private array $storedFileInfo = [];
 
@@ -18,17 +19,18 @@ class FakeFileStorageInfoRepo implements FileStorageInfoRepo
         UploadedFile $uploadedFile,
     ): string {
 
+        $datetime = new \DateTimeImmutable();
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
-        $params = [
-            'id' => $id,
-            'user_id' => $user_id,
-            'normalized_filename' => $normalized_filename,
-            'size' => $uploadedFile->getSize(),
-            'filestate' => FileState::INITIAL->value,
-        ];
-
-        $this->storedFileInfo[$id] = $params;
+        $this->storedFileInfo[$id] = new StoredFile(
+            $id,
+            $normalized_filename,
+            $original_filename = $uploadedFile->getOriginalName(),
+            $state = FileState::INITIAL->value,
+            $size = $uploadedFile->getSize(),
+            $user_id,
+            $created_at = $datetime->format("Y-m-d H:i:s")
+        );
 
         return $id;
     }
@@ -39,7 +41,7 @@ class FakeFileStorageInfoRepo implements FileStorageInfoRepo
     }
 
     /**
-     * @return array
+     * @return StoredFile[]
      */
     public function getStoredFileInfo(): array
     {

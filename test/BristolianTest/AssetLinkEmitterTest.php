@@ -2,7 +2,7 @@
 
 namespace BristolianTest;
 
-use Bristolian\AssetLinkEmitter;
+use Bristolian\SiteHtml\AssetLinkEmitter;
 use Bristolian\Config\HardCodedAssetLinkConfig;
 
 /**
@@ -11,7 +11,7 @@ use Bristolian\Config\HardCodedAssetLinkConfig;
 class AssetLinkEmitterTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\AssetLinkEmitter
+     * @covers \Bristolian\SiteHtml\AssetLinkEmitter
      */
     public function testWorks()
     {

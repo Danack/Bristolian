@@ -20,11 +20,11 @@ values (
 SQL;
 
     const SELECT = <<< SQL
-select  
+select
     id,
     description,
     checksum
 from
-  migrations
+  migrations 
 SQL;
 }

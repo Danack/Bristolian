@@ -32,8 +32,8 @@ function getAllApiRoutes()
 
         ['/api/login-status', 'GET', 'Bristolian\AppController\User::get_login_status'],
 
-        ['/api/meme-upload/', 'POST', 'Bristolian\AppController\MemeUpload::handleFileUpload'],
-        ['/api/meme-upload/', 'GET', 'Bristolian\AppController\MemeUpload::handleFileUpload_get'],
+        ['/api/meme-upload/', 'POST', 'Bristolian\AppController\MemeUpload::handleMemeUpload'],
+        ['/api/meme-upload/', 'GET', 'Bristolian\AppController\MemeUpload::handleMemeUpload_get'],
 
         ['/api/meme-tag-add/', 'POST', 'Bristolian\AppController\User::handleMemeTagAdd'],
         ['/api/meme-tag-add/', 'GET', 'Bristolian\AppController\User::handleMemeTagAdd_get'],

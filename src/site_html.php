@@ -91,8 +91,8 @@ HTML;
 }
 
 function createPageHtml(
-    \Bristolian\AssetLinkEmitter $assetLinkEmitter,
-    string $html,
+    \Bristolian\SiteHtml\AssetLinkEmitter $assetLinkEmitter,
+    string                                $html,
 ): string {
 
     $pageTitle = "Bristolian";

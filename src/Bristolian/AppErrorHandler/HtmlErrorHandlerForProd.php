@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\AppErrorHandler;
 
-use Bristolian\AssetLinkEmitter;
+use Bristolian\SiteHtml\AssetLinkEmitter;
 use Bristolian\Basic\ErrorLogger;
 
 class HtmlErrorHandlerForProd implements AppErrorHandler

@@ -26,7 +26,7 @@ values (
 SQL;
 
     const SELECT = <<< SQL
-select  
+select
     id,
     normalized_name,
     original_filename,
@@ -34,6 +34,6 @@ select
     size,
     user_id
 from
-  stored_file
+  stored_file 
 SQL;
 }

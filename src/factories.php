@@ -338,7 +338,9 @@ function createAppSession(
     $app_session = $appSessionManager->getCurrentAppSession();
 
     if ($app_session === null) {
-        throw new \Bristolian\BristolianException("Something depends on AppSession");
+        throw new \Bristolian\Exception\UnauthorisedException(
+            "Something depends on AppSession but user not logged in."
+        );
     }
 
     return $app_session;

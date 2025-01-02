@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\SiteHtml;
 
-use Bristolian\AssetLinkEmitter;
+use Bristolian\SiteHtml\AssetLinkEmitter;
 use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
 use Psr\Http\Message\ResponseInterface as Response;
 

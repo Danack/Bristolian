@@ -20,11 +20,11 @@ values (
 SQL;
 
     const SELECT = <<< SQL
-select  
+select
     tag_id,
     text,
     description
 from
-  tag
+  tag 
 SQL;
 }

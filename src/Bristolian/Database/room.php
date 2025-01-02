@@ -22,12 +22,12 @@ values (
 SQL;
 
     const SELECT = <<< SQL
-select  
+select
     id,
     owner_user_id,
     name,
     purpose
 from
-  room
+  room 
 SQL;
 }

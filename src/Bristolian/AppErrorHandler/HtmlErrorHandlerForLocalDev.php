@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Bristolian\AppErrorHandler;
 
 use Bristolian\App;
-use Bristolian\AssetLinkEmitter;
+use Bristolian\SiteHtml\AssetLinkEmitter;
 use Bristolian\Basic\ErrorLogger;
 use SlimDispatcher\Response\HtmlResponse;
 use function SlimDispatcher\mapStubResponseToPsr7;

@@ -20,11 +20,11 @@ values (
 SQL;
 
     const SELECT = <<< SQL
-select  
+select
     id,
     test_string,
     test_int
 from
-  pdo_simple_test
+  pdo_simple_test 
 SQL;
 }

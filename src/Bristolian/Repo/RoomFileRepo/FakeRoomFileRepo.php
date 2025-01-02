@@ -13,12 +13,13 @@ class FakeRoomFileRepo implements RoomFileRepo
 
     public function addFileToRoom(string $fileStorageId, string $room_id): void
     {
+        // TODO - change this to store File so they can be returned.
         $this->filesAndRooms[] = [$fileStorageId, $room_id];
     }
 
     /**
      * @param string $room_id
-     * @return string[]
+     * @return StoredFile[]
      */
     public function getFilesForRoom(string $room_id): array
     {

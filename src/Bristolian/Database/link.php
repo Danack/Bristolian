@@ -20,11 +20,11 @@ values (
 SQL;
 
     const SELECT = <<< SQL
-select  
+select
     id,
     user_id,
     url
 from
-  link
+  link 
 SQL;
 }

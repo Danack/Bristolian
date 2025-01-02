@@ -7,6 +7,7 @@ use Bristolian\Session\AppSessionManager;
 use Bristolian\DataType\MemeTagDeleteParam;
 use Bristolian\DataType\MemeTagParam;
 use Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo;
+use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Repo\MemeTagRepo\MemeTagRepo;
 use Bristolian\Session\UserSession;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -17,7 +18,7 @@ use SlimDispatcher\Response\StubResponse;
 class User
 {
     public function listMemes(
-        FileStorageInfoRepo $fileStorageInfoRepo,
+        MemeStorageRepo $memeStorageRepo,
         UserSession $appSession,
     ): StubResponse {
         if ($appSession->isLoggedIn() !== true) {
@@ -25,17 +26,14 @@ class User
             return new JsonResponse($data, [], 400);
         }
 
-        $memes = $fileStorageInfoRepo->listMemesForUser($appSession->getUserId());
+        $memes = $memeStorageRepo->listMemesForUser($appSession->getUserId());
 
-        $memeData = [];
 
-        foreach ($memes as $meme) {
-            $memeData[] = $meme->toArray();
-        }
+        [$error, $values] = convertToValue($memes);
 
         $data = [
             'result' => 'success',
-            'memes' => $memeData
+            'memes' => $values
         ];
 
         return new JsonResponse($data);
@@ -46,8 +44,11 @@ class User
     {
         $content = "";
 
+        $content .= "Meme upload panel:";
+        $content .= "<div class='meme_upload_panel'></div>";
+
         $content .= "Meme management panel:";
-        $content .= "<div class='meme_management_panel' ></div>";
+        $content .= "<div class='meme_management_panel'></div>";
 
         return $content;
     }
@@ -134,7 +135,6 @@ class User
 
 
     public function get_login_status(
-        //      AppSession $appSession
         AppSessionManager $appSessionManager
     ): JsonNoCacheResponse {
         $data = [
@@ -147,7 +147,6 @@ class User
                 'logged_in' => true,
             ];
         }
-
 
         return new JsonNoCacheResponse($data);
     }

@@ -77,6 +77,8 @@ SQL;
             ':meme_id' => $meme_id
         ];
 
+
+        // @phpstan-ignore-next-line
         return $this->pdoSimple->fetchAllAsData($sql, $params);
     }
 

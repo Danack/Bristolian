@@ -20,11 +20,11 @@ values (
 SQL;
 
     const SELECT = <<< SQL
-select  
+select
     user_id,
     email_address,
     password_hash
 from
-  user_auth_email_password
+  user_auth_email_password 
 SQL;
 }

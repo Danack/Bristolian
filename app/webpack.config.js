@@ -19,7 +19,7 @@ const options = commandLineArgs(
 );
 
 // const TimestampWebpackPlugin = require('timestamp-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     devtool: false,
@@ -72,11 +72,10 @@ module.exports = {
         //     analyzerHost: "0.0.0.0",
         //     analyzerMode: options.analyze === "enabled" ? 'static': "server",
         //     openAnalyzer: false
-        // })
+        // }),
 
         new webpack.SourceMapDevToolPlugin({
             filename: '[name].bundle.map',
-            // publicPath: "http://local.phpopendocs.com/js/app.bundle.js.map"
             sourceRoot: "/var/app/app/public"
         }),
 
@@ -101,4 +100,9 @@ module.exports = {
             "react-dom": "preact/compat"
         }
     },
+    // stats: {
+    //     preset: 'detailed',
+    //     moduleTrace: true,
+    //     errorDetails: true,
+    // },
 };

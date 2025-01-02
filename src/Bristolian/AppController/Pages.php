@@ -430,29 +430,6 @@ HTML;
         $content .= "<div class='notification_test_panel' ></div>";
 
 
-//
-//        $content .= "Polis test:";
-//
-//        $polis_html = <<< HTML
-//        <div
-//  class="polis"
-//  data-page_id="PAGE_ID"
-//  data-site_id="polis_site_id_hQIX0IPcJDZIPZxgpQ">
-//</div>
-//<script async src="https://pol.is/embed.js"></script>
-//HTML;
-//
-//        $polis_html = <<< HTML
-//        <div class='polis' data-conversation_id='9mmkkhcezy'></div>
-//<script async src='https://pol.is/embed.js'></script>
-//HTML;
-//
-//        $content .= $polis_html;
-//
-
-
-
-//        $content .= "<p>wtf.</p>";
         return $content;
     }
 }

@@ -3,9 +3,6 @@
 declare(strict_types = 1);
 
 
-use Bristolian\DataType\BasicString;
-use Bristolian\Repo\FileStorageInfoRepo\FileType;
-
 function getAllQueries_6(): array
 {
     $sql = [];

@@ -27,6 +27,15 @@ class UserSessionFileUploaderHandler
 
         $uploadedFile = $this->uploadedFiles->get($formFileName);
 
+        if ($uploadedFile === null) {
+            $response = [
+                'result' => 'error',
+                'detail' => 'Temp file not found.'
+            ];
+
+            return new JsonNoCacheResponse($response, [], 500);
+        }
+
         if (file_exists($uploadedFile->getTmpName()) !== true) {
             $response = [
                 'result' => 'error',

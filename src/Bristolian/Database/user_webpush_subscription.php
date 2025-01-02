@@ -24,13 +24,13 @@ values (
 SQL;
 
     const SELECT = <<< SQL
-select  
+select
     user_webpush_subscription_id,
     user_id,
     endpoint,
     expiration_time,
     raw
 from
-  user_webpush_subscription
+  user_webpush_subscription 
 SQL;
 }

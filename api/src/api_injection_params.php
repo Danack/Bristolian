@@ -1,6 +1,7 @@
 <?php
 
 use Bristolian\InjectionParams;
+use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 
 function apiInjectionParams() : InjectionParams
 {
@@ -71,7 +72,19 @@ function apiInjectionParams() : InjectionParams
             \Bristolian\Session\StandardOptionalUserSession::class,
 
         \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::class =>
-            \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::class
+            \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::class,
+
+        \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::class =>
+            \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class,
+
+        \Bristolian\Service\MemeStorage\MemeStorage::class =>
+            \Bristolian\Service\MemeStorage\StandardMemeStorage::class,
+
+        \Bristolian\Service\ObjectStore\MemeObjectStore::class =>
+            \Bristolian\Service\ObjectStore\StandardMemeObjectStore::class,
+
+        \Bristolian\Service\MemeStorageProcessor\MemeStorageProcessor::class =>
+            \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::class,
 
     ];
     // Delegate the creation of types to callables.

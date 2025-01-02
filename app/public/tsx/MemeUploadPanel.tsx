@@ -12,17 +12,12 @@ export interface MemeUploadPanelProps {
 
 
 interface MemeUploadPanelState {
-    // max_comment_id: number|null;
-    // comments: Array<Comment>;
-    // last_error: any;
     selectedFile: File|null,
 }
 
 function getDefaultState(): MemeUploadPanelState {
     return {
         selectedFile: null,
-        // comments: [],
-        // last_error: null
     };
 }
 

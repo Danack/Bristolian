@@ -26,7 +26,7 @@ values (
 SQL;
 
     const SELECT = <<< SQL
-select  
+select
     room_id,
     stored_file_id,
     description,
@@ -34,6 +34,6 @@ select
     src_url,
     document_timestamp
 from
-  room_file
+  room_file 
 SQL;
 }

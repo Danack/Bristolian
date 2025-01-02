@@ -123,7 +123,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
     }
 
     renderMemeBlock() {
-        if (this.state.memes !== null && this.state.memes.length === 0) {
+        if (this.state.memes && this.state.memes.length === 0) {
             return <span>You don't have any memes uploaded. If you did, you could manage them here.</span>
         }
 
