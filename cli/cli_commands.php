@@ -153,7 +153,7 @@ function addGenerateCommands(Application $console)
 {
     $command = new Command(
         'generate:javascript_constants',
-        'Bristolian\CliController\GenerateFiles::generateJavaScriptConstants'
+        'Bristolian\CliController\GenerateFiles::generateAllJavaScriptFiles'
     );
     $command->setDescription("Generate JavaScript constants from PHP source values.");
     $console->add($command);

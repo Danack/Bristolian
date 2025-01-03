@@ -170,7 +170,8 @@ function injectionParams()
 
         \Bristolian\Session\StandardOptionalUserSession::class => 'createOptionalUserSession',
 
-
+        \Bristolian\Session\AppSession::class =>
+            'createAppSession',
     ];
 
     // Define some params that can be injected purely by name.

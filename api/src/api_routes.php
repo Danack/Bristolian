@@ -77,6 +77,12 @@ function getAllApiRoutes()
         ],
 
         [
+            '/api/rooms/{room_id}/file/{file_id}/sourcelinks',
+            'GET',
+            '\Bristolian\AppController\Rooms::getSourcelinksForFile'
+        ],
+
+        [
             '/api/rooms/{room_id:.*}/sourcelinks',
             'GET',
             '\Bristolian\AppController\Rooms::getSourcelinks'

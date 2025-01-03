@@ -9,27 +9,27 @@ class meme_tag
     const INSERT = <<< SQL
 insert into meme_tag (
     id,
-    user_id,
     meme_id,
+    text,
     type,
-    text
+    user_id
 )
 values (
     :id,
-    :user_id,
     :meme_id,
+    :text,
     :type,
-    :text
+    :user_id
 )
 SQL;
 
     const SELECT = <<< SQL
 select
     id,
-    user_id,
     meme_id,
+    text,
     type,
-    text
+    user_id
 from
   meme_tag 
 SQL;

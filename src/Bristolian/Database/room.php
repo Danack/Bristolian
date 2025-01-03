@@ -9,14 +9,14 @@ class room
     const INSERT = <<< SQL
 insert into room (
     id,
-    owner_user_id,
     name,
+    owner_user_id,
     purpose
 )
 values (
     :id,
-    :owner_user_id,
     :name,
+    :owner_user_id,
     :purpose
 )
 SQL;
@@ -24,8 +24,8 @@ SQL;
     const SELECT = <<< SQL
 select
     id,
-    owner_user_id,
     name,
+    owner_user_id,
     purpose
 from
   room 

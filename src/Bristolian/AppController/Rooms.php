@@ -163,6 +163,20 @@ class Rooms
 
 
 
+    public function getSourcelinksForFile(
+        RoomSourceLinkRepo $roomLinkRepo,
+        string $room_id,
+        string $file_id,
+    ): JsonNoCacheResponse {
+        $sourcelinks = $roomLinkRepo->getSourceLinksForRoomAndFile(
+            $room_id,
+            $file_id
+        );
+
+        return createJsonResponse(['sourcelinks' => $sourcelinks]);
+    }
+
+
     public function getSourcelinks(
         RoomSourceLinkRepo $roomLinkRepo,
         string $room_id
@@ -308,7 +322,7 @@ HTML;
         ];
 
         if ($sourcelink_id !== null) {
-            $params['selected_sourcelink_ids'] = [$sourcelink_id];
+            $params['selected_sourcelink_id'] = $sourcelink_id;
         }
 
         $widget_data = encodeWidgetyData($params);
@@ -322,7 +336,7 @@ HTML;
       title='A file to note text in'></iframe>
   </span>
   <span>
-    <div class='text_note_panel' data-widgety_json='$widget_data'></div>
+    <div class='source_link_panel' data-widgety_json='$widget_data'></div>
   </span>
 </div>
 HTML;
@@ -370,11 +384,47 @@ HTML;
             'stored_file_url' => $stored_file_url
         ]);
 
+
+
         $html = <<< HTML
 <!DOCTYPE html>
 
 <html lang="en">
   <body>
+  <script nonce="{$requestNonce->getRandom()}">
+    // (function () {
+      // Queue to store incoming messages
+      const messageQueue = [];
+
+      // Flag to indicate when the iframe script is ready
+      let isReady = false;
+
+      // Temporary listener to queue messages
+      function queueMessages(event) {
+        if (!isReady) {
+          messageQueue.push(event.data);
+        }
+      }
+
+      // Add event listener for postMessage
+      window.addEventListener('message', queueMessages);
+
+      // When your script is ready to handle messages, process the queue
+      function processQueue() {
+        isReady = true;
+
+        // Process all queued messages
+        while (messageQueue.length > 0) {
+          const message = messageQueue.shift();
+          receiveDrawHightlightsMessage(message);
+        }
+
+        // Replace the queueMessages listener with the real handler
+        window.removeEventListener('message', queueMessages);
+      }
+  </script>
+  
+  
     <script src="/js/pdf/pdf.mjs" type="module"></script>
     <script src="/js/pdf_view.js" type="module"></script>
     <link rel="stylesheet" href="/css/pdf_viewer.css">

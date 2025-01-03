@@ -33,7 +33,14 @@ export function humanFileSize(bytes:number, si=false, dp=1) {
   return bytes.toFixed(dp) + ' ' + units[u];
 }
 
-
+export function countWords(str:string) {
+  if (typeof str !== 'string') {
+    throw new TypeError('Input must be a string');
+  }
+  // Trim the string and split it by spaces, then filter out empty strings
+  const words = str.trim().split(/\s+/);
+  return words.length === 1 && words[0] === '' ? 0 : words.length;
+}
 
 /**
  *

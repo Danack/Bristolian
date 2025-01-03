@@ -1,5 +1,6 @@
 import {h, Component} from "preact";
 import {humanFileSize} from "./functions";
+import {RoomSourceLink} from "./generated/types";
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
@@ -8,18 +9,8 @@ export interface RoomSourcelinkPanelProps {
     room_id: string
 }
 
-interface Sourcelink {
-    id: string,
-    user_id: string,
-    file_id: string,
-    highlights_json: string,
-    text: string,
-    title: string,
-    room_sourcelink_id: string,
-}
-
 interface RoomSourcelinkPanelState {
-    sourcelinks: Sourcelink[],
+    sourcelinks: RoomSourceLink[],
     error: string|null,
 }
 
@@ -66,24 +57,9 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
     }
 
     processData(data:any) {
-        if (data.data.files === undefined) {
-            this.setState({error: "Server response did not contains 'files'."})
+        if (data.data.sourcelinks === undefined) {
+            this.setState({error: "Server response did not contains 'sourcelinks'."})
         }
-
-        // let sourcelinks:Sourcelink[] = [];
-        // for(let i=0; i<data.data.sourcelinks.length; i++) {
-        //     const entry = data.data.files[i]
-        //
-        //     // @ts-ignore: any ...
-        //     const file:RoomFile = {
-        //         id: entry.id,
-        //         normalized_name: entry.normalized_name,
-        //         original_filename: entry.original_filename,
-        //         size: entry.size
-        //     };
-        //
-        //     sourcelinks.push(file);
-        // }
 
         this.setState({sourcelinks: data.data.sourcelinks})
     }
@@ -96,7 +72,7 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
     restoreState(state_to_restore: object) {
     }
 
-    renderRoomSourcelink(sourceLink: Sourcelink) {
+    renderRoomSourcelink(sourceLink: RoomSourceLink) {
         const sourcelinkUrl = `/rooms/${this.props.room_id}/file/${sourceLink.file_id}/sourcelinks/${sourceLink.id}`;
 
         return (
@@ -134,7 +110,7 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
                     <td></td>
                 </tr>
                 {Object.values(this.state.sourcelinks).
-                map((sourceLink: Sourcelink) => this.renderRoomSourcelink(sourceLink))}
+                map((sourceLink: RoomSourceLink) => this.renderRoomSourcelink(sourceLink))}
             </table>
         </div>
     }

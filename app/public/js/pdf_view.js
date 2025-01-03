@@ -146,6 +146,8 @@ function initial_render_scrolling(pdf) {
     g_pdf_document = pdf;
 
     loadPage(0);
+    setTimeout(processQueue, 1000);
+    // processQueue();
 }
 
 function handleWindowScroll() {
@@ -333,7 +335,7 @@ function processSelectionChange() {
 
     const selection_data = {
         text: window.getSelection().toString(),
-        rectangles: reduced_simple_approx_rects,
+        highlights: reduced_simple_approx_rects,
     }
 
     // Send the position to the parent window
@@ -341,34 +343,66 @@ function processSelectionChange() {
 }
 
 
-function drawRects(rects) {
+function drawHighlights(highlights) {
     var outputScale = window.devicePixelRatio || 1;
 
-    for (let i = 0; i < rects.length; i += 1) {
-        let rect = rects[i];
+    console.log("Drawing highlights", highlights);
+    if (highlights.length > 0) {
+        let element = g_page_container[highlights[0].page];
 
-        if (rect.page < 0 || rect.page > g_max_page) {
-            console.warn("Highlight rectangle is on invalid page", rect.page);
+        if (element) {
+            element.scrollIntoView({
+                behavior: 'smooth', // Options: 'auto' (default) or 'smooth' for smooth scrolling
+                block: 'center',    // Options: 'start', 'center', 'end', or 'nearest'
+                inline: 'nearest'   // Options: 'start', 'center', 'end', or 'nearest'
+            });
+        }
+    }
+
+
+
+    for (let i = 0; i < highlights.length; i += 1) {
+        let highlight = highlights[i];
+
+        if (highlight.page < 0 || highlight.page > g_max_page) {
+            console.warn("Highlight rectangle is on invalid page", highlight.page);
             continue;
         }
 
-        var context = g_page_canvas_context[rect.page];
+        var context = g_page_canvas_context[highlight.page];
+
+        if (!context) {
+            setTimeout(function () {
+                console.log(
+                    `Some highlights on pages not loaded yet. Delaying drawing from highlight ${i}`
+                );
+                let remaining_highlights = highlights.slice(i);
+                drawHighlights((remaining_highlights))
+            }, 100)
+        }
+
         context.fillStyle = 'rgba(255,221,0,0.42)';
 
         context.fillRect(
-            (rect.left) * outputScale,
-            (rect.top) * outputScale,
-            (rect.right - rect.left) * outputScale,
-            (rect.bottom - rect.top) * outputScale
+            (highlight.left) * outputScale,
+            (highlight.top) * outputScale,
+            (highlight.right - highlight.left) * outputScale,
+            (highlight.bottom - highlight.top) * outputScale
         );
     }
 }
 
 
-function receiveDrawRectsMessage() {
-    if (event.data && event.data.type === "draw_rects") {
-        let rects = event.data.rects;
-        drawRects(rects);
+function receiveDrawHightlightsMessage(event) {
+
+    if (event.data && event.data.type === "draw_highlights") {
+        console.log("Received draw highlights message", event);
+        let highlights = event.data.highlights;
+        if (highlights === undefined) {
+            console.warn("No highlights received.");
+            return;
+        }
+        drawHighlights(highlights);
     }
 }
 
@@ -403,5 +437,4 @@ document.addEventListener("selectionchange", () => {
 
 window.addEventListener('scroll', handleWindowScroll);
 
-
-window.addEventListener("message", receiveDrawRectsMessage);
+window.addEventListener("message", receiveDrawHightlightsMessage);

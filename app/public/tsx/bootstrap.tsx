@@ -18,11 +18,11 @@ import { RoomFilesPanel } from "./RoomFilesPanel";
 import { RoomFileUploadPanel } from "./RoomFileUploadPanel";
 import { RoomLinksPanel } from "./RoomLinksPanel";
 import { RoomSourcelinksPanel } from "./RoomSourcelinksPanel";
-import { TextNotePanel } from "./TextNote";
+import { SourceLinkPanel } from "./SourceLinkPanel";
 import { TeleprompterPanel } from "./TeleprompterPanel";
 import { TimeLinePanel } from "./TimeLinePanel";
 import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
-import {receiveSelectionMessage} from "./TextNote";
+import { receiveSelectionMessage } from "./SourceLinkPanel";
 
 let panels: WidgetClassBinding[] = [
 
@@ -85,10 +85,9 @@ let panels: WidgetClassBinding[] = [
         class: 'teleprompter_panel',
         component: TeleprompterPanel
     },
-
     {
-        class: 'text_note_panel',
-        component: TextNotePanel
+        class: 'source_link_panel',
+        component: SourceLinkPanel
     },
 
     {

@@ -9,21 +9,21 @@ class pdo_simple_test
     const INSERT = <<< SQL
 insert into pdo_simple_test (
     id,
-    test_string,
-    test_int
+    test_int,
+    test_string
 )
 values (
     :id,
-    :test_string,
-    :test_int
+    :test_int,
+    :test_string
 )
 SQL;
 
     const SELECT = <<< SQL
 select
     id,
-    test_string,
-    test_int
+    test_int,
+    test_string
 from
   pdo_simple_test 
 SQL;

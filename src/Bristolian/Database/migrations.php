@@ -8,22 +8,22 @@ class migrations
 {
     const INSERT = <<< SQL
 insert into migrations (
-    id,
+    checksum,
     description,
-    checksum
+    id
 )
 values (
-    :id,
+    :checksum,
     :description,
-    :checksum
+    :id
 )
 SQL;
 
     const SELECT = <<< SQL
 select
-    id,
+    checksum,
     description,
-    checksum
+    id
 from
   migrations 
 SQL;

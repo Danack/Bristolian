@@ -8,22 +8,22 @@ class user_auth_email_password
 {
     const INSERT = <<< SQL
 insert into user_auth_email_password (
-    user_id,
     email_address,
-    password_hash
+    password_hash,
+    user_id
 )
 values (
-    :user_id,
     :email_address,
-    :password_hash
+    :password_hash,
+    :user_id
 )
 SQL;
 
     const SELECT = <<< SQL
 select
-    user_id,
     email_address,
-    password_hash
+    password_hash,
+    user_id
 from
   user_auth_email_password 
 SQL;

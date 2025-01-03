@@ -4,6 +4,7 @@
 namespace Bristolian\AppController;
 
 use Bristolian\Session\AppSession;
+use Bristolian\Session\UserSession;
 
 class Docs
 {
@@ -32,7 +33,7 @@ HTML;
 
 
 
-    public function memes(AppSession $appSession): string
+    public function memes(UserSession $appSession): string
     {
         $content = "<h1>Memes</h1>";
 

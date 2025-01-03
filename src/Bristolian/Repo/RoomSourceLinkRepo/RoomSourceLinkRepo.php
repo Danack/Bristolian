@@ -20,4 +20,14 @@ interface RoomSourceLinkRepo
      * @return RoomSourceLink[]
      */
     public function getSourceLinksForRoom(string $room_id): array;
+
+    /**
+     * @param string $room_id
+     * @param string $file_id
+     * @return RoomSourceLink[]
+     */
+    public function getSourceLinksForRoomAndFile(
+        string $room_id,
+        string $file_id,
+    ): array;
 }

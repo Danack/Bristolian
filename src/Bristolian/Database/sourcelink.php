@@ -8,28 +8,28 @@ class sourcelink
 {
     const INSERT = <<< SQL
 insert into sourcelink (
-    id,
-    user_id,
     file_id,
     highlights_json,
-    text
+    id,
+    text,
+    user_id
 )
 values (
-    :id,
-    :user_id,
     :file_id,
     :highlights_json,
-    :text
+    :id,
+    :text,
+    :user_id
 )
 SQL;
 
     const SELECT = <<< SQL
 select
-    id,
-    user_id,
     file_id,
     highlights_json,
-    text
+    id,
+    text,
+    user_id
 from
   sourcelink 
 SQL;

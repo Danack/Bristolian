@@ -85,4 +85,44 @@ SQL;
             RoomSourceLink::class
         );
     }
+
+
+    public function getSourceLinksForRoomAndFile(
+        string $room_id,
+        string $file_id
+    ): array
+    {
+
+        $sql = <<< SQL
+select  
+    sl.id,
+    sl.user_id,
+    sl.file_id,
+    sl.highlights_json,
+    sl.text,
+    rs.title,
+    rs.id as room_sourcelink_id
+from
+  sourcelink sl
+left join
+  room_sourcelink rs
+on 
+ sl.id = rs.sourcelink_id
+where
+  rs.room_id = :room_id
+and
+  sl.file_id = :file_id
+SQL;
+
+        $params = [
+            ':room_id' => $room_id,
+            ':file_id' => $file_id
+        ];
+
+        return $this->pdoSimple->fetchAllAsObjectConstructor(
+            $sql,
+            $params,
+            RoomSourceLink::class
+        );
+    }
 }

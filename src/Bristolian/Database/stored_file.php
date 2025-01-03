@@ -11,16 +11,16 @@ insert into stored_file (
     id,
     normalized_name,
     original_filename,
-    state,
     size,
+    state,
     user_id
 )
 values (
     :id,
     :normalized_name,
     :original_filename,
-    :state,
     :size,
+    :state,
     :user_id
 )
 SQL;
@@ -30,8 +30,8 @@ select
     id,
     normalized_name,
     original_filename,
-    state,
     size,
+    state,
     user_id
 from
   stored_file 

@@ -9,21 +9,21 @@ class link
     const INSERT = <<< SQL
 insert into link (
     id,
-    user_id,
-    url
+    url,
+    user_id
 )
 values (
     :id,
-    :user_id,
-    :url
+    :url,
+    :user_id
 )
 SQL;
 
     const SELECT = <<< SQL
 select
     id,
-    user_id,
-    url
+    url,
+    user_id
 from
   link 
 SQL;

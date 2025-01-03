@@ -63,13 +63,89 @@ function generate_table_helper_class(string $tableName, array $columns): void
 }
 
 
+/**
+ * @param class-string $type
+ * @return string
+ */
+function generateInterfaceForClass(string $type): string {
 
+    // TODO - this is a hack. It would almost certainly be better to
+    // use https://www.npmjs.com/package/openapi-typescript but as our
+    // Open API spec isn't generating, this will work for the time being.
+
+    $content = '';
+
+    $rc = new \ReflectionClass($type);
+
+    $name = $rc->getShortName();
+    $content .= "// $type\n";
+    $content .= "export interface $name {\n";
+
+    foreach ($rc->getProperties() as $property) {
+        $php_type = $property->getType();
+        if (str_starts_with($php_type, '?') === true) {
+            $php_type = substr($php_type, 1) . "|null";
+        }
+
+        $content .= "    " . $property->getName() . ": " . $php_type . ";\n";
+    }
+
+    $content .= "}\n";
+
+    return $content;
+}
+
+/*
+
+interface FloatingPointPanelState {
+input_value: string
+sign: number;
+exponent: Array<number>;
+fraction: Array<number>;
+modified: boolean;
+}
+
+*/
 
 
 
 
 class GenerateFiles
 {
+    public function generateAllJavaScriptFiles(): void
+    {
+        $this->generateJavaScriptConstants();
+        $this->generateJavaScriptTypes();
+    }
+
+
+    public function generateJavaScriptTypes(): void
+    {
+        $output_filename = __DIR__ . "/../../../app/public/tsx/generated/types.tsx";
+
+        $content = "// This is an auto-generated file\n";
+        $content .= "// DO NOT EDIT\n\n";
+        $content .= "// You'll need to bounce the docker boxes to regenerate.\n\n";
+
+        $types = [
+            \Bristolian\Model\RoomLink::class,
+            \Bristolian\Model\RoomSourceLink::class,
+        ];
+
+        foreach ($types as $type) {
+            $content .= generateInterfaceForClass($type);
+            $content .= "\n";
+        }
+
+        $result = file_put_contents($output_filename, $content);
+        if ($result === false) {
+            throw new BristolianException("Something went wrong writing to file in generateJavaScriptTypes");
+        }
+    }
+
+
+
+
     /**
      * This generates a TypeScript file that contains constants that need to be shared
      * between the front and backend e.g. the name for the field on a form that uploads
@@ -86,13 +162,20 @@ class GenerateFiles
             'SOURCELINK_JSON_MINIMUM_LENGTH' => \Bristolian\DataType\SourceLinkHighlightsJson::MINIMUM_LENGTH,
             'SOURCELINK_JSON_MAXIMUM_LENGTH' => \Bristolian\DataType\SourceLinkHighlightsJson::MAXIMUM_LENGTH,
 
-            'SOURCELINK_TEX_MAXIMUM_LENGTH' => \Bristolian\DataType\SourceLinkText::MAXIMUM_LENGTH,
+            'SOURCELINK_TITLE_MINIMUM_LENGTH' => \Bristolian\DataType\SourceLinkTitle::MINIMUM_LENGTH,
+            'SOURCELINK_TITLE_MAXIMUM_LENGTH' => \Bristolian\DataType\SourceLinkTitle::MAXIMUM_LENGTH,
+
+            'SOURCELINK_TEXT_MAXIMUM_LENGTH' => \Bristolian\DataType\SourceLinkText::MAXIMUM_LENGTH,
 
             'SOURCE_LINK_MAX_PAGES' => \Bristolian\DataType\SourceLinkPage::MAX_PAGES,
         ];
 
-        $template = <<< TEMPLATE
+        $string_template = <<< TEMPLATE
 export const :js_name: string = ":js_value";\n
+TEMPLATE;
+
+        $int_template = <<< TEMPLATE
+export const :js_name: number = :js_value;\n
 TEMPLATE;
 
 
@@ -109,12 +192,16 @@ TEMPLATE;
                 // safe.
                 ':js_value' => $constant_value
             ];
+            $template = $string_template;
+            if (is_int($constant_value) === true) {
+                $template = $int_template;
+            }
             $content .= esprintf($template, $params);
         }
 
         $result = file_put_contents($output_filename, $content);
         if ($result === false) {
-            throw new BristolianException("Something ");
+            throw new BristolianException("Something went wrong writing to file in generateJavaScriptConstants");
         }
     }
 

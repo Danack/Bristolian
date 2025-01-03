@@ -76,7 +76,7 @@ function getAllAppRoutes()
         ],
 
         [
-            '/rooms/{room_id:.*}/file/{file_id:.*}/sourcelinks/{sourcelink_id:.*}',
+            '/rooms/{room_id:.*}/file/{file_id:.*}/sourcelinks/{sourcelink_id}/view',
             'GET',
             '\Bristolian\AppController\Rooms::viewSourcelink'
         ],
