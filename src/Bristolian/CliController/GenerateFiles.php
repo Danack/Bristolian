@@ -2,11 +2,15 @@
 
 namespace Bristolian\CliController;
 
-use Bristolian\BristolianException;
+use Bristolian\Exception\BristolianException;
 use Bristolian\Config\Config;
 use PDO;
 
+
+
 /**
+ *
+ * @codeCoverageIgnore
  * @param string $tableName
  * @param array $columns
  * @return void
@@ -23,6 +27,8 @@ function generate_table_helper_class(string $tableName, array $columns): void
     $columns_separated_by_comma_new_line = "";
     $values_names_separated_by_comma_new_line = "";
     $separator = "";
+
+    // TODO - sort these columns by something, so that they are consistent
     foreach ($columns as $column) {
         if (strcasecmp($column['COLUMN_NAME'], 'created_at') === 0) {
             continue;
@@ -64,10 +70,17 @@ function generate_table_helper_class(string $tableName, array $columns): void
 
 
 /**
+ * Function to generate TypeScript definition of an interface for a PHP
+ * class, so that data transferred from PHP to the front-end can be typed.
+ *
+ * Code is not unit tested as just not worth it currently.
+ *
+ * @codeCoverageIgnore
  * @param class-string $type
  * @return string
  */
-function generateInterfaceForClass(string $type): string {
+function generateInterfaceForClass(string $type): string
+{
 
     // TODO - this is a hack. It would almost certainly be better to
     // use https://www.npmjs.com/package/openapi-typescript but as our
@@ -95,21 +108,13 @@ function generateInterfaceForClass(string $type): string {
     return $content;
 }
 
-/*
 
-interface FloatingPointPanelState {
-input_value: string
-sign: number;
-exponent: Array<number>;
-fraction: Array<number>;
-modified: boolean;
-}
-
-*/
-
-
-
-
+/**
+ * Class to hold code that generates JavaScript helper code.
+ * Not unit-tested as just currently not worth it.
+ *
+ * @codeCoverageIgnore
+ */
 class GenerateFiles
 {
     public function generateAllJavaScriptFiles(): void
@@ -177,7 +182,6 @@ TEMPLATE;
         $int_template = <<< TEMPLATE
 export const :js_name: number = :js_value;\n
 TEMPLATE;
-
 
         $content = "// This is an auto-generated file\n";
         $content .= "// DO NOT EDIT\n\n";

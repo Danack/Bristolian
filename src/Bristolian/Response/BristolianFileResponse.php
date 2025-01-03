@@ -6,6 +6,7 @@ namespace Bristolian\Response;
 
 use SlimDispatcher\Response\ResponseException;
 use SlimDispatcher\Response\StubResponse;
+use Bristolian\Exception\BristolianResponseException;
 
 class BristolianFileResponse implements StubResponse
 {
@@ -30,7 +31,7 @@ class BristolianFileResponse implements StubResponse
         array $headers = []
     ) {
         $standardHeaders = [
-            'Content-Type' => self::getMimeTypeFromFilename($filenameToServe),
+            'Content-Type' => getMimeTypeFromFilename($filenameToServe),
         ];
 
         $this->headers = array_merge($standardHeaders, $headers);
@@ -38,10 +39,8 @@ class BristolianFileResponse implements StubResponse
         $this->filehandle = @fopen($filenameToServe, 'r');
 
         if ($this->filehandle === false) {
-            throw new ResponseException("Failed to open file [$filenameToServe] for serving.");
+            throw BristolianResponseException::failedToOpenFile($filenameToServe);
         }
-
-//        $contents = stream_get_contents($this->filehandle);
 
         $this->filenameToServe = $filenameToServe;
     }
@@ -59,6 +58,9 @@ class BristolianFileResponse implements StubResponse
         rewind($this->filehandle);
         $contents = stream_get_contents($this->filehandle);
 
+        // @codeCoverageIgnoreStart
+        // I have no idea how to trigger this situation, other than
+        // pulling out the hard drive mid-test.
         if ($contents === false) {
             $message = sprintf(
                 "Failed to read contents of [%s] from open filehandle.",
@@ -67,6 +69,7 @@ class BristolianFileResponse implements StubResponse
 
             throw new ResponseException($message);
         }
+        // @codeCoverageIgnoreEnd
 
         return $contents;
     }
@@ -77,25 +80,5 @@ class BristolianFileResponse implements StubResponse
     public function getHeaders(): array
     {
         return $this->headers;
-    }
-
-    public static function getMimeTypeFromFilename(string $filename): string
-    {
-        $contentTypesByExtension = [
-            'jpg'  => 'image/jpg',
-            'jpeg' => 'image/jpg',
-            'pdf'  => 'application/pdf',
-            'png'  => 'image/png',
-            'txt'  => 'text/plain'
-        ];
-
-        $extension = pathinfo($filename, PATHINFO_EXTENSION);
-        $extension = strtolower($extension);
-
-        if (array_key_exists($extension, $contentTypesByExtension) === false) {
-            throw new ResponseException("Unknown file type [$extension]");
-        }
-
-        return $contentTypesByExtension[$extension];
     }
 }

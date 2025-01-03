@@ -20,7 +20,7 @@ class StandardFileStorageProcessor implements FileStorageProcessor
      * @param string[] $allowedExtensions
      * @param FileObjectStore $fileObjectStore
      * @return ObjectStoredFileInfo|UploadError
-     * @throws \Bristolian\BristolianException
+     * @throws \Bristolian\Exception\BristolianException
      */
     public function storeFileForUser(
         string $user_id,

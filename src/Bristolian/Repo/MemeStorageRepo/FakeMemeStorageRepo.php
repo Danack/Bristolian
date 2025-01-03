@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\MemeStorageRepo;
 
-use Bristolian\BristolianException;
+use Bristolian\Exception\BristolianException;
 use Bristolian\Model\Meme;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;

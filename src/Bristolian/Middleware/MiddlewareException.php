@@ -2,7 +2,7 @@
 
 namespace Bristolian\Middleware;
 
-use Bristolian\BristolianException;
+use Bristolian\Exception\BristolianException;
 
 class MiddlewareException extends BristolianException
 {

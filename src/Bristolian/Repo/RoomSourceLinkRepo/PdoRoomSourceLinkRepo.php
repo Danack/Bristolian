@@ -90,8 +90,7 @@ SQL;
     public function getSourceLinksForRoomAndFile(
         string $room_id,
         string $file_id
-    ): array
-    {
+    ): array {
 
         $sql = <<< SQL
 select  

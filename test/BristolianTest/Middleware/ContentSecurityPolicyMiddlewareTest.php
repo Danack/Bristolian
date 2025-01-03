@@ -2,7 +2,7 @@
 
 namespace BristolianTest\Middleware;
 
-use Bristolian\BristolianException;
+use Bristolian\Exception\BristolianException;
 use Bristolian\Data\ApiDomain;
 use Bristolian\Middleware\AppSessionMiddleware;
 

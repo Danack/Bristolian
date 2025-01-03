@@ -2,7 +2,7 @@
 
 namespace BristolianTest\Middleware;
 
-use Bristolian\BristolianException;
+use Bristolian\Exception\BristolianException;
 use Bristolian\Middleware\ExceptionToJsonResponseMiddleware;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ResponseFactory;

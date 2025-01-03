@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo;
 
+use Bristolian\Data\ContentPolicyViolationReport;
 use Bristolian\DataType\CreateUserParams;
 use Bristolian\JsonInput\FakeJsonInput;
 use Bristolian\JsonInput\JsonInput;
@@ -119,7 +120,7 @@ trait TestPlaceholders
 
     /**
      * @return array{0:Room, 1:AdminUser}
-     * @throws \Bristolian\BristolianException
+     * @throws \Bristolian\Exception\BristolianException
      * @throws \DI\InjectionException
      */
     public function createTestUserAndRoom():array
@@ -200,31 +201,7 @@ trait TestPlaceholders
         return 'test_room_description' . time() . '_' . $count;
     }
 
-//    public function createContentPolicyViolationReport(array $particulars)
-//    {
-//        $input = [
-//            'csp-report' =>
-//                [
-//                    'document-uri' => 'http://local.admin.opensourcefees.com:8000/status/csp_reports',
-//                    'referrer' => '',
-//                    'violated-directive' => 'script-src-elem',
-//                    'effective-directive' => 'script-src-elem',
-//                    'original-policy' => 'default-src \'self\'; connect-src \'self\' https://checkout.stripe.com; frame-src *; img-src *; script-src \'self\' \'nonce-b8b4cf51f675e0fc13a6b959\' https://checkout.stripe.com; object-src *; style-src \'self\'; report-uri /csp',
-//                    'disposition' => 'enforce',
-//                    'blocked-uri' => 'inline',
-//                    'line-number' => 13,
-//                    'source-file' => 'http://local.admin.opensourcefees.com:8000/status/csp_reports',
-//                    'status-code' => 200,
-//                    'script-sample' => '',
-//                ],
-//        ];
-//
-//        foreach ($particulars as $key => $value) {
-//            $input['csp-report'][$key] = $value;
-//        }
-//
-//        return ContentPolicyViolationReport::fromCSPPayload($input);
-//    }
+
 
 
     public function getTestString(): string
@@ -233,4 +210,45 @@ trait TestPlaceholders
         $count += 1;
         return 'a test string: ' . time() . '_' . $count;
     }
+
+    public function createContentPolicyViolationReport(array $particulars)
+    {
+        $report =  [
+            'document-uri' => $particulars['document-uri'] ?? 'http://www.example.com',
+            'referrer' => $particulars[ 'referrer'] ?? 'http://www.google.com',
+            'violated-directive' => $particulars['violated-directive'] ?? 'script-src-elem',
+            'effective-directive' => $particulars['effective-directive'] ?? 'script-src-elem',
+            'original-policy' => $particulars['original-policy'] ?? 'default-src \'self\'; connect-src \'self\' https://checkout.stripe.com; frame-src *; img-src *; script-src \'self\' \'nonce-b8b4cf51f675e0fc13a6b959\' https://checkout.stripe.com; object-src *; style-src \'self\'; report-uri /csp',
+            'disposition' => $particulars['disposition'] ?? 'enforce',
+            'blocked-uri' => $particulars['blocked-uri'] ?? 'inline',
+            'line-number' => $particulars['line-number'] ?? 123,
+            'source-file' => $particulars['source-file'] ?? 'http://www.example.com/status/csp_reports',
+            'status-code' => $particulars['status-code'] ?? 200,
+            'script-sample' => $particulars['script-sample'] ?? '',
+        ];
+
+        foreach ($report as $key => $value) {
+            $input['csp-report'][$key] = $value;
+        }
+
+        return ContentPolicyViolationReport::fromCSPPayload($input);
+    }
+
+
+//    public function getCSPReport(): ContentPolicyViolationReport
+//    {
+//        $data = [];
+//        $data['document-uri'] = 'http://www.example.com';
+//        $data['referrer'] =  'http://www.google.com';
+//        $data['blocked-uri'] = 'www.foo.bar';
+//        $data['violated-directive'] = 'some directive';
+//        $data['original-policy'] = 'some policy';
+//
+//        $report['csp-report'] = $data;
+//
+//
+//        $report = ContentPolicyViolationReport::fromCSPPayload($report);
+//        return $report;
+//    }
+
 }

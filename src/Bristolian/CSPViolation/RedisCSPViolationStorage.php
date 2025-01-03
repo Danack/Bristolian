@@ -66,12 +66,12 @@ class RedisCSPViolationStorage implements CSPViolationStorage
             $page = 0;
         }
 
-        $offset = $page * App::CSP_REPORTS_SHOWN_PER_PAGE;
+        $offset = $page * self::REPORTS_PER_PAGE;
 
         $elements = $this->redis->lrange(
             ContentSecurityPolicyKey::getAbsoluteKeyName('csp'),
             $offset,
-            $offset + App::CSP_REPORTS_SHOWN_PER_PAGE
+            $offset + self::REPORTS_PER_PAGE - 1 // e.g. index 20 to 29, not 30.
         );
         $data = [];
 

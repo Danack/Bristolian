@@ -5,6 +5,13 @@ namespace Bristolian\CliController;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
 
+/**
+ * Code for managing rooms from the command line.
+ *
+ * Currently not unit-tested as not currently worth it.
+ *
+ * @codeCoverageIgnore
+ */
 class Rooms
 {
     public function createFromCli(

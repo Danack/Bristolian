@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest;
 
-use Bristolian\BristolianException;
+use Bristolian\Exception\BristolianException;
 use BristolianTest\TestFixtures\ToArrayClass;
 use DataType\DataStorage\TestArrayDataStorage;
 use SlimDispatcher\Response\JsonResponse;
@@ -167,7 +167,7 @@ TEXT;
         $result = getEnvString("FOO");
         $this->assertSame("BAR", $result);
 
-        $this->expectException(\Bristolian\BristolianException::class);
+        $this->expectException(\Bristolian\Exception\BristolianException::class);
         getEnvString("NONEXISTENT");
     }
 
@@ -343,8 +343,8 @@ TEXT;
         $this->assertSame('foobar', $object->test_string);
         $this->assertSame($int_value, $object->test_int);
 
-        $this->expectException(\Bristolian\BristolianException::class);
-        $this->expectExceptionMessage(\Bristolian\BristolianException::CANNOT_INSTANTIATE);
+        $this->expectException(\Bristolian\Exception\BristolianException::class);
+        $this->expectExceptionMessage(\Bristolian\Exception\BristolianException::CANNOT_INSTANTIATE);
 
         convertToArrayOfObjects(\StdClass::class, []);
     }
@@ -378,7 +378,7 @@ TEXT;
      */
     public function test_normalize_file_extension_throws()
     {
-        $this->expectException(\Bristolian\BristolianException::class);
+        $this->expectException(\Bristolian\Exception\BristolianException::class);
         normalize_file_extension(
             "sample.pdf",
             "Currently unused",

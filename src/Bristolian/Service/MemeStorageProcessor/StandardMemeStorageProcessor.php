@@ -20,7 +20,7 @@ class StandardMemeStorageProcessor implements MemeStorageProcessor
      * @param string[] $allowedExtensions
      * @param FileObjectStore $fileObjectStore
      * @return ObjectStoredMeme|UploadError
-     * @throws \Bristolian\BristolianException
+     * @throws \Bristolian\Exception\BristolianException
      */
     public function storeMemeForUser(
         string $user_id,

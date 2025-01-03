@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bristolian\Middleware;
 
-use Bristolian\BristolianException;
+use Bristolian\Exception\BristolianException;
 use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Response;

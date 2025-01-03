@@ -4,6 +4,11 @@ namespace Bristolian\CliController;
 
 use Mailgun\Mailgun;
 
+/**
+ * Placeholder code for sending emails.
+ *
+ * @codeCoverageIgnore
+ */
 class Email
 {
     public function testEmail(Mailgun $mailgun): void

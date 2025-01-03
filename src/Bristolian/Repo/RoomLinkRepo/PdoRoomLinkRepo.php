@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\RoomLinkRepo;
 
-use Bristolian\BristolianException;
+use Bristolian\Exception\BristolianException;
 use Bristolian\Database\room_link;
 use Bristolian\DataType\LinkParam;
 use Bristolian\Model\RoomLink;

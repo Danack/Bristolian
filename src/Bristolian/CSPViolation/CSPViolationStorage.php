@@ -8,6 +8,8 @@ use Bristolian\Data\ContentPolicyViolationReport;
 
 interface CSPViolationStorage extends CSPViolationReporter
 {
+    const REPORTS_PER_PAGE = 20;
+
     /**
      * @return ContentPolicyViolationReport[]
      */

@@ -8,8 +8,7 @@ use Bristolian\Data\ContentPolicyViolationReport;
 
 class FakeCSPViolationStorage implements CSPViolationStorage
 {
-    /** @var int  */
-    private $clearCalls = 0;
+    private int $clearCalls = 0;
 
     /** @var ContentPolicyViolationReport[]  */
     private array $reports = [];
@@ -17,6 +16,7 @@ class FakeCSPViolationStorage implements CSPViolationStorage
     public function clearReports(): void
     {
         $this->clearCalls += 1;
+        $this->reports = [];
     }
 
     /**
@@ -32,8 +32,10 @@ class FakeCSPViolationStorage implements CSPViolationStorage
      */
     public function getReportsByPage(int $page)
     {
-        // TODO - actually implement paging.
-        return $this->reports;
+        $offset = $page * self::REPORTS_PER_PAGE;
+
+        $reports_reversed = array_reverse($this->reports);
+        return array_slice($reports_reversed, $offset, self::REPORTS_PER_PAGE);
     }
 
     public function report(ContentPolicyViolationReport $cpvr): void

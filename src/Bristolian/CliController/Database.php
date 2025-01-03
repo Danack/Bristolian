@@ -9,6 +9,10 @@ use Bristolian\DataType\Migration;
 use PDO;
 use function DataType\createArrayOfType;
 
+/**
+ * @codeCoverageIgnore
+ * @return int
+ */
 function require_all_migration_files(): int
 {
     $glob_pattern = __DIR__ . "/../../../db/migrations/*.php";
@@ -49,6 +53,11 @@ function require_all_migration_files(): int
 }
 
 
+/**
+ * @codeCoverageIgnore
+ * @param PDO $pdo
+ * @return void
+ */
 function ensureMigrationsTableExists(PDO $pdo): void
 {
     $sql = <<< SQL
@@ -66,6 +75,7 @@ SQL;
 }
 
 /**
+ * @codeCoverageIgnore
  * @param mixed[] $queries
  * @return string
  * @throws \Exception
@@ -76,6 +86,7 @@ function getQueriesSha(array $queries): string
 }
 
 /**
+ * @codeCoverageIgnore
  * @param PDO $pdo
  * @param mixed[] $list_of_migrations_that_need_to_be_run
  * @return void
@@ -117,6 +128,7 @@ function runAllQueries(PDO $pdo, array $list_of_migrations_that_need_to_be_run):
 
 
 /**
+ * @codeCoverageIgnore
  * @param mixed[] $migrations
  * @return Migration[]
  * @throws \DataType\Exception\ValidationException
@@ -129,6 +141,7 @@ function convert_to_migrations(array $migrations): array
 }
 
 /**
+ * @codeCoverageIgnore
  * @param PDO $pdo
  * @param int $max_migration_number
  * @return mixed[]
@@ -172,6 +185,12 @@ function findWhichMigrationsNeedToBeRun(PDO $pdo, int $max_migration_number): ar
     return $queries_to_run;
 }
 
+/**
+ * Code that helps manage the DB from the command line.
+ * Not currently unit-tested as currently not worth it.
+ *
+ * @codeCoverageIgnore
+ */
 class Database
 {
     public function waitForDBToBeWorking(

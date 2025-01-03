@@ -12,7 +12,6 @@ use Bristolian\PdoSimple\PdoSimpleException;
 /**
  * @covers \Bristolian\PdoSimple\PdoSimpleException
  * @group db
- * @group wip
  */
 class PdoSimpleExceptionTest extends BaseTestCase
 {

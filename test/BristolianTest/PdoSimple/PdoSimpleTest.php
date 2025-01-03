@@ -16,7 +16,6 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * @covers \Bristolian\PdoSimple\PdoSimple
- * @group wip
  * @group db
  */
 class PdoSimpleTest extends BaseTestCase

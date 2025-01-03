@@ -46,5 +46,5 @@ class App
     public const ENVIRONMENT_PROD = 'prod';
 
     const CSP_REPORT_PATH = '/api/csp/violation';
-    const CSP_REPORTS_SHOWN_PER_PAGE = 10;
+//    const CSP_REPORTS_SHOWN_PER_PAGE = 10;
 }

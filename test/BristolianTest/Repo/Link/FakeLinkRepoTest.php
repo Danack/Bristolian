@@ -44,7 +44,12 @@ class FakeLinkRepoTest extends BaseTestCase
             'url' => $url_2
         ];
 
-        $this->assertSame($expected_1, $links[$link_id_1]);
-        $this->assertSame($expected_2, $links[$link_id_2]);
+        $this->assertSame($expected_1['id'], $links[$link_id_1]->id);
+        $this->assertSame($expected_1['user_id'], $links[$link_id_1]->user_id);
+        $this->assertSame($expected_1['url'], $links[$link_id_1]->url);
+
+        $this->assertSame($expected_2['id'], $links[$link_id_2]->id);
+        $this->assertSame($expected_2['user_id'], $links[$link_id_2]->user_id);
+        $this->assertSame($expected_2['url'], $links[$link_id_2]->url);
     }
 }

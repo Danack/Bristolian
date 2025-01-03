@@ -5,6 +5,7 @@ declare(strict_types = 1);
 use Bristolian\Model\StoredFile;
 use Bristolian\Types\DocumentType;
 use SlimDispatcher\Response\JsonNoCacheResponse;
+use SlimDispatcher\Response\ResponseException;
 
 $injector = null;
 
@@ -324,7 +325,7 @@ function convertToValue(mixed $value)
  * @param class-string<T> $classname
  * @param array<mixed> $data
  * @return T[]
- * @throws \Bristolian\BristolianException
+ * @throws \Bristolian\Exception\BristolianException
  * @throws \DataType\Exception\ValidationException
  */
 function convertToArrayOfObjects(string $classname, array $data)
@@ -341,7 +342,7 @@ function convertToArrayOfObjects(string $classname, array $data)
         return $objects;
     }
 
-    throw \Bristolian\BristolianException::cannot_instantiate();
+    throw \Bristolian\Exception\BristolianException::cannot_instantiate();
 }
 
 
@@ -490,14 +491,14 @@ function remove_install_prefix_from_path(string $file): string
  *
  * @param string $name
  * @return string
- * @throws \Bristolian\BristolianException
+ * @throws \Bristolian\Exception\BristolianException
  */
 function getEnvString(string $name): string
 {
     $value = getenv($name);
 
     if (is_string($value) !== true) {
-        throw \Bristolian\BristolianException::env_variable_is_not_string($name, $value);
+        throw \Bristolian\Exception\BristolianException::env_variable_is_not_string($name, $value);
     }
 
     return $value;
@@ -851,7 +852,7 @@ function normalize_file_extension(
                 implode(", ", $supported_file_extensions)
             );
 
-            throw new \Bristolian\BristolianException($message);
+            throw new \Bristolian\Exception\BristolianException($message);
         }
     }
 
@@ -870,6 +871,28 @@ function normalize_file_extension(
 
     return null;
 }
+
+
+function getMimeTypeFromFilename(string $filename): string
+{
+    $contentTypesByExtension = [
+        'jpg'  => 'image/jpg',
+        'jpeg' => 'image/jpg',
+        'pdf'  => 'application/pdf',
+        'png'  => 'image/png',
+        'txt'  => 'text/plain'
+    ];
+
+    $extension = pathinfo($filename, PATHINFO_EXTENSION);
+    $extension = strtolower($extension);
+
+    if (array_key_exists($extension, $contentTypesByExtension) === false) {
+        throw new \Bristolian\Exception\BristolianException("Unknown file type [$extension]");
+    }
+
+    return $contentTypesByExtension[$extension];
+}
+
 
 
 /**

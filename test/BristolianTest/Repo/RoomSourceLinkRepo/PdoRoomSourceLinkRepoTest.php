@@ -10,7 +10,6 @@ use Bristolian\DataType\SourceLinkParam;
 /**
  * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo
  * @group db
- * @group wip
  */
 class PdoRoomSourceLinkRepoTest extends BaseTestCase
 {

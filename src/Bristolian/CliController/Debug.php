@@ -7,6 +7,10 @@ use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Service\WebPushService\WebPushService;
 
+/**
+ * Placeholder code for testing webpushes.
+ * @codeCoverageIgnore
+ */
 class Debug
 {
     public function hello(): void
@@ -44,38 +48,4 @@ class Debug
             $userWebPushSubscriptions
         );
     }
-
-
-//    public function upload_file(
-//        \Bristolian\Filesystem\LocalFilesystem $localFilesystem,
-//        \Bristolian\Filesystem\MemeFilesystem $memeFilesystem
-//    ): void {
-//
-//        $filesystem = $memeFilesystem;
-//
-//        try {
-////            $filesystem->write($path, $contents, $config);
-//            // USAGE
-////            $contents = "This is my first file.";
-////            $filesystem->write('test.txt', $contents);
-//
-//            $listing = $filesystem->listContents("/", true);
-//
-//            /** @var \League\Flysystem\StorageAttributes $item */
-//            foreach ($listing as $item) {
-//                $path = $item->path();
-//
-//                if ($item instanceof \League\Flysystem\FileAttributes) {
-//                    echo "Found file: " . $path . "\n";
-//                } elseif ($item instanceof \League\Flysystem\DirectoryAttributes) {
-//                    echo "Found directory: " . $path . "\n";
-//                }
-//            }
-//
-//            echo "fin.";
-//        } catch (\Exception $exception) {
-//            // handle the error
-//            echo $exception->getMessage();
-//        }
-//    }
 }

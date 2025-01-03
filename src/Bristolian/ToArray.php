@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Bristolian;
 
+use Bristolian\Exception\BristolianException;
+
 trait ToArray
 {
     /**

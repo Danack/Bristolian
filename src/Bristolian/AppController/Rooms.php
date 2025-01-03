@@ -2,7 +2,7 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\BristolianException;
+use Bristolian\Exception\BristolianException;
 use Bristolian\Response\BristolianFileResponse;
 use Bristolian\DataType\LinkParam;
 use Bristolian\DataType\SourceLinkHighlightParam;

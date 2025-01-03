@@ -2,7 +2,7 @@
 
 namespace Bristolian\Exception;
 
-use Bristolian\BristolianException;
+use Bristolian\Exception\BristolianException;
 
 class UnauthorisedException extends BristolianException
 {

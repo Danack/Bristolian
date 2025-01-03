@@ -3,7 +3,7 @@
 namespace BristolianTest\Middleware;
 
 use Bristolian\SiteHtml\AssetLinkEmitter;
-use Bristolian\BristolianException;
+use Bristolian\Exception\BristolianException;
 use Bristolian\Config\HardCodedAssetLinkConfig;
 use Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware;
 use Bristolian\Middleware\MiddlewareException;

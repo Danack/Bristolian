@@ -50,7 +50,7 @@ class ToArrayTest extends BaseTestCase
     /**
      * @covers \Bristolian\ToArray
      * @return void
-     * @throws \Bristolian\BristolianException
+     * @throws \Bristolian\Exception\BristolianException
      */
     public function test_works_with_datetime()
     {
