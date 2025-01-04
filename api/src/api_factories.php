@@ -7,41 +7,26 @@ declare(strict_types = 1);
 
 use Bristolian\Config\Config;
 use DI\Injector;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Laminas\Diactoros\ResponseFactory;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
 use SlimDispatcher\DispatchingResolver;
-use Bristolian\AppErrorHandler\AppErrorHandler;
-use DataType\Exception\ValidationException;
-
-function createJsonAppErrorHandler(
-    Config $config,
-    DI\Injector $injector
-): AppErrorHandler {
-    if ($config->isProductionEnv() === true) {
-        return $injector->make(\Bristolian\AppErrorHandler\JsonErrorHandlerForProd::class);
-    }
-
-    return $injector->make(\Bristolian\AppErrorHandler\JsonErrorHandlerForLocalDev::class);
-}
-
-
+use Bristolian\Middleware\ExceptionToJsonResponseMiddleware;
 
 /**
  * Creates the ExceptionMiddleware that converts all known app exceptions
  * to nicely formatted pages for the api
  */
-function createExceptionMiddlewareForApi(\Di\Injector $injector)
+function createExceptionMiddlewareForApi(\Di\Injector $injector): ExceptionToJsonResponseMiddleware
 {
     $exceptionHandlers = [
         \DataType\Exception\ValidationException::class => 'convertValidationExceptionMapperApi',
         \Bristolian\Exception\InvalidPermissionsException::class => 'convertInvalidPermissionsExceptionToResponse',
         \PDOException::class => 'pdoExceptionMapper',
         Slim\Exception\HttpNotFoundException::class => 'convertHttpNotFoundExceptionToResponse',
-
         \Bristolian\Exception\UnauthorisedException::class => 'convertUnauthorisedExceptionToResponse',
 
-        \Throwable::class =>'convertGenericThrowableToResponse',
+        \Throwable::class =>'convertGenericThrowableToResponse', // must be last
     ];
 
     $responseFactory = $injector->make(ResponseFactoryInterface::class);
@@ -54,13 +39,11 @@ function createExceptionMiddlewareForApi(\Di\Injector $injector)
 
 /**
  * @param Injector $injector
- * @param \Bristolian\AppErrorHandler\AppErrorHandler $appErrorHandler
  * @return \Slim\App
  * @throws \Auryn\InjectionException
  */
 function createSlimAppForApi(
     Injector $injector,
-    \Bristolian\AppErrorHandler\AppErrorHandler $appErrorHandler
 ): \Slim\App {
 
     $dispatcher = new \Bristolian\Basic\Dispatcher($injector);
@@ -98,8 +81,6 @@ function createSlimAppForApi(
  */
 function getApiResultMappers(\DI\Injector $injector)
 {
-
-
     return [
         \SlimDispatcher\Response\StubResponse::class =>
             'SlimDispatcher\mapStubResponseToPsr7',
@@ -108,9 +89,5 @@ function getApiResultMappers(\DI\Injector $injector)
         // Some controllers just want to return a chunk of JSON...do they?
         // seems bogus in an API environment.
         'string' => 'convertStringToResponse',
-
-
-//        'string' =>
-//            'Bristolian\StringToHtmlPageConverter::convertStringToHtmlResponse',
     ];
 }

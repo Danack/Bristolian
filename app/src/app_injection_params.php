@@ -12,7 +12,6 @@ function injectionParams()
         \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
         \Bristolian\Service\RequestNonce::class,
         \Asm\SessionManager::class,
-//        \Bristolian\SessionStorage::class,
         \Bristolian\Session\AppSessionManager::class,
     ];
 
@@ -133,8 +132,6 @@ function injectionParams()
           'createPDOForUser',
         \Slim\App::class =>
           'createSlimAppForApp',
-        \Bristolian\AppErrorHandler\AppErrorHandler::class =>
-          'createHtmlAppErrorHandler',
         \Bristolian\Data\ApiDomain::class =>
           'createApiDomain',
 

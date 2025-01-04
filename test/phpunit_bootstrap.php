@@ -7,7 +7,7 @@ require_once __DIR__ . "/../src/factories.php";
 require_once __DIR__ . "/../src/react_widgets.php";
 require_once __DIR__ . "/../credentials.php";
 require_once __DIR__ . "/test_injection_params.php";
-
+require_once __DIR__ . "/../src/error_functions.php";
 require_once __DIR__ . "/../api/src/api_convert_exception_to_json_functions.php";
 require_once __DIR__ . "/../api/src/api_factories.php";
 require_once __DIR__ . "/../api/src/api_functions.php";

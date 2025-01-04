@@ -235,20 +235,5 @@ trait TestPlaceholders
     }
 
 
-//    public function getCSPReport(): ContentPolicyViolationReport
-//    {
-//        $data = [];
-//        $data['document-uri'] = 'http://www.example.com';
-//        $data['referrer'] =  'http://www.google.com';
-//        $data['blocked-uri'] = 'www.foo.bar';
-//        $data['violated-directive'] = 'some directive';
-//        $data['original-policy'] = 'some policy';
-//
-//        $report['csp-report'] = $data;
-//
-//
-//        $report = ContentPolicyViolationReport::fromCSPPayload($report);
-//        return $report;
-//    }
 
 }

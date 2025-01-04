@@ -1,7 +1,6 @@
 <?php
 
 use Bristolian\InjectionParams;
-use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 
 function apiInjectionParams() : InjectionParams
 {
@@ -97,9 +96,6 @@ function apiInjectionParams() : InjectionParams
 
         \Slim\App::class =>
           'createSlimAppForApi',
-
-        \Bristolian\AppErrorHandler\AppErrorHandler::class
-          => 'createJsonAppErrorHandler',
 
         \Bristolian\Middleware\ExceptionToJsonResponseMiddleware::class =>
             'createExceptionMiddlewareForApi',

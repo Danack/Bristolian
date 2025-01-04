@@ -2,13 +2,14 @@
 
 declare(strict_types = 1);
 
-use DI\Injector;
 use Bristolian\Config\Config;
-use Psr\Http\Message\ResponseInterface;
-use SlimDispatcher\DispatchingResolver;
-use Laminas\Diactoros\ResponseFactory;
 use Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware;
 use Bristolian\SiteHtml\PageResponseGenerator;
+use DI\Injector;
+use Laminas\Diactoros\ResponseFactory;
+use Psr\Http\Message\ResponseInterface;
+use SlimDispatcher\DispatchingResolver;
+
 /**
  * Creates the ExceptionMiddleware that converts all known app exceptions
  * to nicely formatted pages for the app/user facing sites
@@ -19,10 +20,8 @@ function createExceptionToErrorPageResponseMiddleware(Injector $injector): Excep
     // type of exception could be done via reflection.
     $exceptionHandlers = [
         \Bristolian\Exception\DebuggingCaughtException::class => 'renderDebuggingCaughtExceptionToHtml',
-//        \Auryn\InjectionException::class => 'renderAurynInjectionExceptionToHtml',
         \Bristolian\MarkdownRenderer\MarkdownRendererException::class => 'renderMarkdownRendererException',
         \ParseError::class => 'renderParseErrorToHtml',
-
         DI\InjectionException::class => 'renderInjectionExceptionToHtml',
 
         \Throwable::class => 'genericExceptionHandler' // should be last
@@ -34,16 +33,6 @@ function createExceptionToErrorPageResponseMiddleware(Injector $injector): Excep
     );
 }
 
-function createHtmlAppErrorHandler(
-    Config $config,
-    \DI\Injector $injector
-) : \Bristolian\AppErrorHandler\AppErrorHandler {
-    if ($config->isProductionEnv() === true) {
-        return $injector->make(\Bristolian\AppErrorHandler\HtmlErrorHandlerForProd::class);
-    }
-
-    return $injector->make(\Bristolian\AppErrorHandler\HtmlErrorHandlerForLocalDev::class);
-}
 
 /**
  * @param \Bristolian\Data\ApiDomain $apiDomain
@@ -64,14 +53,10 @@ function createContentSecurityPolicyMiddleware(
 
 /**
  * @param Injector $injector
- * @param \Bristolian\AppErrorHandler\AppErrorHandler $appErrorHandler
  * @return \Slim\App
  * @throws \Auryn\InjectionException
  */
-function createSlimAppForApp(
-    Injector $injector,
-    \Bristolian\AppErrorHandler\AppErrorHandler $appErrorHandler
-): \Slim\App {
+function createSlimAppForApp(Injector $injector): \Slim\App {
 
     $dispatcher = new \Bristolian\Basic\Dispatcher($injector);
 

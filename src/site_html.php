@@ -92,7 +92,7 @@ HTML;
 
 function createPageHtml(
     \Bristolian\SiteHtml\AssetLinkEmitter $assetLinkEmitter,
-    string                                $html,
+    string $html,
 ): string {
 
     $pageTitle = "Bristolian";
