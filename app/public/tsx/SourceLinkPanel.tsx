@@ -159,7 +159,7 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
     const selectionDataJson = selectedSourcelink ? selectedSourcelink.highlights_json : null;
     let highlights = JSON.parse(selectionDataJson)
 
-    console.log("sendHighlightsToDraw");
+    // console.log("sendHighlightsToDraw");
 
     // @ts-ignore:content window does exist
     if (iframe && iframe.contentWindow) {

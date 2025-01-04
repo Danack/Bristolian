@@ -16,6 +16,10 @@ let g_page_container = [];
 // The canvas draw contexts
 let g_page_canvas_context = [];
 
+// Whether the text layer for each page is drawn
+// initialised to array in 'initial_render_scrolling'
+let g_textlayer_drawn = null;
+
 // Scale - the size the PDFs are rendered at
 let g_scale = 1.0;
 
@@ -110,7 +114,7 @@ function render_page_into_container(pdfPage, pageNum) {
     container.style.setProperty('--scale-factor', g_scale);
 
     var renderTask = pdfPage.render(renderContext);
-    renderTask.promise.then(() => page_rendered(container, pdfPage, viewport));
+    renderTask.promise.then(() => page_rendered(container, pdfPage, viewport, pageNum));
 
     page.setAttribute('data-loaded', 'true');
 }
@@ -120,7 +124,7 @@ function loadPage(pageNum) {
       then((pdfPage) => render_page_into_container(pdfPage, pageNum));
 }
 
-function page_rendered(container, pdfPage, viewport) {
+function page_rendered(container, pdfPage, viewport, pageNum) {
 
     let render_task = new TextLayer({
         container,
@@ -128,17 +132,26 @@ function page_rendered(container, pdfPage, viewport) {
         viewport,
     });
 
-    render_task.render();
-
-    // Note - calling
-    // document.getElementById('text-layer');
-    // does not work in this callback. Apparently.
+    render_task.render().then(() => {
+        g_textlayer_drawn[pageNum] = true;
+        let next_page = pageNum + 1;
+        if (next_page <= g_max_page) {
+            loadPage(next_page);
+        }
+    });
 }
+
+
+
 
 function initial_render_scrolling(pdf) {
 
     let viewer = document.getElementById('viewer');
+
+    g_textlayer_drawn = [];
+
     for (let i = 0; i < pdf.numPages; i += 1) {
+        g_textlayer_drawn.push(false);
         let page = createEmptyPage(i);
         viewer.appendChild(page);
     }
@@ -146,6 +159,8 @@ function initial_render_scrolling(pdf) {
     g_pdf_document = pdf;
 
     loadPage(0);
+    // The function 'processQueue' is written in the iFrame itself, so
+    // that it is always available when the iFrame loads.
     setTimeout(processQueue, 1000);
     // processQueue();
 }
@@ -263,7 +278,7 @@ function processSelectionChange() {
     let end_page = getSelectionPage(range.endContainer);
     const rects = range.getClientRects();
 
-    if (rects.length == 0) {
+    if (rects.length === 0) {
         console.log("No visible rect for the selection.");
         return;
     }
@@ -278,7 +293,6 @@ function processSelectionChange() {
     });
 
 
-    // let canvas_rect = canvas.getBoundingClientRect()
     let simpleRects = [];
     for(let i = 0; i < rects.length; i +=1) {
         const rect = rects[i];
@@ -342,11 +356,47 @@ function processSelectionChange() {
     sendSelectionPositionToParent(selection_data);
 }
 
+/*
+
+
+
+function clearPageHighlights(pageNum) {
+    if (pageNum < 0 || pageNum > g_max_page) {
+        console.warn("Invalid page number:", pageNum);
+        return;
+    }
+
+    // Clear the canvas
+    const canvas = document.querySelector(`#page${pageNum}`);
+    if (canvas) {
+        const context = canvas.getContext("2d");
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Re-render the page
+    const pdfPage = g_pdf_page[pageNum];
+    if (pdfPage) {
+        render_page_into_container(pdfPage, pageNum);
+    } else {
+        console.warn("Page data not available for page:", pageNum);
+    }
+}
+
+function clearAllHighlights() {
+    for (let i = 0; i <= g_max_page; i++) {
+        clearPageHighlights(i);
+    }
+}
+
+*/
+
 
 function drawHighlights(highlights) {
+
     var outputScale = window.devicePixelRatio || 1;
 
     console.log("Drawing highlights", highlights);
+
     if (highlights.length > 0) {
         let element = g_page_container[highlights[0].page];
 
@@ -359,8 +409,6 @@ function drawHighlights(highlights) {
         }
     }
 
-
-
     for (let i = 0; i < highlights.length; i += 1) {
         let highlight = highlights[i];
 
@@ -369,18 +417,18 @@ function drawHighlights(highlights) {
             continue;
         }
 
-        var context = g_page_canvas_context[highlight.page];
-
-        if (!context) {
+        if (g_textlayer_drawn[highlight.page] === false) {
             setTimeout(function () {
                 console.log(
-                    `Some highlights on pages not loaded yet. Delaying drawing from highlight ${i}`
+                    `Some highlights on page ${highlight.page} not loaded yet. Delaying drawing from highlight ${i}`
                 );
                 let remaining_highlights = highlights.slice(i);
                 drawHighlights((remaining_highlights))
             }, 100)
+            return;
         }
 
+        var context = g_page_canvas_context[highlight.page];
         context.fillStyle = 'rgba(255,221,0,0.42)';
 
         context.fillRect(
