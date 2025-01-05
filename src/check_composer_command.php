@@ -6,7 +6,7 @@ declare(strict_types = 1);
 // composer update/install to run. Could probably be changed to bash if
 // anyone cares to do so.
 
-// @codeCoverageIgnoreEnd
+// @codeCoverageIgnoreStart
 // This code is not unit tested.
 
 $env = getenv();

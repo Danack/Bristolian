@@ -3,10 +3,10 @@
 namespace BristolianTest\Middleware;
 
 use Asm\AsmException;
-use \Asm\Session;
+use \Asm\Session as RawSession;
 
 // What even is this? Why are we implementing an external type?
-class FakeSession implements Session
+class FakeSession implements RawSession
 {
     /**
      * @param array<string, string> $headers

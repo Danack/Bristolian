@@ -10,6 +10,11 @@ class FakeCSPViolationStorage implements CSPViolationStorage
 {
     private int $clearCalls = 0;
 
+    /**
+     * @var list<int>
+     */
+    private array $pages_requested = [];
+
     /** @var ContentPolicyViolationReport[]  */
     private array $reports = [];
 
@@ -32,6 +37,8 @@ class FakeCSPViolationStorage implements CSPViolationStorage
      */
     public function getReportsByPage(int $page)
     {
+        $this->pages_requested[] = $page;
+
         $offset = $page * self::REPORTS_PER_PAGE;
 
         $reports_reversed = array_reverse($this->reports);
@@ -56,4 +63,10 @@ class FakeCSPViolationStorage implements CSPViolationStorage
     {
         return $this->clearCalls;
     }
+
+    public function getPagesRequested(): array
+    {
+        return $this->pages_requested;
+    }
+
 }

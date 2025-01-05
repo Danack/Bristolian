@@ -24,8 +24,16 @@ class Debug
         );
     }
 
+    /**
+     * This function is to make it easy for a developer to check if xdebug is
+     * working correctly, and their debugger is also working correctly listening
+     * for breakpoints.
+     * @return JsonResponse
+     * @throws \SlimDispatcher\Response\InvalidDataException
+     */
     public function testXdebugWorking(): JsonResponse
     {
+        // @codeCoverageIgnoreStart
         if (function_exists('xdebug_break') === false) {
             return new JsonResponse(
                 ['status' => "xdebug_break isn't a function. Are you on the xdebug port?"]
@@ -34,5 +42,6 @@ class Debug
 
         \xdebug_break();
         return new JsonResponse(['status' => 'ok']);
+        // @codeCoverageIgnoreEnd
     }
 }

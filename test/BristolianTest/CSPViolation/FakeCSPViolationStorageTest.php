@@ -47,5 +47,7 @@ class FakeCSPViolationStorageTest extends BaseTestCase
         $this->assertCount(CSPViolationStorage::REPORTS_PER_PAGE, $reports);
         $expected_line_number = 200 - (($page_number * CSPViolationStorage::REPORTS_PER_PAGE) + 1);
         $this->assertSame("$expected_line_number", $reports[0]->getLineNumber());
+
+        $this->assertSame([2], $cspViolationStorage->getPagesRequested());
     }
 }

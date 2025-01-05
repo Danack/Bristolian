@@ -16,15 +16,21 @@ class Csp
         CSPViolationStorage $cspViolationStorage
     ): JsonResponse {
 
-        $page = (int)$_REQUEST['page'];
+        $page = 0;
+
+        if ($varMap->has('page')) {
+            $page = (int)$varMap->get('page');
+        }
 
         $count = $cspViolationStorage->getCount();
         $reports = $cspViolationStorage->getReportsByPage($page);
 
+
         $data = [
             'count' => $count,
-            'reports' => [],//$reports
+            'reports' => []
         ];
+
 
         foreach ($reports as $report) {
             [$error, $value] = convertToValue($report);
