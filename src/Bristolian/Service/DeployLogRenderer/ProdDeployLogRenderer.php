@@ -12,6 +12,8 @@ class ProdDeployLogRenderer implements DeployLogRenderer
             return "Deploy log file does not exist of is not readable.";
         }
 
+        // @codeCoverageIgnoreStart
+        // I don't believe this code can be usefully unit tested
         $file = fopen($prod_log_filename, "r");
 
         if ($file === false) {
@@ -39,5 +41,6 @@ class ProdDeployLogRenderer implements DeployLogRenderer
         $html .= "</p>";
 
         return $html;
+        // @codeCoverageIgnoreEnd
     }
 }

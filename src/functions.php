@@ -782,22 +782,6 @@ function encodeWidgetyData(array $data): string
 /**
  * @return string[]
  */
-function get_supported_file_extensions()
-{
-    return [
-        'gif',
-        'jpg',
-        'jpeg',
-        'mp4',
-        'png',
-        'pdf',
-        'webp'
-    ];
-}
-
-/**
- * @return string[]
- */
 function get_supported_room_file_extensions()
 {
     return [
@@ -872,25 +856,42 @@ function normalize_file_extension(
     return null;
 }
 
-
-function getMimeTypeFromFilename(string $filename): string
+function get_mime_type_from_extension(string $extension): string|null
 {
     $contentTypesByExtension = [
-        'jpg'  => 'image/jpg',
-        'jpeg' => 'image/jpg',
+        'doc' => 'application/msword',
+        'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'gif' => 'image/gif',
+        'jpeg' => 'image/jpeg',
+        'jpg'  => 'image/jpeg',
+        'md' => 'text/markdown',
+        'mp4' => 'video/mp4',
         'pdf'  => 'application/pdf',
         'png'  => 'image/png',
-        'txt'  => 'text/plain'
+        'txt'  => 'text/plain',
+        'webp' => 'image/webp',
+        'xls' => 'application/vnd.ms-excel',
     ];
 
-    $extension = pathinfo($filename, PATHINFO_EXTENSION);
-    $extension = strtolower($extension);
-
     if (array_key_exists($extension, $contentTypesByExtension) === false) {
-        throw new \Bristolian\Exception\BristolianException("Unknown file type [$extension]");
+        return null;
     }
 
     return $contentTypesByExtension[$extension];
+}
+
+function getMimeTypeFromFilename(string $filename): string
+{
+    $extension = pathinfo($filename, PATHINFO_EXTENSION);
+    $extension = strtolower($extension);
+
+    $mime_type = get_mime_type_from_extension($extension);
+
+    if ($mime_type === null) {
+        throw new \Bristolian\Exception\BristolianException("Unknown file type [$extension]");
+    }
+
+    return $mime_type;
 }
 
 
@@ -1040,10 +1041,3 @@ function customSort(array $array): array {
 
     return $array;
 }
-
-//// Example usage
-//$input = ['name', 'id', 'user_id', 'created_at', 'modified_at', 'group_id', 'email'];
-//$sorted = customSort($input);
-//
-//print_r($sorted);
-//

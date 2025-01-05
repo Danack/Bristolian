@@ -28,6 +28,9 @@ class DebugTest extends BaseTestCase
         $debug->testUncaughtException();
     }
 
+    /**
+     * @group xdebug
+     */
     public function testXdebugWorking(): void
     {
         $debug = new Debug();

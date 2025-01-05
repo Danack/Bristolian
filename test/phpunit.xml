@@ -25,6 +25,7 @@
     <exclude>
       <group>needs_fixing</group>
       <group>external</group>
+      <group>xdebug</group>
       <group>deadish</group>
       <!-- <group>slow</group> -->
     </exclude>

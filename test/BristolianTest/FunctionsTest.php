@@ -471,4 +471,24 @@ TEXT;
         $this->assertSame($expected, $sorted);
     }
 
+    /**
+     * @covers ::get_supported_room_file_extensions
+     * @covers ::get_supported_room_file_extensions
+     * @group wip
+     */
+    public function testMimeTypesAreAdequate()
+    {
+        $file_room_extensions = get_supported_room_file_extensions();
+        foreach ($file_room_extensions as $extension) {
+            $mimetype = get_mime_type_from_extension($extension);
+            $this->assertNotNull($mimetype, "Mimetype for extension $extension is null");
+        }
+
+        $meme_extensions = get_supported_meme_file_extensions();
+        foreach ($meme_extensions as $extension) {
+            $mimetype = get_mime_type_from_extension($extension);
+            $this->assertNotNull($mimetype, "Mimetype for extension $extension is null");
+        }
+    }
+
 }

@@ -29,7 +29,7 @@ class StandardFileStorageProcessor implements FileStorageProcessor
         FileObjectStore $fileObjectStore
     ): ObjectStoredFileInfo|UploadError {
 
-        $contents = file_get_contents($uploadedFile->getTmpName());
+        $contents = @file_get_contents($uploadedFile->getTmpName());
         if ($contents === false) {
             return UploadError::uploadedFileUnreadable();
         }
