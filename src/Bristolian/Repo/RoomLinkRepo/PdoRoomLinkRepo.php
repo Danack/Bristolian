@@ -18,17 +18,17 @@ class PdoRoomLinkRepo implements RoomLinkRepo
     ) {
     }
 
-    // TODO - why are we passing IDs around and not objects?
-    public function addLinkToRoom(string $link_id, string $room_id): void
-    {
-        $sql = room_link::SELECT;
-        $params = [
-            ':room_id' => $room_id,
-            ':link_id' => $link_id,
-        ];
-
-        $this->pdoSimple->insert($sql, $params);
-    }
+//    // TODO - why are we passing IDs around and not objects?
+//    public function addLinkToRoom(string $link_id, string $room_id): void
+//    {
+//        $sql = room_link::SELECT;
+//        $params = [
+//            ':room_id' => $room_id,
+//            ':link_id' => $link_id,
+//        ];
+//
+//        $this->pdoSimple->insert($sql, $params);
+//    }
 
     public function addLinkToRoomFromParam(
         string $user_id,

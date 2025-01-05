@@ -8,14 +8,14 @@ class foi_requests
 {
     const INSERT = <<< SQL
 insert into foi_requests (
-    description,
     foi_request_id,
+    description,
     text,
     url
 )
 values (
-    :description,
     :foi_request_id,
+    :description,
     :text,
     :url
 )
@@ -23,8 +23,8 @@ SQL;
 
     const SELECT = <<< SQL
 select
-    description,
     foi_request_id,
+    description,
     text,
     url
 from

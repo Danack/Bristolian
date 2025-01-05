@@ -2,26 +2,26 @@
 
 namespace BristolianTest\Repo\DbInfo;
 
-use Bristolian\DataType\Migration;
-use Bristolian\Repo\DbInfo\PdoDbInfo;
+use Bristolian\Repo\DbInfo\FakeDbInfo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
+use Bristolian\DataType\Migration;
 
 /**
  * @coversNothing
  */
-class PdoDbInfoTest extends BaseTestCase
+class FakeDbInfoTest extends BaseTestCase
 {
     use TestPlaceholders;
 
     /**
-     * @covers \Bristolian\Repo\DbInfo\PdoDbInfo
+     * @covers \Bristolian\Repo\DbInfo\FakeDbInfo
      * @return void
      * @throws \DI\InjectionException
      */
     public function testWorks()
     {
-        $pdoDbInfo = $this->injector->make(PdoDbInfo::class);
+        $pdoDbInfo = new FakeDbInfo();
         $migrations = $pdoDbInfo->getMigrations();
         $this->assertIsArray($migrations);
         $this->assertIsArray($pdoDbInfo->getTableInfo());

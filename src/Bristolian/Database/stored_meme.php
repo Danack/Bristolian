@@ -9,30 +9,30 @@ class stored_meme
     const INSERT = <<< SQL
 insert into stored_meme (
     id,
+    user_id,
     normalized_name,
     original_filename,
     size,
-    state,
-    user_id
+    state
 )
 values (
     :id,
+    :user_id,
     :normalized_name,
     :original_filename,
     :size,
-    :state,
-    :user_id
+    :state
 )
 SQL;
 
     const SELECT = <<< SQL
 select
     id,
+    user_id,
     normalized_name,
     original_filename,
     size,
-    state,
-    user_id
+    state
 from
   stored_meme 
 SQL;

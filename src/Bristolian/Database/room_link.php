@@ -8,27 +8,27 @@ class room_link
 {
     const INSERT = <<< SQL
 insert into room_link (
-    description,
     id,
     link_id,
     room_id,
+    description,
     title
 )
 values (
-    :description,
     :id,
     :link_id,
     :room_id,
+    :description,
     :title
 )
 SQL;
 
     const SELECT = <<< SQL
 select
-    description,
     id,
     link_id,
     room_id,
+    description,
     title
 from
   room_link 

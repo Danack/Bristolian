@@ -10,16 +10,16 @@ class meme_tag
 insert into meme_tag (
     id,
     meme_id,
+    user_id,
     text,
-    type,
-    user_id
+    type
 )
 values (
     :id,
     :meme_id,
+    :user_id,
     :text,
-    :type,
-    :user_id
+    :type
 )
 SQL;
 
@@ -27,9 +27,9 @@ SQL;
 select
     id,
     meme_id,
+    user_id,
     text,
-    type,
-    user_id
+    type
 from
   meme_tag 
 SQL;
