@@ -71,9 +71,14 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
 
   message_listener:null|number = null;
 
+  // If the panel is loaded with a selected sourcelink_id, then we need
+  // to remember to render it when we get the data back about sourcelinks.
+  pending_sourcelink_id: null|string = null;
+
   constructor(props: SourceLinkPanelProps) {
     super(props);
     this.state = getDefaultState(props);
+    this.pending_sourcelink_id = props.selected_sourcelink_id;
   }
 
   componentDidMount() {
@@ -108,7 +113,6 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
     catch((data:any) => this.processError(data));
   }
 
-
   processData(data:any) {
     if (data.data.sourcelinks === undefined) {
       this.setState({error: "Server response did not contains 'sourcelinks'."})
@@ -140,7 +144,14 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
   }
 
   componentDidUpdate(prevProps: SourceLinkPanelProps, prevState: SourceLinkPanelState) {
-    if (this.state.selected_sourcelink_id !== prevState.selected_sourcelink_id) {
+    // The whole lifecycle and interaction between this panel and
+    // the iframe containing the PDF could do with some re-thinking.
+    if (this.pending_sourcelink_id && this.state.sourcelinks) {
+      console.log("we had pending_sourcelink_id and data is now loaded, so sending highlights");
+      this.sendHighlightsToDraw();
+      this.pending_sourcelink_id = null;
+    }
+    else if (this.state.selected_sourcelink_id !== prevState.selected_sourcelink_id) {
       this.sendHighlightsToDraw();
     }
   }
@@ -162,12 +173,23 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
     // console.log("sendHighlightsToDraw");
 
     // @ts-ignore:content window does exist
-    if (iframe && iframe.contentWindow) {
+    if (iframe) {
       // @ts-ignore:content window does exist
-      iframe.contentWindow.postMessage({
-        type: 'draw_highlights',
-        highlights: highlights
-      }, '*',);
+      if (iframe.contentWindow) {
+        // @ts-ignore:content window does exist
+        iframe.contentWindow.postMessage({
+          type: 'draw_highlights',
+          highlights: highlights
+        }, '*',);
+
+        console.log("highlights sent");
+      }
+      else {
+        console.log("iframe.contentWindow is null");
+      }
+    }
+    else {
+      console.log("no iframe");
     }
   }
 

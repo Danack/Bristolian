@@ -124,6 +124,30 @@ function loadPage(pageNum) {
       then((pdfPage) => render_page_into_container(pdfPage, pageNum));
 }
 
+function renderingTextLayerForPageIsFinished(pageNum) {
+    g_textlayer_drawn[pageNum] = true;
+    let next_page = pageNum + 1;
+    if (next_page <= g_max_page) {
+        loadPage(next_page);
+        return;
+    }
+
+    console.log("All text layers are drawn.");
+    // The function 'processQueue' is written in the iFrame itself, so
+    // that it is always available when the iFrame loads.
+    // Final text layer is drawn
+
+    // let setupRecevingDrawHightlightsMessage = () => {
+    //     console.log("setupRecevingDrawHightlightsMessage has been called");
+    //     window.addEventListener("message", receiveDrawHightlightsMessage);
+    // }
+    setTimeout(processQueue, 1);
+    // Inside the processQueue function is where we start listening to
+    //
+    // and shut the queue down.
+}
+
+
 function page_rendered(container, pdfPage, viewport, pageNum) {
 
     let render_task = new TextLayer({
@@ -132,13 +156,7 @@ function page_rendered(container, pdfPage, viewport, pageNum) {
         viewport,
     });
 
-    render_task.render().then(() => {
-        g_textlayer_drawn[pageNum] = true;
-        let next_page = pageNum + 1;
-        if (next_page <= g_max_page) {
-            loadPage(next_page);
-        }
-    });
+    render_task.render().then(() => renderingTextLayerForPageIsFinished(pageNum));
 }
 
 
@@ -159,10 +177,6 @@ function initial_render_scrolling(pdf) {
     g_pdf_document = pdf;
 
     loadPage(0);
-    // The function 'processQueue' is written in the iFrame itself, so
-    // that it is always available when the iFrame loads.
-    setTimeout(processQueue, 1000);
-    // processQueue();
 }
 
 function handleWindowScroll() {
@@ -441,18 +455,39 @@ function drawHighlights(highlights) {
 }
 
 
-function receiveDrawHightlightsMessage(event) {
+export function receiveDrawHightlightsMessage(data) {
 
-    if (event.data && event.data.type === "draw_highlights") {
-        console.log("Received draw highlights message", event);
-        let highlights = event.data.highlights;
+    if (data && data.type === "draw_highlights") {
+        console.log("Received draw highlights message", data);
+        let highlights = data.highlights;
         if (highlights === undefined) {
             console.warn("No highlights received.");
             return;
         }
         drawHighlights(highlights);
     }
+    else {
+        console.log("Received unknown message", data);
+    }
 }
+
+// When your script is ready to handle messages, process the queue
+export function processQueue() {
+    // isReady = true;
+
+    console.log("Queue length for receiveDrawHightlightsMessage was " + messageQueue.length)
+    // Process all queued messages
+    while (messageQueue.length > 0) {
+        const message = messageQueue.shift();
+        receiveDrawHightlightsMessage(message);
+    }
+
+    window.addEventListener("message", (event) => receiveDrawHightlightsMessage(event.data));
+    // Replace the queueMessages listener with the real handler
+    window.removeEventListener('message', queueMessage);
+}
+
+
 
 let viewer_element = document.getElementById('viewer');
 if (!viewer_element) {
@@ -485,4 +520,4 @@ document.addEventListener("selectionchange", () => {
 
 window.addEventListener('scroll', handleWindowScroll);
 
-window.addEventListener("message", receiveDrawHightlightsMessage);
+// window.addEventListener("message", receiveDrawHightlightsMessage);

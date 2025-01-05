@@ -391,43 +391,34 @@ HTML;
 
 <html lang="en">
   <body>
+  <script src="/js/pdf/pdf.mjs" type="module"></script>
+  <script src="/js/pdf_view.js" type="module"></script>
+  <link rel="stylesheet" href="/css/pdf_viewer.css">
   <script nonce="{$requestNonce->getRandom()}">
     // (function () {
+
       // Queue to store incoming messages
       const messageQueue = [];
 
       // Flag to indicate when the iframe script is ready
-      let isReady = false;
+      // let isReady = false;
 
       // Temporary listener to queue messages
-      function queueMessages(event) {
-        if (!isReady) {
+      function queueMessage(event) {
+        // if (!isReady) {
           messageQueue.push(event.data);
-        }
+        // }
       }
 
       // Add event listener for postMessage
-      window.addEventListener('message', queueMessages);
+      window.addEventListener('message', queueMessage);
+      console.log("Message queue setup");
 
-      // When your script is ready to handle messages, process the queue
-      function processQueue() {
-        isReady = true;
 
-        // Process all queued messages
-        while (messageQueue.length > 0) {
-          const message = messageQueue.shift();
-          receiveDrawHightlightsMessage(message);
-        }
-
-        // Replace the queueMessages listener with the real handler
-        window.removeEventListener('message', queueMessages);
-      }
   </script>
   
   
-    <script src="/js/pdf/pdf.mjs" type="module"></script>
-    <script src="/js/pdf_view.js" type="module"></script>
-    <link rel="stylesheet" href="/css/pdf_viewer.css">
+    
     <div id="viewer" class="pdfViewer" data-widgety_json='$widget_data' />
   </body>
 </html>

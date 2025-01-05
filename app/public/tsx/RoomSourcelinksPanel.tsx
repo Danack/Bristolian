@@ -73,7 +73,7 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
     }
 
     renderRoomSourcelink(sourceLink: RoomSourceLink) {
-        const sourcelinkUrl = `/rooms/${this.props.room_id}/file/${sourceLink.file_id}/sourcelinks/${sourceLink.id}`;
+        const sourcelinkUrl = `/rooms/${this.props.room_id}/file/${sourceLink.file_id}/sourcelinks/${sourceLink.id}/view`;
 
         return (
           <tr key={sourceLink.id}>
@@ -82,15 +82,8 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
                       {sourceLink.title || "Unnamed Link"}
                   </a>
               </td>
-              {/*<td>*/}
-              {/*    {sourceLink.text ? (*/}
-              {/*      <span>{sourceLink.text.substring(0, 50)}...</span> // Display the first 50 characters*/}
-              {/*    ) : (*/}
-              {/*      <i>No description</i>*/}
-              {/*    )}*/}
-              {/*</td>*/}
               <td>
-                  <a href={sourcelinkUrl + "/view"}>View</a>
+                  <a href={sourcelinkUrl}>View</a>
               </td>
           </tr>
         );
