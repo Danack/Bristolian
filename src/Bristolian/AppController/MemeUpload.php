@@ -2,18 +2,15 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\Service\MemeStorageProcessor\UploadError;
 use Bristolian\Service\MemeStorage\MemeStorage;
-use Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme;
-use Bristolian\Service\ObjectStore\FileObjectStore;
+use Bristolian\Service\MemeStorageProcessor\MemeStorageProcessor;
+use Bristolian\Service\MemeStorageProcessor\UploadError;
 use Bristolian\Service\ObjectStore\MemeObjectStore;
 use Bristolian\Session\UserSession;
-use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\UserUploadedFile\UserSessionFileUploaderHandler;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
-use Bristolian\Service\MemeStorageProcessor\MemeStorageProcessor;
 
 class MemeUpload
 {

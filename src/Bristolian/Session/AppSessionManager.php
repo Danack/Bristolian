@@ -2,12 +2,9 @@
 
 namespace Bristolian\Session;
 
-use Asm\RequestSessionStorage;
 use Asm\Session;
 use Asm\SessionManager;
 use Bristolian\Exception\BristolianException;
-use Bristolian\Model\AdminUser;
-use Bristolian\Session\AppSession;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**

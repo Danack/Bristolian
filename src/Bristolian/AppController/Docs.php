@@ -3,7 +3,6 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\Session\AppSession;
 use Bristolian\Session\UserSession;
 
 class Docs

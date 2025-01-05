@@ -23,9 +23,6 @@ function apiInjectionParams() : InjectionParams
         \Bristolian\CSPViolation\CSPViolationStorage::class =>
           \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
 
-        \Asm\RequestSessionStorage::class =>
-            \StandardRequestSessionStorage::class,
-
         \Psr\Http\Message\ResponseFactoryInterface::class =>
           \Laminas\Diactoros\ResponseFactory::class,
 
@@ -75,9 +72,6 @@ function apiInjectionParams() : InjectionParams
 
         \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::class =>
             \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class,
-
-        \Bristolian\Service\MemeStorage\MemeStorage::class =>
-            \Bristolian\Service\MemeStorage\StandardMemeStorage::class,
 
         \Bristolian\Service\ObjectStore\MemeObjectStore::class =>
             \Bristolian\Service\ObjectStore\StandardMemeObjectStore::class,

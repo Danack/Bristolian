@@ -4,7 +4,6 @@ namespace Bristolian\Session;
 
 use Asm\Session as RawSession;
 use Bristolian\Model\AdminUser;
-use Bristolian\Session\UserSession;
 
 class AppSession implements UserSession
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Bristolian\Response;
 
+use Bristolian\Exception\BristolianResponseException;
 use SlimDispatcher\Response\ResponseException;
 use SlimDispatcher\Response\StubResponse;
-use Bristolian\Exception\BristolianResponseException;
 
 class BristolianFileResponse implements StubResponse
 {

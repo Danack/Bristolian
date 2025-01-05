@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Bristolian\CSPViolation;
 
-use Bristolian\App;
 use Bristolian\Data\ContentPolicyViolationReport;
 use Key\ContentSecurityPolicyKey;
 use Redis;

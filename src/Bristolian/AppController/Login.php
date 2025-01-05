@@ -2,17 +2,14 @@
 
 namespace Bristolian\AppController;
 
+use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Session\AppSession;
 use Bristolian\Session\AppSessionManager;
-use Bristolian\Repo\AdminRepo\AdminRepo;
 use SlimDispatcher\Response\RedirectResponse;
 
 class Login
 {
-    public function logout(
-        //    AppSession $appSession
-        AppSessionManager $appSessionManager
-    ): RedirectResponse {
+    public function logout(AppSessionManager $appSessionManager): RedirectResponse {
         // $appSession->destroy_session();
         $appSessionManager->deleteSession();
 
@@ -52,7 +49,6 @@ HTML;
 
     public function processLoginPage(
         AdminRepo $adminRepo,
-        // AppSession $appSession
         AppSessionManager $appSessionManager
     ): RedirectResponse {
 
@@ -61,13 +57,9 @@ HTML;
         $password = $_POST['password'] ?? null;
 
         if ($username === null) {
-//            echo "Username is null.";
-//            exit(0);
             return new RedirectResponse('/login?message=login failed');
         }
         if ($password === null) {
-//            echo "password is null.";
-//            exit(0);
             return new RedirectResponse('/login?message=login failed');
         }
 

@@ -2,8 +2,6 @@
 
 namespace Bristolian\Service\ObjectStore;
 
-use Bristolian\Filesystem\MemeFilesystem;
-
 /**
  * The standard implementation for storing files that are uploaded to rooms.
  */

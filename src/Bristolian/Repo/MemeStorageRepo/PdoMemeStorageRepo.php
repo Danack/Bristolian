@@ -2,14 +2,13 @@
 
 namespace Bristolian\Repo\MemeStorageRepo;
 
-use Bristolian\Database\stored_file;
 use Bristolian\Database\stored_meme;
+use Bristolian\Model\Meme;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Repo\FileStorageInfoRepo\FileState;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
-use Bristolian\Repo\FileStorageInfoRepo\FileState;
-use Bristolian\Model\Meme;
 
 class PdoMemeStorageRepo implements MemeStorageRepo
 {

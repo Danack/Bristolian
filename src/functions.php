@@ -5,7 +5,6 @@ declare(strict_types = 1);
 use Bristolian\Model\StoredFile;
 use Bristolian\Types\DocumentType;
 use SlimDispatcher\Response\JsonNoCacheResponse;
-use SlimDispatcher\Response\ResponseException;
 
 $injector = null;
 

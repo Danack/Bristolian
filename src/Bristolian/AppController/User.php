@@ -2,13 +2,11 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\Session\AppSession;
-use Bristolian\Session\AppSessionManager;
 use Bristolian\DataType\MemeTagDeleteParam;
 use Bristolian\DataType\MemeTagParam;
-use Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo;
 use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Repo\MemeTagRepo\MemeTagRepo;
+use Bristolian\Session\AppSessionManager;
 use Bristolian\Session\UserSession;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use SlimDispatcher\Response\JsonNoCacheResponse;
@@ -134,9 +132,8 @@ class User
     }
 
 
-    public function get_login_status(
-        AppSessionManager $appSessionManager
-    ): JsonNoCacheResponse {
+    public function get_login_status(AppSessionManager $appSessionManager): JsonNoCacheResponse
+    {
         $data = [
             'logged_in' => false,
         ];

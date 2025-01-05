@@ -5,10 +5,9 @@ namespace Bristolian\Repo\RoomSourceLinkRepo;
 use Bristolian\Database\room_sourcelink;
 use Bristolian\Database\sourcelink;
 use Bristolian\DataType\SourceLinkParam;
-use Bristolian\Model\StoredFile;
+use Bristolian\Model\RoomSourceLink;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
-use Bristolian\Model\RoomSourceLink;
 
 class PdoRoomSourceLinkRepo implements RoomSourceLinkRepo
 {

@@ -11,7 +11,6 @@ declare (strict_types = 1);
  */
 
 use Aws\S3\S3Client;
-use Bristolian\Session\AppSession;
 use Bristolian\Config\Config;
 use Bristolian\Service\DeployLogRenderer\DeployLogRenderer;
 use DI\Injector;

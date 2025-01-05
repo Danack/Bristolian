@@ -3,9 +3,9 @@
 namespace Bristolian\UserUploadedFile;
 
 use Bristolian\App;
+use Bristolian\Session\UserSession;
 use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\UploadedFiles\UploadedFiles;
-use Bristolian\Session\UserSession;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;

@@ -2,8 +2,6 @@
 
 namespace Bristolian\Session;
 
-use Bristolian\Session\UserSession;
-
 class MockUserSession implements UserSession
 {
     public function __construct(

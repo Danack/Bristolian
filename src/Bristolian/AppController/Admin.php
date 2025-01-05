@@ -2,8 +2,8 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\Session\AppSession;
 use Bristolian\Repo\UserSearch\UserSearch;
+use Bristolian\Session\AppSession;
 use Bristolian\UserNotifier\UserNotifier;
 use SlimDispatcher\Response\JsonResponse;
 use VarMap\VarMap;

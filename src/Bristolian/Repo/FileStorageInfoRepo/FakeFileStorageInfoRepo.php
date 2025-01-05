@@ -2,9 +2,9 @@
 
 namespace Bristolian\Repo\FileStorageInfoRepo;
 
+use Bristolian\Model\StoredFile;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
-use Bristolian\Model\StoredFile;
 
 class FakeFileStorageInfoRepo implements FileStorageInfoRepo
 {
