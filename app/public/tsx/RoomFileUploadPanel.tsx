@@ -8,6 +8,7 @@ let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
 export interface RoomFileUploadPanelProps {
     room_id: string
+    accepted_file_extensions: string[]
 }
 
 interface RoomFileUploadPanelState {
@@ -164,6 +165,8 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, Roo
             error_block = <div class="error">Error: {this.state.error}</div>;
         }
 
+        let accept_string = this.props.accepted_file_extensions.join(", ");
+
         return (
           <div class="room_file_upload_panel_react">
               <h3>Drag a file here to upload</h3>
@@ -179,6 +182,7 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, Roo
                   <p>{state.selectedFile ? `Selected file: ${state.selectedFile.name}` : "Drop files here or click to select files."}</p>
                   <input
                     type="file"
+                    accept={accept_string}
                     onChange={this.onFileChange}
                     style={{display: "block", marginTop: "10px"}}
                   />

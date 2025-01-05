@@ -64,9 +64,11 @@ class FakeCSPViolationStorage implements CSPViolationStorage
         return $this->clearCalls;
     }
 
+    /**
+     * @return list<int>
+     */
     public function getPagesRequested(): array
     {
         return $this->pages_requested;
     }
-
 }

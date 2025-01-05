@@ -2,7 +2,6 @@
 
 namespace BristolianTest\CSPViolation;
 
-
 use BristolianTest\BaseTestCase;
 use Bristolian\CSPViolation\RedisCSPViolationStorage;
 use BristolianTest\Repo\TestPlaceholders;
@@ -37,8 +36,8 @@ class RedisCSPViolationStorageTest extends BaseTestCase
         $this->assertSame(0, $cspViolationStorage->getCount());
         $this->assertEmpty($cspViolationStorage->getReports());
 
-        for ($i = 0; $i < 100 ; $i += 1) {
-            $cspReport = $this->createContentPolicyViolationReport(['line-number' => 100 + $i]);
+        for ($i = 0; $i < 100; $i += 1) {
+            $cspReport = $this->createContentPolicyViolationReport(['line-number' => (string)(100 + $i)]);
             $cspViolationStorage->report($cspReport);
         }
 

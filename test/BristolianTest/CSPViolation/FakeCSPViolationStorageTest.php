@@ -2,7 +2,6 @@
 
 namespace BristolianTest\CSPViolation;
 
-
 use BristolianTest\BaseTestCase;
 use Bristolian\CSPViolation\FakeCSPViolationStorage;
 use BristolianTest\Repo\TestPlaceholders;
@@ -37,7 +36,7 @@ class FakeCSPViolationStorageTest extends BaseTestCase
         $this->assertEmpty($cspViolationStorage->getReports());
         $this->assertSame(1, $cspViolationStorage->getClearCalls());
 
-        for ($i = 0; $i < 100 ; $i += 1) {
+        for ($i = 0; $i < 100; $i += 1) {
             $cspReport = $this->createContentPolicyViolationReport(['line-number' => 100 + $i]);
             $cspViolationStorage->report($cspReport);
         }

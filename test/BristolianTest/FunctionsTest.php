@@ -474,7 +474,6 @@ TEXT;
     /**
      * @covers ::get_supported_room_file_extensions
      * @covers ::get_supported_room_file_extensions
-     * @group wip
      */
     public function testMimeTypesAreAdequate()
     {
@@ -490,5 +489,4 @@ TEXT;
             $this->assertNotNull($mimetype, "Mimetype for extension $extension is null");
         }
     }
-
 }

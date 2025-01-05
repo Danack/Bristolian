@@ -1,49 +1,49 @@
 <?php
 
-namespace BristolianTest\Service\FileStorageProcessor;
+namespace BristolianTest\Service\MemeStorageProcessor;
 
-use Bristolian\Service\ObjectStore\FakeRoomFileObjectStore;
+use Bristolian\Service\ObjectStore\FakeMemeObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
-use Bristolian\Service\FileStorageProcessor\StandardFileStorageProcessor;
-use Bristolian\Repo\FileStorageInfoRepo\FakeFileStorageInfoRepo;
-use Bristolian\Service\FileStorageProcessor\ObjectStoredFileInfo;
-use Bristolian\Service\FileStorageProcessor\UploadError;
+use Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor;
+use Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo;
+use Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme;
+use Bristolian\Service\MemeStorageProcessor\UploadError;
 
 /**
- * @covers \Bristolian\Service\FileStorageProcessor\StandardFileStorageProcessor
+ * @covers \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor
  */
-class StandardFileStorageProcessorTest extends BaseTestCase
+class StandardMemeStorageProcessorTest extends BaseTestCase
 {
     public function testWorks()
     {
-        $fileStorageInfoRepo = new FakeFileStorageInfoRepo();
+        $memeStorageRepo = new FakeMemeStorageRepo();
         $uploadedFile = UploadedFile::fromFile(__FILE__);
-        $objectStore = new FakeRoomFileObjectStore();
+        $objectStore = new FakeMemeObjectStore();
 
-        $storage_processor = new StandardFileStorageProcessor($fileStorageInfoRepo);
+        $storage_processor = new StandardMemeStorageProcessor($memeStorageRepo);
 
-        $result = $storage_processor->storeFileForUser(
+        $result = $storage_processor->storeMemeForUser(
             $user_id = '12345',
             $uploadedFile,
             $allowedExtensions = ["php"],
             $objectStore
         );
 
-        $this->assertInstanceOf(ObjectStoredFileInfo::class, $result);
+        $this->assertInstanceOf(ObjectStoredMeme::class, $result);
         $this->assertTrue($objectStore->hasFile($result->normalized_filename));
     }
 
     public function testErrors_unreadable_file()
     {
-        $fileStorageInfoRepo = new FakeFileStorageInfoRepo();
+        $fileStorageInfoRepo = new FakeMemeStorageRepo();
         $uploadedFile = UploadedFile::fromFile(__DIR__ . "/test_unreadable.txt");
         \Safe\chmod(__DIR__ . "/test_unreadable.txt", 0o055);
-        $objectStore = new FakeRoomFileObjectStore();
+        $objectStore = new FakeMemeObjectStore();
 
-        $storage_processor = new StandardFileStorageProcessor($fileStorageInfoRepo);
+        $storage_processor = new StandardMemeStorageProcessor($fileStorageInfoRepo);
 
-        $result = $storage_processor->storeFileForUser(
+        $result = $storage_processor->storeMemeForUser(
             $user_id = '12345',
             $uploadedFile,
             $allowedExtensions = ["php"],
@@ -58,15 +58,15 @@ class StandardFileStorageProcessorTest extends BaseTestCase
 
     public function testErrors_unsupported_file_type()
     {
-        $fileStorageInfoRepo = new FakeFileStorageInfoRepo();
+        $fileStorageInfoRepo = new FakeMemeStorageRepo();
         $uploadedFile = UploadedFile::fromFile(__FILE__);
 
 
-        $objectStore = new FakeRoomFileObjectStore();
+        $objectStore = new FakeMemeObjectStore();
 
-        $storage_processor = new StandardFileStorageProcessor($fileStorageInfoRepo);
+        $storage_processor = new StandardMemeStorageProcessor($fileStorageInfoRepo);
 
-        $result = $storage_processor->storeFileForUser(
+        $result = $storage_processor->storeMemeForUser(
             $user_id = '12345',
             $uploadedFile,
             $allowedExtensions = ["pdf"],

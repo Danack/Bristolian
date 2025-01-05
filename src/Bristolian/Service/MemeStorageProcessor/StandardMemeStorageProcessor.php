@@ -29,7 +29,7 @@ class StandardMemeStorageProcessor implements MemeStorageProcessor
         FileObjectStore $fileObjectStore
     ): ObjectStoredMeme|UploadError {
 
-        $contents = file_get_contents($uploadedFile->getTmpName());
+        $contents = @file_get_contents($uploadedFile->getTmpName());
         if ($contents === false) {
             return UploadError::uploadedFileUnreadable();
         }

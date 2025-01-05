@@ -1005,7 +1005,8 @@ function getRouteForStoredFile(string $room_id, StoredFile $storedFile): string
  * @param list<string> $array
  * @return list<string>
  */
-function customSort(array $array): array {
+function customSort(array $array): array
+{
     usort($array, function ($a, $b) {
         // Define custom priorities
         $priorities = [
@@ -1032,8 +1033,12 @@ function customSort(array $array): array {
             return $a <=> $b;
         }
 
-        if ($aIsId) return -1;
-        if ($bIsId) return 1;
+        if ($aIsId) {
+            return -1;
+        }
+        if ($bIsId) {
+            return 1;
+        }
 
         // For all other elements, sort alphabetically
         return $a <=> $b;

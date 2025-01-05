@@ -211,6 +211,11 @@ trait TestPlaceholders
         return 'a test string: ' . time() . '_' . $count;
     }
 
+    /**
+     * @param array<string, string> $particulars
+     * @return ContentPolicyViolationReport
+     * @throws \Exception
+     */
     public function createContentPolicyViolationReport(array $particulars)
     {
         $report =  [
@@ -233,7 +238,4 @@ trait TestPlaceholders
 
         return ContentPolicyViolationReport::fromCSPPayload($input);
     }
-
-
-
 }

@@ -6,7 +6,7 @@ use Bristolian\Service\ObjectStore\FileObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
 
-class FakeWorksFileStorageProcessor implements MemeStorageProcessor
+class FakeWorksMemeStorageProcessor implements MemeStorageProcessor
 {
     /**
      * @param string $user_id

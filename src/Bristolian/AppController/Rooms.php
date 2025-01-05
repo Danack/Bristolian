@@ -286,7 +286,8 @@ class Rooms
         }
 
         $widget_data = encodeWidgetyData([
-            'room_id' => $room_id
+            'room_id' => $room_id,
+            'accepted_file_extensions' => get_supported_room_file_extensions()
         ]);
 
         $template = <<< HTML

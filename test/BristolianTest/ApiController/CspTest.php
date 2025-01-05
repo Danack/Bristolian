@@ -24,7 +24,7 @@ class CspTest extends BaseTestCase
         $cspStorage = new FakeCSPViolationStorage();
 
         for ($i = 0; $i < 100; $i++) {
-            $cspReport = $this->createContentPolicyViolationReport(['line-number' => 100 + $i]);
+            $cspReport = $this->createContentPolicyViolationReport(['line-number' => (string)(100 + $i)]);
             $cspStorage->report($cspReport);
         }
 

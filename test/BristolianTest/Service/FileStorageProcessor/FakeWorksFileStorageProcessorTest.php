@@ -11,7 +11,6 @@ use Bristolian\Service\FileStorageProcessor\ObjectStoredFileInfo;
 
 /**
  * @covers \Bristolian\Service\FileStorageProcessor\FakeWorksFileStorageProcessor
- * @group wip
  */
 class FakeWorksFileStorageProcessorTest extends BaseTestCase
 {

@@ -1,12 +1,13 @@
 <?php
 
-namespace BristolianTest\Service\FileStorageProcessor;
+namespace BristolianTest\Service\MemeStorageProcessor;
 
-use Bristolian\Service\FileStorageProcessor\UploadError;
+use Bristolian\Service\MemeStorageProcessor\UploadError;
 use BristolianTest\BaseTestCase;
 
 /**
- * @covers \Bristolian\Service\FileStorageProcessor\UploadError
+ * @covers \Bristolian\Service\MemeStorageProcessor\UploadError
+ * @group wip
  */
 class UploadErrorTest extends BaseTestCase
 {

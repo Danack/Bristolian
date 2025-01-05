@@ -7,7 +7,6 @@ use Bristolian\Service\FileStorageProcessor\ObjectStoredFileInfo;
 
 /**
  * @covers \Bristolian\Service\FileStorageProcessor\ObjectStoredFileInfo
- * @group wip
  */
 class ObjectStoredFileInfoTest extends BaseTestCase
 {

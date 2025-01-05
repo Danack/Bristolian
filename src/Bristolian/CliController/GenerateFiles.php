@@ -6,11 +6,6 @@ use Bristolian\Exception\BristolianException;
 use Bristolian\Config\Config;
 use PDO;
 
-
-
-
-
-
 /**
  *
  * @codeCoverageIgnore
