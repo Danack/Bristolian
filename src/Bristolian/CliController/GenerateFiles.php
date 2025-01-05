@@ -7,48 +7,6 @@ use Bristolian\Config\Config;
 use PDO;
 
 
-function customSort(array $array): array {
-    usort($array, function ($a, $b) {
-        // Define custom order
-        $order = [
-            'id' => 0,
-            'created_at' => PHP_INT_MAX - 1,
-            'modified_at' => PHP_INT_MAX,
-        ];
-
-        // Check if $a and $b are in the custom order
-        $aOrder = $order[$a] ?? null;
-        $bOrder = $order[$b] ?? null;
-
-        // Compare elements explicitly defined in the custom order
-        if ($aOrder !== null && $bOrder !== null) {
-            return $aOrder <=> $bOrder;
-        }
-
-        // If only one is in the custom order, it comes first
-        if ($aOrder !== null) return -1;
-        if ($bOrder !== null) return 1;
-
-        // Handle '_id' elements: prioritize them alphabetically
-        if (str_ends_with($a, '_id') && str_ends_with($b, '_id')) {
-            return $a <=> $b;
-        }
-
-        if (str_ends_with($a, '_id')) return -1;
-        if (str_ends_with($b, '_id')) return 1;
-
-        // For all other elements, sort alphabetically
-        return $a <=> $b;
-    });
-
-    return $array;
-}
-
-//// Example usage
-//$input = ['name', 'id', 'user_id', 'created_at', 'modified_at', 'group_id', 'email'];
-//$sorted = customSort($input);
-//
-//print_r($sorted);
 
 
 

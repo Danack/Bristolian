@@ -988,3 +988,62 @@ function getRouteForStoredFile(string $room_id, StoredFile $storedFile): string
 
     return esprintf($template, $params);
 }
+
+
+/**
+ * Sorts strings so that the follow these rules:
+ * i) any element that is just 'id' is first.
+ * ii) any elements that contain '_id' are next, with those sorted alphabetically.
+ * iii) any element that is 'modified_at' is last.
+ * iv) any element that is 'created_at' is second from last.
+ * v) all other elements are sorted alphabetically.
+ *
+ * This is used in generating the DB helper classes, so that they are stable,
+ * and so don't differ randomly between different machines.
+ *
+ * @param list<string> $array
+ * @return list<string>
+ */
+function customSort(array $array): array {
+    usort($array, function ($a, $b) {
+        // Define custom priorities
+        $priorities = [
+            'id' => 0,                // Highest priority
+            'created_at' => 998,      // Second to last
+            'modified_at' => 999,     // Last
+        ];
+
+        // Get priorities or default to a middle range for other elements
+        $aPriority = $priorities[$a] ?? 500;
+        $bPriority = $priorities[$b] ?? 500;
+
+        // Compare by priority
+        if ($aPriority !== $bPriority) {
+            return $aPriority <=> $bPriority;
+        }
+
+        // Handle cases where priorities are equal
+        // For '_id' elements, sort alphabetically
+        $aIsId = str_ends_with($a, '_id');
+        $bIsId = str_ends_with($b, '_id');
+
+        if ($aIsId && $bIsId) {
+            return $a <=> $b;
+        }
+
+        if ($aIsId) return -1;
+        if ($bIsId) return 1;
+
+        // For all other elements, sort alphabetically
+        return $a <=> $b;
+    });
+
+    return $array;
+}
+
+//// Example usage
+//$input = ['name', 'id', 'user_id', 'created_at', 'modified_at', 'group_id', 'email'];
+//$sorted = customSort($input);
+//
+//print_r($sorted);
+//

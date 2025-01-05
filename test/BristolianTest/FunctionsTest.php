@@ -458,4 +458,17 @@ TEXT;
             $result
         );
     }
+
+    /**
+     * @covers ::customSort
+     */
+    public function test_customSort()
+    {
+        $input = ['name', 'id', 'user_id', 'created_at', 'modified_at', 'group_id', 'email'];
+        $sorted = customSort($input);
+
+        $expected = ['id', 'group_id', 'user_id', 'email', 'name',  'created_at', 'modified_at'];
+        $this->assertSame($expected, $sorted);
+    }
+
 }
