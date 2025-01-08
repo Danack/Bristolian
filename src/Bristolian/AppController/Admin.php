@@ -4,9 +4,13 @@ namespace Bristolian\AppController;
 
 use Bristolian\Repo\UserSearch\UserSearch;
 use Bristolian\Session\AppSession;
+use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
+use Bristolian\Session\UserSession;
 use Bristolian\UserNotifier\UserNotifier;
 use SlimDispatcher\Response\JsonResponse;
+use SlimDispatcher\Response\RedirectResponse;
 use VarMap\VarMap;
+use Bristolian\Repo\ProcessorRepo\ProcessType;
 
 class Admin
 {
@@ -17,6 +21,105 @@ class Admin
 
         return $content;
     }
+
+    public function showAdminPage(): string
+    {
+        $content = "<h1>Admin page</h1>";
+        $content .= "<ul>";
+        $content .= "<li><a href='/admin/control_processors'>Control processors</a></li>'";
+        $content .= "</ul>";
+
+        return $content;
+    }
+
+    public function showProcessorsPage(ProcessorRepo $processorRepo): string
+    {
+        $content = "<h1>Processors</h1>";
+        $content .= "<div class='processors_panel'></div>";
+
+        $processors_states = $processorRepo->getProcessorsStates();
+
+        $processors = [
+            ProcessType::email_send->value => "Email send",
+            ProcessType::moon_alert->value => "Moon alert",
+        ];
+
+        $content .= "<table class='processors'>";
+        $content .= "<tr><th>Processor</th><th>State</th><th>Last changed</th><th>Change</th></tr>";
+
+        foreach ($processors as $processor => $processor_name) {
+            $state = "Disabled";
+            $class = "disabled";
+            $action = "enable";
+            $last_changed = "-";
+
+            if (array_key_exists($processor, $processors_states)) {
+                $processor_state = $processors_states[$processor];
+                $last_changed = $processor_state->updated_at;
+
+                if ($processor_state->enabled == true) {
+                    $state = "Enabled";
+                    $class = "enabled";
+                    $action = "disable";
+                }
+            }
+
+            $button = <<<HTML
+<form action='/admin/control_processors' method='post'>
+    <input type='hidden' name='processor' value='$processor' />
+    <input type='hidden' name='action' value='$action' />
+    <input type='submit' value='$action' />
+</form>
+HTML;
+
+            $content .= "<tr><td>$processor_name</td><td class='$class'>$state</td><td>$last_changed</td><td>$button</td></tr>";
+        }
+
+        $content .= "</table>";
+
+        return $content;
+    }
+
+    public function updateProcessors(
+        ProcessorRepo $processorRepo,
+        VarMap $varMap,
+        UserSession $appSession
+    ): RedirectResponse {
+
+        $processors = [
+            ProcessType::email_send->value => "Email send",
+            ProcessType::moon_alert->value => "Moon alert",
+        ];
+
+
+        if ($varMap->has("processor") === false) {
+            return new RedirectResponse('/admin/control_processors?message=No processor specified');
+        }
+        $processor = $varMap->get("processor");
+        $processor_type = ProcessType::from($processor);
+
+        if (array_key_exists($processor, $processors) === false) {
+            return new RedirectResponse('/admin/control_processors?message=Invalid processor specified');
+        }
+
+        if ($varMap->has("action") === false) {
+            return new RedirectResponse('/admin/control_processors?message=No action specified');
+        }
+        $action = $varMap->get("action");
+        if ($action !== "enable" && $action !== "disable") {
+            return new RedirectResponse('/admin/control_processors?message=Invalid action specified');
+        }
+
+        $enabled = false;
+        if ($action === "enable") {
+            $enabled = true;
+        }
+
+        $processorRepo->setProcessorEnabled($processor_type, $enabled);
+
+        return new RedirectResponse("/admin/control_processors?message=$processor should be $action");
+    }
+
 
     public function ping_user(
         AppSession $appSession,

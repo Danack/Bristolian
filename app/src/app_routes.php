@@ -110,6 +110,7 @@ function getAllAppRoutes()
         ['/system/swagger', 'GET', 'Bristolian\AppController\System::display_swagger'],
         ['/system/route_explorer', 'GET', 'Bristolian\AppController\System::route_explorer'],
 
+
         ['/system', 'GET', 'Bristolian\AppController\System::index'],
         ['/files', 'GET', '\Bristolian\AppController\Docs::files'],
         ['/memes', 'GET', '\Bristolian\AppController\Docs::memes'],
@@ -125,6 +126,11 @@ function getAllAppRoutes()
         ['/user/memes', 'GET', 'Bristolian\AppController\User::manageMemes'],
         ["/images/memes/{id:.+}.jpg", 'GET', 'Bristolian\AppController\Images::show_meme'],
         ["/admin/notification_test", 'GET', '\Bristolian\AppController\Admin::showNotificationTestPage'],
+
+        ['/admin/control_processors', 'POST', 'Bristolian\AppController\Admin::updateProcessors'],
+        ['/admin/control_processors', 'GET', 'Bristolian\AppController\Admin::showProcessorsPage'],
+
+        ['/admin', 'GET', 'Bristolian\AppController\Admin::showAdminPage'],
         // Dynamic pages
         ['/topics', 'GET', 'Bristolian\AppController\Topics::index'],
         // System pages

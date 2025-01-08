@@ -27,11 +27,14 @@ docker-compose up --build installer_npm
 docker-compose build php_fpm
 
 docker-compose up --build \
- varnish caddy \
- php_fpm php_fpm_debug \
+ varnish \
+ caddy \
+ php_fpm \
+ php_fpm_debug \
  sass_dev_builder \
  js_builder \
  redis \
+ supervisord \
  --remove-orphans
 
 

@@ -116,3 +116,13 @@ blockquote {
 .text_note_panel {
   flex: 1;
 }
+
+.processors {
+  .disabled {
+    background-color: #ff8b8b;
+  }
+  .enabled {
+    background-color: #8bff95;
+  }
+
+}

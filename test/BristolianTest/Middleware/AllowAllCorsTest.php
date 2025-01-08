@@ -21,7 +21,7 @@ class AllowAllCorsTest extends BaseTestCase
 
         $middleware = new AllowAllCors();
 
-        $response = $middleware($request, $requestHandler);
+        $response = $middleware->process($request, $requestHandler);
 
         $this->assertTrue($response->hasHeader('Access-Control-Allow-Origin'));
         $this->assertTrue($response->hasHeader('Access-Control-Allow-Methods'));

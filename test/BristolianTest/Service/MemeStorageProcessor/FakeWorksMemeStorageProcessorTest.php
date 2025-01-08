@@ -11,7 +11,6 @@ use Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme;
 
 /**
  * @covers \Bristolian\Service\MemeStorageProcessor\FakeWorksMemeStorageProcessor
- * @group wip
  */
 class FakeWorksMemeStorageProcessorTest extends BaseTestCase
 {

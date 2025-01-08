@@ -9,8 +9,8 @@ use SlimDispatcher\Response\RedirectResponse;
 
 class Login
 {
-    public function logout(AppSessionManager $appSessionManager): RedirectResponse {
-        // $appSession->destroy_session();
+    public function logout(AppSessionManager $appSessionManager): RedirectResponse
+    {
         $appSessionManager->deleteSession();
 
         return new RedirectResponse('/?message=You should be logged out.');

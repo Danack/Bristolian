@@ -1,9 +1,8 @@
 <?php
 
-namespace BristolianTest\Middleware;
+namespace deadish;
 
-use Asm\AsmException;
-use \Asm\Session as RawSession;
+use Asm\Session as RawSession;
 
 // What even is this? Why are we implementing an external type?
 class FakeSession implements RawSession

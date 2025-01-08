@@ -5,6 +5,7 @@ namespace Bristolian\Session;
 use Asm\Session;
 use Asm\SessionManager;
 use Bristolian\Exception\BristolianException;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
@@ -14,7 +15,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
  * after the middleware is setup, so we have some unfortunate state in
  * this class.
  */
-class AppSessionManager
+class AppSessionManager implements AppSessionManagerInterface
 {
     /**
      * The underlying 'raw' session that is not aware of the application
@@ -63,7 +64,7 @@ class AppSessionManager
         $this->session = null;
     }
 
-    public function getRawSession(): Session|null
+    private function getRawSession(): Session|null
     {
         $this->checkInitialised();
 
@@ -118,14 +119,33 @@ class AppSessionManager
         return $this->session;
     }
 
-    public function get(): AppSession|null
+//    public function get(): AppSession|null
+//    {
+//        $this->checkInitialised();
+//
+//        if ($this->session) {
+//            return new AppSession($this->session);
+//        }
+//
+//        return null;
+//    }
+
+    /**
+     * @return array<array<string, string>>
+     */
+    public function saveIfOpenedAndGetHeaders(): array
     {
-        $this->checkInitialised();
+        $session = $this->getRawSession();
 
-        if ($this->session) {
-            return new AppSession($this->session);
+        if ($session) {
+            $session->save();
+            $headersArrays = $session->getHeaders(
+                \Asm\SessionManager::CACHE_PRIVATE,
+                '/'
+            );
+
+            return $headersArrays;
         }
-
-        return null;
+        return [];
     }
 }

@@ -7,7 +7,6 @@ use Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme;
 
 /**
  * @covers \Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme
- * @group wip
  */
 class ObjectStoredMemeTest extends BaseTestCase
 {

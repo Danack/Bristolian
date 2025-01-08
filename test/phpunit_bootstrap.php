@@ -17,7 +17,7 @@ require_once __DIR__ . "/../src/site_html.php";
 
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use Bristolian\Session\UserSession;
-use Bristolian\Session\MockUserSession;
+use Bristolian\Session\FakeUserSession;
 
 
 /**
@@ -30,7 +30,7 @@ function getTestingUserSession(PdoAdminRepo $pdoAdminRepo): UserSession
 {
     $user = $pdoAdminRepo->getAdminUser("testing@example.com", 'testing');
 
-    return new MockUserSession(
+    return new FakeUserSession(
         true,
         $user->getUserId(),
         $user->getEmailAddress()

@@ -1,6 +1,8 @@
 <?php
 
-namespace Bristolian\Session;
+namespace deadish;
+
+use Bristolian\Session\UserSession;
 
 class MockUserSession implements UserSession
 {

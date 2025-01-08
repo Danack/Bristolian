@@ -5,12 +5,15 @@ declare(strict_types = 1);
 namespace Bristolian\Middleware;
 
 use Bristolian\Exception\InvalidPermissionsException;
-use Bristolian\Session\AppSessionManager;
+use Bristolian\Session\AppSessionManagerInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
-class PermissionsCheckHtmlMiddleware
+class PermissionsCheckHtmlMiddleware implements MiddlewareInterface
 {
     /**
      * @var string[]
@@ -21,7 +24,7 @@ class PermissionsCheckHtmlMiddleware
     ];
 
     public function __construct(
-        private AppSessionManager $appSessionManager
+        private AppSessionManagerInterface $appSessionManager
     ) {
     }
 
@@ -30,7 +33,7 @@ class PermissionsCheckHtmlMiddleware
      * @param RequestHandler $handler
      * @return Response
      */
-    public function __invoke(Request $request, RequestHandler $handler): Response
+    public function process(Request $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $check_logged_in = false;
 

@@ -2,7 +2,6 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\Service\MemeStorage\MemeStorage;
 use Bristolian\Service\MemeStorageProcessor\MemeStorageProcessor;
 use Bristolian\Service\MemeStorageProcessor\UploadError;
 use Bristolian\Service\ObjectStore\MemeObjectStore;

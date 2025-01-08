@@ -4,6 +4,7 @@ namespace Bristolian\Config;
 
 use Bristolian\App;
 use Bristolian\Data\DatabaseUserConfig;
+use Bristolian\Exception\BristolianException;
 
 class Config implements AssetLinkEmitterConfig
 {
@@ -40,7 +41,9 @@ class Config implements AssetLinkEmitterConfig
     private function get(string $key): int|string|bool|array
     {
         if (array_key_exists($key, $this->values) == false) {
-            throw new \Exception("No value for " . $key);
+            // @codeCoverageIgnoreStart
+            throw new BristolianException("No value for " . $key);
+            // @codeCoverageIgnoreEnd
         }
 
         return $this->values[$key];
@@ -99,7 +102,9 @@ class Config implements AssetLinkEmitterConfig
             return false;
         }
 
+        // @codeCoverageIgnoreStart
         return true;
+        // @codeCoverageIgnoreEnd
     }
 
     public function getForceAssetRefresh(): bool

@@ -62,8 +62,6 @@ services:
       - .:/var/app
   sass_dev_builder:
     build: containers/sass_dev_builder
-  #  ports:
-  #    - 8888:8888
     volumes:
       - .:/var/app
   php_fpm:

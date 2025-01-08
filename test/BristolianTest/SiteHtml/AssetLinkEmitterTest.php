@@ -1,9 +1,10 @@
 <?php
 
-namespace BristolianTest;
+namespace BristolianTest\SiteHtml;
 
 use Bristolian\SiteHtml\AssetLinkEmitter;
 use Bristolian\Config\HardCodedAssetLinkConfig;
+use BristolianTest\BaseTestCase;
 
 /**
  * @coversNothing

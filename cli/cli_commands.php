@@ -19,6 +19,8 @@ function add_console_commands(Application $console)
     addRoomCommands($console);
     addEmailCommands($console);
     addGenerateCommands($console);
+
+    addMoonCommands($console);
 }
 
 function addEmailCommands(Application $console)
@@ -166,6 +168,19 @@ function addGenerateCommands(Application $console)
     $command->setDescription("Generate Helper classes, to avoid having to type column names out.");
     $console->add($command);
 }
+
+
+function addMoonCommands(Application $console)
+{
+    $command = new Command(
+        'moon:show_info',
+        'Bristolian\CliController\Moon::showInfo'
+    );
+    $command->setDescription("Show info about the moon.");
+    $console->add($command);
+}
+
+
 
 
 

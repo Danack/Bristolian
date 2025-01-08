@@ -6,18 +6,16 @@ namespace BristolianTest\Repo;
 
 use Bristolian\Data\ContentPolicyViolationReport;
 use Bristolian\DataType\CreateUserParams;
-use Bristolian\JsonInput\FakeJsonInput;
 use Bristolian\JsonInput\JsonInput;
 use Bristolian\Model\AdminUser;
-use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use Bristolian\Model\Room;
-use Bristolian\Repo\RoomRepo\PdoRoomRepo;
+use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use Bristolian\Repo\FileStorageInfoRepo\PdoFileStorageInfoRepo;
+use Bristolian\Repo\RoomRepo\PdoRoomRepo;
+use Bristolian\Session\UserSession;
 use Bristolian\UploadedFiles\UploadedFile;
 use DI\ConfigException;
 use DI\InjectionException;
-use VarMap\VarMap;
-use Bristolian\Session\UserSession;
 
 /**
  * Trait to make write tests easier.
@@ -53,7 +51,7 @@ trait TestPlaceholders
 
         $this->injector->alias(
             \Bristolian\Session\UserSession::class,
-            \Bristolian\Session\MockUserSession::class
+            \Bristolian\Session\FakeUserSession::class
         );
         $this->injector->share($session);
 

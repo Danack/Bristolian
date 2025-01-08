@@ -7,7 +7,6 @@ use BristolianTest\BaseTestCase;
 
 /**
  * @covers \Bristolian\Service\MemeStorageProcessor\UploadError
- * @group wip
  */
 class UploadErrorTest extends BaseTestCase
 {

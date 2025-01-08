@@ -20,6 +20,9 @@ function apiInjectionParams() : InjectionParams
         \Bristolian\Service\TooMuchMemoryNotifier\TooMuchMemoryNotifier::class =>
           \Bristolian\Service\TooMuchMemoryNotifier\NullTooMuchMemoryNotifier::class,
 
+        \Bristolian\Session\AppSessionManagerInterface::class =>
+            \Bristolian\Session\AppSessionManager::class,
+
         \Bristolian\CSPViolation\CSPViolationStorage::class =>
           \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
 

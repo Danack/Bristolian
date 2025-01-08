@@ -1,6 +1,7 @@
 <?php
 
 use Bristolian\InjectionParams;
+use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
 
 
 function injectionParams()
@@ -27,8 +28,8 @@ function injectionParams()
         \Bristolian\CSPViolation\CSPViolationStorage::class =>
           \Bristolian\CSPViolation\RedisCSPViolationStorage::class,
 
-//        \Bristolian\Config\ForceAssetRefresh::class =>
-//            \Bristolian\Config\Config::class,
+        \Bristolian\Session\AppSessionManagerInterface::class =>
+            \Bristolian\Session\AppSessionManager::class,
 
         \Bristolian\Config\AssetLinkEmitterConfig::class =>
             \Bristolian\Config\Config::class,
@@ -80,8 +81,8 @@ function injectionParams()
         \Bristolian\Repo\RoomFileRepo\RoomFileRepo::class =>
             \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class,
 
-        \Asm\RequestSessionStorage::class =>
-          \StandardRequestSessionStorage::class,
+//        \Asm\RequestSessionStorage::class =>
+//          \StandardRequestSessionStorage::class,
 
         Bristolian\Repo\UserRepo\UserRepo::class =>
           Bristolian\Repo\UserRepo\HardcodedUserRepo::class,
@@ -92,8 +93,8 @@ function injectionParams()
         \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::class =>
           \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::class,
 
-        \Bristolian\Service\MemeStorage\MemeStorage::class =>
-          \Bristolian\Service\MemeStorage\StandardMemeStorage::class,
+//        \Bristolian\Service\MemeStorage\MemeStorage::class =>
+//          \Bristolian\Service\MemeStorage\StandardMemeStorage::class,
 
         \Bristolian\Service\RoomFileStorage\RoomFileStorage::class =>
             \Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::class,
@@ -118,6 +119,9 @@ function injectionParams()
 
         \Bristolian\Repo\LinkRepo\LinkRepo::class =>
             \Bristolian\Repo\LinkRepo\PdoLinkRepo::class,
+
+        Bristolian\Repo\ProcessorRepo\ProcessorRepo::class =>
+            Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::class,
 
     ];
 
