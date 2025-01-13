@@ -29,7 +29,8 @@ select
     link_id,
     room_id,
     description,
-    title
+    title,
+    created_at
 from
   room_link 
 SQL;

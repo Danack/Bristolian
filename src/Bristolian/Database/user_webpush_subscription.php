@@ -9,14 +9,12 @@ class user_webpush_subscription
     const INSERT = <<< SQL
 insert into user_webpush_subscription (
     user_id,
-    user_webpush_subscription_id,
     endpoint,
     expiration_time,
     raw
 )
 values (
     :user_id,
-    :user_webpush_subscription_id,
     :endpoint,
     :expiration_time,
     :raw
@@ -29,7 +27,8 @@ select
     user_webpush_subscription_id,
     endpoint,
     expiration_time,
-    raw
+    raw,
+    created_at
 from
   user_webpush_subscription 
 SQL;

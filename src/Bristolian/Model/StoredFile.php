@@ -3,6 +3,7 @@
 namespace Bristolian\Model;
 
 use Bristolian\ToArray;
+use DateTimeInterface;
 
 class StoredFile
 {
@@ -15,7 +16,7 @@ class StoredFile
         public readonly string $state,
         public readonly int $size,
         public readonly string $user_id,
-        public readonly string $created_at
+        public readonly DateTimeInterface $created_at
     ) {
     }
 }

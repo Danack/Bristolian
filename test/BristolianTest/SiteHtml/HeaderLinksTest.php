@@ -18,6 +18,6 @@ class HeaderLinksTest extends BaseTestCase
         $header_link = new HeaderLink($path, $description);
         $header_links = new HeaderLinks([$header_link]);
         $header_links_returned = $header_links->getHeaderLinks();
-        $this->assertSame($header_links_returned, $header_links);
+        $this->assertSame($header_links_returned[0], $header_link);
     }
 }

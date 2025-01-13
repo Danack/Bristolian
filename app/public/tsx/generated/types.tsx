@@ -3,6 +3,8 @@
 
 // You'll need to bounce the docker boxes to regenerate.
 
+import { DateTime } from "luxon";
+
 // Bristolian\Model\RoomLink
 export interface RoomLink {
     id: string;
@@ -12,7 +14,7 @@ export interface RoomLink {
     description: string|null;
     room_id: string;
     user_id: string;
-    created_at: string;
+    created_at: DateTime;
 }
 
 // Bristolian\Model\RoomSourceLink

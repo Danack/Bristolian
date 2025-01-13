@@ -26,7 +26,8 @@ select
     id,
     owner_user_id,
     name,
-    purpose
+    purpose,
+    created_at
 from
   room 
 SQL;

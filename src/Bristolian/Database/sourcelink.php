@@ -29,7 +29,8 @@ select
     file_id,
     user_id,
     highlights_json,
-    text
+    text,
+    created_at
 from
   sourcelink 
 SQL;

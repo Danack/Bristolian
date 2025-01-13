@@ -23,7 +23,8 @@ SQL;
 select
     user_id,
     email_address,
-    password_hash
+    password_hash,
+    created_at
 from
   user_auth_email_password 
 SQL;

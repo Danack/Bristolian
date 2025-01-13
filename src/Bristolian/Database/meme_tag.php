@@ -29,7 +29,8 @@ select
     meme_id,
     user_id,
     text,
-    type
+    type,
+    created_at
 from
   meme_tag 
 SQL;

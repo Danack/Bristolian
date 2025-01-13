@@ -26,7 +26,8 @@ select
     id,
     room_id,
     sourcelink_id,
-    title
+    title,
+    created_at
 from
   room_sourcelink 
 SQL;

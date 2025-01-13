@@ -14,7 +14,8 @@ class PdoSimpleTestObjectConstructor
     public function __construct(
         public readonly int $id,
         public readonly string $test_string,
-        public readonly int $test_int
+        public readonly int $test_int,
+        public readonly \DateTimeInterface $created_at,
     ) {
     }
 }

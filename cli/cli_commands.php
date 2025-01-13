@@ -28,6 +28,15 @@ function addEmailCommands(Application $console)
     $command = new Command('email:test', 'Bristolian\CliController\Email::testEmail');
     $command->setDescription("Send a test email.");
     $console->add($command);
+
+    $command = new Command('process:email_send', 'Bristolian\CliController\Email::processEmailSendQueue');
+    $command->setDescription("Process the email send queue.");
+    $console->add($command);
+
+
+    $command = new Command('queue:email_clear', 'Bristolian\CliController\Email::clearEmailQueue');
+    $command->setDescription("Clear any pending emails.");
+    $console->add($command);
 }
 
 /**
@@ -173,11 +182,22 @@ function addGenerateCommands(Application $console)
 function addMoonCommands(Application $console)
 {
     $command = new Command(
-        'moon:show_info',
-        'Bristolian\CliController\Moon::showInfo'
+        'moon:info',
+        'Bristolian\CliController\MoonInfo::info'
     );
     $command->setDescription("Show info about the moon.");
     $console->add($command);
+
+
+    $command = new Command(
+        'process:moon_alert',
+        'Bristolian\CliController\MoonInfo::run'
+    );
+    $command->setDescription("Run the task to send alerts about the moon.");
+    $console->add($command);
+
+
+
 }
 
 

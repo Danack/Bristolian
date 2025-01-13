@@ -7,7 +7,6 @@ use BristolianTest\BaseTestCase;
 
 /**
  * @covers \Bristolian\Session\FakeUserSession
- * @group wip
  */
 class FakeUserSessionTest extends BaseTestCase
 {

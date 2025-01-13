@@ -29,7 +29,7 @@ class FakeFileStorageInfoRepo implements FileStorageInfoRepo
             $state = FileState::INITIAL->value,
             $size = $uploadedFile->getSize(),
             $user_id,
-            $created_at = $datetime->format("Y-m-d H:i:s")
+            $created_at = $datetime
         );
 
         return $id;

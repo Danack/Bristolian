@@ -26,6 +26,21 @@ function injectionParams() : InjectionParams
 
         \Bristolian\Repo\RoomRepo\RoomRepo::class =>
           \Bristolian\Repo\RoomRepo\PdoRoomRepo::class,
+
+        \Bristolian\MoonAlert\MoonAlertRepo::class =>
+            \Bristolian\MoonAlert\StandardMoonAlertRepo::class,
+
+        Bristolian\Service\MoonAlertNotifier\MoonAlertNotifier::class =>
+            \Bristolian\Service\MoonAlertNotifier\StandardMoonAlertNotifier::class,
+
+        \Bristolian\Repo\EmailQueue\EmailQueue::class =>
+            \Bristolian\Repo\EmailQueue\PdoEmailQueue::class,
+
+        \Bristolian\Service\EmailSender\EmailClient::class =>
+            \Bristolian\Service\EmailSender\MailgunEmailClient::class,
+
+        Bristolian\Repo\RunTimeRecorderRepo\MoonAlertRunTimeRecorder::class =>
+            \Bristolian\Repo\RunTimeRecorderRepo\PdoMoonAlertRunTimeRecorder::class,
     ];
 
     // Delegate the creation of types to callables.

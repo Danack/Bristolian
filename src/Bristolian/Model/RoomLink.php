@@ -16,8 +16,7 @@ class RoomLink
         public readonly string|null $description,
         public readonly string $room_id,
         public readonly string $user_id,
-        // TODO - this should be DateTimeInterface ?
-        public readonly string $created_at
+        public readonly \DateTimeInterface $created_at
     ) {
     }
 }

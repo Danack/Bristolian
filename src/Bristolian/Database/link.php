@@ -23,7 +23,8 @@ SQL;
 select
     id,
     user_id,
-    url
+    url,
+    created_at
 from
   link 
 SQL;

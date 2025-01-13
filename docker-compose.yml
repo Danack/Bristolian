@@ -98,6 +98,8 @@ services:
     build: containers/supervisord
     depends_on:
       - redis
+    networks:
+      default_network:
     volumes:
       - .:/var/app
   varnish:

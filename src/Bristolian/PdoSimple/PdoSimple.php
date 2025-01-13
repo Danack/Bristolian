@@ -4,8 +4,57 @@ declare(strict_types = 1);
 
 namespace Bristolian\PdoSimple;
 
+use Bristolian\App;
 use PDO;
 use PDOException;
+
+function convertRowToDatetime($row)
+{
+    $time_columns = [
+        'created_at',
+        'updated_at',
+        'start_time',
+        'end_time',
+    ];
+
+    $data = [];
+    foreach ($row as $key => $value) {
+        if (in_array($key, $time_columns)) {
+            $data[$key] = new \DateTimeImmutable($value);
+        }
+        else {
+            $data[$key] = $value;
+        }
+    }
+    return $data;
+}
+
+function convertRowFromDatetime($row)
+{
+    $time_columns = [
+        'created_at',
+        'updated_at',
+        'start_time',
+        'end_time',
+        ':created_at',
+        ':updated_at',
+        ':start_time',
+        ':end_time',
+    ];
+
+    $data = [];
+    foreach ($row as $key => $value) {
+        if ($value instanceof \DateTimeInterface) {
+            $data[$key] = $value->format(App::MYSQL_DATE_TIME_FORMAT);
+        }
+        else {
+            $data[$key] = $value;
+        }
+    }
+    return $data;
+}
+
+
 
 class PdoSimple
 {
@@ -64,6 +113,8 @@ class PdoSimple
         }
 
         try {
+            // Convert datetime to string here?
+            $params = convertRowFromDatetime($params);
             $result = $statement->execute($params);
         }
         catch (PDOException $pdoe) {
@@ -177,7 +228,8 @@ class PdoSimple
         }
 
         $reflection = new \ReflectionClass($classname);
-        $instance = $reflection->newInstanceArgs($row);
+        $converted_row = convertRowToDatetime($row);
+        $instance = $reflection->newInstanceArgs($converted_row);
 
         return $instance;
     }
@@ -202,9 +254,12 @@ class PdoSimple
 
         $objects = [];
 
+
+        // if is a time column, convert it to a date time.
         foreach ($rows as $row) {
+            $converted_row = convertRowToDatetime($row);
             $reflection = new \ReflectionClass($classname);
-            $objects[] = $reflection->newInstanceArgs($row);
+            $objects[] = $reflection->newInstanceArgs($converted_row);
         }
 
         return $objects;

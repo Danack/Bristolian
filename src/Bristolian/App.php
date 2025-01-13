@@ -11,6 +11,8 @@ class App
 {
     const DATE_TIME_FORMAT = 'Y_m_d_H_i_s';
 
+    const MYSQL_DATE_TIME_FORMAT = "Y-m-d H:i:s";
+
     const INVOICE_DATE_FORMAT = 'F jS, Y';
 
     const DATE_TIME_EXACT_FORMAT = "Y-m-d\TH:i:s.uP";

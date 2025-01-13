@@ -32,6 +32,8 @@
     "url": "git://github.com/Danack/Bristolian.git"
   },
   "dependencies": {
+    "@types/luxon": "^3.4.2",
+    "luxon": "^3.5.0",
     "preact": "^10.11.3"
   },
   "devDependencies": {

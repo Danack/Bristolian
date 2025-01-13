@@ -3,7 +3,8 @@
 namespace Bristolian\CliController;
 
 use AurorasLive\SunCalc;
-use Bristolian\MoonAlert\MoonAlertRepo;
+//use Bristolian\MoonAlert\MoonAlertRepo;
+use Bristolian\Service\MoonAlertNotifier\MoonAlertNotifier;
 
 function getMoonInfo(): string
 {
@@ -84,18 +85,46 @@ function isTimeToProcessMoonInfo(): bool
 
 class MoonInfo
 {
-    public function processMoonAlert(
-        MoonAlertRepo $moonAlertRepo,
-        MoonAlertNotifier $moonAlertNotifier,
+    public function __construct(
+//        private MoonAlertRepo $moonAlertRepo,
+        private MoonAlertNotifier $moonAlertNotifier,
     ) {
+    }
+
+
+    public function info() {
+        echo "Run internal.\n";
+
         if (isTimeToProcessMoonInfo() !== true) {
+            echo "Not time to process moon info.\n";
             return;
         }
 
         $moon_info = getMoonInfo();
 
-        $users = $moonAlertRepo->getUsersForMoonAlert();
+        echo $moon_info;
+        echo "\n";
 
-        $moonAlertNotifier->notifyUsers($users, $moon_info);
+        $this->moonAlertNotifier->notifyRegisteredUsers($moon_info);
     }
+
+    /**
+     * This is a placeholder background task
+     */
+    public function run()
+    {
+        $callable = function () {
+            $this->info();
+        };
+
+        continuallyExecuteCallable(
+            $callable,
+            $secondsBetweenRuns = 5,
+            $sleepTime = 1,
+            $maxRunTime = 600
+        );
+    }
+
+
+
 }

@@ -8,7 +8,6 @@ use Bristolian\Session\AppSession;
 
 /**
  * @covers \Bristolian\Session\StandardOptionalUserSession
- * @group wip
  */
 class StandardOptionalUserSessionTest extends BaseTestCase
 {

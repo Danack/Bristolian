@@ -1,5 +1,6 @@
 import {h, Component} from "preact";
-import {humanFileSize} from "./functions";
+import {humanFileSize, formatDateTime} from "./functions";
+import {DateTime} from "luxon";
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
@@ -15,8 +16,10 @@ interface RoomFile {
     original_filename: string, //"sample.pdf",
     state: string, // "uploaded",
     size: number, // "18810",
-    // created_at: "2024-12-06 14:43:46"
+    created_at: DateTime
 }
+
+
 
 interface RoomFilesPanelState {
     files: RoomFile[],
@@ -79,7 +82,8 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                 id: entry.id,
                 normalized_name: entry.normalized_name,
                 original_filename: entry.original_filename,
-                size: entry.size
+                size: entry.size,
+                created_at: DateTime.fromISO(entry.created_at)
             };
 
             files.push(file);
@@ -110,6 +114,10 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                 {humanFileSize(file.size)}
             </td>
             <td>
+                {formatDateTime(file.created_at)}
+            </td>
+
+            <td>
                 <a href={annotate_url}>
                   Annotate
                 </a>
@@ -128,7 +136,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                 <tr>
                     <td>Name</td>
                     <td>Size</td>
-                    <td></td>
+                    <td>Date</td>
                 </tr>
                 {Object.values(this.state.files).
                 map((roomFile: RoomFile) => this.renderRoomFile(roomFile))}

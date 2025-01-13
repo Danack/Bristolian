@@ -32,7 +32,8 @@ select
     description,
     document_timestamp,
     note,
-    src_url
+    src_url,
+    created_at
 from
   room_file 
 SQL;

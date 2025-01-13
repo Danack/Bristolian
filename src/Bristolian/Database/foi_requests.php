@@ -26,7 +26,8 @@ select
     foi_request_id,
     description,
     text,
-    url
+    url,
+    created_at
 from
   foi_requests 
 SQL;

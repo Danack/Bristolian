@@ -32,7 +32,8 @@ select
     normalized_name,
     original_filename,
     size,
-    state
+    state,
+    created_at
 from
   stored_meme 
 SQL;

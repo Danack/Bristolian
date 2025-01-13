@@ -17,7 +17,8 @@ SQL;
 
     const SELECT = <<< SQL
 select
-    id
+    id,
+    created_at
 from
   user 
 SQL;

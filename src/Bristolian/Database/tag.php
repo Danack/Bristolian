@@ -23,7 +23,8 @@ SQL;
 select
     tag_id,
     description,
-    text
+    text,
+    created_at
 from
   tag 
 SQL;

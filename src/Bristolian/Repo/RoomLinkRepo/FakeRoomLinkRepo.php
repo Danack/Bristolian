@@ -68,7 +68,7 @@ class FakeRoomLinkRepo implements RoomLinkRepo
             $description = $linkParam->description,
             $room_id,
             $user_id,
-            $created_at = $time->format(App::DATE_TIME_EXACT_FORMAT)
+            $created_at = $time
         );
 
         $this->roomLinks[] = $roomLink;

@@ -1,4 +1,6 @@
 
+import { DateTime } from "luxon";
+
 /**
  * Format bytes as human-readable text.
  *
@@ -32,6 +34,31 @@ export function humanFileSize(bytes:number, si=false, dp=1) {
 
   return bytes.toFixed(dp) + ' ' + units[u];
 }
+
+
+
+// Function to format the DateTime object
+export function formatDateTime(dateTime: DateTime) {
+  // Get the current time
+  const now = DateTime.now();
+
+  // Calculate the difference in minutes between the current time and the provided datetime
+  const diffInMinutes = now.diff(dateTime, "minutes").minutes;
+
+  if (diffInMinutes < 60) {
+    // If within the last hour, show "x minutes ago"
+    return `${Math.floor(diffInMinutes)} minutes ago`;
+  } else if (dateTime.hasSame(now, "day")) {
+    // If over an hour old but still the same day, show the time
+    return dateTime.toLocaleString(DateTime.TIME_SIMPLE);
+  } else {
+    // Otherwise, show the full date and time
+    // return dateTime.toLocaleString(DateTime.DATETIME_MED);
+    return dateTime.toFormat('h:mma MMM d, yyyy');
+
+  }
+}
+
 
 export function countWords(str:string) {
   if (typeof str !== 'string') {

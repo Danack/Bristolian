@@ -211,7 +211,9 @@ class Database
                 echo "DB appears to be available.\n";
                 return;
             } catch (\Exception $e) {
-                echo "DB not available yet.\n";
+                echo "DB not available yet. \n";
+                echo $e->getMessage();
+                echo "\n";
             }
 
             sleep(1);
