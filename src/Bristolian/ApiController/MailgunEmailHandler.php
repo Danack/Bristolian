@@ -5,6 +5,7 @@ namespace Bristolian\ApiController;
 use SlimDispatcher\Response\JsonResponse;
 use Bristolian\Service\Mailgun\PayloadValidator;
 use VarMap\VarMap;
+use Bristolian\App;
 
 class MailgunEmailHandler
 {
@@ -19,6 +20,14 @@ class MailgunEmailHandler
         if ($payloadValidator->validate($varMap) === false) {
             return new JsonResponse(['error' => 'invalid payload'], [], 406);
         }
+
+        $filename = "incoming_email_" . date(App::DATE_TIME_FORMAT) . ".json";
+
+        \Safe\file_put_contents(
+            __DIR__ . "/../../../data/$filename",
+            json_encode($varMap->toArray(), JSON_PRETTY_PRINT)
+        );
+
 
         return new JsonResponse(['success' => 'Signature passed'], [], 406);
     }
