@@ -30,6 +30,10 @@ function getAllApiRoutes()
 
         ['/api/ping_user', 'GET', 'Bristolian\AppController\Admin::ping_user'],
 
+        ['/api/services/email/mailgun', 'POST', 'Bristolian\ApiController\MailgunEmailHandler::handleIncomingEmail'],
+
+
+
         ['/api/login-status', 'GET', 'Bristolian\AppController\User::get_login_status'],
 
         ['/api/meme-upload/', 'POST', 'Bristolian\AppController\MemeUpload::handleMemeUpload'],

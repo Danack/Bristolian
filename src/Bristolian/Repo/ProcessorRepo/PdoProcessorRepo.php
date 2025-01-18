@@ -7,6 +7,7 @@ use Bristolian\Database\processor;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Model\ProcessorState;
 
+
 class PdoProcessorRepo implements ProcessorRepo
 {
     public function __construct(private PdoSimple $pdoSimple)
@@ -53,5 +54,17 @@ values (
         ];
 
         $this->pdoSimple->execute($sql, $params);
+    }
+
+    public function getProcessorEnabled(ProcessType $processor): bool
+    {
+        $sql = "select enabled from processor where type = :type";
+        $result = $this->pdoSimple->fetchOneAsDataOrNull($sql, [':type' => $processor->value]);
+
+        if ($result === null) {
+            return false;
+        }
+
+        return (bool)$result['enabled'];
     }
 }

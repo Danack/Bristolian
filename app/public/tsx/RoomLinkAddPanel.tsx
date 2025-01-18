@@ -70,20 +70,13 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
     catch((data:any) => this.processError(data));
   }
 
-  // processResponse(response:Response) {
-  //   if (response.status !== 200) {
-  //     this.setState({error: "Server failed to return an OK response."})
-  //     return;
-  //   }
-  //   let json = response.json();
-  //   this.processData(json);
-  // }
-
   processData(data:any) {
     // success
     if (data.status === 'success') {
-       this.setState({result: "Link added"})
-      // TODO - reset fields
+
+      let new_state = getDefaultState();
+      new_state.result = "Link added";
+      this.setState(new_state)
     }
 
     // failure
@@ -106,7 +99,6 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
   processError (data:any) {
     console.log("something went wrong.");
     console.log(data)
-
   }
 
 
@@ -126,8 +118,6 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
       result = <span>result is {this.state.result}</span>
     }
 
-    // error_title: null,
-    // error_description: null,
     let error_url = <span></span>
     let error_title = <span></span>
     let error_description = <span></span>

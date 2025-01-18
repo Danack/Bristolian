@@ -5,6 +5,8 @@ namespace Bristolian\CliController;
 use AurorasLive\SunCalc;
 //use Bristolian\MoonAlert\MoonAlertRepo;
 use Bristolian\Service\MoonAlertNotifier\MoonAlertNotifier;
+use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
+use Bristolian\Repo\ProcessorRepo\ProcessType;
 
 function getMoonInfo(): string
 {
@@ -88,6 +90,7 @@ class MoonInfo
     public function __construct(
 //        private MoonAlertRepo $moonAlertRepo,
         private MoonAlertNotifier $moonAlertNotifier,
+        ProcessorRepo $processorRepo
     ) {
     }
 
@@ -99,6 +102,10 @@ class MoonInfo
             echo "Not time to process moon info.\n";
             return;
         }
+
+        if ($this->processorRepo->getProcessorEnabled(ProcessType::moon_alert) !== true) {
+
+        };
 
         $moon_info = getMoonInfo();
 
@@ -119,12 +126,9 @@ class MoonInfo
 
         continuallyExecuteCallable(
             $callable,
-            $secondsBetweenRuns = 5,
+            $secondsBetweenRuns = 30,
             $sleepTime = 1,
-            $maxRunTime = 600
+            $maxRunTime = 3600
         );
     }
-
-
-
 }

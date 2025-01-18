@@ -20,7 +20,8 @@ class PermissionsCheckHtmlMiddleware implements MiddlewareInterface
      */
     private $allowed_paths = [
         '/login',
-        '/api/login-status'
+        '/api/login-status',
+        '/api/services/email/mailgun' // mailgun has token based access
     ];
 
     public function __construct(

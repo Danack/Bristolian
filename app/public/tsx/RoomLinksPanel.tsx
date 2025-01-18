@@ -152,11 +152,15 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         return <div>
             <h2>Links</h2>
             <table>
+                <thead>
                 <tr>
                     <td>Links</td>
                 </tr>
+                </thead>
+                <tbody>
                 {Object.values(this.state.roomLinks).
                 map((roomLink: RoomLink) => this.renderRoomLink(roomLink))}
+                </tbody>
             </table>
         </div>
     }
@@ -169,16 +173,15 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
             error_block = <div class="error">Last error: {this.state.error}</div>
         }
 
-
         let length = this.state.roomLinks.length;
-        let number_block = <div>There are {length} links</div>;
+        // let number_block = <div>There are {length} links</div>;
         let links_block = this.renderLinks();
 
         return  <div class='room_links_panel_react'>
             <div>
                 {error_block}
                 {links_block}
-                {number_block}
+
                 <button onClick={() => this.refreshLinks()}>Refresh</button>
 
                 <RoomLinkAddPanel room_id={this.props.room_id}/>

@@ -42,16 +42,20 @@ table {
     padding-bottom:4px;
     padding-right:4px;
   }
-}
 
-table.large_table {
-  tr:hover td
+  //tbody > tr {
+  //  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  //}
+
+  tbody > tr:hover td
   {
     border-top: 1px solid var(--table_row_border_hover_color);
     border-bottom: 1px solid var(--table_row_border_hover_color);
   }
 
-  tr:hover td:first-child
+
+
+  tbody > tr:hover td:first-child
   {
     border-left: 1px solid var(--table_row_border_hover_color);
   }
@@ -65,3 +69,5 @@ table.large_table {
     background: rgba(230, 230, 230, 0.5)
   }
 }
+
+

@@ -31,44 +31,38 @@ class OpenApiGenerator
     {
         $data = [
         '/users/{id}' => [
-        'get' => [
-        'tags' => [
-        'Users',
-        ],
-        'summary' => 'Gets a user by ID.',
-        'description' => "A detailed description of the operation.
-        Use markdown for rich text representation,
-                         such as **bold**, *italic*, and [links](https://swagger.io).",
-        'operationId' => 'getUserById',
-        'parameters' => [
-        'name' => 'id',
-        'in' => 'path',
-        'description' => 'User ID',
-        'required' => true,
-        'schema' => [
-          'type' => 'integer',
-          'format' => 'int64'
-         ],
-         'responses' => [
-           '200' => [
-           'description' => 'Successful operation',
-           'content' => [
-             'application/json' => [
-               'schema' => [
-                 '$ref' => '#/components/schemas/User',
-                ]
-              ],
-            ],
-           ],
-        ],
-        'externalDocs' => [
-          'description' => "Learn more about user operations provided by this API.",
-          'url' => 'http://api.example.com/docs/user-operations/',
+            'get' => [
+                'tags' => [
+                    'Users',
+                ],
+                'summary' => 'Gets a user by ID.',
+                'description' => "A detailed description of the operation. Use markdown for rich text representation, such as **bold**, *italic*, and [links](https://swagger.io).",
+                'operationId' => 'getUserById',
+                'parameters' => [
+                    'name' => 'id',
+                    'in' => 'path',
+                    'description' => 'User ID',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'integer',
+                        'format' => 'int64'
+                    ],
+                ],
+                'responses' => [
+                    '200' => [
+                        'description' => 'Successful operation',
+                        'content' => [
+                            'application/json' => [
+                                'schema' => [
+                                '$ref' => '#/components/schemas/User',
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+            ]
         ]
-        ]
-        ]
-        ]
-        ];
+    ];
 
         return $data;
     }
@@ -79,92 +73,68 @@ class OpenApiGenerator
     {
         $apiData = [
 //  # Reusable schemas (data models)
-        "schemas"=> [
-        "GeneralError"=> [
-        "type" => "object",
-        "properties"=> [
-        "code"=> [
-          "type" => "integer",
-          "format" => "int32"
+    "schemas"=> [
+        "GeneralError" => [
+            "type" => "object",
+            "properties"=> [
+                "code"=> [
+                    "type" => "integer",
+                    "format" => "int32"
+                ],
+                "message" => [
+                    "type" => "string"
+                ]
+            ]
         ],
-        "message" => [
-          "type" => "string"
-        ]
-        ]
-        ],
-//  # Reusable path, query, header and cookie parameters
-//  parameters:
-//    ...
-//  # Security scheme definitions (see Authentication)
-//  securitySchemes:
-//    ...
-//  # Reusable request bodies
-//  requestBodies:
-//    ...
-//  # Reusable responses, such as 401 Unauthorized or 400 Bad Request
-//  responses:
-//    ...
-//  # Reusable response headers
-//  headers:
-//    ...
-//  # Reusable examples
-//  examples:
-//    ...
-//  # Reusable links
-//  links:
-//    ...
-//  # Reusable callbacks
-//  callbacks:
-//    ...
-        ],
-        "parameters" => [
+    ],
+    "parameters" => [
         "skipParam" => [
-        "name" => "skip",
-        "in" => "query",
-        "description" => "number of items to skip",
-        "required" => true,
-        "schema" => [
-        "type" => "integer",
-        "format" => "int32"
-        ]
+            "name" => "skip",
+            "in" => "query",
+            "description" => "number of items to skip",
+            "required" => true,
+            "schema" => [
+                "type" => "integer",
+                "format" => "int32"
+            ]
         ],
         "limitParam"=> [
-        "name" => "limit",
-        "in" => "query",
-        "description" => "max records to return",
-        "required" => true,
-        "schema" => [
-        "type" => "integer",
-        "format"=> "int32"
+            "name" => "limit",
+            "in" => "query",
+            "description" => "max records to return",
+            "required" => true,
+            "schema" => [
+                "type" => "integer",
+                "format"=> "int32"
+            ]
         ]
-        ]
-        ],
-        "responses" => [
+    ],
+    "responses" => [
         "NotFound"=> [
-        "description" => "Entity not found."
+            "description" => "Entity not found."
         ],
         "IllegalInput"=> [
-        "description" => "Illegal input for operation."
+            "description" => "Illegal input for operation."
         ],
         "GeneralError" => [
-        "description" => "General Error",
-        "content" => [
-        "application/json"=> [
-        "schema"=> [
-          '$ref' => "#/components/schemas/GeneralError"
+            "description" => "General Error",
+            "content" => [
+                "application/json"=> [
+                    "schema"=> [
+                        '$ref' => "#/components/schemas/GeneralError"
+                    ]
+                ]
+            ]
         ]
-        ]
-        ]
-        ]
-        ],
-        "securitySchemes"=> [
+    ],
+    "securitySchemes"=> [
         "api_key" => [
-        "type" => "apiKey",
-        "name" => "api_key",
-        "in"=> "header"
-        ],
+            "type" => "apiKey",
+            "name" => "api_key",
+            "in"=> "header"
+            ],
         ]
-        ];
+    ];
 
         return $apiData;
     }
