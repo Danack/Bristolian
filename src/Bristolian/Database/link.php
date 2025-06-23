@@ -2,6 +2,8 @@
 
 // Auto-generated file do not edit
 
+// generated with 'php cli.php generate:php_table_helper_classes'
+
 namespace Bristolian\Database;
 
 class link
@@ -27,5 +29,15 @@ select
     created_at
 from
   link 
+SQL;
+
+    const UPDATE = <<< SQL
+update
+  link
+set
+  url = :url
+where
+  id = :id
+  limit 1
 SQL;
 }

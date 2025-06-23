@@ -2,6 +2,9 @@
 
 namespace Bristolian\DataType;
 
+use Bristolian\DataType\PropertyType\LinkDescription;
+use Bristolian\DataType\PropertyType\LinkTitle;
+use Bristolian\DataType\PropertyType\Url;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;

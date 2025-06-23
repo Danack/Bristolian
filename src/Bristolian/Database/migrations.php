@@ -2,6 +2,8 @@
 
 // Auto-generated file do not edit
 
+// generated with 'php cli.php generate:php_table_helper_classes'
+
 namespace Bristolian\Database;
 
 class migrations
@@ -26,4 +28,16 @@ select
 from
   migrations 
 SQL;
+
+    const UPDATE = <<< SQL
+update
+  migrations
+set
+  checksum = :checksum,
+  description = :description
+where
+  id = :id
+  limit 1
+SQL;
+
 }

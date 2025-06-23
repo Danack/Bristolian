@@ -8,6 +8,7 @@ use Bristolian\Data\ContentPolicyViolationReport;
 use Bristolian\DataType\CreateUserParams;
 use Bristolian\JsonInput\JsonInput;
 use Bristolian\Model\AdminUser;
+use Bristolian\Model\IncomingEmailParam;
 use Bristolian\Model\Room;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use Bristolian\Repo\FileStorageInfoRepo\PdoFileStorageInfoRepo;
@@ -199,7 +200,15 @@ trait TestPlaceholders
         return 'test_room_description' . time() . '_' . $count;
     }
 
+    public function getTestIncomingEmeail(): IncomingEmailParam
+    {
+        static $count = 0;
 
+        $json = file_get_contents(__DIR__ . '/../../data/mailgun/incoming_email_2025_01_18_06_57_45.json');
+        $data = json_decode($json, true);
+        $data['raw_email'] = $json;
+        return IncomingEmailParam::createFromData($data);
+    }
 
 
     public function getTestString(): string

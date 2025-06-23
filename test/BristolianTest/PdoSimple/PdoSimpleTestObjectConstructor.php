@@ -2,8 +2,8 @@
 
 namespace BristolianTest\PdoSimple;
 
-use Bristolian\DataType\BasicString;
-use Bristolian\DataType\SourceLinkPositionValue;
+use Bristolian\DataType\PropertyType\BasicString;
+use Bristolian\DataType\PropertyType\SourceLinkPositionValue;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromRequest;
 use DataType\DataType;

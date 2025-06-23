@@ -51,7 +51,5 @@ class StandardMoonAlertNotifier implements MoonAlertNotifier
 
         echo "setting run finished.\n";
         $this->runtimeRecorder->setRunFinished($run_id);
-
     }
-
 }

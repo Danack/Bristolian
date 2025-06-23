@@ -39,7 +39,7 @@ class UserSessionFileUploaderHandler
         if (file_exists($uploadedFile->getTmpName()) !== true) {
             $response = [
                 'result' => 'error',
-                'detail' => 'Temp file unreadable.'
+                'detail' => $uploadedFile->getErrorMessage()
             ];
 
             return new JsonNoCacheResponse($response, [], 500);

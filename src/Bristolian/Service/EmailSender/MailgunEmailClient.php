@@ -7,7 +7,9 @@ use Bristolian\Model\Email;
 
 class MailgunEmailClient implements EmailClient
 {
-    public function __construct(private Mailgun $mailgun) {}
+    public function __construct(private Mailgun $mailgun)
+    {
+    }
 
     public function send(Email $email): bool
     {
@@ -30,5 +32,4 @@ class MailgunEmailClient implements EmailClient
         }
         return false;
     }
-
 }

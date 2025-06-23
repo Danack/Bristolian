@@ -2,6 +2,7 @@
 
 namespace Bristolian\DataType;
 
+use Bristolian\DataType\PropertyType\Url;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;

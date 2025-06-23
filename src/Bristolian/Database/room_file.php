@@ -2,6 +2,8 @@
 
 // Auto-generated file do not edit
 
+// generated with 'php cli.php generate:php_table_helper_classes'
+
 namespace Bristolian\Database;
 
 class room_file
@@ -36,5 +38,18 @@ select
     created_at
 from
   room_file 
+SQL;
+
+    const UPDATE = <<< SQL
+update
+  room_file
+set
+  description = :description,
+  document_timestamp = :document_timestamp,
+  note = :note,
+  src_url = :src_url
+where
+  id = :id
+  limit 1
 SQL;
 }

@@ -2,6 +2,8 @@
 
 namespace Bristolian\DataType;
 
+use Bristolian\DataType\PropertyType\SourceLinkText;
+use Bristolian\DataType\PropertyType\SourceLinkTitle;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;

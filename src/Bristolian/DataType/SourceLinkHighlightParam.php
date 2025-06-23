@@ -2,6 +2,8 @@
 
 namespace Bristolian\DataType;
 
+use Bristolian\DataType\PropertyType\SourceLinkPage;
+use Bristolian\DataType\PropertyType\SourceLinkPositionValue;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;

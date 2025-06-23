@@ -2,6 +2,8 @@
 
 // Auto-generated file do not edit
 
+// generated with 'php cli.php generate:php_table_helper_classes'
+
 namespace Bristolian\Database;
 
 class email_send_queue
@@ -35,5 +37,19 @@ select
     created_at
 from
   email_send_queue 
+SQL;
+
+    const UPDATE = <<< SQL
+update
+  email_send_queue
+set
+  body = :body,
+  recipient = :recipient,
+  retries = :retries,
+  status = :status,
+  subject = :subject
+where
+  id = :id
+  limit 1
 SQL;
 }

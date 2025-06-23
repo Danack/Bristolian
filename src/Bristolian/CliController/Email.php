@@ -26,7 +26,8 @@ class Email
     public function __construct(
         private EmailClient $emailClient,
         private EmailQueue $emailQueue
-    ) {}
+    ) {
+    }
 
     public function testEmail(Mailgun $mailgun): void
     {
@@ -74,7 +75,8 @@ class Email
     }
 
 
-    public function runInternal() {
+    public function runInternal()
+    {
         // get an email to process
         $email = $this->emailQueue->getEmailToSendAndUpdateState();
 

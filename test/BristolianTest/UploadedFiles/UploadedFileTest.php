@@ -27,6 +27,6 @@ class UploadedFileTest extends BaseTestCase
         $this->assertSame(__FILE__, $file->getTmpName());
         $this->assertSame($original_name, $file->getOriginalName());
         $this->assertSame(\Safe\filesize(__FILE__), $file->getSize());
-        $this->assertSame(0, $file->getError());
+        $this->assertSame(0, $file->getErrorCode());
     }
 }

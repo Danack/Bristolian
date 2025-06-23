@@ -7,7 +7,6 @@ use Bristolian\Database\processor;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Model\ProcessorState;
 
-
 class PdoProcessorRepo implements ProcessorRepo
 {
     public function __construct(private PdoSimple $pdoSimple)

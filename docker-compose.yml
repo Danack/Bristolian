@@ -8,6 +8,7 @@ services:
      - php_fpm
     networks:
       default_network:
+    restart: always
   chrome_headless:
     image: alpeware/chrome-headless-trunk
     ports:
@@ -34,6 +35,7 @@ services:
       MYSQL_ROOT_HOST: "%"
     networks:
       default_network:
+    restart: always
     volumes:
       - ./data/mysql:/var/lib/mysql
       - ./data/mysql_import:/docker-entrypoint-initdb.d
@@ -73,6 +75,7 @@ services:
       - COMPOSER_ALLOW_SUPERUSER=1
    networks:
       default_network:
+   restart: always
    volumes:
      - .:/var/app
   php_fpm_debug:
@@ -94,12 +97,14 @@ services:
     command: ["redis-server", "/var/app/containers/redis/config/redis.conf"]
     networks:
       default_network:
+    restart: always
   supervisord:
     build: containers/supervisord
     depends_on:
       - redis
     networks:
       default_network:
+    restart: always
     volumes:
       - .:/var/app
   varnish:
@@ -108,6 +113,7 @@ services:
       CACHE_SIZE: 128m
     networks:
       default_network:
+    restart: always
     volumes:
       - ./:/var/app
     depends_on:

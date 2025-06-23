@@ -3,6 +3,7 @@
 namespace Bristolian\AppController;
 
 use Bristolian\DataType\LinkParam;
+
 use Bristolian\DataType\SourceLinkHighlightParam;
 use Bristolian\DataType\SourceLinkParam;
 use Bristolian\Exception\BristolianException;
@@ -14,6 +15,7 @@ use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo;
 use Bristolian\Response\BristolianFileResponse;
 use Bristolian\Response\IframeHtmlResponse;
+use Bristolian\Response\StoredFileErrorResponse;
 use Bristolian\Service\FileStorageProcessor\UploadError;
 use Bristolian\Service\RequestNonce;
 use Bristolian\Service\RoomFileStorage\RoomFileStorage;
@@ -242,7 +244,7 @@ class Rooms
         RoomFileRepo $roomFileRepo,
         string $room_id,
         string $file_id
-    ): BristolianFileResponse {
+    ): StubResponse {
         // TODO - validate room, probably
 
         $fileDetails = $roomFileRepo->getFileDetails($room_id, $file_id);
@@ -252,10 +254,17 @@ class Rooms
 
         $normalized_name = $fileDetails->normalized_name;
         if ($localCacheFilesystem->fileExists($normalized_name) === true) {
+            // TODO - why is contents unused?
             $contents = $localCacheFilesystem->read($normalized_name);
         }
         else {
-            $contents = $roomFilesystem->read($normalized_name);
+            try {
+                $contents = $roomFilesystem->read($normalized_name);
+            }
+            catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
+                return new StoredFileErrorResponse($normalized_name);
+            }
+
             $localCacheFilesystem->write($normalized_name, $contents);
         }
 
@@ -384,16 +393,23 @@ HTML;
             'stored_file_url' => $stored_file_url
         ]);
 
-
-
         $html = <<< HTML
 <!DOCTYPE html>
 
 <html lang="en">
   <body>
-  <script src="/js/pdf/pdf.mjs" type="module"></script>
+<!--  <script src="/js/pdfjs/pdf-4.9.155/pdf.mjs" type="module"></script>-->
+<!--  <script src="/js/pdfjs/pdfjs-5.3.31-legacy/pdf.mjs" type="module"></script>-->
   <script src="/js/pdf_view.js" type="module"></script>
-  <link rel="stylesheet" href="/css/pdf_viewer.css">
+
+<!--  <link rel="stylesheet" href="/css/pdf-4.9.155.css">-->
+
+    <link rel="stylesheet" href="/css/pdf-5.3.31.css">
+
+  
+<!--  <link rel="stylesheet" href="/css/pdf-custom.css">-->
+  
+  
   <script nonce="{$requestNonce->getRandom()}">
     // (function () {
 
@@ -413,8 +429,6 @@ HTML;
       // Add event listener for postMessage
       window.addEventListener('message', queueMessage);
       console.log("Message queue setup");
-
-
   </script>
   
   

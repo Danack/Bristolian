@@ -2,6 +2,9 @@
 
 namespace Bristolian\DataType;
 
+use Bristolian\DataType\PropertyType\BasicString;
+use Bristolian\DataType\PropertyType\WebPushEndPoint;
+use Bristolian\DataType\PropertyType\WebPushExpirationTime;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromJson;
 use DataType\Create\CreateFromVarMap;

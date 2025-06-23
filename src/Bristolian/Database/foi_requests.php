@@ -2,6 +2,8 @@
 
 // Auto-generated file do not edit
 
+// generated with 'php cli.php generate:php_table_helper_classes'
+
 namespace Bristolian\Database;
 
 class foi_requests
@@ -30,5 +32,17 @@ select
     created_at
 from
   foi_requests 
+SQL;
+
+    const UPDATE = <<< SQL
+update
+  foi_requests
+set
+  description = :description,
+  text = :text,
+  url = :url
+where
+  id = :id
+  limit 1
 SQL;
 }

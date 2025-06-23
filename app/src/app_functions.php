@@ -24,17 +24,21 @@ function renderInjectionExceptionToHtml(
 
 function showTotalErrorPage(\Throwable $exception): void
 {
-    $exceptionText = null;
-
     $exceptionText = "Failed to get exception text.";
 
     try {
         $exceptionText = getExceptionText($exception);
+        $message = sprintf(
+            "Exception in code and Slim error handler failed also: %s %s.",
+            get_class($exception),
+            $exceptionText
+        );
 
-        \error_log("Exception in code and Slim error handler failed also: " . get_class($exception) . " " . $exceptionText);
+        \error_log($message);
     }
     catch (\Throwable $exception) {
         // Does nothing.
+        \error_log("showTotalErrorPage failed: " . $exception->getMessage());
     }
 
     http_response_code(503);

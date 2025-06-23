@@ -2,6 +2,7 @@
 
 namespace Bristolian\DataType;
 
+use Bristolian\DataType\PropertyType\BasicString;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;

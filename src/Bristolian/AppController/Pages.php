@@ -190,6 +190,15 @@ HTML;
         return $content;
     }
 
+    public function floating_point_page_8(): string
+    {
+        $content = "<h1>Floating point shenanigans</h1>";
+
+        $content .= "<div class='floating_point_8_bit_panel'></div>";
+
+        return $content;
+    }
+
 
 
     public function timeline_page(): string

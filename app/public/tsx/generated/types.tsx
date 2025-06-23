@@ -5,6 +5,23 @@
 
 import { DateTime } from "luxon";
 
+// Bristolian\Model\IncomingEmail
+export interface IncomingEmail {
+    id: number;
+    message_id: string;
+    body_plain: string;
+    provider_variables: string;
+    raw_email: string;
+    recipient: string;
+    retries: string;
+    sender: string;
+    status: string;
+    stripped_text: string;
+    subject: string;
+    created_at: DateTime;
+    updated_at: DateTime;
+}
+
 // Bristolian\Model\RoomLink
 export interface RoomLink {
     id: string;

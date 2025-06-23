@@ -98,7 +98,9 @@ function renderMarkdownRendererException(
 
 function genericExceptionHandler(\Throwable $e, \Psr\Http\Message\RequestInterface $request)
 {
-    $text = "Something went wrong as an exception was thrown.";
+    $text = "Exception was thrown.";
+
+    $exceptionStack = getExceptionStackAsArray($e);
 
     $text .= "<br/>";
     $text .= "<br/>";
@@ -111,6 +113,8 @@ function genericExceptionHandler(\Throwable $e, \Psr\Http\Message\RequestInterfa
     $text .= "Stacktrace: <br/>";
     $text .= "<br/>";
     $text .= getStacktraceForException($e);
+
+
 
     return [nl2br($text), 500];
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace BristolianTest\Repo\WebPushSubscriptionRepo;
 
-use Bristolian\DataType\BasicString;
+use Bristolian\DataType\PropertyType\BasicString;
 use Bristolian\DataType\CreateUserParams;
-use Bristolian\DataType\WebPushEndPoint;
+use Bristolian\DataType\PropertyType\WebPushEndPoint;
 use Bristolian\DataType\WebPushSubscriptionParam;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use BristolianTest\Repo\TestPlaceholders;

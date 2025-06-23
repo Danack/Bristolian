@@ -222,7 +222,7 @@ SQL;
 //fetchOneAsObjectOrNullConstructor => FETCH_ASSOC - uses constructor
 
     /**
-     * @group wip
+
      */
     public function test_fetchAllAsObjectConstructor()
     {

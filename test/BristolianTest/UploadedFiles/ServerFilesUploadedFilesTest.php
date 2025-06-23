@@ -34,7 +34,7 @@ class ServerFilesUploadedFilesTest extends BaseTestCase
         $this->assertSame(__FILE__, $uploaded_file->getTmpName());
         $this->assertSame($original_name, $uploaded_file->getOriginalName());
         $this->assertSame(\Safe\filesize(__FILE__), $uploaded_file->getSize());
-        $this->assertSame(0, $uploaded_file->getError());
+        $this->assertSame(0, $uploaded_file->getErrorCode());
 
         $this->assertNull($sfuf->get('non-existent-file'));
     }

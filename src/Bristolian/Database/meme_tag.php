@@ -2,6 +2,8 @@
 
 // Auto-generated file do not edit
 
+// generated with 'php cli.php generate:php_table_helper_classes'
+
 namespace Bristolian\Database;
 
 class meme_tag
@@ -33,5 +35,16 @@ select
     created_at
 from
   meme_tag 
+SQL;
+
+    const UPDATE = <<< SQL
+update
+  meme_tag
+set
+  text = :text,
+  type = :type
+where
+  id = :id
+  limit 1
 SQL;
 }

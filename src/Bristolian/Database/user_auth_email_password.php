@@ -2,6 +2,8 @@
 
 // Auto-generated file do not edit
 
+// generated with 'php cli.php generate:php_table_helper_classes'
+
 namespace Bristolian\Database;
 
 class user_auth_email_password
@@ -27,5 +29,16 @@ select
     created_at
 from
   user_auth_email_password 
+SQL;
+
+    const UPDATE = <<< SQL
+update
+  user_auth_email_password
+set
+  email_address = :email_address,
+  password_hash = :password_hash
+where
+  id = :id
+  limit 1
 SQL;
 }

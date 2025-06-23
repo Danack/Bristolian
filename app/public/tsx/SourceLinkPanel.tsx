@@ -1,9 +1,11 @@
 
 import {h, Component} from "preact";
-import {registerMessageListener, sendMessage} from "./message/message";
+import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";
 import {RoomSourceLink} from "./generated/types";
 import {countWords} from "./functions";
 import {SOURCELINK_TITLE_MINIMUM_LENGTH} from "./generated/constants";
+
+import {PdfSelectionType} from "./constants";
 
 export interface SelectionPosition {
   top: number;
@@ -30,12 +32,23 @@ export interface SelectionMessage {
   selection_data: SelectionData;
 }
 
+// This function transfers global messages to the bespoke widgety
+// message handler.
 export function receiveSelectionMessage(event: MessageEvent) {
-  if (event.data && event.data.type === "selectionData") {
+  if (event.data && event.data.type === PdfSelectionType.TEXT_SELECTED){ // "selectionData") {
     const message: SelectionMessage = event.data;
     // console.log("Received selection data:", message.selection_data);
     sendMessage("text_selected", message.selection_data);
+    return;
   }
+
+  if (event.data && event.data.type === PdfSelectionType.TEXT_DESELECTED){ // "selectionData") {
+    const message: SelectionMessage = event.data;
+
+    sendMessage("text_deselected", message.selection_data);
+    return;
+  }
+
 }
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
@@ -52,7 +65,7 @@ interface SourceLinkPanelState {
   text: string,
   sourcelinks: RoomSourceLink[],
   selected_sourcelink_id: string|null,
-  // checkbox_handler: (event: any, id: string) => void
+  create_status: string|null,
   error: string|null,
 }
 
@@ -63,13 +76,36 @@ function getDefaultState(props: SourceLinkPanelProps): SourceLinkPanelState {
     text: "",
     sourcelinks: [],
     selected_sourcelink_id: props.selected_sourcelink_id || null,
+    create_status: null,
     error: null,
   };
 }
 
+function sendDataToPDFJS(data: object) {
+  let iframe = document.getElementById('pdf_iframe');
+// @ts-ignore:content window does exist
+  if (iframe) {
+    // @ts-ignore:content window does exist
+    if (iframe.contentWindow) {
+      // @ts-ignore:content window does exist
+      iframe.contentWindow.postMessage(data, '*',);
+
+      console.log("highlights sent");
+    } else {
+      console.log("iframe.contentWindow is null");
+    }
+  } else {
+    console.log("no iframe");
+  }
+
+}
+
+
 export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkPanelState> {
 
   message_listener:null|number = null;
+
+  message_listener_deselect:null|number = null;
 
   // If the panel is loaded with a selected sourcelink_id, then we need
   // to remember to render it when we get the data back about sourcelinks.
@@ -87,14 +123,28 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
       (selection_data: SelectionData) => this.receiveTextSelected(selection_data)
     );
 
+    this.message_listener_deselect = registerMessageListener(
+      "text_deselected",
+      () => this.receiveTextDeselected()
+    );
+
     this.refreshRoomFileSourcelinks();
   }
 
   componentWillUnmount() {
+    unregisterListener(this.message_listener);
+    unregisterListener(this.message_listener_deselect);
   }
 
   receiveTextSelected(selection_data: SelectionData) {
-    this.setState({selection_data:selection_data});
+    this.setState({
+      create_status: null,
+      selection_data:selection_data
+    });
+  }
+
+  receiveTextDeselected() {
+    this.setState({selection_data:null});
   }
 
   handleCheckboxChange(event: any, id: string) {
@@ -157,8 +207,6 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
   }
 
   sendHighlightsToDraw() {
-
-    let iframe = document.getElementById('pdf_iframe');
     const selectedSourcelink = this.state.sourcelinks.find(
       (sourcelink) => sourcelink.id === this.state.selected_sourcelink_id
     );
@@ -172,25 +220,10 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
 
     // console.log("sendHighlightsToDraw");
 
-    // @ts-ignore:content window does exist
-    if (iframe) {
-      // @ts-ignore:content window does exist
-      if (iframe.contentWindow) {
-        // @ts-ignore:content window does exist
-        iframe.contentWindow.postMessage({
-          type: 'draw_highlights',
-          highlights: highlights
-        }, '*',);
-
-        console.log("highlights sent");
-      }
-      else {
-        console.log("iframe.contentWindow is null");
-      }
-    }
-    else {
-      console.log("no iframe");
-    }
+    sendDataToPDFJS({
+      type: 'draw_highlights',
+      highlights: highlights
+    });
   }
 
 
@@ -221,11 +254,29 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
       if (data.data["/title"]) {
         this.setState({error: data.data["/title"]})
       }
+      else {
+        this.setState({create_status: "Source Link created. Make a new selection to create another."})
+        this.refreshRoomFileSourcelinks();
+      }
+
+
+  }
+  clearSelectedSourceLink() {
+    this.setState({ selected_sourcelink_id: null })
+    sendDataToPDFJS({
+      type: 'clear_highlights'
+    });
   }
 
   renderSourcelinks() {
     if (this.state.sourcelinks.length === 0) {
       return <span>No sourcelinks</span>;
+    }
+
+    let clear_selection = <span></span>;
+
+    if(this.state.selected_sourcelink_id !== null) {
+      clear_selection = <li onClick={() => this.clearSelectedSourceLink()}>Clear selection</li>
     }
 
     return (
@@ -240,7 +291,8 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
           </li>
         ))}
 
-        <li onClick={() => this.setState({ selected_sourcelink_id: null })}>Clear selection</li>
+        {clear_selection}
+
       </ul>
     );
   }
@@ -254,10 +306,19 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
       error_title = <span class="error">{this.state.error}</span>
     }
 
+    let title_length_error = <span></span>
 
     if (this.state.title.length < SOURCELINK_TITLE_MINIMUM_LENGTH) {
       validToSubmit = false;
+
+      if (this.state.title.length !== 0) {
+        // title_length_error = <span>Minimum title length is {SOURCELINK_TITLE_MINIMUM_LENGTH} characters.</span>
+
+        title_length_error = <span>Title needs {SOURCELINK_TITLE_MINIMUM_LENGTH - this.state.title.length} more characters.</span>
+      }
     }
+
+
 
     let add_button = <span></span>
     if (validToSubmit === true) {
@@ -269,11 +330,10 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
     let sourcelinks_block = this.renderSourcelinks();
 
     let text_selected_box = <div>
-      <span>Select some text to create a sourcelink.</span>
+      <span>First, select some text in the PDF.</span>
     </div>
 
     if (this.state.selection_data !== null) {
-
       let json = JSON.stringify(this.state.selection_data.highlights);
       if (json.length > 16 * 1024) {
         return <div>
@@ -284,20 +344,20 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
         </div>
       }
 
-
       text_selected_box = <div>
         <div>
-          <div>
-          <label>You have selected {countWords(this.state.selection_data.text)} words</label>
-          </div>
+          {/*<div>*/}
+          {/*<label>You have selected {countWords(this.state.selection_data.text)} words</label>*/}
+          {/*</div>*/}
 
           <label>
-            Title <input name="title" size={100} onInput={
+            Enter a title <input name="title" size={100} onInput={
             // @ts-ignore
             e => this.setState({title: e.target.value})
           }/>
             <br/>
             {error_title}
+            {title_length_error}
           </label>
           {add_button}
         </div>
@@ -305,8 +365,18 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
     }
 
 
+    // If already created, don't allow creating again.
+    if (this.state.create_status !== null) {
+      text_selected_box = <div>
+        <div>
+          <span>{this.state.create_status}</span>
+        </div>
+      </div>
+    }
+
+
     return <div class='source_link_panel_react'>
-      <h3>Source Link panel</h3>
+      <h3>Create Source Link</h3>
 
       {text_selected_box}
 

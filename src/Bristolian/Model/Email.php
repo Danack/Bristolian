@@ -11,5 +11,6 @@ class Email
         public readonly int $retries,
         public readonly string $status,
         public readonly string $subject
-    ) {}
+    ) {
+    }
 }

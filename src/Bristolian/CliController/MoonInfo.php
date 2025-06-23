@@ -88,14 +88,15 @@ function isTimeToProcessMoonInfo(): bool
 class MoonInfo
 {
     public function __construct(
-//        private MoonAlertRepo $moonAlertRepo,
+        //        private MoonAlertRepo $moonAlertRepo,
         private MoonAlertNotifier $moonAlertNotifier,
         ProcessorRepo $processorRepo
     ) {
     }
 
 
-    public function info() {
+    public function info()
+    {
         echo "Run internal.\n";
 
         if (isTimeToProcessMoonInfo() !== true) {
@@ -104,7 +105,6 @@ class MoonInfo
         }
 
         if ($this->processorRepo->getProcessorEnabled(ProcessType::moon_alert) !== true) {
-
         };
 
         $moon_info = getMoonInfo();

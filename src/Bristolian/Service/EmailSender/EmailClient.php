@@ -8,4 +8,3 @@ interface EmailClient
 {
     public function send(Email $email): bool;
 }
-

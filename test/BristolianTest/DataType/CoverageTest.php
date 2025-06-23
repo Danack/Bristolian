@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace BristolianTest\DataType;
 
-use Bristolian\DataType\EmailAddress;
+use Bristolian\DataType\PropertyType\EmailAddress;
 use Bristolian\DataType\FoiRequestParam;
 use Safe\DateTimeImmutable;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
 
-use Bristolian\DataType\PasswordOrRandom;
+use Bristolian\DataType\PropertyType\PasswordOrRandom;
 use Bristolian\DataType\QRData;
 use Bristolian\DataType\Table;
 
@@ -20,17 +20,17 @@ use Bristolian\DataType\Table;
 class CoverageTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\DataType\SourceLinkPositionValue
-     * @covers \Bristolian\DataType\BasicString
-     * @covers \Bristolian\DataType\BasicDateTime
-     * @covers \Bristolian\DataType\EmailAddress
-     * @covers \Bristolian\DataType\LinkDescription
-     * @covers \Bristolian\DataType\LinkTitle
-     * @covers \Bristolian\DataType\Url
-     * @covers \Bristolian\DataType\Username
-     * @covers \Bristolian\DataType\WebPushEndPoint
-     * @covers \Bristolian\DataType\WebPushExpirationTime
-     * @covers \Bristolian\DataType\PasswordOrRandom
+     * @covers \Bristolian\DataType\PropertyType\SourceLinkPositionValue
+     * @covers \Bristolian\DataType\PropertyType\BasicString
+     * @covers \Bristolian\DataType\PropertyType\BasicDateTime
+     * @covers \Bristolian\DataType\PropertyType\EmailAddress
+     * @covers \Bristolian\DataType\PropertyType\LinkDescription
+     * @covers \Bristolian\DataType\PropertyType\LinkTitle
+     * @covers \Bristolian\DataType\PropertyType\Url
+     * @covers \Bristolian\DataType\PropertyType\Username
+     * @covers \Bristolian\DataType\PropertyType\WebPushEndPoint
+     * @covers \Bristolian\DataType\PropertyType\WebPushExpirationTime
+     * @covers \Bristolian\DataType\PropertyType\PasswordOrRandom
      *
      *
      *

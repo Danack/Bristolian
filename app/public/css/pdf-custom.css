@@ -1,0 +1,206 @@
+
+:root {
+    --main-color: rgb(12 12 13);
+    --body-bg-color: rgb(212 212 215);
+    --scrollbar-color:auto;
+    --scrollbar-bg-color:auto;
+
+    --viewer-container-height:0;
+    --pdfViewer-padding-bottom:0;
+    --page-margin:1px auto -8px;
+    --page-border:9px solid transparent;
+    --spreadHorizontalWrapped-margin-LR:-3.5px;
+    --loading-icon-delay:400ms;
+}
+
+html,
+body{
+    height:100%;
+    width:100%;
+}
+
+body{
+    margin:0;
+    background-color:var(--body-bg-color);
+    scrollbar-color:var(--scrollbar-color) var(--scrollbar-bg-color);
+}
+
+body.wait::before{
+    content:"";
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:100000;
+    cursor:wait;
+}
+
+.pdfViewer .page{
+    --scale-round-x:1px;
+    --scale-round-y:1px;
+
+    direction:ltr;
+    width:816px;
+    height:1056px;
+    margin:var(--page-margin);
+    position:relative;
+    overflow:visible;
+    border:var(--page-border);
+    background-clip:content-box;
+    background-color:var(--page-bg-color, rgb(255 255 255));
+}
+
+.pdfViewer .dummyPage{
+    position:relative;
+    width:0;
+    height:var(--viewer-container-height);
+}
+
+.pdfViewer.noUserSelect{
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    user-select:none;
+}
+
+.pdfViewer.removePageBorders .page{
+    margin:0 auto 10px;
+    border:none;
+}
+
+
+.textLayer{
+    position:absolute;
+    text-align:initial;
+    inset:0;
+    overflow:clip;
+    opacity:1;
+    line-height:1;
+    -webkit-text-size-adjust:none;
+    -moz-text-size-adjust:none;
+    text-size-adjust:none;
+    forced-color-adjust:none;
+    transform-origin:0 0;
+    caret-color:CanvasText;
+    z-index:0;
+}
+
+.textLayer.highlighting{
+    touch-action:none;
+}
+
+.textLayer :is(span,br){
+    color:transparent;
+    position:absolute;
+    white-space:pre;
+    cursor:text;
+    transform-origin:0% 0%;
+}
+
+.textLayer  > :not(.markedContent),.textLayer .markedContent span:not(.markedContent){
+    z-index:1;
+}
+
+.textLayer span.markedContent{
+    top:0;
+    height:0;
+}
+
+.textLayer span[role="img"]{
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    user-select:none;
+    cursor:default;
+}
+
+.textLayer .highlight{
+    --highlight-bg-color:rgb(180 0 170 / 0.25);
+    --highlight-selected-bg-color:rgb(0 100 0 / 0.25);
+    --highlight-backdrop-filter:none;
+    --highlight-selected-backdrop-filter:none;
+}
+
+@media screen and (forced-colors: active){
+
+    .textLayer .highlight{
+        --highlight-bg-color:transparent;
+        --highlight-selected-bg-color:transparent;
+        --highlight-backdrop-filter:var(--hcm-highlight-filter);
+        --highlight-selected-backdrop-filter:var(
+                --hcm-highlight-selected-filter
+        );
+    }
+}
+
+.textLayer .highlight{
+
+    margin:-1px;
+    padding:1px;
+    background-color:var(--highlight-bg-color);
+    -webkit-backdrop-filter:var(--highlight-backdrop-filter);
+    backdrop-filter:var(--highlight-backdrop-filter);
+    border-radius:4px;
+}
+
+.appended:is(.textLayer .highlight){
+    position:initial;
+}
+
+.begin:is(.textLayer .highlight){
+    border-radius:4px 0 0 4px;
+}
+
+.end:is(.textLayer .highlight){
+    border-radius:0 4px 4px 0;
+}
+
+.middle:is(.textLayer .highlight){
+    border-radius:0;
+}
+
+.selected:is(.textLayer .highlight){
+    background-color:var(--highlight-selected-bg-color);
+    -webkit-backdrop-filter:var(--highlight-selected-backdrop-filter);
+    backdrop-filter:var(--highlight-selected-backdrop-filter);
+}
+
+.textLayer ::-moz-selection{
+    background:rgba(0 0 255 / 0.25);
+    background:color-mix(in srgb, AccentColor, transparent 75%);
+}
+
+.textLayer ::selection{
+    background:rgba(0 0 255 / 0.25);
+    background:color-mix(in srgb, AccentColor, transparent 75%);
+}
+
+.textLayer br::-moz-selection{
+    background:transparent;
+}
+
+.textLayer br::selection{
+    background:transparent;
+}
+
+.textLayer .endOfContent{
+    display:block;
+    position:absolute;
+    inset:100% 0 0;
+    z-index:0;
+    cursor:default;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    user-select:none;
+}
+
+.textLayer.selecting .endOfContent{
+    top:0;
+}
+
+.annotationLayer{
+    --annotation-unfocused-field-background:url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
+    --input-focus-border-color:Highlight;
+    --input-focus-outline:1px solid Canvas;
+    --input-unfocused-border-color:transparent;
+    --input-disabled-border-color:transparent;
+    --input-hover-border-color:black;
+    --link-outline:none;
+}

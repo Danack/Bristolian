@@ -2,8 +2,8 @@
 
 namespace BristolianTest\DataType;
 
-use Bristolian\DataType\BasicDateTime;
-use Bristolian\DataType\BasicString;
+use Bristolian\DataType\PropertyType\BasicDateTime;
+use Bristolian\DataType\PropertyType\BasicString;
 use BristolianTest\BaseTestCase;
 use Bristolian\DataType\QRData;
 use DataType\Create\CreateFromArray;

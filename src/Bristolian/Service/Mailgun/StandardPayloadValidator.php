@@ -34,4 +34,3 @@ class StandardPayloadValidator implements PayloadValidator
         return true;
     }
 }
-

@@ -62,7 +62,7 @@ class OpenApiGenerator
                 ],
             ]
         ]
-    ];
+        ];
 
         return $data;
     }
@@ -73,7 +73,7 @@ class OpenApiGenerator
     {
         $apiData = [
 //  # Reusable schemas (data models)
-    "schemas"=> [
+        "schemas"=> [
         "GeneralError" => [
             "type" => "object",
             "properties"=> [
@@ -86,8 +86,8 @@ class OpenApiGenerator
                 ]
             ]
         ],
-    ],
-    "parameters" => [
+        ],
+        "parameters" => [
         "skipParam" => [
             "name" => "skip",
             "in" => "query",
@@ -108,8 +108,8 @@ class OpenApiGenerator
                 "format"=> "int32"
             ]
         ]
-    ],
-    "responses" => [
+        ],
+        "responses" => [
         "NotFound"=> [
             "description" => "Entity not found."
         ],
@@ -126,15 +126,15 @@ class OpenApiGenerator
                 ]
             ]
         ]
-    ],
-    "securitySchemes"=> [
+        ],
+        "securitySchemes"=> [
         "api_key" => [
             "type" => "apiKey",
             "name" => "api_key",
             "in"=> "header"
             ],
         ]
-    ];
+        ];
 
         return $apiData;
     }

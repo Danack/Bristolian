@@ -2,6 +2,8 @@
 
 // Auto-generated file do not edit
 
+// generated with 'php cli.php generate:php_table_helper_classes'
+
 namespace Bristolian\Database;
 
 class user_webpush_subscription
@@ -31,5 +33,17 @@ select
     created_at
 from
   user_webpush_subscription 
+SQL;
+
+    const UPDATE = <<< SQL
+update
+  user_webpush_subscription
+set
+  endpoint = :endpoint,
+  expiration_time = :expiration_time,
+  raw = :raw
+where
+  id = :id
+  limit 1
 SQL;
 }

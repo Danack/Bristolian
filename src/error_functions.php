@@ -28,10 +28,15 @@ function getExceptionText(\Throwable $exception): string
 //    return $details;
 //}
 
+/**
+ * Trims exception messages to remove embedded parameters
+ */
 function purgeExceptionMessage(\Throwable $exception): string
 {
     $rawMessage = $exception->getMessage();
     $purgeAfterPhrases = [
+        // TODO - where does this come from? why would we care?
+        // maybe from core PHP?
         'with params'
     ];
 
@@ -55,12 +60,16 @@ function getTextForException(\Throwable $exception): string
     $text = '';
 
     do {
+        $path = remove_install_prefix_from_path(
+            $currentException->getFile() . ':' . $currentException->getLine()
+        );
+
         $text .= sprintf(
             "Exception type: %s\nMessage:  %s\nFile:  %s \n\nStack trace:\n%s\n",
             get_class($currentException),
             purgeExceptionMessage($currentException),
-            remove_install_prefix_from_path($currentException->getFile()) . ':' . $currentException->getLine(),
-            formatLinesWithCount(getExceptionStackAsArray($currentException))
+            $path,
+            getFormattedException($currentException)
         );
 
         $currentException = $currentException->getPrevious();
@@ -114,21 +123,16 @@ function saneErrorHandler(
  * @return string
  * @throws Exception
  */
-function formatTraceLine(array $trace): string
+function formatTraceLine(array $trace, int $count): string
 {
     $location = '??';
-    $function = 'unknown';
-
     if (isset($trace["file"]) && isset($trace["line"])) {
         $location = $trace["file"]. ':' . $trace["line"];
     }
     else if (isset($trace["file"])) {
         $location = $trace["file"] . ':??';
     }
-//    else {
-//        var_dump($trace);
-//        exit(0);
-//    }
+
 
     $baseDir = realpath(__DIR__ . '/../');
     if ($baseDir === false) {
@@ -150,24 +154,60 @@ function formatTraceLine(array $trace): string
         $function = "Function is weird: " . json_encode(var_export($trace, true));
     }
 
-    return sprintf(
-        "%s %s",
+    $text = sprintf(
+        "#%d  %s %s\n",
+        $count,
         $location,
         $function
     );
+
+//    if ($function === "ReflectionMethod->invokeArgs") {
+//        $text = "&nbsp;&nbsp;&nbsp;&nbsp;-----------^^ Controller \n" . $text;
+//    }
+
+    return $text;
 }
 
-function getExceptionStack(\Throwable $exception): string
+//function getExceptionStack(\Throwable $exception): string
+//{
+//    $line = "Exception of type " . get_class($exception). "\n";
+//
+//    foreach ($exception->getTrace() as $trace) {
+//        $line .=  formatTraceLine($trace);
+//    }
+//
+//    return $line;
+//}
+
+function getFormattedException(\Throwable $exception): string
 {
-    $line = "Exception of type " . get_class($exception). "\n";
+//    $lines = getExceptionStackAsArray($exception);
 
-    foreach ($exception->getTrace() as $trace) {
-        $line .=  formatTraceLine($trace);
-    }
+    $output = '';
 
-    return $line;
+    $lines = [];
+
+    do {
+        $count = 0;
+        foreach ($exception->getTrace() as $trace) {
+            $output .= formatTraceLine($trace, $count);
+//            $output .= '#' . $count . ' '. $line . "\n";
+//            $output .= $line . "\n";
+            $count += 1;
+        }
+        $exception = $exception->getPrevious();
+
+        // sanity limit previous exceptions to prevent
+        // infinite loops.
+    } while ($exception !== null && $count < 10);
+
+//    foreach ($lines as $line) {
+//        $output .= '#' . $count . ' '. $line . "\n";
+//        $count += 1;
+//    }
+
+    return $output;
 }
-
 
 /**
  * @param Throwable $exception
@@ -179,7 +219,7 @@ function getExceptionStackAsArray(\Throwable $exception)
     do {
         $lines = [];
         foreach ($exception->getTrace() as $trace) {
-            $lines[] = formatTraceLine($trace);
+            $lines[] = formatTraceLine($trace, 123);
         }
         $exception = $exception->getPrevious();
 

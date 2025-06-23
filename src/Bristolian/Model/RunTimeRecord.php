@@ -11,6 +11,5 @@ class RunTimeRecord
         public readonly string $status,
         public readonly string $task,
     ) {
-
     }
 }

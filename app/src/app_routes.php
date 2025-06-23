@@ -94,6 +94,7 @@ function getAllAppRoutes()
         // TODO - limit the allowed characters for files
         ['/rooms/{room_id:.*}', 'GET', 'Bristolian\AppController\Rooms::showRoom'],
         ['/tools/floating_point', 'GET', '\Bristolian\AppController\Pages::floating_point_page'],
+        ['/tools/floating_point_8_bit', 'GET', '\Bristolian\AppController\Pages::floating_point_page_8'],
         ['/tools/timeline', 'GET', '\Bristolian\AppController\Pages::timeline_page'],
         ['/tools/notes', 'GET', '\Bristolian\AppController\Pages::notes_page'],
         ['/tools/twitter_splitter', 'GET', '\Bristolian\AppController\Pages::twitter_splitter_page'],
@@ -129,6 +130,11 @@ function getAllAppRoutes()
 
         ['/admin/control_processors', 'POST', 'Bristolian\AppController\Admin::updateProcessors'],
         ['/admin/control_processors', 'GET', 'Bristolian\AppController\Admin::showProcessorsPage'],
+
+        ['/admin/email', 'GET', 'Bristolian\AppController\Admin::showEmailPage'],
+
+        ['/api/admin/email', 'GET', 'Bristolian\AppController\Admin::getEmails'],
+
 
         ['/admin', 'GET', 'Bristolian\AppController\Admin::showAdminPage'],
         // Dynamic pages

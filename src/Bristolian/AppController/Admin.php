@@ -27,10 +27,33 @@ class Admin
         $content = "<h1>Admin page</h1>";
         $content .= "<ul>";
         $content .= "<li><a href='/admin/control_processors'>Control processors</a></li>'";
+        $content .= "<li><a href='/admin/email'>Email status</a></li>'";
         $content .= "</ul>";
 
         return $content;
     }
+
+    public function showEmailPage()
+    {
+        $content = "";
+
+        $content .= "Emails";
+        $content .= "<div class='admin_email_panel'></div>";
+
+
+
+        return $content;
+    }
+
+    public function getEmails()
+    {
+        emails
+    }
+
+
+
+
+
 
     public function showProcessorsPage(ProcessorRepo $processorRepo): string
     {

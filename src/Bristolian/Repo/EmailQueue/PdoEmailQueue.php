@@ -8,10 +8,11 @@ use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\CliController\Email as EmailController;
 use Bristolian\Database\email_send_queue;
 
-
 class PdoEmailQueue implements EmailQueue
 {
-    public function __construct(private PdoSimple $pdo) {}
+    public function __construct(private PdoSimple $pdo)
+    {
+    }
 
     /**
      * @param string[] $users
@@ -21,7 +22,7 @@ class PdoEmailQueue implements EmailQueue
      */
     public function queueEmailToUsers(array $users, string $subject, string $body): void
     {
-$sql = <<< SQL
+        $sql = <<< SQL
 insert into email_send_queue (
     body,
     recipient,
@@ -168,7 +169,6 @@ SQL;
         $sql = sprintf(
             $sql,
             EmailController::STATE_SKIPPED,
-
             EmailController::STATE_INITIAL,
             EmailController::STATE_SENDING,
             EmailController::STATE_RETRY,

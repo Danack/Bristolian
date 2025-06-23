@@ -176,6 +176,16 @@ function addGenerateCommands(Application $console)
     );
     $command->setDescription("Generate Helper classes, to avoid having to type column names out.");
     $console->add($command);
+
+
+    $command = new Command(
+        'generate:datatype_docs',
+        'Bristolian\CliController\CodeGen::analyze_datatypes'
+    );
+    $command->setDescription("Generate documentation for the datatypes.");
+    $console->add($command);
+
+
 }
 
 

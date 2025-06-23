@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Bristolian\DataType;
 
+use Bristolian\DataType\PropertyType\EmailAddress;
+use Bristolian\DataType\PropertyType\PasswordOrRandom;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;

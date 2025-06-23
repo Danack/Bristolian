@@ -14,6 +14,7 @@ class Docs
 <ul>
     <li><a href="/files">Files</a></li>
     <li><a href="/memes">Memes</a></li>
+   
 </ul>
 HTML;
 

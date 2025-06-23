@@ -2,6 +2,8 @@
 
 namespace Bristolian\DataType;
 
+use Bristolian\DataType\PropertyType\BasicString;
+use Bristolian\DataType\PropertyType\Url;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;

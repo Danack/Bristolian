@@ -24,8 +24,14 @@ import { TimeLinePanel } from "./TimeLinePanel";
 import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
 import { receiveSelectionMessage } from "./SourceLinkPanel";
 
+
 let panels: WidgetClassBinding[] = [
 
+
+    // {
+    //     class: 'admin_email_panel',
+    //     component: AdminEmailPanel
+    // },
     {
         class: 'email_link_generator_panel',
         component: EmailLinkGeneratorPanel

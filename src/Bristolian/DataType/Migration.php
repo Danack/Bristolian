@@ -2,6 +2,9 @@
 
 namespace Bristolian\DataType;
 
+use Bristolian\DataType\PropertyType\BasicDateTime;
+use Bristolian\DataType\PropertyType\BasicString;
+use Bristolian\DataType\PropertyType\SourceLinkPositionValue;
 use DataType\Create\CreateArrayOfTypeFromArray;
 use DataType\Create\CreateFromArray;
 use DataType\DataType;
