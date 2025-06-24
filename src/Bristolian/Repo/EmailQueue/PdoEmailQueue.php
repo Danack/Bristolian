@@ -98,7 +98,7 @@ SQL;
         return $emailOrNull;
     }
 
-    public function setEmailSent(Email $email)
+    public function setEmailSent(Email $email): void
     {
         $sql = <<< SQL
 update
@@ -117,7 +117,7 @@ SQL;
         $this->pdo->execute($sql, $params);
     }
 
-    public function setEmailFailed(Email $email)
+    public function setEmailFailed(Email $email): void
     {
         $sql = <<< SQL
 update
@@ -136,7 +136,7 @@ SQL;
         $this->pdo->execute($sql, $params);
     }
 
-    public function setEmailToRetry(Email $email)
+    public function setEmailToRetry(Email $email): void
     {
         $sql = <<< SQL
 update

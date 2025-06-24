@@ -32,6 +32,9 @@ class FakeRoomFileObjectStore implements RoomFileObjectStore
         return $this->storedFiles[$name];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getStoredFiles(): array
     {
         return $this->storedFiles;

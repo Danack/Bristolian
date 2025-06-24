@@ -71,7 +71,7 @@ class ErrorSetupTest extends BaseTestCase
         $this->assertSame($statusCode, 500);
         $this->assertStringContainsString('Bristolian\Exception\DebuggingUncaughtException', $body);
         $this->assertStringContainsString(
-            App::ERROR_CAUGHT_BY_ERROR_HANDLER_MESSAGE,
+            App::ERROR_CAUGHT_BY_MIDDLEWARE_MESSAGE,
             $body
         );
     }
@@ -92,7 +92,7 @@ class ErrorSetupTest extends BaseTestCase
             $data['details'][0]['type']
         );
         $this->assertStringContainsString(
-            App::ERROR_CAUGHT_BY_ERROR_HANDLER_API_MESSAGE,
+            App::ERROR_CAUGHT_BY_MIDDLEWARE_API_MESSAGE,
             $body
         );
     }

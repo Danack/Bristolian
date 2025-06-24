@@ -18,9 +18,9 @@ interface EmailQueue
 
     public function getEmailToSendAndUpdateState(): Email|null;
 
-    public function setEmailSent(Email $email);
+    public function setEmailSent(Email $email): void;
 
-    public function setEmailFailed(Email $email);
+    public function setEmailFailed(Email $email): void;
 
-    public function setEmailToRetry(Email $email);
+    public function setEmailToRetry(Email $email): void;
 }

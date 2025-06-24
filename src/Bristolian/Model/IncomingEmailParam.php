@@ -23,7 +23,12 @@ class IncomingEmailParam
     ) {
     }
 
-    public static function createFromData(array $data)
+    /**
+     * @param array<string, string> $data
+     * @return self
+     * @throws BristolianException
+     */
+    public static function createFromData(array $data): self
     {
         $required_keys = [
             'message_id' => "Message-Id",

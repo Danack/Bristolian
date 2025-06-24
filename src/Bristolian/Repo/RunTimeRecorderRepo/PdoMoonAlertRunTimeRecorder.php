@@ -58,7 +58,7 @@ SQL;
 
         $result = $this->pdoSimple->insert($sql, $params);
 
-        return $result;
+        return (string)$result;
     }
 
     public function setRunFinished(string $id): void
@@ -103,6 +103,11 @@ SQL;
         $this->pdoSimple->execute($sql, $params);
     }
 
+    /**
+     * @param string $id
+     * @return array<string, string|int>
+     * @throws \Bristolian\PdoSimple\PdoSimpleException
+     */
     public function getRunState(string $id): array
     {
         $sql = run_time_recorder::SELECT;

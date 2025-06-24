@@ -49,7 +49,7 @@ class Email
         }
     }
 
-    public function clearEmailQueue()
+    public function clearEmailQueue(): void
     {
         $emails_skipped = $this->emailQueue->clearQueue();
 
@@ -60,7 +60,7 @@ class Email
     /**
      * This is a placeholder background task
      */
-    public function processEmailSendQueue()
+    public function processEmailSendQueue(): void
     {
         $callable = function () {
             $this->runInternal();
@@ -75,7 +75,7 @@ class Email
     }
 
 
-    public function runInternal()
+    public function runInternal(): void
     {
         // get an email to process
         $email = $this->emailQueue->getEmailToSendAndUpdateState();

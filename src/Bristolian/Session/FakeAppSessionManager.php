@@ -15,6 +15,9 @@ class FakeAppSessionManager implements AppSessionManagerInterface
 {
     private UserSession|null $userSession = null;
 
+    /**
+     * @param list<array{0:string, 1:string}>|null $fake_headers
+     */
     public function __construct(private array|null $fake_headers = null)
     {
     }
@@ -50,6 +53,9 @@ class FakeAppSessionManager implements AppSessionManagerInterface
         throw new BristolianException('Not implemented');
     }
 
+    /**
+     * @return list<array{0:string, 1:string}>
+     */
     public function renewSession(): array
     {
         if ($this->fake_headers) {
@@ -68,7 +74,7 @@ class FakeAppSessionManager implements AppSessionManagerInterface
     }
 
     /**
-     * @return array<array{0:string, 1:string}>
+     * @return list<array{0:string, 1:string}>
      */
     public function saveIfOpenedAndGetHeaders(): array
     {

@@ -15,4 +15,12 @@ class FakeEmailIncoming implements EmailIncoming
     {
         $this->emails[] = $email;
     }
+
+    /**
+     * @return IncomingEmailParam[]
+     */
+    public function getEmails(): array
+    {
+        return $this->emails;
+    }
 }

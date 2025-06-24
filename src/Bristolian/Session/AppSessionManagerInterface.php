@@ -25,7 +25,6 @@ interface AppSessionManagerInterface
      */
     public function deleteSession(): void;
 
-//    public function getRawSession(): Session|null;
 
     /**
      * If the user has already started a session, recreate it from
@@ -47,12 +46,12 @@ interface AppSessionManagerInterface
     /**
      * Renews the session and extends the life of the saved data,
      * and returns headers to be sent to the user.
-     * @return array<array<string, string>>
+     * @return list<array{0:string, 1:string}>
      */
     public function renewSession(): array;
 
     /**
-     * @return array<array<string, string>>
+     * @return list<array{0:string, 1:string}>
      */
     public function saveIfOpenedAndGetHeaders(): array;
 }

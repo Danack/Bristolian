@@ -8,7 +8,12 @@ use Bristolian\App;
 use PDO;
 use PDOException;
 
-function convertRowToDatetime($row)
+/**
+ * @param $row
+ * @return array<string, string|\DateTimeInterface>
+ * @throws \DateMalformedStringException
+ */
+function convertRowToDatetime($row): array
 {
     $time_columns = [
         'created_at',

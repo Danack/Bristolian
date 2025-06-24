@@ -119,6 +119,10 @@ class AppSessionManager implements AppSessionManagerInterface
         return $this->session;
     }
 
+    /**
+     * @return list<array{0:string, 1:string}>
+     * @throws BristolianException
+     */
     public function renewSession(): array
     {
         // TODO - this is terrible code. We are using the side-effect of a method
@@ -127,7 +131,7 @@ class AppSessionManager implements AppSessionManagerInterface
         $rawSession = $this->getRawSession();
 
         if ($rawSession !== null) {
-            return $rawSession-> getHeaders(
+            return $rawSession->getHeaders(
                 \Asm\SessionManager::CACHE_PRIVATE,
                 '/'
             );
@@ -138,7 +142,7 @@ class AppSessionManager implements AppSessionManagerInterface
 
 
     /**
-     * @return array<array<string, string>>
+     * @return list<array{0:string, 1:string}>
      */
     public function saveIfOpenedAndGetHeaders(): array
     {

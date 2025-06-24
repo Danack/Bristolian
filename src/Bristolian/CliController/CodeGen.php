@@ -4,10 +4,10 @@ namespace Bristolian\CliController;
 
 // Output the extracted information
 /**
- * @param $comment
- * @return string[]
+ * @param $comment string
+ * @return list<string>
  */
-function formatComment($comment)
+function formatComment(string $comment): array
 {
     // Clean up and format the comment
     $lines = explode("\n", $comment);

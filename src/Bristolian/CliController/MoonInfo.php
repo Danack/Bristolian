@@ -90,12 +90,12 @@ class MoonInfo
     public function __construct(
         //        private MoonAlertRepo $moonAlertRepo,
         private MoonAlertNotifier $moonAlertNotifier,
-        ProcessorRepo $processorRepo
+        private ProcessorRepo $processorRepo
     ) {
     }
 
 
-    public function info()
+    public function info(): void
     {
         echo "Run internal.\n";
 
@@ -118,7 +118,7 @@ class MoonInfo
     /**
      * This is a placeholder background task
      */
-    public function run()
+    public function run(): void
     {
         $callable = function () {
             $this->info();

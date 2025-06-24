@@ -22,7 +22,13 @@ class AppSessionMiddlewareTest extends BaseTestCase
         $header_name = "someName";
         $header_value = "some value";
 
-        $appSessionManager = new FakeAppSessionManager([[$header_name, $header_value]]);
+
+        $testing = [[$header_name, $header_value]];
+
+
+//        $appSessionManager = new FakeAppSessionManager([[$header_name, $header_value]]);
+        $appSessionManager = new FakeAppSessionManager($testing);
+
 
         $middleware = new AppSessionMiddleware($appSessionManager);
 

@@ -33,7 +33,7 @@ class Admin
         return $content;
     }
 
-    public function showEmailPage()
+    public function showEmailPage(): string
     {
         $content = "";
 
@@ -44,12 +44,12 @@ class Admin
 
         return $content;
     }
-
-    public function getEmails()
-    {
-        emails
-    }
-
+//
+//    public function getEmails()
+//    {
+////        emails
+//    }
+//
 
 
 
