@@ -171,9 +171,11 @@ function createPDOForUser(Config $config)
 
 function createSessionConfig(): Asm\SessionConfig
 {
+    $thirty_days = 3600 * 24 * 30;
+
     return new Asm\SessionConfig(
         "john_is_my_name",
-        3600,
+        $thirty_days,
     );
 }
 

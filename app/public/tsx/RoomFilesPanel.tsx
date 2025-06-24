@@ -1,6 +1,8 @@
 import {h, Component} from "preact";
 import {humanFileSize, formatDateTime} from "./functions";
 import {DateTime} from "luxon";
+import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";
+import {PdfSelectionType} from "./constants";
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
@@ -24,18 +26,22 @@ interface RoomFile {
 interface RoomFilesPanelState {
     files: RoomFile[],
     error: string|null,
+
 }
 
 function getDefaultState(): RoomFilesPanelState {
     return {
         files: [],
         error: null,
+
     };
 }
 
-
+// sendMessage(PdfSelectionType.ROOM_FILES_CHANGED, {});
 
 export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPanelState> {
+
+    message_listener: number|null;
 
     constructor(props: RoomFilesPanelProps) {
         super(props);
@@ -44,9 +50,12 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
 
     componentDidMount() {
         this.refreshFiles();
+        this.message_listener = registerMessageListener(PdfSelectionType.ROOM_FILES_CHANGED, () => this.refreshFiles())
     }
 
     componentWillUnmount() {
+        unregisterListener(this.message_listener);
+        this.message_listener = null;
     }
 
     refreshFiles() {

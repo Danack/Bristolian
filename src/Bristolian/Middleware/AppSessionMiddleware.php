@@ -35,6 +35,12 @@ class AppSessionMiddleware implements MiddlewareInterface
         // Session could have been opened inside request
         $headersArrays = $this->appSessionManager->saveIfOpenedAndGetHeaders();
 
+        if (count($headersArrays) === 0) {
+            if ($request->hasHeader('x-session-renew') === true) {
+                $headersArrays = $this->appSessionManager->renewSession();
+            }
+        }
+
         foreach ($headersArrays as $nameAndValue) {
             $name = $nameAndValue[0];
             $value = $nameAndValue[1];

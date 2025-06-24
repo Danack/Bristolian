@@ -44,8 +44,12 @@ interface AppSessionManagerInterface
      */
     public function createRawSession(): Session;
 
-//    public function get(): AppSession|null;
-
+    /**
+     * Renews the session and extends the life of the saved data,
+     * and returns headers to be sent to the user.
+     * @return array<array<string, string>>
+     */
+    public function renewSession(): array;
 
     /**
      * @return array<array<string, string>>

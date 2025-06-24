@@ -119,16 +119,23 @@ class AppSessionManager implements AppSessionManagerInterface
         return $this->session;
     }
 
-//    public function get(): AppSession|null
-//    {
-//        $this->checkInitialised();
-//
-//        if ($this->session) {
-//            return new AppSession($this->session);
-//        }
-//
-//        return null;
-//    }
+    public function renewSession(): array
+    {
+        // TODO - this is terrible code. We are using the side-effect of a method
+        // call, and that is just bad practice.
+        $session = $this->getCurrentAppSession();
+        $rawSession = $this->getRawSession();
+
+        if ($rawSession !== null) {
+            return $rawSession-> getHeaders(
+                \Asm\SessionManager::CACHE_PRIVATE,
+                '/'
+            );
+        }
+
+        return [];
+    }
+
 
     /**
      * @return array<array<string, string>>
@@ -137,6 +144,7 @@ class AppSessionManager implements AppSessionManagerInterface
     {
         $session = $this->getRawSession();
 
+        // Session was read from
         if ($session) {
             $session->save();
             $headersArrays = $session->getHeaders(
@@ -146,6 +154,15 @@ class AppSessionManager implements AppSessionManagerInterface
 
             return $headersArrays;
         }
+
+//        // Try to open an already created session from the cookie
+//        // a user may have sent us.
+//        $this->session = $this->sessionManager->openSessionFromCookie($this->request);
+
+
+
+
+
         return [];
     }
 }

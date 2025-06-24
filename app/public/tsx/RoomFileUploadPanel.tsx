@@ -2,7 +2,9 @@ import {h, Component} from "preact";
 import {global} from "./globals";
 
 import {ROOM_FILE_UPLOAD_FORM_NAME} from "./generated/constants";
-import {registerMessageListener} from "./message/message";
+import {PdfSelectionType} from "./constants";
+
+import {registerMessageListener, sendMessage} from "./message/message";
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
@@ -138,6 +140,9 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, Roo
             if (xhr.status === 200) {
                 console.log("File uploaded successfully");
                 this.setState({ uploadProgress: null, selectedFile: null });
+
+                sendMessage(PdfSelectionType.ROOM_FILES_CHANGED, {});
+
             } else {
                 this.setState({
                     uploadProgress: null,

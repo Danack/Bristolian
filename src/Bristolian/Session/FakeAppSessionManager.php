@@ -50,6 +50,23 @@ class FakeAppSessionManager implements AppSessionManagerInterface
         throw new BristolianException('Not implemented');
     }
 
+    public function renewSession(): array
+    {
+        if ($this->fake_headers) {
+            return $this->fake_headers;
+        }
+
+        return [
+            [
+                'set-cookie',
+                'john_is_my_name=123456; expires=Sun, 05 Jan 2025 23:04:05 UTC; Max-Age=3600; path=/; httpOnly'
+            ],
+            [
+                'set-cookie',
+                'john_is_my_name_key=123457890abcdefgh==; expires=Sun, 05 Jan 2025 23:04:05 UTC; Max-Age=3600; path=/; httpOnly']
+        ];
+    }
+
     /**
      * @return array<array{0:string, 1:string}>
      */

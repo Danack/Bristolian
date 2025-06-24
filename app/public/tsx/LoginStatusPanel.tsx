@@ -42,18 +42,23 @@ export class LoginStatusPanel extends Component<LoginStatusPanelProps, LoginStat
     // console.log('triggerDataFetch');
     let callback = () => this.setTimeout();
 
-    fetch('/api/login-status').
+    // TODO - we shouldn't need to renew the session so often.
+    // at some point, renewing could be done every 20 requests.
+
+    fetch(
+      '/api/login-status', {
+      headers: {
+        'x-session-renew': 'true'
+      }
+    }).
       then((response:Response) => response.json()).
       then((data:any) => this.processLoggedInResponse(data)).
       finally(callback);
   }
 
   setTimeout() {
-
-    // console.log('setTimeout');
     setTimeout(
       () => this.triggerDataFetch(),
-      // 10 *  // every ten minutes
       20 * 1000 // every 20 seconds
     );
   }
