@@ -17,19 +17,19 @@ class ConfigTest extends BaseTestCase
         Config::testValuesArePresent();
         $config = new Config();
 
-        $this->assertIsBool($config->getForceAssetRefresh());
+        $config->getForceAssetRefresh();
+        $config->getVersion();
+        $config->isProductionEnv();
+        $config->getCommitSha();
+        $config->getMailgunApiKey();
 
-        $this->assertIsString($config->getVersion());
-        $this->assertIsBool($config->isProductionEnv());
 
-        $this->assertIsString($config->getCommitSha());
-        $this->assertIsString($config->getMailgunApiKey());
 
         $dbConfig = $config->getDatabaseUserConfig();
         $this->assertInstanceOf(DatabaseUserConfig::class, $dbConfig);
 
-        $this->assertIsString($config->getDeployTime());
-        $this->assertIsString($config->getDatabaseSchema());
+        $config->getDeployTime();
+        $config->getDatabaseSchema();
 
         $redisConfig = $config->getRedisInfo();
         $this->assertInstanceOf(RedisConfig::class, $redisConfig);

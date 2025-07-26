@@ -7,14 +7,14 @@ use Bristolian\Model\StoredFile;
 class FakeRoomFileRepo implements RoomFileRepo
 {
     /**
-     * @var array<array{0:string, 1:string}>
+     * @ var array<array{0:string, 1:string}>
      */
-    private $filesAndRooms = [];
+//    private $filesAndRooms = [];
 
     public function addFileToRoom(string $fileStorageId, string $room_id): void
     {
         // TODO - change this to store File so they can be returned.
-        $this->filesAndRooms[] = [$fileStorageId, $room_id];
+//        $this->filesAndRooms[] = [$fileStorageId, $room_id];
     }
 
     /**
@@ -25,12 +25,14 @@ class FakeRoomFileRepo implements RoomFileRepo
     {
         $filesForRoom = [];
 
-        foreach ($this->filesAndRooms as $fileAndRoom) {
-            [$fileStorageId, $file_room_id] = $fileAndRoom;
-            if ($room_id === $file_room_id) {
-                $filesForRoom[] = $fileStorageId;
-            }
-        }
+//        foreach ($this->filesAndRooms as $fileAndRoom) {
+//            [$fileStorageId, $file_room_id] = $fileAndRoom;
+//            if ($room_id === $file_room_id) {
+//                $filesForRoom[] = $fileStorageId;
+//            }
+//        }
+
+
 
         return $filesForRoom;
     }

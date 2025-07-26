@@ -10,14 +10,16 @@ class WebPushNotification
 
     // 'vibrate' => [500,110,500,110,450,110,200,110,170,40,450,110,200,110,170,40,500],
     /**
-     * @var null|int[]
+     * @var null
+     * @ var null|int[]
      */
     private $vibrate = null;
 
     private string $sound = "/sounds/meow.mp3";
 
     /**
-     * @var null|array<int, mixed>
+     * @var null
+     *  // var null|array<int, mixed>
      */
     private $data = null;
         //'data' => [

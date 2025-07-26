@@ -58,7 +58,7 @@ class IncomingEmailParam
             $provider_variables = json_encode_safe([]),
             $raw_email = $calling_data['raw_email'],
             $calling_data['recipient'],
-            $retries = 0,
+            $retries = "0",
             $calling_data['sender'],
             $status = IncomingEmailParam::STATUS_INITIAL,
             $calling_data['stripped_text'],

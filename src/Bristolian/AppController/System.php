@@ -10,6 +10,7 @@ use Bristolian\CSPViolation\CSPViolationStorage;
 use Bristolian\DataType\Migration;
 use Bristolian\Repo\DbInfo\DbInfo;
 use Bristolian\Service\DeployLogRenderer\DeployLogRenderer;
+use Bristolian\Session\UserSession;
 use OpenApi\OpenApiGenerator;
 use SlimDispatcher\Response\JsonResponse;
 use function Bristolian\createReactWidget;
@@ -139,7 +140,7 @@ HTML;
         return $table_info;
     }
 
-    public function debugging(): string
+    public function debugging(UserSession $appSession,): string
     {
         $output = null;
         $result_code = 0;

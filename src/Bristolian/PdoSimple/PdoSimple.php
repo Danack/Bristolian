@@ -9,11 +9,11 @@ use PDO;
 use PDOException;
 
 /**
- * @param $row
+ * @param  array<string, string|int> $row
  * @return array<string, string|\DateTimeInterface>
  * @throws \DateMalformedStringException
  */
-function convertRowToDatetime($row): array
+function convertRowToDatetime(array $row): array
 {
     $time_columns = [
         'created_at',
@@ -34,18 +34,22 @@ function convertRowToDatetime($row): array
     return $data;
 }
 
-function convertRowFromDatetime($row)
+/**
+ * @param array<string, string|int|\DateTimeInterface> $row
+ * @return array<string, string|int>
+ */
+function convertRowFromDatetime(array $row)
 {
-    $time_columns = [
-        'created_at',
-        'updated_at',
-        'start_time',
-        'end_time',
-        ':created_at',
-        ':updated_at',
-        ':start_time',
-        ':end_time',
-    ];
+//    $time_columns = [
+//        'created_at',
+//        'updated_at',
+//        'start_time',
+//        'end_time',
+//        ':created_at',
+//        ':updated_at',
+//        ':start_time',
+//        ':end_time',
+//    ];
 
     $data = [];
     foreach ($row as $key => $value) {

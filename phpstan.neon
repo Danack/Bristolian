@@ -4,13 +4,11 @@ parameters:
         - src
         - test
     excludePaths:
-        - src/functions_opendocs.php
-        - src/scrape.php
-        - src/scrape_functions.php
+        - src/Bristolian/FromString.php
+        - src/Bristolian/ToString.php
         - src/ModernGov/generate_types.php
         - src/OpenApi/OpenApiGenerator.php
         - src/Bristolian/CliController/GenerateFiles.php
-        - test/BristolianTest/Middleware/FakeSession.php
     bootstrapFiles:
         - config.generated.php
         - credentials.php
@@ -37,5 +35,8 @@ parameters:
           path: *src/Bristolian/MarkdownRenderer/CommonMarkRenderer.php
         -
           message: '#Argument of an invalid type .* supplied for foreach, only iterables are supported.#'
+          path: *src/Bristolian/ToArray.php
+        -
+          message: '#Method .* should return * but returns object.#'
           path: *src/Bristolian/ToArray.php
 

@@ -330,8 +330,15 @@ function createOptionalUserSession(
 }
 
 
-
-
+/**
+ * If any controller requests a UserSession but the person making the
+ * request is not logged in, then an UnauthorisedException is thrown.
+ *
+ * @param \Bristolian\Session\AppSessionManager $appSessionManager
+ * @return \Bristolian\Session\AppSession
+ * @throws \Bristolian\Exception\BristolianException
+ * @throws \Bristolian\Exception\UnauthorisedException
+ */
 function createAppSession(
     \Bristolian\Session\AppSessionManager $appSessionManager
 ): \Bristolian\Session\AppSession {

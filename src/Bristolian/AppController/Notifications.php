@@ -30,10 +30,10 @@ class Notifications
         WebPushSubscriptionRepo $webPushSubscriptionRepo
     ): JsonResponse {
 
-        if ($appSession->isLoggedIn() !== true) {
-            $data = ['not logged in' => true];
-            return new JsonResponse($data, [], 400);
-        }
+//        if ($appSession->isLoggedIn() !== true) {
+//            $data = ['not logged in' => true];
+//            return new JsonResponse($data, [], 400);
+//        }
 
         [$webPushSubscriptionParam, $validation_problems] =
         WebPushSubscriptionParam::createOrErrorFromArray($jsonInput->getData());

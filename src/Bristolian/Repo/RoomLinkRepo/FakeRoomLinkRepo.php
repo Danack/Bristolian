@@ -19,11 +19,6 @@ class FakeRoomLinkRepo implements RoomLinkRepo
     {
     }
 
-//    public function addLinkToRoom(string $link_id, string $room_id)
-//    {
-//        $this->roomLinks[] = [$link_id, $room_id];
-//    }
-
     /**
      * @param string $room_id
      * @return RoomLink[]
@@ -32,12 +27,14 @@ class FakeRoomLinkRepo implements RoomLinkRepo
     {
         $linksForRoom = [];
 
-        foreach ($this->roomLinks as $roomLink) {
-            [$link_id, $file_room_id] = $roomLink;
-            if ($room_id === $file_room_id) {
-                $linksForRoom[] = $link_id;
-            }
-        }
+//        foreach ($this->roomLinks as $roomLink) {
+//            [$link_id, $file_room_id] = $roomLink->link_id;
+//            $file_room_id = $roomLink->l;
+//
+//            if ($room_id === $file_room_id) {
+//                $linksForRoom[] = $link_id;
+//            }
+//        }
 
         return $linksForRoom;
     }

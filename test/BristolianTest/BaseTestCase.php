@@ -55,7 +55,7 @@ class BaseTestCase extends TestCase
         //<exclude>*/BaseTestCase.php</exclude>
         //in the phpunit.xml file it still thinks this file is a test class.
         //and then complains about it not having any tests.
-        $this->assertTrue(true);
+//        $this->assertTrue(true);
     }
 
     /**

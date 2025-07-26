@@ -37,6 +37,8 @@ HTML;
     {
         $content = "<h1>Memes</h1>";
 
+        // TODO - we only need to UserSession to exist....if it doesn't
+        // they aren't logged in.
         if ($appSession->isLoggedIn() !== true) {
             return "You're not logged in, so currently you can't see any memes.";
         }

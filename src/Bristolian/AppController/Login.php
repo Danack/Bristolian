@@ -21,7 +21,7 @@ class Login
     {
         $appSession = $appSessionManager->getCurrentAppSession();
 
-        if ($appSession && $appSession->isLoggedIn()) {
+        if ($appSession) {// && $appSession->isLoggedIn()) {
             return new RedirectResponse('/?message=You are logged in');
         }
 

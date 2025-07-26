@@ -131,6 +131,8 @@ class AppSessionManager implements AppSessionManagerInterface
         $rawSession = $this->getRawSession();
 
         if ($rawSession !== null) {
+            $rawSession->save();
+
             return $rawSession->getHeaders(
                 \Asm\SessionManager::CACHE_PRIVATE,
                 '/'

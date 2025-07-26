@@ -27,10 +27,10 @@ class MemeUpload
         MemeObjectStore $memeObjectStore,
     ): StubResponse {
 
-        if ($appSession->isLoggedIn() !== true) {
-            $data = ['not logged in' => true];
-            return new JsonResponse($data, [], 400);
-        }
+//        if ($appSession->isLoggedIn() !== true) {
+//            $data = ['not logged in' => true];
+//            return new JsonResponse($data, [], 400);
+//        }
 
         // Get the user uploaded file.
         $fileOrResponse = $usfuh->processFile(self::MEME_FILE_UPLOAD_FORM_NAME);

@@ -93,11 +93,11 @@ class Rooms
         string $room_id
     ): StubResponse {
 
-        // TODO - check user logged in
-        if ($appSession->isLoggedIn() !== true) {
-            $data = ['not logged in' => true];
-            return new JsonResponse($data, [], 400);
-        }
+//        // TODO - check user logged in
+//        if ($appSession->isLoggedIn() !== true) {
+//            $data = ['not logged in' => true];
+//            return new JsonResponse($data, [], 400);
+//        }
 
         // Get the user uploaded file.
         $fileOrResponse = $usfuh->processFile(self::ROOM_FILE_UPLOAD_FORM_NAME);
@@ -198,11 +198,11 @@ class Rooms
         VarMap $varMap,
         string $room_id
     ): JsonResponse {
-        // TODO - check user logged in
-        if ($appSession->isLoggedIn() !== true) {
-            $data = ['not logged in' => true];
-            return new JsonResponse($data, [], 400);
-        }
+//        // TODO - check user logged in
+//        if ($appSession->isLoggedIn() !== true) {
+//            $data = ['not logged in' => true];
+//            return new JsonResponse($data, [], 400);
+//        }
 
         $linkParam = LinkParam::createFromVarMap($varMap);
 
@@ -453,10 +453,10 @@ HTML;
     ): StubResponse {
         $highLightParam = SourceLinkParam::createFromVarMap($varMap);
 
-        if ($appSession->isLoggedIn() !== true) {
-            $data = ['not logged in' => true];
-            return new JsonResponse($data, [], 400);
-        }
+//        if ($appSession->isLoggedIn() !== true) {
+//            $data = ['not logged in' => true];
+//            return new JsonResponse($data, [], 400);
+//        }
 
         $data = json_decode_safe($highLightParam->highlights_json);
 

@@ -3,17 +3,12 @@
     "type": "project",
 
     "repositories": {
-        "danack_asm": {
-            "type": "vcs",
-            "url": "git@github.com:Danack/AdvancedSessionManagement.git"
-        },
         "danack_injector": {
             "type": "vcs",
             "url": "git@github.com:danack/Injector.git"
         }
     },
     "require": {
-        "danack/asm": "dev-main",
         "danack/configurator": "1.1.1",
         "danack/console": "^2.6.2",
         "danack/esprintf": "^2.0.0",
@@ -65,6 +60,7 @@
     },
     "autoload": {
         "psr-0": {
+            "Asm\\": "asm_in_project/lib/",
             "Bristolian\\": "src/",
             "Key\\": "src/",
             "OpenApi\\": "src/",

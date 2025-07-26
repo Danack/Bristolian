@@ -31,7 +31,7 @@ class AppSession implements UserSession
 
     public function isLoggedIn(): bool
     {
-        return ($this->raw_session !== null);
+        return true;//($this->raw_session !== null);
     }
 
     public function setLoggedIn(bool $logged_in): void

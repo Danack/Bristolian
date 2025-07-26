@@ -7,11 +7,11 @@ namespace Bristolian;
 trait FromArray
 {
     /**
-     * @param array $data
+     * @param array<mixed> $data
      * @return static
      * @throws \ReflectionException
      */
-    public static function fromArray(array $data): self
+    public static function fromArray(array $data): static
     {
         $reflection = new \ReflectionClass(__CLASS__);
         $instance = $reflection->newInstanceWithoutConstructor();

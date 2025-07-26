@@ -19,10 +19,10 @@ class User
         MemeStorageRepo $memeStorageRepo,
         UserSession $appSession,
     ): StubResponse {
-        if ($appSession->isLoggedIn() !== true) {
-            $data = ['not logged in' => true];
-            return new JsonResponse($data, [], 400);
-        }
+//        if ($appSession->isLoggedIn() !== true) {
+//            $data = ['not logged in' => true];
+//            return new JsonResponse($data, [], 400);
+//        }
 
         $memes = $memeStorageRepo->listMemesForUser($appSession->getUserId());
 
@@ -52,17 +52,17 @@ class User
     }
 
     public function getTagsForMeme(
-        UserSession $appSession,
-        string $meme_id,
+        UserSession $userSession,
+        string      $meme_id,
         MemeTagRepo $memeTagRepo
     ): JsonResponse {
 
-        if ($appSession->isLoggedIn() !== true) {
-            return new JsonResponse([]);
-        }
+//        if ($appSession->isLoggedIn() !== true) {
+//            return new JsonResponse([]);
+//        }
 
         $data = $memeTagRepo->getUserTagsForMeme(
-            $appSession->getUserId(),
+            $userSession->getUserId(),
             $meme_id
         );
 
@@ -78,10 +78,10 @@ class User
     ): StubResponse {
         $memeTagParam = MemeTagParam::createFromRequest($request);
 
-        if ($appSession->isLoggedIn() !== true) {
-            $data = ['not logged in' => true];
-            return new JsonResponse($data, [], 400);
-        }
+//        if ($appSession->isLoggedIn() !== true) {
+//            $data = ['not logged in' => true];
+//            return new JsonResponse($data, [], 400);
+//        }
 
         $memeTagRepo->addTagForMeme(
             $appSession->getUserId(),
@@ -107,10 +107,10 @@ class User
         Request $request,
         MemeTagRepo $memeTagRepo
     ): StubResponse {
-        if ($appSession->isLoggedIn() !== true) {
-            $data = ['not logged in' => true];
-            return new JsonResponse($data, [], 400);
-        }
+//        if ($appSession->isLoggedIn() !== true) {
+//            $data = ['not logged in' => true];
+//            return new JsonResponse($data, [], 400);
+//        }
 
         $memeTagDeleteParam = MemeTagDeleteParam::createFromRequest($request);
 
@@ -139,7 +139,7 @@ class User
         ];
 
         $appSession = $appSessionManager->getCurrentAppSession();
-        if ($appSession && $appSession->isLoggedIn()) {
+        if ($appSession){ // && $appSession->isLoggedIn()) {
             $data = [
                 'logged_in' => true,
             ];

@@ -21,7 +21,6 @@ class FakeUrlFetcher implements UrlFetcher
     /**
      * @param string $uri
      * @return string
-     * @throws UrlNotOkException
      */
     public function getUrl(string $uri): string
     {
