@@ -113,6 +113,15 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         let file_url = `/rooms/${this.props.room_id}/file/${file.id}/${file.original_filename}`
         let annotate_url = `/rooms/${this.props.room_id}/file_annotate/${file.id}`
 
+        let annotate_block = <a href={annotate_url}>
+            Annotate
+        </a>
+
+        let file_url_lower_case = file_url.toLowerCase();
+        if (file_url_lower_case.endsWith(".pdf") !== true) {
+            annotate_block = <span></span>
+        }
+
         return <tr key={file.id}>
             <td>
                 <a href={file_url} target="_blank">
@@ -127,9 +136,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             </td>
 
             <td>
-                <a href={annotate_url}>
-                  Annotate
-                </a>
+                {annotate_block}
             </td>
         </tr>
     }
