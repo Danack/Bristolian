@@ -101,7 +101,7 @@ HTML;
 
         $pageHtml = \createPageHtml($assetLinkEmitter, $content);
 
-        return new HtmlNoCacheResponse($pageHtml, [], 404);
+        return new HtmlNoCacheResponse($pageHtml, [], 200);
 
     }
 
