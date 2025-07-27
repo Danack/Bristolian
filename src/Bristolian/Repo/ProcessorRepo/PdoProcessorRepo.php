@@ -53,8 +53,6 @@ values (
         ];
 
         $rows_affected = $this->pdoSimple->execute($sql, $params);
-
-        \error_log("rows_affected = $rows_affected");
     }
 
     public function getProcessorEnabled(ProcessType $processor): bool

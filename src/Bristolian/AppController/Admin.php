@@ -7,8 +7,11 @@ use Bristolian\Session\AppSession;
 use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
 use Bristolian\Session\UserSession;
 use Bristolian\UserNotifier\UserNotifier;
+use SlimDispatcher\Response\HtmlNoCacheResponse;
+use SlimDispatcher\Response\HtmlResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\RedirectResponse;
+use SlimDispatcher\Response\StubResponse;
 use VarMap\VarMap;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 
@@ -50,7 +53,10 @@ class Admin
     }
 
 
-    public function showProcessorsPage(ProcessorRepo $processorRepo): string
+    public function showProcessorsPage(
+        ProcessorRepo $processorRepo,
+        \Bristolian\SiteHtml\AssetLinkEmitter $assetLinkEmitter
+    ): StubResponse
     {
         $content = "<h1>Processors</h1>";
         $content .= "<div class='processors_panel'></div>";
@@ -58,17 +64,7 @@ class Admin
         $processors_states = $processorRepo->getProcessorsStates();
 
         $content .= "<div class='processors_panel'>";
-
-        foreach ($processors_states as $processor => $info) {
-            $content .= "Processor ". $processor . " info ". var_export($info, true);
-            $content .= "<hr/>";
-        }
-
-//        $content .= var_export($processors_states, true);
-
         $content .= "</div>";
-
-        $content .= "<div class='processors_panel'>AAAAAHHHRGH</div>";
 
         $content .= "<table class='processors'>";
         $content .= "<tr><th>Processor</th><th>State</th><th>Last changed</th><th>Change</th></tr>";
@@ -103,7 +99,10 @@ HTML;
 
         $content .= "</table>";
 
-        return $content;
+        $pageHtml = \createPageHtml($assetLinkEmitter, $content);
+
+        return new HtmlNoCacheResponse($pageHtml, [], 404);
+
     }
 
     public function updateProcessors(
@@ -136,7 +135,6 @@ HTML;
         }
 
         $processorRepo->setProcessorEnabled($processor_type, $enabled);
-        \error_log("changing {$processor_type->value} to ". (int)$enabled);
 
         $message = sprintf(
             "/admin/control_processors?message=%s should be %s",
