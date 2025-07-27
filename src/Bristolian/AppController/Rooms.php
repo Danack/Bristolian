@@ -374,8 +374,13 @@ HTML;
         );
     }
 
+
+
+
+
     public function iframe_show_file(
         RequestNonce $requestNonce,
+        \Bristolian\SiteHtml\AssetLinkEmitter $assetLinkEmitter,
         RoomRepo $roomRepo,
         RoomFileRepo $roomFileRepo,
         string $room_id,
@@ -393,23 +398,19 @@ HTML;
             'stored_file_url' => $stored_file_url
         ]);
 
+
+        $assetSuffix = $assetLinkEmitter->getAssetSuffix();
+
         $html = <<< HTML
 <!DOCTYPE html>
 
 <html lang="en">
   <body>
-<!--  <script src="/js/pdfjs/pdf-4.9.155/pdf.mjs" type="module"></script>-->
-<!--  <script src="/js/pdfjs/pdfjs-5.3.31-legacy/pdf.mjs" type="module"></script>-->
-  <script src="/js/pdf_view.js" type="module"></script>
+    <script src="/js/pdf_view.js" type="module"></script>
+    <link rel="stylesheet" href="/css/pdf-5.3.31.css$assetSuffix">
 
-<!--  <link rel="stylesheet" href="/css/pdf-4.9.155.css">-->
-
-    <link rel="stylesheet" href="/css/pdf-5.3.31.css">
-
-  
-<!--  <link rel="stylesheet" href="/css/pdf-custom.css">-->
-  
-  
+    <link rel="stylesheet" href="/css/pdf-custom.css$assetSuffix">
+ 
   <script nonce="{$requestNonce->getRandom()}">
     // (function () {
 
@@ -430,8 +431,6 @@ HTML;
       window.addEventListener('message', queueMessage);
       console.log("Message queue setup");
   </script>
-  
-  
     
     <div id="viewer" class="pdfViewer" data-widgety_json='$widget_data' />
   </body>
@@ -452,11 +451,6 @@ HTML;
         string $file_id
     ): StubResponse {
         $highLightParam = SourceLinkParam::createFromVarMap($varMap);
-
-//        if ($appSession->isLoggedIn() !== true) {
-//            $data = ['not logged in' => true];
-//            return new JsonResponse($data, [], 400);
-//        }
 
         $data = json_decode_safe($highLightParam->highlights_json);
 

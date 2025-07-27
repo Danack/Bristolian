@@ -1,4 +1,6 @@
 
+/* This CSS is used in the iFrame for displaying PDFs. */
+
 :root {
     --main-color: rgb(12 12 13);
     --body-bg-color: rgb(212 212 215);
@@ -204,3 +206,45 @@ body.wait::before{
     --input-hover-border-color:black;
     --link-outline:none;
 }
+
+
+
+#viewer {
+    position: relative;
+    overflow: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    /*width: 100%;*/
+    /*height: 500px; !* or whatever height is appropriate *!*/
+    /*transition: transform 0.2s ease-in-out;*/
+}
+
+.zoom-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 6px;
+    padding: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+.zoom-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s;
+}
+
+.zoom-btn:hover {
+    background-color: #ddd;
+}
+

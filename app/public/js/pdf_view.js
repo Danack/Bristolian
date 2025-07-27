@@ -26,19 +26,39 @@ let g_page_canvas_context = [];
 // initialised to array in 'initial_render_scrolling'
 let g_textlayer_drawn = null;
 
+
+
+let g_zoom_levels = [
+    3 / 9,
+    4 / 9,
+    5 / 9,
+    2 / 3,
+    7 / 9,
+    8 / 9,
+    1.0,
+    4 / 3,
+    5 / 3,
+    6 / 3,
+    7 / 3,
+    8 / 3,
+    9 / 3
+];
+
+let g_current_zoom_level_index = 6;
+
 // Scale - the size the PDFs are rendered at
-let g_scale = 1.0;
+let g_scale = g_zoom_levels[g_current_zoom_level_index];
+
+console.log("inital g_scale is ", g_scale);
 
 let g_max_page = 0;
 
-// import { TextLayer } from "/js/pdfjs/pdf-4.9.155/pdf.mjs";
 import { TextLayer } from "/js/pdfjs/pdfjs-5.3.31-legacy/pdf.mjs";
 
 // Loaded via <script> tag, create shortcut to access PDF.js exports.
 var { pdfjsLib  } = globalThis;
 
 // The workerSrc property shall be specified.
-// pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdfjs/pdf-4.9.155/pdf.worker.mjs';
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdfjs/pdfjs-5.3.31-legacy/pdf.worker.mjs';
 
 
@@ -187,6 +207,8 @@ function start_rendering_pdf_into_document(pdf) {
 
     // Remove all child nodes so that we can we reinitialise the PDf viewer
     viewer.innerHTML = '';
+
+    setupZoomButtons(viewer);
 
     g_textlayer_drawn = [];
 
@@ -509,8 +531,65 @@ export function receiveDrawHightlightsMessage(data) {
         console.log("Received clear highlights message");
         clearAllHighlights();
     }
-
 }
+
+function adjustZoomLevel(change)
+{
+    g_current_zoom_level_index = g_current_zoom_level_index + change;
+
+    if (g_current_zoom_level_index < 0) {
+        g_current_zoom_level_index = 0;
+    }
+
+    if (g_current_zoom_level_index > g_zoom_levels.length) {
+        g_current_zoom_level_index = g_zoom_levels.length;
+    }
+
+    g_scale = g_zoom_levels[g_current_zoom_level_index];
+    console.log("g_scale is now ", g_scale);
+    // need to redraw page
+}
+
+
+function setupZoomButtons(viewer_element) {
+// Create zoom controls container
+    const zoomControls = document.createElement('div');
+    zoomControls.className = 'zoom-controls';
+
+    // Create Zoom In button
+    const zoomInBtn = document.createElement('button');
+    zoomInBtn.innerText = '+';
+    zoomInBtn.title = 'Zoom In';
+    zoomInBtn.className = 'zoom-btn';
+
+    // Create Zoom Out button
+    const zoomOutBtn = document.createElement('button');
+    zoomOutBtn.innerText = '−';
+    zoomOutBtn.title = 'Zoom Out';
+    zoomOutBtn.className = 'zoom-btn';
+
+    zoomControls.appendChild(zoomInBtn);
+    zoomControls.appendChild(zoomOutBtn);
+    viewer_element.appendChild(zoomControls);
+
+    // Apply zoom by scaling the viewer content
+    function applyZoom() {
+        redrawWholePage();
+    }
+
+    // Zoom In
+    zoomInBtn.addEventListener('click', () => {
+            adjustZoomLevel(1);
+            applyZoom();
+    });
+
+    // Zoom Out
+    zoomOutBtn.addEventListener('click', () => {
+        adjustZoomLevel(-1);
+        applyZoom();
+    });
+}
+
 
 // When your script is ready to handle messages, process the queue
 export function processQueue() {
@@ -529,7 +608,11 @@ export function processQueue() {
 }
 
 
+function redrawWholePage() {
 
+    loadingTask.promise.then(start_rendering_pdf_into_document);
+
+}
 
 
 let viewer_element = document.getElementById('viewer');
