@@ -52,7 +52,9 @@ values (
             ':enabled_again' => $enabled_int,
         ];
 
-        $this->pdoSimple->execute($sql, $params);
+        $rows_affected = $this->pdoSimple->execute($sql, $params);
+
+        \error_log("rows_affected = $rows_affected");
     }
 
     public function getProcessorEnabled(ProcessType $processor): bool
