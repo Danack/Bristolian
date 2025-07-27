@@ -102,6 +102,7 @@ services:
     build: containers/supervisord
     depends_on:
       - redis
+      - db
     networks:
       default_network:
     restart: always

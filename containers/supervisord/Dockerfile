@@ -23,6 +23,7 @@ RUN mkdir -p /var/log/supervisor
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 COPY tasks/*.conf /etc/supervisor/conf.d/
 
-# RUN php cli.php db:wait_for_db
-CMD tail -f README.md
-# CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
+# CMD tail -f README.md
+CMD sh /var/app/containers/supervisord/entrypoint.sh
+
+

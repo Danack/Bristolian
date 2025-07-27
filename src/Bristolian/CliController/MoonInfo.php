@@ -105,6 +105,8 @@ class MoonInfo
         }
 
         if ($this->processorRepo->getProcessorEnabled(ProcessType::moon_alert) !== true) {
+            echo "ProcessType::moon_alert is not enabled..\n";
+            return;
         };
 
         $moon_info = getMoonInfo();

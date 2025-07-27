@@ -6,43 +6,35 @@
 
 namespace Bristolian\Database;
 
-class sourcelink
+class processor_run_record
 {
     const INSERT = <<< SQL
-insert into sourcelink (
-    id,
-    file_id,
-    user_id,
-    highlights_json,
-    text
+insert into processor_run_record (
+    debug_info,
+    processor_type
 )
 values (
-    :id,
-    :file_id,
-    :user_id,
-    :highlights_json,
-    :text
+    :debug_info,
+    :processor_type
 )
 SQL;
 
     const SELECT = <<< SQL
 select
     id,
-    file_id,
-    user_id,
-    highlights_json,
-    text,
+    debug_info,
+    processor_type,
     created_at
 from
-  sourcelink 
+  processor_run_record 
 SQL;
 
     const UPDATE = <<< SQL
 update
-  sourcelink
+  processor_run_record
 set
-  highlights_json = :highlights_json,
-  text = :text
+  debug_info = :debug_info,
+  processor_type = :processor_type
 where
   id = :id
   limit 1

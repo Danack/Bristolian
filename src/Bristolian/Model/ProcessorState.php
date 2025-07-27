@@ -12,7 +12,7 @@ class ProcessorState
         public readonly string $id,
         public readonly bool $enabled,
         public readonly string $type,
-        public readonly string  $updated_at
+        public readonly \DateTimeInterface  $updated_at
     ) {
     }
 }

@@ -34,9 +34,9 @@ docker-compose up --build \
  sass_dev_builder \
  js_builder \
  redis \
- supervisord \
  --remove-orphans
 
+ # supervisord \
 
 docker-compose down
 

@@ -13,6 +13,10 @@ docker-compose up --build -d db
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up  --build --force-recreate installer
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up  --build --force-recreate js_and_css_prod_builder
 
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build --force-recreate varnish caddy php_fpm redis
-
-# docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build --force-recreate varnish nginx php_fpm
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d \
+ --build --force-recreate \
+  caddy \
+  php_fpm \
+  redis \
+  supervisord \
+  varnish \

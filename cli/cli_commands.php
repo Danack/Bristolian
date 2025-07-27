@@ -29,7 +29,10 @@ function addEmailCommands(Application $console)
     $command->setDescription("Send a test email.");
     $console->add($command);
 
-    $command = new Command('process:email_send', 'Bristolian\CliController\Email::processEmailSendQueue');
+    $command = new Command(
+        'process:queue:email_send',
+        'Bristolian\CliController\Email::processEmailSendQueue'
+    );
     $command->setDescription("Process the email send queue.");
     $console->add($command);
 
@@ -48,7 +51,6 @@ function addDebugCommands(Application $console)
     $command->setDescription("Test cli commands are working.");
     $console->add($command);
 
-
     $command = new Command('debug:send_webpush', 'Bristolian\CliController\Debug::send_webpush');
     $command->setDescription(
         "Send a webpush to a user, if they are registered for webpushes"
@@ -57,71 +59,10 @@ function addDebugCommands(Application $console)
     $command->addArgument('message', InputArgument::REQUIRED, "The message to send");
     $console->add($command);
 
-//    $command = new Command('debug:debug', 'Osf\CliController\Debug::debug');
-//    $command->setDescription("Debugging, customise this.");
-//    $console->add($command);
-//
-//    $command = new Command('debug:add_stripe_event', 'Osf\CliController\Debug::addStripeEvent');
-//    $command->setDescription("Debugging, stripe events.");
-//    $console->add($command);
-//
-//    $command = new Command('debug:invoice_pdf', 'Osf\CliController\Debug::invoicePdf');
-//    $command->setDescription("Debugging invoice rendering.");
-//    $console->add($command);
-
     $command = new Command('debug:files', '\Bristolian\CliController\Debug::upload_file');
     $command->setDescription("Test file stuff is work.");
     $console->add($command);
 }
-
-
-///**
-// * @param Application $console
-// */
-//function addProcessCommands(Application $console)
-//{
-//    $command = new Command('process:alive_check', 'Osf\CliController\AliveCheck::run');
-//    $command->setDescription("Place holder command to make sure commands are running .");
-//    $console->add($command);
-//
-////    $command = new Command('process:invoice_pdf_generate', 'Osf\CliController\PrintUrlToPdfQueueProcessor::run');
-////    $command->setDescription("Listens for InvoicePDF jobs and runs them .");
-////    $console->add($command);
-//
-////    $command = new Command('process:purchase_order_alert', 'Osf\CliController\PurchaseOrderAlert::run');
-////    $command->setDescription("Listens new purchase orders and generates alerts from them");
-////    $console->add($command);
-//
-//    $command = new Command('process:stripe_events', 'Osf\CliController\ProcessStripeEventQueue::run');
-//    $command->setDescription("Processes stripe events");
-//    $console->add($command);
-//
-//    $command = new Command(
-//        'process:purchase_order_alert',
-//        '\Osf\CliController\PurchaseOrderNotificationSender::watchPurchaseOrdersAndAlert'
-//    );
-//    $command->setDescription("Sends notifications when there are new purchase orders");
-//    $console->add($command);
-//}
-
-
-//function addTestCommands(Application $console)
-//{
-//    $command = new Command('test:twilio', 'Osf\CliController\Twilio::test');
-//    $command->setDescription("Send a test SMS message.");
-//
-//    $command->addArgument('number', InputArgument::REQUIRED, 'The number to send the message to.');
-//    $command->addArgument('message', InputArgument::REQUIRED, 'The message to send');
-//    $console->add($command);
-//
-//    $command = new Command('test:purchase_queue', 'Osf\CliController\Debug::testPurchaseOrderAlert');
-//    $command->setDescription("Send the purchase order queue works.");
-//
-////    $command->addArgument('number', InputArgument::REQUIRED, 'The number to send the message to.');
-////    $command->addArgument('message', InputArgument::REQUIRED, 'The message to send');
-//    $console->add($command);
-//}
-
 
 function addSeedCommands(Application $console)
 {
@@ -158,6 +99,14 @@ function addMiscCommands(Application $console)
     );
     $command->setDescription("Check the config has values for all known config.");
     $console->add($command);
+
+    $command = new Command(
+        'process:generate:daily_system_info',
+        'Bristolian\CliController\SystemInfo::process_daily_system_info'
+    );
+
+    $command->setDescription("Generate an email just past noon each day.");
+    $console->add($command);
 }
 
 function addGenerateCommands(Application $console)
@@ -168,7 +117,6 @@ function addGenerateCommands(Application $console)
     );
     $command->setDescription("Generate JavaScript constants from PHP source values.");
     $console->add($command);
-
 
     $command = new Command(
         'generate:php_table_helper_classes',
@@ -184,8 +132,6 @@ function addGenerateCommands(Application $console)
     );
     $command->setDescription("Generate documentation for the datatypes.");
     $console->add($command);
-
-
 }
 
 
@@ -200,14 +146,11 @@ function addMoonCommands(Application $console)
 
 
     $command = new Command(
-        'process:moon_alert',
+        'process:generate:moon_alert',
         'Bristolian\CliController\MoonInfo::run'
     );
-    $command->setDescription("Run the task to send alerts about the moon.");
+    $command->setDescription("Run the task to generate alerts about the moon.");
     $console->add($command);
-
-
-
 }
 
 

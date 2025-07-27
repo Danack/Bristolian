@@ -7,6 +7,8 @@ function getAllQueries_16(): array
 {
     $sql = [];
 
+    // This probably shouldn't be used.
+
     $sql[] = <<< SQL
 CREATE TABLE `run_time_recorder` (
   `id` INT AUTO_INCREMENT NOT NULL,

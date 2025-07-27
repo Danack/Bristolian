@@ -39,8 +39,14 @@ function injectionParams() : InjectionParams
         \Bristolian\Service\EmailSender\EmailClient::class =>
             \Bristolian\Service\EmailSender\MailgunEmailClient::class,
 
+        \Bristolian\Repo\ProcessorRepo\ProcessorRepo::class =>
+            \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::class,
+
         Bristolian\Repo\RunTimeRecorderRepo\MoonAlertRunTimeRecorder::class =>
             \Bristolian\Repo\RunTimeRecorderRepo\PdoMoonAlertRunTimeRecorder::class,
+
+        \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::class =>
+            \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::class
     ];
 
     // Delegate the creation of types to callables.

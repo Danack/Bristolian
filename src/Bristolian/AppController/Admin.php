@@ -14,6 +14,13 @@ use Bristolian\Repo\ProcessorRepo\ProcessType;
 
 class Admin
 {
+    protected static $processors = [
+        ProcessType::daily_system_info->value => "Daily system info",
+        ProcessType::email_send->value => "Email send",
+        ProcessType::moon_alert->value => "Moon generate alert",
+    ];
+
+
     public function showNotificationTestPage(): string
     {
         $content = "<h1>Notification test page</h1>";
@@ -26,8 +33,8 @@ class Admin
     {
         $content = "<h1>Admin page</h1>";
         $content .= "<ul>";
-        $content .= "<li><a href='/admin/control_processors'>Control processors</a></li>'";
-        $content .= "<li><a href='/admin/email'>Email status</a></li>'";
+        $content .= "<li><a href='/admin/control_processors'>Control processors</a></li>";
+        $content .= "<li><a href='/admin/email'>Email status</a></li>";
         $content .= "</ul>";
 
         return $content;
@@ -39,20 +46,8 @@ class Admin
 
         $content .= "Emails";
         $content .= "<div class='admin_email_panel'></div>";
-
-
-
         return $content;
     }
-//
-//    public function getEmails()
-//    {
-////        emails
-//    }
-//
-
-
-
 
 
     public function showProcessorsPage(ProcessorRepo $processorRepo): string
@@ -62,15 +57,10 @@ class Admin
 
         $processors_states = $processorRepo->getProcessorsStates();
 
-        $processors = [
-            ProcessType::email_send->value => "Email send",
-            ProcessType::moon_alert->value => "Moon alert",
-        ];
-
         $content .= "<table class='processors'>";
         $content .= "<tr><th>Processor</th><th>State</th><th>Last changed</th><th>Change</th></tr>";
 
-        foreach ($processors as $processor => $processor_name) {
+        foreach (self::$processors as $processor => $processor_name) {
             $state = "Disabled";
             $class = "disabled";
             $action = "enable";
@@ -78,7 +68,7 @@ class Admin
 
             if (array_key_exists($processor, $processors_states)) {
                 $processor_state = $processors_states[$processor];
-                $last_changed = $processor_state->updated_at;
+                $last_changed = $processor_state->updated_at->format("Y-m-d H:i:s");
 
                 if ($processor_state->enabled == true) {
                     $state = "Enabled";
@@ -109,10 +99,10 @@ HTML;
         UserSession $appSession
     ): RedirectResponse {
 
-        $processors = [
-            ProcessType::email_send->value => "Email send",
-            ProcessType::moon_alert->value => "Moon alert",
-        ];
+//        $processors = [
+//            ProcessType::email_send->value => "Email send",
+//            ProcessType::moon_alert->value => "Moon alert",
+//        ];
 
 
         if ($varMap->has("processor") === false) {
@@ -121,7 +111,7 @@ HTML;
         $processor = $varMap->get("processor");
         $processor_type = ProcessType::from($processor);
 
-        if (array_key_exists($processor, $processors) === false) {
+        if (array_key_exists($processor, self::$processors) === false) {
             return new RedirectResponse('/admin/control_processors?message=Invalid processor specified');
         }
 

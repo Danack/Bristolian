@@ -139,7 +139,7 @@ class User
         ];
 
         $appSession = $appSessionManager->getCurrentAppSession();
-        if ($appSession){ // && $appSession->isLoggedIn()) {
+        if ($appSession) { // && $appSession->isLoggedIn()) {
             $data = [
                 'logged_in' => true,
             ];
