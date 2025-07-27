@@ -99,12 +99,6 @@ HTML;
         UserSession $appSession
     ): RedirectResponse {
 
-//        $processors = [
-//            ProcessType::email_send->value => "Email send",
-//            ProcessType::moon_alert->value => "Moon alert",
-//        ];
-
-
         if ($varMap->has("processor") === false) {
             return new RedirectResponse('/admin/control_processors?message=No processor specified');
         }
@@ -129,8 +123,15 @@ HTML;
         }
 
         $processorRepo->setProcessorEnabled($processor_type, $enabled);
+        \error_log("changing {$processor_type->value} to ". (int)$enabled);
 
-        return new RedirectResponse("/admin/control_processors?message=$processor should be $action");
+        $message = sprintf(
+            "/admin/control_processors?message=%s should be %s",
+            $processor,
+            $action
+        );
+
+        return new RedirectResponse($message);
     }
 
 
