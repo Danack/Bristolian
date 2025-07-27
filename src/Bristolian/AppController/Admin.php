@@ -57,6 +57,19 @@ class Admin
 
         $processors_states = $processorRepo->getProcessorsStates();
 
+        $content .= "<div class='processors_panel'>";
+
+        foreach ($processors_states as $processor => $info) {
+            $content .= "Processor ". $processor . " info ". var_export($info, true);
+            $content .= "<hr/>";
+        }
+
+//        $content .= var_export($processors_states, true);
+
+        $content .= "</div>";
+
+        $content .= "<div class='processors_panel'>AAAAAHHHRGH</div>";
+
         $content .= "<table class='processors'>";
         $content .= "<tr><th>Processor</th><th>State</th><th>Last changed</th><th>Change</th></tr>";
 
