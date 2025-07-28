@@ -56,8 +56,7 @@ class Admin
     public function showProcessorsPage(
         ProcessorRepo $processorRepo,
         \Bristolian\SiteHtml\AssetLinkEmitter $assetLinkEmitter
-    ): StubResponse
-    {
+    ): StubResponse {
         $content = "<h1>Processors</h1>";
         $content .= "<div class='processors_panel'></div>";
 
@@ -102,7 +101,6 @@ HTML;
         $pageHtml = \createPageHtml($assetLinkEmitter, $content);
 
         return new HtmlNoCacheResponse($pageHtml, [], 200);
-
     }
 
     public function updateProcessors(
