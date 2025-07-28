@@ -11,7 +11,9 @@ use PDOException;
 /**
  * @param  array<string, string|int> $row
  * @return array<string, string|\DateTimeInterface>
- * @throws \DateMalformedStringException
+ * @throws \Exception
+ *
+ * TODO - when upgrading to PHP 8.3, change to \DateMalformedStringException
  */
 function convertRowToDatetime(array $row): array
 {
@@ -152,7 +154,7 @@ class PdoSimple
 
     /**
      * @param string $query
-     * @param array<string, string|int> $params
+     * @param array<string, string|int|null> $params
      * @return int
      * @throws \Exception
      */

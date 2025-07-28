@@ -15,6 +15,7 @@ class LocalDeployLogRendererTest extends BaseTestCase
         $renderer = new LocalDeployLogRenderer();
 
         $result = $renderer->render();
+        /* @phpstan-ignore method.alreadyNarrowedType */
         $this->assertIsString($result);
         $this->assertStringContainsString("there is no log", $result);
     }

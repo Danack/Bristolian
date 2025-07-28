@@ -46,7 +46,7 @@ class SystemInfo
 
 
 
-    public function process_daily_system_info()
+    public function process_daily_system_info(): void
     {
         $callable = function () {
             $this->runInternal();
@@ -60,7 +60,7 @@ class SystemInfo
         );
     }
 
-    public function runInternal()
+    public function runInternal(): void
     {
         echo "I am the daily system info.\n";
 
@@ -93,7 +93,7 @@ class SystemInfo
         );
 
         // Mark last run time.
-        $processorRunRecordRepo->markJustRun(
+        $this->processorRunRecordRepo->markJustRun(
             ProcessType::daily_system_info,
             "no debug info"
         );

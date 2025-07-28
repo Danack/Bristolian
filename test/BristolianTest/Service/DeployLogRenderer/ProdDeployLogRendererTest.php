@@ -14,6 +14,8 @@ class ProdDeployLogRendererTest extends BaseTestCase
     {
         $renderer = new ProdDeployLogRenderer();
         $result = $renderer->render();
+
+        /* @phpstan-ignore method.alreadyNarrowedType */
         $this->assertIsString($result);
     }
 }

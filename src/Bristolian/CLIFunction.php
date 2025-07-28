@@ -43,12 +43,15 @@ class CLIFunction
             $file = 'unknown';
             $line = 'unknown';
 
+            /* @phpstan-ignore function.alreadyNarrowedType, identical.alwaysTrue */
             if (array_key_exists('message', $lastError) === true) {
                 $message = $lastError['message'];
             }
+            /* @phpstan-ignore function.alreadyNarrowedType, identical.alwaysTrue */
             if (array_key_exists('file', $lastError) === true) {
                 $file = $lastError['file'];
             }
+            /* @phpstan-ignore function.alreadyNarrowedType, identical.alwaysTrue */
             if (array_key_exists('line', $lastError) === true) {
                 $line = $lastError['line'];
             }

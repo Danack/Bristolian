@@ -17,6 +17,9 @@ use Bristolian\Repo\ProcessorRepo\ProcessType;
 
 class Admin
 {
+    /**
+     * @var array<string, string>
+     */
     protected static $processors = [
         ProcessType::daily_system_info->value => "Daily system info",
         ProcessType::email_send->value => "Email send",

@@ -21,6 +21,7 @@ trait FromArray
             $property = $data[$key];
         }
 
+        /* @phpstan-ignore return.type */
         return $instance;
     }
 }

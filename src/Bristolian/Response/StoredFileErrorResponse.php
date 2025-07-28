@@ -19,7 +19,6 @@ class StoredFileErrorResponse implements StubResponse
     /**
      * @param string $filenameToServe
      * @param array<string, string> $headers
-     * @throws ResponseException
      */
     public function __construct(
         string $filenameToServe,
