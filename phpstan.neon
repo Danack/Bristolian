@@ -1,4 +1,5 @@
 parameters:
+    editorUrl: 'phpstorm://open?file=/Users/danack/projects/github/Bristolian/%%relFile%%&line=%%line%%'
     level: 6
     paths:
         - src
@@ -36,7 +37,3 @@ parameters:
         -
           message: '#Argument of an invalid type .* supplied for foreach, only iterables are supported.#'
           path: *src/Bristolian/ToArray.php
-        -
-          message: '#Method .* should return * but returns object.#'
-          path: *src/Bristolian/ToArray.php
-
