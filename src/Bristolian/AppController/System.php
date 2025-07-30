@@ -40,7 +40,7 @@ HTML;
     <p>Deployed at :html_deploy_time</p>
     <p>Version is :html_version</p>
 
-    <p>Error log is :html_error_log</p>
+    <p>Error log: :html_error_log</p>
 HTML;
 
         $error_log = "Does not exist \o/";

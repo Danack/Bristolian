@@ -50,7 +50,7 @@ elif [ "$LOCAL" = "$BASE" ]; then
     chown -R deployer:deployer *
     sh runProd.sh
     MESSAGE=$(git show -s --format=%s $REMOTE)
-    echo "Should have deployed ${REMOTE} ${MESSAGE}"
+    echo "Should have deployed ${REMOTE} ${MESSAGE} at $(date)"
     rm /var/home/Bristolian/Bristolian/data/git_pull_error.log
 elif [ "$REMOTE" = "$BASE" ]; then
     echo "Need to push server changes."
