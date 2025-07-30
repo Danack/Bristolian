@@ -1045,3 +1045,26 @@ function customSort(array $array): array
 
     return $array;
 }
+
+
+
+function generateSystemInfoEmailContent(): string
+{
+    $body = "Shamoan";
+
+    $body .= "\n\n";
+
+    $exec_output = [];
+    $result_code = null;
+    exec("df -h", $exec_output, $result_code);
+
+    if ($result_code !== 0) {
+        $body .= "Failed to run disk info command";
+    }
+    else {
+        $body .= implode("\n", $exec_output);
+    }
+
+    return $body;
+}
+

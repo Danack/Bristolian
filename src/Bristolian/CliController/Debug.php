@@ -48,4 +48,10 @@ class Debug
             $userWebPushSubscriptions
         );
     }
+
+    public function generate_system_info_email(): void
+    {
+        echo generateSystemInfoEmailContent();
+    }
+
 }

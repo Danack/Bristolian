@@ -62,6 +62,11 @@ function addDebugCommands(Application $console)
     $command = new Command('debug:files', '\Bristolian\CliController\Debug::upload_file');
     $command->setDescription("Test file stuff is work.");
     $console->add($command);
+
+
+    $command = new Command('debug:system_info', '\Bristolian\CliController\Debug::generate_system_info_email');
+    $command->setDescription("Generate the system info email.");
+    $console->add($command);
 }
 
 function addSeedCommands(Application $console)

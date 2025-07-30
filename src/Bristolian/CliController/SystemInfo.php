@@ -88,8 +88,8 @@ class SystemInfo
         // Put it in the email queue
         $this->emailQueue->queueEmailToUsers(
             ['danack@basereality.com'],
-            $subject = "Bristolian daily system info",
-            $body = "Shamoan"
+            $subject = "[Bristolian] daily system info",
+            $body = generateSystemInfoEmailContent()
         );
 
         // Mark last run time.
