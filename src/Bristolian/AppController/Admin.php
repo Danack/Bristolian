@@ -101,10 +101,24 @@ HTML;
 
         $content .= "</table>";
 
+
+        $content .= $this->renderProcessorLogWidget();
         $pageHtml = \createPageHtml($assetLinkEmitter, $content);
 
         return new HtmlNoCacheResponse($pageHtml, [], 200);
     }
+
+
+    public function renderProcessorLogWidget()
+    {
+        $data = [];
+
+        $widget_json = json_encode_safe([]);
+        $widget_data = htmlspecialchars($widget_json);
+
+        return "<div class='processor_run_record_panel' data-widgety_json='$widget_data'></div>";
+    }
+
 
     public function updateProcessors(
         ProcessorRepo $processorRepo,

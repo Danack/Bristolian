@@ -33,6 +33,7 @@ function getAllApiRoutes()
         ['/api/services/email/mailgun', 'POST', 'Bristolian\ApiController\MailgunEmailHandler::handleIncomingEmail'],
 
 
+        ['/api/log/processor_run_records', 'GET', 'Bristolian\ApiController\Log::get_processor_run_records'],
 
         ['/api/login-status', 'GET', 'Bristolian\AppController\User::get_login_status'],
 

@@ -45,3 +45,11 @@ export interface RoomSourceLink {
     room_sourcelink_id: string;
 }
 
+// Bristolian\Model\ProcessorRunRecord
+export interface ProcessorRunRecord {
+    id: number;
+    debug_info: string;
+    processor_type: string;
+    created_at: DateTime;
+}
+

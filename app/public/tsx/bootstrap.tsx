@@ -13,6 +13,7 @@ import { MemeUploadPanel } from "./MemeUploadPanel";
 import { NotesPanel } from "./NotesPanel";
 import { NotificationRegistrationPanel } from "./NotificationRegistrationPanel";
 import { NotificationTestPanel } from "./NotificationTestPanel";
+import { ProcessorRunRecordPanel } from "./ProcessorRunRecordPanel";
 import { QrCodeGeneratorPanel } from "./QrCodeGenerator";
 import { RoomFilesPanel } from "./RoomFilesPanel";
 import { RoomFileUploadPanel } from "./RoomFileUploadPanel";
@@ -63,6 +64,15 @@ let panels: WidgetClassBinding[] = [
     {
         class: 'notification_test_panel',
         component: NotificationTestPanel
+    },
+
+    {
+        class: 'notification_test_panel',
+        component: NotificationTestPanel
+    },
+    {
+        class: 'processor_run_record_panel',
+        component: ProcessorRunRecordPanel,
     },
     {
         class: 'qr_code_generator_panel',

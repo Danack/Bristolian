@@ -225,6 +225,8 @@ class GenerateFiles
             \Bristolian\Model\IncomingEmail::class,
             \Bristolian\Model\RoomLink::class,
             \Bristolian\Model\RoomSourceLink::class,
+            \Bristolian\Model\ProcessorRunRecord::class,
+
         ];
 
         foreach ($types as $type) {
