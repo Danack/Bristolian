@@ -39,12 +39,32 @@ HTML;
         $deploy_template = <<< HTML
     <p>Deployed at :html_deploy_time</p>
     <p>Version is :html_version</p>
+
+    <p>Error log is :html_error_log</p>
 HTML;
+
+        $error_log = "Does not exist \o/";
+
+        if (file_exists("/var/app/data/git_pull_error.log") === true) {
+            $file_contents = file_get_contents("/var/app/data/git_pull_error.log");
+            if ($file_contents === false) {
+                $error_log = "Unable to read log file";
+            }
+            else {
+                $error_log = $file_contents;
+            }
+        }
+
 
         $params = [
             ':html_deploy_time' => $config->getDeployTime(),
-            ':html_version' => $config->getVersion()
+            ':html_version' => $config->getVersion(),
+            ':html_error_log' => $error_log,
         ];
+
+
+
+
         $html .= esprintf($deploy_template, $params);
         return $html;
     }

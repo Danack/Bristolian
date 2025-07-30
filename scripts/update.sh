@@ -35,12 +35,38 @@ if [ "$LOCAL" = "$REMOTE" ]; then
 elif [ "$LOCAL" = "$BASE" ]; then
     echo "Need to pull at ${timestamp}"
     git pull
+
+    git pull
+    if [ $? -ne 0 ]; then
+        {
+            echo "git pull failed at $(date)"
+            echo "Retrying git pull..."
+            git pull 2>&1
+        } > /var/home/Bristolian/Bristolian/data/git_pull_error.log
+
+      echo "Aborting deploy."
+    fi
+
     chown -R deployer:deployer *
     sh runProd.sh
     MESSAGE=$(git show -s --format=%s $REMOTE)
     echo "Should have deployed ${REMOTE} ${MESSAGE}"
+    rm /var/home/Bristolian/Bristolian/data/git_pull_error.log
 elif [ "$REMOTE" = "$BASE" ]; then
     echo "Need to push server changes."
+
+    {
+        echo "Project files have been edited on the server at $(date)"
+        echo "Cannot deploy"
+        git pull 2>&1
+    } > /var/home/Bristolian/Bristolian/data/git_pull_error.log
+
+
 else
     echo "Diverged"
+    {
+        echo "Project files have diverged on the server at $(date)"
+        echo "Cannot deploy"
+        git pull 2>&1
+    } > /var/home/Bristolian/Bristolian/data/git_pull_error.log
 fi
