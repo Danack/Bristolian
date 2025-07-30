@@ -5,7 +5,7 @@
 // generated with 'php cli.php generate:php_table_helper_classes'
 
 namespace Bristolian\Database;
-
+adasda
 class email_incoming
 {
     const INSERT = <<< SQL

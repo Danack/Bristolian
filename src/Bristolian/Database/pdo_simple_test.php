@@ -5,7 +5,7 @@
 // generated with 'php cli.php generate:php_table_helper_classes'
 
 namespace Bristolian\Database;
-
+adada
 class pdo_simple_test
 {
     const INSERT = <<< SQL

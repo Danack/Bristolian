@@ -5,7 +5,7 @@
 // generated with 'php cli.php generate:php_table_helper_classes'
 
 namespace Bristolian\Database;
-
+asdasd
 class user_auth_email_password
 {
     const INSERT = <<< SQL
