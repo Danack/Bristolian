@@ -5,7 +5,7 @@
 // generated with 'php cli.php generate:php_table_helper_classes'
 
 namespace Bristolian\Database;
-asdad
+
 class foi_requests
 {
     const INSERT = <<< SQL

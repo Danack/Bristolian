@@ -5,7 +5,7 @@
 // generated with 'php cli.php generate:php_table_helper_classes'
 
 namespace Bristolian\Database;
-adasd
+
 class sourcelink
 {
     const INSERT = <<< SQL
