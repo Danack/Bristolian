@@ -10,9 +10,10 @@ class ProcessorRunRecord
 
     public function __construct(
         public readonly int $id,
-        public readonly string $debug_info,
-        public readonly string $processor_type,
-        public readonly \DateTimeInterface $created_at
+        public readonly \DateTimeInterface $start_time,
+        public readonly \DateTimeInterface $end_time,
+        public readonly string $status,
+        public readonly string $task,
     ) {
     }
 }

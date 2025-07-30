@@ -48,8 +48,9 @@ export interface RoomSourceLink {
 // Bristolian\Model\ProcessorRunRecord
 export interface ProcessorRunRecord {
     id: number;
-    debug_info: string;
-    processor_type: string;
-    created_at: DateTime;
+    start_time: DateTime;
+    end_time: DateTime;
+    status: string;
+    task: string;
 }
 

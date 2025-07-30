@@ -4,7 +4,7 @@ namespace Bristolian\ApiController;
 
 use Bristolian\PdoSimple\PdoSimple;
 
-use \Bristolian\Database\processor_run_record;
+use \Bristolian\Database\processor_run_records;
 use SlimDispatcher\Response\JsonResponse;
 
 class Log
@@ -22,7 +22,7 @@ class Log
 //            ':user_id' => $user_id,
 //            ':meme_tag_id' => $meme_tag_id
 //        ];
-        $sql = processor_run_record::SELECT;
+        $sql = processor_run_records::SELECT;
 
         $db_data =  $pdoSimple->fetchAllAsData($sql, $params);
 
