@@ -8,7 +8,7 @@ namespace Bristolian\Database;
 
 class foi_requests
 {
-    const INSERT = <<< SQL
+    const INSERasdadT = <<< SQL
 insert into foi_requests (
     foi_request_id,
     description,
