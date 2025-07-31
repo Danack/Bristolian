@@ -109,7 +109,7 @@ HTML;
     }
 
 
-    public function renderProcessorLogWidget()
+    public function renderProcessorLogWidget(): string
     {
         $data = [];
 

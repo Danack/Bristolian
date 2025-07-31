@@ -4,7 +4,6 @@ namespace Bristolian\CliController;
 
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
-
 use Bristolian\Repo\EmailQueue\EmailQueue;
 
 function isOverXHoursAgo(int $hours, \DateTimeInterface $datetime): bool
@@ -44,8 +43,6 @@ class SystemInfo
     ) {
     }
 
-
-
     public function process_daily_system_info(): void
     {
         $callable = function () {
@@ -82,6 +79,10 @@ class SystemInfo
             }
         }
 
+        $run_id = $this->processorRunRecordRepo->startRun(
+            ProcessType::daily_system_info
+        );
+
         // Generate the system info email
         echo "Email generated, queueing to send.\n";
 
@@ -93,9 +94,10 @@ class SystemInfo
         );
 
         // Mark last run time.
-        $this->processorRunRecordRepo->markJustRun(
-            ProcessType::daily_system_info,
-            "no debug info"
+        $this->processorRunRecordRepo->setRunFinished(
+            $run_id
         );
+
+        echo "Fin.\n";
     }
 }

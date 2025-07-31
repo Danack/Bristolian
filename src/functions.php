@@ -1067,4 +1067,3 @@ function generateSystemInfoEmailContent(): string
 
     return $body;
 }
-

@@ -8,6 +8,7 @@ interface MoonAlertRunTimeRecorder
 //    const STATE_RUNNING = 'running';
     const STATE_FINISHED = 'finished';
 
+
     public function getLastRunTime(): \DateTimeInterface|null;
 
     public function startRun(): string;

@@ -320,6 +320,8 @@ class PdoSimple
      */
     public function fetchAllAsObject(string $query, array $params, string $classname)
     {
+        // TODO - this should be fetchAllAsType
+
         [$result, $statement] = $this->prepareAndExecute($query, $params);
 
         $data = $statement->fetchAll(PDO::FETCH_ASSOC);

@@ -53,5 +53,4 @@ class Debug
     {
         echo generateSystemInfoEmailContent();
     }
-
 }

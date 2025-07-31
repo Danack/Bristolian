@@ -42,8 +42,8 @@ function injectionParams() : InjectionParams
         \Bristolian\Repo\ProcessorRepo\ProcessorRepo::class =>
             \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::class,
 
-        Bristolian\Repo\RunTimeRecorderRepo\MoonAlertRunTimeRecorder::class =>
-            \Bristolian\Repo\RunTimeRecorderRepo\PdoMoonAlertRunTimeRecorder::class,
+//        Bristolian\Repo\RunTimeRecorderRepo\MoonAlertRunTimeRecorder::class =>
+//            \Bristolian\Repo\RunTimeRecorderRepo\PdoMoonAlertRunTimeRecorder::class,
 
         \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::class =>
             \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::class
