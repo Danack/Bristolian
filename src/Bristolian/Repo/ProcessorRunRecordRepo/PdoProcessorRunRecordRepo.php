@@ -111,10 +111,13 @@ SQL;
         $sql = processor_run_records::SELECT;
 
         if ($task_type !== null) {
-            $params[':task'] = $task_type->value;
+            $sql .= " where task = :task_type";
+            $params[':task_type'] = $task_type->value;
         }
 
-        $db_data =  $this->pdoSimple->fetchAllAsObject(
+        $sql .= " order by id desc limit 50";
+
+        $db_data =  $this->pdoSimple->fetchAllAsObjectConstructor(
             $sql,
             $params,
             ProcessorRunRecord::class

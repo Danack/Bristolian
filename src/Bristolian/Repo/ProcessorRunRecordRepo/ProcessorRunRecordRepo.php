@@ -20,8 +20,6 @@ interface ProcessorRunRecordRepo
 
     public function setRunFinished(string $id): void;
 
-//    public function markJustRun(string $id, string $debug_info): void;
-
     /**
      * @param ProcessType|null $task_type
      * @return \Bristolian\Model\ProcessorRunRecord[]

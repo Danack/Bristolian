@@ -3,9 +3,11 @@
 namespace Bristolian\Model;
 
 use Bristolian\FromArray;
+use Bristolian\ToArray;
 
 class ProcessorRunRecord
 {
+    use ToArray;
     use FromArray;
 
     public function __construct(

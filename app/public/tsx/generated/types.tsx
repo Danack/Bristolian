@@ -49,8 +49,15 @@ export interface RoomSourceLink {
 export interface ProcessorRunRecord {
     id: number;
     start_time: DateTime;
-    end_time: DateTime;
+    end_time: DateTime|null;
     status: string;
     task: string;
+}
+
+// Bristolian\Repo\ProcessorRepo\ProcessType
+export enum ProcessType {
+  daily_system_info = "daily_system_info",
+  email_send = "email_send",
+  moon_alert = "moon_alert",
 }
 

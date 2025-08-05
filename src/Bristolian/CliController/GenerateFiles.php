@@ -170,8 +170,18 @@ function generateInterfaceForClass(string $type): string
     $content .= "export interface $name {\n";
 
     foreach ($rc->getProperties() as $property) {
+        $nullable = false;
+
         $php_type = $property->getType();
         $php_type = (string)$php_type;
+
+//        var_dump($php_type);
+
+        if (str_starts_with($php_type, "?") === true) {
+            $php_type = ltrim($php_type, '?');
+            $nullable = true;
+        }
+
 
         if (strcasecmp($php_type, 'DateTimeImmutable') === 0 ||
             strcasecmp($php_type, 'DateTimeInterface') === 0 ||
@@ -183,8 +193,12 @@ function generateInterfaceForClass(string $type): string
             $php_type = "number";
         }
 
-        if (str_starts_with($php_type, '?') === true) {
-            $php_type = substr($php_type, 1) . "|null";
+//        if (str_starts_with($php_type, '?') === true) {
+//            $php_type = substr($php_type, 1) . "|null";
+//        }
+//
+        if ($nullable === true) {
+            $php_type .= "|null";
         }
 
         $content .= "    " . $property->getName() . ": " . $php_type . ";\n";
@@ -194,6 +208,67 @@ function generateInterfaceForClass(string $type): string
 
     return $content;
 }
+
+/**
+ * Function to generate TypeScript definition of an enum from a PHP
+ * Backed Enum class, so that data transferred from PHP to the front-end can be typed.
+ *
+ * Code is not unit tested as just not worth it currently.
+ *
+ * @codeCoverageIgnore
+ * @param class-string $type
+ * @return string
+ */
+function generateEnumForClass(string $type): string
+{
+    $content = '';
+
+    $rc = new \ReflectionClass($type);
+
+    $cases = getEnumCases($type);
+
+    $name = $rc->getShortName();
+    $content .= "// $type\n";
+    $content .= "export enum $name {\n";
+
+
+    // Iterate over all cases and print name and value
+    foreach ($cases as $case) {
+        if (is_string($case->value) === true) {
+            $content .= sprintf(
+                "  %s = \"%s\",\n",
+                $case->name,
+                $case->value
+            );
+        }
+        else if (is_int($case->value) === true) {
+            $content .= sprintf(
+                "  %s = %s,\n",
+                $case->name,
+                $case->value
+            );
+        }
+        else {
+            throw new \Exception("Unsupported type (neither string nor int) '" . var_export($case, true) . "'.");
+        }
+    }
+
+
+    $content .= "}\n";
+
+
+
+
+
+    return $content;
+}
+
+
+
+
+
+
+
 
 
 /**
@@ -226,11 +301,25 @@ class GenerateFiles
             \Bristolian\Model\RoomLink::class,
             \Bristolian\Model\RoomSourceLink::class,
             \Bristolian\Model\ProcessorRunRecord::class,
-
         ];
+
+
 
         foreach ($types as $type) {
             $content .= generateInterfaceForClass($type);
+            $content .= "\n";
+        }
+
+        /**
+         * @var $enums class-string[]
+         */
+        $enums = [
+            \Bristolian\Repo\ProcessorRepo\ProcessType::class
+        ];
+
+
+        foreach ($enums as $enum) {
+            $content .= generateEnumForClass($enum);
             $content .= "\n";
         }
 

@@ -3,8 +3,10 @@
 namespace Bristolian\CliController;
 
 use Bristolian\Repo\EmailQueue\EmailQueue;
+use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Service\EmailSender\EmailClient;
 use Mailgun\Mailgun;
+use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 
 /**
  * Placeholder code for sending emails.
@@ -25,7 +27,8 @@ class Email
 
     public function __construct(
         private EmailClient $emailClient,
-        private EmailQueue $emailQueue
+        private EmailQueue $emailQueue,
+        private ProcessorRunRecordRepo $processorRunRecordRepo,
     ) {
     }
 
@@ -77,12 +80,16 @@ class Email
 
     public function runInternal(): void
     {
+
+        $run_id = $this->processorRunRecordRepo->startRun(ProcessType::email_send);
+
+
         // get an email to process
         $email = $this->emailQueue->getEmailToSendAndUpdateState();
 
         if ($email === null) {
             echo "No email to send.\n";
-            return;
+            goto finish;
         }
 
         // try to send it
@@ -93,7 +100,7 @@ class Email
         if ($sent) {
             echo "Email sent.\n";
             $this->emailQueue->setEmailSent($email);
-            return;
+            goto finish;
         }
 
         if ($email->retries >= self::MAX_RETRIES) {
@@ -104,5 +111,8 @@ class Email
             echo "Email failed, will retry.\n";
             $this->emailQueue->setEmailToRetry($email);
         }
+
+finish:
+        $this->processorRunRecordRepo->setRunFinished($run_id);
     }
 }

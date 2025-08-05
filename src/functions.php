@@ -276,10 +276,11 @@ function convertToValue(mixed $value)
     }
     if (is_object($value) === true) {
         if ($value instanceof \DateTimeInterface) {
-            // Format as Atom time with microseconds
+            // Format as Atom time without microseconds
             return [
                 null,
-                $value->format("Y-m-d\TH:i:s.uP")
+//                $value->format("Y-m-d\TH:i:s.uP")
+                $value->format("Y-m-d\TH:i:sP")
             ];
         }
     }
@@ -288,7 +289,10 @@ function convertToValue(mixed $value)
         $values = [];
         foreach ($value as $key => $entry) {
             [$error, $value] = convertToValue($entry);
-            // TODO - why is error being ignored....
+
+            if ($error !== null) {
+                return [$error, null];
+            }
             $values[$key] = $value;
         }
 
@@ -1066,4 +1070,53 @@ function generateSystemInfoEmailContent(): string
     }
 
     return $body;
+}
+
+
+/**
+ * @param class-string<BackedEnum> $typeString
+ * @return array<BackedEnum>
+ */
+function getEnumCases(string $typeString): array
+{
+    // Check if the class exists
+    if (!class_exists($typeString)) {
+        throw new InvalidArgumentException("Class '$typeString' does not exist.");
+    }
+
+    // Use Reflection to inspect the class
+    $reflection = new ReflectionClass($typeString);
+
+    // Check if it's an enum
+    if (!$reflection->isEnum()) {
+        throw new InvalidArgumentException("Class '$typeString' is not an enum.");
+    }
+
+    // Get enum cases
+    return $cases = $typeString::cases();
+}
+/**
+ * @param class-string<BackedEnum> $typeString
+ * @return int[]|string[]
+ */
+function getEnumCaseValues(string $typeString): array
+{
+    // Check if the class exists
+    if (!class_exists($typeString)) {
+        throw new InvalidArgumentException("Class '$typeString' does not exist.");
+    }
+
+    // Use Reflection to inspect the class
+    $reflection = new ReflectionClass($typeString);
+
+    // Check if it's an enum
+    if (!$reflection->isEnum()) {
+        throw new InvalidArgumentException("Class '$typeString' is not an enum.");
+    }
+
+    // Get enum cases
+    $cases = $typeString::cases();
+
+    // Convert cases to array of names (or values, depending on your needs)
+    return array_map(fn($case) => $case->value, $cases);
 }

@@ -83,7 +83,10 @@ function apiInjectionParams() : InjectionParams
             \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::class,
 
         \Bristolian\Service\Mailgun\PayloadValidator::class =>
-            \Bristolian\Service\Mailgun\StandardPayloadValidator::class
+            \Bristolian\Service\Mailgun\StandardPayloadValidator::class,
+
+        \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::class =>
+            \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::class
     ];
     // Delegate the creation of types to callables.
     $delegates = [
