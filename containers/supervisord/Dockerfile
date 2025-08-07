@@ -18,16 +18,12 @@ RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee -a /
 
 WORKDIR /var/app
 
-# RUN mkdir -p /var/log/supervisor
+RUN mkdir -p /var/log/supervisor
 
-#RUN chown 0775 /var/app/data/supervisord
+#COPY supervisord.conf /etc/supervisor/supervisord.conf
+#COPY tasks/*.conf /etc/supervisor/conf.d/
 
-#RUN useradd -G tty supervisord
-
-COPY supervisord.conf /etc/supervisor/supervisord.conf
-COPY tasks/*.conf /etc/supervisor/conf.d/
-
-CMD tail -f README.md
-#CMD sh /var/app/containers/supervisord/entrypoint.sh
+# CMD tail -f README.md
+CMD sh /var/app/containers/supervisord/entrypoint.sh
 
 
