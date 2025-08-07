@@ -2,7 +2,7 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\DataType\TagParam;
+use Bristolian\Parameters\TagParams;
 use Bristolian\Repo\TagRepo\TagRepo;
 use SlimDispatcher\Response\RedirectResponse;
 use VarMap\VarMap;
@@ -57,7 +57,7 @@ HTML;
 
     public function process_add(TagRepo $tagRepo, VarMap $varMap): RedirectResponse
     {
-        $tagParam = TagParam::createFromVarMap($varMap);
+        $tagParam = TagParams::createFromVarMap($varMap);
 
         $tag = $tagRepo->createTag($tagParam);
 

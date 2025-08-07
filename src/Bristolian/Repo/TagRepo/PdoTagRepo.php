@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\TagRepo;
 
-use Bristolian\DataType\TagParam;
+use Bristolian\Parameters\TagParams;
 use Bristolian\Model\Tag;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
@@ -13,7 +13,7 @@ class PdoTagRepo implements TagRepo
     {
     }
 
-    public function createTag(TagParam $tagParam): Tag
+    public function createTag(TagParams $tagParam): Tag
     {
         $uuid = Uuid::uuid7();
         $userSQL = <<< SQL

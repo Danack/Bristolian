@@ -2,7 +2,7 @@
 
 namespace Bristolian\Model;
 
-use Bristolian\DataType\TagParam;
+use Bristolian\Parameters\TagParams;
 
 class Tag
 {
@@ -10,7 +10,7 @@ class Tag
     private string $text;
     private string $description;
 
-    public static function fromParam(string $uuid, TagParam $tagParam): self
+    public static function fromParam(string $uuid, TagParams $tagParam): self
     {
         $instance = new self();
 

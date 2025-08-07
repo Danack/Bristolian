@@ -5,7 +5,7 @@ namespace BristolianTest\Repo\RoomSourceLinkRepo;
 use Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
-use Bristolian\DataType\SourceLinkParam;
+use Bristolian\Parameters\SourceLinkParam;
 
 /**
  * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo

@@ -2,7 +2,7 @@
 
 namespace Bristolian\Model;
 
-use Bristolian\DataType\PropertyType\BasicString;
+use Bristolian\Parameters\PropertyType\BasicString;
 use Bristolian\Types\DocumentType;
 use Bristolian\Types\UserList;
 use DataType\Create\CreateArrayOfTypeFromArray;

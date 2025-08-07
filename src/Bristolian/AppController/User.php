@@ -2,8 +2,8 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\DataType\MemeTagDeleteParam;
-use Bristolian\DataType\MemeTagParam;
+use Bristolian\Parameters\MemeTagDeleteParams;
+use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Repo\MemeTagRepo\MemeTagRepo;
 use Bristolian\Session\AppSessionManager;
@@ -76,7 +76,7 @@ class User
         Request $request,
         MemeTagRepo $memeTagRepo
     ): StubResponse {
-        $memeTagParam = MemeTagParam::createFromRequest($request);
+        $memeTagParam = MemeTagParams::createFromRequest($request);
 
 //        if ($appSession->isLoggedIn() !== true) {
 //            $data = ['not logged in' => true];
@@ -112,7 +112,7 @@ class User
 //            return new JsonResponse($data, [], 400);
 //        }
 
-        $memeTagDeleteParam = MemeTagDeleteParam::createFromRequest($request);
+        $memeTagDeleteParam = MemeTagDeleteParams::createFromRequest($request);
 
         $memeTagRepo->deleteTagForUser(
             $appSession->getUserId(),

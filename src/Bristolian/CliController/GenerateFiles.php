@@ -345,15 +345,15 @@ class GenerateFiles
             'MEME_FILE_UPLOAD_FORM_NAME' => \Bristolian\AppController\MemeUpload::MEME_FILE_UPLOAD_FORM_NAME,
             'ROOM_FILE_UPLOAD_FORM_NAME' => \Bristolian\AppController\Rooms::ROOM_FILE_UPLOAD_FORM_NAME,
 
-            'SOURCELINK_JSON_MINIMUM_LENGTH' => \Bristolian\DataType\SourceLinkHighlightsJson::MINIMUM_LENGTH,
-            'SOURCELINK_JSON_MAXIMUM_LENGTH' => \Bristolian\DataType\SourceLinkHighlightsJson::MAXIMUM_LENGTH,
+            'SOURCELINK_JSON_MINIMUM_LENGTH' => \Bristolian\Parameters\SourceLinkHighlightsJson::MINIMUM_LENGTH,
+            'SOURCELINK_JSON_MAXIMUM_LENGTH' => \Bristolian\Parameters\SourceLinkHighlightsJson::MAXIMUM_LENGTH,
 
-            'SOURCELINK_TITLE_MINIMUM_LENGTH' => \Bristolian\DataType\PropertyType\SourceLinkTitle::MINIMUM_LENGTH,
-            'SOURCELINK_TITLE_MAXIMUM_LENGTH' => \Bristolian\DataType\PropertyType\SourceLinkTitle::MAXIMUM_LENGTH,
+            'SOURCELINK_TITLE_MINIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\SourceLinkTitle::MINIMUM_LENGTH,
+            'SOURCELINK_TITLE_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\SourceLinkTitle::MAXIMUM_LENGTH,
 
-            'SOURCELINK_TEXT_MAXIMUM_LENGTH' => \Bristolian\DataType\PropertyType\SourceLinkText::MAXIMUM_LENGTH,
+            'SOURCELINK_TEXT_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\SourceLinkText::MAXIMUM_LENGTH,
 
-            'SOURCE_LINK_MAX_PAGES' => \Bristolian\DataType\PropertyType\SourceLinkPage::MAX_PAGES,
+            'SOURCE_LINK_MAX_PAGES' => \Bristolian\Parameters\PropertyType\SourceLinkPage::MAX_PAGES,
         ];
 
         $string_template = <<< TEMPLATE

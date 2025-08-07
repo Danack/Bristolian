@@ -3,10 +3,10 @@
 namespace BristolianTest\DataType;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\DataType\Table;
+use Bristolian\Parameters\Table;
 
 /**
- * @covers \Bristolian\DataType\Table
+ * @covers \Bristolian\Parameters\Table
  */
 class TableTest extends BaseTestCase
 {

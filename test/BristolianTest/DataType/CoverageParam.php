@@ -6,17 +6,17 @@ use DataType\DataType;
 use DataType\Create\CreateFromVarMap;
 use DataType\GetInputTypesFromAttributes;
 
-use Bristolian\DataType\PropertyType\SourceLinkPositionValue;
-use Bristolian\DataType\PropertyType\BasicString;
-use Bristolian\DataType\PropertyType\Url;
-use Bristolian\DataType\PropertyType\Username;
-use Bristolian\DataType\PropertyType\BasicDateTime;
-use Bristolian\DataType\PropertyType\EmailAddress;
-use Bristolian\DataType\PropertyType\LinkDescription;
-use Bristolian\DataType\PropertyType\LinkTitle;
-use Bristolian\DataType\PropertyType\WebPushEndPoint;
-use Bristolian\DataType\PropertyType\WebPushExpirationTime;
-use Bristolian\DataType\PropertyType\PasswordOrRandom;
+use Bristolian\Parameters\PropertyType\SourceLinkPositionValue;
+use Bristolian\Parameters\PropertyType\BasicString;
+use Bristolian\Parameters\PropertyType\Url;
+use Bristolian\Parameters\PropertyType\Username;
+use Bristolian\Parameters\PropertyType\BasicDateTime;
+use Bristolian\Parameters\PropertyType\EmailAddress;
+use Bristolian\Parameters\PropertyType\LinkDescription;
+use Bristolian\Parameters\PropertyType\LinkTitle;
+use Bristolian\Parameters\PropertyType\WebPushEndPoint;
+use Bristolian\Parameters\PropertyType\WebPushExpirationTime;
+use Bristolian\Parameters\PropertyType\PasswordOrRandom;
 
 /**
  * This is a class solely used for adding coverage to

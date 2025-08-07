@@ -2,7 +2,7 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\DataType\QRData;
+use Bristolian\Parameters\Params;
 use Bristolian\Response\SVGResponse;
 use chillerlan\QRCode\QRCode as QRCodeGenerator;
 use chillerlan\QRCode\QROptions;
@@ -12,7 +12,7 @@ class QRCode
 {
     public function get(VarMap $varMap): SVGResponse
     {
-        $qrData = QRData::createFromVarMap($varMap);
+        $qrData = Params::createFromVarMap($varMap);
 
 //        https://www.qrcode.com/en/about/version.html#versionPage1_10
 

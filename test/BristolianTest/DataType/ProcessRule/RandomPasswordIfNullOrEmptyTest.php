@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace BristolianTest\DataType\ProcessRule;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\DataType\ProcessRule\RandomPasswordIfNullOrEmpty;
+use Bristolian\Parameters\ProcessRule\RandomPasswordIfNullOrEmpty;
 use DataType\DataStorage\TestArrayDataStorage;
 use DataType\ProcessedValues;
 
@@ -14,7 +14,7 @@ use DataType\ProcessedValues;
 class RandomPasswordIfNullOrEmptyTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\DataType\ProcessRule\RandomPasswordIfNullOrEmpty
+     * @covers \Bristolian\Parameters\ProcessRule\RandomPasswordIfNullOrEmpty
      */
     public function testValidationWorks()
     {
@@ -45,7 +45,7 @@ class RandomPasswordIfNullOrEmptyTest extends BaseTestCase
 
 
     /**
-     * @covers \Bristolian\DataType\ProcessRule\RandomPasswordIfNullOrEmpty
+     * @covers \Bristolian\Parameters\ProcessRule\RandomPasswordIfNullOrEmpty
      */
     public function testDescription()
     {

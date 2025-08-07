@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Bristolian\DataType\ProcessRule;
+namespace Bristolian\Parameters\ProcessRule;
 
 use DataType\DataStorage\DataStorage;
 use DataType\Messages;

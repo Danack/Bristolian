@@ -2,13 +2,13 @@
 
 namespace BristolianTest\DataType;
 
-use Bristolian\DataType\PropertyType\BasicString;
+use Bristolian\Parameters\PropertyType\BasicString;
 use BristolianTest\BaseTestCase;
-use Bristolian\DataType\MemeTagDeleteParam;
+use Bristolian\Parameters\MemeTagDeleteParams;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\DataType\MemeTagDeleteParam
+ * @covers \Bristolian\Parameters\MemeTagDeleteParams
  */
 class MemeTagDeleteParamTest extends BaseTestCase
 {
@@ -22,7 +22,7 @@ class MemeTagDeleteParamTest extends BaseTestCase
             'meme_tag_id' => $meme_tag_id,
         ];
 
-        $deleteParam = MemeTagDeleteParam::createFromVarMap(new ArrayVarMap($params));
+        $deleteParam = MemeTagDeleteParams::createFromVarMap(new ArrayVarMap($params));
 
         $this->assertSame($meme_id, $deleteParam->meme_id);
         $this->assertSame($meme_tag_id, $deleteParam->meme_tag_id);

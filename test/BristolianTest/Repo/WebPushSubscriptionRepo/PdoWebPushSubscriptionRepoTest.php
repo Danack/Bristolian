@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace BristolianTest\Repo\WebPushSubscriptionRepo;
 
-use Bristolian\DataType\PropertyType\BasicString;
-use Bristolian\DataType\CreateUserParams;
-use Bristolian\DataType\PropertyType\WebPushEndPoint;
-use Bristolian\DataType\WebPushSubscriptionParam;
+use Bristolian\Parameters\PropertyType\BasicString;
+use Bristolian\Parameters\CreateUserParams;
+use Bristolian\Parameters\PropertyType\WebPushEndPoint;
+use Bristolian\Parameters\WebPushSubscriptionParams;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use VarMap\ArrayVarMap;
@@ -32,7 +32,7 @@ class PdoWebPushSubscriptionRepoTest extends BaseTestCase
         $expiration_time = 'some time string';
         $raw = 'Some raw WebPushSubscriptionParam';
 
-        $webPushSubParams = WebPushSubscriptionParam::createFromArray([
+        $webPushSubParams = WebPushSubscriptionParams::createFromArray([
             'endpoint' => $endpoint,
             'expirationTime' => $expiration_time,
             'raw' => $raw
@@ -62,7 +62,7 @@ class PdoWebPushSubscriptionRepoTest extends BaseTestCase
         $expiration_time = 'some time string';
         $raw = 'Some raw WebPushSubscriptionParam';
 
-        $webPushSubParams = WebPushSubscriptionParam::createFromArray([
+        $webPushSubParams = WebPushSubscriptionParams::createFromArray([
             'endpoint' => $endpoint,
             'expirationTime' => $expiration_time,
             'raw' => $raw

@@ -2,16 +2,16 @@
 
 namespace BristolianTest\DataType;
 
-use Bristolian\DataType\PropertyType\BasicDateTime;
-use Bristolian\DataType\PropertyType\BasicString;
+use Bristolian\Parameters\PropertyType\BasicDateTime;
+use Bristolian\Parameters\PropertyType\BasicString;
 use BristolianTest\BaseTestCase;
-use Bristolian\DataType\Migration;
+use Bristolian\Parameters\Migration;
 use DataType\Create\CreateFromArray;
 use Safe\DateTimeImmutable;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\DataType\Migration
+ * @covers \Bristolian\Parameters\Migration
  */
 class MigrationTest extends BaseTestCase
 {

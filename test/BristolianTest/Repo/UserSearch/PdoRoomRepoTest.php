@@ -2,7 +2,7 @@
 
 namespace BristolianTest\Repo\UserSearch;
 
-use Bristolian\DataType\CreateUserParams;
+use Bristolian\Parameters\CreateUserParams;
 use Bristolian\Model\Room;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use Bristolian\Repo\DbInfo\PdoDbInfo;

@@ -2,13 +2,13 @@
 
 namespace Bristolian\Repo\MemeTagRepo;
 
-use Bristolian\DataType\MemeTagParam;
+use Bristolian\Parameters\MemeTagParams;
 
 interface MemeTagRepo
 {
     public function addTagForMeme(
-        string $user_id,
-        MemeTagParam $memeTagParam,
+        string        $user_id,
+        MemeTagParams $memeTagParam,
     ): void;
 
     /**

@@ -107,6 +107,7 @@ services:
       default_network:
     restart: always
     volumes:
+      - ./data/supervisor:/var/log/supervisor
       - .:/var/app
   varnish:
     build: containers/varnish

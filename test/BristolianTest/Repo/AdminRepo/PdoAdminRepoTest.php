@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\AdminRepo;
 
-use Bristolian\DataType\CreateUserParams;
+use Bristolian\Parameters\CreateUserParams;
 use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\BaseTestCase;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;

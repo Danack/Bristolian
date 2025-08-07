@@ -7,7 +7,7 @@ namespace Bristolian\AppController;
 use Bristolian\App;
 use Bristolian\Config\Config;
 use Bristolian\CSPViolation\CSPViolationStorage;
-use Bristolian\DataType\Migration;
+use Bristolian\Parameters\Migration;
 use Bristolian\Repo\DbInfo\DbInfo;
 use Bristolian\Service\DeployLogRenderer\DeployLogRenderer;
 use Bristolian\Session\UserSession;

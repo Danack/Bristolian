@@ -3,11 +3,11 @@
 namespace BristolianTest\DataType;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\DataType\DebugParam;
+use Bristolian\Parameters\DebugParams;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\DataType\DebugParam
+ * @covers \Bristolian\Parameters\DebugParams
  */
 class DebugParamTest extends BaseTestCase
 {
@@ -21,7 +21,7 @@ class DebugParamTest extends BaseTestCase
             'detail' => $detail,
         ];
 
-        $debugParam = DebugParam::createFromVarMap(new ArrayVarMap($params));
+        $debugParam = DebugParams::createFromVarMap(new ArrayVarMap($params));
 
         $this->assertSame($message, $debugParam->message);
         $this->assertSame($detail, $debugParam->detail);

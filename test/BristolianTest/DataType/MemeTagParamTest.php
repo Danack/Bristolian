@@ -2,13 +2,13 @@
 
 namespace BristolianTest\DataType;
 
-use Bristolian\DataType\PropertyType\BasicString;
+use Bristolian\Parameters\PropertyType\BasicString;
 use BristolianTest\BaseTestCase;
-use Bristolian\DataType\MemeTagParam;
+use Bristolian\Parameters\MemeTagParams;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\DataType\MemeTagParam
+ * @covers \Bristolian\Parameters\MemeTagParams
  */
 class MemeTagParamTest extends BaseTestCase
 {
@@ -24,7 +24,7 @@ class MemeTagParamTest extends BaseTestCase
             'text' => $text,
         ];
 
-        $tagParam = MemeTagParam::createFromVarMap(new ArrayVarMap($params));
+        $tagParam = MemeTagParams::createFromVarMap(new ArrayVarMap($params));
 
         $this->assertSame($meme_id, $tagParam->meme_id);
         $this->assertSame($type, $tagParam->type);

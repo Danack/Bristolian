@@ -5,7 +5,7 @@ namespace Functions;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Response;
-use Bristolian\DataType\LinkParam;
+use Bristolian\Parameters\LinkParam;
 use VarMap\ArrayVarMap;
 use DataType\Exception\ValidationException;
 use function convertToValue;

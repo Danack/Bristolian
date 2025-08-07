@@ -3,7 +3,7 @@
 declare(strict_types = 1);
 
 
-use Bristolian\DataType\PropertyType\BasicString;
+use Bristolian\Parameters\PropertyType\BasicString;
 use Bristolian\Repo\FileStorageInfoRepo\FileType;
 
 function getAllQueries_8(): array

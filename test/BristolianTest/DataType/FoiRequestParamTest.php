@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\DataType;
 
-use Bristolian\DataType\FoiRequestParam;
+use Bristolian\Parameters\FoiRequestParams;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
 
@@ -14,7 +14,7 @@ use BristolianTest\BaseTestCase;
 class FoiRequestParamTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\DataType\FoiRequestParam
+     * @covers \Bristolian\Parameters\FoiRequestParams
      */
     public function testWorks()
     {
@@ -30,7 +30,7 @@ class FoiRequestParamTest extends BaseTestCase
             'url' => $url,
         ];
 
-        $foiRequestParam = FoiRequestParam::createFromVarMap(new ArrayVarMap($data));
+        $foiRequestParam = FoiRequestParams::createFromVarMap(new ArrayVarMap($data));
 
         $this->assertSame($text, $foiRequestParam->getText());
         $this->assertSame($url, $foiRequestParam->getUrl());

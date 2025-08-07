@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\TagRepo;
 
-use Bristolian\DataType\TagParam;
+use Bristolian\Parameters\TagParams;
 use Bristolian\Model\Tag;
 
 interface TagRepo
@@ -13,5 +13,5 @@ interface TagRepo
     public function getAllTags(): array;
 
 
-    public function createTag(TagParam $tagParam): Tag;
+    public function createTag(TagParams $tagParam): Tag;
 }

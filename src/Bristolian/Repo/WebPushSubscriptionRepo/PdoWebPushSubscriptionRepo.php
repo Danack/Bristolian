@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\WebPushSubscriptionRepo;
 
-use Bristolian\DataType\WebPushSubscriptionParam;
+use Bristolian\Parameters\WebPushSubscriptionParams;
 use Bristolian\Model\UserWebPushSubscription;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
@@ -58,9 +58,9 @@ SQL;
      * @throws UserConstraintFailedException
      */
     public function save(
-        string $user_id,
-        WebPushSubscriptionParam $webPushSubscriptionParam,
-        string $raw
+        string                    $user_id,
+        WebPushSubscriptionParams $webPushSubscriptionParam,
+        string                    $raw
     ): void {
 
         $sql = <<< SQL

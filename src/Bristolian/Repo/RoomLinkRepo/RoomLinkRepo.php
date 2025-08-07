@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\RoomLinkRepo;
 
-use Bristolian\DataType\LinkParam;
+use Bristolian\Parameters\LinkParam;
 use Bristolian\Model\RoomLink;
 
 /**

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\AppController;
 
-use Bristolian\DataType\DebugParam;
+use Bristolian\Parameters\DebugParams;
 use Bristolian\MarkdownRenderer\MarkdownRenderer;
 use Bristolian\Page;
 use Bristolian\SiteHtml\PageStubResponseGenerator;
@@ -410,7 +410,7 @@ HTML;
         return $markdownRenderer->renderFile($fullPath);
     }
 
-    public function experimental_debug_param(DebugParam $debugParam): string
+    public function experimental_debug_param(DebugParams $debugParam): string
     {
         return "Hello world: " . $debugParam->message;
     }

@@ -2,7 +2,7 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\DataType\FoiRequestParam;
+use Bristolian\Parameters\FoiRequestParams;
 use Bristolian\Repo\FoiRequestRepo\FoiRequestRepo;
 use SlimDispatcher\Response\RedirectResponse;
 use VarMap\VarMap;
@@ -58,7 +58,7 @@ HTML;
 
     public function process_add(FoiRequestRepo $foiRequestRepo, VarMap $varMap): RedirectResponse
     {
-        $foiRequestParam = FoiRequestParam::createFromVarMap($varMap);
+        $foiRequestParam = FoiRequestParams::createFromVarMap($varMap);
 
         $tag = $foiRequestRepo->createFoiRequest($foiRequestParam);
 

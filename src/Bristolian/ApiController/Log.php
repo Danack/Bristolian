@@ -8,7 +8,7 @@ use \Bristolian\Database\processor_run_records;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use SlimDispatcher\Response\JsonResponse;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
-use Bristolian\DataType\ProcessorRunRecordTypeParam;
+use Bristolian\Parameters\ProcessorRunRecordTypeParam;
 use VarMap\VarMap;
 
 class Log

@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\RoomSourceLinkRepo;
 
-use Bristolian\DataType\SourceLinkParam;
+use Bristolian\Parameters\SourceLinkParam;
 use Bristolian\Model\RoomSourceLink;
 
 interface RoomSourceLinkRepo

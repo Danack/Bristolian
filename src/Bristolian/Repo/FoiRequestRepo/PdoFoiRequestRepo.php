@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\FoiRequestRepo;
 
-use Bristolian\DataType\FoiRequestParam;
+use Bristolian\Parameters\FoiRequestParams;
 use Bristolian\Model\FoiRequest;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
@@ -35,7 +35,7 @@ SQL;
         );
     }
 
-    public function createFoiRequest(FoiRequestParam $foiRequestParam): FoiRequest
+    public function createFoiRequest(FoiRequestParams $foiRequestParam): FoiRequest
     {
         $uuid = Uuid::uuid7();
         $userSQL = <<< SQL

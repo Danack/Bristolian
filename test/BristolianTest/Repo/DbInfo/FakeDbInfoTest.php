@@ -5,7 +5,7 @@ namespace BristolianTest\Repo\DbInfo;
 use Bristolian\Repo\DbInfo\FakeDbInfo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
-use Bristolian\DataType\Migration;
+use Bristolian\Parameters\Migration;
 
 /**
  * @coversNothing

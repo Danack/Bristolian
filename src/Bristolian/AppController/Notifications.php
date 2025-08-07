@@ -2,7 +2,7 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\DataType\WebPushSubscriptionParam;
+use Bristolian\Parameters\WebPushSubscriptionParams;
 use Bristolian\JsonInput\JsonInput;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Session\UserSession;
@@ -36,7 +36,7 @@ class Notifications
 //        }
 
         [$webPushSubscriptionParam, $validation_problems] =
-        WebPushSubscriptionParam::createOrErrorFromArray($jsonInput->getData());
+        WebPushSubscriptionParams::createOrErrorFromArray($jsonInput->getData());
 
         if ($errorResponse = createErrorJsonResponse($validation_problems)) {
             return $errorResponse;

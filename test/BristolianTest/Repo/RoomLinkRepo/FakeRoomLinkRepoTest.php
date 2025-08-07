@@ -2,7 +2,7 @@
 
 namespace BristolianTest\Repo\RoomLinkRepo;
 
-use Bristolian\DataType\LinkParam;
+use Bristolian\Parameters\LinkParam;
 use Bristolian\Model\RoomLink;
 use Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo;
 use BristolianTest\BaseTestCase;

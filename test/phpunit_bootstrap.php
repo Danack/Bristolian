@@ -66,7 +66,7 @@ if ($user === null) {
         'password' => 'testing',
     ];
 
-    $createUserParams = \Bristolian\DataType\CreateUserParams::createFromArray($data);
+    $createUserParams = \Bristolian\Parameters\CreateUserParams::createFromArray($data);
     $pdoAdminRepo->addUser($createUserParams);
 }
 

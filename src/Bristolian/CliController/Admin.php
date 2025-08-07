@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\CliController;
 
-use Bristolian\DataType\CreateUserParams;
+use Bristolian\Parameters\CreateUserParams;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\AdminRepo\DuplicateEntryException;
 use VarMap\VarMap;

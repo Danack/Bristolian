@@ -3,10 +3,10 @@
 namespace BristolianTest\DataType;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\DataType\WebPushSubscriptionParam;
+use Bristolian\Parameters\WebPushSubscriptionParams;
 
 /**
- * @covers \Bristolian\DataType\WebPushSubscriptionParam
+ * @covers \Bristolian\Parameters\WebPushSubscriptionParams
  */
 class WebPushSubscriptionParamTest extends BaseTestCase
 {
@@ -30,7 +30,7 @@ class WebPushSubscriptionParamTest extends BaseTestCase
             "expirationTime" => $expiration_time,
             'raw' => $raw
         ];
-        $params = WebPushSubscriptionParam::createFromArray($data);
+        $params = WebPushSubscriptionParams::createFromArray($data);
 
         $this->assertSame($endpoint, $params->getEndpoint());
         $this->assertSame($expiration_time, $params->getExpirationTime());
@@ -57,7 +57,7 @@ class WebPushSubscriptionParamTest extends BaseTestCase
             "expirationTime" => $expiration_time,
             'raw' => $raw
         ];
-        $params = WebPushSubscriptionParam::createFromArray($data);
+        $params = WebPushSubscriptionParams::createFromArray($data);
 
         $this->assertSame($endpoint, $params->getEndpoint());
         $this->assertSame($expiration_time, $params->getExpirationTime());

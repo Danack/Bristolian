@@ -2,7 +2,7 @@
 
 namespace Bristolian\Model;
 
-use Bristolian\DataType\FoiRequestParam;
+use Bristolian\Parameters\FoiRequestParams;
 
 class FoiRequest
 {
@@ -27,7 +27,7 @@ class FoiRequest
         return $instance;
     }
 
-    public static function fromParam(string $uuid, FoiRequestParam $foiParam): self
+    public static function fromParam(string $uuid, FoiRequestParams $foiParam): self
     {
         return self::create(
             $uuid,

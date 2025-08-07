@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\DataType;
 
-use Bristolian\DataType\CreateUserParams;
+use Bristolian\Parameters\CreateUserParams;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
 
@@ -14,7 +14,7 @@ use BristolianTest\BaseTestCase;
 class CreateUserParamsTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\DataType\CreateUserParams
+     * @covers \Bristolian\Parameters\CreateUserParams
      */
     public function testWorks()
     {

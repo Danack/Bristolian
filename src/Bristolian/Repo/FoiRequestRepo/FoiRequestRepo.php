@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\FoiRequestRepo;
 
-use Bristolian\DataType\FoiRequestParam;
+use Bristolian\Parameters\FoiRequestParams;
 use Bristolian\Model\FoiRequest;
 
 interface FoiRequestRepo
@@ -13,5 +13,5 @@ interface FoiRequestRepo
     public function getAllFoiRequests(): array;
 
 
-    public function createFoiRequest(FoiRequestParam $foiRequestParam): FoiRequest;
+    public function createFoiRequest(FoiRequestParams $foiRequestParam): FoiRequest;
 }

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\DataType;
 
-use Bristolian\DataType\LinkParam;
+use Bristolian\Parameters\LinkParam;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
 
@@ -14,7 +14,7 @@ use BristolianTest\BaseTestCase;
 class LinkParamTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\DataType\LinkParam
+     * @covers \Bristolian\Parameters\LinkParam
      */
     public function testWorks()
     {

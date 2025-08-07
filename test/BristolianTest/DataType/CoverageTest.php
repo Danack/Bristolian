@@ -4,15 +4,15 @@ declare(strict_types = 1);
 
 namespace BristolianTest\DataType;
 
-use Bristolian\DataType\PropertyType\EmailAddress;
-use Bristolian\DataType\FoiRequestParam;
+use Bristolian\Parameters\PropertyType\EmailAddress;
+use Bristolian\Parameters\FoiRequestParams;
 use Safe\DateTimeImmutable;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
 
-use Bristolian\DataType\PropertyType\PasswordOrRandom;
-use Bristolian\DataType\QRData;
-use Bristolian\DataType\Table;
+use Bristolian\Parameters\PropertyType\PasswordOrRandom;
+use Bristolian\Parameters\Params;
+use Bristolian\Parameters\Table;
 
 /**
  * @coversNothing
@@ -20,17 +20,17 @@ use Bristolian\DataType\Table;
 class CoverageTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\DataType\PropertyType\SourceLinkPositionValue
-     * @covers \Bristolian\DataType\PropertyType\BasicString
-     * @covers \Bristolian\DataType\PropertyType\BasicDateTime
-     * @covers \Bristolian\DataType\PropertyType\EmailAddress
-     * @covers \Bristolian\DataType\PropertyType\LinkDescription
-     * @covers \Bristolian\DataType\PropertyType\LinkTitle
-     * @covers \Bristolian\DataType\PropertyType\Url
-     * @covers \Bristolian\DataType\PropertyType\Username
-     * @covers \Bristolian\DataType\PropertyType\WebPushEndPoint
-     * @covers \Bristolian\DataType\PropertyType\WebPushExpirationTime
-     * @covers \Bristolian\DataType\PropertyType\PasswordOrRandom
+     * @covers \Bristolian\Parameters\PropertyType\SourceLinkPositionValue
+     * @covers \Bristolian\Parameters\PropertyType\BasicString
+     * @covers \Bristolian\Parameters\PropertyType\BasicDateTime
+     * @covers \Bristolian\Parameters\PropertyType\EmailAddress
+     * @covers \Bristolian\Parameters\PropertyType\LinkDescription
+     * @covers \Bristolian\Parameters\PropertyType\LinkTitle
+     * @covers \Bristolian\Parameters\PropertyType\Url
+     * @covers \Bristolian\Parameters\PropertyType\Username
+     * @covers \Bristolian\Parameters\PropertyType\WebPushEndPoint
+     * @covers \Bristolian\Parameters\PropertyType\WebPushExpirationTime
+     * @covers \Bristolian\Parameters\PropertyType\PasswordOrRandom
      *
      *
      *

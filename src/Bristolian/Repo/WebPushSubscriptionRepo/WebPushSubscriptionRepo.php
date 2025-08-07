@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\WebPushSubscriptionRepo;
 
-use Bristolian\DataType\WebPushSubscriptionParam;
+use Bristolian\Parameters\WebPushSubscriptionParams;
 
 interface WebPushSubscriptionRepo
 {
@@ -13,8 +13,8 @@ interface WebPushSubscriptionRepo
     public function getUserSubscriptions(string $username): array;
 
     public function save(
-        string $user_id,
-        WebPushSubscriptionParam $webPushSubscriptionParam,
-        string $raw
+        string                    $user_id,
+        WebPushSubscriptionParams $webPushSubscriptionParam,
+        string                    $raw
     ): void;
 }

@@ -2,7 +2,7 @@
 
 namespace BristolianTest\Repo\DbInfo;
 
-use Bristolian\DataType\Migration;
+use Bristolian\Parameters\Migration;
 use Bristolian\Repo\DbInfo\PdoDbInfo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;

@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\SourceLinkRepo;
 
-use Bristolian\DataType\SourceLinkHighlightParam;
+use Bristolian\Parameters\SourceLinkHighlightParam;
 
 interface SourceLinkRepo
 {

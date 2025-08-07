@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\DataType;
 
-use Bristolian\DataType\TagParam;
+use Bristolian\Parameters\TagParams;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
 
@@ -14,7 +14,7 @@ use BristolianTest\BaseTestCase;
 class TagParamTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\DataType\TagParam
+     * @covers \Bristolian\Parameters\TagParams
      */
     public function testWorks()
     {
@@ -27,7 +27,7 @@ class TagParamTest extends BaseTestCase
             'description' => $description,
         ];
 
-        $TagParam = TagParam::createFromVarMap(new ArrayVarMap($data));
+        $TagParam = TagParams::createFromVarMap(new ArrayVarMap($data));
 
         $this->assertSame($text, $TagParam->text);
         $this->assertSame($description, $TagParam->description);

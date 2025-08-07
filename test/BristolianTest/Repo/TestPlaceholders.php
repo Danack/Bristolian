@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo;
 
 use Bristolian\Data\ContentPolicyViolationReport;
-use Bristolian\DataType\CreateUserParams;
+use Bristolian\Parameters\CreateUserParams;
 use Bristolian\JsonInput\JsonInput;
 use Bristolian\Model\AdminUser;
 use Bristolian\Model\IncomingEmailParam;

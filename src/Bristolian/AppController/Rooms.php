@@ -2,10 +2,10 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\DataType\LinkParam;
+use Bristolian\Parameters\LinkParam;
 
-use Bristolian\DataType\SourceLinkHighlightParam;
-use Bristolian\DataType\SourceLinkParam;
+use Bristolian\Parameters\SourceLinkHighlightParam;
+use Bristolian\Parameters\SourceLinkParam;
 use Bristolian\Exception\BristolianException;
 use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Filesystem\RoomFileFilesystem;

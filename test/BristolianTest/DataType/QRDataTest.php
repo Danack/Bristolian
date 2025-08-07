@@ -2,16 +2,16 @@
 
 namespace BristolianTest\DataType;
 
-use Bristolian\DataType\PropertyType\BasicDateTime;
-use Bristolian\DataType\PropertyType\BasicString;
+use Bristolian\Parameters\PropertyType\BasicDateTime;
+use Bristolian\Parameters\PropertyType\BasicString;
 use BristolianTest\BaseTestCase;
-use Bristolian\DataType\QRData;
+use Bristolian\Parameters\Params;
 use DataType\Create\CreateFromArray;
 use Safe\DateTimeImmutable;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\DataType\QRData
+ * @covers \Bristolian\Parameters\Params
  */
 class QRDataTest extends BaseTestCase
 {
@@ -24,7 +24,7 @@ class QRDataTest extends BaseTestCase
 
         ];
 
-        $qr_data = QRData::createFromArray($params);
+        $qr_data = Params::createFromArray($params);
 
         $this->assertSame($url, $qr_data->url);
     }

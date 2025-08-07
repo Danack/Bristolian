@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Params;
 
-use Bristolian\DataType\CreateUserParams;
+use Bristolian\Parameters\CreateUserParams;
 use BristolianTest\Repo\TestPlaceholders;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
 //use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo;
-use Bristolian\DataType\FoiRequestParam;
+use Bristolian\Parameters\FoiRequestParams;
 
 /**
  * @coversNothing
@@ -36,7 +36,7 @@ class PdoFoiRequestRepoTest extends BaseTestCase
 
         $varMap = new ArrayVarMap($data);
 
-        $foiRequestParam = FoiRequestParam::createFromVarMap($varMap);
+        $foiRequestParam = FoiRequestParams::createFromVarMap($varMap);
         $pdo_foi_request_repo = $this->injector->make(PdoFoiRequestRepo::class);
         $foiRequest = $pdo_foi_request_repo->createFoiRequest($foiRequestParam);
 
