@@ -23,7 +23,7 @@ RUN mkdir -p /var/log/supervisor
 #COPY supervisord.conf /etc/supervisor/supervisord.conf
 #COPY tasks/*.conf /etc/supervisor/conf.d/
 
-CMD tail -f README.md
-# CMD sh /var/app/containers/supervisord/entrypoint.sh
+# CMD tail -f README.md
+CMD sh /var/app/containers/supervisord/entrypoint.sh
 
 
