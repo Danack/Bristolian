@@ -10,7 +10,8 @@ set -x
 php cli.php db:wait_for_db
 
 #/usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
-/usr/bin/supervisord -n -c ./supervisord.conf
+/usr/bin/supervisord -n -c /var/app/containers/supervisord/supervisord.conf
+
 
 #  /etc/supervisor/supervisord.conf
 # COPY tasks/*.conf /etc/supervisor/conf.d/
