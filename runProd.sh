@@ -18,5 +18,6 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d \
   caddy \
   php_fpm \
   redis \
-  supervisord \
-  varnish \
+  varnish
+
+#    supervisord \
