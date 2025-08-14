@@ -1,6 +1,8 @@
 import {h, Component} from "preact";
 import {humanFileSize} from "./functions";
 import {RoomLinkAddPanel} from "./RoomLinkAddPanel";
+import {registerMessageListener} from "./message/message";
+import {PdfSelectionType} from "./constants";
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
@@ -14,7 +16,6 @@ interface RoomLink {
     url: string,
     title: string,
     description: string,
-
 }
 
 interface RoomLinksPanelState {
@@ -34,6 +35,8 @@ function getDefaultState(): RoomLinksPanelState {
 
 export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPanelState> {
 
+    message_listener: number|null;
+
     constructor(props: RoomLinksPanelProps) {
         super(props);
         this.state = getDefaultState(/*props.initialControlParams*/);
@@ -41,6 +44,10 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
 
     componentDidMount() {
         this.refreshLinks();
+        this.message_listener = registerMessageListener(
+          PdfSelectionType.ROOM_LINKS_CHANGED,
+          () => this.refreshLinks()
+        );
     }
 
     componentWillUnmount() {

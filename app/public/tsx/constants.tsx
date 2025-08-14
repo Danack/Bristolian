@@ -8,4 +8,6 @@ export enum PdfSelectionType {
   ROOM_FILES_CHANGED = "room_files_changed",
 
 
+  ROOM_LINKS_CHANGED = "room_links_changed",
+
 }
