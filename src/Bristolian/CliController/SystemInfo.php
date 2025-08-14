@@ -63,7 +63,7 @@ class SystemInfo
 
         // Check the time, if it is between noon and 3pm, exit
         if (isTimeToRunDailySystemInfo() !== true) {
-            echo "Skipping, not currently time to process_daily_system_info";
+            echo "Skipping, not currently time to process_daily_system_info\n";
             return;
         }
 
@@ -74,7 +74,7 @@ class SystemInfo
 
         if ($last_run_time !== null) {
             if (isOverXHoursAgo(21, $last_run_time) === false) {
-                echo "Skipping, process_daily_system_info was run within the last 21 hours.";
+                echo "Skipping, process_daily_system_info was run within the last 21 hours.\n";
                 return;
             }
         }
