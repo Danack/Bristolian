@@ -97,9 +97,6 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
         this.setState({error_description: data.data['/description']})
       }
     }
-
-
-
   }
 
   processError (data:any) {
@@ -128,90 +125,89 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
     let error_url = <span></span>
     let error_title = <span></span>
     let error_description = <span></span>
-    {
-      if (this.state.error_url !== null) {
-        error_url = <span class="error">{this.state.error_url}</span>
-      }
 
-      if (this.state.error_title !== null) {
-        error_title = <span class="error">{this.state.error_title}</span>
-      }
-
-      if (this.state.error_description !== null) {
-        error_description = <span class="error">{this.state.error_description}</span>
-      }
-
-
-      // @ts-ignore
-      return <div class='room_links_add_panel_react'>
-
-        <table>
-          <tbody>
-          <tr>
-            <td>
-              <label for={"url"}>
-                Url
-              </label>
-            </td>
-            <td>
-              <input name="url"
-                     size={100}
-                     value={this.state.url}
-                     // @ts-ignore
-                     onChange={ e => this.setState({url: e.target.value})}/>
-              {error_url}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label>
-                Title
-              </label>
-            </td>
-            <td>
-              <input name="title"
-                     size={100}
-                     value={this.state.title}
-                     onChange={
-                // @ts-ignore
-                e => this.setState({title: e.target.value})
-              }/>
-              {error_title}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label for={"description"}>Description</label>
-            </td>
-
-            <td>
-              <textarea
-                name="description"
-                rows={4}
-                cols={80}
-                value={this.state.description}
-                onChange={
-                  // @ts-ignore
-                  e => this.setState({description: e.target.value})
-                }/>
-
-              {error_description}
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
-              {add_button}
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>{result}</td>
-          </tr>
-
-          </tbody>
-        </table>
-      </div>;
+    if (this.state.error_url !== null) {
+      error_url = <span class="error">{this.state.error_url}</span>
     }
+
+    if (this.state.error_title !== null) {
+      error_title = <span class="error">{this.state.error_title}</span>
+    }
+
+    if (this.state.error_description !== null) {
+      error_description = <span class="error">{this.state.error_description}</span>
+    }
+
+
+    // @ts-ignore
+    return <div class='room_links_add_panel_react'>
+      <table>
+        <tbody>
+        <tr>
+          <td>
+            <label for={"url"}>
+              Url
+            </label>
+          </td>
+          <td>
+            <input name="url"
+                   size={100}
+                   value={this.state.url}
+                   // @ts-ignore
+                   onChange={ e => this.setState({url: e.target.value})}/>
+            {error_url}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label>
+              Title
+            </label>
+          </td>
+          <td>
+            <input name="title"
+                   size={100}
+                   value={this.state.title}
+                   onChange={
+              // @ts-ignore
+              e => this.setState({title: e.target.value})
+            }/>
+            {error_title}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for={"description"}>Description</label>
+          </td>
+
+          <td>
+            <textarea
+              name="description"
+              rows={4}
+              cols={80}
+              value={this.state.description}
+              onChange={
+                // @ts-ignore
+                e => this.setState({description: e.target.value})
+              }/>
+
+            {error_description}
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            {add_button}
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>{result}</td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>;
+
   }
 }

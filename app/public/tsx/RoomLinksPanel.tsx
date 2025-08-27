@@ -1,5 +1,5 @@
 import {h, Component} from "preact";
-import {humanFileSize} from "./functions";
+import {humanFileSize, isUrl} from "./functions";
 import {RoomLinkAddPanel} from "./RoomLinkAddPanel";
 import {registerMessageListener} from "./message/message";
 import {PdfSelectionType} from "./constants";
@@ -141,13 +141,13 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
 
         return <tr key={link.id}>
             <td>
-                <a href={link.url} target="_blank">
-                    {resolved_title}
-                </a>
+              <a href={link.url} target="_blank">
+                {resolved_title}
+              </a>
             </td>
-            {/*<td>*/}
-            {/*    <button onClick={() => this.startEditingRoomLink(link)}>Edit</button>*/}
-            {/*</td>*/}
+            <td>
+              <button onClick={() => this.startEditingRoomLink(link)}>Edit</button>
+            </td>
         </tr>
     }
 
@@ -156,44 +156,156 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
             return <span>No links.</span>
         }
 
-        return <div>
-            <h2>Links</h2>
-            <table>
-                <thead>
-                <tr>
-                    <td>Links</td>
-                </tr>
-                </thead>
+        return <table>
+                {/*<thead>*/}
+                {/*<tr>*/}
+                {/*    <td>Links</td>*/}
+                {/*</tr>*/}
+                {/*</thead>*/}
                 <tbody>
                 {Object.values(this.state.roomLinks).
                 map((roomLink: RoomLink) => this.renderRoomLink(roomLink))}
                 </tbody>
             </table>
-        </div>
+
     }
 
+    renderLinkBeingEdited() {
 
 
-    render(props: RoomLinksPanelProps, state: RoomLinksPanelState) {
+
+        let error_url = <span></span>
+        let error_title = <span></span>
+        let error_description = <span></span>
+
+        // if (this.state.error_url !== null) {
+        //     error_url = <span class="error">{this.state.error_url}</span>
+        // }
+        //
+        // if (this.state.error_title !== null) {
+        //     error_title = <span class="error">{this.state.error_title}</span>
+        // }
+        //
+        // if (this.state.error_description !== null) {
+        //     error_description = <span class="error">{this.state.error_description}</span>
+        // }
+
+        let isValidUrl = isUrl(this.state.linkBeingEdited.url);
+
+        let add_button = <span><button disabled={true}>Add link</button>Url is not valid.</span>
+
+        if (isValidUrl) {
+            // add_button = <button type="submit" onClick={() => this.addLink()}>Add link</button>
+        }
+
+
+
+        // @ts-ignore
+        return <div class='room_links_add_panel_react'>
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <label for={"url"}>
+                            Url
+                        </label>
+                    </td>
+                    <td>
+                        <input name="url"
+                               size={100}
+                               value={this.state.linkBeingEdited.url}
+                          // @ts-ignore
+                               onChange={ e => this.setState({url: e.target.value})}/>
+                        {error_url}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            Title
+                        </label>
+                    </td>
+                    <td>
+                        <input name="title"
+                               size={100}
+                               value={this.state.linkBeingEdited.title}
+                               onChange={
+                                   // @ts-ignore
+                                   e => this.setState({title: e.target.value})
+                               }/>
+                        {error_title}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for={"description"}>Description</label>
+                    </td>
+
+                    <td>
+              <textarea
+                name="description"
+                rows={4}
+                cols={80}
+                value={this.state.linkBeingEdited.description}
+                onChange={
+                    // @ts-ignore
+                    e => this.setState({description: e.target.value})
+                }/>
+
+                        {error_description}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        {add_button}
+                        <button type="submit" onClick={() => this.cancelEditingRoomLink()}>Cancel</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>;
+
+
+
+    }
+
+    renderTableOfLinks() {
+
         let error_block = <span>&nbsp;</span>;
         if (this.state.error != null) {
             error_block = <div class="error">Last error: {this.state.error}</div>
         }
-
         let length = this.state.roomLinks.length;
         // let number_block = <div>There are {length} links</div>;
         let links_block = this.renderLinks();
 
-        return  <div class='room_links_panel_react'>
+        return <div>
+            {error_block}
+            {links_block}
+            <button onClick={() => this.refreshLinks()}>Refresh</button>
+            <RoomLinkAddPanel room_id={this.props.room_id}/>
+        </div>
+    }
+
+    render(props: RoomLinksPanelProps, state: RoomLinksPanelState) {
+
+        let content = this.renderTableOfLinks();
+
+        if (this.state.linkBeingEdited !== null) {
+            content = this.renderLinkBeingEdited();
+        }
+
+        return <div className='room_links_panel_react'>
+            <h2>Links</h2>
             <div>
-                {error_block}
-                {links_block}
-
-                <button onClick={() => this.refreshLinks()}>Refresh</button>
-
-                <RoomLinkAddPanel room_id={this.props.room_id}/>
+                {content}
             </div>
-
         </div>;
     }
 }
