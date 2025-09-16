@@ -26,7 +26,6 @@ function cliHandleInjectionException(Application $console, \Auryn\InjectionExcep
 
 function cliHandleGenericException(Application $console, \Exception $e)
 {
-    fwrite(STDERR, "time: " . date(\Bristolian\App::DATE_TIME_FORMAT) . "\n");
 
     fwrite(STDERR, getTextForException($e) . "\n");
 

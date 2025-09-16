@@ -42,11 +42,20 @@ function injectionParams() : InjectionParams
         \Bristolian\Repo\ProcessorRepo\ProcessorRepo::class =>
             \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::class,
 
-//        Bristolian\Repo\RunTimeRecorderRepo\MoonAlertRunTimeRecorder::class =>
-//            \Bristolian\Repo\RunTimeRecorderRepo\PdoMoonAlertRunTimeRecorder::class,
-
         \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::class =>
-            \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::class
+            \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::class,
+
+        Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo::class =>
+            \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo::class,
+
+        \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::class =>
+          \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class,
+
+        Bristolian\Service\ObjectStore\BristolianStairImageObjectStore::class =>
+          \Bristolian\Service\ObjectStore\StandardBristolianStairImageObjectStore::class,
+
+        \Bristolian\Service\BristolStairImageStorageProcessor\BristolStairImageStorageProcessor::class =>
+          \Bristolian\Service\BristolStairImageStorageProcessor\StandardBristolStairImageStorageProcessor::class,
     ];
 
     // Delegate the creation of types to callables.
@@ -58,6 +67,9 @@ function injectionParams() : InjectionParams
         \Bristolian\Filesystem\MemeFilesystem::class =>
             'createMemeFilesystem',
         \Mailgun\Mailgun::class => 'createMailgun',
+
+        \Bristolian\Filesystem\BristolStairsFilesystem::class => 'createBristolStairsFilesystem'
+
 
     ];
 

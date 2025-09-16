@@ -7,6 +7,22 @@ use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Service\WebPushService\WebPushService;
 
+
+function fn_level_1()
+{
+    fn_level_2();
+}
+
+function fn_level_2()
+{
+    fn_level_3();
+}
+
+function fn_level_3()
+{
+    throw new \Exception("This is on line ". __LINE__);
+}
+
 /**
  * Placeholder code for testing webpushes.
  * @codeCoverageIgnore
@@ -17,6 +33,13 @@ class Debug
     {
         echo "Hello.";
     }
+
+
+    public function stack_trace()
+    {
+        fn_level_1();
+    }
+
 
     public function send_webpush(
         string $email_address,

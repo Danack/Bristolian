@@ -86,7 +86,10 @@ function apiInjectionParams() : InjectionParams
             \Bristolian\Service\Mailgun\StandardPayloadValidator::class,
 
         \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::class =>
-            \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::class
+            \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::class,
+
+        \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::class =>
+            \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class,
     ];
     // Delegate the creation of types to callables.
     $delegates = [
@@ -116,6 +119,10 @@ function apiInjectionParams() : InjectionParams
 
         \Bristolian\Filesystem\MemeFilesystem::class =>
             'createMemeFilesystem',
+
+        \Bristolian\Filesystem\BristolStairsFilesystem::class =>
+            'createBristolStairsFilesystem',
+
 
         \Bristolian\Filesystem\RoomFileFilesystem::class =>
             'createRoomFileFilesystem',

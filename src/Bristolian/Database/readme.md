@@ -1,2 +1,2 @@
-Don't add any of the auto-generated files.
+Don't add any of the auto-generated files to source control.
 

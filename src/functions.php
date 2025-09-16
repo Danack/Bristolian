@@ -203,7 +203,8 @@ TABLE;
  */
 function json_encode_safe($data, $options = 0): string
 {
-    $result = json_encode($data, $options);
+
+    $result = json_encode($data, $options | JSON_PRETTY_PRINT);
 
     if ($result === false) {
         throw new \Bristolian\Exception\JsonException("Failed to encode data as json: " . json_last_error_msg());
@@ -798,6 +799,15 @@ function get_supported_room_file_extensions()
         'xls'
     ];
 }
+
+function get_supported_bristolian_stair_image_extensions()
+{
+    return [
+        'jpeg',
+        'jpg',
+    ];
+}
+
 
 /**
  * @return string[]

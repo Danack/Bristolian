@@ -1,0 +1,4401 @@
+[
+  {
+    "id": 18941332,
+    "event_type": "response",
+    "created_at": "2025-08-21T14:56:07.524+01:00",
+    "described_state": null,
+    "calculated_state": null,
+    "last_described_at": null,
+    "incoming_message_id": 3131605,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Response",
+    "snippet": "&nbsp;\n Dear&nbsp;Filipa Gaspar\n &nbsp;\n Thank you for your request for information received on&nbsp;22 July 2025.\n &nbsp;\n Please find attached our response to your request....",
+    "info_request": {
+      "id": 1314576,
+      "url_title": "locations_of_council_pitches_for",
+      "title": "Locations of council pitches for van dwellers",
+      "created_at": "2025-07-22T12:01:35.876+01:00",
+      "updated_at": "2025-08-21T14:56:07.535+01:00",
+      "described_state": "waiting_response",
+      "display_status": "Awaiting classification",
+      "awaiting_description": true,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 305467,
+      "url_name": "filipa_gaspar_2",
+      "name": "Filipa Gaspar",
+      "ban_text": "",
+      "about_me": ""
+    }
+  },
+  {
+    "id": 18941220,
+    "event_type": "followup_sent",
+    "created_at": "2025-08-21T14:30:06.339+01:00",
+    "described_state": "internal_review",
+    "calculated_state": "internal_review",
+    "last_described_at": "2025-08-21T14:30:06.681+01:00",
+    "incoming_message_id": null,
+    "outgoing_message_id": 1924017,
+    "comment_id": null,
+    "display_status": "Internal review request",
+    "snippet": "Please pass this on to the person who conducts Freedom of Information reviews.\n\nNow that I have had a substantive response,  I would like to request a...",
+    "info_request": {
+      "id": 1306694,
+      "url_title": "barton_house_technical_note_and",
+      "title": "Barton House Technical note and workshop",
+      "created_at": "2025-07-08T13:47:03.678+01:00",
+      "updated_at": "2025-08-21T14:28:25.336+01:00",
+      "described_state": "internal_review",
+      "display_status": "Awaiting internal review",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 233630,
+      "url_name": "dan_ackroyd",
+      "name": "Dan Ackroyd",
+      "ban_text": "",
+      "about_me": "Can be reached at danack & base reality dotcom\r\n\r\nOn Twatter - https://twitter.com/MrDanack"
+    }
+  },
+  {
+    "id": 18936281,
+    "event_type": "response",
+    "created_at": "2025-08-20T17:07:27.148+01:00",
+    "described_state": null,
+    "calculated_state": "internal_review",
+    "last_described_at": "2025-08-21T14:28:25.651+01:00",
+    "incoming_message_id": 3130135,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Awaiting internal review",
+    "snippet": "&nbsp;\n Dear&nbsp;Dan Ackroyd\n &nbsp;\n &nbsp;\n Thank you for your request for information received on&nbsp;8 July 2025.\n &nbsp;\n Please find attached our response to your request....",
+    "info_request": {
+      "id": 1306694,
+      "url_title": "barton_house_technical_note_and",
+      "title": "Barton House Technical note and workshop",
+      "created_at": "2025-07-08T13:47:03.678+01:00",
+      "updated_at": "2025-08-21T14:28:25.336+01:00",
+      "described_state": "internal_review",
+      "display_status": "Awaiting internal review",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 233630,
+      "url_name": "dan_ackroyd",
+      "name": "Dan Ackroyd",
+      "ban_text": "",
+      "about_me": "Can be reached at danack & base reality dotcom\r\n\r\nOn Twatter - https://twitter.com/MrDanack"
+    }
+  },
+  {
+    "id": 18941184,
+    "event_type": "comment",
+    "created_at": "2025-08-21T14:24:10.716+01:00",
+    "described_state": null,
+    "calculated_state": null,
+    "last_described_at": null,
+    "incoming_message_id": null,
+    "outgoing_message_id": null,
+    "comment_id": 123194,
+    "snippet": "The answer says that the Chair did not write a letter, as voted for by the committee, and instead had a verbal conversation.\n\nI do not think there was...",
+    "info_request": {
+      "id": 1319560,
+      "url_title": "correspondence_between_chair_of_2",
+      "title": "Correspondence between Chair of OSMB and Mayor Rees",
+      "created_at": "2025-08-03T12:16:41.506+01:00",
+      "updated_at": "2025-08-20T15:25:16.612+01:00",
+      "described_state": "not_held",
+      "display_status": "Information not held",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 233630,
+      "url_name": "dan_ackroyd",
+      "name": "Dan Ackroyd",
+      "ban_text": "",
+      "about_me": "Can be reached at danack & base reality dotcom\r\n\r\nOn Twatter - https://twitter.com/MrDanack"
+    }
+  },
+  {
+    "id": 18935479,
+    "event_type": "response",
+    "created_at": "2025-08-20T15:01:33.777+01:00",
+    "described_state": null,
+    "calculated_state": "waiting_response",
+    "last_described_at": "2025-08-20T19:58:57.825+01:00",
+    "incoming_message_id": 3129684,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Awaiting response",
+    "snippet": "&nbsp;\n Dear&nbsp;Patrick Fitzmichael\n &nbsp;\n Freedom of Information Act 2000\n &nbsp;\n &nbsp;\n Thank you for your request for information that was received on&nbsp;5 August\n 2025....",
+    "info_request": {
+      "id": 1321434,
+      "url_title": "correspondence_between_naht_and",
+      "title": "Correspondence between NAHT and BCC regarding support for headteachers",
+      "created_at": "2025-08-05T17:52:41.382+01:00",
+      "updated_at": "2025-08-20T19:58:57.498+01:00",
+      "described_state": "waiting_response",
+      "display_status": "Awaiting response",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 306104,
+      "url_name": "patrick_fitzmichael",
+      "name": "Patrick Fitzmichael",
+      "ban_text": "",
+      "about_me": ""
+    }
+  },
+  {
+    "id": 18934822,
+    "event_type": "response",
+    "created_at": "2025-08-20T13:54:02.604+01:00",
+    "described_state": null,
+    "calculated_state": "not_held",
+    "last_described_at": "2025-08-20T15:25:16.829+01:00",
+    "incoming_message_id": 3129325,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Information not held",
+    "snippet": "&nbsp;\n Dear&nbsp;Dan Ackroyd\n &nbsp;\n Thank you for your request for information received on&nbsp;4 August 2025.\n &nbsp;\n Please find attached our response to your request.\n &nbsp;...",
+    "info_request": {
+      "id": 1319560,
+      "url_title": "correspondence_between_chair_of_2",
+      "title": "Correspondence between Chair of OSMB and Mayor Rees",
+      "created_at": "2025-08-03T12:16:41.506+01:00",
+      "updated_at": "2025-08-20T15:25:16.612+01:00",
+      "described_state": "not_held",
+      "display_status": "Information not held",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 233630,
+      "url_name": "dan_ackroyd",
+      "name": "Dan Ackroyd",
+      "ban_text": "",
+      "about_me": "Can be reached at danack & base reality dotcom\r\n\r\nOn Twatter - https://twitter.com/MrDanack"
+    }
+  },
+  {
+    "id": 18932883,
+    "event_type": "followup_sent",
+    "created_at": "2025-08-20T11:20:24.306+01:00",
+    "described_state": "internal_review",
+    "calculated_state": "internal_review",
+    "last_described_at": "2025-08-20T11:20:24.654+01:00",
+    "incoming_message_id": null,
+    "outgoing_message_id": 1922545,
+    "comment_id": null,
+    "display_status": "Internal review request",
+    "snippet": "Please pass this on to the person who conducts Freedom of Information reviews.\n\nI am writing to request an internal review of Bristol City Council's h...",
+    "info_request": {
+      "id": 1314346,
+      "url_title": "audit_trail_for_risks_related_to",
+      "title": "Audit trail for risks related to Fire/building safety",
+      "created_at": "2025-07-21T20:33:11.552+01:00",
+      "updated_at": "2025-08-28T19:36:16.346+01:00",
+      "described_state": "waiting_response",
+      "display_status": "Delayed",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 233630,
+      "url_name": "dan_ackroyd",
+      "name": "Dan Ackroyd",
+      "ban_text": "",
+      "about_me": "Can be reached at danack & base reality dotcom\r\n\r\nOn Twatter - https://twitter.com/MrDanack"
+    }
+  },
+  {
+    "id": 18926617,
+    "event_type": "response",
+    "created_at": "2025-08-19T14:16:23.001+01:00",
+    "described_state": null,
+    "calculated_state": "partially_successful",
+    "last_described_at": "2025-08-19T17:37:22.326+01:00",
+    "incoming_message_id": 3127438,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Partially successful",
+    "snippet": "&nbsp;\n Dear&nbsp;Chris McEvoy\n &nbsp;\n Thank you for your request for information received on&nbsp;11 August 2025.\n &nbsp;\n Please find attached our response to your request....",
+    "info_request": {
+      "id": 1323335,
+      "url_title": "right_to_buy_sales_2000_onwards",
+      "title": "Right to Buy Sales - 2000 onwards",
+      "created_at": "2025-08-10T14:35:01.742+01:00",
+      "updated_at": "2025-08-19T17:37:22.136+01:00",
+      "described_state": "partially_successful",
+      "display_status": "Partially successful",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 229907,
+      "url_name": "chris_mcevoy",
+      "name": "Chris McEvoy",
+      "ban_text": "",
+      "about_me": ""
+    }
+  },
+  {
+    "id": 18927103,
+    "event_type": "response",
+    "created_at": "2025-08-19T15:33:58.466+01:00",
+    "described_state": null,
+    "calculated_state": "waiting_response",
+    "last_described_at": "2025-08-19T16:00:11.527+01:00",
+    "incoming_message_id": 3127718,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Awaiting response",
+    "snippet": "&nbsp;\n Dear&nbsp;Doug Paulley\n &nbsp;\n Freedom of Information Act 2000\n &nbsp;\n &nbsp;\n Thank you for your request for information that was received on&nbsp;19 August\n 2025. It is...",
+    "info_request": {
+      "id": 1329070,
+      "url_title": "home_to_school_psvar_compliance_21",
+      "title": "Home to School PSVAR compliance after July 2025",
+      "created_at": "2025-08-18T20:35:50.243+01:00",
+      "updated_at": "2025-08-19T16:00:11.080+01:00",
+      "described_state": "waiting_response",
+      "display_status": "Awaiting response",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 11109,
+      "url_name": "doug_paulley",
+      "name": "Doug Paulley",
+      "ban_text": "",
+      "about_me": "Volunteer administrator on WhatDoTheyKnow.\r\nI sometimes send Freedom of Information requests on behalf of third parties.\r\n\r\nDisabled activist, particularly interested in treatment in social care / discrimination in service provision. My personal FoI requests are usually on these issues, or transparency and accountability of statutory organisations. My blog: https://www.kingqueen.org.uk"
+    }
+  },
+  {
+    "id": 18926497,
+    "event_type": "response",
+    "created_at": "2025-08-19T13:59:59.363+01:00",
+    "described_state": null,
+    "calculated_state": "waiting_response",
+    "last_described_at": "2025-08-19T14:38:24.157+01:00",
+    "incoming_message_id": 3127385,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Awaiting response",
+    "snippet": "&nbsp;\n Dear&nbsp;Joanna Booth\n &nbsp;\n Freedom of Information Act 2000\n &nbsp;\n &nbsp;\n Thank you for your request for information that was received on&nbsp;18 August\n 2025. It is...",
+    "info_request": {
+      "id": 1328249,
+      "url_title": "number_of_emails_cllr_patrick_mc",
+      "title": "Number of emails Cllr Patrick McAllister receives",
+      "created_at": "2025-08-17T11:37:02.729+01:00",
+      "updated_at": "2025-08-19T14:38:23.936+01:00",
+      "described_state": "waiting_response",
+      "display_status": "Awaiting response",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 154398,
+      "url_name": "joanna_booth",
+      "name": "Joanna Booth",
+      "ban_text": "",
+      "about_me": ""
+    }
+  },
+  {
+    "id": 18911196,
+    "event_type": "response",
+    "created_at": "2025-08-15T14:44:32.118+01:00",
+    "described_state": null,
+    "calculated_state": "internal_review",
+    "last_described_at": "2025-08-19T08:03:36.226+01:00",
+    "incoming_message_id": 3123210,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Awaiting internal review",
+    "snippet": "Dear Mark Ashdown\n\n I am writing with reference to your information request (reference\n 61279877), which was received by Bristol City Council on 4 July...",
+    "info_request": {
+      "id": 1305263,
+      "url_title": "development_of_st_mary_le_port_w_2",
+      "title": "Development of St Mary-le-Port, Wine Street, Bristol - 2nd request",
+      "created_at": "2025-07-04T17:20:35.542+01:00",
+      "updated_at": "2025-08-19T08:03:35.929+01:00",
+      "described_state": "internal_review",
+      "display_status": "Awaiting internal review",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 224613,
+      "url_name": "the_bristol_tree_forum",
+      "name": "The Bristol Tree Forum",
+      "ban_text": "",
+      "about_me": "We are a group of volunteers dedicated to protecting and increasing the tree canopy cover of Bristol’s urban forest.\r\n\r\nWhy? Because tree cover brings so many benefits to an urban environment: a shared amenity, public health, economic growth, reduced pollution and flooding, wildlife, food and a better sense of well-being.\r\n\r\nWe can be found at https://bristoltreeforum.org/"
+    }
+  },
+  {
+    "id": 18921394,
+    "event_type": "sent",
+    "created_at": "2025-08-18T20:35:50.935+01:00",
+    "described_state": "waiting_response",
+    "calculated_state": "waiting_response",
+    "last_described_at": "2025-08-18T20:35:51.595+01:00",
+    "incoming_message_id": null,
+    "outgoing_message_id": 1920900,
+    "comment_id": null,
+    "display_status": "Clarification",
+    "snippet": "Concerning home-to-school transport services involving passengers not entitled to free transport:\n\n1. Exempt Vehicle Usage\nWhen was the last time a P...",
+    "info_request": {
+      "id": 1329070,
+      "url_title": "home_to_school_psvar_compliance_21",
+      "title": "Home to School PSVAR compliance after July 2025",
+      "created_at": "2025-08-18T20:35:50.243+01:00",
+      "updated_at": "2025-08-19T16:00:11.080+01:00",
+      "described_state": "waiting_response",
+      "display_status": "Awaiting response",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 11109,
+      "url_name": "doug_paulley",
+      "name": "Doug Paulley",
+      "ban_text": "",
+      "about_me": "Volunteer administrator on WhatDoTheyKnow.\r\nI sometimes send Freedom of Information requests on behalf of third parties.\r\n\r\nDisabled activist, particularly interested in treatment in social care / discrimination in service provision. My personal FoI requests are usually on these issues, or transparency and accountability of statutory organisations. My blog: https://www.kingqueen.org.uk"
+    }
+  },
+  {
+    "id": 18919129,
+    "event_type": "response",
+    "created_at": "2025-08-18T14:40:04.173+01:00",
+    "described_state": null,
+    "calculated_state": "waiting_response",
+    "last_described_at": "2025-08-18T17:08:27.000+01:00",
+    "incoming_message_id": 3125069,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Awaiting response",
+    "snippet": "Dear Chris McEvoy\n\n Thank you for your clarification queries received by the council on 14\n July 2025, regarding the information disclosed to you under...",
+    "info_request": {
+      "id": 1305384,
+      "url_title": "south_bristol_liveable_neighbour",
+      "title": "South Bristol Liveable Neighbourhoods Interactive Map Data",
+      "created_at": "2025-07-05T20:55:21.300+01:00",
+      "updated_at": "2025-08-28T18:34:25.468+01:00",
+      "described_state": "internal_review",
+      "display_status": "Awaiting internal review",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 229907,
+      "url_name": "chris_mcevoy",
+      "name": "Chris McEvoy",
+      "ban_text": "",
+      "about_me": ""
+    }
+  },
+  {
+    "id": 18920109,
+    "event_type": "response",
+    "created_at": "2025-08-18T16:41:11.742+01:00",
+    "described_state": null,
+    "calculated_state": null,
+    "last_described_at": null,
+    "incoming_message_id": 3125495,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Response",
+    "snippet": "&nbsp;\n Dear&nbsp;Mr Macdonald\n &nbsp;\n Internal review\n &nbsp;\n Thank you for your request for an internal review received on 21 July\n 2025&nbsp;\n We are still considering the...",
+    "info_request": {
+      "id": 1301250,
+      "url_title": "independent_valuation_of_baltic",
+      "title": "Independent Valuation of Baltic Wharf Caravan site",
+      "created_at": "2025-06-24T17:37:41.746+01:00",
+      "updated_at": "2025-08-18T16:41:11.764+01:00",
+      "described_state": "internal_review",
+      "display_status": "Awaiting classification",
+      "awaiting_description": true,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 304273,
+      "url_name": "mr_macdonald_4",
+      "name": "Mr Macdonald",
+      "ban_text": "",
+      "about_me": ""
+    }
+  },
+  {
+    "id": 18919951,
+    "event_type": "response",
+    "created_at": "2025-08-18T16:12:54.111+01:00",
+    "described_state": null,
+    "calculated_state": null,
+    "last_described_at": null,
+    "incoming_message_id": 3125394,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Response",
+    "snippet": "&nbsp;\n Dear&nbsp;James Smith\n &nbsp;\n Thank you for your request for an internal review received on 14 August\n 2025. I am sorry that you are unhappy with our respons...",
+    "info_request": {
+      "id": 1297556,
+      "url_title": "stoke_lodge_legal_costs",
+      "title": "Stoke Lodge legal costs",
+      "created_at": "2025-06-15T10:32:23.703+01:00",
+      "updated_at": "2025-08-18T16:12:54.132+01:00",
+      "described_state": "internal_review",
+      "display_status": "Awaiting classification",
+      "awaiting_description": true,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 293460,
+      "url_name": "james_smith_96",
+      "name": "James Smith",
+      "ban_text": "",
+      "about_me": ""
+    }
+  },
+  {
+    "id": 18916862,
+    "event_type": "response",
+    "created_at": "2025-08-18T08:55:48.524+01:00",
+    "described_state": null,
+    "calculated_state": "waiting_response",
+    "last_described_at": "2025-08-18T14:50:07.716+01:00",
+    "incoming_message_id": 3124024,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Awaiting response",
+    "snippet": "Dear Dan Ackroyd,\n\n I am writing with reference to your information request (reference\n 61504074), which was received by Bristol City Council on&nbsp; 08th...",
+    "info_request": {
+      "id": 1306694,
+      "url_title": "barton_house_technical_note_and",
+      "title": "Barton House Technical note and workshop",
+      "created_at": "2025-07-08T13:47:03.678+01:00",
+      "updated_at": "2025-08-21T14:28:25.336+01:00",
+      "described_state": "internal_review",
+      "display_status": "Awaiting internal review",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 233630,
+      "url_name": "dan_ackroyd",
+      "name": "Dan Ackroyd",
+      "ban_text": "",
+      "about_me": "Can be reached at danack & base reality dotcom\r\n\r\nOn Twatter - https://twitter.com/MrDanack"
+    }
+  },
+  {
+    "id": 18918531,
+    "event_type": "response",
+    "created_at": "2025-08-18T13:00:13.005+01:00",
+    "described_state": null,
+    "calculated_state": null,
+    "last_described_at": null,
+    "incoming_message_id": 3124791,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Response",
+    "snippet": "&nbsp;\n Dear&nbsp;Daniel Hebbes\n &nbsp;\n Thank you for your request for information received on&nbsp;15 August 2025.\n &nbsp;\n Please find attached our response to your request....",
+    "info_request": {
+      "id": 1327587,
+      "url_title": "freedom_of_information_request_c_1531",
+      "title": "Freedom of Information Request – Council-Owned Solar PV Systems greater than 50KW",
+      "created_at": "2025-08-15T11:06:15.341+01:00",
+      "updated_at": "2025-08-18T13:00:13.018+01:00",
+      "described_state": "waiting_response",
+      "display_status": "Awaiting classification",
+      "awaiting_description": true,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 306537,
+      "url_name": "daniel_hebbes",
+      "name": "daniel hebbes",
+      "ban_text": "",
+      "about_me": ""
+    }
+  },
+  {
+    "id": 18918499,
+    "event_type": "response",
+    "created_at": "2025-08-18T12:55:12.917+01:00",
+    "described_state": null,
+    "calculated_state": null,
+    "last_described_at": null,
+    "incoming_message_id": 3124778,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Response",
+    "snippet": "&nbsp;\n Dear&nbsp;Daniel Hebbes\n &nbsp;\n Freedom of Information Act 2000\n &nbsp;\n &nbsp;\n Thank you for your request for information that was received on&nbsp;15 August\n 2025. It is...",
+    "info_request": {
+      "id": 1327587,
+      "url_title": "freedom_of_information_request_c_1531",
+      "title": "Freedom of Information Request – Council-Owned Solar PV Systems greater than 50KW",
+      "created_at": "2025-08-15T11:06:15.341+01:00",
+      "updated_at": "2025-08-18T13:00:13.018+01:00",
+      "described_state": "waiting_response",
+      "display_status": "Awaiting classification",
+      "awaiting_description": true,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 306537,
+      "url_name": "daniel_hebbes",
+      "name": "daniel hebbes",
+      "ban_text": "",
+      "about_me": ""
+    }
+  },
+  {
+    "id": 18906240,
+    "event_type": "response",
+    "created_at": "2025-08-14T14:13:08.737+01:00",
+    "described_state": null,
+    "calculated_state": "waiting_response",
+    "last_described_at": "2025-08-18T08:39:51.537+01:00",
+    "incoming_message_id": 3121345,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Awaiting response",
+    "snippet": "&nbsp;\n Dear&nbsp;Joanna Booth\n &nbsp;\n Freedom of Information Act 2000\n &nbsp;\n &nbsp;\n Thank you for your request for information that was received on&nbsp;11 August\n 2025. It is...",
+    "info_request": {
+      "id": 1323360,
+      "url_title": "information_regarding_the_famili",
+      "title": "information regarding the Families First transformation programme with Newton Europe",
+      "created_at": "2025-08-10T20:02:46.859+01:00",
+      "updated_at": "2025-08-18T08:39:51.277+01:00",
+      "described_state": "waiting_response",
+      "display_status": "Awaiting response",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 154398,
+      "url_name": "joanna_booth",
+      "name": "Joanna Booth",
+      "ban_text": "",
+      "about_me": ""
+    }
+  },
+  {
+    "id": 18915894,
+    "event_type": "sent",
+    "created_at": "2025-08-17T11:37:06.555+01:00",
+    "described_state": "waiting_response",
+    "calculated_state": "waiting_response",
+    "last_described_at": "2025-08-17T11:37:07.178+01:00",
+    "incoming_message_id": null,
+    "outgoing_message_id": 1919851,
+    "comment_id": null,
+    "display_status": "Clarification",
+    "snippet": "Please let me know how many emails Cllr Patrick McAllister receives. I don't want the content. \nI would like to know how many external and internal em...",
+    "info_request": {
+      "id": 1328249,
+      "url_title": "number_of_emails_cllr_patrick_mc",
+      "title": "Number of emails Cllr Patrick McAllister receives",
+      "created_at": "2025-08-17T11:37:02.729+01:00",
+      "updated_at": "2025-08-19T14:38:23.936+01:00",
+      "described_state": "waiting_response",
+      "display_status": "Awaiting response",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 154398,
+      "url_name": "joanna_booth",
+      "name": "Joanna Booth",
+      "ban_text": "",
+      "about_me": ""
+    }
+  },
+  {
+    "id": 18908124,
+    "event_type": "response",
+    "created_at": "2025-08-14T17:05:43.923+01:00",
+    "described_state": null,
+    "calculated_state": "not_held",
+    "last_described_at": "2025-08-17T08:30:45.151+01:00",
+    "incoming_message_id": 3122147,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Information not held",
+    "snippet": "&nbsp;\n Dear&nbsp;Mark CD Ashdown\n &nbsp;\n Thank you for your request for information received on&nbsp;3 July 2025.\n &nbsp;\n Please find attached our response to your request....",
+    "info_request": {
+      "id": 1304650,
+      "url_title": "baltic_wharf_biodiversity_gain_p",
+      "title": "Baltic Wharf - Biodiversity Gain Plan (10 April 2025) information request",
+      "created_at": "2025-07-03T07:52:06.502+01:00",
+      "updated_at": "2025-08-17T08:30:44.935+01:00",
+      "described_state": "not_held",
+      "display_status": "Information not held",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 224613,
+      "url_name": "the_bristol_tree_forum",
+      "name": "The Bristol Tree Forum",
+      "ban_text": "",
+      "about_me": "We are a group of volunteers dedicated to protecting and increasing the tree canopy cover of Bristol’s urban forest.\r\n\r\nWhy? Because tree cover brings so many benefits to an urban environment: a shared amenity, public health, economic growth, reduced pollution and flooding, wildlife, food and a better sense of well-being.\r\n\r\nWe can be found at https://bristoltreeforum.org/"
+    }
+  },
+  {
+    "id": 18914311,
+    "event_type": "followup_sent",
+    "created_at": "2025-08-16T16:11:52.779+01:00",
+    "described_state": null,
+    "calculated_state": null,
+    "last_described_at": null,
+    "incoming_message_id": null,
+    "outgoing_message_id": 1919754,
+    "comment_id": null,
+    "display_status": "Follow up",
+    "snippet": "Dear Foi Team,\n\nPlease provide an update on my request for an Internal Review into the handling of this FOI request.\n\nJane Oliver",
+    "info_request": {
+      "id": 1292337,
+      "url_title": "bus_gates_for_east_bristol_livea",
+      "title": "Bus Gates for East Bristol Liveable Neighbourhood",
+      "created_at": "2025-06-03T12:19:12.367+01:00",
+      "updated_at": "2025-08-01T09:18:54.119+01:00",
+      "described_state": "internal_review",
+      "display_status": "Awaiting internal review",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 256450,
+      "url_name": "jane_oliver",
+      "name": "Jane Oliver",
+      "ban_text": "",
+      "about_me": ".."
+    }
+  },
+  {
+    "id": 18913737,
+    "event_type": "followup_sent",
+    "created_at": "2025-08-16T07:45:21.713+01:00",
+    "described_state": "internal_review",
+    "calculated_state": "internal_review",
+    "last_described_at": "2025-08-16T07:45:22.016+01:00",
+    "incoming_message_id": null,
+    "outgoing_message_id": 1919528,
+    "comment_id": null,
+    "display_status": "Internal review request",
+    "snippet": "Please pass this on to the person who conducts Freedom of Information reviews.\n\nI am writing to request an internal review of Bristol City Council's h...",
+    "info_request": {
+      "id": 1305304,
+      "url_title": "grosvenor_hotel_legal_history_su",
+      "title": "Grosvenor Hotel legal history summary",
+      "created_at": "2025-07-05T07:22:10.886+01:00",
+      "updated_at": "2025-08-25T09:52:56.400+01:00",
+      "described_state": "internal_review",
+      "display_status": "Awaiting internal review",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 188419,
+      "url_name": "scrupulous_landlord",
+      "name": "scrupulous Landlord",
+      "ban_text": "",
+      "about_me": ""
+    }
+  },
+  {
+    "id": 18876957,
+    "event_type": "response",
+    "created_at": "2025-08-08T12:47:46.845+01:00",
+    "described_state": null,
+    "calculated_state": "partially_successful",
+    "last_described_at": "2025-08-16T07:41:30.145+01:00",
+    "incoming_message_id": 3112783,
+    "outgoing_message_id": null,
+    "comment_id": null,
+    "display_status": "Partially successful",
+    "snippet": "&nbsp;\n Dear&nbsp;Richard Loxton\n &nbsp;\n Thank you for your request for information received on&nbsp;7 July 2025.\n &nbsp;\n Please find attached our response to your request....",
+    "info_request": {
+      "id": 1305304,
+      "url_title": "grosvenor_hotel_legal_history_su",
+      "title": "Grosvenor Hotel legal history summary",
+      "created_at": "2025-07-05T07:22:10.886+01:00",
+      "updated_at": "2025-08-25T09:52:56.400+01:00",
+      "described_state": "internal_review",
+      "display_status": "Awaiting internal review",
+      "awaiting_description": false,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 188419,
+      "url_name": "scrupulous_landlord",
+      "name": "scrupulous Landlord",
+      "ban_text": "",
+      "about_me": ""
+    }
+  },
+  {
+    "id": 18910276,
+    "event_type": "sent",
+    "created_at": "2025-08-15T11:06:15.802+01:00",
+    "described_state": "waiting_response",
+    "calculated_state": "waiting_response",
+    "last_described_at": "2025-08-15T11:06:16.305+01:00",
+    "incoming_message_id": null,
+    "outgoing_message_id": 1918979,
+    "comment_id": null,
+    "display_status": "Clarification",
+    "snippet": "FOI Team \n\nUnder the Freedom of Information Act 2000, I request the following information regarding solar photovoltaic (PV) systems owned or managed b...",
+    "info_request": {
+      "id": 1327587,
+      "url_title": "freedom_of_information_request_c_1531",
+      "title": "Freedom of Information Request – Council-Owned Solar PV Systems greater than 50KW",
+      "created_at": "2025-08-15T11:06:15.341+01:00",
+      "updated_at": "2025-08-18T13:00:13.018+01:00",
+      "described_state": "waiting_response",
+      "display_status": "Awaiting classification",
+      "awaiting_description": true,
+      "prominence": "normal",
+      "law_used": "foi",
+      "tags": []
+    },
+    "public_body": {
+      "id": 90,
+      "url_name": "bristol_city_council",
+      "name": "Bristol City Council",
+      "short_name": null,
+      "created_at": "2008-03-03T18:42:02.833+00:00",
+      "updated_at": "2025-08-23T04:10:08.879+01:00",
+      "home_page": "https://www.bristol.gov.uk/",
+      "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+      "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+      "disclosure_log": "",
+      "tags": [
+        [
+          "addressbase_custodian",
+          "116"
+        ],
+        [
+          "billing_authority",
+          "E0102"
+        ],
+        [
+          "BST",
+          null],
+        [
+          "cassr",
+          null],
+        [
+          "cassr_england",
+          null],
+        [
+          "coins",
+          "E0102"
+        ],
+        [
+          "district_level_functions",
+          null],
+        [
+          "district_level_functions_england",
+          null],
+        [
+          "dpr",
+          "Z5873747"
+        ],
+        [
+          "E0102",
+          null],
+        [
+          "england",
+          null],
+        [
+          "gss",
+          "E06000023"
+        ],
+        [
+          "highways",
+          null],
+        [
+          "la",
+          "801"
+        ],
+        [
+          "lad23cd_code",
+          "E06000023"
+        ],
+        [
+          "la_type",
+          "UA"
+        ],
+        [
+          "lcnaf",
+          "nr97004150"
+        ],
+        [
+          "lea",
+          null],
+        [
+          "local_council",
+          null],
+        [
+          "local_planning_authority",
+          "E60000290"
+        ],
+        [
+          "local_resilience_forum",
+          "avon-and-somerset"
+        ],
+        [
+          "mapit",
+          "2561"
+        ],
+        [
+          "navigation_authority",
+          null],
+        [
+          "parent_ca",
+          "WECA"
+        ],
+        [
+          "parliament_thesaurus",
+          "4400"
+        ],
+        [
+          "pha",
+          null],
+        [
+          "region_code",
+          "E12000009"
+        ],
+        [
+          "south_west",
+          null],
+        [
+          "statistical_geography",
+          "E06000023"
+        ],
+        [
+          "unitary",
+          null],
+        [
+          "unitary_authority",
+          null],
+        [
+          "UTA",
+          null],
+        [
+          "UTLA",
+          null],
+        [
+          "WECA",
+          null],
+        [
+          "wikidata",
+          "Q16953796"
+        ]
+      ],
+      "info": {
+        "requests_count": 4498,
+        "requests_successful_count": 2655,
+        "requests_not_held_count": 323,
+        "requests_overdue_count": 407,
+        "requests_visible_classified_count": 3951
+      }
+    },
+    "user": {
+      "id": 306537,
+      "url_name": "daniel_hebbes",
+      "name": "daniel hebbes",
+      "ban_text": "",
+      "about_me": ""
+    }
+  }
+]

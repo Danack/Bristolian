@@ -30,6 +30,11 @@ function getAllApiRoutes()
 
         ['/api/ping_user', 'GET', 'Bristolian\AppController\Admin::ping_user'],
 
+        ['/api/bristol_stairs/image/{bristol_stairs_id:.+}', 'GET', 'Bristolian\AppController\BristolStairs::getImage'],
+        ['/api/bristol_stairs/{bristol_stairs_id:.+}', 'GET', 'Bristolian\AppController\BristolStairs::getDetails'],
+
+        ['/api/bristol_stairs', 'GET', 'Bristolian\AppController\BristolStairs::getData'],
+
         ['/api/services/email/mailgun', 'POST', 'Bristolian\ApiController\MailgunEmailHandler::handleIncomingEmail'],
 
 

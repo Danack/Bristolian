@@ -47,15 +47,12 @@
         "nyholm/psr7": "^1.8",
         "ext-xmlreader": "*",
         "auroras-live/suncalc-php": "dev-master",
-
-
-
         "psr/http-server-middleware": "^1.0.2",
         "php" : "^8.2",
         "ircmaxell/random-lib": "^1.1.0",
         "ext-openssl": "*",
-        "ext-mbstring": "*"
-
+        "ext-mbstring": "*",
+        "ext-exif": "*"
     },
     "require-dev": {
         "danack/coding-standard": "0.3.0",
@@ -79,7 +76,8 @@
             "Bristolian\\Database\\": "src/Bristolian/Database"
         },
         "files": [
-            "src/functions.php"
+            "src/functions.php",
+            "src/functions_exif.php"
         ]
     },
     "autoload-dev": {

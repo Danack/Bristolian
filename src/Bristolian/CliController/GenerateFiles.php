@@ -297,13 +297,12 @@ class GenerateFiles
         $content .= 'import { DateTime } from "luxon";' . "\n\n";
 
         $types = [
+            \Bristolian\Model\BristolStairInfo::class,
             \Bristolian\Model\IncomingEmail::class,
+            \Bristolian\Model\ProcessorRunRecord::class,
             \Bristolian\Model\RoomLink::class,
             \Bristolian\Model\RoomSourceLink::class,
-            \Bristolian\Model\ProcessorRunRecord::class,
         ];
-
-
 
         foreach ($types as $type) {
             $content .= generateInterfaceForClass($type);

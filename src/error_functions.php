@@ -15,19 +15,6 @@ function getExceptionText(\Throwable $exception): string
     return $text;
 }
 
-//function getExceptionArray(\Throwable $exception): array
-//{
-//    $details = [];
-//    do {
-//        $details[] = get_class($exception) . ":" . $exception->getMessage() . "\n\n";
-//        $details[] = $exception->getTrace();
-//
-//        $exception = $exception->getPrevious();
-//    } while ($exception !== null);
-//
-//    return $details;
-//}
-
 /**
  * Trims exception messages to remove embedded parameters
  */
@@ -64,8 +51,18 @@ function getTextForException(\Throwable $exception): string
             $currentException->getFile() . ':' . $currentException->getLine()
         );
 
+        $message = <<< MESSAGE
+Exception type: %s
+Message:  %s
+File:  %s
+
+Stack trace of previous function calls:
+%s
+
+MESSAGE;
+
         $text .= sprintf(
-            "Exception type: %s\nMessage:  %s\nFile:  %s \n\nStack trace:\n%s\n",
+            $message,
             get_class($currentException),
             purgeExceptionMessage($currentException),
             $path,
@@ -161,28 +158,12 @@ function formatTraceLine(array $trace, int $count): string
         $function
     );
 
-//    if ($function === "ReflectionMethod->invokeArgs") {
-//        $text = "&nbsp;&nbsp;&nbsp;&nbsp;-----------^^ Controller \n" . $text;
-//    }
-
     return $text;
 }
 
-//function getExceptionStack(\Throwable $exception): string
-//{
-//    $line = "Exception of type " . get_class($exception). "\n";
-//
-//    foreach ($exception->getTrace() as $trace) {
-//        $line .=  formatTraceLine($trace);
-//    }
-//
-//    return $line;
-//}
 
 function getFormattedException(\Throwable $exception): string
 {
-//    $lines = getExceptionStackAsArray($exception);
-
     $output = '';
 
     $lines = [];
@@ -192,8 +173,6 @@ function getFormattedException(\Throwable $exception): string
         foreach ($exception->getTrace() as $trace) {
             /* @phpstan-ignore argument.type */
             $output .= formatTraceLine($trace, $count);
-//            $output .= '#' . $count . ' '. $line . "\n";
-//            $output .= $line . "\n";
             $count += 1;
         }
         $exception = $exception->getPrevious();
@@ -201,11 +180,6 @@ function getFormattedException(\Throwable $exception): string
         // sanity limit previous exceptions to prevent
         // infinite loops.
     } while ($exception !== null && $count < 10);
-
-//    foreach ($lines as $line) {
-//        $output .= '#' . $count . ' '. $line . "\n";
-//        $count += 1;
-//    }
 
     return $output;
 }

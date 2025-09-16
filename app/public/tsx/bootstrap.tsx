@@ -1,9 +1,11 @@
 import { h, render } from "preact";
 
 import initByClass from "./widgety/widgety";
-import { startMessageProcessing } from "./message/message";
+import { sendMessage, startMessageProcessing } from "./message/message";
 import type { WidgetClassBinding } from "./widgety/widgety";
 
+
+import { BristolStairsPanel } from "./BristolStairsPanel";
 import { CSPViolationReportsPanel } from "./CSPViolationReportsPanel";
 import { EmailLinkGeneratorPanel } from "./EmailLinkGenerator";
 import { FloatingPointPanel } from "./FloatingPointPanel";
@@ -26,13 +28,13 @@ import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
 import { receiveSelectionMessage } from "./SourceLinkPanel";
 
 
+
 let panels: WidgetClassBinding[] = [
 
-
-    // {
-    //     class: 'admin_email_panel',
-    //     component: AdminEmailPanel
-    // },
+    {
+        class: 'bristol_stairs_panel',
+        component: BristolStairsPanel
+    },
     {
         class: 'email_link_generator_panel',
         component: EmailLinkGeneratorPanel
@@ -94,9 +96,6 @@ let panels: WidgetClassBinding[] = [
         class: 'room_sourcelinks_panel',
         component: RoomSourcelinksPanel
     },
-
-
-
     {
         class: 'teleprompter_panel',
         component: TeleprompterPanel
@@ -105,7 +104,6 @@ let panels: WidgetClassBinding[] = [
         class: 'source_link_panel',
         component: SourceLinkPanel
     },
-
     {
         class: 'time_line_panel',
         component: TimeLinePanel
@@ -114,8 +112,6 @@ let panels: WidgetClassBinding[] = [
         class: 'twitter_splitter_panel',
         component: TwitterSplitterPanel
     },
-
-
     {
         class: 'widget_csp_violation_reports',
         component: CSPViolationReportsPanel
@@ -145,6 +141,9 @@ registerServiceWorker();
 
 // Add an event listener to receive messages
 window.addEventListener("message", receiveSelectionMessage);
+
+// @ts-ignore: bind send message to the actual function.
+window.sendMessage = sendMessage;
 
 console.log("Bootstrap finished");
 

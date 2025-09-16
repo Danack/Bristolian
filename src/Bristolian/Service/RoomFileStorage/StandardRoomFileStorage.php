@@ -9,8 +9,6 @@ use Bristolian\Service\FileStorageProcessor\UploadError;
 use Bristolian\Service\ObjectStore\RoomFileObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 
-//use Bristolian\Service\FileUploader\FileObjectStore;
-
 /**
  * Stores files that have been uploaded for use in a Room.
  *

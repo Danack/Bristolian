@@ -241,6 +241,48 @@ function createMemeFilesystem(Config $config): \Bristolian\Filesystem\MemeFilesy
     return $filesystem;
 }
 
+function createBristolStairsFilesystem(Config $config): \Bristolian\Filesystem\BristolStairsFilesystem
+{
+    $bucketName = 'bristolian-stairs-images';
+
+    if ($config->isProductionEnv() !== true) {
+        $bucketName = 'bristolian-stairs-images-dev';
+    }
+
+    // SETUP
+    $client = new S3Client([
+        'credentials' => [
+            'key' => getScalewayApiKey(),
+            'secret' => getScalewayApiSecret(),
+        ],
+        'region' => 'nl-ams',
+        'endpoint' => 'https://s3.nl-ams.scw.cloud'
+    ]);
+
+    // The internal adapter
+    $adapter = new AwsS3V3Adapter(
+        $client,
+        $bucketName,
+        // Optional path prefix
+        '', //'path/prefix',
+        new PortableVisibilityConverter(
+            Visibility::PRIVATE
+        )
+    );
+
+    $config = [];
+
+    // The FilesystemOperator
+    $filesystem = new \Bristolian\Filesystem\BristolStairsFilesystem($adapter, $config);
+
+    return $filesystem;
+}
+
+
+
+
+
+
 
 function createRoomFileFilesystem(Config $config): \Bristolian\Filesystem\RoomFileFilesystem
 {

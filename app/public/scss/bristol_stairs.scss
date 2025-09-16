@@ -1,0 +1,22 @@
+
+.bristol_stairs_panel {
+
+    /* Container limits the image to at most 50% of viewport width/height.
+    The image keeps its intrinsic aspect ratio and will not be upscaled. */
+    .image-wrapper {
+        /* limit size to 50% of viewport */
+        max-width: 50vw;
+        max-height: 50vh;
+        display: inline-block;
+        margin: 2rem auto;
+    }
+
+
+    .image-wrapper img {
+        width: auto;
+        height: auto;
+        max-width: 100%; /* at most the wrapper's width */
+        max-height: 100%; /* at most the wrapper's height */
+        display: block;
+    }
+}

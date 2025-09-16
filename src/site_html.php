@@ -86,6 +86,18 @@ function getPageLayoutHtml(): string
 </body>
 
 <script src=':raw_site_js_link'></script>
+
+    <link rel="stylesheet" href="/css/leaflet/leaflet.1.7.1.css" />
+    <link rel="stylesheet" href="/css/leaflet/MarkerCluster.1.4.1.css" />
+    <link rel="stylesheet" href="/css/leaflet/MarkerCluster.Default.1.5.0.min.css" />
+ 
+    <link rel="stylesheet" href="/css/bristol_stairs_map.css" />
+
+    <script src="/js/leaflet/leaflet.1.7.1.js"></script>
+    <script src="/js/leaflet/leaflet.markercluster.1.4.1.js"></script>
+
+    <script src="/js/bristol_stairs_map.js"></script>
+
 </html>
 HTML;
 }

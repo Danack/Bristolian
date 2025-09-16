@@ -20,6 +20,8 @@ function add_console_commands(Application $console)
     addEmailCommands($console);
     addGenerateCommands($console);
 
+    addBristolStairsCommands($console);
+
     addMoonCommands($console);
 }
 
@@ -67,6 +69,12 @@ function addDebugCommands(Application $console)
     $command = new Command('debug:system_info', '\Bristolian\CliController\Debug::generate_system_info_email');
     $command->setDescription("Generate the system info email.");
     $console->add($command);
+
+
+    $command = new Command('debug:stack_trace', 'Bristolian\CliController\Debug::stack_trace');
+    $command->setDescription("Test exception stack trace is correct.");
+    $console->add($command);
+
 }
 
 function addSeedCommands(Application $console)
@@ -202,4 +210,20 @@ function addRoomCommands(Application $console)
     $command->addArgument('purpose', InputArgument::REQUIRED, "The purpose/description of the room.");
 
     $console->add($command);
+}
+
+
+function addBristolStairsCommands(Application $console)
+{
+    $command = new Command('stairs:create', 'Bristolian\CliController\BristolStairs::create');
+    $command->setDescription("Create Bristol stairs entry from an image");
+    $command->addArgument('image_filename', InputArgument::REQUIRED, "The image filename.");
+//    $command->addArgument('purpose', InputArgument::OPTIONAL, "The purpose/description of the room.");
+
+    $console->add($command);
+
+    $command = new Command('stairs:total', 'Bristolian\CliController\BristolStairs::total');
+    $command->setDescription("Find the total number of steps known.");
+    $console->add($command);
+
 }

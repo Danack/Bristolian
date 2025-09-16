@@ -1,0 +1,176 @@
+{
+  "id": 18941332,
+  "event_type": "response",
+  "created_at": "2025-08-21T14:56:07.524+01:00",
+  "described_state": null,
+  "calculated_state": null,
+  "last_described_at": null,
+  "incoming_message_id": 3131605,
+  "outgoing_message_id": null,
+  "comment_id": null,
+  "display_status": "Response",
+  "snippet": "&nbsp;\n Dear&nbsp;Filipa Gaspar\n &nbsp;\n Thank you for your request for information received on&nbsp;22 July 2025.\n &nbsp;\n Please find attached our response to your request....",
+  "info_request": {
+    "id": 1314576,
+    "url_title": "locations_of_council_pitches_for",
+    "title": "Locations of council pitches for van dwellers",
+    "created_at": "2025-07-22T12:01:35.876+01:00",
+    "updated_at": "2025-08-21T14:56:07.535+01:00",
+    "described_state": "waiting_response",
+    "display_status": "Awaiting classification",
+    "awaiting_description": true,
+    "prominence": "normal",
+    "law_used": "foi",
+    "tags": []
+  },
+  "public_body": {
+    "id": 90,
+    "url_name": "bristol_city_council",
+    "name": "Bristol City Council",
+    "short_name": null,
+    "created_at": "2008-03-03T18:42:02.833+00:00",
+    "updated_at": "2025-08-23T04:10:08.879+01:00",
+    "home_page": "https://www.bristol.gov.uk/",
+    "notes": "The UK has multiple tiers of local government and not all local authorities have responsibility for education. This public authority is one of around 200 local authorities in England, Scotland and Wales which do have responsibilities for education. This council has the functions of a district level council. Councils of this type are usually the primary planning authority and council tax billing authority and have responsibility for, among other things, refuse collection, housing, food safety inspections, dog wardens, parks and street cleaning as well as cemeteries and crematoria. It is our understanding that this is a Council with Adult Social Services Responsibilities.",
+    "publication_scheme": "http://www.bristol.gov.uk/ccm/content/Council-Democracy/Data-Protection-Freedom-of-Information/publication-scheme-2009.en",
+    "disclosure_log": "",
+    "tags": [
+      [
+        "addressbase_custodian",
+        "116"
+      ],
+      [
+        "billing_authority",
+        "E0102"
+      ],
+      [
+        "BST",
+        null],
+      [
+        "cassr",
+        null],
+      [
+        "cassr_england",
+        null],
+      [
+        "coins",
+        "E0102"
+      ],
+      [
+        "district_level_functions",
+        null],
+      [
+        "district_level_functions_england",
+        null],
+      [
+        "dpr",
+        "Z5873747"
+      ],
+      [
+        "E0102",
+        null],
+      [
+        "england",
+        null],
+      [
+        "gss",
+        "E06000023"
+      ],
+      [
+        "highways",
+        null],
+      [
+        "la",
+        "801"
+      ],
+      [
+        "lad23cd_code",
+        "E06000023"
+      ],
+      [
+        "la_type",
+        "UA"
+      ],
+      [
+        "lcnaf",
+        "nr97004150"
+      ],
+      [
+        "lea",
+        null],
+      [
+        "local_council",
+        null],
+      [
+        "local_planning_authority",
+        "E60000290"
+      ],
+      [
+        "local_resilience_forum",
+        "avon-and-somerset"
+      ],
+      [
+        "mapit",
+        "2561"
+      ],
+      [
+        "navigation_authority",
+        null],
+      [
+        "parent_ca",
+        "WECA"
+      ],
+      [
+        "parliament_thesaurus",
+        "4400"
+      ],
+      [
+        "pha",
+        null],
+      [
+        "region_code",
+        "E12000009"
+      ],
+      [
+        "south_west",
+        null],
+      [
+        "statistical_geography",
+        "E06000023"
+      ],
+      [
+        "unitary",
+        null],
+      [
+        "unitary_authority",
+        null],
+      [
+        "UTA",
+        null],
+      [
+        "UTLA",
+        null],
+      [
+        "WECA",
+        null],
+      [
+        "wikidata",
+        "Q16953796"
+      ]
+    ],
+    "info": {
+      "requests_count": 4498,
+      "requests_successful_count": 2655,
+      "requests_not_held_count": 323,
+      "requests_overdue_count": 407,
+      "requests_visible_classified_count": 3951
+    }
+  },
+  "user": {
+    "id": 305467,
+    "url_name": "filipa_gaspar_2",
+    "name": "Filipa Gaspar",
+    "ban_text": "",
+    "about_me": ""
+  }
+}

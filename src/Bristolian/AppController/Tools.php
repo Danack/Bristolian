@@ -22,6 +22,7 @@ Well, hello there '$username' !
 
 <ul>
   <li><a href="/tools/email_link_generator">Email link generator</a></li>
+  <li><a href="/tools/bristol_stairs">Bristol Stairs</a></li>
   <li><a href="/tools/twitter_splitter">Twitter splitter</a></li>          
   <li><a href="/tools/qr_code_generator">QR generator</a></li>
   <li><a href="/tools/floating_point">Floating point visualiser</a></li>

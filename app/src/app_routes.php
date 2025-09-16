@@ -96,6 +96,9 @@ function getAllAppRoutes()
         ['/tools/floating_point', 'GET', '\Bristolian\AppController\Pages::floating_point_page'],
         ['/tools/floating_point_8_bit', 'GET', '\Bristolian\AppController\Pages::floating_point_page_8'],
         ['/tools/timeline', 'GET', '\Bristolian\AppController\Pages::timeline_page'],
+
+        ['/tools/bristol_stairs', 'GET', '\Bristolian\AppController\Pages::stairs_page'],
+
         ['/tools/notes', 'GET', '\Bristolian\AppController\Pages::notes_page'],
         ['/tools/twitter_splitter', 'GET', '\Bristolian\AppController\Pages::twitter_splitter_page'],
         ['/tools/teleprompter', 'GET', '\Bristolian\AppController\Pages::teleprompter_page'],

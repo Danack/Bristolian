@@ -9,21 +9,42 @@ services:
     networks:
       default_network:
     restart: always
-  chrome_headless:
-    image: alpeware/chrome-headless-trunk
+#  chrome_headless:
+#    image: alpeware/chrome-headless-trunk
+#    ports:
+#      - "9222:9222"
+#    cap_add:
+#      - SYS_ADMIN
+#    environment:
+#      - CHROME_OPTS=--window-size="800,800"
+#    networks:
+#      default_network:
+#    security_opt:
+#      - seccomp:unconfined
+#      #extra_hosts:
+#      #      - "local.phpimagick.com:imagick_php_backend"
+#      # - "local.phpimagick.com:162.242.195.82"
+
+  mediawiki:
+    image: mediawiki:latest
+    container_name: mediawiki
     ports:
-      - "9222:9222"
-    cap_add:
-      - SYS_ADMIN
+      - "8080:80"
     environment:
-      - CHROME_OPTS=--window-size="800,800"
+      MEDIAWIKI_DB_HOST: db
+      MEDIAWIKI_DB_USER: mediawiki
+      MEDIAWIKI_DB_PASSWORD: abcd1234
+      MEDIAWIKI_DB_NAME: mediawiki
+      # MEDIAWIKI_DB_USER: mediawiki
+      # MEDIAWIKI_DB_PASSWORD: db_pasword
+      # MEDIAWIKI_DB_NAME: mediawiki
     networks:
       default_network:
-    security_opt:
-      - seccomp:unconfined
-      #extra_hosts:
-      #      - "local.phpimagick.com:imagick_php_backend"
-      # - "local.phpimagick.com:162.242.195.82"
+    depends_on:
+      - db
+    volumes:
+      - ./mediawiki_data:/var/www/html/images
+      - ./containers/mediawiki/LocalSettings.php:/var/www/html/LocalSettings.php
   db:
     image: mysql:8.0.30
     command: --default-authentication-plugin=mysql_native_password

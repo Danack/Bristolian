@@ -124,7 +124,10 @@ function injectionParams()
             Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::class,
 
         \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::class =>
-            \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::class
+            \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::class,
+
+        \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::class =>
+            \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class,
     ];
 
 

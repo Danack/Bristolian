@@ -29,6 +29,7 @@ docker-compose build php_fpm
 docker-compose up --build \
  varnish \
  caddy \
+ db \
  php_fpm \
  php_fpm_debug \
  sass_dev_builder \
