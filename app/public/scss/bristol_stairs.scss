@@ -1,22 +1,84 @@
 
-.bristol_stairs_panel {
 
-    /* Container limits the image to at most 50% of viewport width/height.
-    The image keeps its intrinsic aspect ratio and will not be upscaled. */
-    .image-wrapper {
-        /* limit size to 50% of viewport */
-        max-width: 50vw;
-        max-height: 50vh;
-        display: inline-block;
-        margin: 2rem auto;
+.bristol_stairs {
+    display: flex;
+    flex-direction: column; // stack by default
+
+    .bristol_stairs_map_class {
+        flex: 1;
+        min-height: 600px;
     }
 
+    .bristol_stairs_panel {
+        width: 100%;
 
-    .image-wrapper img {
-        width: auto;
-        height: auto;
-        max-width: 100%; /* at most the wrapper's width */
-        max-height: 100%; /* at most the wrapper's height */
-        display: block;
+        img {
+            max-width: 500px;   // cap width
+            max-height: 500px;  // cap height
+            width: auto;        // let browser adjust
+            height: auto;
+            display: block;
+            margin: 0 auto;     // center in panel
+        }
+
+        //img {
+        //    max-width: 80%;    // up to 80% of panel width
+        //    max-height: 40vh;  // up to 40% of viewport height
+        //    width: auto;       // preserve aspect ratio
+        //    height: auto;
+        //    display: block;
+        //    margin: 0 auto;    // center the image
+        //}
+
+        .image-wrapper {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.5rem 1rem; // row gap, column gap
+            align-items: center;
+            max-width: 400px;
+
+            label {
+                font-weight: bold;
+                text-align: right;
+            }
+
+            input {
+                padding: 0.25rem 0.5rem;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                width: 100%;
+            }
+
+            button {
+                grid-column: 2; // align button under inputs
+                justify-self: start;
+                margin-top: 0.5rem;
+                padding: 0.4rem 0.8rem;
+                border: none;
+                background: #444;
+                color: white;
+                border-radius: 4px;
+                cursor: pointer;
+
+                &:hover {
+                    background: #222;
+                }
+            }
+        }
+    }
+
+    @media screen and (min-width: 680px) {
+        flex-direction: row;
+
+        .bristol_stairs_map_class {
+            flex: 1;
+            min-width: 600px;
+        }
+
+        .bristol_stairs_panel {
+            flex: 0 0 auto;
+            max-width: 600px;
+            margin-left: 20px;
+        }
     }
 }

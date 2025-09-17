@@ -123,7 +123,6 @@ function apiInjectionParams() : InjectionParams
         \Bristolian\Filesystem\BristolStairsFilesystem::class =>
             'createBristolStairsFilesystem',
 
-
         \Bristolian\Filesystem\RoomFileFilesystem::class =>
             'createRoomFileFilesystem',
 

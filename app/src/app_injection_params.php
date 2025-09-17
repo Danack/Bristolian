@@ -128,6 +128,9 @@ function injectionParams()
 
         \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::class =>
             \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class,
+
+        \Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo::class =>
+          \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo::class
     ];
 
 
@@ -170,6 +173,8 @@ function injectionParams()
         \Bristolian\Service\DeployLogRenderer\DeployLogRenderer::class =>
             'createDeployLogRenderer',
 
+        \Bristolian\Filesystem\BristolStairsFilesystem::class =>
+            'createBristolStairsFilesystem',
 
         \Bristolian\Middleware\ContentSecurityPolicyMiddleware::class =>
             'createContentSecurityPolicyMiddleware',

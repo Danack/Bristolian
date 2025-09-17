@@ -5,6 +5,7 @@ namespace Bristolian\Repo\BristolStairsRepo;
 
 use Bristolian\Database\bristol_stair_info;
 use Bristolian\Model\BristolStairInfo;
+use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 
@@ -13,6 +14,33 @@ class PdoBristolStairsRepo implements BristolStairsRepo
 {
     public function __construct(private PdoSimple $pdo_simple)
     {
+    }
+
+    public function updateStairInfo(BristolStairsInfoParams $stairs_info_params)
+    {
+        $sql = <<< SQL
+update
+  bristol_stair_info
+set 
+  description = :description,
+  steps = :steps
+where
+  id = :id
+  limit 1
+SQL;
+
+        $params = [
+            ":description" => $stairs_info_params->description,
+            ":steps" => $stairs_info_params->steps,
+            ":id" => $stairs_info_params->bristol_stair_info_id,
+        ];
+
+
+        $rows_affected = $this->pdo_simple->execute($sql, $params);
+
+        if ($rows_affected !== 1) {
+            throw new \Exception("Failed to update bristol_stairs_info");
+        }
     }
 
     public function store_stairs_info(

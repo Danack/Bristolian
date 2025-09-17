@@ -52,6 +52,8 @@ function getAllAppRoutes()
             'Bristolian\AppController\Pages::advice_for_speaking_at_council'
         ],
 
+        ['/bristol_stairs/image/{stored_stair_image_file_id:.+}', 'GET', 'Bristolian\AppController\BristolStairs::getImage'],
+
         ['/explanations/shenanigans_planning', 'GET', 'Bristolian\AppController\Pages::shenanigans_planning'],
         [
             '/explanations/monitoring_officer_notes',
@@ -97,7 +99,8 @@ function getAllAppRoutes()
         ['/tools/floating_point_8_bit', 'GET', '\Bristolian\AppController\Pages::floating_point_page_8'],
         ['/tools/timeline', 'GET', '\Bristolian\AppController\Pages::timeline_page'],
 
-        ['/tools/bristol_stairs', 'GET', '\Bristolian\AppController\Pages::stairs_page'],
+
+        ['/tools/bristol_stairs', 'GET', 'Bristolian\AppController\BristolStairs::stairs_page'],
 
         ['/tools/notes', 'GET', '\Bristolian\AppController\Pages::notes_page'],
         ['/tools/twitter_splitter', 'GET', '\Bristolian\AppController\Pages::twitter_splitter_page'],

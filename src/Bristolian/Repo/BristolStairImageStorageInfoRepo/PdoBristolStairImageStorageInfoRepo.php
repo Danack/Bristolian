@@ -3,6 +3,8 @@
 namespace Bristolian\Repo\BristolStairImageStorageInfoRepo;
 
 use Bristolian\Database\stored_stair_image_file;
+use Bristolian\Model\BristolStairImageFile;
+use Bristolian\Model\BristolStairInfo;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\UploadedFiles\UploadedFile;
@@ -13,6 +15,17 @@ class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInf
 {
     public function __construct(private PdoSimple $pdo_simple)
     {
+    }
+
+    function getById(string $bristol_stairs_image_id): BristolStairImageFile|null {
+        $sql = stored_stair_image_file::SELECT;
+        $sql .= " WHERE id = :id";
+
+        return $this->pdo_simple->fetchOneAsObjectOrNullConstructor(
+            $sql,
+            [':id' => $bristol_stairs_image_id],
+            BristolStairImageFile::class
+        );
     }
 
     public function storeFileInfo(

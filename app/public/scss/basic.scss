@@ -70,4 +70,8 @@ table {
   }
 }
 
-
+ol, ul {
+  margin-left: 0;
+  padding-left: 0;
+  list-style-position: inside; // optional, keeps numbers aligned with content
+}

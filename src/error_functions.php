@@ -191,11 +191,13 @@ function getFormattedException(\Throwable $exception): string
 function getExceptionStackAsArray(\Throwable $exception)
 {
     $count = 0;
+    $line_count = 0;
     do {
         $lines = [];
         foreach ($exception->getTrace() as $trace) {
             /* @phpstan-ignore argument.type */
-            $lines[] = formatTraceLine($trace, 123);
+            $lines[] = formatTraceLine($trace, $line_count);
+            $line_count += 1;
         }
         $exception = $exception->getPrevious();
 

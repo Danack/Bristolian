@@ -1,6 +1,7 @@
 import {h, Component} from "preact";
 import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";
 import {BristolStairInfo} from "./generated/types";
+import {global} from "./globals";
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
@@ -54,19 +55,124 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
         console.log(data)
     }
 
-    restoreState(state_to_restore: object) {
+    // restoreState(state_to_restore: object) {
+    // }
+
+    handleDescriptionChange = (value: string) => {
+        this.setState((prevState) => ({
+            selectedStairInfo: {
+                ...prevState.selectedStairInfo,
+                description: value,
+            },
+        }));
+    };
+
+    handleStepsChange = (value: number) => {
+        this.setState((prevState) => ({
+            selectedStairInfo: {
+                ...prevState.selectedStairInfo,
+                steps: value,
+            },
+        }));
+    };
+
+    handleSave() {
+        // Your save logic goes here (e.g. API call)
+        console.log("Saved:", this.state.selectedStairInfo);
+
+        let stairInfo = this.state.selectedStairInfo;
+
+        const endpoint = `/api/bristol_stairs_update/${this.state.selectedStairInfo.id}`;
+        const formData = new FormData();
+
+
+        formData.append("bristol_stair_info_id", stairInfo.id);
+        formData.append("description", stairInfo.description);
+        formData.append("steps", "" + stairInfo.steps);
+
+
+        let params = {
+            method: 'POST',
+            body: formData
+        }
+
+        fetch(endpoint, params).
+        then((response:Response) => {
+            if (response.status !== 200 && response.status !== 400) {
+                throw new Error("Server failed to return an expected response.")
+            }
+            return response;
+        }).
+        then((response:Response) => response.json()).
+        then((data:any) =>this.processData(data)).
+        catch((data:any) => this.processError(data));
+    };
+
+    processData(data:any) {
+        console.log("success, presumably");
     }
+
+    renderLoggedInStairInfo() {
+
+        const { description, steps, stored_stair_image_file_id } =
+          this.state.selectedStairInfo;
+
+        // Editable version
+        return (
+          <span className="image-wrapper">
+          <img
+            src={"/bristol_stairs/image/" + stored_stair_image_file_id}
+            alt="some stairs"
+            style={{gridColumn: "1 / span 2", marginBottom: "1rem"}}
+          />
+
+          <label htmlFor="desc">Description</label>
+          <input
+            id="desc"
+            type="text"
+            value={description}
+            onChange={(e: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+              this.handleDescriptionChange(e.currentTarget.value)
+            }
+          />
+
+          <label htmlFor="steps">Steps</label>
+          <input
+            id="steps"
+            type="number"
+            value={steps}
+            onChange={(e: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+              this.handleStepsChange(parseInt(e.currentTarget.value))
+            }
+          />
+
+          <button style={{gridColumn: "2"}} onClick={() => this.handleSave()}>
+            Save Changes
+          </button>
+        </span>
+        );
+    }
+
+    renderViewOnlyStairInfo() {
+        return <span className='image-wrapper'>
+                Description:{this.state.selectedStairInfo.description} <br/>
+                Steps: {this.state.selectedStairInfo.steps} <br/>
+                <img src={"/bristol_stairs/image/" + this.state.selectedStairInfo.stored_stair_image_file_id}
+                     alt='some stairs'/><br/>
+        </span>
+    }
+
 
     render(props: BristolStairsPanelProps, state: BristolStairsPanelState) {
         let error_block = <span>&nbsp;</span>;
-        let stair_info = <span>Stair selected is null</span>
+        let stair_info = <span>Click a marker on the map to view the stairs.</span>
 
         if (this.state.selectedStairInfo !== null) {
-            stair_info = <span class='image-wrapper'>
-                Description:{this.state.selectedStairInfo.description} <br/>
-                Steps: {this.state.selectedStairInfo.steps} <br/>
-                <img src='/api/bristol_stairs/image/{this.state.selectedStairInfo.id}' alt='some stairs'/><br/>
-            </span>
+            if (global.logged_in === true) {
+                stair_info = this.renderLoggedInStairInfo();
+            } else {
+                stair_info = this.renderViewOnlyStairInfo()
+            }
         }
 
         return <div class='bristol_stairs_panel_react'>

@@ -210,21 +210,6 @@ HTML;
     }
 
 
-    public function stairs_page(): string
-    {
-        $content = "<h1>Stairs page goes here</h1>";
-        $content .= <<< HTML
-
-
-<div id="bristol_stairs_map"></div>
-<div class='bristol_stairs_panel'></div>
-
-HTML;
-
-
-        return $content;
-    }
-
 
     public function teleprompter_page(): string
     {
