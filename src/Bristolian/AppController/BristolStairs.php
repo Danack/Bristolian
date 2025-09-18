@@ -14,6 +14,7 @@ use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Filesystem\BristolStairsFilesystem;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Parameters\BristolStairsInfoParams;
+use Bristolian\SiteHtml\ExtraAssets;
 use VarMap\VarMap;
 
 class BristolStairs
@@ -35,8 +36,19 @@ class BristolStairs
     }
 
 
-    public function stairs_page(): string
+
+    public function stairs_page(ExtraAssets $extraAssets): string
     {
+
+        $extraAssets->addCSS("/css/leaflet/leaflet.1.7.1.css");
+        $extraAssets->addCSS("/css/leaflet/MarkerCluster.1.4.1.css");
+        $extraAssets->addCSS("/css/leaflet/MarkerCluster.Default.1.5.0.min.css");
+        $extraAssets->addCSS("/css/bristol_stairs_map.css");
+
+        $extraAssets->addJS("/js/leaflet/leaflet.1.7.1.js");
+        $extraAssets->addJS("/js/leaflet/leaflet.markercluster.1.4.1.js");
+        $extraAssets->addJS("/js/bristol_stairs_map.js");
+
         $content = "<h1>A map of Bristol Stairs</h1>";
         $content .= <<< HTML
 
@@ -73,7 +85,6 @@ HTML;
     function getImage(
         BristolStairsFilesystem $roomFilesystem,
         LocalCacheFilesystem $localCacheFilesystem,
-//        BristolStairsRepo $bristolStairsRepo,
         BristolStairImageStorageInfoRepo $bristolStairImageStorageInfoRepo,
         string $stored_stair_image_file_id
     ) {

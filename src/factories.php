@@ -149,6 +149,12 @@ function createPDOForUser(Config $config)
         PDO::MYSQL_ATTR_FOUND_ROWS => true
     ];
 
+    // TODO - return a readonly connection.
+    // this needs a little thought to allow people to login.
+    // 'bristolian_readonly_user'
+    // 's^Z8p!R3tM#9wXj@Qk2'
+
+
     try {
         $pdo = new \PDO(
             $dsn_string,

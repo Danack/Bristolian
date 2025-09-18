@@ -175,28 +175,21 @@ function generateInterfaceForClass(string $type): string
         $php_type = $property->getType();
         $php_type = (string)$php_type;
 
-//        var_dump($php_type);
-
         if (str_starts_with($php_type, "?") === true) {
             $php_type = ltrim($php_type, '?');
             $nullable = true;
         }
 
-
         if (strcasecmp($php_type, 'DateTimeImmutable') === 0 ||
             strcasecmp($php_type, 'DateTimeInterface') === 0 ||
             strcasecmp($php_type, 'DateTime') === 0) {
-            $php_type = "DateTime";
+            $php_type = "Date";
         }
 
         if (strcasecmp($php_type, 'int') === 0) {
             $php_type = "number";
         }
 
-//        if (str_starts_with($php_type, '?') === true) {
-//            $php_type = substr($php_type, 1) . "|null";
-//        }
-//
         if ($nullable === true) {
             $php_type .= "|null";
         }
@@ -293,8 +286,6 @@ class GenerateFiles
         $content = "// This is an auto-generated file\n";
         $content .= "// DO NOT EDIT\n\n";
         $content .= "// You'll need to bounce the docker boxes to regenerate.\n\n";
-
-        $content .= 'import { DateTime } from "luxon";' . "\n\n";
 
         $types = [
             \Bristolian\Model\BristolStairInfo::class,

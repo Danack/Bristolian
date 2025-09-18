@@ -1,6 +1,4 @@
 
-import { DateTime } from "luxon";
-
 /**
  * Format bytes as human-readable text.
  *
@@ -37,26 +35,54 @@ export function humanFileSize(bytes:number, si=false, dp=1) {
 
 
 
-// Function to format the DateTime object
-export function formatDateTime(dateTime: DateTime) {
-  // Get the current time
-  const now = DateTime.now();
 
-  // Calculate the difference in minutes between the current time and the provided datetime
-  const diffInMinutes = now.diff(dateTime, "minutes").minutes;
 
-  if (diffInMinutes < 60) {
+export function formatDateTime(date: Date): string {
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMinutes = Math.floor(diffMs / 1000 / 60);
+
+  if (diffMinutes < 60) {
     // If within the last hour, show "x minutes ago"
-    return `${Math.floor(diffInMinutes)} minutes ago`;
-  } else if (dateTime.hasSame(now, "day")) {
-    // If over an hour old but still the same day, show the time
-    return dateTime.toLocaleString(DateTime.TIME_SIMPLE);
-  } else {
-    // Otherwise, show the full date and time
-    // return dateTime.toLocaleString(DateTime.DATETIME_MED);
-    return dateTime.toFormat('h:mma MMM d, yyyy');
-
+    return `${diffMinutes} minutes ago`;
   }
+
+  // Check if the date is today
+  const isToday =
+    date.getDate() === now.getDate() &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear();
+
+  if (isToday) {
+    // If same day, show just the time
+    return date.toLocaleTimeString(undefined, {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  }
+
+  // Otherwise, show full date and time
+  return date.toLocaleString(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+
+export function formatDateTimeForDB(date: Date): string {
+  const pad = (n: number) => n.toString().padStart(2, '0');
+
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1); // months are 0-indexed
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+  const seconds = pad(date.getSeconds());
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
 

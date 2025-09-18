@@ -26,6 +26,8 @@ services:
   js_builder:
     environment:
       - BRISTOLIAN_API_BASE_URL=http://local.api.bristolian.org
+    ports:
+      - "8888:8888"
 #  php_fpm:
 #    env_file:
 #      - env_local_dev.env

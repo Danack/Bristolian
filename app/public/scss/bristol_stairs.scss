@@ -3,6 +3,7 @@
 .bristol_stairs {
     display: flex;
     flex-direction: column; // stack by default
+    border: 2px solid #1f1f1f;
 
     .bristol_stairs_map_class {
         flex: 1;
@@ -13,12 +14,17 @@
         width: 100%;
 
         img {
+
+            display: block;         // removes inline whitespace
+            margin: 0;              // reset default margin
+            padding: 0;             // reset default padding
+
             max-width: 500px;   // cap width
             max-height: 500px;  // cap height
             width: auto;        // let browser adjust
             height: auto;
-            display: block;
-            margin: 0 auto;     // center in panel
+            //display: block;
+            //margin: 0 auto;     // center in panel
         }
 
         //img {

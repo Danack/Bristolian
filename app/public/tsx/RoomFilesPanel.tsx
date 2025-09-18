@@ -1,12 +1,9 @@
 import {h, Component} from "preact";
 import {humanFileSize, formatDateTime} from "./functions";
-import {DateTime} from "luxon";
 import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";
 import {PdfSelectionType} from "./constants";
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
-
-
 
 export interface RoomFilesPanelProps {
     room_id: string
@@ -18,7 +15,7 @@ interface RoomFile {
     original_filename: string, //"sample.pdf",
     state: string, // "uploaded",
     size: number, // "18810",
-    created_at: DateTime
+    created_at: Date
 }
 
 
@@ -92,7 +89,8 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                 normalized_name: entry.normalized_name,
                 original_filename: entry.original_filename,
                 size: entry.size,
-                created_at: DateTime.fromISO(entry.created_at)
+                // created_at: DateTime.fromISO(entry.created_at)
+                created_at: new Date(entry.created_at),
             };
 
             files.push(file);

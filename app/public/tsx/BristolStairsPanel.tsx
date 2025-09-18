@@ -154,12 +154,23 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
     }
 
     renderViewOnlyStairInfo() {
-        return <span className='image-wrapper'>
-                Description:{this.state.selectedStairInfo.description} <br/>
-                Steps: {this.state.selectedStairInfo.steps} <br/>
-                <img src={"/bristol_stairs/image/" + this.state.selectedStairInfo.stored_stair_image_file_id}
-                     alt='some stairs'/><br/>
-        </span>
+        const { description, steps, stored_stair_image_file_id } = this.state.selectedStairInfo;
+  
+        return (
+          <span className="image-wrapper">
+            <img
+              src={"/bristol_stairs/image/" + stored_stair_image_file_id}
+              alt="some stairs"
+              style={{ gridColumn: "1 / span 2", marginBottom: "1rem" }}
+            />
+
+            <label>Description</label>
+            <span>{description}</span>
+
+            <label>Steps</label>
+            <span>{steps}</span>
+          </span>
+        );
     }
 
 

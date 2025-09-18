@@ -4,12 +4,16 @@ declare(strict_types = 1);
 
 namespace Bristolian;
 
-// TODO - this needs an interface
+// TODO - these could do with an interface?
 use Bristolian\SiteHtml\AssetLinkEmitter;
+use Bristolian\SiteHtml\ExtraAssets;
 
 class StringToHtmlPageConverter
 {
-    public function __construct(private AssetLinkEmitter $assetLinkEmitter)
+    public function __construct(
+        private AssetLinkEmitter $assetLinkEmitter,
+        private ExtraAssets $extraAssets
+    )
     {
     }
 
@@ -20,7 +24,11 @@ class StringToHtmlPageConverter
         \Psr\Http\Message\ResponseInterface $response
     ): \Psr\Http\Message\ResponseInterface {
 
-        $page = createPageHtml($this->assetLinkEmitter, $result);
+        $page = createPageHtml(
+            $this->assetLinkEmitter,
+            $this->extraAssets,
+            $result
+        );
 
         $response = $response->withHeader('Content-Type', 'text/html');
         $response->getBody()->write($page);

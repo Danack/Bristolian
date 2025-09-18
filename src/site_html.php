@@ -15,8 +15,6 @@ function createPageHeaderHtml(/*HeaderLinks $headerLinks*/) : string
         new HeaderLink('/', 'Home'),
         new HeaderLink('/tools', 'Tools'),
         new HeaderLink('/rooms', 'Rooms'),
-//        new HeaderLink('/docs', 'Docs'),
-//        new HeaderLink('/users', 'Users'),
         new HeaderLink('/about', "About")
     ]);
 
@@ -54,9 +52,9 @@ HTML;
     return esprintf($html, $params);
 }
 
-function getPageLayoutHtml(): string
+function getPageLayoutHtml(\Bristolian\SiteHtml\ExtraAssets $extraAssets,): string
 {
-    return <<< HTML
+    $html = <<< HTML
 <!DOCTYPE html>
 
 <html lang="en">
@@ -87,23 +85,19 @@ function getPageLayoutHtml(): string
 
 <script src=':raw_site_js_link'></script>
 
-    <link rel="stylesheet" href="/css/leaflet/leaflet.1.7.1.css" />
-    <link rel="stylesheet" href="/css/leaflet/MarkerCluster.1.4.1.css" />
-    <link rel="stylesheet" href="/css/leaflet/MarkerCluster.Default.1.5.0.min.css" />
- 
-    <link rel="stylesheet" href="/css/bristol_stairs_map.css" />
-
-    <script src="/js/leaflet/leaflet.1.7.1.js"></script>
-    <script src="/js/leaflet/leaflet.markercluster.1.4.1.js"></script>
-
-    <script src="/js/bristol_stairs_map.js"></script>
-
-</html>
 HTML;
+
+    $html .= $extraAssets->getHTML();
+    $html .= "\n</html>\n";
+
+    return $html;
 }
+
+
 
 function createPageHtml(
     \Bristolian\SiteHtml\AssetLinkEmitter $assetLinkEmitter,
+    \Bristolian\SiteHtml\ExtraAssets $extraAssets,
     string $html,
 ): string {
 
@@ -123,7 +117,7 @@ function createPageHtml(
         ':raw_footer' => createFooterHtml(),
     ];
 
-    return esprintf(getPageLayoutHtml(), $params);
+    return esprintf(getPageLayoutHtml($extraAssets), $params);
 }
 
 //function create404Page(string $path)

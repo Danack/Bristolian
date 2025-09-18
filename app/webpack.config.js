@@ -12,14 +12,41 @@ const optionDefinitions = [
 ];
 
 
+// const TimestampWebpackPlugin = require('timestamp-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+
 const commandLineArgs = require('command-line-args');
 const options = commandLineArgs(
   optionDefinitions,
-  {partial: false}
+  {partial: true}
 );
 
-// const TimestampWebpackPlugin = require('timestamp-webpack-plugin');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+console.log("Bundle analyzer enabled:", !!options.analyze);
+// const options = commandLineArgs(optionDefinitions, { partial: true });
+
+
+const analyzerPlugins = options.analyze ? [
+    new BundleAnalyzerPlugin({
+        analyzerMode: "static",
+        openAnalyzer: false,
+        reportFilename: "bundle-report.html",
+    })
+] : [];
+
+
+
+// const analyzerPlugins = options.analyze === "enabled" ? [
+//     new BundleAnalyzerPlugin({
+//         analyzerHost: "0.0.0.0",
+//         analyzerPort: 8888,
+//         analyzerMode: "server",
+//         openAnalyzer: false,
+//     })
+// ] : [];
+
+
+//
 
 module.exports = {
     devtool: false,
@@ -56,8 +83,10 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'public/js'),
+        publicPath: '/js/',     // <— tell Webpack that bundles are served from /js/
         filename: '[name].bundle.js'
     },
+
     performance: {
         hints: false,
         // hints: process.env.NODE_ENV === 'production' ? "warning" : false
@@ -91,6 +120,8 @@ module.exports = {
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 1,
         }),
+
+        ...analyzerPlugins
     ],
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
@@ -101,8 +132,21 @@ module.exports = {
         }
     },
     // stats: {
-    //     preset: 'detailed',
-    //     moduleTrace: true,
-    //     errorDetails: true,
-    // },
+    //     all: false,       // start with nothing
+    //     modules: true,    // show all modules
+    //     moduleAssets: true,
+    //     chunkModules: true,
+    //     errors: true,
+    //     warnings: true,
+    // }
+
+    stats: {
+        all: false,      // start with nothing
+        modules: true,   // show every module individually
+        errors: true,
+        warnings: true,
+        builtAt: true,
+        timings: true,
+        entrypoints: true,
+    },
 };

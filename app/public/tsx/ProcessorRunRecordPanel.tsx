@@ -1,7 +1,6 @@
 import { h, Component } from "preact";
-import { humanFileSize } from "./functions";
+import { formatDateTimeForDB, humanFileSize } from "./functions";
 import { ProcessorRunRecord, ProcessType } from "./generated/types";
-import { DateTime } from "luxon";
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
@@ -94,17 +93,25 @@ export class ProcessorRunRecordPanel extends Component<
         for (let i = 0; i < run_records_received.length; i++) {
             const entry = run_records_received[i];
 
+            // const run_record: ProcessorRunRecord = {
+            //     id: entry.id,
+            //     task: entry.task,
+            //     start_time: DateTime.fromFormat(
+            //       entry.start_time,
+            //       "yyyy-MM-dd'T'H:mm:ssZ"
+            //     ),
+            //     end_time: DateTime.fromFormat(
+            //       entry.end_time,
+            //       "yyyy-MM-dd'T'H:mm:ssZ"
+            //     ),
+            //     status: entry.status,
+            // };
+
             const run_record: ProcessorRunRecord = {
                 id: entry.id,
                 task: entry.task,
-                start_time: DateTime.fromFormat(
-                  entry.start_time,
-                  "yyyy-MM-dd'T'H:mm:ssZ"
-                ),
-                end_time: DateTime.fromFormat(
-                  entry.end_time,
-                  "yyyy-MM-dd'T'H:mm:ssZ"
-                ),
+                start_time: new Date(entry.start_time),
+                end_time: new Date(entry.end_time),
                 status: entry.status,
             };
 
@@ -139,10 +146,8 @@ export class ProcessorRunRecordPanel extends Component<
     restoreState(state_to_restore: object) {}
 
     renderRoomLink(run_record: ProcessorRunRecord) {
-        const start_time_formatted =
-          run_record.start_time.toFormat("yyyy-MM-dd HH:mm:ss");
-        const end_time_formatted =
-          run_record.end_time.toFormat("yyyy-MM-dd HH:mm:ss");
+        const start_time_formatted = formatDateTimeForDB(run_record.start_time);
+        const end_time_formatted = formatDateTimeForDB(run_record.end_time);
 
         return (
           <tr key={run_record.id}>

@@ -11,7 +11,8 @@ class PageResponseGenerator
 {
     public function __construct(
         private ResponseFactory $responseFactory,
-        private AssetLinkEmitter $assetLinkEmitter
+        private AssetLinkEmitter $assetLinkEmitter,
+        private ExtraAssets $extraAssets
     ) {
     }
 
@@ -20,7 +21,11 @@ class PageResponseGenerator
         int $statusCode
     ): Response {
 
-        $page = createPageHtml($this->assetLinkEmitter, $contentHtml);
+        $page = createPageHtml(
+            $this->assetLinkEmitter,
+            $this->extraAssets,
+            $contentHtml
+        );
 
         $response = $this->responseFactory->createResponse();
         $response = $response->withHeader('Content-Type', 'text/html');

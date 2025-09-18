@@ -14,6 +14,7 @@ function injectionParams()
         \Bristolian\Service\RequestNonce::class,
         \Asm\SessionManager::class,
         \Bristolian\Session\AppSessionManager::class,
+        \Bristolian\SiteHtml\ExtraAssets::class,
     ];
 
     // Alias interfaces (or classes) to the actual types that should be used

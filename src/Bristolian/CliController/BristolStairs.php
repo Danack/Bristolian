@@ -6,7 +6,7 @@ use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Service\BristolStairImageStorageProcessor\ObjectStoredFileInfo;
-use Bristolian\Service\FileStorageProcessor\UploadError;
+use Bristolian\Service\BristolStairImageStorageProcessor\UploadError;
 use Bristolian\Service\ObjectStore\BristolianStairImageObjectStore;
 use Bristolian\Service\ObjectStore\FileObjectStore;
 use Ramsey\Uuid\Uuid;
@@ -38,6 +38,27 @@ class BristolStairs
 
         $latitude = 51.4536491;
         $longitude = -2.5913353;
+
+        $extension = pathinfo($image_filename, PATHINFO_EXTENSION);
+        $extension = strtolower($extension);
+
+        if ($extension === 'heic') {
+            $image = new \Imagick($image_filename);
+
+            $image->setImageFormat("jpg");
+            $image->setImageCompressionQuality(95);
+
+            $temp_file = tempnam(sys_get_temp_dir(), 'stair_image');
+
+            $image->setImageFormat('jpg');
+
+            $temp_file_with_extension = $temp_file . ".jpg";
+            $image->writeImage($temp_file_with_extension);
+
+//            var_dump($temp_file_with_extension);
+
+            $image_filename = $temp_file_with_extension;
+        }
 
         $coordinates = \get_image_gps($image_filename);
 
