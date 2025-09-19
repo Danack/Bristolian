@@ -13,6 +13,7 @@ use Ramsey\Uuid\Uuid;
 use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Service\BristolStairImageStorageProcessor\BristolStairImageStorageProcessor;
+use Bristolian\Filesystem\BristolStairsFilesystem;
 
 class BristolStairs
 {
@@ -21,6 +22,44 @@ class BristolStairs
         [$flights_of_stairs, $total_steps] = $bristolStairsRepo->get_total_number_of_steps();
 
         echo "There are $total_steps steps in $flights_of_stairs flights_of_stairs.\n";
+    }
+
+    public function check_contents(
+        BristolStairImageStorageInfoRepo $bristolStairImageStorageInfoRepo,
+        BristolStairsFilesystem $bristolStairsFilesystem)
+    {
+        $result = $bristolStairsFilesystem->listContents("");
+
+        $files_in_storage = [];
+
+        /** @var \League\Flysystem\FileAttributes[] $result */
+        foreach ($result as $file) {
+            $files_in_storage[] = $file->path();
+        }
+
+        $known_files = [];
+        $unknown_files = [];
+
+        foreach ($files_in_storage as $file_in_storage) {
+            $result = $bristolStairImageStorageInfoRepo->getByNormalizedName($file_in_storage);
+
+            if ($result === null) {
+                $unknown_files[] = $file_in_storage;
+            }
+            else {
+                $known_files[] = $file_in_storage;
+            }
+        }
+
+        echo "Unknown files:\n";
+        var_dump($unknown_files);
+
+        // Thise code doesn't have permissions. Think I'm going to leave
+        // it here like this for now, as I don't want to setup permissions
+        // to delete just yet.
+//        foreach ($unknown_files as $unknown_file) {
+//            $bristolStairsFilesystem->delete($unknown_file);
+//        }
     }
 
     public function create(

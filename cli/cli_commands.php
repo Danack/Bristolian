@@ -226,4 +226,8 @@ function addBristolStairsCommands(Application $console)
     $command->setDescription("Find the total number of steps known.");
     $console->add($command);
 
+    $command = new Command('stairs:check', 'Bristolian\CliController\BristolStairs::check_contents');
+    $command->setDescription("chcked stored sfilessfd.");
+    $console->add($command);
+
 }

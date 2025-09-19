@@ -17,6 +17,18 @@ class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInf
     {
     }
 
+    function getByNormalizedName(string $normalized_name): BristolStairImageFile|null
+    {
+        $sql = stored_stair_image_file::SELECT;
+        $sql .= " WHERE normalized_name = :normalized_name";
+
+        return $this->pdo_simple->fetchOneAsObjectOrNullConstructor(
+            $sql,
+            [':normalized_name' => $normalized_name],
+            BristolStairImageFile::class
+        );
+    }
+
     function getById(string $bristol_stairs_image_id): BristolStairImageFile|null {
         $sql = stored_stair_image_file::SELECT;
         $sql .= " WHERE id = :id";

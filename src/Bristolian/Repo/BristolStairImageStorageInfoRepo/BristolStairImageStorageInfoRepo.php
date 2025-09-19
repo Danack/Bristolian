@@ -28,5 +28,7 @@ interface BristolStairImageStorageInfoRepo
 
     function getById(string $bristol_stairs_image_id): BristolStairImageFile|null;
 
+    function getByNormalizedName(string $normalized_name): BristolStairImageFile|null;
+
     public function setUploaded(string $file_storage_id): void;
 }
