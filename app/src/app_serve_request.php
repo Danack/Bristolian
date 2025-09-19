@@ -39,7 +39,7 @@ $injector->staticFactory(\Bristolian\StaticFactory::class, 'createFromRequest');
 $injector->share($injector);
 
 try {
-    $app = $injector->make(\Slim\App::class);
+    $app = \createSlimAppForApp($injector);
 
     $routes = getAllAppRoutes();
     foreach ($routes as $standardRoute) {

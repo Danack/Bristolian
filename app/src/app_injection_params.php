@@ -82,9 +82,6 @@ function injectionParams()
         \Bristolian\Repo\RoomFileRepo\RoomFileRepo::class =>
             \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class,
 
-//        \Asm\RequestSessionStorage::class =>
-//          \StandardRequestSessionStorage::class,
-
         Bristolian\Repo\UserRepo\UserRepo::class =>
           Bristolian\Repo\UserRepo\HardcodedUserRepo::class,
 
@@ -93,9 +90,6 @@ function injectionParams()
 
         \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::class =>
           \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::class,
-
-//        \Bristolian\Service\MemeStorage\MemeStorage::class =>
-//          \Bristolian\Service\MemeStorage\StandardMemeStorage::class,
 
         \Bristolian\Service\RoomFileStorage\RoomFileStorage::class =>
             \Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::class,
@@ -143,8 +137,6 @@ function injectionParams()
           'createExceptionToErrorPageResponseMiddleware',
         \PDO::class =>
           'createPDOForUser',
-        \Slim\App::class =>
-          'createSlimAppForApp',
         \Bristolian\Data\ApiDomain::class =>
           'createApiDomain',
 

@@ -39,7 +39,6 @@ class BristolStairs
 
     public function stairs_page(ExtraAssets $extraAssets): string
     {
-
         $extraAssets->addCSS("/css/leaflet/leaflet.1.7.1.css");
         $extraAssets->addCSS("/css/leaflet/MarkerCluster.1.4.1.css");
         $extraAssets->addCSS("/css/leaflet/MarkerCluster.Default.1.5.0.min.css");
@@ -116,17 +115,15 @@ HTML;
             );
         }
 
-        // check file is available locally
-        return new BristolianFileResponse(
+//        // check file is available locally
+//        return new BristolianFileResponse(
+//            $filenameToServe
+//        );
+
+
+        return new \Bristolian\Response\StreamingResponse(
             $filenameToServe
         );
-
-//
-//
-//        return new ImageResponse(
-//            file_get_contents(__DIR__ . '/../../../stairs_temp/IMG_6339.JPG'),
-//            ImageResponse::TYPE_JPG
-//        );
     }
 
 

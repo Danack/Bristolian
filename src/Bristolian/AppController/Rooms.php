@@ -2,18 +2,16 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\Parameters\LinkParam;
-
-use Bristolian\Parameters\SourceLinkHighlightParam;
-use Bristolian\Parameters\SourceLinkParam;
 use Bristolian\Exception\BristolianException;
 use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Filesystem\RoomFileFilesystem;
+use Bristolian\Parameters\LinkParam;
+use Bristolian\Parameters\SourceLinkHighlightParam;
+use Bristolian\Parameters\SourceLinkParam;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo;
-use Bristolian\Response\BristolianFileResponse;
 use Bristolian\Response\IframeHtmlResponse;
 use Bristolian\Response\StoredFileErrorResponse;
 use Bristolian\Service\FileStorageProcessor\UploadError;
@@ -26,6 +24,7 @@ use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
 use VarMap\VarMap;
 use function DataType\createArrayOfTypeOrError;
+
 
 class Rooms
 {
@@ -278,8 +277,12 @@ class Rooms
             );
         }
 
-        // check file is available locally
-        return new BristolianFileResponse(
+//        // check file is available locally
+//        return new BristolianFileResponse(
+//            $filenameToServe
+//        );
+
+        return new \Bristolian\Response\StreamingResponse(
             $filenameToServe
         );
     }

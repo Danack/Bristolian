@@ -1130,3 +1130,26 @@ function getEnumCaseValues(string $typeString): array
     // Convert cases to array of names (or values, depending on your needs)
     return array_map(fn($case) => $case->value, $cases);
 }
+
+
+function mapStreamingResponseToPSR7(
+    \Bristolian\Response\StreamingResponse $streamingResponse
+): \Psr\Http\Message\ResponseInterface {
+
+    $response = new \Laminas\Diactoros\Response();
+    $status_code = $streamingResponse->getStatusCode();
+
+    $response = $response->withStatus(
+        $status_code,
+        \SlimDispatcher\getReasonPhrase($status_code)
+    );
+
+    foreach ($streamingResponse->getHeaders() as $key => $value) {
+        /** @var \Psr\Http\Message\ResponseInterface $response */
+        $response = $response->withHeader($key, $value);
+    }
+
+    $response = $response->withBody($streamingResponse->getBodyStream());
+
+    return $response;
+}

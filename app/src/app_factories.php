@@ -97,12 +97,13 @@ function createSlimAppForApp(Injector $injector): \Slim\App {
 function getAppResultMappers(\DI\Injector $injector)
 {
     return [
+        // Convert a streaming Response to a PSR-7 response.
+        \Bristolian\Response\StreamingResponse::class =>
+            '\mapStreamingResponseToPSR7',
+
         // Convert a Stub Response to a PSR-7 response.
         \SlimDispatcher\Response\StubResponse::class =>
             'SlimDispatcher\mapStubResponseToPsr7',
-
-        // TODO - add markdown return type
-//        \Bristolian\Page::class => 'mapBristolianPageToPsr7',
 
         // Response is already a PSR-7 response, just pass it through.
         ResponseInterface::class =>
