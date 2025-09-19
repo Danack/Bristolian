@@ -1,7 +1,7 @@
 import { h, render } from "preact";
 
 import initByClass from "./widgety/widgety";
-import { sendMessage, startMessageProcessing } from "./message/message";
+import { registerMessageListener, sendMessage, startMessageProcessing } from "./message/message";
 import type { WidgetClassBinding } from "./widgety/widgety";
 
 
@@ -144,6 +144,8 @@ window.addEventListener("message", receiveSelectionMessage);
 
 // @ts-ignore: bind send message to the actual function.
 window.sendMessage = sendMessage;
+// @ts-ignore: bind send message to the actual function.
+window.registerMessageListener = registerMessageListener;
 
 console.log("Bootstrap finished");
 

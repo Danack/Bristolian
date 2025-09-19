@@ -11,7 +11,10 @@ export interface BristolStairsPanelProps {
 interface BristolStairsPanelState {
     error: string|null,
     marker_id: number|null;
-    selectedStairInfo: BristolStairInfo|null
+    selectedStairInfo: BristolStairInfo|null,
+    original_stair_info: BristolStairInfo|null,
+    changes_made: boolean
+
 }
 
 function getDefaultState(): BristolStairsPanelState {
@@ -19,6 +22,8 @@ function getDefaultState(): BristolStairsPanelState {
         marker_id: null,
         error: null,
         selectedStairInfo: null,
+        original_stair_info: null,
+        changes_made: false,
     };
 }
 
@@ -38,7 +43,12 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
           // @ts-ignore: not helping...
           (selectedStairInfo) => {
               // @ts-ignore: not helping...
-              this.setState({selectedStairInfo: selectedStairInfo})
+              this.setState({
+                  // @ts-ignore: not helping...
+                  selectedStairInfo: selectedStairInfo,
+                  // @ts-ignore: not helping...
+                  original_stair_info: selectedStairInfo,
+              })
           }
         )
 
@@ -64,6 +74,7 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
                 ...prevState.selectedStairInfo,
                 description: value,
             },
+            changes_made: true
         }));
     };
 
@@ -73,6 +84,7 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
                 ...prevState.selectedStairInfo,
                 steps: value,
             },
+            changes_made: true
         }));
     };
 
@@ -85,11 +97,9 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
         const endpoint = `/api/bristol_stairs_update/${this.state.selectedStairInfo.id}`;
         const formData = new FormData();
 
-
         formData.append("bristol_stair_info_id", stairInfo.id);
         formData.append("description", stairInfo.description);
         formData.append("steps", "" + stairInfo.steps);
-
 
         let params = {
             method: 'POST',
@@ -104,58 +114,79 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
             return response;
         }).
         then((response:Response) => response.json()).
-        then((data:any) =>this.processData(data)).
+        then((data:any) =>this.processData(data, stairInfo)).
         catch((data:any) => this.processError(data));
     };
 
-    processData(data:any) {
+    processData(data:any, stairInfo: BristolStairInfo) {
         console.log("success, presumably");
+        sendMessage("STAIR_INFO_UPDATED", {stairInfo: stairInfo});
+        this.setState({
+            changes_made: false,
+            original_stair_info: this.state.selectedStairInfo
+        })
+    }
+
+    handleCancel() {
+        this.setState({
+            changes_made: false,
+            selectedStairInfo: this.state.original_stair_info
+        })
     }
 
     renderLoggedInStairInfo() {
-
         const { description, steps, stored_stair_image_file_id } =
           this.state.selectedStairInfo;
+        const { changes_made } = this.state;
 
         // Editable version
         return (
           <span className="image-wrapper">
-          <img
-            src={"/bristol_stairs/image/" + stored_stair_image_file_id}
-            alt="some stairs"
-            style={{gridColumn: "1 / span 2", marginBottom: "1rem"}}
-          />
+      <img
+        src={"/bristol_stairs/image/" + stored_stair_image_file_id}
+        alt="some stairs"
+        style={{gridColumn: "1 / span 2", marginBottom: "1rem"}}
+      />
 
-          <label htmlFor="desc">Description</label>
-          <input
-            id="desc"
-            type="text"
-            value={description}
-            onChange={(e: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
-              this.handleDescriptionChange(e.currentTarget.value)
-            }
-          />
+      <label htmlFor="desc">Description</label>
+      <input
+        id="desc"
+        type="text"
+        value={description}
+        onInput={(e: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+          this.handleDescriptionChange(e.currentTarget.value)
+        }
+      />
 
-          <label htmlFor="steps">Steps</label>
-          <input
-            id="steps"
-            type="number"
-            value={steps}
-            onChange={(e: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
-              this.handleStepsChange(parseInt(e.currentTarget.value))
-            }
-          />
+      <label htmlFor="steps">Steps</label>
+      <input
+        id="steps"
+        type="number"
+        value={steps}
+        onInput={(e: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+          this.handleStepsChange(parseInt(e.currentTarget.value))
+        }
+      />
 
-          <button style={{gridColumn: "2"}} onClick={() => this.handleSave()}>
-            Save Changes
-          </button>
-        </span>
+      <div className="button-row">
+        <button onClick={() => this.handleSave()} disabled={!changes_made}>
+          Save Changes
+        </button>
+
+          {changes_made && (
+            <button onClick={() => this.handleCancel()}>
+                Cancel Changes
+            </button>
+          )}
+      </div>
+      </span>
+
         );
     }
 
     renderViewOnlyStairInfo() {
-        const { description, steps, stored_stair_image_file_id } = this.state.selectedStairInfo;
-  
+        const {description, steps, stored_stair_image_file_id} = this.state.selectedStairInfo;
+
         return (
           <span className="image-wrapper">
             <img
@@ -175,7 +206,6 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
 
 
     render(props: BristolStairsPanelProps, state: BristolStairsPanelState) {
-        let error_block = <span>&nbsp;</span>;
         let stair_info = <span>Click a marker on the map to view the stairs.</span>
 
         if (this.state.selectedStairInfo !== null) {

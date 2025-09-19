@@ -17,38 +17,61 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 var markers = L.markerClusterGroup();
 
+
+function parse_response_json(response) {
+    if (!response.ok) {
+        throw new Error("HTTP error, status = " + response.status);
+    }
+    return response.json();
+}
+
+const stairsById = {};
+
+function process_response_data(data) {
+    for (let stair_info of data.data) {
+        stairsById[stair_info.id] = stair_info;
+
+        const marker = L.marker([stair_info.latitude, stair_info.longitude]);
+        marker.stairId = stair_info.id;
+
+        marker.on('click', (event) => {
+            const info = stairsById[event.target.stairId];
+            sendMessage("MAP_MARKER_CLICKED", info);
+        });
+
+        markers.addLayer(marker);
+    }
+
+    map.addLayer(markers);
+}
+
+
 function fetchData() {
     let url = '/api/bristol_stairs';
 
     fetch(url)
-        .then(function(response) {
-            if (!response.ok) {
-                throw new Error("HTTP error, status = " + response.status);
-            }
-            return response.json();
-        })
-        .then(function(data) {
-            let stairs_info = data.data;
-            for (var i = 0; i < stairs_info.length; i++) {
-                let stair_info = stairs_info[i];
-
-                const marker = L.marker([
-                    stair_info.latitude,
-                    stair_info.longitude,
-                ])
-
-                marker.on('click', (event) => {
-                    sendMessage("MAP_MARKER_CLICKED", stair_info)
-                });
-
-                markers.addLayer(marker)
-            }
-
-            map.addLayer(markers);
-        })
+        .then(parse_response_json)
+        .then(process_response_data)
         .catch(function(error) {
             console.error("Error fetching data:", error);
         });
 }
+
+function bristol_stair_info_updated(data) {
+    let stair_info = data.stairInfo;
+    console.log("Updating stair:", stair_info);
+
+    // Replace the entry in the lookup with the updated info
+    stairsById[stair_info.id] = stair_info;
+
+    // If you also want to move the marker when lat/lng changes:
+    markers.eachLayer((marker) => {
+        if (marker.stairId === stair_info.id) {
+            marker.setLatLng([stair_info.latitude, stair_info.longitude]);
+        }
+    });
+}
+
+registerMessageListener("STAIR_INFO_UPDATED", bristol_stair_info_updated)
 
 fetchData();
