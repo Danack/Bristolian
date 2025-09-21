@@ -31,3 +31,6 @@ composer_oauth_token.txt
 app/public/pdfjs-4.9.155-dist
 scripts/bcc_files_2025_07_25
 scripts/html_output
+scripts/bcc_files
+scripts/bcc_foi_analysis
+stairs_to_process
