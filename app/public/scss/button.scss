@@ -1,4 +1,4 @@
-.button {
+button {
 
   /* clicking buttons leads to accidental text selection far too often */
   -webkit-user-select: none; /* Safari */
@@ -9,12 +9,23 @@
   border: 1px solid #000;
   cursor: pointer;
   border-radius: 3px;
-  background-color: #003286;
+  background-color: #2782ff;
   color: white;
-  padding: 3px;
+  padding: 0.4rem 0.8rem;
   margin: 3px;
+
   &:hover {
     background: #d2e3ff;
     color: black;
+  }
+
+  &:disabled {
+    background: #aaa;
+    color: #eee;
+    cursor: not-allowed;
+
+    &:hover {
+      background: #aaa; // prevent hover effect when disabled
+    }
   }
 }

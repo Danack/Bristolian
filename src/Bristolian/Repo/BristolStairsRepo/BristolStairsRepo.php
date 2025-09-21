@@ -4,11 +4,10 @@ namespace Bristolian\Repo\BristolStairsRepo;
 
 use Bristolian\Model\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsInfoParams;
+use Bristolian\Parameters\BristolStairsPositionParams;
 
 interface BristolStairsRepo
 {
-//    public function getStairsInfoById(string $id): BristolStairInfo|null;
-
     public function store_stairs_info(
         string $stored_stair_image_file_id,
         string $description,
@@ -29,6 +28,8 @@ interface BristolStairsRepo
     public function getAllStairsInfo(): array;
 
     public function updateStairInfo(BristolStairsInfoParams $stairs_info_params);
+
+    public function updateStairPosition(BristolStairsPositionParams $stairs_position_params);
 }
 
 

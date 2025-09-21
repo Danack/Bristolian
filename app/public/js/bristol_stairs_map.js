@@ -5,18 +5,35 @@ var southWest = L.latLng(51.3325441, -2.8657612),
     northEast = L.latLng(51.6014432, -2.2960328),
     bounds = L.latLngBounds(southWest, northEast);
 
-var options = {
+var map_options = {
     maxBounds: bounds,   // Then add it here..
-    maxZoom: 18,
-    minZoom: 11
+    maxZoom: 22,
+    minZoom: 11,
 }
 
-var map = L.map('bristol_stairs_map', options).setView(bristol, 12)
+var tile_options = {
+    maxNativeZoom: 18,  // highest zoom your tiles actually have
+    maxZoom: 22         // allow Leaflet to zoom further
+}
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+var map = L.map('bristol_stairs_map', map_options).setView(bristol, 12)
 
-var markers = L.markerClusterGroup();
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', tile_options).addTo(map);
 
+var markers = L.markerClusterGroup({
+    maxClusterRadius: function (zoom) {
+        if (zoom < 12) {
+            // At low zooms, cluster aggressively
+            return 80;
+        } else if (zoom < 16) {
+            // Medium zooms, less aggressive
+            return 40;
+        } else {
+            // At high zooms, barely cluster at all
+            return 10;
+        }
+    }
+});
 
 function parse_response_json(response) {
     if (!response.ok) {
@@ -27,16 +44,55 @@ function parse_response_json(response) {
 
 const stairsById = {};
 
+// Default Leaflet icons
+const defaultIcon = L.icon({
+    iconUrl: '/css/leaflet/images/marker-icon.png',
+    iconRetinaUrl: '/css/leaflet/images/marker-icon-2x.png',
+    shadowUrl: '/css/leaflet/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
+// Highlighted icons (provide your own images)
+const highlightedIcon = L.icon({
+    iconUrl: '/css/leaflet/images/marker-icon-highlighted.png',
+    iconRetinaUrl: '/css/leaflet/images/marker-icon-highlighted-2x.png',
+    shadowUrl: '/css/leaflet/images/marker-shadow.png', // you can reuse the same shadow
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
+let lastClickedMarker = null;
+
 function process_response_data(data) {
     for (let stair_info of data.data) {
         stairsById[stair_info.id] = stair_info;
 
-        const marker = L.marker([stair_info.latitude, stair_info.longitude]);
+        // Create marker with default icon
+        const marker = L.marker([stair_info.latitude, stair_info.longitude], { icon: defaultIcon });
         marker.stairId = stair_info.id;
 
         marker.on('click', (event) => {
             const info = stairsById[event.target.stairId];
             sendMessage("MAP_MARKER_CLICKED", info);
+
+            // Highlight marker (your existing code)
+            if (lastClickedMarker) {
+                lastClickedMarker.setIcon(defaultIcon);
+            }
+            marker.setIcon(highlightedIcon);
+            lastClickedMarker = marker;
+
+            // Center map on the clicked marker
+            const latlng = marker.getLatLng();
+            const currentZoom = map.getZoom();
+            const targetZoom = currentZoom < 15 ? 15 : currentZoom;
+
+            map.setView(latlng, targetZoom);
         });
 
         markers.addLayer(marker);
@@ -44,6 +100,7 @@ function process_response_data(data) {
 
     map.addLayer(markers);
 }
+
 
 
 function fetchData() {
@@ -57,8 +114,8 @@ function fetchData() {
         });
 }
 
-function bristol_stair_info_updated(data) {
-    let stair_info = data.stairInfo;
+function updateStairInfo(stair_info) {
+
     console.log("Updating stair:", stair_info);
 
     // Replace the entry in the lookup with the updated info
@@ -72,6 +129,113 @@ function bristol_stair_info_updated(data) {
     });
 }
 
+
+function bristol_stair_info_updated(data) {
+    let stair_info = data.stairInfo;
+    updateStairInfo(stair_info);
+}
+
+function bristol_stair_position_updated(data) {
+    let stair_info = data.stairInfo;
+    updateStairInfo(stair_info);
+    bristol_stair_cancel_editing_position();
+}
+
+
+
+function bristol_stair_cancel_editing_position() {
+    // Show all markers again
+    if (!map.hasLayer(markers)) {
+        map.addLayer(markers);
+    }
+
+    // Remove the crosshair
+    if (crosshairDiv && crosshairDiv.parentNode) {
+        crosshairDiv.parentNode.removeChild(crosshairDiv);
+    }
+}
+
+
+let crosshairDiv = null;
+
+function bristol_stair_start_editing_position(data) {
+
+    let stair_info = data.stairInfo;
+
+    // Move map to the stair's position
+    if (stair_info.latitude && stair_info.longitude) {
+        map.setView([stair_info.latitude, stair_info.longitude], map.getZoom());
+    }
+
+    // Hide all markers
+    if (map.hasLayer(markers)) {
+        map.removeLayer(markers);
+    }
+
+    // Draw a full crosshair over the map
+    if (!crosshairDiv) {
+        crosshairDiv = L.DomUtil.create('div', 'crosshair', map.getContainer());
+        Object.assign(crosshairDiv.style, {
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+            zIndex: 1000,
+        });
+
+        // Vertical line
+        const vLine = document.createElement('div');
+        Object.assign(vLine.style, {
+            position: 'absolute',
+            top: '0',
+            bottom: '0',
+            left: '50%',
+            width: '2px',
+            marginLeft: '-1px',
+            background: 'rgba(255, 0, 0, 0.7)', // semi-transparent red
+        });
+
+        // Horizontal line
+        const hLine = document.createElement('div');
+        Object.assign(hLine.style, {
+            position: 'absolute',
+            left: '0',
+            right: '0',
+            top: '50%',
+            height: '2px',
+            marginTop: '-1px',
+            background: 'rgba(255, 0, 0, 0.7)',
+        });
+
+        crosshairDiv.appendChild(vLine);
+        crosshairDiv.appendChild(hLine);
+    }
+
+    map.getContainer().appendChild(crosshairDiv);
+}
+
+
+
+
+// Listen to map move events
+map.on('move', () => {
+    const center = map.getCenter(); // L.LatLng object
+    const positionData = {
+        latitude: center.lat,
+        longitude: center.lng,
+        zoom: map.getZoom()
+    };
+
+    sendMessage("STAIRS_MAP_POSITION_CHANGED", positionData);
+});
+
+
 registerMessageListener("STAIR_INFO_UPDATED", bristol_stair_info_updated)
+registerMessageListener("STAIR_POSITION_UPDATED", bristol_stair_position_updated)
+registerMessageListener("STAIR_START_EDITING_POSITION", bristol_stair_start_editing_position)
+registerMessageListener("STAIR_CANCEL_EDITING_POSITION", bristol_stair_cancel_editing_position)
+
 
 fetchData();

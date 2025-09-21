@@ -1,20 +1,21 @@
-
-
 .bristol_stairs {
     display: flex;
-    flex-direction: column; // stack by default
     border: 2px solid #1f1f1f;
+    box-sizing: border-box;
+    min-width: fit-content;
 
     .bristol_stairs_map_class {
         flex: 1;
         min-height: 600px;
+        max-width: 50vw;
     }
 
     .bristol_stairs_panel {
-        width: 100%;
+        //width: 100%;
+        min-width: 0;           // allow shrinking inside flex parent
+        box-sizing: border-box;
 
         img {
-
             display: block;         // removes inline whitespace
             margin: 0;              // reset default margin
             padding: 0;             // reset default padding
@@ -23,72 +24,43 @@
             max-height: 500px;  // cap height
             width: auto;        // let browser adjust
             height: auto;
-            //display: block;
-            //margin: 0 auto;     // center in panel
         }
 
-        //img {
-        //    max-width: 80%;    // up to 80% of panel width
-        //    max-height: 40vh;  // up to 40% of viewport height
-        //    width: auto;       // preserve aspect ratio
-        //    height: auto;
-        //    display: block;
-        //    margin: 0 auto;    // center the image
-        //}
-
-        .image-wrapper {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 0.5rem 1rem; // row gap, column gap
-            align-items: center;
-            max-width: 400px;
+        .contents-wrapper {
+            width: 100%;       // fit parent
+            max-width: 100%;   // prevent overspill
+            min-width: 0;      // allow shrinking
+            box-sizing: border-box;
 
             label {
                 font-weight: bold;
-                text-align: right;
+                text-align: left;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 12rem; // keep labels from forcing wide grid
+            }
+
+            .form-row {
+                display: grid;
+                grid-template-columns: 7rem 1fr;
+                align-items: start;
+                margin-bottom: 0.5rem;
+
+                label {
+                  margin-right: 0.5rem;
+                }
+
+                input {
+                    width: 250px;
+                }
             }
 
             input {
                 padding: 0.25rem 0.5rem;
                 border: 1px solid #ccc;
                 border-radius: 4px;
-                width: 100%;
             }
-
-            button {
-                grid-column: 2; // align button under inputs
-                justify-self: start;
-                margin-top: 0.5rem;
-                padding: 0.4rem 0.8rem;
-                border: 1px solid #fff;
-                background: #1351bf;
-                color: white;
-                border-radius: 4px;
-                cursor: pointer;
-
-                &:hover {
-                    background: #222;
-                }
-
-                &:disabled {
-                    background: #aaa;
-                    color: #eee;
-                    cursor: not-allowed;
-
-                    &:hover {
-                        background: #aaa; // prevent hover effect when disabled
-                    }
-                }
-            }
-
-            .button-row {
-                grid-column: 2;         // align the whole row under the inputs
-                display: flex;
-                gap: 0.5rem;            // horizontal gap between buttons
-                margin-top: 0.5rem;     // vertical spacing from inputs above
-                justify-self: start;
-            }
-
         }
     }
 

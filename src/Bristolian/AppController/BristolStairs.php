@@ -14,6 +14,7 @@ use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Filesystem\BristolStairsFilesystem;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Parameters\BristolStairsInfoParams;
+use Bristolian\Parameters\BristolStairsPositionParams;
 use Bristolian\SiteHtml\ExtraAssets;
 use VarMap\VarMap;
 
@@ -31,6 +32,19 @@ class BristolStairs
     ) {
         $stairs_info_params = BristolStairsInfoParams::createFromVarMap($varMap);
         $bristolStairsRepo->updateStairInfo($stairs_info_params);
+
+        return new JsonResponse(['success' => true]);
+    }
+
+
+
+    public function update_stairs_position(
+        UserSession $appSession,
+        BristolStairsRepo $bristolStairsRepo,
+        VarMap $varMap
+    ) {
+        $stairs_position_params = BristolStairsPositionParams::createFromVarMap($varMap);
+        $bristolStairsRepo->updateStairPosition($stairs_position_params);
 
         return new JsonResponse(['success' => true]);
     }
@@ -66,8 +80,9 @@ class BristolStairs
 
 <ol>
 <li>Stairs need to be on a place where members of the public will walk through, to another location. i.e. steps leading up to a house don't qualify.</li>
-<li>There need to be at least three steps between the top and bottom.</li>
+<li>There need to be at least two steps between the top and bottom.</li>
 <li>The steps need to be within about one meter of each other. Some paths (e.g. in Brandon Hill Park) have steps in them, to make the gradient of the path be not too steep, but they are too far apart to qualify as a flight of stairs.</li>
+<li>Stairs cannot be inside a building.</li>
 <li>The stairs have to be in Bristol. We use some discretion here for the definition of Bristol. </li>
 </ol>
 

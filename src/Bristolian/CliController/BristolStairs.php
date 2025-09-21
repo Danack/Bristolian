@@ -78,6 +78,7 @@ class BristolStairs
         $latitude = 51.4536491;
         $longitude = -2.5913353;
 
+
         $extension = pathinfo($image_filename, PATHINFO_EXTENSION);
         $extension = strtolower($extension);
 
@@ -93,8 +94,6 @@ class BristolStairs
 
             $temp_file_with_extension = $temp_file . ".jpg";
             $image->writeImage($temp_file_with_extension);
-
-//            var_dump($temp_file_with_extension);
 
             $image_filename = $temp_file_with_extension;
         }

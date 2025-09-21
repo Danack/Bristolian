@@ -23,6 +23,8 @@ function getAllApiRoutes()
         ['/api/search_users', 'GET', 'Bristolian\AppController\Admin::search_users'],
         ['/api/ping_user', 'GET', 'Bristolian\AppController\Admin::ping_user'],
         ['/api/bristol_stairs_update/{bristol_stair_info_id:.*}', 'GET', 'Bristolian\AppController\BristolStairs::update_stairs_info_get'],
+        ['/api/bristol_stairs_update_position/{bristol_stair_info_id:.*}', 'POST', 'Bristolian\AppController\BristolStairs::update_stairs_position'],
+
         ['/api/bristol_stairs_update/{bristol_stair_info_id:.*}', 'POST', 'Bristolian\AppController\BristolStairs::update_stairs_info'],
         ['/api/bristol_stairs/{bristol_stairs_image_id:.+}', 'GET', 'Bristolian\AppController\BristolStairs::getDetails'],
         ['/api/bristol_stairs', 'GET', 'Bristolian\AppController\BristolStairs::getData'],

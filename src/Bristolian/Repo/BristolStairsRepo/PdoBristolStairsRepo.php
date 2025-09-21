@@ -6,6 +6,7 @@ namespace Bristolian\Repo\BristolStairsRepo;
 use Bristolian\Database\bristol_stair_info;
 use Bristolian\Model\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsInfoParams;
+use Bristolian\Parameters\BristolStairsPositionParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 
@@ -35,6 +36,31 @@ SQL;
             ":id" => $stairs_info_params->bristol_stair_info_id,
         ];
 
+        $rows_affected = $this->pdo_simple->execute($sql, $params);
+
+        if ($rows_affected !== 1) {
+            throw new \Exception("Failed to update bristol_stairs_info");
+        }
+    }
+
+    public function updateStairPosition(BristolStairsPositionParams $stairs_position_params)
+    {
+        $sql = <<< SQL
+update
+  bristol_stair_info
+set 
+  latitude = :latitude,
+  longitude = :longitude
+where
+  id = :id
+  limit 1
+SQL;
+
+        $params = [
+            ":latitude" => $stairs_position_params->latitude,
+            ":longitude" => $stairs_position_params->longitude,
+            ":id" => $stairs_position_params->bristol_stair_info_id,
+        ];
 
         $rows_affected = $this->pdo_simple->execute($sql, $params);
 
