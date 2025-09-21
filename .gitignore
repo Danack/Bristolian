@@ -34,3 +34,7 @@ scripts/html_output
 scripts/bcc_files
 scripts/bcc_foi_analysis
 stairs_to_process
+cron.lock
+deployer.log
+test_update.sh
+this_is_prod.txt
