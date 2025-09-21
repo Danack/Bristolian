@@ -7,7 +7,7 @@ namespace Bristolian\AppController;
 use Bristolian\App;
 use Bristolian\Config\Config;
 use Bristolian\CSPViolation\CSPViolationStorage;
-use Bristolian\Parameters\Migration;
+use Bristolian\Parameters\MigrationThatHasBeenRun;
 use Bristolian\Repo\DbInfo\DbInfo;
 use Bristolian\Service\DeployLogRenderer\DeployLogRenderer;
 use Bristolian\Session\UserSession;
@@ -147,10 +147,10 @@ HTML;
         ];
 
         $rowFns = [
-            ':html_id' => fn(Migration $migration) => $migration->id,
-            ':html_description' => fn(Migration $migration) => $migration->description,
-            ':html_checksum' => fn(Migration $migration) => $migration->checksum,
-            ':html_created_at' => fn(Migration $migration) => $migration->created_at->format(App::DATE_TIME_FORMAT)
+            ':html_id' => fn(MigrationThatHasBeenRun $migration) => $migration->id,
+            ':html_description' => fn(MigrationThatHasBeenRun $migration) => $migration->description,
+            ':html_checksum' => fn(MigrationThatHasBeenRun $migration) => $migration->checksum,
+            ':html_created_at' => fn(MigrationThatHasBeenRun $migration) => $migration->created_at->format(App::DATE_TIME_FORMAT)
         ];
 
         $table_info .= renderTableHtml(

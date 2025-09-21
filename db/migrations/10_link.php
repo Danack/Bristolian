@@ -17,8 +17,9 @@ CREATE TABLE `link` (
   CONSTRAINT uc_id UNIQUE (id)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT="Table entries should be immutable.";
+SQL;
 
-
+$sql[] = <<< SQL
 CREATE TABLE `room_link` (
   `id` varchar(36) NOT NULL,
   `room_id` varchar(36) NOT NULL,

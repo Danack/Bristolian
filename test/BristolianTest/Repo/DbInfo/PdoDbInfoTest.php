@@ -2,7 +2,7 @@
 
 namespace BristolianTest\Repo\DbInfo;
 
-use Bristolian\Parameters\Migration;
+use Bristolian\Parameters\MigrationThatHasBeenRun;
 use Bristolian\Repo\DbInfo\PdoDbInfo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
@@ -26,7 +26,7 @@ class PdoDbInfoTest extends BaseTestCase
         $this->assertIsArray($migrations);
         $this->assertIsArray($pdoDbInfo->getTableInfo());
         foreach ($migrations as $migration) {
-            $this->assertInstanceOf(Migration::class, $migration);
+            $this->assertInstanceOf(MigrationThatHasBeenRun::class, $migration);
         }
         // TODO - any useful assertions?
     }

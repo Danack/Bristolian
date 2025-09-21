@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\DbInfo;
 
-use Bristolian\Parameters\Migration;
+use Bristolian\Parameters\MigrationThatHasBeenRun;
 use Bristolian\Parameters\Table;
 
 /**
@@ -17,7 +17,7 @@ interface DbInfo
 
 
     /**
-     * @return Migration[]
+     * @return MigrationThatHasBeenRun[]
      */
     public function getMigrations(): array;
 }

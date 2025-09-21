@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\DbInfo;
 
-use Bristolian\Parameters\Migration;
+use Bristolian\Parameters\MigrationThatHasBeenRun;
 use Bristolian\Parameters\Table;
 use PDO;
 
@@ -31,7 +31,7 @@ SQL;
     }
 
     /**
-     * @return Migration[]
+     * @return MigrationThatHasBeenRun[]
      */
     public function getMigrations(): array
     {
@@ -44,6 +44,6 @@ SQL;
         $statement = $this->pdo->query($sql);
         $migration_data = $statement->fetchAll();
 
-        return Migration::createArrayOfTypeFromArray($migration_data);
+        return MigrationThatHasBeenRun::createArrayOfTypeFromArray($migration_data);
     }
 }

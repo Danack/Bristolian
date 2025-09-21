@@ -26,8 +26,8 @@ SQL;
 CREATE TABLE `bristol_stair_info` (
   `id` INT AUTO_INCREMENT NOT NULL,
   `description` varchar(1024) DEFAULT NULL COMMENT 'A description of the steps',
-  `latitude` FLOAT DEFAULT NULL COMMENT 'Where they are. We allow null to simplify uploading.',
-  `longitude`  FLOAT DEFAULT NULL COMMENT 'Where they are. We allow null to simplify uploading.',
+  `latitude` DOUBLE DEFAULT NULL COMMENT 'Where they are. We allow null to simplify uploading.',
+  `longitude`  DOUBLE DEFAULT NULL COMMENT 'Where they are. We allow null to simplify uploading.',
   `stored_stair_image_file_id` varchar(36) NOT NULL,
   `steps` integer NOT NULL COMMENT 'The count of steps.',
   `is_deleted` BOOLEAN NOT NULL COMMENT 'There\'s going to be duplicates..',

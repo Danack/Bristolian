@@ -90,6 +90,11 @@ class PdoSimple
         $this->pdo->beginTransaction();
     }
 
+    public function get_pdo(): \PDO
+    {
+        return $this->pdo;
+    }
+
     /**
      * @codeCoverageIgnore
      * @return void

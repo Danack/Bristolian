@@ -111,13 +111,19 @@ HTML;
         }
         else {
             try {
-                $contents = $roomFilesystem->read($normalized_name);
+//                $contents = $roomFilesystem->read($normalized_name);
+                $stream = $roomFilesystem->readStream($normalized_name);
             }
             catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
                 return new StoredFileErrorResponse($normalized_name);
             }
 
-            $localCacheFilesystem->write($normalized_name, $contents);
+            if (!$stream) {
+                return new StoredFileErrorResponse($normalized_name);
+            }
+
+//            $localCacheFilesystem->write($normalized_name, $contents);
+            $localCacheFilesystem->writeStream($normalized_name, $stream);
         }
 
         $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;
@@ -130,10 +136,7 @@ HTML;
             );
         }
 
-//        // check file is available locally
-//        return new BristolianFileResponse(
-//            $filenameToServe
-//        );
+
 
 
         return new \Bristolian\Response\StreamingResponse(

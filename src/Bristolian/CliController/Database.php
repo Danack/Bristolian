@@ -5,9 +5,11 @@ declare(strict_types = 1);
 namespace Bristolian\CliController;
 
 use Bristolian\Config\Config;
-use Bristolian\Parameters\Migration;
+use Bristolian\Parameters\MigrationThatHasBeenRun;
+use Bristolian\PdoSimple\PdoSimple;
 use PDO;
 use function DataType\createArrayOfType;
+use Bristolian\Parameters\MigrationFromCode;
 
 /**
  * @codeCoverageIgnore
@@ -58,20 +60,20 @@ function require_all_migration_files(): int
  * @param PDO $pdo
  * @return void
  */
-function ensureMigrationsTableExists(PDO $pdo): void
+function ensureMigrationsTableExists(PdoSimple $pdo): void
 {
     $sql = <<< SQL
 CREATE TABLE IF NOT EXISTS `migrations` (
   `id` int AUTO_INCREMENT NOT NULL,
   `description` varchar(1024) NOT NULL,
-  `checksum` varchar(1024) NOT NULL,
+  `json_encoded_queries` MEDIUMTEXT NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT="Table entries should be immutable.";
 
 SQL;
 
-    $pdo->exec($sql);
+    $pdo->execute($sql, []);
 }
 
 /**
@@ -88,101 +90,133 @@ function getQueriesSha(array $queries): string
 /**
  * @codeCoverageIgnore
  * @param PDO $pdo
- * @param mixed[] $list_of_migrations_that_need_to_be_run
+ * @param MigrationFromCode[] $list_of_migrations_that_need_to_be_run
  * @return void
  */
-function runAllQueries(PDO $pdo, array $list_of_migrations_that_need_to_be_run): void
+function runAllQueries(PdoSimple $pdo, array $list_of_migrations_that_need_to_be_run): void
 {
-    foreach ($list_of_migrations_that_need_to_be_run as $i => $queries) {
-        $sha = getQueriesSha($queries);
+    foreach ($list_of_migrations_that_need_to_be_run as $i => $migrationFromCode) {
 
-        $description_fn = "getDescription_" . ($i + 1);
+        $json_encoded_queries = json_encode_safe($migrationFromCode->queries_to_run);
 
-        $description = $description_fn();
+//        printf(
+//            "Query %d description %s queries: %s\n",
+//            $i,
+//            $migrationFromCode->description,
+//            $json_encoded_queries
+//        );
 
-        printf(
-            "Query %d description %s sha: %s\n",
-            $i,
-            $description,
-            $sha
-        );
+        $migration_sql_index = 0;
 
-        echo "Running migration $i \n";
-
-        foreach ($queries as $query) {
-            echo "Query is: [$query]\n";
-            $pdo->exec($query);
+        foreach ($migrationFromCode->queries_to_run as $query) {
+            printf(
+                "Running migration %d part %d\n",
+                $i,
+                $migration_sql_index
+            );
+            $pdo->execute($query, []);
+            $migration_sql_index += 1;
         }
 
-        $statement = $pdo->prepare("insert into migrations (
-                        description,
-                        checksum
-                    ) values (:description, :checksum)");
+        $sql = <<< SQL
+insert into migrations (
+    id, 
+    description,
+    json_encoded_queries
+)
+values (
+  :id,
+  :description,
+  :json_encoded_queries
+)
+SQL;
 
-        $statement->execute([
-            ':description' => "Migration $i: $description",
-            ':checksum' => $sha
-        ]);
+        $params = [
+            ':id' => $i,
+            ':description' => $migrationFromCode->description,
+            ':json_encoded_queries' => $json_encoded_queries
+        ];
+
+        $statement = $pdo->get_pdo()->prepare($sql);
+        $statement->execute($params);
     }
 }
 
-
 /**
  * @codeCoverageIgnore
- * @param mixed[] $migrations
- * @return Migration[]
- * @throws \DataType\Exception\ValidationException
- */
-function convert_to_migrations(array $migrations): array
-{
-    $migration_as_types = createArrayOfType(Migration::class, $migrations);
-
-    return $migration_as_types;
-}
-
-/**
- * @codeCoverageIgnore
- * @param PDO $pdo
  * @param int $max_migration_number
- * @return mixed[]
+ * @return MigrationFromCode[]
  * @throws \DataType\Exception\ValidationException
  */
-function findWhichMigrationsNeedToBeRun(PDO $pdo, int $max_migration_number): array
-{
-    $db_query_list = [];
+function findWhichMigrationsNeedToBeRun(
+    PdoSimple $pdoSimple,
+    int $max_migration_number,
+): array {
+    /** @var MigrationFromCode[] $migrations_from_code */
+    $migrations_from_code = [];
 
     for ($i = 1; $i <= $max_migration_number; $i += 1) {
-        $function_name = 'getAllQueries_' . $i;
+        $function_name_sql = 'getAllQueries_' . $i;
+        $function_name_description = 'getDescription_' . $i;
 
-        if (function_exists($function_name) !== true) {
-            echo "DB migration function [$function_name] does not exist.";
+        if (function_exists($function_name_sql) !== true) {
+            echo "DB migration function [$function_name_sql] does not exist.";
+            exit(-1);
+        }
+        if (function_exists($function_name_sql) !== true) {
+            echo "DB migration function [$function_name_sql] does not exist.";
             exit(-1);
         }
 
-        $db_query_list[$i] = $function_name();
+        $migrations_from_code[$i] = new MigrationFromCode(
+            $i,
+            $function_name_description(),
+            $function_name_sql()
+        );
     }
 
-    $result = $pdo->query("select * from migrations order by id ASC");
-    $migrations = $result->fetchAll();
+    $sql = "select * from migrations order by id ASC";
+    $migrations_from_db = $pdoSimple->fetchAllAsObjectConstructor($sql, [], MigrationThatHasBeenRun::class);
 
-    $migrations_type = convert_to_migrations($migrations);
-    $checksums = array_map(fn(Migration $migration) => $migration->checksum, $migrations_type);
+    $migrations_from_db_indexed = [];
 
-    $queries_to_run = [];
-
-    foreach ($db_query_list as $i => $queries) {
-        $sha = getQueriesSha($queries);
-
-        if (array_contains($sha, $checksums) === false) {
-            echo "Need to run $sha \n";
-            $queries_to_run[] = $queries;
-        }
-        else {
-            echo "No need to run $sha \n";
-        }
+    foreach ($migrations_from_db as $migration_from_db) {
+        $migrations_from_db_indexed[$migration_from_db->id] = $migration_from_db;
     }
 
-    return $queries_to_run;
+    $any_errors = false;
+    $migrations_to_run = [];
+    $migrations_from_db = null;
+
+    foreach ($migrations_from_code as $i => $migration_from_code) {
+        // migration hasn't been run, we have to run it.
+        if (array_key_exists($i, $migrations_from_db_indexed) === false) {
+            $migrations_to_run[$i] = $migration_from_code;
+            echo "Need to run migration $i\n";
+            continue;
+        }
+
+        $migration_from_db = $migrations_from_db_indexed[$i];
+        $json_encoded_queries_for_migration = json_encode_safe($migration_from_code->queries_to_run);
+
+        if ($migration_from_db->json_encoded_queries != $json_encoded_queries_for_migration) {
+            $any_errors = true;
+            echo "Migration $i defined in code does not match migration as run on server\n";
+            echo "Code: $json_encoded_queries_for_migration\n";
+            echo "DB  : " . $migration_from_db->json_encoded_queries . "\n";
+
+            exit(-1);
+        }
+
+        echo "No need to run migration $i \n";
+    }
+
+    if ($any_errors === true) {
+        echo "Some migrations have been modified in code from when they were run - unsafe to proceed.\n";
+        exit(-1);
+    }
+
+    return $migrations_to_run;
 }
 
 /**
@@ -224,21 +258,20 @@ class Database
      * @param PDO $pdo
      * @return void
      */
-    public function performMigrations(PDO $pdo)
-    {
-        ensureMigrationsTableExists($pdo);
+    public function performMigrations(PdoSimple $pdoSimple) {
+        ensureMigrationsTableExists($pdoSimple);
 
         $max_migration_number = require_all_migration_files();
 
         echo "max_migration_number = $max_migration_number \n";
         $list_of_migrations_that_need_to_be_run = findWhichMigrationsNeedToBeRun(
-            $pdo,
+            $pdoSimple,
             $max_migration_number
         );
 
-//        var_dump($list_of_migrations_that_need_to_be_run);
-//        exit(0);
 
-        runAllQueries($pdo, $list_of_migrations_that_need_to_be_run);
+
+
+        runAllQueries($pdoSimple, $list_of_migrations_that_need_to_be_run);
     }
 }

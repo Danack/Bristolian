@@ -5,13 +5,13 @@ namespace BristolianTest\DataType;
 use Bristolian\Parameters\PropertyType\BasicDateTime;
 use Bristolian\Parameters\PropertyType\BasicString;
 use BristolianTest\BaseTestCase;
-use Bristolian\Parameters\Migration;
+use Bristolian\Parameters\MigrationThatHasBeenRun;
 use DataType\Create\CreateFromArray;
 use Safe\DateTimeImmutable;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\Migration
+ * @covers \Bristolian\Parameters\MigrationThatHasBeenRun
  */
 class MigrationTest extends BaseTestCase
 {
@@ -29,7 +29,7 @@ class MigrationTest extends BaseTestCase
             'created_at' => $datetime->format("Y-m-d H:i:s"),
         ];
 
-        $migration = Migration::createFromArray($params);
+        $migration = MigrationThatHasBeenRun::createFromArray($params);
 
         $this->assertSame($id, $migration->id);
         $this->assertSame($description, $migration->description);
