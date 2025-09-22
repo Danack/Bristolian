@@ -13,6 +13,7 @@ use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo;
 use Bristolian\Response\IframeHtmlResponse;
+use Bristolian\Response\StreamingResponse;
 use Bristolian\Response\StoredFileErrorResponse;
 use Bristolian\Service\FileStorageProcessor\UploadError;
 use Bristolian\Service\RequestNonce;
@@ -243,7 +244,7 @@ class Rooms
         RoomFileRepo $roomFileRepo,
         string $room_id,
         string $file_id
-    ): StubResponse {
+    ): StubResponse|StreamingResponse {
         // TODO - validate room, probably
 
         $fileDetails = $roomFileRepo->getFileDetails($room_id, $file_id);
@@ -277,12 +278,7 @@ class Rooms
             );
         }
 
-//        // check file is available locally
-//        return new BristolianFileResponse(
-//            $filenameToServe
-//        );
-
-        return new \Bristolian\Response\StreamingResponse(
+        return new StreamingResponse(
             $filenameToServe
         );
     }
