@@ -1,6 +1,10 @@
 <?php
 
 
+/**
+ * @param string $filename
+ * @return array{0:float, 1:float}|null
+ */
 function get_image_gps(string $filename): null|array
 {
     $exif_data = exif_read_data($filename);
@@ -45,9 +49,10 @@ function gps2Num(string $coordPart): float {
 
     $parts = explode('/', $coordPart);
 
-    if (count($parts) <= 0) {
-        return 0;
-    }
+    // PHPStan complains about this code. tbh, think I need some unit tests
+//    if (count($parts) <= 0) {
+//        return 0;
+//    }
 
     if (count($parts) == 1) {
         return (float)$parts[0];

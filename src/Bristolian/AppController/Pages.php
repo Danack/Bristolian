@@ -7,6 +7,7 @@ namespace Bristolian\AppController;
 use Bristolian\Parameters\DebugParams;
 use Bristolian\MarkdownRenderer\MarkdownRenderer;
 use Bristolian\Page;
+use Bristolian\SiteHtml\ExtraAssets;
 use Bristolian\SiteHtml\PageStubResponseGenerator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use SlimDispatcher\Response\StubResponse;
@@ -270,11 +271,12 @@ HTML;
 
     public function get404Page(
         Request $request,
+        ExtraAssets $extraAssets,
         PageStubResponseGenerator $pageStubResponseGenerator
     ): StubResponse {
         $path = $request->getUri()->getPath();
 
-        return $pageStubResponseGenerator->create404Page($path);
+        return $pageStubResponseGenerator->create404Page($extraAssets, $path);
     }
 
     public function about(MarkdownRenderer $markdownRenderer): string

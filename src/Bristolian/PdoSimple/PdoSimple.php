@@ -146,7 +146,7 @@ class PdoSimple
      * Returns the number of rows affected
      *
      * @param string $query
-     * @param array<string, string|int> $params
+     * @param array<string, string|int|float|null> $params
      * @return int
      * @throws \Exception
      */
@@ -159,7 +159,7 @@ class PdoSimple
 
     /**
      * @param string $query
-     * @param array<string, string|int|null> $params
+     * @param array<string, string|int|null|float> $params
      * @return int
      * @throws \Exception
      */

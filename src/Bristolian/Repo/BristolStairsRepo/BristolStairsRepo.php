@@ -18,7 +18,7 @@ interface BristolStairsRepo
 
 
     /**
-     * @return {0:int, 1:int}
+     * @return array{0:int, 1:int}
      */
     public function get_total_number_of_steps(): array;
 
@@ -27,9 +27,9 @@ interface BristolStairsRepo
      */
     public function getAllStairsInfo(): array;
 
-    public function updateStairInfo(BristolStairsInfoParams $stairs_info_params);
+    public function updateStairInfo(BristolStairsInfoParams $stairs_info_params): void;
 
-    public function updateStairPosition(BristolStairsPositionParams $stairs_position_params);
+    public function updateStairPosition(BristolStairsPositionParams $stairs_position_params): void;
 }
 
 

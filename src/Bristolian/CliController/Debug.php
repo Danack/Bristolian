@@ -8,17 +8,17 @@ use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Service\WebPushService\WebPushService;
 
 
-function fn_level_1()
+function fn_level_1(): void
 {
     fn_level_2();
 }
 
-function fn_level_2()
+function fn_level_2(): void
 {
     fn_level_3();
 }
 
-function fn_level_3()
+function fn_level_3(): void
 {
     throw new \Exception("This is on line ". __LINE__);
 }
@@ -35,7 +35,7 @@ class Debug
     }
 
 
-    public function stack_trace()
+    public function stack_trace(): void
     {
         fn_level_1();
     }

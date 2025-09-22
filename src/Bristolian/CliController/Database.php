@@ -57,7 +57,7 @@ function require_all_migration_files(): int
 
 /**
  * @codeCoverageIgnore
- * @param PDO $pdo
+ * @param PdoSimple $pdo
  * @return void
  */
 function ensureMigrationsTableExists(PdoSimple $pdo): void
@@ -89,7 +89,7 @@ function getQueriesSha(array $queries): string
 
 /**
  * @codeCoverageIgnore
- * @param PDO $pdo
+ * @param PdoSimple $pdo
  * @param MigrationFromCode[] $list_of_migrations_that_need_to_be_run
  * @return void
  */
@@ -163,8 +163,8 @@ function findWhichMigrationsNeedToBeRun(
             echo "DB migration function [$function_name_sql] does not exist.";
             exit(-1);
         }
-        if (function_exists($function_name_sql) !== true) {
-            echo "DB migration function [$function_name_sql] does not exist.";
+        if (function_exists($function_name_description) !== true) {
+            echo "DB migration function [$function_name_description] does not exist.";
             exit(-1);
         }
 
@@ -184,7 +184,6 @@ function findWhichMigrationsNeedToBeRun(
         $migrations_from_db_indexed[$migration_from_db->id] = $migration_from_db;
     }
 
-    $any_errors = false;
     $migrations_to_run = [];
     $migrations_from_db = null;
 
@@ -200,7 +199,6 @@ function findWhichMigrationsNeedToBeRun(
         $json_encoded_queries_for_migration = json_encode_safe($migration_from_code->queries_to_run);
 
         if ($migration_from_db->json_encoded_queries != $json_encoded_queries_for_migration) {
-            $any_errors = true;
             echo "Migration $i defined in code does not match migration as run on server\n";
             echo "Code: $json_encoded_queries_for_migration\n";
             echo "DB  : " . $migration_from_db->json_encoded_queries . "\n";
@@ -209,11 +207,6 @@ function findWhichMigrationsNeedToBeRun(
         }
 
         echo "No need to run migration $i \n";
-    }
-
-    if ($any_errors === true) {
-        echo "Some migrations have been modified in code from when they were run - unsafe to proceed.\n";
-        exit(-1);
     }
 
     return $migrations_to_run;
@@ -255,7 +248,7 @@ class Database
     }
 
     /**
-     * @param PDO $pdo
+     * @param PdoSimple $pdoSimple
      * @return void
      */
     public function performMigrations(PdoSimple $pdoSimple) {
@@ -268,9 +261,6 @@ class Database
             $pdoSimple,
             $max_migration_number
         );
-
-
-
 
         runAllQueries($pdoSimple, $list_of_migrations_that_need_to_be_run);
     }

@@ -17,7 +17,7 @@ class PdoBristolStairsRepo implements BristolStairsRepo
     {
     }
 
-    public function updateStairInfo(BristolStairsInfoParams $stairs_info_params)
+    public function updateStairInfo(BristolStairsInfoParams $stairs_info_params): void
     {
         $sql = <<< SQL
 update
@@ -43,7 +43,7 @@ SQL;
         }
     }
 
-    public function updateStairPosition(BristolStairsPositionParams $stairs_position_params)
+    public function updateStairPosition(BristolStairsPositionParams $stairs_position_params): void
     {
         $sql = <<< SQL
 update
@@ -114,7 +114,7 @@ SQL;
     }
 
     /**
-     * @return {0:int, 1:int}
+     * @return array{0:int, 1:int}
      */
     public function get_total_number_of_steps(): array
     {

@@ -17,7 +17,7 @@ use Bristolian\Filesystem\BristolStairsFilesystem;
 
 class BristolStairs
 {
-    public function total(BristolStairsRepo $bristolStairsRepo)
+    public function total(BristolStairsRepo $bristolStairsRepo): void
     {
         [$flights_of_stairs, $total_steps] = $bristolStairsRepo->get_total_number_of_steps();
 
@@ -26,13 +26,12 @@ class BristolStairs
 
     public function check_contents(
         BristolStairImageStorageInfoRepo $bristolStairImageStorageInfoRepo,
-        BristolStairsFilesystem $bristolStairsFilesystem)
+        BristolStairsFilesystem $bristolStairsFilesystem): void
     {
         $result = $bristolStairsFilesystem->listContents("");
 
         $files_in_storage = [];
 
-        /** @var \League\Flysystem\FileAttributes[] $result */
         foreach ($result as $file) {
             $files_in_storage[] = $file->path();
         }
@@ -54,7 +53,7 @@ class BristolStairs
         echo "Unknown files:\n";
         var_dump($unknown_files);
 
-        // Thise code doesn't have permissions. Think I'm going to leave
+        // This code doesn't have permissions. Think I'm going to leave
         // it here like this for now, as I don't want to setup permissions
         // to delete just yet.
 //        foreach ($unknown_files as $unknown_file) {
@@ -68,7 +67,7 @@ class BristolStairs
         BristolianStairImageObjectStore $bristolStairImageObjectStore,
         BristolStairsRepo $bristolStairsRepo,
         string $image_filename
-    ) {
+    ): void {
         $user_id = $adminRepo->getAdminUserId(getAdminEmailAddress());
         if ($user_id === null) {
             echo "Failed to find admin user";

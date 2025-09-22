@@ -4,12 +4,16 @@ namespace Bristolian\Repo\DbInfo;
 
 use Bristolian\Parameters\MigrationThatHasBeenRun;
 use Bristolian\Parameters\Table;
+use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Database\migrations;
 use PDO;
 
 class PdoDbInfo implements DbInfo
 {
-    public function __construct(private PDO $pdo)
-    {
+    public function __construct(
+        private PDO $pdo,
+        private PdoSimple $pdoSimple
+    ) {
     }
 
     /**
@@ -35,15 +39,21 @@ SQL;
      */
     public function getMigrations(): array
     {
-        $sql = <<< SQL
-SELECT id, description, checksum, created_at
-    FROM migrations
-    order by created_at
-SQL;
+        $sql = migrations::SELECT . " order by created_at";
 
-        $statement = $this->pdo->query($sql);
-        $migration_data = $statement->fetchAll();
+//
+//            <<< SQL
+//SELECT id, description, json_encoded_queries, created_at
+//    FROM migrations
+//    order by created_at
+//SQL;
 
-        return MigrationThatHasBeenRun::createArrayOfTypeFromArray($migration_data);
+        return $this->pdoSimple->fetchAllAsObjectConstructor(
+            $sql,
+            [],
+            MigrationThatHasBeenRun::class
+        );
+//        $migration_data = $statement->();
+//        return MigrationThatHasBeenRun::createArrayOfTypeFromArray($migration_data);
     }
 }

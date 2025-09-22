@@ -2,6 +2,7 @@
 
 namespace Bristolian\Repo\BristolStairImageStorageInfoRepo;
 
+use Bristolian\Model\BristolStairImageFile;
 use Bristolian\Model\StoredFile;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
@@ -35,9 +36,20 @@ class FakeBristolStairImageStorageInfoRepo implements BristolStairImageStorageIn
         return $id;
     }
 
+    function getById(string $bristol_stairs_image_id): BristolStairImageFile|null
+    {
+        throw new \Exception("Implement getById() method.");
+    }
+
+    function getByNormalizedName(string $normalized_name): BristolStairImageFile|null
+    {
+        throw new \Exception("Implement getByNormalizedName() method.");
+    }
+
+
     public function setUploaded(string $file_storage_id): void
     {
-        // TODO - should throw an exception if $file_storage_id is invalid
+        throw new \Exception("Implement setUploaded() method.");
     }
 
     /**

@@ -9,6 +9,7 @@ use Bristolian\Parameters\MigrationThatHasBeenRun;
 use DataType\Create\CreateFromArray;
 use Safe\DateTimeImmutable;
 use VarMap\ArrayVarMap;
+use function DataType\createArrayOfType;
 
 /**
  * @covers \Bristolian\Parameters\MigrationThatHasBeenRun
@@ -19,21 +20,19 @@ class MigrationTest extends BaseTestCase
     {
         $id = 123;
         $description = 'This is some description.';
-        $checksum = '12345';
+        $queries = 'This is meant to be some queries';
         $datetime = new DateTimeImmutable();
 
-        $params = [
-            'id' => "$id",
-            'description' => $description,
-            'checksum' => $checksum,
-            'created_at' => $datetime->format("Y-m-d H:i:s"),
-        ];
-
-        $migration = MigrationThatHasBeenRun::createFromArray($params);
+        $migration = new MigrationThatHasBeenRun(
+            $id,
+            $description,
+            $queries,
+            $datetime,
+        );
 
         $this->assertSame($id, $migration->id);
         $this->assertSame($description, $migration->description);
-        $this->assertSame($checksum, $migration->checksum);
+        $this->assertSame($queries, $migration->json_encoded_queries);
         $this->assertSame($datetime->format("Y-m-d H:i:s"), $migration->created_at->format("Y-m-d H:i:s"));
     }
 }

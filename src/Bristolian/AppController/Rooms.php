@@ -232,7 +232,7 @@ class Rooms
      * @param RoomFileRepo $roomFileRepo
      * @param string $room_id
      * @param string $file_id
-     * @return StubResponse
+     * @return StubResponse|StreamingResponse
      * @throws BristolianException
      * @throws \League\Flysystem\FilesystemException
      * @throws \SlimDispatcher\Response\ResponseException

@@ -25,7 +25,8 @@ class ExceptionToErrorPageResponseMiddlewareTest extends BaseTestCase
         $responseFactory = new ResponseFactory();
         $assetLinkConfig = new HardCodedAssetLinkConfig(false, $sha = 'abcdefg');
         $linkEmitter = new AssetLinkEmitter($assetLinkConfig);
-        $pageResponseGenerator = new PageResponseGenerator($responseFactory, $linkEmitter);
+        $extraAssets = new \Bristolian\SiteHtml\ExtraAssets();
+        $pageResponseGenerator = new PageResponseGenerator($responseFactory, $linkEmitter, $extraAssets);
 
         $middleware = new ExceptionToErrorPageResponseMiddleware(
             $pageResponseGenerator,
@@ -73,7 +74,8 @@ class ExceptionToErrorPageResponseMiddlewareTest extends BaseTestCase
         $responseFactory = new ResponseFactory();
         $assetLinkConfig = new HardCodedAssetLinkConfig(false, $sha = 'abcdefg');
         $linkEmitter = new AssetLinkEmitter($assetLinkConfig);
-        $pageResponseGenerator = new PageResponseGenerator($responseFactory, $linkEmitter);
+        $extraAssets = new \Bristolian\SiteHtml\ExtraAssets();
+        $pageResponseGenerator = new PageResponseGenerator($responseFactory,  $linkEmitter, $extraAssets);
         $middleware = new ExceptionToErrorPageResponseMiddleware($pageResponseGenerator, $handlers);
 
         $message = "something went wrong";
@@ -118,7 +120,8 @@ class ExceptionToErrorPageResponseMiddlewareTest extends BaseTestCase
         $responseFactory = new ResponseFactory();
         $assetLinkConfig = new HardCodedAssetLinkConfig(false, $sha = 'abcdefg');
         $linkEmitter = new AssetLinkEmitter($assetLinkConfig);
-        $pageResponseGenerator = new PageResponseGenerator($responseFactory, $linkEmitter);
+        $extraAssets = new \Bristolian\SiteHtml\ExtraAssets();
+        $pageResponseGenerator = new PageResponseGenerator($responseFactory, $linkEmitter, $extraAssets);
 
         $middleware = new ExceptionToErrorPageResponseMiddleware($pageResponseGenerator, []);
         $request = new ServerRequest();

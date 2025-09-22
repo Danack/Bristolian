@@ -58,7 +58,8 @@ class Admin
 
     public function showProcessorsPage(
         ProcessorRepo $processorRepo,
-        \Bristolian\SiteHtml\AssetLinkEmitter $assetLinkEmitter
+        \Bristolian\SiteHtml\AssetLinkEmitter $assetLinkEmitter,
+        \Bristolian\SiteHtml\ExtraAssets $extraAssets,
     ): StubResponse {
         $content = "<h1>Processors</h1>";
         $content .= "<div class='processors_panel'></div>";
@@ -103,7 +104,11 @@ HTML;
 
 
         $content .= $this->renderProcessorLogWidget();
-        $pageHtml = \createPageHtml($assetLinkEmitter, $content);
+        $pageHtml = \createPageHtml(
+            $assetLinkEmitter,
+            $extraAssets,
+            $content
+        );
 
         return new HtmlNoCacheResponse($pageHtml, [], 200);
     }

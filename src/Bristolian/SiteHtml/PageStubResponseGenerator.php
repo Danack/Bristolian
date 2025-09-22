@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\SiteHtml;
 
+use Bristolian\SiteHtml\ExtraAssets;
 use SlimDispatcher\Response\HtmlResponse;
 use SlimDispatcher\Response\StubResponse;
 
@@ -13,7 +14,7 @@ class PageStubResponseGenerator
     {
     }
 
-    public function create404Page(string $path): StubResponse
+    public function create404Page(ExtraAssets $extraAssets, string $path): StubResponse
     {
         $output = "<p>This is a 404 page.</p>";
 
@@ -22,7 +23,11 @@ class PageStubResponseGenerator
             $path
         );
 
-        $pageHtml = createPageHtml($this->assetLinkEmitter, $output);
+        $pageHtml = createPageHtml(
+            $this->assetLinkEmitter,
+            $extraAssets,
+            $output
+        );
 
         return new HtmlResponse($pageHtml, [], 404);
     }

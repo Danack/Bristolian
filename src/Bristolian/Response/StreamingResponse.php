@@ -18,7 +18,10 @@ class StreamingResponse
     private $filehandle;
 
     /** @var string */
-    private $filenameToServe;
+    /* @noinspection PhpPropertyOnlyWrittenInspection
+     * @phpstan-ignore property.onlyWritten
+     */
+    private string $filenameToServe;
 
     /**
      * @param string $filenameToServe

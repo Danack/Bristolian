@@ -804,7 +804,7 @@ function encodeWidgetyData(array $data): string
 /**
  * @return string[]
  */
-function get_supported_room_file_extensions()
+function get_supported_room_file_extensions(): array
 {
     return [
         'docx',
@@ -818,7 +818,10 @@ function get_supported_room_file_extensions()
     ];
 }
 
-function get_supported_bristolian_stair_image_extensions()
+/**
+ * @return string[]
+ */
+function get_supported_bristolian_stair_image_extensions(): array
 {
     return [
         'jpeg',

@@ -142,14 +142,14 @@ HTML;
         $headers = [
             'ID',
             'Description',
-            'Checksum',
+            'Queries',
             'Created at'
         ];
 
         $rowFns = [
             ':html_id' => fn(MigrationThatHasBeenRun $migration) => $migration->id,
             ':html_description' => fn(MigrationThatHasBeenRun $migration) => $migration->description,
-            ':html_checksum' => fn(MigrationThatHasBeenRun $migration) => $migration->checksum,
+            ':html_queries' => fn(MigrationThatHasBeenRun $migration) => $migration->json_encoded_queries,
             ':html_created_at' => fn(MigrationThatHasBeenRun $migration) => $migration->created_at->format(App::DATE_TIME_FORMAT)
         ];
 

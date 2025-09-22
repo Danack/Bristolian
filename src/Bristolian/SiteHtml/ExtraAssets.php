@@ -5,21 +5,21 @@ namespace Bristolian\SiteHtml;
 class ExtraAssets
 {
     /**
-     * @var string
+     * @var string[]
      */
     private $css_files = [];
 
     /**
-     * @var string
+     * @var string[]
      */
     private $js_files = [];
 
-    public function addCSS(string $css_file)
+    public function addCSS(string $css_file): void
     {
         $this->css_files[] = $css_file;
     }
 
-    public function addJS(string $js_file)
+    public function addJS(string $js_file): void
     {
         $this->js_files[] = $js_file;
     }

@@ -10,7 +10,6 @@ use VarMap\ArrayVarMap;
 use DataType\Exception\ValidationException;
 use function convertToValue;
 
-
 /**
  * @coversNothing
  * @group wip
@@ -26,7 +25,6 @@ class ConvertToValueTest extends BaseTestCase
             new \DateTime("2025-08-04 10:00:00"),
             '2025-08-04T10:00:00+00:00'
         ];
-
     }
 
 

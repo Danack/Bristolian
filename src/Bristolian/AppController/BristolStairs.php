@@ -11,6 +11,7 @@ use Bristolian\Session\UserSession;
 use SlimDispatcher\Response\ImageResponse;
 use SlimDispatcher\Response\JsonResponse;
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
+use Bristolian\Response\StreamingResponse;
 use Bristolian\Filesystem\BristolStairsFilesystem;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Parameters\BristolStairsInfoParams;
@@ -20,7 +21,7 @@ use VarMap\VarMap;
 
 class BristolStairs
 {
-    public function update_stairs_info_get(){
+    public function update_stairs_info_get(): string{
 
         return "This is a GET end point. You probably meant to POST.";
     }
@@ -29,7 +30,7 @@ class BristolStairs
         UserSession $appSession,
         BristolStairsRepo $bristolStairsRepo,
         VarMap $varMap
-    ) {
+    ): JsonResponse {
         $stairs_info_params = BristolStairsInfoParams::createFromVarMap($varMap);
         $bristolStairsRepo->updateStairInfo($stairs_info_params);
 
@@ -42,7 +43,7 @@ class BristolStairs
         UserSession $appSession,
         BristolStairsRepo $bristolStairsRepo,
         VarMap $varMap
-    ) {
+    ): JsonResponse {
         $stairs_position_params = BristolStairsPositionParams::createFromVarMap($varMap);
         $bristolStairsRepo->updateStairPosition($stairs_position_params);
 
@@ -93,41 +94,26 @@ HTML;
     }
 
 
-
-
-
     function getImage(
         BristolStairsFilesystem $roomFilesystem,
         LocalCacheFilesystem $localCacheFilesystem,
         BristolStairImageStorageInfoRepo $bristolStairImageStorageInfoRepo,
         string $stored_stair_image_file_id
-    ) {
+    ): StreamingResponse|StoredFileErrorResponse {
         $fileDetails = $bristolStairImageStorageInfoRepo->getById($stored_stair_image_file_id);
 
         $normalized_name = $fileDetails->normalized_name;
-        if ($localCacheFilesystem->fileExists($normalized_name) === true) {
-            // TODO - why is contents unused?
-            $contents = $localCacheFilesystem->read($normalized_name);
-        }
-        else {
+        if ($localCacheFilesystem->fileExists($normalized_name) !== true) {
             try {
-//                $contents = $roomFilesystem->read($normalized_name);
                 $stream = $roomFilesystem->readStream($normalized_name);
             }
             catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
                 return new StoredFileErrorResponse($normalized_name);
             }
-
-            if (!$stream) {
-                return new StoredFileErrorResponse($normalized_name);
-            }
-
-//            $localCacheFilesystem->write($normalized_name, $contents);
             $localCacheFilesystem->writeStream($normalized_name, $stream);
         }
 
         $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;
-
         $filenameToServe = realpath($localCacheFilename);
 
         if ($filenameToServe === false) {
@@ -136,16 +122,13 @@ HTML;
             );
         }
 
-
-
-
-        return new \Bristolian\Response\StreamingResponse(
+        return new StreamingResponse(
             $filenameToServe
         );
     }
 
 
-    function getData(BristolStairsRepo $stairs_repo)
+    function getData(BristolStairsRepo $stairs_repo): JsonResponse
     {
         $markers = $stairs_repo->getAllStairsInfo();
 

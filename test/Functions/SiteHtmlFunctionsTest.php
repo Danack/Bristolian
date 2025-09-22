@@ -31,7 +31,8 @@ class SiteHtmlFunctionsTest extends BaseTestCase
      */
     public function test_getPageLayoutHtml()
     {
-        $result = getPageLayoutHtml();
+        $extraAssets = new \Bristolian\SiteHtml\ExtraAssets();
+        $result = getPageLayoutHtml($extraAssets);
     }
 
     /**
@@ -41,10 +42,11 @@ class SiteHtmlFunctionsTest extends BaseTestCase
     {
         $assetLinkConfig = new \Bristolian\Config\HardCodedAssetLinkConfig(true, "abdefg");
         $assetLinkEmitter = new \Bristolian\SiteHtml\AssetLinkEmitter($assetLinkConfig);
+        $extraAssets = new \Bristolian\SiteHtml\ExtraAssets();
 
         $html = "<div>I am great webpage.</div>";
 
-        $result = createPageHtml($assetLinkEmitter, $html);
+        $result = createPageHtml($assetLinkEmitter, $extraAssets, $html);
     }
 
 
