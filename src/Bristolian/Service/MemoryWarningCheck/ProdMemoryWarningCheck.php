@@ -22,7 +22,7 @@ class ProdMemoryWarningCheck implements MemoryWarningCheck
 
     public function checkMemoryUsage(Request $request) : int
     {
-        $percentMemoryUsed = getPercentMemoryUsed();
+        [$percentMemoryUsed, $memoryLimitValue] = getPercentMemoryUsed();
 
         if ($percentMemoryUsed > 50) {
             $this->tooMuchMemoryNotifier->tooMuchMemory($request);

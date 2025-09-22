@@ -464,8 +464,26 @@ function getMemoryLimit(): int
 }
 // @codeCoverageIgnoreEnd
 
+function human_readable_value(int $size): string {
+
+    $units = array('B', 'KB', 'MB', 'GB', 'TB');
+    $formattedSize = $size;
+
+    for ($i = 0; $size >= 1024 && $i < count($units) - 1; $i++) {
+        $size /= 1024;
+        $formattedSize = round($size, 2);
+    }
+
+    return $formattedSize . ' ' . $units[$i];
+}
+
+
 // @codeCoverageIgnoreStart
-function getPercentMemoryUsed(): int
+/**
+ * @return array{0:int, 1:int}
+ * @throws Exception
+ */
+function getPercentMemoryUsed(): array
 {
     $maxMemory = memory_get_peak_usage();
 
@@ -473,7 +491,7 @@ function getPercentMemoryUsed(): int
 
     $percentMemoryUsed = (int)((100 * $maxMemory) / $memoryLimitValue);
 
-    return $percentMemoryUsed;
+    return [$percentMemoryUsed, $memoryLimitValue];
 }
 // @codeCoverageIgnoreEnd
 

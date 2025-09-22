@@ -122,7 +122,7 @@ TEXT;
             $this->markTestSkipped("No memory limit, cannot test getPercentMemoryUsed");
         }
 
-        $percentMemoryUsed = getPercentMemoryUsed();
+        [$percentMemoryUsed, $memoryLimitValue] = getPercentMemoryUsed();
         $this->assertGreaterThanOrEqual(0, $percentMemoryUsed);
         $this->assertLessThanOrEqual(100, $percentMemoryUsed);
     }

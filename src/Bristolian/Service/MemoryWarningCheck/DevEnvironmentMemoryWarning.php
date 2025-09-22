@@ -10,10 +10,15 @@ class DevEnvironmentMemoryWarning implements MemoryWarningCheck
 {
     public function checkMemoryUsage(Request $request) : int
     {
-        $percentMemoryUsed = getPercentMemoryUsed();
+        [$percentMemoryUsed, $memoryLimitValue] = getPercentMemoryUsed();
 
-        if ($percentMemoryUsed > 50) {
-            throw new MemoryUseException("Request is using too much memory.");
+        if ($percentMemoryUsed > 75) {
+            $message = sprintf(
+                "Request is using too much memory: %d of memory limit %s.",
+                $percentMemoryUsed,
+                human_readable_value($memoryLimitValue)
+            );
+            throw new MemoryUseException();
         }
 
         return $percentMemoryUsed;
