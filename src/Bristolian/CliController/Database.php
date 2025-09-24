@@ -96,7 +96,6 @@ function getQueriesSha(array $queries): string
 function runAllQueries(PdoSimple $pdo, array $list_of_migrations_that_need_to_be_run): void
 {
     foreach ($list_of_migrations_that_need_to_be_run as $i => $migrationFromCode) {
-
         $json_encoded_queries = json_encode_safe($migrationFromCode->queries_to_run);
 
 //        printf(
@@ -251,7 +250,8 @@ class Database
      * @param PdoSimple $pdoSimple
      * @return void
      */
-    public function performMigrations(PdoSimple $pdoSimple) {
+    public function performMigrations(PdoSimple $pdoSimple)
+    {
         ensureMigrationsTableExists($pdoSimple);
 
         $max_migration_number = require_all_migration_files();

@@ -36,12 +36,12 @@ class FakeBristolStairImageStorageInfoRepo implements BristolStairImageStorageIn
         return $id;
     }
 
-    function getById(string $bristol_stairs_image_id): BristolStairImageFile|null
+    public function getById(string $bristol_stairs_image_id): BristolStairImageFile|null
     {
         throw new \Exception("Implement getById() method.");
     }
 
-    function getByNormalizedName(string $normalized_name): BristolStairImageFile|null
+    public function getByNormalizedName(string $normalized_name): BristolStairImageFile|null
     {
         throw new \Exception("Implement getByNormalizedName() method.");
     }

@@ -4,7 +4,7 @@ namespace Bristolian\Repo\ProcessorRunRecordRepo;
 
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
-use Bristolian\Database\processor_run_records;
+use Bristolian\Database\processor_run_record;
 use Bristolian\Model\ProcessorRunRecord;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 
@@ -16,7 +16,7 @@ class PdoProcessorRunRecordRepo implements ProcessorRunRecordRepo
 
     public function getLastRunDateTime(ProcessType $process_type): \DateTimeInterface|null
     {
-        $query = processor_run_records::SELECT;
+        $query = processor_run_record::SELECT;
         $query .= "where task = :processor_type"; // TODO - normalise names
         $query .= " order by start_time desc limit 1";
 
@@ -45,7 +45,7 @@ class PdoProcessorRunRecordRepo implements ProcessorRunRecordRepo
         ];
 
         $this->pdoSimple->insert(
-            processor_run_records::INSERT,
+            processor_run_record::INSERT,
             $params
         );
     }
@@ -53,7 +53,7 @@ class PdoProcessorRunRecordRepo implements ProcessorRunRecordRepo
     public function startRun(ProcessType $process_type): string
     {
                 $sql = <<< SQL
-insert into processor_run_records (
+insert into processor_run_record (
     end_time,
     status,
     task
@@ -82,7 +82,7 @@ SQL;
 
         $sql = <<< SQL
 update
-  processor_run_records 
+  processor_run_record
 set 
   end_time = NOW(),
   status = :status
@@ -108,7 +108,7 @@ SQL;
     {
         $params = [];
 
-        $sql = processor_run_records::SELECT;
+        $sql = processor_run_record::SELECT;
 
         if ($task_type !== null) {
             $sql .= " where task = :task_type";

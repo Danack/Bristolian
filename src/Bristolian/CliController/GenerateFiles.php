@@ -335,6 +335,8 @@ class GenerateFiles
             'MEME_FILE_UPLOAD_FORM_NAME' => \Bristolian\AppController\MemeUpload::MEME_FILE_UPLOAD_FORM_NAME,
             'ROOM_FILE_UPLOAD_FORM_NAME' => \Bristolian\AppController\Rooms::ROOM_FILE_UPLOAD_FORM_NAME,
 
+            'BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME' => \Bristolian\AppController\BristolStairs::BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME,
+
             'SOURCELINK_JSON_MINIMUM_LENGTH' => \Bristolian\Parameters\SourceLinkHighlightsJson::MINIMUM_LENGTH,
             'SOURCELINK_JSON_MAXIMUM_LENGTH' => \Bristolian\Parameters\SourceLinkHighlightsJson::MAXIMUM_LENGTH,
 

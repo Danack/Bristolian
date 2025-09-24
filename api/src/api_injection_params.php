@@ -49,8 +49,8 @@ function apiInjectionParams() : InjectionParams
         \Bristolian\Service\FileStorageProcessor\FileStorageProcessor::class =>
             \Bristolian\Service\FileStorageProcessor\StandardFileStorageProcessor::class,
 
-        \Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo::class =>
-            \Bristolian\Repo\FileStorageInfoRepo\PdoFileStorageInfoRepo::class,
+        \Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo::class =>
+            \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::class,
 
         \Bristolian\Service\ObjectStore\RoomFileObjectStore::class =>
             \Bristolian\Service\ObjectStore\StandardRoomFileObjectStore::class,

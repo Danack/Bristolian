@@ -7,7 +7,10 @@ use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Filesystem\RoomFileFilesystem;
 use Bristolian\Response\BristolianFileResponse;
 use Bristolian\Response\StoredFileErrorResponse;
+use Bristolian\Service\ObjectStore\BristolianStairImageObjectStore;
+use Bristolian\Service\ObjectStore\FileObjectStore;
 use Bristolian\Session\UserSession;
+use Bristolian\UploadedFiles\UploadedFile;
 use SlimDispatcher\Response\ImageResponse;
 use SlimDispatcher\Response\JsonResponse;
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
@@ -16,12 +19,23 @@ use Bristolian\Filesystem\BristolStairsFilesystem;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
+use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
 use Bristolian\SiteHtml\ExtraAssets;
+use SlimDispatcher\Response\StubResponse;
+use SlimDispatcher\Response\JsonNoCacheResponse;
+use Bristolian\Service\BristolStairImageStorage\UploadError;
+use Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage;
+
+
 use VarMap\VarMap;
 
 class BristolStairs
 {
-    public function update_stairs_info_get(): string{
+
+    public const BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME = "stair_file";
+
+    public function update_stairs_info_get(): string
+    {
 
         return "This is a GET end point. You probably meant to POST.";
     }
@@ -94,7 +108,7 @@ HTML;
     }
 
 
-    function getImage(
+    public function getImage(
         BristolStairsFilesystem $roomFilesystem,
         LocalCacheFilesystem $localCacheFilesystem,
         BristolStairImageStorageInfoRepo $bristolStairImageStorageInfoRepo,
@@ -128,7 +142,7 @@ HTML;
     }
 
 
-    function getData(BristolStairsRepo $stairs_repo): JsonResponse
+    public function getData(BristolStairsRepo $stairs_repo): JsonResponse
     {
         $markers = $stairs_repo->getAllStairsInfo();
 
@@ -136,5 +150,49 @@ HTML;
             'status' => 'ok',
             'data' => $markers,
         ]);
+    }
+
+
+    public function handleFileUpload(
+        BristolStairImageStorage $bristolStairImageStorage,
+        UserSession                       $appSession,
+        UserSessionFileUploadHandler      $usfuh,
+    ): StubResponse {
+
+//        // TODO - check user logged in
+//        if ($appSession->isLoggedIn() !== true) {
+//            $data = ['not logged in' => true];
+//            return new JsonResponse($data, [], 400);
+//        }
+
+        // Get the user uploaded file.
+        $fileOrResponse = $usfuh->fetchUploadedFile(self::BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME);
+        if ($fileOrResponse instanceof StubResponse) {
+            return $fileOrResponse;
+        }
+
+        $storedFileOrError = $bristolStairImageStorage->storeFileForUser(
+            $appSession->getUserId(),
+            $fileOrResponse,
+            get_supported_bristolian_stair_image_extensions(),
+        );
+
+        if ($storedFileOrError instanceof UploadError) {
+            $data = [
+                'result' => 'error',
+                'error' => $storedFileOrError->error_message
+            ];
+            // todo - change to helper function
+            return new JsonNoCacheResponse($data, [], 400);
+        }
+
+        $response = [
+            'result' => 'success',
+//            'file_id' => $storedFileOrError->fileStorageId
+        ];
+
+        $response = new JsonNoCacheResponse($response);
+
+        return $response;
     }
 }

@@ -464,7 +464,8 @@ function getMemoryLimit(): int
 }
 // @codeCoverageIgnoreEnd
 
-function human_readable_value(int $size): string {
+function human_readable_value(int $size): string
+{
 
     $units = array('B', 'KB', 'MB', 'GB', 'TB');
     $formattedSize = $size;

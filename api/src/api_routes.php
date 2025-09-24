@@ -40,6 +40,17 @@ function getAllApiRoutes()
         ['/api/memes', 'GET', 'Bristolian\AppController\User::listMemes'],
         ['/api/memes/{meme_id:.+}/tags', 'GET', 'Bristolian\AppController\User::getTagsForMeme'],
         ['/api/rooms/{room_id:.*}/files', 'GET', 'Bristolian\AppController\Rooms::getFiles'],
+
+
+
+
+
+        [
+            '/api/bristol_stairs_create',
+            'POST',
+            'Bristolian\AppController\BristolStairs::handleFileUpload'
+        ],
+
         [
             '/api/rooms/{room_id:.*}/file-upload',
             'POST',

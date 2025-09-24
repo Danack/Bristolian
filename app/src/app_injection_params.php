@@ -97,8 +97,8 @@ function injectionParams()
         \Bristolian\UploadedFiles\UploadedFiles::class =>
             \Bristolian\UploadedFiles\ServerFilesUploadedFiles::class,
 
-        \Bristolian\Repo\FileStorageInfoRepo\FileStorageInfoRepo::class =>
-          \Bristolian\Repo\FileStorageInfoRepo\PdoFileStorageInfoRepo::class,
+        \Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo::class =>
+          \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::class,
 
         \Bristolian\Repo\MemeTagRepo\MemeTagRepo::class =>
             \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class,

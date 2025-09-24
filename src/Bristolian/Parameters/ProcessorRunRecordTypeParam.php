@@ -26,4 +26,3 @@ class ProcessorRunRecordTypeParam implements DataType
 // api Parameter types
 
 // PHP internal types and definitions e.g. length
-

@@ -75,7 +75,7 @@ class ExceptionToErrorPageResponseMiddlewareTest extends BaseTestCase
         $assetLinkConfig = new HardCodedAssetLinkConfig(false, $sha = 'abcdefg');
         $linkEmitter = new AssetLinkEmitter($assetLinkConfig);
         $extraAssets = new \Bristolian\SiteHtml\ExtraAssets();
-        $pageResponseGenerator = new PageResponseGenerator($responseFactory,  $linkEmitter, $extraAssets);
+        $pageResponseGenerator = new PageResponseGenerator($responseFactory, $linkEmitter, $extraAssets);
         $middleware = new ExceptionToErrorPageResponseMiddleware($pageResponseGenerator, $handlers);
 
         $message = "something went wrong";

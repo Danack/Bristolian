@@ -10,7 +10,11 @@ use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
 
-class UserSessionFileUploaderHandler
+/**
+ * This class is aware of UserSession, to prevent non-logged in users from being
+ * able to upload files. Presumably.
+ */
+class UserSessionFileUploadHandler
 {
     public function __construct(
         private UserSession $appSession,
@@ -18,7 +22,12 @@ class UserSessionFileUploaderHandler
     ) {
     }
 
-    public function processFile(string $formFileName): StubResponse|UploadedFile
+    /**
+     * @param string $formFileName
+     * @return StubResponse|UploadedFile
+     * @throws \SlimDispatcher\Response\InvalidDataException
+     */
+    public function fetchUploadedFile(string $formFileName): StubResponse|UploadedFile
     {
         if ($this->appSession->isLoggedIn() !== true) {
             $data = ['not logged in' => true];

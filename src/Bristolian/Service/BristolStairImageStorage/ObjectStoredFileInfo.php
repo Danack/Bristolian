@@ -1,6 +1,6 @@
 <?php
 
-namespace Bristolian\Service\BristolStairImageStorageProcessor;
+namespace Bristolian\Service\BristolStairImageStorage;
 
 class ObjectStoredFileInfo
 {

@@ -3,6 +3,8 @@ import {registerMessageListener, sendMessage, unregisterListener} from "./messag
 import {BristolStairInfo} from "./generated/types";
 import {global} from "./globals";
 
+import {BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME} from "./generated/constants";
+
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
 export interface BristolStairsPanelProps {

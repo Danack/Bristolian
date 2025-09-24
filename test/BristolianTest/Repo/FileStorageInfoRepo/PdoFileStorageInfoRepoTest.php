@@ -6,7 +6,7 @@ use Bristolian\Model\Meme;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 
-use Bristolian\Repo\FileStorageInfoRepo\PdoFileStorageInfoRepo;
+use Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use Ramsey\Uuid\Uuid;
 
@@ -18,11 +18,11 @@ class PdoFileStorageInfoRepoTest extends BaseTestCase
     use TestPlaceholders;
 
     /**
-     * @covers \Bristolian\Repo\FileStorageInfoRepo\PdoFileStorageInfoRepo
+     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo
      */
     public function test_createEntry()
     {
-        $pdoFileStorageInfoRepo = $this->make(PdoFileStorageInfoRepo::class);
+        $pdoFileStorageInfoRepo = $this->make(PdoRoomFileObjectInfoRepo::class);
         $uploadedFile = UploadedFile::fromFile(__FILE__);
 
         $uuid = Uuid::uuid7();
@@ -30,12 +30,12 @@ class PdoFileStorageInfoRepoTest extends BaseTestCase
         $original_name = $this->getTestFileName();
         $testUser = $this->createTestAdminUser();
 
-        $file_id = $pdoFileStorageInfoRepo->storeFileInfo(
+        $file_id = $pdoFileStorageInfoRepo->createRoomFileObjectInfo(
             $testUser->getUserId(),
             $normalized_name,
             $uploadedFile
         );
 
-        $pdoFileStorageInfoRepo->setUploaded($file_id);
+        $pdoFileStorageInfoRepo->setRoomFileObjectUploaded($file_id);
     }
 }

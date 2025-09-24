@@ -6,7 +6,7 @@ use Bristolian\Service\MemeStorageProcessor\MemeStorageProcessor;
 use Bristolian\Service\MemeStorageProcessor\UploadError;
 use Bristolian\Service\ObjectStore\MemeObjectStore;
 use Bristolian\Session\UserSession;
-use Bristolian\UserUploadedFile\UserSessionFileUploaderHandler;
+use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
@@ -21,10 +21,10 @@ class MemeUpload
     }
 
     public function handleMemeUpload(
-        MemeStorageProcessor $memeStorageProcessor,
-        UserSession $appSession,
-        UserSessionFileUploaderHandler $usfuh,
-        MemeObjectStore $memeObjectStore,
+        MemeStorageProcessor         $memeStorageProcessor,
+        UserSession                  $appSession,
+        UserSessionFileUploadHandler $usfuh,
+        MemeObjectStore              $memeObjectStore,
     ): StubResponse {
 
 //        if ($appSession->isLoggedIn() !== true) {
@@ -33,7 +33,7 @@ class MemeUpload
 //        }
 
         // Get the user uploaded file.
-        $fileOrResponse = $usfuh->processFile(self::MEME_FILE_UPLOAD_FORM_NAME);
+        $fileOrResponse = $usfuh->fetchUploadedFile(self::MEME_FILE_UPLOAD_FORM_NAME);
         if ($fileOrResponse instanceof StubResponse) {
             return $fileOrResponse;
         }

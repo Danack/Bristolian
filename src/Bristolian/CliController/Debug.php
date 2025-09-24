@@ -7,7 +7,6 @@ use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Service\WebPushService\WebPushService;
 
-
 function fn_level_1(): void
 {
     fn_level_2();

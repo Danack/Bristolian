@@ -11,7 +11,7 @@ use Bristolian\Model\AdminUser;
 use Bristolian\Model\IncomingEmailParam;
 use Bristolian\Model\Room;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
-use Bristolian\Repo\FileStorageInfoRepo\PdoFileStorageInfoRepo;
+use Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo;
 use Bristolian\Repo\RoomRepo\PdoRoomRepo;
 use Bristolian\Session\UserSession;
 use Bristolian\UploadedFiles\UploadedFile;
@@ -141,7 +141,7 @@ trait TestPlaceholders
 
     public function createTestFile(AdminUser $user): string
     {
-        $roomRepo = $this->injector->make(PdoFileStorageInfoRepo::class);
+        $roomRepo = $this->injector->make(PdoRoomFileObjectInfoRepo::class);
         $normalized_filename = $this->getTestFileName();
 
         $filepath = __DIR__ ."/../../sample.pdf";
@@ -155,7 +155,7 @@ trait TestPlaceholders
             0
         );
 
-        $file_id = $roomRepo->storeFileInfo(
+        $file_id = $roomRepo->createRoomFileObjectInfo(
             $user->getUserId(),
             $normalized_filename,
             $uploadedFile

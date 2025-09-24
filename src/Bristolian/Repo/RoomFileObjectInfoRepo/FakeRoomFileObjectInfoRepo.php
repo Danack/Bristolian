@@ -1,19 +1,19 @@
 <?php
 
-namespace Bristolian\Repo\FileStorageInfoRepo;
+namespace Bristolian\Repo\RoomFileObjectInfoRepo;
 
 use Bristolian\Model\StoredFile;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
 
-class FakeFileStorageInfoRepo implements FileStorageInfoRepo
+class FakeRoomFileObjectInfoRepo implements RoomFileObjectInfoRepo
 {
     /**
      * @var StoredFile[]
      */
     private array $storedFileInfo = [];
 
-    public function storeFileInfo(
+    public function createRoomFileObjectInfo(
         string $user_id,
         string $normalized_filename,
         UploadedFile $uploadedFile,
@@ -35,7 +35,7 @@ class FakeFileStorageInfoRepo implements FileStorageInfoRepo
         return $id;
     }
 
-    public function setUploaded(string $file_storage_id): void
+    public function setRoomFileObjectUploaded(string $file_storage_id): void
     {
         // TODO - should throw an exception if $file_storage_id is invalid
     }

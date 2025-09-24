@@ -3,7 +3,10 @@
 namespace Bristolian\UploadedFiles;
 
 /**
+ * A class to hide wrap the $_FILES functionality in a layer of
+ * abstraction.
  *
+ * Standard implementation to be used on server.
  */
 class ServerFilesUploadedFiles implements UploadedFiles
 {

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 
 use Bristolian\Parameters\PropertyType\BasicString;
-use Bristolian\Repo\FileStorageInfoRepo\FileType;
+use Bristolian\Repo\RoomFileObjectInfoRepo\FileType;
 
 function getAllQueries_8(): array
 {

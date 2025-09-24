@@ -1,6 +1,6 @@
 <?php
 
-namespace Bristolian\Service\FileStorageProcessor;
+namespace Bristolian\Service\RoomFileStorage;
 
 class UploadError
 {

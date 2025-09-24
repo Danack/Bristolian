@@ -54,8 +54,8 @@ function injectionParams() : InjectionParams
         Bristolian\Service\ObjectStore\BristolianStairImageObjectStore::class =>
           \Bristolian\Service\ObjectStore\StandardBristolianStairImageObjectStore::class,
 
-        \Bristolian\Service\BristolStairImageStorageProcessor\BristolStairImageStorageProcessor::class =>
-          \Bristolian\Service\BristolStairImageStorageProcessor\StandardBristolStairImageStorageProcessor::class,
+        \Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage::class =>
+          \Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::class,
     ];
 
     // Delegate the creation of types to callables.

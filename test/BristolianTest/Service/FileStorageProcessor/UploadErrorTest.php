@@ -2,11 +2,11 @@
 
 namespace BristolianTest\Service\FileStorageProcessor;
 
-use Bristolian\Service\FileStorageProcessor\UploadError;
+use Bristolian\Service\RoomFileStorage\UploadError;
 use BristolianTest\BaseTestCase;
 
 /**
- * @covers \Bristolian\Service\FileStorageProcessor\UploadError
+ * @covers \Bristolian\Service\RoomFileStorage\UploadError
  */
 class UploadErrorTest extends BaseTestCase
 {

@@ -2,6 +2,12 @@
 
 namespace Bristolian\UploadedFiles;
 
+/**
+ * A class to hide wrap the $_FILES functionality in a layer of
+ * abstraction.
+ *
+ * A fake implementation to be used for testing, or other requirements.
+ */
 class FakeUploadedFiles implements UploadedFiles
 {
     /**

@@ -31,5 +31,3 @@ interface BristolStairsRepo
 
     public function updateStairPosition(BristolStairsPositionParams $stairs_position_params): void;
 }
-
-

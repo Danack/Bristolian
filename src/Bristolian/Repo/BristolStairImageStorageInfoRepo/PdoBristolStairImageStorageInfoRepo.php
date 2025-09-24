@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\BristolStairImageStorageInfoRepo;
 
-use Bristolian\Database\stored_stair_image_file;
+use Bristolian\Database\stair_image_object_info;
 use Bristolian\Model\BristolStairImageFile;
 use Bristolian\Model\BristolStairInfo;
 use Bristolian\PdoSimple\PdoSimple;
@@ -10,16 +10,15 @@ use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
 
-
 class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInfoRepo
 {
     public function __construct(private PdoSimple $pdo_simple)
     {
     }
 
-    function getByNormalizedName(string $normalized_name): BristolStairImageFile|null
+    public function getByNormalizedName(string $normalized_name): BristolStairImageFile|null
     {
-        $sql = stored_stair_image_file::SELECT;
+        $sql = stair_image_object_info::SELECT;
         $sql .= " WHERE normalized_name = :normalized_name";
 
         return $this->pdo_simple->fetchOneAsObjectOrNullConstructor(
@@ -29,8 +28,9 @@ class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInf
         );
     }
 
-    function getById(string $bristol_stairs_image_id): BristolStairImageFile|null {
-        $sql = stored_stair_image_file::SELECT;
+    public function getById(string $bristol_stairs_image_id): BristolStairImageFile|null
+    {
+        $sql = stair_image_object_info::SELECT;
         $sql .= " WHERE id = :id";
 
         return $this->pdo_simple->fetchOneAsObjectOrNullConstructor(
@@ -46,7 +46,7 @@ class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInf
         UploadedFile $uploadedFile,
     ): string {
 
-        $sql = stored_stair_image_file::INSERT;
+        $sql = stair_image_object_info::INSERT;
 
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
@@ -84,7 +84,7 @@ class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInf
     {
         $sql = <<< SQL
 update
-  stored_stair_image_file 
+  stair_image_object_info 
 set
   state = :filestate
 where

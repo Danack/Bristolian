@@ -1,6 +1,6 @@
 <?php
 
-namespace Bristolian\Repo\FileStorageInfoRepo;
+namespace Bristolian\Repo\RoomFileObjectInfoRepo;
 
 use Bristolian\UploadedFiles\UploadedFile;
 
@@ -8,7 +8,7 @@ use Bristolian\UploadedFiles\UploadedFile;
  * Stores information about a file in the local database.
  * The actual file will be stored in an object store.
  */
-interface FileStorageInfoRepo
+interface RoomFileObjectInfoRepo
 {
     /**
      * Stores information about a file that a user is uploading.
@@ -18,11 +18,16 @@ interface FileStorageInfoRepo
      * @param UploadedFile $uploadedFile
      * @return string The 'file_storage_id'
      */
-    public function storeFileInfo(
+    public function createRoomFileObjectInfo(
         string $user_id,
         string $normalized_filename,
         UploadedFile $uploadedFile,
     ): string;
 
-    public function setUploaded(string $file_storage_id): void;
+    /**
+     * Update the file to have a status of uploaded.
+     * @param string $file_storage_id
+     * @return void
+     */
+    public function setRoomFileObjectUploaded(string $file_storage_id): void;
 }

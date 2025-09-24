@@ -6,6 +6,9 @@ use BristolianTest\BaseTestCase;
 use Bristolian\Repo\EmailIncoming\PdoEmailIncoming;
 use BristolianTest\Repo\TestPlaceholders;
 
+/**
+ * @coversNothing
+ */
 class PdoEmailIncomingTest extends BaseTestCase
 {
     use TestPlaceholders;

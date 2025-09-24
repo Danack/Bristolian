@@ -15,17 +15,16 @@ use Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo;
 use Bristolian\Response\IframeHtmlResponse;
 use Bristolian\Response\StreamingResponse;
 use Bristolian\Response\StoredFileErrorResponse;
-use Bristolian\Service\FileStorageProcessor\UploadError;
+use Bristolian\Service\RoomFileStorage\UploadError;
 use Bristolian\Service\RequestNonce;
 use Bristolian\Service\RoomFileStorage\RoomFileStorage;
 use Bristolian\Session\UserSession;
-use Bristolian\UserUploadedFile\UserSessionFileUploaderHandler;
+use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
 use VarMap\VarMap;
 use function DataType\createArrayOfTypeOrError;
-
 
 class Rooms
 {
@@ -87,10 +86,10 @@ class Rooms
 
 
     public function handleFileUpload(
-        RoomFileStorage $roomFileStorage,
-        UserSession $appSession,
-        UserSessionFileUploaderHandler $usfuh,
-        string $room_id
+        RoomFileStorage              $roomFileStorage,
+        UserSession                  $appSession,
+        UserSessionFileUploadHandler $usfuh,
+        string                       $room_id
     ): StubResponse {
 
 //        // TODO - check user logged in
@@ -100,7 +99,7 @@ class Rooms
 //        }
 
         // Get the user uploaded file.
-        $fileOrResponse = $usfuh->processFile(self::ROOM_FILE_UPLOAD_FORM_NAME);
+        $fileOrResponse = $usfuh->fetchUploadedFile(self::ROOM_FILE_UPLOAD_FORM_NAME);
         if ($fileOrResponse instanceof StubResponse) {
             return $fileOrResponse;
         }
@@ -122,13 +121,10 @@ class Rooms
 
         $response = [
             'result' => 'success',
-            'next' => 'actually upload to file_server.',
-            'file_id' => $storedFileOrError->fileStorageId
+//            'file_id' => $storedFileOrError->fileStorageId
         ];
 
-        $response = new JsonNoCacheResponse($response);
-
-        return $response;
+        return new JsonNoCacheResponse($response);
     }
 
     /**

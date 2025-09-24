@@ -1,54 +1,31 @@
 <?php
 
-namespace Bristolian\Repo\FileStorageInfoRepo;
+namespace Bristolian\Repo\RoomFileObjectInfoRepo;
 
-use Bristolian\Database\stored_file;
+use Bristolian\Database\room_file_object_info;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
 
-class PdoFileStorageInfoRepo implements FileStorageInfoRepo
+/**
+ * Stores information about a file in the local database.
+ * The actual file will be stored in an object store.
+ */
+class PdoRoomFileObjectInfoRepo implements RoomFileObjectInfoRepo
 {
     public function __construct(private PdoSimple $pdo_simple)
     {
     }
 
-//    /**
-//     * @return Meme[]
-//     */
-//    public function listMemesForUser(string $user_id): array
-//    {
-//        $sql = file_storage_info::SELECT . <<< SQL
-//where
-//  user_id = :user_id and
-//
-//  filestate = :filestate
-//SQL;
-//        echo "This is broken. Memes for users needs a need table setting up to store that info.";
-//        exit(0);
-//        $params = [
-//            ':user_id' => $user_id,
-//            ':filetype' => FileType::Meme->value,
-////            ':filestate' => FileState::UPLOADED->value
-//        ];
-//
-//        $memes = $this->pdo_simple->fetchAllAsObject(
-//            $sql,
-//            $params,
-//            Meme::class
-//        );
-//        return $memes;
-//    }
 
-
-    public function storeFileInfo(
+    public function createRoomFileObjectInfo(
         string $user_id,
         string $normalized_filename,
         UploadedFile $uploadedFile,
     ): string {
 
-        $sql = stored_file::INSERT;
+        $sql = room_file_object_info::INSERT;
 
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
@@ -82,11 +59,11 @@ class PdoFileStorageInfoRepo implements FileStorageInfoRepo
         return $id;
     }
 
-    public function setUploaded(string $file_storage_id): void
+    public function setRoomFileObjectUploaded(string $file_storage_id): void
     {
         $sql = <<< SQL
 update
-  stored_file 
+  room_file_object_info 
 set
   state = :filestate
 where

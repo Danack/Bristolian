@@ -34,7 +34,8 @@ function get_image_gps(string $filename): null|array
  * @param string $hemi
  * @return float|int
  */
-function getGps(array $exifCoord, string $hemi) {
+function getGps(array $exifCoord, string $hemi)
+{
 
     $degrees = count($exifCoord) > 0 ? gps2Num($exifCoord[0]) : 0;
     $minutes = count($exifCoord) > 1 ? gps2Num($exifCoord[1]) : 0;
@@ -45,7 +46,8 @@ function getGps(array $exifCoord, string $hemi) {
     return $flip * ($degrees + $minutes / 60 + $seconds / 3600);
 }
 
-function gps2Num(string $coordPart): float {
+function gps2Num(string $coordPart): float
+{
 
     $parts = explode('/', $coordPart);
 

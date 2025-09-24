@@ -2,14 +2,12 @@
 
 namespace Bristolian\Repo\BristolStairsRepo;
 
-
 use Bristolian\Database\bristol_stair_info;
 use Bristolian\Model\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
-
 
 class PdoBristolStairsRepo implements BristolStairsRepo
 {
@@ -75,8 +73,7 @@ SQL;
         float $latitude,
         float $longitude,
         int $steps,
-    ): string
-    {
+    ): string {
         $sql = bristol_stair_info::INSERT;
 
         $uuid = Uuid::uuid7();

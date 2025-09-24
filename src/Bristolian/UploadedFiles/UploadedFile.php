@@ -2,6 +2,9 @@
 
 namespace Bristolian\UploadedFiles;
 
+/**
+ * A class to hold information about an uploaded file.
+ */
 class UploadedFile
 {
     public function __construct(

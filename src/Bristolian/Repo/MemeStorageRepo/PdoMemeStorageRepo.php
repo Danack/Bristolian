@@ -5,7 +5,7 @@ namespace Bristolian\Repo\MemeStorageRepo;
 use Bristolian\Database\stored_meme;
 use Bristolian\Model\Meme;
 use Bristolian\PdoSimple\PdoSimple;
-use Bristolian\Repo\FileStorageInfoRepo\FileState;
+use Bristolian\Repo\RoomFileObjectInfoRepo\FileState;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;

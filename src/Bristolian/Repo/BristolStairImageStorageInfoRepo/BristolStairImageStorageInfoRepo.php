@@ -3,7 +3,6 @@
 namespace Bristolian\Repo\BristolStairImageStorageInfoRepo;
 
 use Bristolian\UploadedFiles\UploadedFile;
-use Bristolian\Database\stored_stair_image_file;
 use Bristolian\Model\BristolStairImageFile;
 
 /**
@@ -26,9 +25,9 @@ interface BristolStairImageStorageInfoRepo
         UploadedFile $uploadedFile,
     ): string;
 
-    function getById(string $bristol_stairs_image_id): BristolStairImageFile|null;
+    public function getById(string $bristol_stairs_image_id): BristolStairImageFile|null;
 
-    function getByNormalizedName(string $normalized_name): BristolStairImageFile|null;
+    public function getByNormalizedName(string $normalized_name): BristolStairImageFile|null;
 
     public function setUploaded(string $file_storage_id): void;
 }

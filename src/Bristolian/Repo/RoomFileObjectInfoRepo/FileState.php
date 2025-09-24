@@ -1,6 +1,6 @@
 <?php
 
-namespace Bristolian\Repo\FileStorageInfoRepo;
+namespace Bristolian\Repo\RoomFileObjectInfoRepo;
 
 enum FileState: string
 {

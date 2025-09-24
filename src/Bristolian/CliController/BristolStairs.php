@@ -5,14 +5,14 @@ namespace Bristolian\CliController;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
-use Bristolian\Service\BristolStairImageStorageProcessor\ObjectStoredFileInfo;
-use Bristolian\Service\BristolStairImageStorageProcessor\UploadError;
+use Bristolian\Service\BristolStairImageStorage\ObjectStoredFileInfo;
+use Bristolian\Service\BristolStairImageStorage\UploadError;
 use Bristolian\Service\ObjectStore\BristolianStairImageObjectStore;
 use Bristolian\Service\ObjectStore\FileObjectStore;
 use Ramsey\Uuid\Uuid;
 use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
-use Bristolian\Service\BristolStairImageStorageProcessor\BristolStairImageStorageProcessor;
+use Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage;
 use Bristolian\Filesystem\BristolStairsFilesystem;
 
 class BristolStairs
@@ -26,8 +26,8 @@ class BristolStairs
 
     public function check_contents(
         BristolStairImageStorageInfoRepo $bristolStairImageStorageInfoRepo,
-        BristolStairsFilesystem $bristolStairsFilesystem): void
-    {
+        BristolStairsFilesystem $bristolStairsFilesystem
+    ): void {
         $result = $bristolStairsFilesystem->listContents("");
 
         $files_in_storage = [];
@@ -62,68 +62,28 @@ class BristolStairs
     }
 
     public function create(
-        AdminRepo $adminRepo,
-        BristolStairImageStorageProcessor $bristolStairImageStorageProcessor,
-        BristolianStairImageObjectStore $bristolStairImageObjectStore,
-        BristolStairsRepo $bristolStairsRepo,
-        string $image_filename
+        AdminRepo                       $adminRepo,
+        BristolStairImageStorage        $bristolStairImageStorage,
+        string                          $image_filename
     ): void {
+
         $user_id = $adminRepo->getAdminUserId(getAdminEmailAddress());
         if ($user_id === null) {
             echo "Failed to find admin user";
             exit(-1);
         }
 
-        $latitude = 51.4536491;
-        $longitude = -2.5913353;
-
-
-        $extension = pathinfo($image_filename, PATHINFO_EXTENSION);
-        $extension = strtolower($extension);
-
-        if ($extension === 'heic') {
-            $image = new \Imagick($image_filename);
-
-            $image->setImageFormat("jpg");
-            $image->setImageCompressionQuality(95);
-
-            $temp_file = tempnam(sys_get_temp_dir(), 'stair_image');
-
-            $image->setImageFormat('jpg');
-
-            $temp_file_with_extension = $temp_file . ".jpg";
-            $image->writeImage($temp_file_with_extension);
-
-            $image_filename = $temp_file_with_extension;
-        }
-
-        $coordinates = \get_image_gps($image_filename);
-
-        if ($coordinates !== null) {
-            $latitude = $coordinates[0];
-            $longitude = $coordinates[1];
-        }
-
         $uploadedFile = UploadedFile::fromFile($image_filename);
 
-        $result = $bristolStairImageStorageProcessor->storeFileForUser(
+        $fileStorageIdOrError = $bristolStairImageStorage->storeFileForUser(
             $user_id,
             $uploadedFile,
             get_supported_bristolian_stair_image_extensions(),
-            $bristolStairImageObjectStore // TODO - why is this not a dependency on the implementation?
         );
 
-        if ($result instanceof UploadError) {
+        if ($fileStorageIdOrError instanceof UploadError) {
             echo "Failed to upload file";
             exit(-1);
         }
-
-        $bristolStairsRepo->store_stairs_info(
-            $result->fileStorageId,
-            $description = "",
-            $latitude,
-            $longitude,
-            $steps = 0,
-        );
     }
 }
