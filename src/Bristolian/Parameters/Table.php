@@ -3,7 +3,7 @@
 namespace Bristolian\Parameters;
 
 use Bristolian\Parameters\PropertyType\BasicString;
-use Bristolian\Parameters\PropertyType\SourceLinkPositionValue;
+use Bristolian\Parameters\PropertyType\TableNumberOfRowsValue;
 use DataType\Create\CreateArrayOfTypeFromArray;
 use DataType\Create\CreateFromArray;
 use DataType\DataType;
@@ -16,7 +16,7 @@ class Table implements DataType
     use GetInputTypesFromAttributes;
 
     public function __construct(
-        #[SourceLinkPositionValue('TABLE_ROWS')]
+        #[TableNumberOfRowsValue('TABLE_ROWS')]
         public readonly int $number_of_rows,
         #[BasicString('TABLE_NAME')]
         public readonly string $name,
