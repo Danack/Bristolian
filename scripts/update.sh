@@ -34,7 +34,6 @@ if [ "$LOCAL" = "$REMOTE" ]; then
     echo "Up-to-date at ${timestamp}"
 elif [ "$LOCAL" = "$BASE" ]; then
     echo "Need to pull at ${timestamp}"
-    git pull
 
     git pull
     if [ $? -ne 0 ]; then
@@ -51,7 +50,7 @@ elif [ "$LOCAL" = "$BASE" ]; then
     sh runProd.sh
     MESSAGE=$(git show -s --format=%s $REMOTE)
     echo "Should have deployed ${REMOTE} ${MESSAGE} at $(date)"
-    rm /var/home/Bristolian/Bristolian/data/git_pull_error.log
+    rm /var/home/Bristolian/Bristolian/data/git_pull_error.log 2>/dev/null
 elif [ "$REMOTE" = "$BASE" ]; then
     echo "Need to push server changes."
 

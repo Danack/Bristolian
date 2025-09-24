@@ -39,21 +39,12 @@ SQL;
      */
     public function getMigrations(): array
     {
-        $sql = migrations::SELECT . " order by created_at";
-
-//
-//            <<< SQL
-//SELECT id, description, json_encoded_queries, created_at
-//    FROM migrations
-//    order by created_at
-//SQL;
+        $sql = migrations::SELECT . " order by created_at ASC, ID ASC";
 
         return $this->pdoSimple->fetchAllAsObjectConstructor(
             $sql,
             [],
             MigrationThatHasBeenRun::class
         );
-//        $migration_data = $statement->();
-//        return MigrationThatHasBeenRun::createArrayOfTypeFromArray($migration_data);
     }
 }
