@@ -51,7 +51,7 @@ select
     sf.user_id,
     sf.created_at
 from
-  stored_file as sf
+  room_file_object_info as sf
 left join
    room_file as rf
 on 
@@ -83,7 +83,7 @@ select
     sf.user_id,
     sf.created_at
 from
-  stored_file as sf
+  room_file_object_info as sf
 left join
    room_file as rf
 on 
