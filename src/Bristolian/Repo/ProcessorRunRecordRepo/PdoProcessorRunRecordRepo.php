@@ -17,7 +17,7 @@ class PdoProcessorRunRecordRepo implements ProcessorRunRecordRepo
     public function getLastRunDateTime(ProcessType $process_type): \DateTimeInterface|null
     {
         $query = processor_run_record::SELECT;
-        $query .= "where task = :processor_type"; // TODO - normalise names
+        $query .= "where processor_type = :processor_type"; // TODO - normalise names
         $query .= " order by start_time desc limit 1";
 
         $params = [
@@ -37,39 +37,15 @@ class PdoProcessorRunRecordRepo implements ProcessorRunRecordRepo
         return $objectOrNull->start_time;
     }
 
-    public function markJustRun(ProcessType $process_type, string $debug_info): void
-    {
-        $params = [
-            'debug_info' => $debug_info,
-            'task' => $process_type->value
-        ];
-
-        $this->pdoSimple->insert(
-            processor_run_record::INSERT,
-            $params
-        );
-    }
-
     public function startRun(ProcessType $process_type): string
     {
-                $sql = <<< SQL
-insert into processor_run_record (
-    end_time,
-    status,
-    task
-)
-values (
-    :end_time,
-    :status,
-    :task
-)
-SQL;
+        $sql = processor_run_record::INSERT;
 
         $params = [
             ':end_time' => null,
-//            ':start_time' => (new \DateTimeImmutable())->format(App::MYSQL_DATE_TIME_FORMAT),
+            ':debug_info' => "",
             ':status' => self::STATE_INITIAL,
-            ':task' => $process_type->value
+            ':processor_type' => $process_type->value
         ];
 
         $result = $this->pdoSimple->insert($sql, $params);
@@ -77,7 +53,7 @@ SQL;
         return (string)$result;
     }
 
-    public function setRunFinished(string $id): void
+    public function setRunFinished(string $id, string $debug_info): void
     {
 
         $sql = <<< SQL
@@ -92,27 +68,25 @@ limit 1
 SQL;
 
         $params = [
-//            ':end_time' => (new \DateTimeImmutable())->format(App::MYSQL_DATE_TIME_FORMAT),
             ':status' => self::STATE_FINISHED,
             ':id' => $id
         ];
         $this->pdoSimple->execute($sql, $params);
     }
 
-
     /**
-     * @param ProcessType|null $task_type
+     * @param ProcessType|null $processType
      * @return \Bristolian\Model\ProcessorRunRecord[]
      */
-    public function getRunRecords(ProcessType|null $task_type): array
+    public function getRunRecords(ProcessType|null $processType): array
     {
         $params = [];
 
         $sql = processor_run_record::SELECT;
 
-        if ($task_type !== null) {
-            $sql .= " where task = :task_type";
-            $params[':task_type'] = $task_type->value;
+        if ($processType !== null) {
+            $sql .= " where processor_type = :processor_type";
+            $params[':processor_type'] = $processType->value;
         }
 
         $sql .= " order by id desc limit 50";

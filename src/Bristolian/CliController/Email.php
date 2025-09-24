@@ -83,12 +83,12 @@ class Email
 
         $run_id = $this->processorRunRecordRepo->startRun(ProcessType::email_send);
 
-
         // get an email to process
         $email = $this->emailQueue->getEmailToSendAndUpdateState();
 
         if ($email === null) {
             echo "No email to send.\n";
+            $debug_info = "No email to send.";
             goto finish;
         }
 
@@ -99,20 +99,23 @@ class Email
         // if success, set to sent
         if ($sent) {
             echo "Email sent.\n";
+            $debug_info = "Email sent..";
             $this->emailQueue->setEmailSent($email);
             goto finish;
         }
 
         if ($email->retries >= self::MAX_RETRIES) {
             echo "Email failed.\n";
+            $debug_info = "Email failed, and retry limit reached.\n";
             $this->emailQueue->setEmailFailed($email);
         }
         else {
             echo "Email failed, will retry.\n";
+            $debug_info = "Email failed, will retry.\n";
             $this->emailQueue->setEmailToRetry($email);
         }
 
 finish:
-        $this->processorRunRecordRepo->setRunFinished($run_id);
+        $this->processorRunRecordRepo->setRunFinished($run_id, $debug_info);
     }
 }

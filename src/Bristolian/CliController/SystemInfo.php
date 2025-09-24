@@ -95,7 +95,8 @@ class SystemInfo
 
         // Mark last run time.
         $this->processorRunRecordRepo->setRunFinished(
-            $run_id
+            $run_id,
+            ""
         );
 
         echo "Fin.\n";

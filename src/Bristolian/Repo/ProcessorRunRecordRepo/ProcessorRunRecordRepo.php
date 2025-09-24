@@ -18,11 +18,11 @@ interface ProcessorRunRecordRepo
 
     public function startRun(ProcessType $process_type): string;
 
-    public function setRunFinished(string $id): void;
+    public function setRunFinished(string $id, string $debug_info): void;
 
     /**
-     * @param ProcessType|null $task_type
+     * @param ProcessType|null $processType
      * @return \Bristolian\Model\ProcessorRunRecord[]
      */
-    public function getRunRecords(ProcessType|null $task_type): array;
+    public function getRunRecords(ProcessType|null $processType): array;
 }

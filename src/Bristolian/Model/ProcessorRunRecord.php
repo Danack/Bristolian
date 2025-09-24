@@ -15,7 +15,8 @@ class ProcessorRunRecord
         public readonly \DateTimeInterface $start_time,
         public readonly \DateTimeInterface|null $end_time,
         public readonly string $status,
-        public readonly string $task,
+        public readonly string $debug_info,
+        public readonly string $processor_type,
     ) {
     }
 }

@@ -26,7 +26,10 @@ function convertRowToDatetime(array $row): array
 
     $data = [];
     foreach ($row as $key => $value) {
-        if (in_array($key, $time_columns)) {
+        if ($value === null) {
+            $data[$key] = null;
+        }
+        else if (in_array($key, $time_columns)) {
             $data[$key] = new \DateTimeImmutable($value);
         }
         else {

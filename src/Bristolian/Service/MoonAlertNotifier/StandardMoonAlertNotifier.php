@@ -54,8 +54,10 @@ class StandardMoonAlertNotifier implements MoonAlertNotifier
             $mooninfo
         );
 
+        $debug_info = 'todo - add info';
+
         echo "setting run finished.\n";
-        $this->processorRunRecordRepo->setRunFinished($run_id);
+        $this->processorRunRecordRepo->setRunFinished($run_id, $debug_info);
         echo "Fin.\n";
     }
 }

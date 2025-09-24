@@ -92,24 +92,10 @@ export class ProcessorRunRecordPanel extends Component<
 
         for (let i = 0; i < run_records_received.length; i++) {
             const entry = run_records_received[i];
-
-            // const run_record: ProcessorRunRecord = {
-            //     id: entry.id,
-            //     task: entry.task,
-            //     start_time: DateTime.fromFormat(
-            //       entry.start_time,
-            //       "yyyy-MM-dd'T'H:mm:ssZ"
-            //     ),
-            //     end_time: DateTime.fromFormat(
-            //       entry.end_time,
-            //       "yyyy-MM-dd'T'H:mm:ssZ"
-            //     ),
-            //     status: entry.status,
-            // };
-
             const run_record: ProcessorRunRecord = {
                 id: entry.id,
                 task: entry.task,
+                debug_info: entry.debug_info,
                 start_time: new Date(entry.start_time),
                 end_time: new Date(entry.end_time),
                 status: entry.status,
