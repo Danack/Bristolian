@@ -174,18 +174,14 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
         })
     }
 
-    startEditingPosition() {
+    startEditingPosition = () => {
         this.setState(prevState => ({ editing_position: true }));
         sendMessage("STAIR_START_EDITING_POSITION", {stair_info: this.state.selected_stair_info});
     }
 
-
-
-
     startUploadingImage = () => {
         this.setState({ uploading_image: true });
     }
-
 
     processUpdatePosition() {
 
