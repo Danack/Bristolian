@@ -66,16 +66,25 @@ class BristolStairs
     ): string {
         $stair_info = $bristolStairsRepo->getStairInfoById($stair_id);
 
-        return $this->render_stairs_page($extraAssets, $stair_info);
+        return $this->render_stairs_page(
+            $extraAssets,
+            $bristolStairsRepo,
+            $stair_info
+        );
     }
 
-    public function stairs_page(ExtraAssets $extraAssets): string
+    public function stairs_page(ExtraAssets $extraAssets, BristolStairsRepo $bristolStairsRepo): string
     {
-        return $this->render_stairs_page($extraAssets, null);
+        return $this->render_stairs_page(
+            $extraAssets,
+            $bristolStairsRepo,
+            null
+        );
     }
 
     private function render_stairs_page(
         ExtraAssets $extraAssets,
+        BristolStairsRepo $bristolStairsRepo,
         BristolStairInfo $selected_stair = null
     ) {
         $extraAssets->addCSS("/css/leaflet/leaflet.1.7.1.css");
@@ -90,9 +99,14 @@ class BristolStairs
         $data = [
             'selected_stair_info' => $selected_stair
         ];
-        $widget_data = convertToValue($data);
-        $widget_json = json_encode_safe($data);
+//        $widget_data = convertToValue($data);
+        $widget_json = json_encode_safe(convertToValue($data));
         $widget_data = htmlspecialchars($widget_json);
+
+        [$flights_of_stairs, $total_steps] = $bristolStairsRepo->get_total_number_of_steps();
+
+        echo "\n";
+
 
         $content = "<h1>A map of Bristol Stairs</h1>";
         $content .= <<< HTML
@@ -105,6 +119,8 @@ class BristolStairs
 <div>
 <h2>About</h2>
 <p>Bristol has many steps. This page is an attempt to document all of them, to be able to answer the question, how many steps does Bristol have?</p>
+
+<p>There are currently $total_steps steps in $flights_of_stairs flights of stairs documented.</p>
 
 
 <h2>Qualification rules</h2>
