@@ -109,8 +109,8 @@ class BristolStairs
         $content = "<h1>A map of Bristol Stairs</h1>";
         $content .= <<< HTML
 
-<div class="bristol_stairs">
-  <div class="bristol_stairs_map_class" id="bristol_stairs_map" ></div>
+<div class="bristol_stairs_container">
+  <div class="bristol_stairs_map" id="bristol_stairs_map" ></div>
   <div class="bristol_stairs_panel" data-widgety_json="$widget_data"></div>
 </div>
 

@@ -1,35 +1,48 @@
-.bristol_stairs {
+.bristol_stairs_container {
     display: flex;
-    border: 2px solid #1f1f1f;
+    flex-wrap: wrap; // allow stacking in narrow screens
+    width: 100%;
     box-sizing: border-box;
-    min-width: fit-content;
+    border: 1px solid #aaa;
 
-    .bristol_stairs_map_class {
-        flex: 1;
-        min-height: 600px;
-        max-width: 50vw;
+    .bristol_stairs_map,
+    .bristol_stairs_panel {
+        //background: #ddd;
+        box-sizing: border-box;
+    }
+
+    // Portrait / narrow screens
+    flex-direction: column;
+
+    .bristol_stairs_map {
+        width: 100%;
+        min-height: 300px;  // reduced height for narrow screens
+        height: auto;       // allow shrinking naturally
+        justify-content: center; // horizontal centering of map content
+        align-items: stretch;    // let height expand naturally
+        display: flex;
     }
 
     .bristol_stairs_panel {
-        //width: 100%;
-        min-width: 0;           // allow shrinking inside flex parent
-        box-sizing: border-box;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;      // horizontal centering
+        justify-content: center;  // vertical centering
+        //border: 1px solid #000;
 
         img {
-            display: block;         // removes inline whitespace
-            margin: 0;              // reset default margin
-            padding: 0;             // reset default padding
-
-            max-width: 500px;   // cap width
-            max-height: 500px;  // cap height
-            width: auto;        // let browser adjust
+            display: block;
+            margin: 0;
+            padding: 0;
+            max-width: 500px;
+            max-height: 500px;
+            border: 2px solid #000;
+            width: auto;
             height: auto;
         }
 
         .contents-wrapper {
-            width: 100%;       // fit parent
-            max-width: 100%;   // prevent overspill
-            min-width: 0;      // allow shrinking
             box-sizing: border-box;
 
             label {
@@ -38,7 +51,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                max-width: 12rem; // keep labels from forcing wide grid
+                max-width: 12rem;
             }
 
             .form-row {
@@ -48,7 +61,7 @@
                 margin-bottom: 0.5rem;
 
                 label {
-                  margin-right: 0.5rem;
+                    margin-right: 0.5rem;
                 }
 
                 input {
@@ -64,18 +77,24 @@
         }
     }
 
-    @media screen and (min-width: 680px) {
+    // Landscape / wide screens
+    @media (orientation: landscape) {
         flex-direction: row;
+        flex-wrap: nowrap;
 
-        .bristol_stairs_map_class {
-            flex: 1;
-            min-width: 600px;
+        .bristol_stairs_map,
+        .bristol_stairs_panel {
+            width: 50%;
+            min-height: 500px;      // map panel min-height
+            display: flex;
+            justify-content: center; // horizontal centering
+            align-items: stretch;    // let height expand to match panel
         }
 
         .bristol_stairs_panel {
-            flex: 0 0 auto;
-            max-width: 600px;
-            margin-left: 20px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
     }
 }
