@@ -1,6 +1,14 @@
 
 const bristol = [51.4545, -2.5879]; // Latitude, Longitude
 
+const stairsById = {};
+
+let crosshairDiv = null;
+
+let lastClickedMarker = null;
+let pending_stair_info_to_focus = null;
+let markers_loaded = false;
+
 var southWest = L.latLng(51.3325441, -2.8657612),
     northEast = L.latLng(51.6014432, -2.2960328),
     bounds = L.latLngBounds(southWest, northEast);
@@ -42,7 +50,7 @@ function parse_response_json(response) {
     return response.json();
 }
 
-const stairsById = {};
+
 
 // Default Leaflet icons
 const defaultIcon = L.icon({
@@ -66,8 +74,6 @@ const highlightedIcon = L.icon({
     shadowSize: [41, 41]
 });
 
-let lastClickedMarker = null;
-
 function process_response_data(data) {
     for (let stair_info of data.data) {
         stairsById[stair_info.id] = stair_info;
@@ -79,28 +85,45 @@ function process_response_data(data) {
         marker.on('click', (event) => {
             const info = stairsById[event.target.stairId];
             sendMessage("MAP_MARKER_CLICKED", info);
-
-            // Highlight marker (your existing code)
-            if (lastClickedMarker) {
-                lastClickedMarker.setIcon(defaultIcon);
-            }
-            marker.setIcon(highlightedIcon);
-            lastClickedMarker = marker;
-
-            // Center map on the clicked marker
-            const latlng = marker.getLatLng();
-            const currentZoom = map.getZoom();
-            const targetZoom = currentZoom < 15 ? 15 : currentZoom;
-
-            map.setView(latlng, targetZoom);
+            focusOnMarker(marker);
         });
 
         markers.addLayer(marker);
     }
-
     map.addLayer(markers);
+
+    markers_loaded = true;
+
+    // If we received a message on page load to bring a stair into focus
+    // we do that now we have the stair data.
+    if (pending_stair_info_to_focus !== null) {
+        console.log("pending_stair_info_to_focus !== null when stairs loaded");
+        markers.eachLayer((marker) => {
+            if (marker.stairId === pending_stair_info_to_focus.id) {
+                focusOnMarker(marker);
+            }
+        });
+        pending_stair_info_to_focus = null;
+    }
 }
 
+
+function focusOnMarker(marker) {
+    // Highlight marker
+    if (lastClickedMarker) {
+        lastClickedMarker.setIcon(defaultIcon);
+    }
+    marker.setIcon(highlightedIcon);
+    lastClickedMarker = marker;
+
+    // Center map on the marker
+    const latlng = marker.getLatLng();
+    const currentZoom = map.getZoom();
+    const targetZoom = currentZoom < 15 ? 15 : currentZoom;
+
+    console.log("Map should have moved and zoomed");
+    map.setView(latlng, targetZoom);
+}
 
 
 function fetchData() {
@@ -131,17 +154,30 @@ function updateStairInfo(stair_info) {
 
 
 function bristol_stair_info_updated(data) {
-    let stair_info = data.stairInfo;
+    let stair_info = data.stair_info;
     updateStairInfo(stair_info);
 }
 
 function bristol_stair_position_updated(data) {
-    let stair_info = data.stairInfo;
+    let stair_info = data.stair_info;
     updateStairInfo(stair_info);
     bristol_stair_cancel_editing_position();
 }
 
+function bristol_stair_selected_on_load(data) {
+    let stair_info = data.stair_info;
 
+    if (markers_loaded === true) {
+        markers.eachLayer((marker) => {
+            if (marker.stairId === stair_info.id) {
+                focusOnMarker(marker);
+            }
+        });
+    }
+    else {
+        pending_stair_info_to_focus = stair_info;
+    }
+}
 
 function bristol_stair_cancel_editing_position() {
     // Show all markers again
@@ -155,12 +191,8 @@ function bristol_stair_cancel_editing_position() {
     }
 }
 
-
-let crosshairDiv = null;
-
 function bristol_stair_start_editing_position(data) {
-
-    let stair_info = data.stairInfo;
+    let stair_info = data.stair_info;
 
     // Move map to the stair's position
     if (stair_info.latitude && stair_info.longitude) {
@@ -216,9 +248,6 @@ function bristol_stair_start_editing_position(data) {
     map.getContainer().appendChild(crosshairDiv);
 }
 
-
-
-
 // Listen to map move events
 map.on('move', () => {
     const center = map.getCenter(); // L.LatLng object
@@ -231,11 +260,10 @@ map.on('move', () => {
     sendMessage("STAIRS_MAP_POSITION_CHANGED", positionData);
 });
 
-
 registerMessageListener("STAIR_INFO_UPDATED", bristol_stair_info_updated)
 registerMessageListener("STAIR_POSITION_UPDATED", bristol_stair_position_updated)
 registerMessageListener("STAIR_START_EDITING_POSITION", bristol_stair_start_editing_position)
 registerMessageListener("STAIR_CANCEL_EDITING_POSITION", bristol_stair_cancel_editing_position)
-
+registerMessageListener("STAIR_SELECTED_ON_LOAD", bristol_stair_selected_on_load)
 
 fetchData();

@@ -2,6 +2,7 @@
 
 namespace Bristolian\Service\BristolStairImageStorage;
 
+use Bristolian\Model\BristolStairInfo;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Service\ObjectStore\BristolianStairImageObjectStore;
@@ -29,7 +30,7 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
         string $user_id,
         UploadedFile $uploadedFile,
         array $allowedExtensions,
-    ): string|UploadError {
+    ): BristolStairInfo|UploadError {
 
         $contents = @file_get_contents($uploadedFile->getTmpName());
         if ($contents === false) {
@@ -40,7 +41,7 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
 
 
 
-        $extension = pathinfo($image_filename, PATHINFO_EXTENSION);
+        $extension = pathinfo($uploadedFile->getOriginalName(), PATHINFO_EXTENSION);
         $extension = strtolower($extension);
 
         if ($extension === 'heic') {

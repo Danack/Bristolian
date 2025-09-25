@@ -75,13 +75,13 @@ class BristolStairs
 
         $uploadedFile = UploadedFile::fromFile($image_filename);
 
-        $fileStorageIdOrError = $bristolStairImageStorage->storeFileForUser(
+        $stairInfoOrError = $bristolStairImageStorage->storeFileForUser(
             $user_id,
             $uploadedFile,
             get_supported_bristolian_stair_image_extensions(),
         );
 
-        if ($fileStorageIdOrError instanceof UploadError) {
+        if ($stairInfoOrError instanceof UploadError) {
             echo "Failed to upload file";
             exit(-1);
         }

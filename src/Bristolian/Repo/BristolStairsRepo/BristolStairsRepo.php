@@ -14,7 +14,7 @@ interface BristolStairsRepo
         float $latitude,
         float $longitude,
         int $steps,
-    ): string;
+    ): BristolStairInfo;
 
 
     /**
@@ -26,6 +26,8 @@ interface BristolStairsRepo
      * @return BristolStairInfo[]
      */
     public function getAllStairsInfo(): array;
+
+    public function getStairInfoById(int $id): BristolStairInfo|null;
 
     public function updateStairInfo(BristolStairsInfoParams $stairs_info_params): void;
 

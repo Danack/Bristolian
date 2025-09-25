@@ -22,12 +22,21 @@ function getAllApiRoutes()
         ['/api/save-subscription/', 'GET', 'Bristolian\AppController\Notifications::save_subscription_get'],
         ['/api/search_users', 'GET', 'Bristolian\AppController\Admin::search_users'],
         ['/api/ping_user', 'GET', 'Bristolian\AppController\Admin::ping_user'],
+
         ['/api/bristol_stairs_update/{bristol_stair_info_id:.*}', 'GET', 'Bristolian\AppController\BristolStairs::update_stairs_info_get'],
+
         ['/api/bristol_stairs_update_position/{bristol_stair_info_id:.*}', 'POST', 'Bristolian\AppController\BristolStairs::update_stairs_position'],
 
         ['/api/bristol_stairs_update/{bristol_stair_info_id:.*}', 'POST', 'Bristolian\AppController\BristolStairs::update_stairs_info'],
+
+        ['/api/bristol_stairs_image', 'POST', 'Bristolian\AppController\BristolStairs::handleFileUpload'],
+
+
+
         ['/api/bristol_stairs/{bristol_stairs_image_id:.+}', 'GET', 'Bristolian\AppController\BristolStairs::getDetails'],
         ['/api/bristol_stairs', 'GET', 'Bristolian\AppController\BristolStairs::getData'],
+
+
         ['/api/services/email/mailgun', 'POST', 'Bristolian\ApiController\MailgunEmailHandler::handleIncomingEmail'],
         ['/api/log/processor_run_records', 'GET', 'Bristolian\ApiController\Log::get_processor_run_records'],
         ['/api/login-status', 'GET', 'Bristolian\AppController\User::get_login_status'],

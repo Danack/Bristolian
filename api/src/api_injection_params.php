@@ -90,7 +90,18 @@ function apiInjectionParams() : InjectionParams
 
         \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::class =>
             \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class,
+
+        \Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage::class =>
+            \Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::class,
+
+        \Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo::class =>
+            \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo::class,
+
+        \Bristolian\Service\ObjectStore\BristolianStairImageObjectStore::class =>
+            \Bristolian\Service\ObjectStore\StandardBristolianStairImageObjectStore::class
+
     ];
+
     // Delegate the creation of types to callables.
     $delegates = [
         \Redis::class =>

@@ -119,12 +119,9 @@ let panels: WidgetClassBinding[] = [
 ];
 
 
-initByClass(panels, h, render);
 
-startMessageProcessing();
 
 function registerServiceWorker() {
-
   if (!('serviceWorker' in navigator)) {
     console.log('Service Worker isn\'t supported on this browser.');
     return;
@@ -136,8 +133,8 @@ function registerServiceWorker() {
     then(() => {console.log("service worker registered?")});
 }
 
+initByClass(panels, h, render);
 registerServiceWorker();
-
 
 // Add an event listener to receive messages
 window.addEventListener("message", receiveSelectionMessage);
@@ -147,7 +144,9 @@ window.sendMessage = sendMessage;
 // @ts-ignore: bind send message to the actual function.
 window.registerMessageListener = registerMessageListener;
 
+addEventListener("DOMContentLoaded", (event) => {
+    startMessageProcessing();
+})
+
 console.log("Bootstrap finished");
-
-
 

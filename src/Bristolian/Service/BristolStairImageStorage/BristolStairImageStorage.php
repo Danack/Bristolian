@@ -2,6 +2,7 @@
 
 namespace Bristolian\Service\BristolStairImageStorage;
 
+use Bristolian\Model\BristolStairInfo;
 use Bristolian\Service\ObjectStore\FileObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 
@@ -28,5 +29,5 @@ interface BristolStairImageStorage
         string $user_id,
         UploadedFile $uploadedFile,
         array $allowedExtensions,
-    ): string|UploadError;
+    ): BristolStairInfo|UploadError;
 }

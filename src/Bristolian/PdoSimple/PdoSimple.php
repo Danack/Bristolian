@@ -45,17 +45,6 @@ function convertRowToDatetime(array $row): array
  */
 function convertRowFromDatetime(array $row)
 {
-//    $time_columns = [
-//        'created_at',
-//        'updated_at',
-//        'start_time',
-//        'end_time',
-//        ':created_at',
-//        ':updated_at',
-//        ':start_time',
-//        ':end_time',
-//    ];
-
     $data = [];
     foreach ($row as $key => $value) {
         if ($value instanceof \DateTimeInterface) {

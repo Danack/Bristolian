@@ -73,11 +73,8 @@ SQL;
         float $latitude,
         float $longitude,
         int $steps,
-    ): string {
+    ): BristolStairInfo {
         $sql = bristol_stair_info::INSERT;
-
-        $uuid = Uuid::uuid7();
-        $id = $uuid->toString();
 
         $params = [
             ':stored_stair_image_file_id' => $stored_stair_image_file_id,
@@ -88,9 +85,15 @@ SQL;
             ':is_deleted' => 0,
         ];
 
-        $this->pdo_simple->insert($sql, $params);
+        $insert_id = $this->pdo_simple->insert($sql, $params);
 
-        return $id;
+        $stair_info = $this->getStairInfoById($insert_id);
+
+        if ($stair_info === null) {
+            throw new \Exception("Failed to store stairs_info");
+        }
+
+        return $stair_info;
     }
 
 
@@ -109,6 +112,20 @@ SQL;
             BristolStairInfo::class
         );
     }
+
+
+    public function getStairInfoById(int $id): BristolStairInfo|null
+    {
+        $sql = bristol_stair_info::SELECT;
+        $sql .= "where id = :id and is_deleted = 0";
+
+        return $this->pdo_simple->fetchOneAsObjectOrNullConstructor(
+            $sql,
+            [':id' => $id],
+            BristolStairInfo::class
+        );
+    }
+
 
     /**
      * @return array{0:int, 1:int}

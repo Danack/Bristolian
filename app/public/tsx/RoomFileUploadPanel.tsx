@@ -208,8 +208,6 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps, Roo
                     <p>{state.uploadProgress}%</p>
                 </div>
               )}
-
-
               {error_block}
           </div>
         );

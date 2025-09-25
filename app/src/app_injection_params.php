@@ -38,9 +38,6 @@ function injectionParams()
         Bristolian\Basic\ErrorLogger::class =>
             \Bristolian\Basic\StandardErrorLogger::class,
 
-        \Bristolian\Service\FileStorageProcessor\FileStorageProcessor::class =>
-            \Bristolian\Service\FileStorageProcessor\StandardFileStorageProcessor::class,
-
         \Bristolian\Service\ObjectStore\RoomFileObjectStore::class =>
             \Bristolian\Service\ObjectStore\StandardRoomFileObjectStore::class,
 
@@ -125,7 +122,10 @@ function injectionParams()
             \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class,
 
         \Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo::class =>
-          \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo::class
+          \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo::class,
+
+
+
     ];
 
 

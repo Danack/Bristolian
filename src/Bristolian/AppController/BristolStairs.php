@@ -25,18 +25,15 @@ use SlimDispatcher\Response\StubResponse;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use Bristolian\Service\BristolStairImageStorage\UploadError;
 use Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage;
-
-
+use Bristolian\Model\BristolStairInfo;
 use VarMap\VarMap;
 
 class BristolStairs
 {
-
     public const BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME = "stair_file";
 
     public function update_stairs_info_get(): string
     {
-
         return "This is a GET end point. You probably meant to POST.";
     }
 
@@ -51,8 +48,6 @@ class BristolStairs
         return new JsonResponse(['success' => true]);
     }
 
-
-
     public function update_stairs_position(
         UserSession $appSession,
         BristolStairsRepo $bristolStairsRepo,
@@ -64,10 +59,25 @@ class BristolStairs
         return new JsonResponse(['success' => true]);
     }
 
+    public function stairs_page_stair_selected(
+        ExtraAssets $extraAssets,
+        BristolStairsRepo $bristolStairsRepo,
+        int $stair_id
+    ): string {
+        $stair_info = $bristolStairsRepo->getStairInfoById($stair_id);
 
+        return $this->render_stairs_page($extraAssets, $stair_info);
+    }
 
     public function stairs_page(ExtraAssets $extraAssets): string
     {
+        return $this->render_stairs_page($extraAssets, null);
+    }
+
+    private function render_stairs_page(
+        ExtraAssets $extraAssets,
+        BristolStairInfo $selected_stair = null
+    ) {
         $extraAssets->addCSS("/css/leaflet/leaflet.1.7.1.css");
         $extraAssets->addCSS("/css/leaflet/MarkerCluster.1.4.1.css");
         $extraAssets->addCSS("/css/leaflet/MarkerCluster.Default.1.5.0.min.css");
@@ -77,14 +87,20 @@ class BristolStairs
         $extraAssets->addJS("/js/leaflet/leaflet.markercluster.1.4.1.js");
         $extraAssets->addJS("/js/bristol_stairs_map.js");
 
+        $data = [
+            'selected_stair_info' => $selected_stair
+        ];
+        $widget_data = convertToValue($data);
+        $widget_json = json_encode_safe($data);
+        $widget_data = htmlspecialchars($widget_json);
+
         $content = "<h1>A map of Bristol Stairs</h1>";
         $content .= <<< HTML
 
 <div class="bristol_stairs">
-  <div class="bristol_stairs_map_class" id="bristol_stairs_map"></div>
-  <div class="bristol_stairs_panel"></div>
+  <div class="bristol_stairs_map_class" id="bristol_stairs_map" ></div>
+  <div class="bristol_stairs_panel" data-widgety_json="$widget_data"></div>
 </div>
-
 
 <div>
 <h2>About</h2>
@@ -154,9 +170,9 @@ HTML;
 
 
     public function handleFileUpload(
-        BristolStairImageStorage $bristolStairImageStorage,
-        UserSession                       $appSession,
-        UserSessionFileUploadHandler      $usfuh,
+        BristolStairImageStorage     $bristolStairImageStorage,
+        UserSession                  $appSession,
+        UserSessionFileUploadHandler $usfuh,
     ): StubResponse {
 
 //        // TODO - check user logged in
@@ -171,24 +187,26 @@ HTML;
             return $fileOrResponse;
         }
 
-        $storedFileOrError = $bristolStairImageStorage->storeFileForUser(
+        $stairInfoOrError = $bristolStairImageStorage->storeFileForUser(
             $appSession->getUserId(),
             $fileOrResponse,
             get_supported_bristolian_stair_image_extensions(),
         );
 
-        if ($storedFileOrError instanceof UploadError) {
+        if ($stairInfoOrError instanceof UploadError) {
             $data = [
                 'result' => 'error',
-                'error' => $storedFileOrError->error_message
+                'error' => $stairInfoOrError->error_message
             ];
             // todo - change to helper function
             return new JsonNoCacheResponse($data, [], 400);
         }
 
+        [$error, $values] = convertToValue($stairInfoOrError);
+
         $response = [
             'result' => 'success',
-//            'file_id' => $storedFileOrError->fileStorageId
+            'stair_info' => $values
         ];
 
         $response = new JsonNoCacheResponse($response);

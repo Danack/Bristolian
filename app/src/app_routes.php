@@ -52,7 +52,6 @@ function getAllAppRoutes()
             'Bristolian\AppController\Pages::advice_for_speaking_at_council'
         ],
 
-        ['/bristol_stairs/image/{stored_stair_image_file_id:.+}', 'GET', 'Bristolian\AppController\BristolStairs::getImage'],
 
         ['/explanations/shenanigans_planning', 'GET', 'Bristolian\AppController\Pages::shenanigans_planning'],
         [
@@ -60,6 +59,7 @@ function getAllAppRoutes()
             'GET',
             'Bristolian\AppController\Pages::monitoring_officer_notes'
         ],
+
         [
             '/explanations/development_committee_rules',
             'GET',
@@ -100,6 +100,8 @@ function getAllAppRoutes()
         ['/tools/timeline', 'GET', '\Bristolian\AppController\Pages::timeline_page'],
 
 
+        ['/tools/bristol_stairs/{stair_id:.*}', 'GET', 'Bristolian\AppController\BristolStairs::stairs_page_stair_selected'],
+        ['/bristol_stairs/image/{stored_stair_image_file_id:.+}', 'GET', 'Bristolian\AppController\BristolStairs::getImage'],
         ['/tools/bristol_stairs', 'GET', 'Bristolian\AppController\BristolStairs::stairs_page'],
 
         ['/tools/notes', 'GET', '\Bristolian\AppController\Pages::notes_page'],
