@@ -94,7 +94,7 @@ export class ProcessorRunRecordPanel extends Component<
             const entry = run_records_received[i];
             const run_record: ProcessorRunRecord = {
                 id: entry.id,
-                task: entry.task,
+                processor_type: entry.processor_type,
                 debug_info: entry.debug_info,
                 start_time: new Date(entry.start_time),
                 end_time: new Date(entry.end_time),
@@ -138,7 +138,7 @@ export class ProcessorRunRecordPanel extends Component<
         return (
           <tr key={run_record.id}>
               <td>{run_record.id}</td>
-              <td>{run_record.task}</td>
+              <td>{run_record.processor_type}</td>
               <td>{run_record.status}</td>
               <td>{start_time_formatted}</td>
               <td>{end_time_formatted}</td>
