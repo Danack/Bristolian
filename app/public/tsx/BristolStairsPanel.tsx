@@ -485,7 +485,6 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
                   <input
                     type="file"
                     accept=".jpg,.jpeg,.heic,image/jpeg,image/heic"
-                    capture="environment"  // Use back camera on mobile
                     onChange={this.onFileChange}
                     style={{display: "block", marginTop: "10px"}}
                   />
