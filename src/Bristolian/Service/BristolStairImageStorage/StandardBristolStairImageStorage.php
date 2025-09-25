@@ -37,15 +37,16 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
             return UploadError::uploadedFileUnreadable();
         }
 
-        $image_filename = $uploadedFile->getTmpName();
+//        $image_filename = $uploadedFile->getTmpName();
 
-
+//        $filename_for_content = $uploadedFile->getTmpName();
+        $filename_for_extension = $uploadedFile->getOriginalName();
 
         $extension = pathinfo($uploadedFile->getOriginalName(), PATHINFO_EXTENSION);
         $extension = strtolower($extension);
 
         if ($extension === 'heic') {
-            $image = new \Imagick($image_filename);
+            $image = new \Imagick($uploadedFile->getTmpName());
 
             $image->setImageFormat("jpg");
             $image->setImageCompressionQuality(95);
@@ -57,7 +58,8 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
             $temp_file_with_extension = $temp_file . ".jpg";
             $image->writeImage($temp_file_with_extension);
 
-            $image_filename = $temp_file_with_extension;
+//            $filename_for_content = $temp_file_with_extension;
+            $filename_for_extension = $temp_file_with_extension;
 
             // This is duplication of start of function, and even more memory.
             $uploadedFile = UploadedFile::fromFile($temp_file_with_extension);
@@ -71,7 +73,7 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
         $latitude = self::BRISTOL_CENTRE_LATITUDE;
         $longitude = self::BRISTOL_CENTRE_LONGITUDE;
 
-        $coordinates = \get_image_gps($image_filename);
+        $coordinates = \get_image_gps($uploadedFile->getTmpName());
         if ($coordinates !== null) {
             $latitude = $coordinates[0];
             $longitude = $coordinates[1];
@@ -79,7 +81,7 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
 
         // Normalize extension.
         $extension = normalize_file_extension(
-            $image_filename, // may have been changed when converting from HEIC to JPG
+            $filename_for_extension, // may have been changed when converting from HEIC to JPG
             $contents,
             $allowedExtensions
         );
