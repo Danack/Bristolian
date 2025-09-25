@@ -335,8 +335,17 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
 
         if (event.dataTransfer && event.dataTransfer.files.length > 0) {
             const file = event.dataTransfer.files[0];
-            console.log("Dropped file: ", file);
-            this.setState({ selectedFile: file });
+            const allowedTypes = ["image/jpeg", "image/heic"];
+            const allowedExtensions = ["jpg", "jpeg", "heic"];
+            const fileExtension = file.name.split(".").pop()?.toLowerCase();
+
+            if (allowedTypes.includes(file.type) || (fileExtension && allowedExtensions.includes(fileExtension))) {
+                console.log("Dropped file accepted: ", file);
+                this.setState({ selectedFile: file });
+            } else {
+                console.warn("Rejected file type. Only JPG and HEIC images are allowed.");
+                this.setState({ selectedFile: null });
+            }
 
             // Clear drag data to avoid duplicate events
             event.dataTransfer.clearData();
@@ -475,7 +484,8 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
                   <p>{this.state.selectedFile ? `Selected file: ${this.state.selectedFile.name}` : "Drop files here or click to select files."}</p>
                   <input
                     type="file"
-                    // accept={accept_string}
+                    accept=".jpg,.jpeg,.heic,image/jpeg,image/heic"
+                    capture="environment"  // Use back camera on mobile
                     onChange={this.onFileChange}
                     style={{display: "block", marginTop: "10px"}}
                   />
@@ -499,7 +509,6 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
               {/*{error_block}*/}
           </div>
         );
-
     }
 
     renderLoggedInStairInfo() {
