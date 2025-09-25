@@ -1,5 +1,3 @@
-import {startMessageProcessing} from "../tsx/message/message";
-
 const bristol = [51.4545, -2.5879]; // Latitude, Longitude
 
 const stairsById = {};

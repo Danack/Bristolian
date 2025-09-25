@@ -99,14 +99,12 @@ class BristolStairs
         $data = [
             'selected_stair_info' => $selected_stair
         ];
-//        $widget_data = convertToValue($data);
-        $widget_json = json_encode_safe(convertToValue($data));
+
+        [$error, $values] = convertToValue($data);
+        $widget_json = json_encode_safe($values);
         $widget_data = htmlspecialchars($widget_json);
 
         [$flights_of_stairs, $total_steps] = $bristolStairsRepo->get_total_number_of_steps();
-
-        echo "\n";
-
 
         $content = "<h1>A map of Bristol Stairs</h1>";
         $content .= <<< HTML
