@@ -1,3 +1,4 @@
+import {startMessageProcessing} from "../tsx/message/message";
 
 const bristol = [51.4545, -2.5879]; // Latitude, Longitude
 
@@ -260,10 +261,17 @@ map.on('move', () => {
     sendMessage("STAIRS_MAP_POSITION_CHANGED", positionData);
 });
 
-registerMessageListener("STAIR_INFO_UPDATED", bristol_stair_info_updated)
-registerMessageListener("STAIR_POSITION_UPDATED", bristol_stair_position_updated)
-registerMessageListener("STAIR_START_EDITING_POSITION", bristol_stair_start_editing_position)
-registerMessageListener("STAIR_CANCEL_EDITING_POSITION", bristol_stair_cancel_editing_position)
-registerMessageListener("STAIR_SELECTED_ON_LOAD", bristol_stair_selected_on_load)
 
-fetchData();
+
+addEventListener("DOMContentLoaded", (event) => {
+    registerMessageListener("STAIR_INFO_UPDATED", bristol_stair_info_updated)
+    registerMessageListener("STAIR_POSITION_UPDATED", bristol_stair_position_updated)
+    registerMessageListener("STAIR_START_EDITING_POSITION", bristol_stair_start_editing_position)
+    registerMessageListener("STAIR_CANCEL_EDITING_POSITION", bristol_stair_cancel_editing_position)
+    registerMessageListener("STAIR_SELECTED_ON_LOAD", bristol_stair_selected_on_load)
+
+    fetchData();
+})
+
+
+

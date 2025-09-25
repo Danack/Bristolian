@@ -120,8 +120,7 @@ class BristolStairs
 <h2>About</h2>
 <p>Bristol has many steps. This page is an attempt to document all of them, to be able to answer the question, how many steps does Bristol have?</p>
 
-<p>There are currently $total_steps steps in $flights_of_stairs flights of stairs documented.</p>
-
+<p>We are currently have entries for $total_steps steps in $flights_of_stairs flights of stairs.</p>
 
 <h2>Qualification rules</h2>
 
