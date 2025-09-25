@@ -110,11 +110,12 @@ class BristolStairs
 <h2>Qualification rules</h2>
 
 <ol>
-<li>Stairs need to be on a place where members of the public will walk through, to another location. i.e. steps leading up to a house don't qualify.</li>
+<li>Stairs need to be on a place where members of the public will walk through, to another location or to a public amenity. i.e. steps leading up to a house don't qualify, steps leading up to a park bench do.</li>
 <li>There need to be at least two steps between the top and bottom.</li>
 <li>The steps need to be within about one meter of each other. Some paths (e.g. in Brandon Hill Park) have steps in them, to make the gradient of the path be not too steep, but they are too far apart to qualify as a flight of stairs.</li>
 <li>Stairs cannot be inside a building.</li>
-<li>The stairs have to be in Bristol. We use some discretion here for the definition of Bristol. </li>
+<li>The stairs have to be in Bristol. We use some discretion here for the definition of Bristol.</li>
+<li>These rules are more what you'd call guidelines, than actual rules.</li>
 </ol>
 
 </div>
@@ -210,6 +211,9 @@ HTML;
         ];
 
         $response = new JsonNoCacheResponse($response);
+
+        // Usage after storing a post:
+        purgeVarnish("/api/bristol_stairs");
 
         return $response;
     }

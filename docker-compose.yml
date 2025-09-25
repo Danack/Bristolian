@@ -7,7 +7,7 @@ services:
     depends_on:
      - php_fpm
     networks:
-      default_network:
+      app_network:
     restart: always
 #  chrome_headless:
 #    image: alpeware/chrome-headless-trunk
@@ -18,7 +18,7 @@ services:
 #    environment:
 #      - CHROME_OPTS=--window-size="800,800"
 #    networks:
-#      default_network:
+#      app_network:
 #    security_opt:
 #      - seccomp:unconfined
 #      #extra_hosts:
@@ -39,7 +39,7 @@ services:
       # MEDIAWIKI_DB_PASSWORD: db_pasword
       # MEDIAWIKI_DB_NAME: mediawiki
     networks:
-      default_network:
+      app_network:
     depends_on:
       - db
     volumes:
@@ -55,7 +55,7 @@ services:
       MYSQL_PASSWORD: p5ffrKSk4mPqN8vH
       MYSQL_ROOT_HOST: "%"
     networks:
-      default_network:
+      app_network:
     restart: always
     volumes:
       - ./data/mysql:/var/lib/mysql
@@ -70,13 +70,13 @@ services:
       - MYSQL_USER=bristolian
       - MYSQL_PASSWORD=p5ffrKSk4mPqN8vH
     networks:
-      default_network:
+      app_network:
     volumes:
       - .:/var/app
   installer_npm:
     build: containers/installer_npm
     networks:
-      default_network:
+      app_network:
     volumes:
       - .:/var/app
   js_builder:
@@ -95,7 +95,7 @@ services:
       - COMPOSER_CACHE_DIR=/var/app/var/cache/composer
       - COMPOSER_ALLOW_SUPERUSER=1
    networks:
-      default_network:
+      app_network:
    restart: always
    volumes:
      - .:/var/app
@@ -108,7 +108,7 @@ services:
     depends_on:
       - php_fpm
     networks:
-      default_network:
+      app_network:
     volumes:
       - .:/var/app
   redis:
@@ -117,7 +117,7 @@ services:
       - .:/var/app
     command: ["redis-server", "/var/app/containers/redis/config/redis.conf"]
     networks:
-      default_network:
+      app_network:
     restart: always
   supervisord:
     build: containers/supervisord
@@ -125,7 +125,7 @@ services:
       - redis
       - db
     networks:
-      default_network:
+      app_network:
     restart: always
     volumes:
       - ./data/supervisor:/var/log/supervisor
@@ -135,7 +135,7 @@ services:
     environment:
       CACHE_SIZE: 128m
     networks:
-      default_network:
+      app_network:
     restart: always
     volumes:
       - ./:/var/app
@@ -143,5 +143,10 @@ services:
       - caddy
       - php_fpm
 networks:
-  default_network:
-
+  app_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.176.0/24
+          gateway: 192.168.176.1

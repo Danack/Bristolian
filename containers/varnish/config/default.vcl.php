@@ -35,10 +35,12 @@ sub vcl_init {
     # new country = geoip2.geoip2("/var/app/containers/varnish/GeoLite2-Country_20181225/GeoLite2-Country.mmdb");
 }
 
-# acl purge {
-#  "localhost";
-#  "192.168.55.0"/24;
-# }
+acl purge {
+  "127.0.0.1";          # localhost
+  "192.168.176.0"/24;     # Docker network
+}
+
+
 
 ############################################################
 #
@@ -84,11 +86,28 @@ sub add_country_code_if_required {
 
 sub vcl_recv {
 
+
+#  if (req.method == "PURGE") {
+#    if (!client.ip ~ purge) {
+#        return (synth(405, "Not allowed."));
+#    }
+#    return (purge);
+#  }
+  
+  if (req.method == "PURGE") {
+      if (!client.ip ~ purge) {
+          // return a synth with status 405; body and headers are set in vcl_synth
+          return (synth(405, "Not allowed"));
+      }
+      return (purge);
+  }
+
   if (req.method != "GET" && # Disallow custom methods
     req.method != "HEAD" &&
     req.method != "POST" &&
     req.method != "OPTIONS" &&
     req.method != "PUT" &&
+    
     req.method != "DELETE") {
       return (synth(405, "Method Not Allowed"));
   }
@@ -111,11 +130,6 @@ sub vcl_recv {
   }
 
   call add_country_code_if_required;
-
-  # if (req.method == "PURGE") {
-  #   ##PROD_PURGE_ALLOW_CHECK##
-  #   return (purge);
-  # }
 
   if (req.method != "GET" && req.method != "HEAD") {
       return(pass);
@@ -244,6 +258,13 @@ sub vcl_deliver {
 # synthetic() function.
 ###############################################################################
 sub vcl_synth {
+
+    if (resp.status == 405 && resp.reason == "Not allowed") {
+        set resp.http.Content-Type = "text/plain; charset=utf-8";
+        synthetic("PURGE not allowed from IP: " + client.ip);
+        return (deliver);
+    }
+
     if (resp.status == 850) {
        set resp.http.Location = req.http.x-https-redirect;
        set resp.status = 302;

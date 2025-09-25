@@ -1175,3 +1175,46 @@ function mapStreamingResponseToPSR7(
 
     return $response;
 }
+
+
+function purgeVarnish($urlPath) {
+    $varnishHost = 'varnish';
+    $varnishPort = 80;
+
+    $errno = 0;
+    $errstr = '';
+    $fp = fsockopen($varnishHost, $varnishPort, $errno, $errstr, 2);
+    if (!$fp) {
+        \error_log(sprintf("Failed to connect to Varnish: %s (%d)\n", $errstr, $errno));
+        return false;
+    }
+
+    $request = "PURGE $urlPath HTTP/1.1\r\n";
+    $request .= "Host: bristolian.org\r\n";
+    $request .= "Connection: close\r\n\r\n";
+
+    fwrite($fp, $request);
+
+    // Read the response from Varnish
+    $response = '';
+    while (!feof($fp)) {
+        $response .= fgets($fp, 1024);
+    }
+
+    fclose($fp);
+
+    // Check HTTP status code in response
+    if (preg_match('#HTTP/\d\.\d (\d{3})#', $response, $matches)) {
+        $status = (int)$matches[1];
+        if ($status >= 200 && $status < 300) {
+            \error_log(sprintf("Varnish purge successful: HTTP %d\n", $status));
+            return true;
+        } else {
+            \error_log(sprintf("Varnish purge failed: HTTP %d\n%s", $status, $response));
+            return false;
+        }
+    } else {
+        \error_log("Could not read HTTP response from Varnish\n");
+        return false;
+    }
+}

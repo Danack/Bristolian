@@ -31,6 +31,7 @@ class Debug
     public function hello(): void
     {
         echo "Hello.";
+        purgeVarnish("/api/bristol_stairs");
     }
 
 
