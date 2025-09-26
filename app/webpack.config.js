@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
 
+
 const optionDefinitions = [
     { name: 'verbose', alias: 'v', type: Boolean },
     { name: 'src', type: String, multiple: true, defaultOption: true },
@@ -97,11 +98,20 @@ module.exports = {
         //     // default output is timestamp.json
         //     filename: 'timestamp.json'
         // }),
-        // new BundleAnalyzerPlugin({
-        //     analyzerHost: "0.0.0.0",
-        //     analyzerMode: options.analyze === "enabled" ? 'static': "server",
-        //     openAnalyzer: false
-        // }),
+        new BundleAnalyzerPlugin({
+            // analyzerHost: "0.0.0.0",
+            // analyzerMode: options.analyze === "enabled" ? 'static': "server",
+            // openAnalyzer: false
+
+
+            analyzerMode: "static",
+            openAnalyzer: false,
+            generateStatsFile: true,
+            compressionAlgorithm: "gzip",
+
+            statsOptions: "verbose",
+
+        }),
 
         new webpack.SourceMapDevToolPlugin({
             filename: '[name].bundle.map',
@@ -131,14 +141,7 @@ module.exports = {
             "react-dom": "preact/compat"
         }
     },
-    // stats: {
-    //     all: false,       // start with nothing
-    //     modules: true,    // show all modules
-    //     moduleAssets: true,
-    //     chunkModules: true,
-    //     errors: true,
-    //     warnings: true,
-    // }
+
 
     stats: {
         all: false,      // start with nothing
@@ -149,4 +152,6 @@ module.exports = {
         timings: true,
         entrypoints: true,
     },
+
+
 };

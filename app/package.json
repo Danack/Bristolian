@@ -13,10 +13,9 @@
     "js:build:dev": "webpack --mode development",
     "js:build:dev:watch": "webpack --watch --mode development",
     "js:build:prod": "webpack --mode production",
-    "js:build:prod:analyze": "webpack --mode production --analyze",
+    "js:build:prod:analyze": "webpack --mode production --profile --json=stats.json",
     "js:build:prod:watch": "webpack --watch --mode production",
 
-    "stats:console": "node stats-console.js",
     "sass:build:dev": "sass public/scss/site.scss public/css/site.css",
     "sass:build:prod": "sass public/scss/site.scss public/css/site.css --style=compressed",
     "sass:build:watch": "sass public/scss/site.scss public/css/site.css --watch"

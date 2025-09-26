@@ -90,7 +90,6 @@ class BristolStairs
         $extraAssets->addCSS("/css/leaflet/leaflet.1.7.1.css");
         $extraAssets->addCSS("/css/leaflet/MarkerCluster.1.4.1.css");
         $extraAssets->addCSS("/css/leaflet/MarkerCluster.Default.1.5.0.min.css");
-        $extraAssets->addCSS("/css/bristol_stairs_map.css");
 
         $extraAssets->addJS("/js/leaflet/leaflet.1.7.1.js");
         $extraAssets->addJS("/js/leaflet/leaflet.markercluster.1.4.1.js");
