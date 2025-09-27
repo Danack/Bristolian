@@ -1,12 +1,11 @@
 import {h, Component} from "preact";
 import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";
 import {BristolStairInfo} from "./generated/types";
-import {global} from "./globals";
-
+import {FileUpload} from "./components/FileUpload";
+import {call_api} from "./functions";
+import {use_logged_in} from "./store";
 import {BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME} from "./generated/constants";
-import {PdfSelectionType} from "./constants";
 
-let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
 export interface BristolStairsPanelProps {
     selected_stair_info: BristolStairInfo|null;
@@ -129,34 +128,20 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
     };
 
     handleSave() {
-        // Your save logic goes here (e.g. API call)
         console.log("Saved:", this.state.selected_stair_info);
 
-        let stair_info = this.state.selected_stair_info;
+        const stair_info = this.state.selected_stair_info;
+        const endpoint = `/api/bristol_stairs_update/${stair_info.id}`;
+        const form_data = new FormData();
 
-        const endpoint = `/api/bristol_stairs_update/${this.state.selected_stair_info.id}`;
-        const formData = new FormData();
+        form_data.append("bristol_stair_info_id", stair_info.id);
+        form_data.append("description", stair_info.description);
+        form_data.append("steps", "" + stair_info.steps);
 
-        formData.append("bristol_stair_info_id", stair_info.id);
-        formData.append("description", stair_info.description);
-        formData.append("steps", "" + stair_info.steps);
-
-        let params = {
-            method: 'POST',
-            body: formData
-        }
-
-        fetch(endpoint, params).
-        then((response:Response) => {
-            if (response.status !== 200 && response.status !== 400) {
-                throw new Error("Server failed to return an expected response.")
-            }
-            return response;
-        }).
-        then((response:Response) => response.json()).
-        then((data:any) =>this.processData(data, stair_info)).
-        catch((data:any) => this.processError(data));
-    };
+        call_api(endpoint, form_data)
+          .then((data: any) => this.processData(data, stair_info))
+          .catch((err: any) => this.processError(err));
+    }
 
     processData(data:any, stair_info: BristolStairInfo) {
         console.log("success, presumably");
@@ -184,35 +169,21 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
     }
 
     processUpdatePosition() {
-
         const stair_info: BristolStairInfo = {
             ...this.state.selected_stair_info,
             latitude: this.state.position_latitude.toString(),
             longitude: this.state.position_longitude.toString(),
         };
 
-        const endpoint = `/api/bristol_stairs_update_position/${this.state.selected_stair_info.id}`;
-        const formData = new FormData();
+        const endpoint = `/api/bristol_stairs_update_position/${stair_info.id}`;
+        const form_data = new FormData();
+        form_data.append("bristol_stair_info_id", stair_info.id);
+        form_data.append("latitude", stair_info.latitude);
+        form_data.append("longitude", stair_info.longitude);
 
-        formData.append("bristol_stair_info_id", stair_info.id);
-        formData.append("latitude", stair_info.latitude);
-        formData.append("longitude", "" + stair_info.longitude);
-
-        let params = {
-            method: 'POST',
-            body: formData
-        }
-
-        fetch(endpoint, params).
-        then((response:Response) => {
-            if (response.status !== 200) {
-                throw new Error("Server failed to return an expected response.")
-            }
-            return response;
-        }).
-        then((response:Response) => response.json()).
-        then((data:any) => this.handlePositionUpdated(data, stair_info)).
-        catch((data:any) => this.processError(data));
+        call_api(endpoint, form_data)
+          .then((data: any) => this.handlePositionUpdated(data, stair_info))
+          .catch((err: any) => this.processError(err));
     }
 
     handlePositionUpdated(data:any, stair_info: BristolStairInfo) {
@@ -309,49 +280,6 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
         );
     }
 
-
-    // TODO - move to a component
-    handleDragEnter(event: DragEvent) {
-        event.preventDefault();
-        event.stopPropagation();
-        console.log("File dragged into the area");
-    }
-
-    handleDragOver(event: DragEvent) {
-        event.preventDefault();
-        event.stopPropagation();
-        console.log("File being dragged over the area");
-    }
-
-    handleDragLeave(event: DragEvent) {
-        event.preventDefault();
-        event.stopPropagation();
-        console.log("File left the drop area");
-    }
-
-    handleDrop(event: DragEvent) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (event.dataTransfer && event.dataTransfer.files.length > 0) {
-            const file = event.dataTransfer.files[0];
-            const allowedTypes = ["image/jpeg", "image/heic"];
-            const allowedExtensions = ["jpg", "jpeg", "heic"];
-            const fileExtension = file.name.split(".").pop()?.toLowerCase();
-
-            if (allowedTypes.includes(file.type) || (fileExtension && allowedExtensions.includes(fileExtension))) {
-                console.log("Dropped file accepted: ", file);
-                this.setState({ selectedFile: file });
-            } else {
-                console.warn("Rejected file type. Only JPG and HEIC images are allowed.");
-                this.setState({ selectedFile: null });
-            }
-
-            // Clear drag data to avoid duplicate events
-            event.dataTransfer.clearData();
-        }
-    }
-
     // On file select (from the pop up)
     onFileChange = (event: any) => {
 
@@ -361,152 +289,22 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
         });
     };
 
-    // On file upload (click the upload button)
-    onFileUpload = () => {
-        // Create an object of formData
-        const formData = new FormData();
-
-        if (this.state.selectedFile === null) {
-            this.setState({error: "select a file to upload"})
-            return;
-        }
-
-        this.setState({
-            error: null,
-            uploadProgress: 0
-        });
-
-        // Details of the uploaded file
-        console.log("selectedFile ", this.state.selectedFile);
-
-        // Update the formData object
-        formData.append(
-          BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME,
-          this.state.selectedFile,
-          this.state.selectedFile.name
-        );
-
-        // Request made to the backend api
-        console.log("Should upload ", formData);
-
-        let params = {
-            method: 'POST',
-            body: formData
-        }
-
-        let endpoint = `/api/bristol_stairs_image`
-        const xhr = new XMLHttpRequest();
-
-        xhr.open("POST", endpoint, true);
-
-        xhr.upload.onprogress = (event) => {
-            if (event.lengthComputable) {
-                const progress = Math.round((event.loaded / event.total) * 100);
-                this.setState({ uploadProgress: progress });
-                console.log(`Upload progress: ${progress}%`);
-            }
-        };
-
-        xhr.onload = () => {
-            if (xhr.status === 200) {
-                console.log("File uploaded successfully");
-
-                // If you expect JSON back from the server:
-                let data;
-                try {
-                    const responseText = xhr.responseText; // plain string
-                    data = JSON.parse(responseText);
-
-                    console.log("Parsed JSON:", data.stair_info);
-                    // Need to trigger reloading data in map, and then select the just uploaded stair_info
-
-                    // Could just refresh page with appropriate URL?
-                    let new_url = `/tools/bristol_stairs/${data.stair_info.id}`;
-                    console.log("lets change the page to " + new_url);
-                    window.location.href = new_url;
-
-
-                } catch (e) {
-                    console.error("Failed to parse JSON:", e);
-                }
-
-                this.setState({
-                    uploadProgress: null,
-                    selectedFile: null,
-                    uploading_image: false
-                });
-
-            } else {
-                this.setState({
-                    uploadProgress: null,
-                    error: "Upload failed"
-                });
-            }
-        };
-
-        xhr.onerror = () => {
-            this.setState({
-                uploadProgress: null,
-                error: "An error occurred during the upload"
-            });
-        };
-
-        xhr.send(formData);
-    };
-    // TODO - move to a component
-
-
-
-
-
     renderUploadPanel() {
-
-        //
-        // let error_block = <span>&nbsp;</span>;
-        // if (this.state.error != null) {
-        //     error_block = <div class="error">Error: {this.state.error}</div>;
-        // }
-
-        // let accept_string = this.props.accepted_file_extensions.join(", ");
-
         return (
-          <div class="room_file_upload_panel_react">
-              <h3>Drag a file here to upload</h3>
-              <div
-                class="drop-area"
-                onDragEnter={(e) => this.handleDragEnter(e as DragEvent)}
-                onDragOver={(e) => this.handleDragOver(e as DragEvent)}
-                onDragLeave={(e) => this.handleDragLeave(e as DragEvent)}
-                onDrop={(e) => this.handleDrop(e as DragEvent)}
-                style={{border: "2px dashed #ccc", padding: "20px", borderRadius: "5px"}}
-              >
-
-                  <p>{this.state.selectedFile ? `Selected file: ${this.state.selectedFile.name}` : "Drop files here or click to select files."}</p>
-                  <input
-                    type="file"
-                    accept=".jpg,.jpeg,.heic,image/jpeg,image/heic"
-                    onChange={this.onFileChange}
-                    style={{display: "block", marginTop: "10px"}}
-                  />
-
-
-                  <button onClick={this.onFileUpload}>Upload</button>
-              </div>
-
-              {/*{state.uploadProgress !== null && (*/}
-              {/*  <div class="progress-bar" style={{ marginTop: "10px" }}>*/}
-              {/*      <div*/}
-              {/*        style={{*/}
-              {/*            width: `${state.uploadProgress}%`,*/}
-              {/*            backgroundColor: "#4caf50",*/}
-              {/*            height: "10px",*/}
-              {/*        }}*/}
-              {/*      ></div>*/}
-              {/*      <p>{state.uploadProgress}%</p>*/}
-              {/*  </div>*/}
-              {/*)}*/}
-              {/*{error_block}*/}
-          </div>
+          <FileUpload
+            uploadUrl="/api/bristol_stairs_image"
+            formFieldName={BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME}
+            allowedTypes={["image/jpeg", "image/heic"]}
+            allowedExtensions={["jpg", "jpeg", "heic"]}
+            onUploadSuccess={(data) => {
+                console.log("Upload success", data);
+                const newUrl = `/tools/bristol_stairs/${data.stair_info.id}`;
+                window.location.href = newUrl;
+            }}
+            onUploadError={(error) => {
+                console.error("Upload error:", error);
+            }}
+          />
         );
     }
 
@@ -548,16 +346,17 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
         let stair_info = <span>Click a marker on the map to view the stairs.</span>
         let upload_button = <span></span>
 
-        if (global.logged_in === true) {
+        const logged_in = use_logged_in();
+
+        if (logged_in === true) {
             upload_button = <button onClick = {this.startUploadingImage}>Upload image </button>
         }
 
         if (this.state.uploading_image === true) {
             upload_button = this.renderUploadPanel();
         }
-
         else if (this.state.selected_stair_info !== null) {
-            if (global.logged_in === true) {
+            if (logged_in === true) {
                 stair_info = this.renderLoggedInStairInfo();
             } else {
                 stair_info = this.renderViewOnlyStairInfo()

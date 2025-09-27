@@ -136,3 +136,20 @@ export function isUrl(value: string) {
 
   return false;
 }
+
+
+// Reusable API function
+export async function call_api(endpoint: string, form_data: FormData) {
+  const params: RequestInit = {
+    method: 'POST',
+    body: form_data
+  };
+
+  const response = await fetch(endpoint, params);
+
+  if (!response.ok) {
+    throw new Error(`Server returned status ${response.status}`);
+  }
+
+  return response.json();
+}

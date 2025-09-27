@@ -147,6 +147,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         return <div>
             <h2>Files</h2>
             <table>
+              <tbody>
                 <tr>
                     <td>Name</td>
                     <td>Size</td>
@@ -154,6 +155,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                 </tr>
                 {Object.values(this.state.files).
                 map((roomFile: RoomFile) => this.renderRoomFile(roomFile))}
+              </tbody>
             </table>
         </div>
     }
@@ -165,9 +167,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         }
 
         let length = this.state.files.length;
-
         let number_block = <div>There are {length} files</div>;
-
         let files_block = this.renderFiles();
 
         return  <div class='room_files_panel_react'>
