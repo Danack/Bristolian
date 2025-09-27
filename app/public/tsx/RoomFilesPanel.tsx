@@ -18,23 +18,17 @@ interface RoomFile {
     created_at: Date
 }
 
-
-
 interface RoomFilesPanelState {
     files: RoomFile[],
     error: string|null,
-
 }
 
 function getDefaultState(): RoomFilesPanelState {
     return {
         files: [],
         error: null,
-
     };
 }
-
-// sendMessage(PdfSelectionType.ROOM_FILES_CHANGED, {});
 
 export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPanelState> {
 

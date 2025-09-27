@@ -2,6 +2,7 @@ import {h, Component} from "preact";
 import {isUrl} from "./functions";
 import {PdfSelectionType} from "./constants";
 import {sendMessage} from "./message/message";
+import {use_logged_in} from "./store";
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
@@ -106,6 +107,12 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
 
 
   render(props: RoomLinkAddPanelProps, state: RoomLinkAddPanelState) {
+
+    const logged_in = use_logged_in();
+
+    if (logged_in !== true) {
+      return <span></span>
+    }
 
     let isValidUrl = isUrl(this.state.url);
 

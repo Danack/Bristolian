@@ -2,6 +2,7 @@ import {h, Component} from "preact";
 import {FileUpload} from "./components/FileUpload";
 import {PdfSelectionType} from "./constants";
 import {sendMessage} from "./message/message";
+import {use_logged_in} from "./store";
 import {ROOM_FILE_UPLOAD_FORM_NAME} from "./generated/constants";
 
 interface RoomFileUploadPanelProps {
@@ -20,24 +21,30 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps> {
     };
 
     render() {
-        const uploadUrl = `/api/rooms/${this.props.room_id}/file-upload`;
+      const logged_in = use_logged_in();
 
-        return (
-          <div class="room-file-upload-panel">
-              <FileUpload
-                uploadUrl={uploadUrl}
-                formFieldName={ROOM_FILE_UPLOAD_FORM_NAME} // change to whatever your backend expects
-                allowedTypes={[
-                    "image/jpeg",
-                    "image/heic",
-                    "image/png",
-                    "application/pdf"
-                ]}
-                allowedExtensions={["jpg", "jpeg", "heic", "png", "pdf"]}
-                onUploadSuccess={this.onUploadSuccess}
-                onUploadError={this.onUploadError}
-              />
-          </div>
-        );
-    }
+      if (logged_in !== true) {
+        return <span></span>
+      }
+
+    const uploadUrl = `/api/rooms/${this.props.room_id}/file-upload`;
+
+      return (
+        <div class="room-file-upload-panel">
+          <FileUpload
+            uploadUrl={uploadUrl}
+            formFieldName={ROOM_FILE_UPLOAD_FORM_NAME} // change to whatever your backend expects
+            allowedTypes={[
+                "image/jpeg",
+                "image/heic",
+                "image/png",
+                "application/pdf"
+            ]}
+            allowedExtensions={["jpg", "jpeg", "heic", "png", "pdf"]}
+            onUploadSuccess={this.onUploadSuccess}
+            onUploadError={this.onUploadError}
+        />
+      </div>
+    );
+  }
 }

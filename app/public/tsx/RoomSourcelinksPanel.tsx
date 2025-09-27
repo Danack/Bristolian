@@ -91,19 +91,23 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
 
     renderSourcelinks() {
         if (this.state.sourcelinks.length === 0) {
-            return <span>No sourcelinks.</span>
+            return <div>
+                <h2>Sourcelinks</h2>
+                <span>No sourcelinks.</span>
+            </div>
         }
 
         return <div>
             <h2>Sourcelinks</h2>
             <table>
+              <tbody>
                 <tr>
                     <td>Name</td>
                     <td>Size</td>
                     <td></td>
                 </tr>
-                {Object.values(this.state.sourcelinks).
-                map((sourceLink: RoomSourceLink) => this.renderRoomSourcelink(sourceLink))}
+                {Object.values(this.state.sourcelinks).map((sourceLink: RoomSourceLink) => this.renderRoomSourcelink(sourceLink))}
+              </tbody>
             </table>
         </div>
     }
@@ -115,15 +119,12 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
         }
 
         let length = this.state.sourcelinks.length;
-
-        let number_block = <div>There are {length} sourcelinks</div>;
-
+        // let number_block = <div>There are {length} sourcelinks</div>;
         let files_block = this.renderSourcelinks();
 
         return  <div class='room_sourcelinks_panel_react'>
             {error_block}
             {files_block}
-            {number_block}
             <button onClick={() => this.refreshRoomSourcelinks()}>Refresh</button>
         </div>;
     }
