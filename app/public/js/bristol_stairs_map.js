@@ -195,8 +195,32 @@ function bristol_stair_start_editing_position(data) {
 
     // Move map to the stair's position
     if (stair_info.latitude && stair_info.longitude) {
-        map.setView([stair_info.latitude, stair_info.longitude], map.getZoom());
+
+        console.log("Moving map to " + stair_info.latitude + " " + stair_info.longitude);
+
+        map.setView([stair_info.latitude, stair_info.longitude], 22);
+        map.invalidateSize({ animate: false });
+
+        // Step 2: Wait until the browser has applied layout
+        // Using requestAnimationFrame is usually enough
+        requestAnimationFrame(() => {
+            map.setView([stair_info.latitude, stair_info.longitude], 22);
+        });
     }
+    else {
+        console.log("For some reason not moving to stair position");
+    }
+
+    console.log("right after Map is  at  ", map.getCenter());
+
+    setTimeout(() => {
+        console.log("a few moments later Map is  at  ", map.getCenter());
+    }, 200)
+
+    setTimeout(() => {
+        console.log("a few seconds later Map is  at  ", map.getCenter());
+    }, 4000)
+
 
     // Hide all markers
     if (map.hasLayer(markers)) {

@@ -82,6 +82,10 @@
         flex-direction: row;
         flex-wrap: nowrap;
 
+        .bristol_stairs_map {
+            height: 500px;
+        }
+
         .bristol_stairs_map,
         .bristol_stairs_panel {
             width: 50%;
