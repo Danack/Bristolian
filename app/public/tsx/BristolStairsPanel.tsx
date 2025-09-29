@@ -2,7 +2,7 @@ import {h, Component} from "preact";
 import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";
 import {BristolStairInfo} from "./generated/types";
 import {FileUpload} from "./components/FileUpload";
-import {call_api} from "./functions";
+import {call_api, open_lightbox_if_not_mobile} from "./functions";
 import {use_logged_in} from "./store";
 import {BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME} from "./generated/constants";
 
@@ -227,13 +227,16 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
         const {description, steps, stored_stair_image_file_id} =
           this.state.selected_stair_info;
 
+        let img_src = "/bristol_stairs/image/" + stored_stair_image_file_id;
+
         // Default (not editing position): full editing UI
         return (
           <span className="contents-wrapper">
             <img
-              src={"/bristol_stairs/image/" + stored_stair_image_file_id}
+              src={img_src}
               alt="some stairs"
               style={{marginBottom: "1rem"}}
+              onClick={() => open_lightbox_if_not_mobile(img_src)}
             />
 
             <span className="form-row">

@@ -153,3 +153,41 @@ export async function call_api(endpoint: string, form_data: FormData) {
 
   return response.json();
 }
+
+
+export function open_lightbox_if_not_mobile(src: string) {
+  const isMobile = window.innerWidth < 768;
+  if (isMobile) {
+    return;
+  }
+
+  // Create overlay
+  const lightbox = document.createElement('div');
+  lightbox.className = 'lightbox';
+
+  // Create image inside it
+  const lightboxImg = document.createElement('img');
+  lightboxImg.src = src;
+  lightbox.appendChild(lightboxImg);
+
+  // Add to body
+  document.body.appendChild(lightbox);
+
+  // Close on click
+  lightbox.addEventListener('click', () => {
+    close_lightbox(lightbox);
+  });
+
+  // Close on Escape
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.key === "Escape") {
+      close_lightbox(lightbox);
+    }
+  }
+  document.addEventListener('keydown', handleKeydown);
+
+  function close_lightbox(lightboxElement: HTMLDivElement) {
+    document.body.removeChild(lightboxElement);
+    document.removeEventListener('keydown', handleKeydown);
+  }
+}
