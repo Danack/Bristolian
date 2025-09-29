@@ -75,6 +75,11 @@ function addDebugCommands(Application $console)
     $command->setDescription("Test exception stack trace is correct.");
     $console->add($command);
 
+
+    $command = new Command('debug:add_room_file', 'Bristolian\CliController\Debug::test_add_room_file');
+    $command->setDescription("Test adding a file to a room.");
+    $console->add($command);
+
 }
 
 function addSeedCommands(Application $console)

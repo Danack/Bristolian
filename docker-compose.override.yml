@@ -34,6 +34,10 @@ services:
 #  php_fpm_debug:
 #    env_file:
 #      - env_local_dev.env
+
+  php_websocket:
+    ports:
+      - "8015:5000"
   redis:
     ports:
       - "6379:6379"

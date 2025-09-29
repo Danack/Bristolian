@@ -111,6 +111,18 @@ services:
       app_network:
     volumes:
       - .:/var/app
+  php_websocket:
+    build: containers/php_websocket
+    # The image name is so the debug container can be built from it
+    # image: bristolian_php_fpm
+    environment:
+      - COMPOSER_CACHE_DIR=/var/app/var/cache/composer
+      - COMPOSER_ALLOW_SUPERUSER=1
+    networks:
+      app_network:
+    restart: always
+    volumes:
+      - .:/var/app
   redis:
     image: redis:6.2.4
     volumes:

@@ -32,12 +32,12 @@ docker-compose up --build \
  db \
  php_fpm \
  php_fpm_debug \
+ php_websocket \
  sass_dev_builder \
  js_builder \
  redis \
   --remove-orphans
 
- # supervisord \
 
 docker-compose down
 

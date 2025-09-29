@@ -32,8 +32,16 @@ class BristolStairs
 
         $files_in_storage = [];
 
-        foreach ($result as $file) {
-            $files_in_storage[] = $file->path();
+        try {
+            foreach ($result as $file) {
+                $files_in_storage[] = $file->path();
+            }
+        }
+        catch (\League\Flysystem\UnableToListContents $exception) {
+            echo "Failed to list files in storage in " . __FILE__ . ":" . __LINE__ .".\n";
+            echo $exception->getMessage();
+            echo "\n";
+            exit(-1);
         }
 
         $known_files = [];

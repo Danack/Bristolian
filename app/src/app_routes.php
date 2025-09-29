@@ -77,6 +77,13 @@ function getAllAppRoutes()
             'Bristolian\AppController\Rooms::annotate_file'
         ],
 
+
+        [
+            '/comms',
+            'GET',
+            'Bristolian\AppController\Comms::get_test_page'
+        ],
+
         [
             '/rooms/{room_id:.*}/file/{file_id:.*}/sourcelinks/{sourcelink_id}/view',
             'GET',

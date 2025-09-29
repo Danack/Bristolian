@@ -10,7 +10,8 @@ $config = <<< END
 pid = /run/php7.0-fpm.pid
 
 ; Error log file
-error_log = /dev/stderr
+; error_log = /dev/stderr
+error_log = /proc/self/fd/2             ; PHP errors go to Docker stderr
 
 ; Log level
 ; Possible Values: alert, error, warning, notice, debug
@@ -92,6 +93,12 @@ pm.status_path = /status
 ; The access log format.
 ;access.format = "%R - %u %t \"%m %r%Q%q\" %s %f %{mili}d %{kilo}M %C%%"
 
+
+; error_log = /proc/self/fd/2             ; PHP errors go to Docker stderr
+access.log = /proc/self/fd/1            ; Access log goes to Docker stdout
+access.format = "%R - %u %t \"%m %r%Q%q\" %s %f %{mili}d %{kilo}M %C%%"
+
+
 ; The log file for slow requests
 ; Default Value: not set
 ; Note: slowlog is mandatory if request_slowlog_timeout is set
@@ -134,7 +141,9 @@ security.limit_extensions = .php
 ; Additional php.ini defines
 ;php_admin_value[memory_limit] = 32M
 
-php_admin_value[fastcgi.logging] = off
+; php_admin_value[fastcgi.logging] = off
+
+
 
 END;
 

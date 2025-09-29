@@ -3,6 +3,7 @@
 namespace Bristolian\Service\BristolStairImageStorage;
 
 use Bristolian\Model\BristolStairInfo;
+use Bristolian\Parameters\BristolStairsGpsParams;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Service\ObjectStore\BristolianStairImageObjectStore;
@@ -30,6 +31,7 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
         string $user_id,
         UploadedFile $uploadedFile,
         array $allowedExtensions,
+        BristolStairsGpsParams $gpsParams
     ): BristolStairInfo|UploadError {
 
         $contents = @file_get_contents($uploadedFile->getTmpName());
@@ -69,9 +71,18 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
             }
         }
 
+
         // Default to the centre of Bristol
         $latitude = self::BRISTOL_CENTRE_LATITUDE;
         $longitude = self::BRISTOL_CENTRE_LONGITUDE;
+
+        if ($gpsParams->latitude !== null) {
+            $latitude = $gpsParams->latitude;
+        }
+        if ($gpsParams->longitude !== null) {
+            $longitude = $gpsParams->longitude;
+            \error_log("Using param longitude");
+        }
 
         $coordinates = \get_image_gps($uploadedFile->getTmpName());
         if ($coordinates !== null) {

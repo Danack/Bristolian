@@ -214,12 +214,21 @@ function bristol_stair_start_editing_position(data) {
     console.log("right after Map is  at  ", map.getCenter());
 
     setTimeout(() => {
+        map.setView([stair_info.latitude, stair_info.longitude], 22);
+    }, 100)
+
+
+    setTimeout(() => {
         console.log("a few moments later Map is  at  ", map.getCenter());
     }, 200)
 
     setTimeout(() => {
+        map.setView([stair_info.latitude, stair_info.longitude], 22);
+    }, 400)
+
+    setTimeout(() => {
         console.log("a few seconds later Map is  at  ", map.getCenter());
-    }, 4000)
+    }, 800)
 
 
     // Hide all markers

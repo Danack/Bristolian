@@ -9,23 +9,26 @@ use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
+use Bristolian\Parameters\PropertyType\GpsFloat;
+
 
 /**
- * This is used for updating an existing flight of stairs position
+ * This is used for setting a new flight of stairs position.
+ *
+ * Safari and other browser strip out GPS info
  */
-class BristolStairsPositionParams implements DataType
+class BristolStairsGpsParams implements DataType
 {
     use CreateFromRequest;
     use CreateFromVarMap;
     use GetInputTypesFromAttributes;
 
     public function __construct(
-        #[BasicString('bristol_stair_info_id')]
-        public readonly string $bristol_stair_info_id,
-        #[BasicFloat('latitude')]
-        public readonly float $latitude,
-        #[BasicFloat('longitude')]
-        public readonly float $longitude,
+
+        #[GpsFloat('gps_latitude')]
+        public readonly float|null $latitude,
+        #[GpsFloat('gps_longitude')]
+        public readonly float|null $longitude,
     ) {
     }
 }

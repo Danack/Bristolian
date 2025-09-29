@@ -6,6 +6,8 @@ use Bristolian\Model\WebPushNotification;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Service\WebPushService\WebPushService;
+use Bristolian\Events\ContentAdded;
+use Bristolian\Keys\ContentModifiedKey;
 
 function fn_level_1(): void
 {
@@ -31,7 +33,6 @@ class Debug
     public function hello(): void
     {
         echo "Hello.";
-        purgeVarnish("/api/bristol_stairs");
     }
 
 
@@ -75,5 +76,18 @@ class Debug
     public function generate_system_info_email(): void
     {
         echo generateSystemInfoEmailContent();
+    }
+
+    public function test_add_room_file(\Redis $redis): void
+    {
+        $event = new ContentAdded(
+            $room_id = '12345',
+            $room_name = 'Test room',
+            $user_id = "12345",
+            $user_name = "Danack",
+            $description = "Test description",
+        );
+
+        $redis->rPush(ContentModifiedKey::getAbsoluteKeyName(), $event->toString());
     }
 }

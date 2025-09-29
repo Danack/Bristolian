@@ -57,4 +57,12 @@ php cli.php db:migrate_to_latest
 php cli.php generate:javascript_constants
 php cli.php generate:php_table_helper_classes
 
+cd /var/app/chat
+
+if [ "${COMPOSER_TYPE}" = "update" ]; then
+    php ../composer.phar update
+else
+    php ../composer.phar install
+fi
+
 echo "Installer is finished."

@@ -2,8 +2,14 @@
 
 
 .bristolian_content {
-  background-color: var(--content_panel_background_color);
+  //background-color: var(--content_panel_background_color);
   color: var(--content_panel_text_color);
+
+  background-image: radial-gradient(50% 50% at 25% 75%, rgba(100, 157, 195, 0.07) 0, hsla(0, 0%, 100%, 0) 100%), radial-gradient(50% 50% at 75% 25%, #d57a1f11 0, hsla(0, 0%, 100%, 0) 100%);
+  background-position: center;
+  background-attachment: fixed;
+  background-blend-mode: luminosity;
+
 
   line-height: 20px;
 

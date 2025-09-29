@@ -4,8 +4,15 @@ declare(strict_types = 1);
 
 namespace Bristolian;
 
+use Bristolian\Exception\BristolianException;
+
 trait ToString
 {
+
+
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $data = [];
@@ -15,7 +22,13 @@ trait ToString
                 continue;
             }
 
-            $data[$name] = \convertToValue($name, $value);
+            [$error, $result] = \convertToValue(/*$name,*/ $value);
+
+            if ($error !== null) {
+                throw new BristolianException("Failed to convert object to array on item [$name]");
+            }
+
+            $data[$name] = $result;
         }
 
         return $data;

@@ -1,5 +1,6 @@
 // FileUpload.tsx
 import { h, Component } from "preact";
+import * as exifr from "exifr";
 
 export interface FileUploadProps {
   uploadUrl: string; // endpoint to send files to
@@ -67,6 +68,25 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
       (fileExtension && allowedExtensions.includes(fileExtension))
     ) {
       this.setState({ selectedFile: file, error: null });
+
+      // Try to extract GPS metadata right after selecting
+      exifr.gps(file).then((gps) => {
+        if (gps) {
+          console.log("Extracted GPS:", gps);
+
+          // You could store it in state if you want to inspect later
+          // or just attach it to extraFormData in handleUpload
+          this.setState((prev) => ({
+            ...prev,
+            error: null,
+            // keep selectedFile as is, but add gps info
+            selectedFile: Object.assign(file, { gpsData: gps }),
+          }));
+        }
+      }).catch((err) => {
+        console.warn("No GPS data found or failed to parse:", err);
+      });
+
     } else {
       const allowedList = allowedExtensions.length
         ? allowedExtensions.join(", ")
@@ -96,15 +116,25 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
     const formData = new FormData();
     formData.append(formFieldName, selectedFile, selectedFile.name);
 
+    // Add extra data from props
     if (extraFormData) {
       Object.entries(extraFormData).forEach(([k, v]) => {
         formData.append(k, v);
       });
     }
 
+    // Add extracted GPS data if available
+    if ((selectedFile as any).gpsData) {
+      const gps = (selectedFile as any).gpsData;
+      formData.append("gps_latitude", gps.latitude);
+      formData.append("gps_longitude", gps.longitude);
+      if (gps.altitude) formData.append("gps_altitude", gps.altitude);
+    }
+
     const xhr = new XMLHttpRequest();
     xhr.open("POST", uploadUrl, true);
 
+    // rest of your existing xhr handlers...
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable) {
         const progress = Math.round((event.loaded / event.total) * 100);

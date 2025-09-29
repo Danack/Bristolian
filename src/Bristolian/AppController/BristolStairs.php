@@ -26,6 +26,7 @@ use SlimDispatcher\Response\JsonNoCacheResponse;
 use Bristolian\Service\BristolStairImageStorage\UploadError;
 use Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage;
 use Bristolian\Model\BristolStairInfo;
+use Bristolian\Parameters\BristolStairsGpsParams;
 use VarMap\VarMap;
 
 class BristolStairs
@@ -55,6 +56,9 @@ class BristolStairs
     ): JsonResponse {
         $stairs_position_params = BristolStairsPositionParams::createFromVarMap($varMap);
         $bristolStairsRepo->updateStairPosition($stairs_position_params);
+
+        // Usage after storing a post:
+        purgeVarnish("/api/bristol_stairs");
 
         return new JsonResponse(['success' => true]);
     }
@@ -117,7 +121,7 @@ class BristolStairs
 <h2>About</h2>
 <p>Bristol has many steps. This page is an attempt to document all of them, to be able to answer the question, how many steps does Bristol have?</p>
 
-<p>We are currently have entries for $total_steps steps in $flights_of_stairs flights of stairs.</p>
+<p>There are currently entries for $total_steps steps in $flights_of_stairs flights of stairs.</p>
 
 <h2>Qualification rules</h2>
 
@@ -186,6 +190,7 @@ HTML;
         BristolStairImageStorage     $bristolStairImageStorage,
         UserSession                  $appSession,
         UserSessionFileUploadHandler $usfuh,
+        VarMap                       $varMap
     ): StubResponse {
 
 //        // TODO - check user logged in
@@ -193,6 +198,8 @@ HTML;
 //            $data = ['not logged in' => true];
 //            return new JsonResponse($data, [], 400);
 //        }
+
+        $gpsParams = BristolStairsGpsParams::createFromVarMap($varMap);
 
         // Get the user uploaded file.
         $fileOrResponse = $usfuh->fetchUploadedFile(self::BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME);
@@ -204,6 +211,7 @@ HTML;
             $appSession->getUserId(),
             $fileOrResponse,
             get_supported_bristolian_stair_image_extensions(),
+            $gpsParams
         );
 
         if ($stairInfoOrError instanceof UploadError) {

@@ -41,7 +41,7 @@ function createMemoryWarningCheck(
  * @return Redis
  * @throws Exception
  */
-function createRedis(Config $config)
+function createRedis(Config $config): \Redis
 {
     $redisConfig = $config->getRedisInfo();
 
@@ -262,7 +262,11 @@ function createBristolStairsFilesystem(Config $config): \Bristolian\Filesystem\B
             'secret' => getScalewayApiSecret(),
         ],
         'region' => 'nl-ams',
-        'endpoint' => 'https://s3.nl-ams.scw.cloud'
+        'endpoint' => 'https://s3.nl-ams.scw.cloud',
+        'http' => [
+            'timeout' => 15,          // seconds to wait for response
+            'connect_timeout' => 4,  // seconds to wait for TCP connection
+        ],
     ]);
 
     // The internal adapter

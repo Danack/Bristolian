@@ -68,6 +68,10 @@ function injectionParams() : InjectionParams
             'createMemeFilesystem',
         \Mailgun\Mailgun::class => 'createMailgun',
 
+
+        \Redis::class =>
+            'createRedis',
+
         \Bristolian\Filesystem\BristolStairsFilesystem::class => 'createBristolStairsFilesystem'
 
 
