@@ -198,37 +198,37 @@ function bristol_stair_start_editing_position(data) {
 
         console.log("Moving map to " + stair_info.latitude + " " + stair_info.longitude);
 
-        map.setView([stair_info.latitude, stair_info.longitude], 22);
+        map.setView([stair_info.latitude, stair_info.longitude], map.getZoom());
         map.invalidateSize({ animate: false });
 
         // Step 2: Wait until the browser has applied layout
         // Using requestAnimationFrame is usually enough
         requestAnimationFrame(() => {
-            map.setView([stair_info.latitude, stair_info.longitude], 22);
+            map.setView([stair_info.latitude, stair_info.longitude], map.getZoom());
         });
     }
     else {
         console.log("For some reason not moving to stair position");
     }
 
-    console.log("right after Map is  at  ", map.getCenter());
-
-    setTimeout(() => {
-        map.setView([stair_info.latitude, stair_info.longitude], 22);
-    }, 100)
-
-
-    setTimeout(() => {
-        console.log("a few moments later Map is  at  ", map.getCenter());
-    }, 200)
-
-    setTimeout(() => {
-        map.setView([stair_info.latitude, stair_info.longitude], 22);
-    }, 400)
-
-    setTimeout(() => {
-        console.log("a few seconds later Map is  at  ", map.getCenter());
-    }, 800)
+    // console.log("right after Map is  at  ", map.getCenter());
+    //
+    // setTimeout(() => {
+    //     map.setView([stair_info.latitude, stair_info.longitude], 22);
+    // }, 100)
+    //
+    //
+    // setTimeout(() => {
+    //     console.log("a few moments later Map is  at  ", map.getCenter());
+    // }, 200)
+    //
+    // setTimeout(() => {
+    //     map.setView([stair_info.latitude, stair_info.longitude], 22);
+    // }, 400)
+    //
+    // setTimeout(() => {
+    //     console.log("a few seconds later Map is  at  ", map.getCenter());
+    // }, 800)
 
 
     // Hide all markers
