@@ -75,8 +75,6 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
             console.log("STAIR_SELECTED_ON_LOAD should have been sent");
             sendMessage("STAIR_SELECTED_ON_LOAD", {stair_info: this.state.selected_stair_info});
         }
-
-        console.log("stairs panel loaded.");
     }
 
     handleMarkerClicked(selected_stair_info: BristolStairInfo) {

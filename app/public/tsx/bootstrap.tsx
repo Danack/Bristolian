@@ -138,7 +138,7 @@ function registerServiceWorker() {
   navigator.serviceWorker.
     // The file needs to be in root, because of scope
     register("/serviceWorker.js").
-    then(() => {console.log("service worker registered?")});
+    then(() => {console.log("service worker registered")});
 }
 
 initByClass(panels, h, render);
