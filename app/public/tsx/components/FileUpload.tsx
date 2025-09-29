@@ -16,6 +16,11 @@ interface FileUploadState {
   selectedFile: File | null;
   uploadProgress: number | null;
   error: string | null;
+
+  gps_latitude: number|null,
+  gps_longitude: number|null,
+  debug: string,
+
 }
 
 export class FileUpload extends Component<FileUploadProps, FileUploadState> {
@@ -25,6 +30,9 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
       selectedFile: null,
       uploadProgress: null,
       error: null,
+      gps_latitude: null,
+      gps_longitude: null,
+      debug: "no debug yet"
     };
   }
 
@@ -81,7 +89,14 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
             error: null,
             // keep selectedFile as is, but add gps info
             selectedFile: Object.assign(file, { gpsData: gps }),
+
+            gps_latitude: gps.latitude,
+            gps_longitude: gps.longitude,
+            debug: "gps was probably read"
           }));
+        }
+        else {
+          this.setState({debug: "no gps info"})
         }
       }).catch((err) => {
         console.warn("No GPS data found or failed to parse:", err);
@@ -197,6 +212,13 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
             style={{ display: "block", marginTop: "10px" }}
           />
           <button onClick={this.handleUpload}>Upload</button>
+
+          <div>
+            gps_latitude {this.state.gps_latitude}<br/>
+            gps_longtitude: {this.state.gps_longitude} <br/>
+            debug: {this.state.debug}
+          </div>
+
         </div>
 
         {uploadProgress !== null && (
