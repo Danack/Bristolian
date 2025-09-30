@@ -305,6 +305,7 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
             onUploadError={(error) => {
                 console.error("Upload error:", error);
             }}
+            fetchGPS={true}
           />
         );
     }

@@ -43,6 +43,7 @@ export class RoomFileUploadPanel extends Component<RoomFileUploadPanelProps> {
             allowedExtensions={["jpg", "jpeg", "heic", "png", "pdf"]}
             onUploadSuccess={this.onUploadSuccess}
             onUploadError={this.onUploadError}
+            fetchGPS={false}
         />
       </div>
     );

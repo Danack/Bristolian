@@ -10,6 +10,7 @@ export interface FileUploadProps {
   extraFormData?: Record<string, string>;
   onUploadSuccess?: (data: any) => void;
   onUploadError?: (error: string) => void;
+  fetchGPS?: boolean; // <-- new optional prop
 }
 
 interface FileUploadState {
@@ -20,6 +21,8 @@ interface FileUploadState {
   gps_latitude: number|null,
   gps_longitude: number|null,
   debug: string,
+
+  gpsData?: { latitude: number; longitude: number; altitude?: number };
 
 }
 
@@ -68,40 +71,33 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
   };
 
   validateAndSetFile(file: File) {
-    const { allowedTypes = [], allowedExtensions = [] } = this.props;
+    const { allowedTypes = [], allowedExtensions = [], fetchGPS } = this.props;
     const fileExtension = file.name.split(".").pop()?.toLowerCase();
 
     if (
       (file.type && allowedTypes.includes(file.type)) &&
       (fileExtension && allowedExtensions.includes(fileExtension))
     ) {
-      this.setState({ selectedFile: file, error: null });
+      this.setState({ selectedFile: file, error: null, gpsData: undefined });
 
-      // Try to extract GPS metadata right after selecting
-      exifr.gps(file).then((gps) => {
-        if (gps) {
-          console.log("Extracted GPS:", gps);
+      if (fetchGPS) {
+        // Try to read EXIF GPS first
+        exifr.gps(file).then((gps) => {
+          if (gps) {
+            this.setState({
+              gpsData: gps,
+              debug: "gps set from exifr"
+            });
+          } else {
+            // No EXIF GPS → fall back to browser geolocation
+            this.requestBrowserLocation();
+          }
+        }).catch(() => {
+          this.requestBrowserLocation();
+        });
 
-          // You could store it in state if you want to inspect later
-          // or just attach it to extraFormData in handleUpload
-          this.setState((prev) => ({
-            ...prev,
-            error: null,
-            // keep selectedFile as is, but add gps info
-            selectedFile: Object.assign(file, { gpsData: gps }),
-
-            gps_latitude: gps.latitude,
-            gps_longitude: gps.longitude,
-            debug: "gps was probably read"
-          }));
-        }
-        else {
-          this.setState({debug: "no gps info"})
-        }
-      }).catch((err) => {
-        console.warn("No GPS data found or failed to parse:", err);
-      });
-
+        console.log("Hmm");
+      }
     } else {
       const allowedList = allowedExtensions.length
         ? allowedExtensions.join(", ")
@@ -111,6 +107,24 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
         error: `Invalid file type. Allowed file types: ${allowedList}.`
       });
     }
+  }
+
+  requestBrowserLocation() {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        this.setState({
+          gpsData: {
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+            altitude: pos.coords.altitude ?? undefined,
+          },
+          debug: "gps set navigator.geolocation"
+        });
+      },
+      (err) => console.warn("Geolocation error:", err),
+      { enableHighAccuracy: true }
+    );
   }
 
   handleUpload = () => {
