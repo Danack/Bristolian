@@ -81,7 +81,7 @@ function getAllAppRoutes()
         [
             '/comms',
             'GET',
-            'Bristolian\AppController\Comms::get_test_page'
+            'Bristolian\AppController\Chat::get_test_page'
         ],
 
         [

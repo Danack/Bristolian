@@ -46,8 +46,8 @@ function apiInjectionParams() : InjectionParams
         \Bristolian\Service\RoomFileStorage\RoomFileStorage::class =>
             \Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::class,
 
-        \Bristolian\Service\FileStorageProcessor\FileStorageProcessor::class =>
-            \Bristolian\Service\FileStorageProcessor\StandardFileStorageProcessor::class,
+//        \Bristolian\Service\FileStorageProcessor\FileStorageProcessor::class =>
+//            \Bristolian\Service\FileStorageProcessor\StandardFileStorageProcessor::class,
 
         \Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo::class =>
             \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::class,
@@ -98,7 +98,10 @@ function apiInjectionParams() : InjectionParams
             \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo::class,
 
         \Bristolian\Service\ObjectStore\BristolianStairImageObjectStore::class =>
-            \Bristolian\Service\ObjectStore\StandardBristolianStairImageObjectStore::class
+            \Bristolian\Service\ObjectStore\StandardBristolianStairImageObjectStore::class,
+
+        Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::class =>
+            Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class
 
     ];
 

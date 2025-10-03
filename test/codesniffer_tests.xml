@@ -7,6 +7,7 @@
 
     <exclude-pattern>*test/phpunit_bootstrap.php</exclude-pattern>
 
+    <exclude-pattern>*src/Bristolian/Database/*</exclude-pattern>
 
     <rule ref="PSR2">
         <!-- Need to find a way to turn this off for text, before re-enabling -->

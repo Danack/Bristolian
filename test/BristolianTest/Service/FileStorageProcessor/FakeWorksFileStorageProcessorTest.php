@@ -10,7 +10,7 @@ use BristolianTest\BaseTestCase;
 use Bristolian\Service\FileStorageProcessor\ObjectStoredFileInfo;
 
 /**
- * @covers \Bristolian\Service\FileStorageProcessor\FakeWorksFileStorageProcessor
+ * @coversNothing
  */
 class FakeWorksFileStorageProcessorTest extends BaseTestCase
 {

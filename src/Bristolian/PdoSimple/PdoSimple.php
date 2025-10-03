@@ -185,6 +185,35 @@ class PdoSimple
         return $object;
     }
 
+
+    /**
+     * @template T of object
+     * @param string $query
+     * @param array<string, string|int> $params
+     * @param class-string<T> $classname
+     * @return T
+     * @throws RowNotFoundException
+     */
+    public function fetchOneAsObjectConstructor(string $query, array $params, string $classname)
+    {
+        [$result, $statement] = $this->prepareAndExecute($query, $params);
+
+        $statement->setFetchMode(PDO::FETCH_ASSOC);
+        $row = $statement->fetch();
+
+        if ($row === false) {
+            throw new RowNotFoundException("The query did not result in a row");
+        }
+
+
+        $reflection = new \ReflectionClass($classname);
+        $converted_row = convertRowToDatetime($row);
+        $instance = $reflection->newInstanceArgs($converted_row);
+
+        return $instance;
+    }
+
+
     /**
      * This version assigns the properties magically, before calling the constructor.
      *

@@ -51,6 +51,23 @@ function getAllApiRoutes()
         ['/api/rooms/{room_id:.*}/files', 'GET', 'Bristolian\AppController\Rooms::getFiles'],
 
 
+        [
+            '/api/chat/message',
+            'GET',
+            'Bristolian\AppController\Chat::send_message_get',
+        ],
+
+        [
+            '/api/chat/message',
+            'POST',
+            'Bristolian\AppController\Chat::send_message',
+        ],
+
+        [
+            '/api/chat/room_messages/{room_id:.*}/',
+            'GET',
+            'Bristolian\AppController\Chat::get_room_messages',
+        ],
 
 
 

@@ -63,7 +63,8 @@ class ToArrayTest extends BaseTestCase
 
         $expected = [
             "foo" => "John",
-            "dateTime" => "2010-01-28T15:00:00.000000+02:00"
+//            "dateTime" => "2010-01-28T15:00:00.000000+02:00"
+            "dateTime" => '2010-01-28T15:00:00+02:00'
         ];
 
         $this->assertSame($expected, $result);

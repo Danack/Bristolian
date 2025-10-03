@@ -11,7 +11,7 @@ use Bristolian\Service\FileStorageProcessor\ObjectStoredFileInfo;
 use Bristolian\Service\RoomFileStorage\UploadError;
 
 /**
- * @covers \Bristolian\Service\FileStorageProcessor\StandardFileStorageProcessor
+ * @coversNothing
  */
 class StandardFileStorageProcessorTest extends BaseTestCase
 {

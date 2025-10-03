@@ -124,8 +124,8 @@ function injectionParams()
         \Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo::class =>
           \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo::class,
 
-
-
+        Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::class =>
+            \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class,
     ];
 
 

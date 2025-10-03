@@ -5,6 +5,11 @@ namespace Bristolian\Session;
 use Asm\Session as RawSession;
 use Bristolian\Model\AdminUser;
 
+/**
+ * This class is only instantiable if the user is logged in.
+ *
+ * TOOD - rename the session classes so they reflect reality more accurately.
+ */
 class AppSession implements UserSession
 {
     const LOGGED_IN = 'LOGGED_IN';

@@ -56,6 +56,10 @@ function injectionParams() : InjectionParams
 
         \Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage::class =>
           \Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::class,
+
+        \Bristolian\Service\RoomMessageService\RoomMessageService::class =>
+          \Bristolian\Service\RoomMessageService\RedisRoomMessageService::class
+
     ];
 
     // Delegate the creation of types to callables.

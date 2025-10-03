@@ -1177,7 +1177,8 @@ function mapStreamingResponseToPSR7(
 }
 
 
-function purgeVarnish($urlPath) {
+function purgeVarnish($urlPath)
+{
     $varnishHost = 'varnish';
     $varnishPort = 80;
 

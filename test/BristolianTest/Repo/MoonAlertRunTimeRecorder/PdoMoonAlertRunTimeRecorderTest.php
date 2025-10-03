@@ -7,7 +7,7 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 
 /**
- * @covers \Bristolian\Repo\RunTimeRecorderRepo\PdoMoonAlertRunTimeRecorder
+ * @coversNothing
  */
 class PdoMoonAlertRunTimeRecorderTest extends BaseTestCase
 {

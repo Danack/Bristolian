@@ -80,6 +80,14 @@ function addDebugCommands(Application $console)
     $command->setDescription("Test adding a file to a room.");
     $console->add($command);
 
+
+    $command = new Command(
+        'debug:send_message_to_room',
+        'Bristolian\CliController\Debug::send_message_to_room'
+    );
+    $command->setDescription("Test sending message to a room.");
+    $command->addArgument('message', InputArgument::REQUIRED, "The message to send");
+    $console->add($command);
 }
 
 function addSeedCommands(Application $console)

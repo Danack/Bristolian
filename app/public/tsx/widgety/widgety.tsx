@@ -26,9 +26,11 @@ const setupWidgetForElement = (element: HTMLOrSVGElement, component: object, h: 
   );
 };
 
-const setupWidget = (widgetBindings: WidgetClassBinding, h: any, render: any) => {
-  const domElements = document.getElementsByClassName(widgetBindings.class);
+const setupWidget = (widgetBinding: WidgetClassBinding, h: any, render: any) => {
+  const domElements = document.getElementsByClassName(widgetBinding.class);
   const domElementsSnapshot = [];
+
+
 
   // take a static snapshot of the domElementsSnapshot, to prevent
   // yo'dawging of widgetBindings creation.
@@ -48,7 +50,7 @@ const setupWidget = (widgetBindings: WidgetClassBinding, h: any, render: any) =>
     //     continue;
     // }
     // @ts-ignore: you not helping here.
-    setupWidgetForElement(element, widgetBindings.component, h, render);
+    setupWidgetForElement(element, widgetBinding.component, h, render);
   }
 };
 

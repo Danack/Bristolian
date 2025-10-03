@@ -2,12 +2,14 @@
 
 namespace Bristolian\CliController;
 
+use Bristolian\ChatMessage\StandardMessage;
 use Bristolian\Model\WebPushNotification;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Service\WebPushService\WebPushService;
-use Bristolian\Events\ContentAdded;
-use Bristolian\Keys\ContentModifiedKey;
+//use Bristolian\ChatMessage\ContentAdded;
+use Bristolian\Keys\RoomMessageKey;
+use Bristolian\Service\RoomMessageService\RoomMessageService;
 
 function fn_level_1(): void
 {
@@ -78,16 +80,48 @@ class Debug
         echo generateSystemInfoEmailContent();
     }
 
-    public function test_add_room_file(\Redis $redis): void
-    {
-        $event = new ContentAdded(
-            $room_id = '12345',
-            $room_name = 'Test room',
-            $user_id = "12345",
-            $user_name = "Danack",
-            $description = "Test description",
-        );
+//    public function test_add_room_file(\Redis $redis): void
+//    {
+//        $event = new ContentAdded(
+//            $room_id = '12345',
+//            $room_name = 'Test room',
+//            $user_id = "12345",
+//            $user_name = "Danack",
+//            $description = "Test description",
+//        );
+//
+//        $redis->rPush(RoomMessageKey::getAbsoluteKeyName(), $event->toString());
+//    }
 
-        $redis->rPush(ContentModifiedKey::getAbsoluteKeyName(), $event->toString());
+
+    public function send_message_to_room(
+        RoomMessageService $roomMessageService,
+        string $message,
+    ) {
+        $standard_message = new StandardMessage($message);
+        $roomMessageService->sendMessage($standard_message);
+    }
+
+
+    public function generate_room_messages()
+    {
+        $users = [
+            'Alice',
+            'Bob',
+            'Carol',
+            'Dave',
+            'Eve',
+            'Frank',
+            'Grace',
+            'Heidi',
+            'Ivan',
+            'Judy',
+            'Mallory',
+            'Oscar',
+            'Peggy',
+            'Trent',
+            'Victor',
+            'Walter',
+        ];
     }
 }

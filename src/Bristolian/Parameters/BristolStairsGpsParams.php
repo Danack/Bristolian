@@ -11,7 +11,6 @@ use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 use Bristolian\Parameters\PropertyType\GpsFloat;
 
-
 /**
  * This is used for setting a new flight of stairs position.
  *
@@ -24,7 +23,6 @@ class BristolStairsGpsParams implements DataType
     use GetInputTypesFromAttributes;
 
     public function __construct(
-
         #[GpsFloat('gps_latitude')]
         public readonly float|null $latitude,
         #[GpsFloat('gps_longitude')]
