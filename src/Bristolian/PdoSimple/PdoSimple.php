@@ -9,8 +9,8 @@ use PDO;
 use PDOException;
 
 /**
- * @param  array<string, string|int> $row
- * @return array<string, string|\DateTimeInterface>
+ * @param  array<string, string|int|null> $row
+ * @return array<string, string|\DateTimeInterface|null>
  * @throws \Exception
  *
  * TODO - when upgrading to PHP 8.3, change to \DateMalformedStringException

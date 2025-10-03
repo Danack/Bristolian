@@ -18,7 +18,7 @@ class ClientHandler implements WebsocketClientHandler
     ) {
     }
 
-    public function getGateway(): WebsocketClientGateway
+    public function getGateway(): WebsocketGateway
     {
         return $this->gateway;
     }

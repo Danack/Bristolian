@@ -14,7 +14,7 @@ class StandardChatMessageService implements ChatMessageService
     ) {
     }
 
-    public function handleChatMessage(string $user_id, ChatMessageParam $chatMessage)
+    public function handleChatMessage(string $user_id, ChatMessageParam $chatMessage): void
     {
 
         $message_id = $this->chatMessageRepo->storeChatMessageForUser(

@@ -257,9 +257,9 @@ SQL;
 
         // Assertions
         $this->assertInstanceOf(PdoSimpleTestObjectConstructor::class, $result);
-        $this->assertIsInt($result->id);
-        $this->assertIsString($result->test_string);
-        $this->assertIsInt($result->test_int);
+        $this->assertSame(1, $result->id);
+        $this->assertSame('test', $result->test_string);
+        $this->assertSame(42, $result->test_int);
         $this->assertInstanceOf(\DateTimeInterface::class, $result->created_at);
     }
 

@@ -30,7 +30,6 @@ class PdoSimpleDateTimeFunctionsTest extends BaseTestCase
 
         $result = \Bristolian\PdoSimple\convertRowToDatetime($row);
 
-        $this->assertIsArray($result);
         $this->assertSame(1, $result['id']);
         $this->assertSame('test', $result['test_string']);
         $this->assertInstanceOf(\DateTimeImmutable::class, $result['created_at']);
@@ -57,7 +56,6 @@ class PdoSimpleDateTimeFunctionsTest extends BaseTestCase
 
         $result = \Bristolian\PdoSimple\convertRowToDatetime($row);
 
-        $this->assertIsArray($result);
         $this->assertSame(1, $result['id']);
         $this->assertSame('test', $result['test_string']);
         $this->assertNull($result['created_at']);
@@ -76,7 +74,6 @@ class PdoSimpleDateTimeFunctionsTest extends BaseTestCase
 
         $result = \Bristolian\PdoSimple\convertRowToDatetime($row);
 
-        $this->assertIsArray($result);
         $this->assertSame(1, $result['id']);
         $this->assertSame('test', $result['test_string']);
         $this->assertSame('value', $result['some_other_field']);
@@ -105,7 +102,6 @@ class PdoSimpleDateTimeFunctionsTest extends BaseTestCase
 
         $result = \Bristolian\PdoSimple\convertRowFromDatetime($row);
 
-        $this->assertIsArray($result);
         $this->assertSame(1, $result['id']);
         $this->assertSame('test', $result['test_string']);
         $this->assertSame('2023-01-01 12:00:00', $result['created_at']);
@@ -122,7 +118,6 @@ class PdoSimpleDateTimeFunctionsTest extends BaseTestCase
 
         $result = \Bristolian\PdoSimple\convertRowFromDatetime($row);
 
-        $this->assertIsArray($result);
         $this->assertSame(1, $result['id']);
         $this->assertSame('test', $result['test_string']);
         $this->assertSame(123, $result['some_int']);
@@ -141,7 +136,6 @@ class PdoSimpleDateTimeFunctionsTest extends BaseTestCase
 
         $result = \Bristolian\PdoSimple\convertRowFromDatetime($row);
 
-        $this->assertIsArray($result);
         $this->assertSame(1, $result['id']);
         $this->assertSame('test', $result['test_string']);
         $this->assertSame('2023-01-01 12:00:00', $result['created_at']);

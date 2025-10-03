@@ -10,5 +10,5 @@ use Bristolian\Parameters\ChatMessageParam;
  */
 interface ChatMessageService
 {
-    public function handleChatMessage(string $user_id, ChatMessageParam $chatMessage);
+    public function handleChatMessage(string $user_id, ChatMessageParam $chatMessage): void;
 }

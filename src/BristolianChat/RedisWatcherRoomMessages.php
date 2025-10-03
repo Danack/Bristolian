@@ -19,7 +19,7 @@ class RedisWatcherRoomMessages
     ) {
     }
 
-    public function run()
+    public function run(): void
     {
         while (true) {
             try {

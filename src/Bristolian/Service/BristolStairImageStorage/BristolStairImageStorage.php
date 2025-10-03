@@ -24,7 +24,7 @@ interface BristolStairImageStorage
      * @param string $user_id
      * @param UploadedFile $uploadedFile
      * @param string[] $allowedExtensions
-     * @return string|UploadError
+     * @return BristolStairInfo|UploadError
      */
     public function storeFileForUser(
         string $user_id,

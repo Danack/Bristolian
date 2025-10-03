@@ -15,7 +15,7 @@ class Chat
         return new JsonNoCacheResponse(['this is meant to be a post end point.']);
     }
 
-    public function get_test_page()
+    public function get_test_page(): string
     {
         $props = [
             'room_id' => '019980fb-8a39-7223-9402-e9d7973cd7f7'
@@ -42,7 +42,7 @@ HTML;
     public function get_room_messages(
         ChatMessageRepo $chatMessageRepo,
         string $room_id
-    ) {
+    ): void {
     }
 
 

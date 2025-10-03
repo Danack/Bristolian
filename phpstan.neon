@@ -13,6 +13,7 @@ parameters:
     bootstrapFiles:
         - config.generated.php
         - credentials.php
+        - chat/vendor/autoload.php
         - api/src/api_convert_exception_to_json_functions.php
         - api/src/api_factories.php
         - api/src/api_functions.php
@@ -37,3 +38,6 @@ parameters:
         -
           message: '#Argument of an invalid type .* supplied for foreach, only iterables are supported.#'
           path: *src/Bristolian/ToArray.php
+        -
+          message: '#While loop condition is always true.#'
+          path: *src/BristolianChat/RedisWatcherRoomMessages.php

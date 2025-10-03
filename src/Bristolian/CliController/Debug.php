@@ -97,13 +97,13 @@ class Debug
     public function send_message_to_room(
         RoomMessageService $roomMessageService,
         string $message,
-    ) {
+    ): void {
         $standard_message = new StandardMessage($message);
         $roomMessageService->sendMessage($standard_message);
     }
 
 
-    public function generate_room_messages()
+    public function generate_room_messages(): void
     {
         $users = [
             'Alice',

@@ -13,6 +13,7 @@ use Ramsey\Uuid\Uuid;
 use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage;
+use Bristolian\Parameters\BristolStairsGpsParams;
 use Bristolian\Filesystem\BristolStairsFilesystem;
 
 class BristolStairs
@@ -83,10 +84,12 @@ class BristolStairs
 
         $uploadedFile = UploadedFile::fromFile($image_filename);
 
+        $gpsParams = new BristolStairsGpsParams(null, null);
         $stairInfoOrError = $bristolStairImageStorage->storeFileForUser(
             $user_id,
             $uploadedFile,
             get_supported_bristolian_stair_image_extensions(),
+            $gpsParams
         );
 
         if ($stairInfoOrError instanceof UploadError) {
