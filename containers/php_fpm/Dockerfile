@@ -22,10 +22,10 @@ RUN  apt-get update -qq && \
      php8.2-intl php8.2-redis php8.2-zip \
      build-essential make gcc g++
 
-# WORKDIR /var/app
+WORKDIR /tmp
 
 # Copy pie.phar from container directory and install the extension
-# COPY pie.phar /var/app/pie.phar
+COPY pie.phar /tmp/pie.phar
 RUN php pie.phar install danack/fnbind:@alpha
 
 # Stage 2: Runtime stage without dev dependencies
