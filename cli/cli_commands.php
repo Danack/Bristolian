@@ -21,6 +21,7 @@ function add_console_commands(Application $console)
     addGenerateCommands($console);
 
     addBristolStairsCommands($console);
+    addOpenApiCommands($console);
 
     addMoonCommands($console);
 }
@@ -243,4 +244,20 @@ function addBristolStairsCommands(Application $console)
     $command->setDescription("chcked stored sfilessfd.");
     $console->add($command);
 
+}
+
+function addOpenApiCommands(Application $console)
+{
+    $command = new Command('openapi:generate', 'Bristolian\CliController\OpenApi::generate');
+    $command->setDescription("Generate OpenAPI specification from PHP generator");
+    $console->add($command);
+
+    $command = new Command('openapi:validate', 'Bristolian\CliController\OpenApi::validate');
+    $command->setDescription("Validate an OpenAPI JSON file");
+    $command->addArgument('file_path', InputArgument::REQUIRED, "Path to the OpenAPI JSON file to validate");
+    $console->add($command);
+
+    $command = new Command('openapi:generate-and-validate', 'Bristolian\CliController\OpenApi::generateAndValidate');
+    $command->setDescription("Generate OpenAPI specification and validate it");
+    $console->add($command);
 }
