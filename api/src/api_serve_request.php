@@ -31,7 +31,8 @@ $injectionParams->addToInjector($injector);
 $logger = $injector->make(Bristolian\Basic\ErrorLogger::class);
 
 
-
+// Any class that implements this interface and method,
+// can be instantiated through that static method.
 $injector->staticFactory(\Bristolian\StaticFactory::class, 'createFromRequest');
 $injector->share($injector);
 

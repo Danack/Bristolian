@@ -252,14 +252,29 @@ SQL;
     {
         // Setup
         $pdo_simple = $this->injector->make(PdoSimple::class);
-        $sql = pdo_simple_test::SELECT;
-        $result = $pdo_simple->fetchOneAsObjectConstructor($sql, [], PdoSimpleTestObjectConstructor::class);
+        $sql_insert = pdo_simple_test::INSERT;
+        $test_string = 'test string ' . mktime(1);
+        $test_int = rand(1, 100);
+
+        $params = [
+            'test_string' => $test_string,
+            'test_int' => $test_int
+        ];
+
+        $insert_id = $pdo_simple->insert($sql_insert, $params);
+
+        $sql_select = pdo_simple_test::SELECT . ' where id = :id';
+        $result = $pdo_simple->fetchOneAsObjectConstructor(
+            $sql_select,
+            [':id' => $insert_id],
+            PdoSimpleTestObjectConstructor::class
+        );
 
         // Assertions
         $this->assertInstanceOf(PdoSimpleTestObjectConstructor::class, $result);
-        $this->assertSame(1, $result->id);
-        $this->assertSame('test', $result->test_string);
-        $this->assertSame(42, $result->test_int);
+        $this->assertSame($insert_id, $result->id);
+        $this->assertSame($test_string, $result->test_string);
+        $this->assertSame($test_int, $result->test_int);
         $this->assertInstanceOf(\DateTimeInterface::class, $result->created_at);
     }
 
