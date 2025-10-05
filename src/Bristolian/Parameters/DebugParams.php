@@ -7,8 +7,9 @@ use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
+use Bristolian\StaticFactory;
 
-class DebugParams implements DataType, \Bristolian\StaticFactory
+class DebugParams implements DataType, StaticFactory
 {
     use CreateFromRequest;
     use CreateFromVarMap;

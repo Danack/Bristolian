@@ -332,6 +332,75 @@ class BaseTestCase extends TestCase
 //        return $description;
 //    }
 
+
+    /**
+     * @param string $identifier
+     * @param string $expectedProblem
+     * @param \DataType\ValidationProblem[] $validationProblems
+     */
+    protected function assertValidationProblemRegexp(
+        string $identifier,
+        string $expectedProblem,
+               $validationProblems
+    ) {
+        $expectedProblemRegexp = templateStringToRegExp($expectedProblem);
+
+        $correct_identifier_incorrect_message = false;
+
+        foreach ($validationProblems as $validationProblem) {
+            if ($validationProblem->getInputStorage()->getPath() !== $identifier) {
+                continue;
+            }
+
+            if (preg_match($expectedProblemRegexp, $validationProblem->getProblemMessage())) {
+                // correct problem message found
+                return;
+            }
+            // loop over all entries before failing.
+            $correct_identifier_incorrect_message = true;
+        }
+
+        if ($correct_identifier_incorrect_message === true) {
+            $incorrectMessageText = sprintf(
+                "Validation problem for identifier '%s' found, but wrong message.\nExpected: '%s'\nActual '%s'\n",
+                $identifier,
+                $expectedProblem,
+                $validationProblem->getProblemMessage()
+            );
+
+            $this->fail($incorrectMessageText);
+        }
+
+        // Todo - make a function
+        // Identifier not found
+        $pathsAsStrings = [];
+        foreach ($validationProblems as $validationProblem) {
+            $pathsAsStrings[] = $validationProblem->getInputStorage()->getPath();
+        }
+        $missingIndentifierText = sprintf(
+            "Identifier '%s' not found in validation problems. Identifiers found are '%s'",
+            $identifier,
+            implode(", ", $pathsAsStrings)
+        );
+
+        $this->fail($missingIndentifierText);
+    }
+
+    /**
+     * @param \DataType\ValidationProblem[] $validationProblems
+     * @param array $messagesByIdentifier
+     * @return void
+     */
+    protected function assertValidationProblems(
+        array $validationProblems,
+        array $messagesByIdentifier
+    ) {
+
+        foreach ($messagesByIdentifier as $identifier => $message) {
+            $this->assertValidationProblemRegexp($identifier, $message, $validationProblems);
+        }
+    }
+
 //    /**
 //     * @param int $expected_count
 //     * @param \TypeSpec\ValidationProblem[] $validationProblems
