@@ -86,6 +86,8 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
           if (gps) {
             this.setState({
               gpsData: gps,
+              gps_latitude: gps.latitude,
+              gps_longitude: gps.longitude,
               debug: "gps set from exifr"
             });
           } else {
@@ -119,6 +121,8 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
             longitude: pos.coords.longitude,
             altitude: pos.coords.altitude ?? undefined,
           },
+          gps_latitude: pos.coords.latitude,
+          gps_longitude: pos.coords.longitude,
           debug: "gps set navigator.geolocation"
         });
       },

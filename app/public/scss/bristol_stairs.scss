@@ -7,7 +7,6 @@
 
     .bristol_stairs_map,
     .bristol_stairs_panel {
-        //background: #ddd;
         box-sizing: border-box;
     }
 
@@ -29,14 +28,13 @@
         flex-direction: column;
         align-items: center;      // horizontal centering
         justify-content: center;  // vertical centering
-        //border: 1px solid #000;
 
         img {
             display: block;
             margin: 0;
             padding: 0;
             max-width: 90vw;
-            max-height: 500px;
+            max-height: 40vh;
             border: 2px solid #000;
             width: auto;
             height: auto;
@@ -102,6 +100,7 @@
 
             img {
                 max-width: 500px;
+                max-height: 500px;
             }
         }
     }
