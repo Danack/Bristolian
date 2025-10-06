@@ -1,6 +1,6 @@
 // FileUpload.tsx
 import { h, Component } from "preact";
-import * as exifr from "exifr";
+// import * as exifr from "exifr";
 
 export interface FileUploadProps {
   uploadUrl: string; // endpoint to send files to
@@ -21,9 +21,6 @@ interface FileUploadState {
   gps_latitude: number|null,
   gps_longitude: number|null,
   debug: string,
-
-  gpsData?: { latitude: number; longitude: number; altitude?: number };
-
 }
 
 export class FileUpload extends Component<FileUploadProps, FileUploadState> {
@@ -78,25 +75,29 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
       (file.type && allowedTypes.includes(file.type)) &&
       (fileExtension && allowedExtensions.includes(fileExtension))
     ) {
-      this.setState({ selectedFile: file, error: null, gpsData: undefined });
+      this.setState({
+        selectedFile: file,
+        error: null,
+        gps_latitude: null,
+        gps_longitude: null,
+      });
 
       if (fetchGPS) {
-        // Try to read EXIF GPS first
-        exifr.gps(file).then((gps) => {
-          if (gps) {
-            this.setState({
-              gpsData: gps,
-              gps_latitude: gps.latitude,
-              gps_longitude: gps.longitude,
-              debug: "gps set from exifr"
-            });
-          } else {
-            // No EXIF GPS → fall back to browser geolocation
-            this.requestBrowserLocation();
-          }
-        }).catch(() => {
+        // // Try to read EXIF GPS first
+        // exifr.gps(file).then((gps) => {
+        //   if (gps) {
+        //     this.setState({
+        //       gps_latitude: gps.latitude,
+        //       gps_longitude: gps.longitude,
+        //       debug: "gps set from exifr"
+        //     });
+        //   } else {
+        //     // No EXIF GPS → fall back to browser geolocation
+        //     this.requestBrowserLocation();
+        //   }
+        // }).catch(() => {
           this.requestBrowserLocation();
-        });
+        // });
 
         console.log("Hmm");
       }
@@ -116,11 +117,6 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         this.setState({
-          gpsData: {
-            latitude: pos.coords.latitude,
-            longitude: pos.coords.longitude,
-            altitude: pos.coords.altitude ?? undefined,
-          },
           gps_latitude: pos.coords.latitude,
           gps_longitude: pos.coords.longitude,
           debug: "gps set navigator.geolocation"
@@ -156,13 +152,8 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
       });
     }
 
-    // Add extracted GPS data if available
-    if ((selectedFile as any).gpsData) {
-      const gps = (selectedFile as any).gpsData;
-      formData.append("gps_latitude", gps.latitude);
-      formData.append("gps_longitude", gps.longitude);
-      if (gps.altitude) formData.append("gps_altitude", gps.altitude);
-    }
+    formData.append("gps_latitude", String(this.state.gps_latitude));
+    formData.append("gps_longitude", String(this.state.gps_longitude));
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", uploadUrl, true);
