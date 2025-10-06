@@ -9,7 +9,7 @@ use Bristolian\Parameters\MigrationThatHasBeenRun;
 use Bristolian\PdoSimple\PdoSimple;
 use PDO;
 use function DataType\createArrayOfType;
-use Bristolian\Parameters\MigrationFromCode;
+use Bristolian\Model\MigrationFromCode;
 
 /**
  * @codeCoverageIgnore

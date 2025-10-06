@@ -12,7 +12,6 @@ use function convertToValue;
 
 /**
  * @coversNothing
- * @group wip
  */
 class ConvertToValueTest extends BaseTestCase
 {

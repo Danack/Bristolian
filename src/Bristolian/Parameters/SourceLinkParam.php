@@ -2,6 +2,7 @@
 
 namespace Bristolian\Parameters;
 
+use Bristolian\Parameters\PropertyType\SourceLinkHighlightsJson;
 use Bristolian\Parameters\PropertyType\SourceLinkText;
 use Bristolian\Parameters\PropertyType\SourceLinkTitle;
 use DataType\Create\CreateFromArray;

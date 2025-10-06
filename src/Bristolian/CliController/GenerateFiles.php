@@ -337,8 +337,8 @@ class GenerateFiles
 
             'BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME' => \Bristolian\AppController\BristolStairs::BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME,
 
-            'SOURCELINK_JSON_MINIMUM_LENGTH' => \Bristolian\Parameters\SourceLinkHighlightsJson::MINIMUM_LENGTH,
-            'SOURCELINK_JSON_MAXIMUM_LENGTH' => \Bristolian\Parameters\SourceLinkHighlightsJson::MAXIMUM_LENGTH,
+            'SOURCELINK_JSON_MINIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\SourceLinkHighlightsJson::MINIMUM_LENGTH,
+            'SOURCELINK_JSON_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\SourceLinkHighlightsJson::MAXIMUM_LENGTH,
 
             'SOURCELINK_TITLE_MINIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\SourceLinkTitle::MINIMUM_LENGTH,
             'SOURCELINK_TITLE_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\SourceLinkTitle::MAXIMUM_LENGTH,

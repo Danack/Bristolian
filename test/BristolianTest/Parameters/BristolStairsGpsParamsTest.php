@@ -11,7 +11,6 @@ use VarMap\ArrayVarMap;
 
 /**
  * @covers \Bristolian\Parameters\BristolStairsGpsParams
- * @group wip
  */
 class BristolStairsGpsParamsTest extends BaseTestCase
 {
