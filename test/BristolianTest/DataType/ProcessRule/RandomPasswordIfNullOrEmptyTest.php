@@ -23,6 +23,8 @@ class RandomPasswordIfNullOrEmptyTest extends BaseTestCase
         $rule = new RandomPasswordIfNullOrEmpty(8);
         $dataStorage = TestArrayDataStorage::fromArraySetFirstValue([]);
         $processedValues = new ProcessedValues();
+
+        // Actually set case
         $validationResult = $rule->process(
             'password12345', $processedValues, $dataStorage
         );
@@ -30,12 +32,14 @@ class RandomPasswordIfNullOrEmptyTest extends BaseTestCase
         $this->assertSame($validationResult->getValue(), $testValue);
 
 
+        // Null case
         $validationResult = $rule->process(
             null, $processedValues, $dataStorage
         );
         $this->assertNoProblems($validationResult);
         $this->assertGreaterThanOrEqual(8, strlen($validationResult->getValue()));
 
+        // Empty case
         $validationResult = $rule->process(
             '', $processedValues, $dataStorage
         );

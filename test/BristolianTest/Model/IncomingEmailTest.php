@@ -11,7 +11,7 @@ use Bristolian\Model\IncomingEmailParam;
 class IncomingEmailTest extends BaseTestCase
 {
     /**
-     * @group wip
+     * @covers \Bristolian\Model\IncomingEmailParam
      */
     public function testWorks()
     {

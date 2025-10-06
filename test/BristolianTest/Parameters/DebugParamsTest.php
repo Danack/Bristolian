@@ -12,7 +12,6 @@ use DataType\Exception\ValidationException;
 
 /**
  * @covers \Bristolian\Parameters\DebugParams
- * @group wip
  */
 class DebugParamsTest extends BaseTestCase
 {
@@ -52,9 +51,6 @@ class DebugParamsTest extends BaseTestCase
 
     public function testFailsWithMissingDetail()
     {
-        // Removed expectException
-//        $this->expectException(\DataType\Exception\ValidationException::class);
-
         try {
             $params = [
                 'message' => 'some message',
@@ -105,8 +101,8 @@ class DebugParamsTest extends BaseTestCase
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
                 [
-                    '/message' => \DataType\Messages::WRONG_TYPE,
-                    '/detail' => \DataType\Messages::WRONG_TYPE
+                    '/message' => \DataType\Messages::STRING_EXPECTED,
+                    '/detail' => \DataType\Messages::STRING_EXPECTED
                 ]
             );
         }
@@ -127,8 +123,8 @@ class DebugParamsTest extends BaseTestCase
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
                 [
-                    '/message' => \DataType\Messages::WRONG_TYPE,
-                    '/detail' => \DataType\Messages::WRONG_TYPE
+                    '/message' => \DataType\Messages::STRING_REQUIRED_FOUND_NULL,
+                    '/detail' => \DataType\Messages::STRING_REQUIRED_FOUND_NULL
                 ]
             );
         }
