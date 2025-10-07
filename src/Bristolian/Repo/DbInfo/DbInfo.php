@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\DbInfo;
 
-use Bristolian\Parameters\MigrationThatHasBeenRun;
+use Bristolian\Model\MigrationThatHasBeenRun;
 use Bristolian\Parameters\Table;
 
 /**

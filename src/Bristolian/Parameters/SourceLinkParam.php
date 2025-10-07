@@ -5,13 +5,14 @@ namespace Bristolian\Parameters;
 use Bristolian\Parameters\PropertyType\SourceLinkHighlightsJson;
 use Bristolian\Parameters\PropertyType\SourceLinkText;
 use Bristolian\Parameters\PropertyType\SourceLinkTitle;
+use Bristolian\StaticFactory;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 
-class SourceLinkParam implements DataType
+class SourceLinkParam implements DataType, StaticFactory
 {
     use CreateFromArray;
     use CreateFromRequest;

@@ -5,14 +5,14 @@ namespace BristolianTest\Parameters;
 use Bristolian\Parameters\PropertyType\BasicDateTime;
 use Bristolian\Parameters\PropertyType\BasicString;
 use BristolianTest\BaseTestCase;
-use Bristolian\Parameters\MigrationThatHasBeenRun;
+use Bristolian\Model\MigrationThatHasBeenRun;
 use DataType\Create\CreateFromArray;
 use Safe\DateTimeImmutable;
 use VarMap\ArrayVarMap;
 use function DataType\createArrayOfType;
 
 /**
- * @covers \Bristolian\Parameters\MigrationThatHasBeenRun
+ * @covers \Bristolian\Model\MigrationThatHasBeenRun
  */
 class MigrationTest extends BaseTestCase
 {

@@ -4,12 +4,13 @@ namespace Bristolian\Parameters;
 
 use Bristolian\Parameters\PropertyType\BasicInteger;
 use Bristolian\Parameters\PropertyType\BasicString;
+use Bristolian\StaticFactory;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 
-class BristolStairsInfoParams implements DataType
+class BristolStairsInfoParams implements DataType, StaticFactory
 {
     use CreateFromRequest;
     use CreateFromVarMap;

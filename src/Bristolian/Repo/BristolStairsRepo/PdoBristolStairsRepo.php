@@ -8,6 +8,7 @@ use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Exception\ContentNotFoundException;
 
 class PdoBristolStairsRepo implements BristolStairsRepo
 {
@@ -37,7 +38,9 @@ SQL;
         $rows_affected = $this->pdo_simple->execute($sql, $params);
 
         if ($rows_affected !== 1) {
-            throw new \Exception("Failed to update bristol_stairs_info");
+            throw ContentNotFoundException::stairs_id_not_found(
+                $stairs_info_params->bristol_stair_info_id
+            );
         }
     }
 
@@ -63,7 +66,9 @@ SQL;
         $rows_affected = $this->pdo_simple->execute($sql, $params);
 
         if ($rows_affected !== 1) {
-            throw new \Exception("Failed to update bristol_stairs_info");
+            throw ContentNotFoundException::stairs_id_not_found(
+                $stairs_position_params->bristol_stair_info_id
+            );
         }
     }
 

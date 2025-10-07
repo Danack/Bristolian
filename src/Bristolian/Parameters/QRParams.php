@@ -2,24 +2,24 @@
 
 namespace Bristolian\Parameters;
 
-use Bristolian\Parameters\PropertyType\BasicString;
+use Bristolian\Parameters\PropertyType\Url;
 use Bristolian\StaticFactory;
-use DataType\Create\CreateFromRequest;
+use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromVarMap;
+use DataType\Create\CreateFromRequest;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 
-class TagParams implements DataType, StaticFactory
+class QRParams implements DataType, StaticFactory
 {
+    use CreateFromArray;
     use CreateFromRequest;
     use CreateFromVarMap;
     use GetInputTypesFromAttributes;
 
     public function __construct(
-        #[BasicString('text')]
-        public readonly string $text,
-        #[BasicString('description')]
-        public readonly string $description,
+        #[Url('url')]
+        public string $url,
     ) {
     }
 }

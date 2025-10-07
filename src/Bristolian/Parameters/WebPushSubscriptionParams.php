@@ -5,18 +5,21 @@ namespace Bristolian\Parameters;
 use Bristolian\Parameters\PropertyType\BasicString;
 use Bristolian\Parameters\PropertyType\WebPushEndPoint;
 use Bristolian\Parameters\PropertyType\WebPushExpirationTime;
+use Bristolian\StaticFactory;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromJson;
+use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;
 use DataType\Create\CreateOrErrorFromArray;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 
-class WebPushSubscriptionParams implements DataType
+class WebPushSubscriptionParams implements DataType, StaticFactory
 {
     use CreateFromVarMap;
     use CreateFromJson;
     use CreateFromArray;
+    use CreateFromRequest;
     use CreateOrErrorFromArray;
     use GetInputTypesFromAttributes;
 

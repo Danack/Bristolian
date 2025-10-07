@@ -10,13 +10,14 @@ use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 use Bristolian\Parameters\PropertyType\GpsFloat;
+use Bristolian\StaticFactory;
 
 /**
  * This is used for setting a new flight of stairs position.
  *
  * Safari and other browser strip out GPS info
  */
-class BristolStairsGpsParams implements DataType
+class BristolStairsGpsParams implements DataType, StaticFactory
 {
     use CreateFromRequest;
     use CreateFromVarMap;

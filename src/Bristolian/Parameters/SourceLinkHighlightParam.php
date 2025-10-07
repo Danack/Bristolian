@@ -4,13 +4,14 @@ namespace Bristolian\Parameters;
 
 use Bristolian\Parameters\PropertyType\SourceLinkPage;
 use Bristolian\Parameters\PropertyType\SourceLinkPositionValue;
+use Bristolian\StaticFactory;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 
-class SourceLinkHighlightParam implements DataType
+class SourceLinkHighlightParam implements DataType, StaticFactory
 {
     use CreateFromArray;
     use CreateFromRequest;

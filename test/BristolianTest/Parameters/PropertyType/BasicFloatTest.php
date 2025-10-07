@@ -8,9 +8,6 @@ use DataType\Create\CreateFromVarMap;
 use DataType\GetInputTypesFromAttributes;
 use VarMap\ArrayVarMap;
 
-/**
- * @group wip
- */
 class BasicFloatTest extends BaseTestCase
 {
     /**

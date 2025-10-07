@@ -11,7 +11,7 @@ use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
 
 use Bristolian\Parameters\PropertyType\PasswordOrRandom;
-use Bristolian\Parameters\Params;
+use Bristolian\Parameters\QRParams;
 use Bristolian\Parameters\Table;
 
 /**

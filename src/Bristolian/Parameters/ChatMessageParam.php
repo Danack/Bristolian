@@ -4,16 +4,19 @@ namespace Bristolian\Parameters;
 
 use Bristolian\Parameters\PropertyType\BasicString;
 use Bristolian\Parameters\PropertyType\ChatMessageReplyId;
+use Bristolian\StaticFactory;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromVarMap;
+use DataType\Create\CreateFromRequest;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 
 /**
  * The parameters passed by a user when they are sending a message.
  */
-class ChatMessageParam implements DataType
+class ChatMessageParam implements DataType, StaticFactory
 {
+    use CreateFromRequest;
     use CreateFromVarMap;
     use CreateFromArray;
     use GetInputTypesFromAttributes;
