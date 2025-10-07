@@ -40,7 +40,6 @@ class ProcessorRunRecordTypeParamTest extends BaseTestCase
     public function testFailsWithInvalidEnumValue()
     {
         try {
-
             $value = "This isn't valid";
 
             $params = [

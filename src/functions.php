@@ -1210,11 +1210,13 @@ function purgeVarnish(string $urlPath): bool
         if ($status >= 200 && $status < 300) {
             \error_log(sprintf("Varnish purge successful: HTTP %d\n", $status));
             return true;
-        } else {
+        }
+        else {
             \error_log(sprintf("Varnish purge failed: HTTP %d\n%s", $status, $response));
             return false;
         }
-    } else {
+    }
+    else {
         \error_log("Could not read HTTP response from Varnish\n");
         return false;
     }

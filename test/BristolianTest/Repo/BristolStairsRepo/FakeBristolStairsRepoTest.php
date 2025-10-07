@@ -12,7 +12,7 @@ use VarMap\ArrayVarMap;
 
 /**
  * Tests for FakeBristolStairsRepo
- * 
+ *
  * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo
  */
 class FakeBristolStairsRepoTest extends BaseTestCase
@@ -525,4 +525,3 @@ class FakeBristolStairsRepoTest extends BaseTestCase
         }
     }
 }
-

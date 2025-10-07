@@ -41,9 +41,10 @@ class BristolStairs
     public function update_stairs_info(
         UserSession $appSession,
         BristolStairsRepo $bristolStairsRepo,
-        VarMap $varMap
+        //        VarMap $varMap,
+        BristolStairsInfoParams $stairs_info_params
     ): JsonResponse {
-        $stairs_info_params = BristolStairsInfoParams::createFromVarMap($varMap);
+//        $stairs_info_params = BristolStairsInfoParams::createFromVarMap($varMap);
         $bristolStairsRepo->updateStairInfo($stairs_info_params);
 
         return new JsonResponse(['success' => true]);
@@ -52,9 +53,10 @@ class BristolStairs
     public function update_stairs_position(
         UserSession $appSession,
         BristolStairsRepo $bristolStairsRepo,
-        VarMap $varMap
+        BristolStairsPositionParams $stairs_position_params
+        //        VarMap $varMap
     ): JsonResponse {
-        $stairs_position_params = BristolStairsPositionParams::createFromVarMap($varMap);
+//        $stairs_position_params = BristolStairsPositionParams::createFromVarMap($varMap);
         $bristolStairsRepo->updateStairPosition($stairs_position_params);
 
         // Usage after storing a post:

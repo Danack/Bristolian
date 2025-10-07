@@ -341,7 +341,7 @@ class BaseTestCase extends TestCase
     protected function assertValidationProblemRegexp(
         string $identifier,
         string $expectedProblem,
-               $validationProblems
+        $validationProblems
     ) {
         $expectedProblemRegexp = templateStringToRegExp($expectedProblem);
 

@@ -17,4 +17,4 @@ class BasicFloatFixture implements DataType
         public readonly float $value,
     ) {
     }
-};
+}

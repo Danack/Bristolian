@@ -191,7 +191,8 @@ class Rooms
     public function addLink(
         UserSession $appSession,
         RoomLinkRepo $roomLinkRepo,
-        VarMap $varMap,
+        LinkParam $linkParam,
+        //        VarMap $varMap,
         string $room_id
     ): JsonResponse {
 //        // TODO - check user logged in
@@ -200,7 +201,7 @@ class Rooms
 //            return new JsonResponse($data, [], 400);
 //        }
 
-        $linkParam = LinkParam::createFromVarMap($varMap);
+//        $linkParam = LinkParam::createFromVarMap($varMap);
 
         // TODO - there needs to be a security check that
         // the user has write access to the room.
@@ -441,11 +442,12 @@ HTML;
         RoomFileRepo $roomFileRepo,
         RoomSourceLinkRepo $roomSourceLinkRepo,
         UserSession $appSession,
-        VarMap $varMap,
+        SourceLinkParam $highLightParam,
+        //        VarMap $varMap,
         string $room_id,
         string $file_id
     ): StubResponse {
-        $highLightParam = SourceLinkParam::createFromVarMap($varMap);
+//        $highLightParam = SourceLinkParam::createFromVarMap($varMap);
 
         $data = json_decode_safe($highLightParam->highlights_json);
 

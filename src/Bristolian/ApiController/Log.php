@@ -4,7 +4,7 @@ namespace Bristolian\ApiController;
 
 use Bristolian\PdoSimple\PdoSimple;
 
-use \Bristolian\Database\processor_run_records;
+
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use SlimDispatcher\Response\JsonResponse;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;

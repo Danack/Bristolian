@@ -15,7 +15,6 @@ use Bristolian\UploadedFiles\UploadedFile;
 use PHPUnit\Framework\MockObject\MockObject;
 use Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo;
 
-
 /**
  * @coversNothing
  * @group wip

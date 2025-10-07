@@ -55,9 +55,12 @@ HTML;
         return $content;
     }
 
-    public function process_add(TagRepo $tagRepo, VarMap $varMap): RedirectResponse
-    {
-        $tagParam = TagParams::createFromVarMap($varMap);
+    public function process_add(
+        TagRepo $tagRepo,
+        TagParams $tagParam
+        //        VarMap $varMap
+    ): RedirectResponse {
+//        $tagParam = TagParams::createFromVarMap($varMap);
 
         $tag = $tagRepo->createTag($tagParam);
 

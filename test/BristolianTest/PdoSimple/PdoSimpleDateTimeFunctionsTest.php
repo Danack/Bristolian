@@ -186,8 +186,8 @@ where
 SQL;
 
         $result = $pdo_simple->fetchOneAsObjectConstructor(
-            $fetch_sql, 
-            [':id' => $insert_id], 
+            $fetch_sql,
+            [':id' => $insert_id],
             PdoSimpleTestObjectConstructor::class
         );
 

@@ -120,5 +120,4 @@ class BristolStairsInfoParamsTest extends BaseTestCase
 
         $this->assertInstanceOf(\DataType\DataType::class, $bristolStairsInfoParams);
     }
-
 }

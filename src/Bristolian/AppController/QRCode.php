@@ -10,9 +10,11 @@ use VarMap\VarMap;
 
 class QRCode
 {
-    public function get(VarMap $varMap): SVGResponse
-    {
-        $qrData = QRParams::createFromVarMap($varMap);
+    public function get(
+        QRParams $qrData,
+        //        VarMap $varMap
+    ): SVGResponse {
+//        $qrData = QRParams::createFromVarMap($varMap);
 
 //        https://www.qrcode.com/en/about/version.html#versionPage1_10
 

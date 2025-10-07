@@ -13,7 +13,7 @@ use VarMap\ArrayVarMap;
 
 /**
  * Tests for FakeBristolStairsRepo
- * 
+ *
  * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo
  */
 class PdoBristolStairsRepoTest extends BaseTestCase
@@ -25,7 +25,4 @@ class PdoBristolStairsRepoTest extends BaseTestCase
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
     }
-
-
 }
-
