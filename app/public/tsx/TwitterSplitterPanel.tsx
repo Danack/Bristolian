@@ -42,6 +42,22 @@ function getNumberPostfixString(numbering: Numbering, tweet_index: number) {
 }
 
 
+// Calculate the Twitter length of text, counting URLs as 23 characters each
+function getTwitterLength(text: string): number {
+  // Twitter counts URLs as 23 characters regardless of their actual length
+  // Match URLs (http/https)
+  const urlRegex = /https?:\/\/\S+/g;
+  const urls = text.match(urlRegex) || [];
+  
+  let length = text.length;
+  for (const url of urls) {
+    // Subtract actual URL length and add Twitter's counting (23 chars)
+    length = length - url.length + 23;
+  }
+  
+  return length;
+}
+
 function remove_text(remaining_text: string, numbering: Numbering, tweet_index: number) {
 
   let number_prefix = getNumberPrefixString(numbering, tweet_index);
@@ -49,27 +65,40 @@ function remove_text(remaining_text: string, numbering: Numbering, tweet_index: 
 
   let size_available = 280 - number_prefix.length;
 
-  if (remaining_text.length < size_available) {
+  if (getTwitterLength(remaining_text) <= size_available) {
     return ["", number_prefix + remaining_text + number_postfix];
   }
 
-  let text_to_analyze = remaining_text.slice(0, size_available);
+  // We need to find where to split based on Twitter length, not character count
+  // Start with a reasonable estimate
+  let search_length = Math.min(remaining_text.length, size_available + 200);
+  let text_to_analyze = remaining_text.slice(0, search_length);
 
   let breakpoints = [
+    "\n\n",
     ". ",
     ", ",
-    ",",
-    "\n\n"
+    ","
   ];
 
   let best_break_point = 0;
+  let best_break_point_twitter_len = 0;
 
   for (const breakpoint of breakpoints) {
-    let index_of_break = text_to_analyze.lastIndexOf(breakpoint);
-    if (index_of_break != -1) {
-      if (best_break_point < index_of_break) {
+    let index_of_break = 0;
+    while (true) {
+      index_of_break = text_to_analyze.indexOf(breakpoint, index_of_break);
+      if (index_of_break === -1) break;
+      
+      let candidate_text = remaining_text.substring(0, index_of_break + 1);
+      let twitter_len = getTwitterLength(candidate_text);
+      
+      if (twitter_len <= size_available && twitter_len > best_break_point_twitter_len) {
         best_break_point = index_of_break;
+        best_break_point_twitter_len = twitter_len;
       }
+      
+      index_of_break++;
     }
   }
 
@@ -80,9 +109,25 @@ function remove_text(remaining_text: string, numbering: Numbering, tweet_index: 
     return [remaining_text, number_prefix + tweet_text + number_postfix];
   }
 
-  // No nice places found, just hard split at size_available characters
-  let tweet_text = remaining_text.substring(0, size_available);
-  remaining_text = remaining_text.substring(size_available);
+  // No nice places found, just hard split at a position that fits
+  // Binary search to find the right position
+  let low = 0;
+  let high = remaining_text.length;
+  let split_position = size_available;
+  
+  while (low < high) {
+    let mid = Math.floor((low + high + 1) / 2);
+    let test_text = remaining_text.substring(0, mid);
+    if (getTwitterLength(test_text) <= size_available) {
+      low = mid;
+      split_position = mid;
+    } else {
+      high = mid - 1;
+    }
+  }
+  
+  let tweet_text = remaining_text.substring(0, split_position);
+  remaining_text = remaining_text.substring(split_position);
 
   return [remaining_text, number_prefix + tweet_text + number_postfix];
 }

@@ -1,8 +1,19 @@
 {
   "transform": {
-    "^.+\\.(t)sx?$": "ts-jest"
+    "^.+\\.tsx?$": ["ts-jest", {
+      "tsconfig": {
+        "jsx": "react",
+        "jsxFactory": "h",
+        "jsxFragmentFactory": "Fragment"
+      }
+    }]
   },
   "verbose": true,
   "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+  "testEnvironment": "jsdom",
+  "transformIgnorePatterns": [],
+  "moduleNameMapper": {
+    "^preact$": "<rootDir>/node_modules/preact/dist/preact.js"
+  }
 }

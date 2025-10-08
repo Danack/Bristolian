@@ -33,7 +33,10 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
             connection_state: "Init",
             messageToSend: "",
             lastMessageReceived: "",
-            messages: []
+            messages: [
+                {text: "Hello world!"},
+                {text: "Second message."},
+            ]
         };
     }
 

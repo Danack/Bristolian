@@ -191,3 +191,38 @@ export function open_lightbox_if_not_mobile(src: string) {
     document.removeEventListener('keydown', handleKeydown);
   }
 }
+
+
+
+
+
+var month_name = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var weekday_name = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+export function now() {
+  return (new Date()).getTime() / 1000; // unlike the rest of the world, JavaScript thinks in milliseconds.
+}
+
+export function seconds_since(date: Date) {
+  return now() - (date.getTime() / 1000);
+}
+
+export function localTimeSimple(date: Date) {
+  var d = date;// new Date(t * 1000);
+  var min = d.getMinutes();
+  var today = (new Date()).setHours(0, 0, 0, 0);
+  var dateTimestamp = date.getTime();
+  var result = d.getHours() + ":" + (min < 10 ? "0" : "") + min;
+  if ((today - dateTimestamp) > 0) {
+    if ((today - dateTimestamp) < 86400000) { // 1 day in milliseconds
+      result = "yst " + result;
+    }
+    else if ((today - dateTimestamp) < 518400000) { // 6 days in milliseconds
+      result = weekday_name[d.getDay()] + " " + result;
+    }
+    else {
+      result = month_name[d.getMonth()] + " " + d.getDate() + ", " + result;
+    }
+  }
+  return result;
+}
