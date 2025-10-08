@@ -116,8 +116,8 @@ export class ChatBottomPanel extends Component<ChatBottomPanelProps, ChatBottomP
           </div>
         </div>
       </div>);
-      }
-      }
+  }
+}
 
 
 

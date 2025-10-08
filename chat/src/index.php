@@ -14,6 +14,7 @@ use Amp\Websocket\Compression\Rfc7692CompressionFactory;
 use Amp\Websocket\Server\Rfc6455Acceptor;
 use Amp\Websocket\Server\Websocket;
 use Bristolian\Config\Config;
+use BristolianChat\ChatSpammer;
 use Monolog\Logger;
 use BristolianChat\ClientHandler;
 use BristolianChat\FallbackHandler;
@@ -23,6 +24,8 @@ use function Amp\Redis\createRedisClient;
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . "/../../config.generated.php";
+require __DIR__ . "/../../src/functions_chat.php";
+require __DIR__ . "/../../src/functions_common.php";
 
 
 // Logger
@@ -51,6 +54,9 @@ $redisWatcher = new RedisWatcherRoomMessages(
     $logger
 );
 
+$chat_spammer = new ChatSpammer($clientHandler, $logger);
+
+
 // Websocket server
 $server = SocketHttpServer::createForDirectAccess($logger);
 $server->expose(new Socket\InternetAddress('0.0.0.0', 5000));
@@ -72,6 +78,7 @@ $router->addRoute('GET', '/chat', $websocket);
 $router->setFallback(new FallbackHandler());
 
 // Start all the things.
+Amp\async($chat_spammer->run(...));
 Amp\async($redisWatcher->run(...));
 $server->start($router, $errorHandler);
 

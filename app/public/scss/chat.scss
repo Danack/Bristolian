@@ -1,5 +1,38 @@
 
 .chat_panel {
+  min-width: 1024px;
+
+  .message_row {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+  }
+
+  .user_signature {
+    width: 15%;
+    flex-shrink: 0;
+    padding-right: 10px;
+    box-sizing: border-box;
+  }
+
+  .message_content {
+    width: 85%;
+    flex-grow: 1;
+    position: relative;
+    
+    .messages {
+      -moz-border-radius: 6px;
+      -webkit-border-radius: 6px;
+      border-radius: 6px;
+      border: none;
+      padding: 5px 5px 5px 5px;
+      word-wrap: break-word;
+      color: #222222;
+      background-color: #f6f6f6;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
 
   .user_container {
     cursor: pointer;
@@ -12,7 +45,7 @@
       padding: 5px 5px 5px 0px;
       float: left;
       word-wrap: break-word;
-      width: 87%;
+      // width: 87%;
       color: #222222;
       background-color: #f6f6f6
     }
@@ -23,16 +56,16 @@
 
   .timestamp {
     color: #000000;
-    font-size: 9px;
+    font-size: 10px;
     padding: 1px 3px;
-    float: right;
+    line-height: 1.1;
     background-color: #ffffff;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
-    margin-right: 2px;
-    margin-left: 10px;
-    position: relative;
+    position: absolute;
+    top: 5px;
+    right: 5px;
     z-index: 1
   }
 

@@ -2,14 +2,13 @@ import { h, Component } from "preact";
 import { registerMessageListener, sendMessage, unregisterListener } from "./message/message";
 import { EventType } from "./events";
 import {ChatBottomPanel} from "./chat/ChatBottomPanel";
+import {ChatMessage, ChatType, createChatMessage} from "./generated/types";
+import {localTimeSimple} from "./functions";
+
 
 export interface ConnectionPanelProps {
     username: string;
     room_id: string;
-}
-
-interface ChatMessage {
-    text: string;
 }
 
 interface ConnectionPanelState {
@@ -34,8 +33,22 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
             messageToSend: "",
             lastMessageReceived: "",
             messages: [
-                {text: "Hello world!"},
-                {text: "Second message."},
+                // {
+                //     id: 54321,
+                //     user_id: "example_user_1",
+                //     room_id: props.room_id,
+                //     text: "Hello world!",
+                //     message_reply_id: 0,
+                //     created_at: new Date()
+                // },
+                // {
+                //     id: 54322,
+                //     user_id: "example_user_2",
+                //     room_id: props.room_id,
+                //     text: "Second message.",
+                //     message_reply_id: 54321,
+                //     created_at: new Date()
+                // },
             ]
         };
     }
@@ -65,20 +78,23 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
 
         let data = JSON.parse(messageEvent.data);
 
-        if (data.type === "message") {
-            let new_chat_message:ChatMessage = {text: data.text}
+        if (data.type === ChatType.MESSAGE) {
             let current_messages = this.state.messages;
-            current_messages.push(new_chat_message)
+
+            let message = createChatMessage(data.chat_message);
+
+            current_messages.push(message);
 
             this.setState({
                 messages: current_messages
             });
         }
-
-        // // Update last message received in state
-        // this.setState({ lastMessageReceived: messageEvent.data });
-        //
-        // sendMessage(EventType.received_sound, parsedData);
+        else if (data.type === undefined) {
+            console.error("type not set in message. Something is wrong with the server.");
+        }
+        else {
+            console.log(`Unsupported message of type ${data.type}`)
+        }
     }
 
     onClose(e: any) {
@@ -116,28 +132,15 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         }
     }
 
-    // handleInputChange = (e: Event) => {
-    //     const target = e.target as HTMLInputElement;
-    //     this.setState({ messageToSend: target.value });
-    // }
-
-    // handleSendMessage = () => {
-    //     if (this.ws && this.state.messageToSend.trim() !== "") {
-    //         const msg = {
-    //             username: this.props.username,
-    //             message: this.state.messageToSend
-    //         };
-    //         this.ws.send(JSON.stringify(msg));
-    //         this.setState({ messageToSend: "" });
-    //     }
-    // }
-
-
-
     renderChatMessage(message: ChatMessage, index: number) {
-        return <div className="user_container" key={index}>
-            <div className="messages">Text is {message.text}</div>
-            <span className="timestamp">12:28</span>
+        return <div className="message_row" key={index}>
+            <div className="user_signature">
+                {message.user_id}
+            </div>
+            <div className="message_content">
+                <div className="messages">Text is {message.text}</div>
+                <span className="timestamp">{localTimeSimple(message.created_at)}</span>
+            </div>
         </div>;
     }
 

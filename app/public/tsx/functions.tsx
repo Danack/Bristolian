@@ -208,21 +208,55 @@ export function seconds_since(date: Date) {
 }
 
 export function localTimeSimple(date: Date) {
-  var d = date;// new Date(t * 1000);
-  var min = d.getMinutes();
+  var min = date.getMinutes();
   var today = (new Date()).setHours(0, 0, 0, 0);
   var dateTimestamp = date.getTime();
-  var result = d.getHours() + ":" + (min < 10 ? "0" : "") + min;
+  var result = date.getHours() + ":" + (min < 10 ? "0" : "") + min;
   if ((today - dateTimestamp) > 0) {
     if ((today - dateTimestamp) < 86400000) { // 1 day in milliseconds
       result = "yst " + result;
     }
     else if ((today - dateTimestamp) < 518400000) { // 6 days in milliseconds
-      result = weekday_name[d.getDay()] + " " + result;
+      result = weekday_name[date.getDay()] + " " + result;
     }
     else {
-      result = month_name[d.getMonth()] + " " + d.getDate() + ", " + result;
+      result = month_name[date.getMonth()] + " " + date.getDate() + ", " + result;
     }
   }
   return result;
+}
+
+/**
+ * Type that converts all Date fields in T to string fields
+ */
+export type DateToString<T> = {
+  [K in keyof T]: T[K] extends Date ? string : T[K];
+};
+
+/**
+ * Converts string date fields to actual Date objects based on a list of date field names.
+ * 
+ * @param data - The object with string date fields
+ * @param dateFields - Array of field names that should be converted to Date objects
+ * @returns A new object with date strings converted to Date objects
+ * 
+ * @example
+ * const apiData = { id: 1, name: "foo", created_at: "2025-10-08T20:50:20+00:00" };
+ * const converted = convertDatesFromStrings(apiData, ['created_at']);
+ * // converted.created_at is now a Date object
+ */
+export function convertDatesFromStrings<T>(
+  data: DateToString<T>,
+  dateFields: (keyof T)[]
+): T {
+  const result = { ...data } as any;
+  
+  for (const field of dateFields) {
+    const value = result[field];
+    if (value && typeof value === 'string') {
+      result[field] = new Date(value);
+    }
+  }
+  
+  return result as T;
 }

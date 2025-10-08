@@ -4,6 +4,7 @@ namespace Bristolian\CliController;
 
 use Bristolian\Config\Config;
 use Bristolian\Exception\BristolianException;
+use Bristolian\Model\ChatMessage;
 use PDO;
 
 function generate_table_strings($sorted_column_names)
@@ -152,9 +153,9 @@ function generate_table_helper_class(string $tableName, array $columns_info): vo
  *
  * @codeCoverageIgnore
  * @param class-string $type
- * @return string
+ * @return array{string, string[]} Returns the interface content and array of date field names
  */
-function generateInterfaceForClass(string $type): string
+function generateInterfaceForClass(string $type): array
 {
 
     // TODO - this is a hack. It would almost certainly be better to
@@ -162,6 +163,7 @@ function generateInterfaceForClass(string $type): string
     // Open API spec isn't generating, this will work for the time being.
 
     $content = '';
+    $dateFields = [];
 
     $rc = new \ReflectionClass($type);
 
@@ -184,6 +186,7 @@ function generateInterfaceForClass(string $type): string
             strcasecmp($php_type, 'DateTimeInterface') === 0 ||
             strcasecmp($php_type, 'DateTime') === 0) {
             $php_type = "Date";
+            $dateFields[] = $property->getName();
         }
 
         if (strcasecmp($php_type, 'int') === 0) {
@@ -197,6 +200,43 @@ function generateInterfaceForClass(string $type): string
         $content .= "    " . $property->getName() . ": " . $php_type . ";\n";
     }
 
+    $content .= "}\n";
+
+    return [$content, $dateFields];
+}
+
+/**
+ * Generate a TypeScript conversion function for a type that converts
+ * string date fields to Date objects.
+ *
+ * @codeCoverageIgnore
+ * @param class-string $type
+ * @param string[] $dateFields
+ * @return string
+ */
+function generateConversionFunctionForClass(string $type, array $dateFields): string
+{
+    if (count($dateFields) === 0) {
+        return '';
+    }
+
+    $rc = new \ReflectionClass($type);
+    $name = $rc->getShortName();
+
+    $content = "// Conversion function for $type\n";
+    $content .= "export function create$name(data: DateToString<$name>): $name {\n";
+    $content .= "  return convertDatesFromStrings<$name>(\n";
+    $content .= "    data,\n";
+    $content .= "    [";
+    
+    $separator = "";
+    foreach ($dateFields as $field) {
+        $content .= $separator . "'$field'";
+        $separator = ", ";
+    }
+    
+    $content .= "]\n";
+    $content .= "  );\n";
     $content .= "}\n";
 
     return $content;
@@ -285,26 +325,40 @@ class GenerateFiles
 
         $content = "// This is an auto-generated file\n";
         $content .= "// DO NOT EDIT\n\n";
-        $content .= "// You'll need to bounce the docker boxes to regenerate.\n\n";
+        $content .= "// You'll need to bounce the docker boxes to regenerate.\n";
+        $content .= "//\n";
+        $content .= "// or run 'php cli.php generate:javascript_constants' \n";
+
+        $content .= "// Code for generating this file is in \Bristolian\CliController\GenerateFiles::generateJavaScriptTypes \n\n";
+
+        $content .= "import { DateToString, convertDatesFromStrings } from '../functions';\n\n";
 
         $types = [
             \Bristolian\Model\BristolStairInfo::class,
+            \Bristolian\Model\ChatMessage::class,
             \Bristolian\Model\IncomingEmail::class,
             \Bristolian\Model\ProcessorRunRecord::class,
             \Bristolian\Model\RoomLink::class,
             \Bristolian\Model\RoomSourceLink::class,
         ];
 
+        $conversionFunctions = '';
+
         foreach ($types as $type) {
-            $content .= generateInterfaceForClass($type);
+            [$interfaceContent, $dateFields] = generateInterfaceForClass($type);
+            $content .= $interfaceContent;
             $content .= "\n";
+            
+            $conversionFunctions .= generateConversionFunctionForClass($type, $dateFields);
+            $conversionFunctions .= "\n";
         }
 
         /**
          * @var $enums class-string[]
          */
         $enums = [
-            \Bristolian\Repo\ProcessorRepo\ProcessType::class
+            \Bristolian\ChatMessage\ChatType::class,
+            \Bristolian\Repo\ProcessorRepo\ProcessType::class,
         ];
 
 
@@ -312,6 +366,9 @@ class GenerateFiles
             $content .= generateEnumForClass($enum);
             $content .= "\n";
         }
+
+        // Add conversion functions at the end
+        $content .= $conversionFunctions;
 
         $result = file_put_contents($output_filename, $content);
         if ($result === false) {
@@ -357,8 +414,15 @@ export const :js_name: number = :js_value;\n
 TEMPLATE;
 
         $content = "// This is an auto-generated file\n";
-        $content .= "// DO NOT EDIT\n\n";
-        $content .= "// You'll need to bounce the docker boxes to regenerate.\n\n";
+        $content .= "// DO NOT EDIT\n";
+        $content .= "//\n";
+        $content .= "// You'll need to bounce the docker boxes to regenerate.\n";
+        $content .= "//\n";
+        $content .= "// or run 'php cli.php generate:javascript_constants' \n";
+
+        $content .= "// Code for generating this file is in \Bristolian\CliController\GenerateFiles::generateJavaScriptConstants \n";
+
+
         // TODO - add command name
 
         foreach ($constants as $constant_name => $constant_value) {
