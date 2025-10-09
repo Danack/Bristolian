@@ -67,7 +67,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
     }
 
     onMessage(messageEvent: MessageEvent) {
-        console.log("Received data", messageEvent.data);
+        // console.log("Received data", messageEvent.data);
 
         let parsedData;
         try {
@@ -80,11 +80,8 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
 
         if (data.type === ChatType.MESSAGE) {
             let current_messages = this.state.messages;
-
             let message = createChatMessage(data.chat_message);
-
             current_messages.push(message);
-
             this.setState({
                 messages: current_messages
             });
@@ -138,7 +135,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
                 {message.user_id}
             </div>
             <div className="message_content">
-                <div className="messages">Text is {message.text}</div>
+                <div className="messages">{message.text}</div>
                 <span className="timestamp">{localTimeSimple(message.created_at)}</span>
             </div>
         </div>;

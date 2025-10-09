@@ -11,10 +11,13 @@ class Users
     {
         $contents = "<h1>User list</h1>";
 
-        $template = "<a href='/users/:attr_username'>:html_username</a>";
+        // TODO - we need need to have user ids for all users.
+        // I need to go back through and 'normalise' a whole load of code.
+        $template = "<a href='/users/:attr_user_id/:attr_username'>:html_username</a>";
 
         foreach ($userRepo->getUsers() as $user) {
             $params = [
+//                ':attr_user_id' => $user->user_id,
                 ':attr_username' => $user->username,
                 ':html_username' => $user->username,
             ];

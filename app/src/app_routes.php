@@ -28,7 +28,9 @@ function getAllAppRoutes()
             'GET',
             'Bristolian\AppController\Users::showUserDocument'
         ],
-        ['/users/{username:.*}', 'GET', 'Bristolian\AppController\Users::showUser'],
+        // https://chat.stackoverflow.com/users/31555712/jamesbot
+
+        ['/users/{user_id:}/{username:.*}', 'GET', 'Bristolian\AppController\Users::showUser'],
         ['/users', 'GET', 'Bristolian\AppController\Users::index'],
         ['/qr/code', 'GET', '\Bristolian\AppController\QRCode::get'],
         [

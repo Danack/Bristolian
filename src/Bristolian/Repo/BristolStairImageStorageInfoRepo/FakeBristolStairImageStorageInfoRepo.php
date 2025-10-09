@@ -3,14 +3,13 @@
 namespace Bristolian\Repo\BristolStairImageStorageInfoRepo;
 
 use Bristolian\Model\BristolStairImageFile;
-use Bristolian\Model\StoredFile;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
 
 class FakeBristolStairImageStorageInfoRepo implements BristolStairImageStorageInfoRepo
 {
     /**
-     * @var StoredFile[]
+     * @var BristolStairImageFile[]
      */
     private array $storedFileInfo = [];
 
@@ -23,14 +22,15 @@ class FakeBristolStairImageStorageInfoRepo implements BristolStairImageStorageIn
         $datetime = new \DateTimeImmutable();
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
-        $this->storedFileInfo[$id] = new StoredFile(
-            $id,
-            $normalized_filename,
-            $original_filename = $uploadedFile->getOriginalName(),
-            $state = FileState::INITIAL->value,
-            $size = $uploadedFile->getSize(),
-            $user_id,
-            $created_at = $datetime
+        
+        $this->storedFileInfo[$id] = new BristolStairImageFile(
+            id: $id,
+            user_id: $user_id,
+            normalized_name: $normalized_filename,
+            original_filename: $uploadedFile->getOriginalName(),
+            size: $uploadedFile->getSize(),
+            state: FileState::INITIAL->value,
+            created_at: $datetime
         );
 
         return $id;
@@ -38,22 +38,42 @@ class FakeBristolStairImageStorageInfoRepo implements BristolStairImageStorageIn
 
     public function getById(string $bristol_stairs_image_id): BristolStairImageFile|null
     {
-        throw new \Exception("Implement getById() method.");
+        return $this->storedFileInfo[$bristol_stairs_image_id] ?? null;
     }
 
     public function getByNormalizedName(string $normalized_name): BristolStairImageFile|null
     {
-        throw new \Exception("Implement getByNormalizedName() method.");
+        foreach ($this->storedFileInfo as $fileInfo) {
+            if ($fileInfo->normalized_name === $normalized_name) {
+                return $fileInfo;
+            }
+        }
+        
+        return null;
     }
-
 
     public function setUploaded(string $file_storage_id): void
     {
-        throw new \Exception("Implement setUploaded() method.");
+        if (!isset($this->storedFileInfo[$file_storage_id])) {
+            throw new \Exception("Failed to update uploaded file.");
+        }
+
+        $existingFile = $this->storedFileInfo[$file_storage_id];
+        
+        // Create a new instance with updated state
+        $this->storedFileInfo[$file_storage_id] = new BristolStairImageFile(
+            id: $existingFile->id,
+            user_id: $existingFile->user_id,
+            normalized_name: $existingFile->normalized_name,
+            original_filename: $existingFile->original_filename,
+            size: $existingFile->size,
+            state: FileState::UPLOADED->value,
+            created_at: $existingFile->created_at
+        );
     }
 
     /**
-     * @return StoredFile[]
+     * @return BristolStairImageFile[]
      */
     public function getStoredFileInfo(): array
     {
