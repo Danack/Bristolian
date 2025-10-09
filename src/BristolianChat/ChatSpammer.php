@@ -35,7 +35,7 @@ class ChatSpammer
 
             $json = json_encode($values);
 
-            if ($json === null || $json === 'null') {
+            if ($json === false || $json === 'null') {
                 echo "json is null";
                 exit(-1);
             }

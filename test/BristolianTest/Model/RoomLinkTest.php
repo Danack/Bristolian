@@ -82,7 +82,6 @@ class RoomLinkTest extends BaseTestCase
         );
 
         $array = $roomLink->toArray();
-        $this->assertIsArray($array);
         $this->assertArrayHasKey('id', $array);
         $this->assertArrayHasKey('url', $array);
     }

@@ -42,7 +42,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BaseTestCase
             $uploadedFile
         );
 
-        $this->assertIsString($file_id);
         $this->assertNotEmpty($file_id);
     }
 
@@ -55,7 +54,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BaseTestCase
 
         $files = $repo->getStoredFileInfo();
 
-        $this->assertIsArray($files);
         $this->assertEmpty($files);
     }
 

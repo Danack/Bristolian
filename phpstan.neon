@@ -7,7 +7,7 @@ parameters:
     excludePaths:
         - src/Bristolian/FromString.php
         - src/Bristolian/ToString.php
-        - src/ModernGov/generate_types.php
+        - src/ModernGov/generate_types.php (?)
         - src/OpenApi/OpenApiGenerator.php
         - src/Bristolian/CliController/GenerateFiles.php
     bootstrapFiles:

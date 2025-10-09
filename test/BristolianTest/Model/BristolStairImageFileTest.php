@@ -58,7 +58,6 @@ class BristolStairImageFileTest extends BaseTestCase
         );
 
         $array = $imageFile->toArray();
-        $this->assertIsArray($array);
         $this->assertArrayHasKey('id', $array);
         $this->assertArrayHasKey('user_id', $array);
         $this->assertArrayHasKey('normalized_name', $array);

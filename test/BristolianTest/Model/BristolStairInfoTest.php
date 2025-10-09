@@ -66,7 +66,6 @@ class BristolStairInfoTest extends BaseTestCase
         );
 
         $array = $stairInfo->toArray();
-        $this->assertIsArray($array);
         $this->assertArrayHasKey('id', $array);
         $this->assertArrayHasKey('latitude', $array);
         $this->assertArrayHasKey('steps', $array);

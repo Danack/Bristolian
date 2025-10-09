@@ -176,8 +176,9 @@ class SourceLinkHighlightsJsonTest extends BaseTestCase
     /**
      * Helper method to test the property type through a DataType class
      * Since SourceLinkHighlightsJson is a property type, we test it through SourceLinkParam
+     * @param array<string, mixed> $params
      */
-    private function testPropertyTypeThroughDataType(array $params, $expectedValue)
+    private function testPropertyTypeThroughDataType(array $params, mixed $expectedValue): void
     {
         // Add required parameters for SourceLinkParam
         $fullParams = array_merge([

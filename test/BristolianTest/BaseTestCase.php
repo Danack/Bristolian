@@ -342,15 +342,18 @@ class BaseTestCase extends TestCase
         string $identifier,
         string $expectedProblem,
         $validationProblems
-    ) {
+    ): void {
         $expectedProblemRegexp = templateStringToRegExp($expectedProblem);
 
         $correct_identifier_incorrect_message = false;
+        $lastValidationProblem = null;
 
         foreach ($validationProblems as $validationProblem) {
             if ($validationProblem->getInputStorage()->getPath() !== $identifier) {
                 continue;
             }
+
+            $lastValidationProblem = $validationProblem;
 
             if (preg_match($expectedProblemRegexp, $validationProblem->getProblemMessage())) {
                 // correct problem message found
@@ -360,12 +363,12 @@ class BaseTestCase extends TestCase
             $correct_identifier_incorrect_message = true;
         }
 
-        if ($correct_identifier_incorrect_message === true) {
+        if ($correct_identifier_incorrect_message === true && $lastValidationProblem !== null) {
             $incorrectMessageText = sprintf(
                 "Validation problem for identifier '%s' found, but wrong message.\nExpected: '%s'\nActual '%s'\n",
                 $identifier,
                 $expectedProblem,
-                $validationProblem->getProblemMessage()
+                $lastValidationProblem->getProblemMessage()
             );
 
             $this->fail($incorrectMessageText);
@@ -388,13 +391,13 @@ class BaseTestCase extends TestCase
 
     /**
      * @param \DataType\ValidationProblem[] $validationProblems
-     * @param array $messagesByIdentifier
+     * @param array<string, string> $messagesByIdentifier
      * @return void
      */
     protected function assertValidationProblems(
         array $validationProblems,
         array $messagesByIdentifier
-    ) {
+    ): void {
 
         foreach ($messagesByIdentifier as $identifier => $message) {
             $this->assertValidationProblemRegexp($identifier, $message, $validationProblems);
@@ -411,7 +414,7 @@ class BaseTestCase extends TestCase
         string $identifier,
         string|int|float $needle,
         array $validationProblems
-    ) {
+    ): void {
         foreach ($validationProblems as $validationProblem) {
             if ($validationProblem->getInputStorage()->getPath() !== $identifier) {
                 continue;

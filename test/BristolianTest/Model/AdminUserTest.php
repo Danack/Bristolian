@@ -48,7 +48,6 @@ class AdminUserTest extends BaseTestCase
         $adminUser = AdminUser::new('user-123', 'test@example.com', 'hash123');
         $array = $adminUser->toArray();
 
-        $this->assertIsArray($array);
         $this->assertArrayHasKey('user_id', $array);
         $this->assertArrayHasKey('email_address', $array);
         $this->assertArrayHasKey('password_hash', $array);

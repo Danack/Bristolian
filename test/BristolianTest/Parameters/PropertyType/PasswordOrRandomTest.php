@@ -30,7 +30,6 @@ class PasswordOrRandomTest extends BaseTestCase
 
         $passwordParamTest = PasswordOrRandomFixture::createFromVarMap(new ArrayVarMap($data));
         // Should generate a random password of 16 characters
-        $this->assertIsString($passwordParamTest->value);
         $this->assertGreaterThanOrEqual(16, strlen($passwordParamTest->value));
     }
 

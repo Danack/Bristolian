@@ -58,7 +58,6 @@ class RoomSourceLinkTest extends BaseTestCase
         );
 
         $array = $sourceLink->toArray();
-        $this->assertIsArray($array);
         $this->assertArrayHasKey('id', $array);
         $this->assertArrayHasKey('text', $array);
     }

@@ -49,7 +49,6 @@ class RoomTest extends BaseTestCase
         $room = new Room('id', 'owner', 'name', 'purpose');
         $array = $room->toArray();
 
-        $this->assertIsArray($array);
         $this->assertArrayHasKey('id', $array);
         $this->assertArrayHasKey('name', $array);
     }

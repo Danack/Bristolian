@@ -71,7 +71,6 @@ class ChatMessageTest extends BaseTestCase
         );
 
         $array = $chatMessage->toArray();
-        $this->assertIsArray($array);
         $this->assertArrayHasKey('id', $array);
         $this->assertArrayHasKey('text', $array);
     }

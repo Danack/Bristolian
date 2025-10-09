@@ -54,7 +54,6 @@ class MemeTest extends BaseTestCase
         );
 
         $array = $meme->toArray();
-        $this->assertIsArray($array);
         $this->assertArrayHasKey('id', $array);
         $this->assertArrayHasKey('normalized_name', $array);
     }

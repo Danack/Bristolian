@@ -58,7 +58,6 @@ class StoredFileTest extends BaseTestCase
         );
 
         $array = $storedFile->toArray();
-        $this->assertIsArray($array);
         $this->assertArrayHasKey('id', $array);
         $this->assertArrayHasKey('normalized_name', $array);
     }

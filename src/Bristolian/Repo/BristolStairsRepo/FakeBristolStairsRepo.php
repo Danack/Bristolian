@@ -110,7 +110,7 @@ class FakeBristolStairsRepo implements BristolStairsRepo
         }
 
         throw ContentNotFoundException::stairs_id_not_found(
-            $id
+            (string)$id
         );
     }
 

@@ -71,7 +71,6 @@ class ProcessorRunRecordTest extends BaseTestCase
         );
 
         $array = $record->toArray();
-        $this->assertIsArray($array);
         $this->assertArrayHasKey('id', $array);
         $this->assertArrayHasKey('status', $array);
     }
