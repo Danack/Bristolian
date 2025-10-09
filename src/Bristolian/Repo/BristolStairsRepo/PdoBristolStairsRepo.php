@@ -95,7 +95,10 @@ SQL;
         $stair_info = $this->getStairInfoById($insert_id);
 
         if ($stair_info === null) {
+            // @codeCoverageIgnoreStart
+            // This probably can't happen
             throw new \Exception("Failed to store stairs_info");
+            // @codeCoverageIgnoreEnd
         }
 
         return $stair_info;
@@ -137,11 +140,17 @@ SQL;
      */
     public function get_total_number_of_steps(): array
     {
-        $sql = "select sum(1) as flights_of_stairs, sum(steps) as total_steps from bristol_stair_info where is_deleted = 0";
+        $sql = <<< SQL
+select sum(1) as flights_of_stairs, sum(steps) as total_steps from bristol_stair_info where is_deleted = 0
+SQL;
+
         $result = $this->pdo_simple->fetchOneAsDataOrNull($sql, []);
 
         if ($result["total_steps"] === null) {
+            // @codeCoverageIgnoreStart
+            // This only happens when the DB is empty
             return [0, 0];
+            // @codeCoverageIgnoreEnd
         }
 
         return [
