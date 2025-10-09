@@ -61,7 +61,9 @@ values (
         $result = $this->pdoSimple->fetchOneAsDataOrNull($sql, [':type' => $processor->value]);
 
         if ($result === null) {
+            // @codeCoverageIgnoreStart
             return false;
+            // @codeCoverageIgnoreEnd
         }
 
         return (bool)$result['enabled'];

@@ -88,6 +88,11 @@ function generate_table_helper_class(string $tableName, array $columns_info): vo
         if (strcasecmp($column['COLUMN_NAME'], 'updated_at') === 0) {
             continue;
         }
+        if (strcasecmp($column['COLUMN_NAME'], 'start_time') === 0) {
+            continue;
+        }
+
+
 
         $column_names_insert[] = $column['COLUMN_NAME'];
 

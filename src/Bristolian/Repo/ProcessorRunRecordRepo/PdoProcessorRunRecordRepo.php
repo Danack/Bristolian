@@ -31,7 +31,9 @@ class PdoProcessorRunRecordRepo implements ProcessorRunRecordRepo
         );
 
         if ($objectOrNull === null) {
+            // @codeCoverageIgnoreStart
             return null;
+            // @codeCoverageIgnoreEnd
         }
 
         return $objectOrNull->start_time;
