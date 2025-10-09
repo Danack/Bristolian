@@ -48,6 +48,8 @@ trait TestPlaceholders
             }
         }
 
+//        $this->injector->staticFactory(\Bristolian\StaticFactory::class, 'createFromRequest');
+
         $session = $this->injector->execute('getTestingUserSession');
 
         $this->injector->alias(

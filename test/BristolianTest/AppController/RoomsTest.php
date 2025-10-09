@@ -3,6 +3,9 @@
 namespace BristolianTest\AppController;
 
 use Bristolian\AppController\Rooms;
+use Bristolian\Parameters\PropertyType\LinkDescription;
+use Bristolian\Parameters\PropertyType\LinkTitle;
+use Bristolian\Parameters\PropertyType\Url;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use SlimDispatcher\Response\JsonResponse;
@@ -11,6 +14,7 @@ use Bristolian\Repo\DbInfo\FakeDbInfo;
 use VarMap\ArrayVarMap;
 use VarMap\VarMap;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
+use Bristolian\Parameters\LinkParam;
 use Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo;
 
 /**
@@ -34,6 +38,14 @@ class RoomsTest extends BaseTestCase
         $userSession = $this->initLoggedInUser([$varMap]);
         $this->initInMemoryFakes();
 
+
+        $link_param = LinkParam::createFromArray([
+            'url' => 'https://www.example.com/',
+            'title' => 'link title ' . time(),
+            'description' => 'link description ' . time(),
+        ]);
+
+        $this->injector->share($link_param);
         $this->injector->defineParam('room_id', $room_id);
         $result = $this->injector->execute('Bristolian\AppController\Rooms::addLink');
         $this->assertInstanceOf(JsonResponse::class, $result);
