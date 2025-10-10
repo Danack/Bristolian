@@ -10,7 +10,7 @@
     },
     "require": {
         "danack/configurator": "1.1.1",
-        "danack/console": "^2.6.2",
+        "danack/console": "^2.6.3",
         "danack/esprintf": "^2.0.0",
         "danack/injector": "dev-static-factories-are-nice",
         "danack/looping-exec": "^0.3.0",

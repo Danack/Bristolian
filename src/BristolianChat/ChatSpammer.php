@@ -22,29 +22,35 @@ class ChatSpammer
         while (true) {
             $chat_message = generateFakeChatMessage();
 
-            $data = [
-                'type' => ChatType::MESSAGE->value,
-                'chat_message' => $chat_message
-            ];
+            send_message_to_clients(
+                $chat_message,
+                $this->logger,
+                $this->clientHandler
+            );
 
-            [$error, $values] = convertToValue($data);
-
-            if ($error !== null) {
-                $this->logger->info("error encoding data - $values");
-            }
-
-            $json = json_encode($values);
-
-            if ($json === false || $json === 'null') {
-                echo "json is null";
-                exit(-1);
-            }
-
-            $this->clientHandler->getGateway()->broadcastText($json)->ignore();
+//            $data = [
+//                'type' => ChatType::MESSAGE->value,
+//                'chat_message' => $chat_message
+//            ];
+//
+//            [$error, $values] = convertToValue($data);
+//
+//            if ($error !== null) {
+//                $this->logger->info("error encoding data - $values");
+//            }
+//
+//            $json = json_encode($values);
+//
+//            if ($json === false || $json === 'null') {
+//                echo "json is null";
+//                exit(-1);
+//            }
+//
+//            $this->clientHandler->getGateway()->broadcastText($json)->ignore();
 
             $this->logger->info("message sent - looping");
             // TODO - think about rate limiting.
-            \Amp\delay(10); // Wait a bit before retrying
+            \Amp\delay(20); // Wait a bit before retrying
         }
     }
 }

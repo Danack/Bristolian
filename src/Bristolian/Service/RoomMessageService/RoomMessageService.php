@@ -2,9 +2,9 @@
 
 namespace Bristolian\Service\RoomMessageService;
 
-use Bristolian\ChatMessage\StandardMessage;
+use Bristolian\Model\ChatMessage;
 
 interface RoomMessageService
 {
-    public function sendMessage(StandardMessage $message): void;
+    public function sendMessage(ChatMessage $message): void;
 }

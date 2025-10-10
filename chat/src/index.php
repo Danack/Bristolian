@@ -24,6 +24,7 @@ use function Amp\Redis\createRedisClient;
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . "/../../config.generated.php";
+require __DIR__ . "/../../src/functions.php";
 require __DIR__ . "/../../src/functions_chat.php";
 require __DIR__ . "/../../src/functions_common.php";
 
@@ -78,7 +79,7 @@ $router->addRoute('GET', '/chat', $websocket);
 $router->setFallback(new FallbackHandler());
 
 // Start all the things.
-Amp\async($chat_spammer->run(...));
+//Amp\async($chat_spammer->run(...));
 Amp\async($redisWatcher->run(...));
 $server->start($router, $errorHandler);
 

@@ -17,7 +17,6 @@ use Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo;
 
 /**
  * @coversNothing
- * @group wip
  */
 class BristolStairsTest extends BaseTestCase
 {

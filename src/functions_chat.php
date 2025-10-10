@@ -1,6 +1,47 @@
 <?php
 
 
+use Bristolian\ChatMessage\ChatType;
+use Bristolian\Model\ChatMessage;
+use BristolianChat\ClientHandler;
+use Monolog\Logger;
+
+
+
+
+function send_message_to_clients(
+    ChatMessage $chat_message,
+    Logger $logger,
+    ClientHandler $clientHandler
+) {
+
+//    echo "Here:\n";
+//    var_dump($chat_message);
+
+    $data = [
+        'type' => ChatType::MESSAGE->value,
+        'chat_message' => $chat_message
+    ];
+
+    [$error, $values] = convertToValue($data);
+
+    if ($error !== null) {
+        $logger->info("error encoding data - $values");
+        return;
+    }
+
+    $json = json_encode($values);
+
+    if ($json === false || $json === 'null') {
+        echo "json is null";
+        exit(-1);
+    }
+
+    $logger->info("sending message to clients - $json");
+
+    $clientHandler->getGateway()->broadcastText($json)->ignore();
+
+}
 
 /**
  * Generate a fake ChatMessage for testing purposes.

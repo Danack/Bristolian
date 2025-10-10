@@ -2,14 +2,15 @@
 
 namespace Bristolian\CliController;
 
-use Bristolian\ChatMessage\StandardMessage;
+use Bristolian\Model\ChatMessage;
 use Bristolian\Model\WebPushNotification;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Service\WebPushService\WebPushService;
-//use Bristolian\ChatMessage\ContentAdded;
 use Bristolian\Keys\RoomMessageKey;
 use Bristolian\Service\RoomMessageService\RoomMessageService;
+use Bristolian\ChatMessage\ChatType;
+
 
 function fn_level_1(): void
 {
@@ -80,26 +81,27 @@ class Debug
         echo generateSystemInfoEmailContent();
     }
 
-//    public function test_add_room_file(\Redis $redis): void
-//    {
-//        $event = new ContentAdded(
-//            $room_id = '12345',
-//            $room_name = 'Test room',
-//            $user_id = "12345",
-//            $user_name = "Danack",
-//            $description = "Test description",
-//        );
-//
-//        $redis->rPush(RoomMessageKey::getAbsoluteKeyName(), $event->toString());
-//    }
-
 
     public function send_message_to_room(
         RoomMessageService $roomMessageService,
+        AdminRepo $adminRepo,
         string $message,
     ): void {
-        $standard_message = new StandardMessage($message);
-        $roomMessageService->sendMessage($standard_message);
+        $user_id = $adminRepo->getAdminUserId(getAdminEmailAddress());
+        $chat_message = new ChatMessage(
+            $id = 5,
+            $user_id,
+            $room_id = '123455',
+            $text = $message,
+            $message_reply_id = null,
+            $created_at = new \DateTimeImmutable(),
+        );
+        $roomMessageService->sendMessage($chat_message);
+
+//        $string = $chat_message->toString();
+//        $recreated_message = ChatMessage::fromString($string);
+//
+//        var_dump($recreated_message);
     }
 
 

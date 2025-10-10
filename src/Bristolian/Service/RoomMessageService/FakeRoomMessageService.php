@@ -7,18 +7,21 @@ use Bristolian\Model\ChatMessage;
 use Bristolian\ToString;
 use Redis;
 
-class RedisRoomMessageService implements RoomMessageService
+class FakeRoomMessageService implements RoomMessageService
 {
+    /**
+     * @var ChatMessage[]
+     */
+    private $chat_messages = [];
+
     public function __construct(
-        private readonly Redis $redis,
     ) {
     }
 
     public function sendMessage(ChatMessage $message): void
     {
-        $this->redis->rPush(
-            RoomMessageKey::getAbsoluteKeyName(),
-            $message->toString()
-        );
+        $chat_messages[] = $message;
     }
 }
+
+
