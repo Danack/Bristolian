@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Key;
+namespace Bristolian\Keys;
 
 class ContentSecurityPolicyKey
 {

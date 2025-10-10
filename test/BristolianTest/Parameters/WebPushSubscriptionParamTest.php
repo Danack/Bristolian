@@ -23,7 +23,7 @@ class WebPushSubscriptionParamTest extends BaseTestCase
                 "auth" => "Some auth key"
             ]
         ];
-        $raw = json_encode($example_data);
+        $raw = json_encode_safe($example_data);
 
         $data = [
             "endpoint" => $endpoint,
@@ -50,7 +50,7 @@ class WebPushSubscriptionParamTest extends BaseTestCase
                 "auth" => "Some auth key"
             ]
         ];
-        $raw = json_encode($example_data);
+        $raw = json_encode_safe($example_data);
 
         $data = [
             "endpoint" => $endpoint,

@@ -13,10 +13,7 @@ function send_message_to_clients(
     ChatMessage $chat_message,
     Logger $logger,
     ClientHandler $clientHandler
-) {
-
-//    echo "Here:\n";
-//    var_dump($chat_message);
+): void {
 
     $data = [
         'type' => ChatType::MESSAGE->value,
@@ -40,7 +37,6 @@ function send_message_to_clients(
     $logger->info("sending message to clients - $json");
 
     $clientHandler->getGateway()->broadcastText($json)->ignore();
-
 }
 
 /**

@@ -19,6 +19,7 @@ class ChatSpammer
 
     public function run(): void
     {
+        // @phpstan-ignore while.alwaysTrue
         while (true) {
             $chat_message = generateFakeChatMessage();
 
@@ -27,26 +28,6 @@ class ChatSpammer
                 $this->logger,
                 $this->clientHandler
             );
-
-//            $data = [
-//                'type' => ChatType::MESSAGE->value,
-//                'chat_message' => $chat_message
-//            ];
-//
-//            [$error, $values] = convertToValue($data);
-//
-//            if ($error !== null) {
-//                $this->logger->info("error encoding data - $values");
-//            }
-//
-//            $json = json_encode($values);
-//
-//            if ($json === false || $json === 'null') {
-//                echo "json is null";
-//                exit(-1);
-//            }
-//
-//            $this->clientHandler->getGateway()->broadcastText($json)->ignore();
 
             $this->logger->info("message sent - looping");
             // TODO - think about rate limiting.

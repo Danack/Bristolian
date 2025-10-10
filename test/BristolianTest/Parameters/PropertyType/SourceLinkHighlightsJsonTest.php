@@ -51,7 +51,7 @@ class SourceLinkHighlightsJsonTest extends BaseTestCase
                 'text' => 'Highlight text'
             ];
         }
-        $highlights_json = json_encode(['highlights' => $highlights]);
+        $highlights_json = json_encode_safe(['highlights' => $highlights]);
         
         // Ensure we don't exceed the maximum length
         if (strlen($highlights_json) > 16384) {

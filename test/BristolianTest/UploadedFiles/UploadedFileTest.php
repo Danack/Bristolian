@@ -7,6 +7,7 @@ use BristolianTest\BaseTestCase;
 
 /**
  * @coversNothing
+ * @group wip
  */
 class UploadedFileTest extends BaseTestCase
 {
@@ -17,16 +18,35 @@ class UploadedFileTest extends BaseTestCase
     {
         $original_name = 'test.php';
 
-        $file = new UploadedFile(
+        // normal constructor
+        $file1 = new UploadedFile(
             __FILE__,
             \Safe\filesize(__FILE__),
             $original_name,
             0
         );
+        $this->assertSame(__FILE__, $file1->getTmpName());
+        $this->assertSame($original_name, $file1->getOriginalName());
+        $this->assertSame(\Safe\filesize(__FILE__), $file1->getSize());
+        $this->assertSame(0, $file1->getErrorCode());
 
-        $this->assertSame(__FILE__, $file->getTmpName());
-        $this->assertSame($original_name, $file->getOriginalName());
-        $this->assertSame(\Safe\filesize(__FILE__), $file->getSize());
-        $this->assertSame(0, $file->getErrorCode());
+
+        $error_message = $file1->getErrorMessage();
+        $this->assertSame(
+            'There is no error, the file uploaded with success',
+            $error_message
+        );
+
+
+
+
+
+        // static constructor
+        $file2 = UploadedFile::fromFile(__FILE__);
+        $this->assertSame(__FILE__, $file2->getTmpName());
+        $this->assertSame(__FILE__, $file2->getOriginalName());
+        $this->assertSame(\Safe\filesize(__FILE__), $file2->getSize());
+        $this->assertSame(0, $file2->getErrorCode());
+
     }
 }

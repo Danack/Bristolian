@@ -22,6 +22,11 @@ class FakeRoomMessageService implements RoomMessageService
     {
         $chat_messages[] = $message;
     }
+
+    public function getChatMessages(): array
+    {
+        return $this->chat_messages;
+    }
 }
 
 

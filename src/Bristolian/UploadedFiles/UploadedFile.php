@@ -80,10 +80,12 @@ class UploadedFile
             8 => 'A PHP extension stopped the file upload.',
         );
 
-        if (array_key_exists($this->error, $phpFileUploadErrors) === false) {
+        if (array_key_exists($this->error, $phpFileUploadErrors) === true) {
             return $phpFileUploadErrors[$this->error];
         }
 
+        // @codeCoverageIgnoreStart
         return "Unknown file upload error code: " . $this->error;
+        // @codeCoverageIgnoreEnd
     }
 }

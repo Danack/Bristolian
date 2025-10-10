@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace UrlFetcher;
 
-use Key\UrlCacheKey;
+use Bristolian\Keys\UrlCacheKey;
 
 class RedisCachedUrlFetcher implements UrlFetcher
 {
