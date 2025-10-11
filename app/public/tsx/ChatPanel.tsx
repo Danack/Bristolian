@@ -164,7 +164,41 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         return parts[parts.length - 1];
     }
 
-    renderChatMessage(message: ChatMessage, index: number) {
+    // Group messages from the same user within 600 seconds
+    groupMessages(): ChatMessage[][] {
+        const groups: ChatMessage[][] = [];
+        let currentGroup: ChatMessage[] = [];
+        
+        for (let i = 0; i < this.state.messages.length; i++) {
+            const message = this.state.messages[i];
+            
+            if (currentGroup.length === 0) {
+                // Start a new group
+                currentGroup.push(message);
+            } else {
+                const lastMessage = currentGroup[currentGroup.length - 1];
+                const timeDiff = Math.abs(new Date(message.created_at).getTime() - new Date(lastMessage.created_at).getTime()) / 1000;
+                
+                // Check if same user and within 600 seconds
+                if (message.user_id === lastMessage.user_id && timeDiff <= 600) {
+                    currentGroup.push(message);
+                } else {
+                    // Different user or time gap too large, start new group
+                    groups.push(currentGroup);
+                    currentGroup = [message];
+                }
+            }
+        }
+        
+        // Add the last group if it has messages
+        if (currentGroup.length > 0) {
+            groups.push(currentGroup);
+        }
+        
+        return groups;
+    }
+
+    renderChatMessage(message: ChatMessage, index: number, isFirstInGroup: boolean) {
         const userProfile = this.state.userProfiles.get(message.user_id);
         const shortUserId = this.getShortUserId(message.user_id);
         const displayName = userProfile?.display_name || shortUserId;
@@ -175,30 +209,34 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         const avatarClass = isCompact ? "compact" : "";
         
         return <div className="message_row" key={index} ref={this.setMessageRef(index)}>
-            <div className="user_signature">
-                {isCompact ? (
-                    <a href={`/users/${message.user_id}/profile`} className={profileLinkClass}>
-                        <span className="user-display-name">{displayName}</span>
-                        {userProfile?.avatar_image_id && (
-                            <img 
-                                src={`/users/${message.user_id}/avatar`} 
-                                alt="User avatar"
-                                className={avatarClass}
-                            />
-                        )}
-                    </a>
-                ) : (
-                    <a href={`/users/${message.user_id}/profile`} className={profileLinkClass}>
-                        {userProfile?.avatar_image_id && (
-                            <img 
-                                src={`/users/${message.user_id}/avatar`} 
-                                alt="User avatar"
-                            />
-                        )}
-                        <span className="user-display-name">{displayName}</span>
-                    </a>
-                )}
-            </div>
+            {isFirstInGroup ? (
+                <div className="user_signature">
+                    {isCompact ? (
+                        <a href={`/users/${message.user_id}/profile`} className={profileLinkClass}>
+                            <span className="user-display-name">{displayName}</span>
+                            {userProfile?.avatar_image_id && (
+                                <img 
+                                    src={`/users/${message.user_id}/avatar`} 
+                                    alt="User avatar"
+                                    className={avatarClass}
+                                />
+                            )}
+                        </a>
+                    ) : (
+                        <a href={`/users/${message.user_id}/profile`} className={profileLinkClass}>
+                            {userProfile?.avatar_image_id && (
+                                <img 
+                                    src={`/users/${message.user_id}/avatar`} 
+                                    alt="User avatar"
+                                />
+                            )}
+                            <span className="user-display-name">{displayName}</span>
+                        </a>
+                    )}
+                </div>
+            ) : (
+                <div className="user_signature"></div>
+            )}
             <div className="message_content">
                 <div className="messages">{message.text}</div>
                 <span className="timestamp">{localTimeSimple(message.created_at)}</span>
@@ -207,7 +245,22 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
     }
 
     renderCommentsBlock() {
-        return <div>{this.state.messages.map((msg, idx) => this.renderChatMessage(msg, idx))} </div>;
+        const messageGroups = this.groupMessages();
+        let messageIndex = 0;
+        
+        return <div>
+            {messageGroups.map((group, groupIndex) => (
+                <div className="message_group" key={groupIndex}>
+                    {group.map((message, indexInGroup) => {
+                        const msgElement = this.renderChatMessage(message, messageIndex, indexInGroup === 0);
+                        messageIndex++;
+                        // Fetch user profile for this message
+                        this.fetchUserProfile(message.user_id);
+                        return msgElement;
+                    })}
+                </div>
+            ))}
+        </div>;
     }
 
     render() {

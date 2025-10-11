@@ -2,10 +2,24 @@
 .chat_panel {
   min-width: 1024px;
 
+  .message_group {
+    margin-bottom: 10px;
+    padding: 5px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    background-color: #f6f6f6;
+    overflow: hidden;
+  }
+
   .message_row {
     display: flex;
     flex-direction: row;
-    margin-bottom: 10px;
+    margin-bottom: 2px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   .user_signature {
@@ -54,14 +68,11 @@
     position: relative;
     
     .messages {
-      -moz-border-radius: 6px;
-      -webkit-border-radius: 6px;
-      border-radius: 6px;
       border: none;
       padding: 5px 5px 5px 5px;
       word-wrap: break-word;
       color: #222222;
-      background-color: #f6f6f6;
+      background-color: transparent;
       width: 100%;
       box-sizing: border-box;
     }
