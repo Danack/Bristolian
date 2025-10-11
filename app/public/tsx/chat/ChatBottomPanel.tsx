@@ -37,7 +37,11 @@ export function ChatBottomPanel(props: ChatBottomPanelProps) {
 
     fetch('/api/chat/message', params)
       .then((response: Response) => response.json())
-      .then((data: any) => foo(data));
+      .then((data: any) => {
+        foo(data);
+        // Clear the text input after successful send
+        setMessageToSend("");
+      });
   };
 
   let left_section = <div className="left-section">

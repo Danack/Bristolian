@@ -122,6 +122,8 @@ export class LoginStatusPanel extends Component<LoginStatusPanelProps, LoginStat
       <br/>
       <a href="/user/profile">Profile</a>
       <br/>
+      <a href="/system">System</a>
+      <br/>
       <a href="/admin">Admin</a>
     </div>;
   }

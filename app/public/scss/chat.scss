@@ -13,6 +13,39 @@
     flex-shrink: 0;
     padding-right: 10px;
     box-sizing: border-box;
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .user-profile-link {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+
+      &.compact {
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+      }
+
+      img {
+        display: block;
+        height: 32px;
+        width: auto;
+
+        &.compact {
+          height: 20px;
+        }
+      }
+
+      .user-display-name {
+        font-size: 0.75rem;
+        line-height: 1;
+      }
+    }
   }
 
   .message_content {
@@ -77,7 +110,7 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 80px;
+    height: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -101,13 +134,13 @@
 
       .message-input {
         flex: 2; // grows twice as much as other flex items
-        min-width: 400px; // ensures it doesn’t get too small
-        height: 60px;
+        min-width: 680px; // 70% wider: 400px * 1.7 = 680px
+        height: 84px; // 40% taller: 60px * 1.4 = 84px
         resize: none;
-        padding: 10px;
+        padding: 5px; // reduced padding
         border: 1px solid #ccc;
-        border-radius: 8px;
-        font-size: 14px;
+        border-radius: 0; // no round corners
+        font-size: 12px; // smaller font: 14px -> 12px
       }
 
       .send-btn,

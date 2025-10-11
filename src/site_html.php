@@ -79,7 +79,7 @@ function getPageLayoutHtml(\Bristolian\SiteHtml\ExtraAssets $extraAssets,): stri
     <div class="bristolian_prev_next">:raw_prev_next</div>
     <div class="bristolian_content_links">:raw_nav_content</div>
     <div class="bristolian_content">:raw_content</div>
-    <div class="bristolian_footer">:raw_footer</div>
+<!--    <div class="bristolian_footer">:raw_footer</div>-->
   </div>
 </body>
 
@@ -114,7 +114,7 @@ function createPageHtml(
         ':raw_prev_next' => '', //createPrevNextHtml($page->getPrevNextLinks()),
         ':raw_content' => $html, //$page->getContentHtml(),
         ':raw_nav_content' => '', //createContentLinksHtml($prefix, $page->getContentLinks()),
-        ':raw_footer' => createFooterHtml(),
+//        ':raw_footer' => createFooterHtml(),
     ];
 
     return esprintf(getPageLayoutHtml($extraAssets), $params);

@@ -171,43 +171,33 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         const messageHeight = this.state.messageHeights.get(index);
         const isCompact = messageHeight !== undefined && messageHeight < 40;
         
-        // Compact layout for short messages (< 40px)
-        const compactLayout = (
-            <a 
-                href={`/users/${message.user_id}/profile`}
-                style="display: flex; flex-direction: row; align-items: center; justify-content: flex-end; text-decoration: none; gap: 4px; color: inherit;"
-            >
-                <span style="font-size: 0.75rem; line-height: 1;">{displayName}</span>
-                {userProfile?.avatar_image_id && (
-                    <img 
-                        src={`/users/${message.user_id}/avatar`} 
-                        alt="User avatar"
-                        style="height: 20px; width: auto; display: block;"
-                    />
-                )}
-            </a>
-        );
-        
-        // Normal layout for taller messages
-        const normalLayout = (
-            <a 
-                href={`/users/${message.user_id}/profile`}
-                style="display: flex; flex-direction: column; align-items: flex-end; text-decoration: none; gap: 4px; color: inherit;"
-            >
-                {userProfile?.avatar_image_id && (
-                    <img 
-                        src={`/users/${message.user_id}/avatar`} 
-                        alt="User avatar"
-                        style="height: 32px; width: auto; display: block;"
-                    />
-                )}
-                <span style="font-size: 0.75rem; line-height: 1;">{displayName}</span>
-            </a>
-        );
+        const profileLinkClass = isCompact ? "user-profile-link compact" : "user-profile-link";
+        const avatarClass = isCompact ? "compact" : "";
         
         return <div className="message_row" key={index} ref={this.setMessageRef(index)}>
             <div className="user_signature">
-                {isCompact ? compactLayout : normalLayout}
+                {isCompact ? (
+                    <a href={`/users/${message.user_id}/profile`} className={profileLinkClass}>
+                        <span className="user-display-name">{displayName}</span>
+                        {userProfile?.avatar_image_id && (
+                            <img 
+                                src={`/users/${message.user_id}/avatar`} 
+                                alt="User avatar"
+                                className={avatarClass}
+                            />
+                        )}
+                    </a>
+                ) : (
+                    <a href={`/users/${message.user_id}/profile`} className={profileLinkClass}>
+                        {userProfile?.avatar_image_id && (
+                            <img 
+                                src={`/users/${message.user_id}/avatar`} 
+                                alt="User avatar"
+                            />
+                        )}
+                        <span className="user-display-name">{displayName}</span>
+                    </a>
+                )}
             </div>
             <div className="message_content">
                 <div className="messages">{message.text}</div>
