@@ -39,12 +39,11 @@ class BristolStairs
     }
 
     public function update_stairs_info(
-        UserSession $appSession,
+        UserSession $userSession,
         BristolStairsRepo $bristolStairsRepo,
-        //        VarMap $varMap,
         BristolStairsInfoParams $stairs_info_params
     ): JsonResponse {
-//        $stairs_info_params = BristolStairsInfoParams::createFromVarMap($varMap);
+
         $bristolStairsRepo->updateStairInfo($stairs_info_params);
 
         return new JsonResponse(['success' => true]);
@@ -196,6 +195,7 @@ HTML;
     ): StubResponse {
 
 //        // TODO - check user logged in
+//        TODO - check the post 'is user logged in' check working.
 //        if ($appSession->isLoggedIn() !== true) {
 //            $data = ['not logged in' => true];
 //            return new JsonResponse($data, [], 400);

@@ -128,17 +128,19 @@ class BristolStairsTest extends BaseTestCase
     }
 
     /**
+     * @group wip2
      * Test create method with valid admin user and successful upload
      */
     public function test_create_successful_upload(): void
     {
-        // TODO: Implement test
-        // - Mock AdminRepo to return valid user ID
-        // - Mock BristolStairImageStorage to return ObjectStoredFileInfo
-        // - Create temporary test image file
-        // - Call create method
-        // - Assert no errors occur
-        $this->markTestIncomplete('Test not implemented yet');
+        $this->markTestSkipped('Test not implemented yet');
+
+        $this->setupStandardWorkingFakes();
+        ob_start();
+        $result = $this->injector->execute([BristolStairs::class, 'create']);
+        $output = ob_get_clean();
+
+        var_dump($output);
     }
 
     /**
@@ -147,9 +149,7 @@ class BristolStairsTest extends BaseTestCase
     public function test_create_admin_user_not_found(): void
     {
         // TODO: Implement test
-        // - Mock AdminRepo to return null user ID
-        // - Call create method
-        // - Assert "Failed to find admin user" message and exit(-1)
+
         $this->markTestIncomplete('Test not implemented yet');
     }
 
@@ -159,11 +159,7 @@ class BristolStairsTest extends BaseTestCase
     public function test_create_upload_failure(): void
     {
         // TODO: Implement test
-        // - Mock AdminRepo to return valid user ID
-        // - Mock BristolStairImageStorage to return UploadError
-        // - Create temporary test image file
-        // - Call create method
-        // - Assert "Failed to upload file" message and exit(-1)
+
         $this->markTestIncomplete('Test not implemented yet');
     }
 

@@ -48,6 +48,9 @@ function getAllApiRoutes()
         ['/api/meme-tag-delete/', 'GET', 'Bristolian\AppController\User::handleMemeTagDelete_get'],
         ['/api/memes', 'GET', 'Bristolian\AppController\User::listMemes'],
         ['/api/memes/{meme_id:.+}/tags', 'GET', 'Bristolian\AppController\User::getTagsForMeme'],
+        ['/api/user/profile', 'POST', 'Bristolian\AppController\Users::updateProfile'],
+        ['/api/user/avatar', 'POST', 'Bristolian\AppController\Users::uploadAvatar'],
+        ['/api/users/{user_id:.*}', 'GET', 'Bristolian\AppController\Users::getUserInfo'],
         ['/api/rooms/{room_id:.*}/files', 'GET', 'Bristolian\AppController\Rooms::getFiles'],
 
 

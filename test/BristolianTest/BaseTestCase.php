@@ -100,6 +100,43 @@ class BaseTestCase extends TestCase
         return $description;
     }
 
+    public function setupStandardWorkingFakes()
+    {
+        $standardFakes = [
+          \Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage::class =>
+            \Bristolian\Service\BristolStairImageStorage\FakeWorksBristolStairImageStorage::class,
+
+//            \Bristolian\Repo\AdminRepo\AdminRepo::class =>
+//                \Bristolian\Repo\AdminRepo\PdoAdminRepo::class,
+//
+//            \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::class =>
+//                \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::class,
+
+            \Bristolian\Basic\ErrorLogger::class =>
+                \Bristolian\Basic\FakeErrorLogger::class,
+
+            \Bristolian\MarkdownRenderer\MarkdownRenderer::class =>
+                \Bristolian\MarkdownRenderer\CommonMarkRenderer::class,
+
+            \Bristolian\Service\RoomMessageService\RoomMessageService::class =>
+                \Bristolian\Service\RoomMessageService\FakeRoomMessageService::class
+
+
+        ];
+
+        foreach ($standardFakes as $interface => $implementation) {
+            $this->injector->alias($interface, $implementation);
+            // All the fakes can be shared
+            $this->injector->share($implementation);
+        }
+    }
+
+
+
+
+
+
+
 //    protected function assertProblems(
 //        ValidationResult $validationResult,
 //        array $messagesByIdentifier

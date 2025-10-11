@@ -6,6 +6,7 @@ use Bristolian\Repo\ChatMessageRepo\ChatMessageRepo;
 use Bristolian\Session\AppSession;
 use Bristolian\Parameters\ChatMessageParam;
 use SlimDispatcher\Response\JsonNoCacheResponse;
+use Bristolian\Service\RoomMessageService\RoomMessageService;
 use VarMap\VarMap;
 
 class Chat
@@ -48,6 +49,7 @@ HTML;
 
     public function send_message(
         ChatMessageRepo $chatMessageRepo,
+        RoomMessageService $roomMessageService,
         AppSession $appSession,
         VarMap $varMap
     ): JsonNoCacheResponse {
@@ -58,6 +60,8 @@ HTML;
             $appSession->getUserId(),
             $messageParams
         );
+
+        $roomMessageService->sendMessage($chat_message);
 
         return new JsonNoCacheResponse(['data' => $chat_message]);
     }

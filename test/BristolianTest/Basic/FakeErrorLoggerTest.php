@@ -11,6 +11,9 @@ use BristolianTest\BaseTestCase;
  */
 class FakeErrorLoggerTest extends BaseTestCase
 {
+    /**
+     * @covers \Bristolian\Basic\FakeErrorLogger
+     */
     public function testWorks()
     {
         $message1 = "Hello world!";

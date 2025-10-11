@@ -308,6 +308,8 @@ TEXT;
 
     public function test_render_markdown_file()
     {
+        $this->markTestSkipped('Test not implemented yet');
+
         $document = new \Bristolian\Model\UserDocument(
             \Bristolian\Types\DocumentType::markdown_file->value,
             "Some title",

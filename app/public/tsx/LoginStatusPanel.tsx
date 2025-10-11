@@ -1,5 +1,5 @@
 import {h, Component} from "preact";
-import {set_logged_in} from "./store";
+import {set_logged_in, set_user_info} from "./store";
 
 export interface LoginStatusPanelProps {
   // no properties currently
@@ -22,6 +22,7 @@ function getDefaultState(/*initialControlParams: object*/): LoginStatusPanelStat
 export class LoginStatusPanel extends Component<LoginStatusPanelProps, LoginStatusPanelState> {
 
   // user_search_timeout:null|number;
+  private previousLoginState: boolean | null = null;
 
   constructor(props: LoginStatusPanelProps) {
     super(props);
@@ -63,10 +64,46 @@ export class LoginStatusPanel extends Component<LoginStatusPanelProps, LoginStat
   }
 
   processLoggedInResponse(data: LoggedInInfo) {
+    const loginStateChanged = this.previousLoginState !== data.logged_in;
+    
     set_logged_in(data.logged_in);
 
     this.setState({
       logged_in: data.logged_in
+    });
+
+    // Update the previous login state
+    this.previousLoginState = data.logged_in;
+
+    // Early return if login status hasn't changed
+    if (!loginStateChanged) {
+      return;
+    }
+
+    // Fetch user info since login status has changed
+    if (data.logged_in) {
+      fetch('/users/whoami')
+        .then((response: Response) => response.json())
+        .then((userInfo: any) => {
+          set_user_info({
+            user_id: userInfo.user_id || null,
+            avatar_image_id: userInfo.avatar_image_id || null
+          });
+        })
+        .catch((err: any) => {
+          console.error('Failed to fetch user info:', err);
+          set_user_info({
+            user_id: null,
+            avatar_image_id: null
+          });
+        });
+      return;
+    }
+    
+    // User logged out, clear user info
+    set_user_info({
+      user_id: null,
+      avatar_image_id: null
     });
   }
 
@@ -82,6 +119,8 @@ export class LoginStatusPanel extends Component<LoginStatusPanelProps, LoginStat
       <a href="/logout">Logout</a>
       <br/>
       <a href="/user/memes">Memes</a>
+      <br/>
+      <a href="/user/profile">Profile</a>
       <br/>
       <a href="/admin">Admin</a>
     </div>;

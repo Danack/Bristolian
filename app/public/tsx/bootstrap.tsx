@@ -8,6 +8,7 @@ import type { WidgetClassBinding } from "./widgety/widgety";
 import { BristolStairsPanel } from "./BristolStairsPanel";
 import { CSPViolationReportsPanel } from "./CSPViolationReportsPanel";
 import { ChatPanel } from "./ChatPanel";
+import { UserProfilePanel } from "./UserProfilePanel";
 import { EmailLinkGeneratorPanel } from "./EmailLinkGenerator";
 import { FloatingPointPanel } from "./FloatingPointPanel";
 import { LoginStatusPanel } from "./LoginStatusPanel";
@@ -116,6 +117,10 @@ let panels: WidgetClassBinding[] = [
     {
         class: 'twitter_splitter_panel',
         component: TwitterSplitterPanel
+    },
+    {
+        class: 'user_profile_panel',
+        component: UserProfilePanel
     },
     {
         class: 'widget_csp_violation_reports',

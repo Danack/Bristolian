@@ -21,7 +21,7 @@ class ChatMessage
         public readonly string $user_id,
         public readonly string $room_id,
         public readonly string $text,
-        public readonly int|null $message_reply_id,
+        public readonly int|null $reply_message_id,
         public readonly \DateTimeInterface $created_at,
     ) {
     }

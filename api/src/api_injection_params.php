@@ -91,6 +91,18 @@ function apiInjectionParams() : InjectionParams
         \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::class =>
             \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class,
 
+        \Bristolian\Repo\UserProfileRepo\UserProfileRepo::class =>
+            \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class,
+
+        \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::class =>
+            \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::class,
+
+        \Bristolian\Service\AvatarImageStorage\AvatarImageStorage::class =>
+            \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::class,
+
+        \Bristolian\Service\ObjectStore\AvatarImageObjectStore::class =>
+            \Bristolian\Service\ObjectStore\StandardAvatarImageObjectStore::class,
+
         \Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage::class =>
             \Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::class,
 
@@ -101,8 +113,10 @@ function apiInjectionParams() : InjectionParams
             \Bristolian\Service\ObjectStore\StandardBristolianStairImageObjectStore::class,
 
         Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::class =>
-            Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class
+            Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class,
 
+        \Bristolian\Service\RoomMessageService\RoomMessageService::class =>
+            \Bristolian\Service\RoomMessageService\RedisRoomMessageService::class,
     ];
 
     // Delegate the creation of types to callables.
@@ -142,6 +156,9 @@ function apiInjectionParams() : InjectionParams
 
         \Bristolian\Filesystem\LocalCacheFilesystem::class =>
             'createLocalCacheFilesystem',
+
+        \Bristolian\Filesystem\AvatarImageFilesystem::class =>
+            'createAvatarImageFilesystem',
 
         \Bristolian\Session\StandardOptionalUserSession::class =>
             'createOptionalUserSession',

@@ -39,9 +39,6 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
             return UploadError::uploadedFileUnreadable();
         }
 
-//        $image_filename = $uploadedFile->getTmpName();
-
-//        $filename_for_content = $uploadedFile->getTmpName();
         $filename_for_extension = $uploadedFile->getOriginalName();
 
         $extension = pathinfo($uploadedFile->getOriginalName(), PATHINFO_EXTENSION);

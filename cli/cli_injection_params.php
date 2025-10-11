@@ -72,13 +72,13 @@ function injectionParams() : InjectionParams
             'createMemeFilesystem',
         \Mailgun\Mailgun::class => 'createMailgun',
 
+        \Bristolian\Filesystem\UserDocumentsFilesystem::class =>
+            'createUserDocumentsFilesystem',
 
         \Redis::class =>
             'createRedis',
 
         \Bristolian\Filesystem\BristolStairsFilesystem::class => 'createBristolStairsFilesystem'
-
-
     ];
 
     // Define some params that can be injected purely by name.

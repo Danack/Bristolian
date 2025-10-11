@@ -28,9 +28,14 @@ function getAllAppRoutes()
             'GET',
             'Bristolian\AppController\Users::showUserDocument'
         ],
-        // https://chat.stackoverflow.com/users/31555712/jamesbot
 
-        ['/users/{user_id:}/{username:.*}', 'GET', 'Bristolian\AppController\Users::showUser'],
+        ['/users/whoami', 'GET', 'Bristolian\AppController\Users::whoami'],
+
+        ['/users/{user_id:.*}/avatar', 'GET', 'Bristolian\AppController\Users::getUserAvatar'],
+
+        ['/users/{user_id:.*}/profile', 'GET', 'Bristolian\AppController\Users::showUserProfile'],
+
+        ['/users/{user_id:.*}/{username:.*}', 'GET', 'Bristolian\AppController\Users::showUser'],
         ['/users', 'GET', 'Bristolian\AppController\Users::index'],
         ['/qr/code', 'GET', '\Bristolian\AppController\QRCode::get'],
         [
@@ -111,6 +116,7 @@ function getAllAppRoutes()
 
         ['/tools/bristol_stairs/{stair_id:.*}', 'GET', 'Bristolian\AppController\BristolStairs::stairs_page_stair_selected'],
         ['/bristol_stairs/image/{stored_stair_image_file_id:.+}', 'GET', 'Bristolian\AppController\BristolStairs::getImage'],
+        ['/avatar/image/{avatar_image_id:.+}', 'GET', 'Bristolian\AppController\Users::getAvatarImage'],
         ['/tools/bristol_stairs', 'GET', 'Bristolian\AppController\BristolStairs::stairs_page'],
 
         ['/tools/notes', 'GET', '\Bristolian\AppController\Pages::notes_page'],

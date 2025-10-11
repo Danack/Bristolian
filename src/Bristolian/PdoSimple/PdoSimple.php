@@ -175,14 +175,28 @@ class PdoSimple
     {
         [$result, $statement] = $this->prepareAndExecute($query, $params);
 
-        $statement->setFetchMode(PDO::FETCH_CLASS, $classname);
-        $object = $statement->fetch();
+//        $statement->setFetchMode(PDO::FETCH_CLASS, $classname);
+//        $object = $statement->fetch();
+//
+//        if ($object === false) {
+//            throw new RowNotFoundException("The query did not result in a row");
+//        }
+//
+//        return $object;
 
-        if ($object === false) {
+
+        $statement->setFetchMode(PDO::FETCH_ASSOC);
+        $row = $statement->fetch();
+
+        if ($row === false) {
             throw new RowNotFoundException("The query did not result in a row");
         }
 
-        return $object;
+        $reflection = new \ReflectionClass($classname);
+        $converted_row = convertRowToDatetime($row);
+        $instance = $reflection->newInstanceArgs($converted_row);
+
+        return $instance;
     }
 
 
@@ -204,7 +218,6 @@ class PdoSimple
         if ($row === false) {
             throw new RowNotFoundException("The query did not result in a row");
         }
-
 
         $reflection = new \ReflectionClass($classname);
         $converted_row = convertRowToDatetime($row);

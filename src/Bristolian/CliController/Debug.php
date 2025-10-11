@@ -97,11 +97,6 @@ class Debug
             $created_at = new \DateTimeImmutable(),
         );
         $roomMessageService->sendMessage($chat_message);
-
-//        $string = $chat_message->toString();
-//        $recreated_message = ChatMessage::fromString($string);
-//
-//        var_dump($recreated_message);
     }
 
 

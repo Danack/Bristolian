@@ -11,11 +11,19 @@ export interface ConnectionPanelProps {
     room_id: string;
 }
 
+interface UserProfile {
+    user_id: string;
+    display_name: string | null;
+    avatar_image_id: string | null;
+}
+
 interface ConnectionPanelState {
     connection_state: string;
     messageToSend: string;  // text box input
     lastMessageReceived: string;  // last message from websocket
-    messages: ChatMessage[]
+    messages: ChatMessage[];
+    userProfiles: Map<string, UserProfile>;
+    messageHeights: Map<number, number>;
 }
 
 export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelState> {
@@ -24,6 +32,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
     timeout: number = 250; // Initial timeout duration
     ws: WebSocket | null = null;
     message_listener: number = 0;
+    messageRefs: Map<number, HTMLDivElement> = new Map();
 
     constructor(props: ConnectionPanelProps) {
         super(props);
@@ -32,24 +41,9 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
             connection_state: "Init",
             messageToSend: "",
             lastMessageReceived: "",
-            messages: [
-                // {
-                //     id: 54321,
-                //     user_id: "example_user_1",
-                //     room_id: props.room_id,
-                //     text: "Hello world!",
-                //     message_reply_id: 0,
-                //     created_at: new Date()
-                // },
-                // {
-                //     id: 54322,
-                //     user_id: "example_user_2",
-                //     room_id: props.room_id,
-                //     text: "Second message.",
-                //     message_reply_id: 54321,
-                //     created_at: new Date()
-                // },
-            ]
+            messages: [],
+            userProfiles: new Map(),
+            messageHeights: new Map()
         };
     }
 
@@ -66,8 +60,26 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         unregisterListener(this.message_listener);
     }
 
+    fetchUserProfile(userId: string) {
+        // Don't fetch if we already have it
+        if (this.state.userProfiles.has(userId)) {
+            return;
+        }
+
+        fetch(`/api/users/${userId}`)
+            .then((response: Response) => response.json())
+            .then((userInfo: UserProfile) => {
+                const newProfiles = new Map(this.state.userProfiles);
+                newProfiles.set(userId, userInfo);
+                this.setState({ userProfiles: newProfiles });
+            })
+            .catch((err: any) => {
+                console.error('Failed to fetch user profile:', err);
+            });
+    }
+
     onMessage(messageEvent: MessageEvent) {
-        // console.log("Received data", messageEvent.data);
+        console.log("Received data", messageEvent.data);
 
         let parsedData;
         try {
@@ -85,6 +97,9 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
             this.setState({
                 messages: current_messages
             });
+            
+            // Fetch user profile for this message
+            this.fetchUserProfile(message.user_id);
         }
         else if (data.type === undefined) {
             console.error("type not set in message. Something is wrong with the server.");
@@ -129,10 +144,70 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         }
     }
 
+    setMessageRef = (index: number) => (el: HTMLDivElement | null) => {
+        if (el) {
+            this.messageRefs.set(index, el);
+            // Use requestAnimationFrame to ensure layout has settled
+            requestAnimationFrame(() => {
+                const height = el.offsetHeight;
+                if (this.state.messageHeights.get(index) !== height) {
+                    const newHeights = new Map(this.state.messageHeights);
+                    newHeights.set(index, height);
+                    this.setState({ messageHeights: newHeights });
+                }
+            });
+        }
+    };
+
+    getShortUserId(userId: string): string {
+        const parts = userId.split('-');
+        return parts[parts.length - 1];
+    }
+
     renderChatMessage(message: ChatMessage, index: number) {
-        return <div className="message_row" key={index}>
+        const userProfile = this.state.userProfiles.get(message.user_id);
+        const shortUserId = this.getShortUserId(message.user_id);
+        const displayName = userProfile?.display_name || shortUserId;
+        const messageHeight = this.state.messageHeights.get(index);
+        const isCompact = messageHeight !== undefined && messageHeight < 40;
+        
+        // Compact layout for short messages (< 40px)
+        const compactLayout = (
+            <a 
+                href={`/users/${message.user_id}/profile`}
+                style="display: flex; flex-direction: row; align-items: center; justify-content: flex-end; text-decoration: none; gap: 4px; color: inherit;"
+            >
+                <span style="font-size: 0.75rem; line-height: 1;">{displayName}</span>
+                {userProfile?.avatar_image_id && (
+                    <img 
+                        src={`/users/${message.user_id}/avatar`} 
+                        alt="User avatar"
+                        style="height: 20px; width: auto; display: block;"
+                    />
+                )}
+            </a>
+        );
+        
+        // Normal layout for taller messages
+        const normalLayout = (
+            <a 
+                href={`/users/${message.user_id}/profile`}
+                style="display: flex; flex-direction: column; align-items: flex-end; text-decoration: none; gap: 4px; color: inherit;"
+            >
+                {userProfile?.avatar_image_id && (
+                    <img 
+                        src={`/users/${message.user_id}/avatar`} 
+                        alt="User avatar"
+                        style="height: 32px; width: auto; display: block;"
+                    />
+                )}
+                <span style="font-size: 0.75rem; line-height: 1;">{displayName}</span>
+            </a>
+        );
+        
+        return <div className="message_row" key={index} ref={this.setMessageRef(index)}>
             <div className="user_signature">
-                {message.user_id}
+                {isCompact ? compactLayout : normalLayout}
             </div>
             <div className="message_content">
                 <div className="messages">{message.text}</div>
@@ -142,7 +217,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
     }
 
     renderCommentsBlock() {
-        return <div>{this.state.messages.map(this.renderChatMessage)} </div>;
+        return <div>{this.state.messages.map((msg, idx) => this.renderChatMessage(msg, idx))} </div>;
     }
 
     render() {

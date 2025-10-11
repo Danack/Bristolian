@@ -408,6 +408,12 @@ class GenerateFiles
             'SOURCELINK_TEXT_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\SourceLinkText::MAXIMUM_LENGTH,
 
             'SOURCE_LINK_MAX_PAGES' => \Bristolian\Parameters\PropertyType\SourceLinkPage::MAX_PAGES,
+
+            'MINIMUM_DISPLAY_NAME_LENGTH' => \Bristolian\Parameters\PropertyType\DisplayName::MINIMUM_DISPLAY_NAME_LENGTH,
+            'MAXIMUM_DISPLAY_NAME_LENGTH' => \Bristolian\Parameters\PropertyType\DisplayName::MAXIMUM_DISPLAY_NAME_LENGTH,
+
+            'MINIMUM_ABOUT_ME_LENGTH' => \Bristolian\Parameters\PropertyType\AboutMeText::MINIMUM_ABOUT_ME_LENGTH,
+            'MAXIMUM_ABOUT_ME_LENGTH' => \Bristolian\Parameters\PropertyType\AboutMeText::MAXIMUM_ABOUT_ME_LENGTH,
         ];
 
         $string_template = <<< TEMPLATE

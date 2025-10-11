@@ -20,3 +20,32 @@ export function use_logged_in() {
   }, []);
   return logged_in;
 }
+
+// User info store
+interface UserInfo {
+  user_id: string | null;
+  avatar_image_id: string | null;
+}
+
+let _user_info: UserInfo = {
+  user_id: null,
+  avatar_image_id: null
+};
+let user_info_listeners: ((user_info: UserInfo) => void)[] = [];
+
+export function set_user_info(value: UserInfo) {
+  _user_info = value;
+  user_info_listeners.forEach(cb => cb(_user_info));
+}
+
+export function use_user_info() {
+  const [user_info, setUserInfo] = useState(_user_info);
+  useEffect(() => {
+    const listener = (value: UserInfo) => setUserInfo(value);
+    user_info_listeners.push(listener);
+    return () => {
+      user_info_listeners = user_info_listeners.filter(l => l !== listener);
+    };
+  }, []);
+  return user_info;
+}

@@ -4,6 +4,10 @@ namespace Bristolian\AppController;
 
 use Bristolian\Repo\UserDocumentRepo\UserDocumentRepo;
 use Bristolian\Repo\UserRepo\UserRepo;
+use Bristolian\Repo\UserProfileRepo\UserProfileRepo;
+use Bristolian\Parameters\UserProfileUpdateParams;
+use Bristolian\Session\UserSession;
+use SlimDispatcher\Response\JsonResponse;
 
 class Users
 {
@@ -27,6 +31,143 @@ class Users
 
         return $contents;
     }
+
+    public function whoami(
+        \Bristolian\Session\AppSessionManager $appSessionManager,
+        UserProfileRepo $userProfileRepo
+    ): JsonResponse|\SlimDispatcher\Response\HtmlResponse {
+        $appSession = $appSessionManager->getCurrentAppSession();
+        
+        if (!$appSession) {
+            return new \SlimDispatcher\Response\HtmlResponse(
+                'Not logged in',
+                [],
+                404
+            );
+        }
+
+        $user_id = $appSession->getUserId();
+        $user_profile = $userProfileRepo->getUserProfile($user_id);
+
+        $data = [
+            'user_id' => $user_id,
+            'avatar_image_id' => $user_profile ? $user_profile->getAvatarImageId() : null,
+        ];
+
+        [$error, $values] = convertToValue($data);
+
+        return new JsonResponse($values);
+    }
+
+    public function getUserInfo(
+        UserProfileRepo $userProfileRepo,
+        string $user_id
+    ): JsonResponse|\SlimDispatcher\Response\HtmlResponse {
+        $user_profile = $userProfileRepo->getUserProfile($user_id);
+        
+        if (!$user_profile) {
+            return new \SlimDispatcher\Response\HtmlResponse(
+                'User not found',
+                [],
+                404
+            );
+        }
+
+        $data = [
+            'user_id' => $user_id,
+            'display_name' => $user_profile->getDisplayName(),
+            'avatar_image_id' => $user_profile->getAvatarImageId(),
+        ];
+
+        [$error, $values] = convertToValue($data);
+
+        return new JsonResponse($values);
+    }
+
+    public function getUserAvatar(
+        \Bristolian\Filesystem\AvatarImageFilesystem $avatarFilesystem,
+        \Bristolian\Filesystem\LocalCacheFilesystem $localCacheFilesystem,
+        \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo $avatarImageStorageInfoRepo,
+        UserProfileRepo $userProfileRepo,
+        string $user_id
+    ): \Bristolian\Response\StreamingResponse|\Bristolian\Response\StoredFileErrorResponse {
+        // Get the user's profile to find their avatar_image_id
+        $user_profile = $userProfileRepo->getUserProfile($user_id);
+        
+        if (!$user_profile || !$user_profile->getAvatarImageId()) {
+            return new \Bristolian\Response\StoredFileErrorResponse('No avatar for user: ' . $user_id);
+        }
+
+        $avatar_image_id = $user_profile->getAvatarImageId();
+        $fileDetails = $avatarImageStorageInfoRepo->getById($avatar_image_id);
+
+        if ($fileDetails === null) {
+            return new \Bristolian\Response\StoredFileErrorResponse($avatar_image_id);
+        }
+
+        $normalized_name = $fileDetails->normalized_name;
+        if ($localCacheFilesystem->fileExists($normalized_name) !== true) {
+            try {
+                $stream = $avatarFilesystem->readStream($normalized_name);
+            }
+            catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
+                return new \Bristolian\Response\StoredFileErrorResponse($normalized_name);
+            }
+            $localCacheFilesystem->writeStream($normalized_name, $stream);
+        }
+
+        $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;
+        $filenameToServe = realpath($localCacheFilename);
+
+        if ($filenameToServe === false) {
+            throw new \Bristolian\Exception\BristolianException(
+                "Failed to retrieve avatar from object store [" . $normalized_name . "]."
+            );
+        }
+
+        return new \Bristolian\Response\StreamingResponse(
+            $filenameToServe
+        );
+    }
+
+
+    public function showUserProfile(
+        \Bristolian\Session\AppSessionManager $appSessionManager,
+        UserProfileRepo $userProfileRepo,
+        string $user_id
+    ): string {
+        // Get full user profile
+        $user_profile = $userProfileRepo->getUserProfile($user_id);
+        
+        // Check if logged-in user is viewing their own profile
+        $is_own_profile = false;
+        $appSession = $appSessionManager->getCurrentAppSession();
+        if ($appSession && $appSession->getUserId() === $user_id) {
+            $is_own_profile = true;
+        }
+
+        // Prepare widget data - flatten the nested structure
+        $data = [
+            'user_id' => $user_id,
+            'display_name' => $user_profile->getDisplayName(),
+            'about_me' => $user_profile->getAboutMe(),
+            'avatar_image_id' => $user_profile->getAvatarImageId(),
+            'is_own_profile' => $is_own_profile
+        ];
+        
+        [$error, $values] = convertToValue($data);
+        $widget_json = json_encode_safe($values);
+        $widget_data = htmlspecialchars($widget_json);
+
+
+        $content = "<h1>User Profile</h1>";
+        $content .= <<< HTML
+<div class="user_profile_panel" data-widgety_json="$widget_data"></div>
+HTML;
+
+        return $content;
+    }
+
 
     public function showUser(
         UserRepo $userRepo,
@@ -72,5 +213,101 @@ class Users
         }
 
         return $userDocumentRepo->renderUserDocument($user, $title);
+    }
+
+    public function updateProfile(
+        UserSession $userSession,
+        UserProfileRepo $userProfileRepo,
+        UserProfileUpdateParams $params
+    ): JsonResponse {
+        // User can only update their own profile
+        $updated_profile = $userProfileRepo->updateProfile(
+            $userSession->getUserId(),
+            $params
+        );
+
+        [$error, $values] = convertToValue($updated_profile);
+
+        return new JsonResponse([
+            'success' => true,
+            'profile' => $values
+        ]);
+    }
+
+    public function uploadAvatar(
+        UserSession $userSession,
+        UserProfileRepo $userProfileRepo,
+        \Bristolian\Service\AvatarImageStorage\AvatarImageStorage $avatarImageStorage,
+        \Bristolian\UserUploadedFile\UserSessionFileUploadHandler $uploadHandler
+    ): \SlimDispatcher\Response\StubResponse {
+        
+        // Get the uploaded file
+        $fileOrResponse = $uploadHandler->fetchUploadedFile('avatar_file');
+        if ($fileOrResponse instanceof \SlimDispatcher\Response\StubResponse) {
+            return $fileOrResponse;
+        }
+
+        // Store the avatar image
+        $avatarImageIdOrError = $avatarImageStorage->storeAvatarForUser(
+            $userSession->getUserId(),
+            $fileOrResponse,
+            get_supported_avatar_image_extensions()
+        );
+
+        if ($avatarImageIdOrError instanceof \Bristolian\Service\AvatarImageStorage\UploadError) {
+            return new \SlimDispatcher\Response\JsonNoCacheResponse(
+                ['error' => $avatarImageIdOrError->error_message],
+                [],
+                400
+            );
+        }
+
+        // Update the user profile with the new avatar ID
+        $userProfileRepo->updateAvatarImage(
+            $userSession->getUserId(),
+            $avatarImageIdOrError
+        );
+
+        return new \SlimDispatcher\Response\JsonNoCacheResponse([
+            'success' => true,
+            'avatar_image_id' => $avatarImageIdOrError
+        ]);
+    }
+
+    public function getAvatarImage(
+        \Bristolian\Filesystem\AvatarImageFilesystem $avatarFilesystem,
+        \Bristolian\Filesystem\LocalCacheFilesystem $localCacheFilesystem,
+        \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo $avatarImageStorageInfoRepo,
+        string $avatar_image_id
+    ): \Bristolian\Response\StreamingResponse|\Bristolian\Response\StoredFileErrorResponse {
+        $fileDetails = $avatarImageStorageInfoRepo->getById($avatar_image_id);
+
+        if ($fileDetails === null) {
+            return new \Bristolian\Response\StoredFileErrorResponse($avatar_image_id);
+        }
+
+        $normalized_name = $fileDetails->normalized_name;
+        if ($localCacheFilesystem->fileExists($normalized_name) !== true) {
+            try {
+                $stream = $avatarFilesystem->readStream($normalized_name);
+            }
+            catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
+                return new \Bristolian\Response\StoredFileErrorResponse($normalized_name);
+            }
+            $localCacheFilesystem->writeStream($normalized_name, $stream);
+        }
+
+        $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;
+        $filenameToServe = realpath($localCacheFilename);
+
+        if ($filenameToServe === false) {
+            throw new \Bristolian\Exception\BristolianException(
+                "Failed to retrieve avatar from object store [" . $normalized_name . "]."
+            );
+        }
+
+        return new \Bristolian\Response\StreamingResponse(
+            $filenameToServe
+        );
     }
 }

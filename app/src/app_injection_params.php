@@ -121,6 +121,18 @@ function injectionParams()
         \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::class =>
             \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class,
 
+        \Bristolian\Repo\UserProfileRepo\UserProfileRepo::class =>
+            \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class,
+
+        \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::class =>
+            \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::class,
+
+        \Bristolian\Service\AvatarImageStorage\AvatarImageStorage::class =>
+            \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::class,
+
+        \Bristolian\Service\ObjectStore\AvatarImageObjectStore::class =>
+            \Bristolian\Service\ObjectStore\StandardAvatarImageObjectStore::class,
+
         \Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo::class =>
           \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo::class,
 
@@ -142,6 +154,9 @@ function injectionParams()
 
         \Redis::class =>
           'createRedis',
+
+        \Bristolian\Filesystem\AvatarImageFilesystem::class =>
+            'createAvatarImageFilesystem',
 
         \UrlFetcher\RedisCachedUrlFetcher::class => 'createRedisCachedUrlFetcher',
 

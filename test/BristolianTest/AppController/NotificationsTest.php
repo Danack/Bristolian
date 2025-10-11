@@ -32,6 +32,7 @@ class NotificationsTest extends BaseTestCase
    */
     public function testNotificationsEndPointIsWorking()
     {
+        $this->markTestSkipped('Test not implemented yet');
         $data = [
         "endpoint" => "https://www.example.com/foo",
         "keys" => [

@@ -289,6 +289,90 @@ function createBristolStairsFilesystem(Config $config): \Bristolian\Filesystem\B
 }
 
 
+function createAvatarImageFilesystem(Config $config): \Bristolian\Filesystem\AvatarImageFilesystem
+{
+    $bucketName = 'bristolian-avatar-images';
+
+    if ($config->isProductionEnv() !== true) {
+        $bucketName = 'bristolian-avatar-images-dev';
+    }
+
+    // SETUP
+    $client = new S3Client([
+        'credentials' => [
+            'key' => getScalewayApiKey(),
+            'secret' => getScalewayApiSecret(),
+        ],
+        'region' => 'nl-ams',
+        'endpoint' => 'https://s3.nl-ams.scw.cloud',
+        'http' => [
+            'timeout' => 15,          // seconds to wait for response
+            'connect_timeout' => 4,  // seconds to wait for TCP connection
+        ],
+    ]);
+
+    // The internal adapter
+    $adapter = new AwsS3V3Adapter(
+        $client,
+        $bucketName,
+        // Optional path prefix
+        '', //'path/prefix',
+        new PortableVisibilityConverter(
+            Visibility::PRIVATE
+        )
+    );
+
+    $config = [];
+
+    // The FilesystemOperator
+    $filesystem = new \Bristolian\Filesystem\AvatarImageFilesystem($adapter, $config);
+
+    return $filesystem;
+}
+
+
+
+function createUserDocumentsFilesystem(Config $config): \Bristolian\Filesystem\UserDocumentsFilesystem
+{
+    $bucketName = 'bristolian-user-documents';
+
+    if ($config->isProductionEnv() !== true) {
+        $bucketName = 'bristolian-user-documents-dev';
+    }
+
+    // SETUP
+    $client = new S3Client([
+        'credentials' => [
+            'key' => getScalewayApiKey(),
+            'secret' => getScalewayApiSecret(),
+        ],
+        'region' => 'nl-ams',
+        'endpoint' => 'https://s3.nl-ams.scw.cloud',
+        'http' => [
+            'timeout' => 15,          // seconds to wait for response
+            'connect_timeout' => 4,  // seconds to wait for TCP connection
+        ],
+    ]);
+
+    // The internal adapter
+    $adapter = new AwsS3V3Adapter(
+        $client,
+        $bucketName,
+        // Optional path prefix
+        '', //'path/prefix',
+        new PortableVisibilityConverter(
+            Visibility::PRIVATE
+        )
+    );
+
+    $config = [];
+
+    // The FilesystemOperator
+    $filesystem = new \Bristolian\Filesystem\UserDocumentsFilesystem($adapter, $config);
+
+    return $filesystem;
+}
+
 
 
 
