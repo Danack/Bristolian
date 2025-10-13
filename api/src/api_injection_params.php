@@ -116,7 +116,7 @@ function apiInjectionParams() : InjectionParams
             Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class,
 
         \Bristolian\Service\RoomMessageService\RoomMessageService::class =>
-            \Bristolian\Service\RoomMessageService\RedisRoomMessageService::class,
+            \Bristolian\Service\RoomMessageService\StandardRoomMessageService::class,
     ];
 
     // Delegate the creation of types to callables.

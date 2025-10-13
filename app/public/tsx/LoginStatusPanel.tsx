@@ -21,17 +21,14 @@ function getDefaultState(/*initialControlParams: object*/): LoginStatusPanelStat
 
 export class LoginStatusPanel extends Component<LoginStatusPanelProps, LoginStatusPanelState> {
 
-  // user_search_timeout:null|number;
   private previousLoginState: boolean | null = null;
 
   constructor(props: LoginStatusPanelProps) {
     super(props);
     this.state = getDefaultState(/*props.initialControlParams*/);
-    // this.user_search_timeout = null;
   }
 
   componentDidMount() {
-    // console.log('componentDidMount');
     this.triggerDataFetch()
   }
 
@@ -39,7 +36,6 @@ export class LoginStatusPanel extends Component<LoginStatusPanelProps, LoginStat
   }
 
   triggerDataFetch() {
-    // console.log('triggerDataFetch');
     let callback = () => this.setTimeout();
 
     // TODO - we shouldn't need to renew the session so often.

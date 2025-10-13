@@ -31,6 +31,8 @@ class App
 
     const MAX_MEME_FILE_SIZE = 50 * 1024 * 1024;
 
+    const ROOM_ID_DEBUG = '019980fb-8a39-7223-9402-e9d7973cd7f7';
+
     const ERROR_CAUGHT_BY_MIDDLEWARE_MESSAGE = "<!-- This is caught in the exception mapper -->";
 
     // This is used by the tests to check that exception handling is working properly

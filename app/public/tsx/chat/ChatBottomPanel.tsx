@@ -3,11 +3,14 @@
 import {h} from "preact";
 import {useState} from "preact/hooks";
 import {use_logged_in, use_user_info} from "../store";
+import {ChatMessage} from "../generated/types";
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
 export interface ChatBottomPanelProps {
   room_id: string;
+  replyingToMessage?: ChatMessage | null;
+  onCancelReply?: () => void;
 }
 
 export function ChatBottomPanel(props: ChatBottomPanelProps) {
@@ -20,15 +23,33 @@ export function ChatBottomPanel(props: ChatBottomPanelProps) {
     setMessageToSend(target.value);
   };
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (messageToSend.trim()) {
+        handleMessageSend();
+      }
+    }
+  };
+
   const foo = (data: any) => {
     // Handle response
   };
 
   const handleMessageSend = () => {
+    // Don't send if there's no text or only whitespace
+    if (!messageToSend.trim()) {
+      return;
+    }
+
     const formData = new FormData();
     formData.append("room_id", props.room_id);
     formData.append("text", messageToSend);
-    // message_reply_id
+
+    // Add reply ID if replying to a message
+    if (props.replyingToMessage) {
+      formData.append("message_reply_id", props.replyingToMessage.id.toString());
+    }
 
     let params = {
       method: 'POST',
@@ -41,52 +62,70 @@ export function ChatBottomPanel(props: ChatBottomPanelProps) {
         foo(data);
         // Clear the text input after successful send
         setMessageToSend("");
+        // Cancel reply after sending
+        if (props.onCancelReply) {
+          props.onCancelReply();
+        }
       });
   };
 
-  let left_section = <div className="left-section">
-    <span>You must be <a href="/login">logged in</a> to talk.</span>
+  let avatar_section = <div className="avatar-section">
   </div>;
 
-  if (logged_in === true) {
-    const avatar_element = user_info.user_id && user_info.avatar_image_id ? (
-      <img
-        className="avatar"
-        src={`/users/${user_info.user_id}/avatar`}
-        alt="User avatar"
-      />
-    ) : (
-      <div className="avatar"></div>
-    );
 
-    left_section = <div className="left-section">
-      {avatar_element}
-      <textarea
-        className="message-input"
-        placeholder="Write a message..."
-        onInput={handleInputChange}
-        value={messageToSend}>
-      </textarea>
-      <button className="send-btn" onClick={handleMessageSend}>Send</button>
-      <button className="upload-btn">Upload</button>
+  let interactive_section = <div>
+    <span>You must be <a href="/login">logged in</a> to talk.</span>
+  </div>
+
+  let replying_section = <div className="reply-indicator-top"></div>;
+
+  if (logged_in === true) {
+    interactive_section = <div>
+      <div className="input-row">
+        <textarea
+          className="message-input"
+          placeholder={props.replyingToMessage ? "Reply... (Enter to send)" : "Write a message... (Enter to send)"}
+          onInput={handleInputChange}
+          onKeyDown={handleKeyDown}
+          value={messageToSend}>
+        </textarea>
+        <button className="send-btn" onClick={handleMessageSend}>Send</button>
+        <button className="upload-btn">Upload</button>
+      </div>
     </div>;
+
+    if (user_info.user_id && user_info.avatar_image_id) {
+      avatar_section =
+        <div className="avatar-section">
+          <img
+            className="avatar"
+            src={`/users/${user_info.user_id}/avatar`}
+            alt="User avatar"
+          />;
+        </div>
+    }
   }
 
-  // <img src="logo.png" alt="Logo" className="logo"/>
-  // <div className="links">
-  //   <a href="#">Help</a> |
-  //   <a href="#">FAQ</a> |
-  //   <a href="#">Legal</a> |
-  //   <a href="#">Privacy Policy</a> |
-  //   <a href="#">Mobile</a>
-  // </div>
+  // Always show replying_section with fixed height
+  if (props.replyingToMessage) {
+    replying_section = <div className="reply-indicator-top">
+      <span>Replying to message {props.replyingToMessage.id}</span>
+      <button className="cancel-reply-btn" onClick={props.onCancelReply}>×</button>
+    </div>;
+  } else {
+    replying_section = <div className="reply-indicator-top"></div>;
+  }
 
   return (
     <div className="bottom-bar">
-      {left_section}
+      {avatar_section}
+      <div className="interactive_section">
+        {replying_section}
+        {interactive_section}
+      </div>
       <div className="right-section">
         Please report bugs to Danack
       </div>
     </div>
-  );
+  ) ;
 }

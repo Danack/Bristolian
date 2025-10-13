@@ -9,6 +9,8 @@ import {localTimeSimple} from "./functions";
 export interface ConnectionPanelProps {
     username: string;
     room_id: string;
+    replyingToMessage?: ChatMessage | null;
+    onCancelReply?: () => void;
 }
 
 interface UserProfile {
@@ -24,6 +26,7 @@ interface ConnectionPanelState {
     messages: ChatMessage[];
     userProfiles: Map<string, UserProfile>;
     messageHeights: Map<number, number>;
+    replyingToMessage: ChatMessage | null;  // message being replied to
 }
 
 export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelState> {
@@ -43,7 +46,8 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
             lastMessageReceived: "",
             messages: [],
             userProfiles: new Map(),
-            messageHeights: new Map()
+            messageHeights: new Map(),
+            replyingToMessage: null
         };
     }
 
@@ -164,6 +168,14 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         return parts[parts.length - 1];
     }
 
+    startReply = (message: ChatMessage) => {
+        this.setState({ replyingToMessage: message });
+    }
+
+    cancelReply = () => {
+        this.setState({ replyingToMessage: null });
+    }
+
     // Group messages from the same user within 600 seconds
     groupMessages(): ChatMessage[][] {
         const groups: ChatMessage[][] = [];
@@ -215,8 +227,8 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
                         <a href={`/users/${message.user_id}/profile`} className={profileLinkClass}>
                             <span className="user-display-name">{displayName}</span>
                             {userProfile?.avatar_image_id && (
-                                <img 
-                                    src={`/users/${message.user_id}/avatar`} 
+                                <img
+                                    src={`/users/${message.user_id}/avatar`}
                                     alt="User avatar"
                                     className={avatarClass}
                                 />
@@ -225,8 +237,8 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
                     ) : (
                         <a href={`/users/${message.user_id}/profile`} className={profileLinkClass}>
                             {userProfile?.avatar_image_id && (
-                                <img 
-                                    src={`/users/${message.user_id}/avatar`} 
+                                <img
+                                    src={`/users/${message.user_id}/avatar`}
                                     alt="User avatar"
                                 />
                             )}
@@ -240,6 +252,15 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
             <div className="message_content">
                 <div className="messages">{message.text}</div>
                 <span className="timestamp">{localTimeSimple(message.created_at)}</span>
+            </div>
+            <div className="message_reply_area">
+                <button
+                    className="reply_button"
+                    onClick={() => this.startReply(message)}
+                    title="Reply to this message"
+                >
+                    ⤶
+                </button>
             </div>
         </div>;
     }
@@ -271,7 +292,11 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
                   {comments_block}
               </div>
 
-              <ChatBottomPanel room_id={this.props.room_id}/>
+              <ChatBottomPanel
+                room_id={this.props.room_id}
+                replyingToMessage={this.state.replyingToMessage}
+                onCancelReply={this.cancelReply}
+              />
           </div>
         );
     }

@@ -2,8 +2,12 @@
 
 namespace Bristolian\CliController;
 
+use Bristolian\App;
 use Bristolian\Model\ChatMessage;
 use Bristolian\Model\WebPushNotification;
+use Bristolian\Parameters\ChatMessageParam;
+use Bristolian\Parameters\PropertyType\BasicString;
+use Bristolian\Parameters\PropertyType\ChatMessageReplyId;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Service\WebPushService\WebPushService;
@@ -43,7 +47,6 @@ class Debug
     {
         fn_level_1();
     }
-
 
     public function send_webpush(
         string $email_address,
@@ -88,17 +91,15 @@ class Debug
         string $message,
     ): void {
         $user_id = $adminRepo->getAdminUserId(getAdminEmailAddress());
-        $chat_message = new ChatMessage(
-            $id = 5,
-            $user_id,
-            $room_id = '123455',
+
+        $chat_message_param = ChatMessageParam::createFromArray([
+            $room_id = App::ROOM_ID_DEBUG,
             $text = $message,
             $message_reply_id = null,
-            $created_at = new \DateTimeImmutable(),
-        );
-        $roomMessageService->sendMessage($chat_message);
-    }
+        ]);
 
+        $roomMessageService->sendMessage($user_id, $chat_message_param);
+    }
 
     public function generate_room_messages(): void
     {

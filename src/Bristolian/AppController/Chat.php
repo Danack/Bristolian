@@ -7,6 +7,7 @@ use Bristolian\Session\AppSession;
 use Bristolian\Parameters\ChatMessageParam;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use Bristolian\Service\RoomMessageService\RoomMessageService;
+use Bristolian\App;
 use VarMap\VarMap;
 
 class Chat
@@ -19,7 +20,7 @@ class Chat
     public function get_test_page(): string
     {
         $props = [
-            'room_id' => '019980fb-8a39-7223-9402-e9d7973cd7f7'
+            'room_id' => App::ROOM_ID_DEBUG
         ];
 
         $widget_json = json_encode_safe($props);
@@ -48,7 +49,6 @@ HTML;
 
 
     public function send_message(
-        ChatMessageRepo $chatMessageRepo,
         RoomMessageService $roomMessageService,
         AppSession $appSession,
         VarMap $varMap
@@ -56,12 +56,10 @@ HTML;
 
         $messageParams = ChatMessageParam::createFromVarMap($varMap);
 
-        $chat_message = $chatMessageRepo->storeChatMessageForUser(
+        $chat_message = $roomMessageService->sendMessage(
             $appSession->getUserId(),
             $messageParams
         );
-
-        $roomMessageService->sendMessage($chat_message);
 
         return new JsonNoCacheResponse(['data' => $chat_message]);
     }

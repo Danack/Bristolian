@@ -586,6 +586,78 @@ export class MyPanel extends Component<MyPanelProps, MyPanelState> {
 - Login status is fetched via the `/api/user/login_status` endpoint
 - The `LoginStatusPanel` component manages fetching and updating this state
 
+### React Pattern: Default Sections with Conditional Updates
+
+A useful pattern for React/Preact components is to initialize sections with default/empty content, then conditionally replace them with actual content based on state or props. This pattern is used in `ChatBottomPanel.tsx`:
+
+```typescript
+export function ChatBottomPanel(props: ChatBottomPanelProps) {
+  // Initialize sections with default/empty content
+  let avatar_section = <div className="avatar-section"></div>;
+  let interactive_section = <div>
+    <span>You must be <a href="/login">logged in</a> to talk.</span>
+  </div>;
+  let replying_section = <div className="reply-indicator-top"></div>;
+
+  // Conditionally update sections based on state/props
+  if (logged_in === true) {
+    interactive_section = <div>
+      <div className="input-row">
+        <textarea
+          className="message-input"
+          placeholder={props.replyingToMessage ? "Reply..." : "Write a message..."}
+          onInput={handleInputChange}
+          value={messageToSend}>
+        </textarea>
+        <button className="send-btn" onClick={handleMessageSend}>Send</button>
+        <button className="upload-btn">Upload</button>
+      </div>
+    </div>;
+  }
+
+  if (user_info.user_id && user_info.avatar_image_id) {
+    avatar_section = <div className="avatar-section">
+      <img
+        className="avatar"
+        src={`/users/${user_info.user_id}/avatar`}
+        alt="User avatar"
+      />;
+    </div>;
+  }
+
+  if (props.replyingToMessage) {
+    replying_section = <div className="reply-indicator-top">
+      <span>Replying to message {props.replyingToMessage.id}</span>
+      <button className="cancel-reply-btn" onClick={props.onCancelReply}>×</button>
+    </div>;
+  }
+
+  return (
+    <div className="bottom-bar">
+      {avatar_section}
+      <div className="interactive_section">
+        {replying_section}
+        {interactive_section}
+      </div>
+      <div className="right-section">
+        Please report bugs to Danack
+      </div>
+    </div>
+  );
+}
+```
+
+**Benefits of this pattern:**
+- **Readability**: The final JSX structure is clear and matches the visual layout
+- **Maintainability**: Each section's logic is grouped together at the top
+- **Performance**: Avoids unnecessary conditional rendering in the JSX
+- **Consistency**: Makes it easy to see all possible states for each section
+
+**When to use:**
+- Components with multiple conditional sections
+- When you want to avoid deeply nested conditional JSX
+- For components where the structure is more important than the conditional logic
+
 **Conditional Rendering Example:**
 ```typescript
 render(props: MyPanelProps, state: MyPanelState) {

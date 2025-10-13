@@ -58,7 +58,7 @@ function injectionParams() : InjectionParams
           \Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::class,
 
         \Bristolian\Service\RoomMessageService\RoomMessageService::class =>
-          \Bristolian\Service\RoomMessageService\RedisRoomMessageService::class
+          \Bristolian\Service\RoomMessageService\StandardRoomMessageService::class
 
     ];
 
