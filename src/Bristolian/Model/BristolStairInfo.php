@@ -4,6 +4,9 @@ namespace Bristolian\Model;
 
 use Bristolian\ToArray;
 
+/**
+ * Information about some stairs in Bristol as pulled from the database.
+ */
 class BristolStairInfo
 {
     use ToArray;

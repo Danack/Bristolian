@@ -64,4 +64,6 @@ RUN usermod -u 1000 www-data
 
 RUN echo 'alias cli="php cli.php"' >> ~/.bashrc
 
-CMD sh /var/app/containers/php_fpm/entrypoint.sh
+# CMD sh /var/app/containers/php_fpm/entrypoint.sh
+
+CMD ["sh", "/var/app/containers/php_fpm/entrypoint.sh"]

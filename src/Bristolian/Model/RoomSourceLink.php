@@ -4,6 +4,9 @@ namespace Bristolian\Model;
 
 use Bristolian\ToArray;
 
+/**
+ * An annotation in a PDF. TODO - change the name to annotations and add user-draw lines.
+ */
 class RoomSourceLink
 {
     use ToArray;

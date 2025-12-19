@@ -3,14 +3,14 @@
 namespace Bristolian\Service\RoomMessageService;
 
 use Bristolian\Keys\RoomMessageKey;
-use Bristolian\Model\ChatMessage;
+use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\ToString;
 use Redis;
 
 class FakeRoomMessageService implements RoomMessageService
 {
     /**
-     * @var ChatMessage[]
+     * @var UserChatMessage[]
      */
     private $chat_messages = [];
 
@@ -18,7 +18,7 @@ class FakeRoomMessageService implements RoomMessageService
     ) {
     }
 
-    public function sendMessage(ChatMessage $message): void
+    public function sendMessage(UserChatMessage $message): void
     {
         $chat_messages[] = $message;
     }

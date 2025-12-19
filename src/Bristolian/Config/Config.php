@@ -6,7 +6,7 @@ use Bristolian\App;
 use Bristolian\Data\DatabaseUserConfig;
 use Bristolian\Exception\BristolianException;
 
-class Config implements AssetLinkEmitterConfig
+class Config implements AssetLinkEmitterConfig, EnvironmentName
 {
     const BRISTOLIAN_ASSETS_FORCE_REFRESH = 'bristol_org.force_assets_refresh';
     const BRISTOLIAN_COMMIT_SHA = 'bristol_org.sha';
@@ -131,4 +131,15 @@ class Config implements AssetLinkEmitterConfig
     {
         return $this->get(self::BRISTOLIAN_SQL_DATABASE);
     }
+
+    public function getEnvironmentNameForEmailSubject(): string
+    {
+        if ($this->isProductionEnv()) {
+            return "[Bristolian]";
+        }
+
+        return "[BristolianDev]";
+    }
+
+
 }

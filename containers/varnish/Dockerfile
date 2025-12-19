@@ -49,4 +49,4 @@ WORKDIR /var/app
 COPY lib/libvmod_geoip2.la /usr/lib/x86_64-linux-gnu/varnish/vmods/libvmod_geoip2.la
 COPY lib/libvmod_geoip2.so /usr/lib/x86_64-linux-gnu/varnish/vmods/libvmod_geoip2.so
 
-CMD sh /var/app/containers/varnish/entrypoint.sh
+CMD ["sh", "/var/app/containers/varnish/entrypoint.sh"]

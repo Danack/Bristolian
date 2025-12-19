@@ -15,4 +15,4 @@ set -x
 #    containers/varnish/config/default.vcl \
 #    $ENV_TO_USE
 
-sh /var/app/containers/varnish/start_varnish.sh
+exec sh /var/app/containers/varnish/start_varnish.sh

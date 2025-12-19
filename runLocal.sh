@@ -30,6 +30,7 @@ docker-compose up --build \
  varnish \
  caddy \
  db \
+ mediawiki \
  php_fpm \
  php_fpm_debug \
  php_websocket \

@@ -49,6 +49,19 @@ export function receiveSelectionMessage(event: MessageEvent) {
     return;
   }
 
+  if (event.data && event.data.type === PdfSelectionType.PDF_READY) {
+    console.log("pdf ready");
+  }
+
+  if (event.data && event.data.type === PdfSelectionType.PDF_RENDERING) {
+
+    console.log("received current page " + event.data.current_page + " total pages " + event.data.total_pages);
+  }
+
+
+
+
+
 }
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;

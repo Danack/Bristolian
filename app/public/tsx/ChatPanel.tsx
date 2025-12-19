@@ -2,14 +2,14 @@ import { h, Component } from "preact";
 import { registerMessageListener, sendMessage, unregisterListener } from "./message/message";
 import { EventType } from "./events";
 import {ChatBottomPanel} from "./chat/ChatBottomPanel";
-import {ChatMessage, ChatType, createChatMessage} from "./generated/types";
+import {UserChatMessage, ChatType, createUserChatMessage, SystemChatMessage} from "./generated/types";
 import {localTimeSimple} from "./functions";
 
 
 export interface ConnectionPanelProps {
     username: string;
     room_id: string;
-    replyingToMessage?: ChatMessage | null;
+    replyingToMessage?: UserChatMessage | null;
     onCancelReply?: () => void;
 }
 
@@ -19,14 +19,22 @@ interface UserProfile {
     avatar_image_id: string | null;
 }
 
+export interface MessageEncapsulated {
+    type: ChatType;
+    message: SystemChatMessage|UserChatMessage;
+}
+
+
 interface ConnectionPanelState {
     connection_state: string;
     messageToSend: string;  // text box input
     lastMessageReceived: string;  // last message from websocket
-    messages: ChatMessage[];
+
+    // TODO - Messages needs to be changed to an array of MessageEncapsulated
+    messages: UserChatMessage[];
     userProfiles: Map<string, UserProfile>;
     messageHeights: Map<number, number>;
-    replyingToMessage: ChatMessage | null;  // message being replied to
+    replyingToMessage: UserChatMessage | null;  // message being replied to
 }
 
 export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelState> {
@@ -53,6 +61,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
 
     componentDidMount() {
         this.connect();
+        this.loadExistingMessages();
 
         // this.message_listener = registerMessageListener(
         //   EventType.trigger_sound,
@@ -62,6 +71,43 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
 
     componentWillUnmount() {
         unregisterListener(this.message_listener);
+    }
+
+    loadExistingMessages() {
+        const endpoint = `/api/chat/room_messages/${this.props.room_id}/`;
+
+        fetch(endpoint)
+            .then((response: Response) => response.json())
+            .then((data: any) => {
+                if (data.messages) {
+                    // Convert API response format to ChatMessage objects
+                    const existingMessages: UserChatMessage[] = data.messages.map((msgData: any) => {
+                        return createUserChatMessage({
+                            id: msgData.id,
+                            user_id: msgData.user_id,
+                            room_id: msgData.room_id,
+                            text: msgData.text,
+                            reply_message_id: msgData.reply_message_id,
+                            created_at: msgData.created_at
+                        });
+                    });
+
+                    // Sort messages by ID (ascending order - oldest first)
+                    existingMessages.sort((a, b) => a.id - b.id);
+
+                    // Set messages in chronological order (oldest first)
+                    this.setState({
+                        messages: existingMessages
+                    });
+
+                    // Fetch user profiles for all existing messages
+                    const uniqueUserIds = [...new Set(existingMessages.map(msg => msg.user_id))];
+                    uniqueUserIds.forEach(userId => this.fetchUserProfile(userId));
+                }
+            })
+            .catch((err: any) => {
+                console.error('Failed to load existing messages:', err);
+            });
     }
 
     fetchUserProfile(userId: string) {
@@ -94,17 +140,26 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
 
         let data = JSON.parse(messageEvent.data);
 
-        if (data.type === ChatType.MESSAGE) {
-            let current_messages = this.state.messages;
-            let message = createChatMessage(data.chat_message);
+        if (data.type === ChatType.USER_MESSAGE) {
+            let current_messages = [...this.state.messages]; // Create a copy to avoid mutating state
+            let message = createUserChatMessage(data.chat_message);
             current_messages.push(message);
+
+            // Sort messages by ID (ascending order - oldest first)
+            current_messages.sort((a, b) => a.id - b.id);
+
             this.setState({
                 messages: current_messages
             });
-            
+
             // Fetch user profile for this message
             this.fetchUserProfile(message.user_id);
         }
+        else if (data.type === ChatType.SYSTEM_MESSAGE) {
+            // TODO - System messages need to be parse
+        }
+
+
         else if (data.type === undefined) {
             console.error("type not set in message. Something is wrong with the server.");
         }
@@ -168,7 +223,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         return parts[parts.length - 1];
     }
 
-    startReply = (message: ChatMessage) => {
+    startReply = (message: UserChatMessage) => {
         this.setState({ replyingToMessage: message });
     }
 
@@ -177,10 +232,10 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
     }
 
     // Group messages from the same user within 600 seconds
-    groupMessages(): ChatMessage[][] {
-        const groups: ChatMessage[][] = [];
-        let currentGroup: ChatMessage[] = [];
-        
+    groupMessages(): UserChatMessage[][] {
+        const groups: UserChatMessage[][] = [];
+        let currentGroup: UserChatMessage[] = [];
+
         for (let i = 0; i < this.state.messages.length; i++) {
             const message = this.state.messages[i];
             
@@ -210,7 +265,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         return groups;
     }
 
-    renderChatMessage(message: ChatMessage, index: number, isFirstInGroup: boolean) {
+    renderChatMessage(message: UserChatMessage, index: number, isFirstInGroup: boolean) {
         const userProfile = this.state.userProfiles.get(message.user_id);
         const shortUserId = this.getShortUserId(message.user_id);
         const displayName = userProfile?.display_name || shortUserId;
@@ -255,7 +310,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
             </div>
             <div className="message_reply_area">
                 <button
-                    className="reply_button"
+                    className="unstyled reply_button"
                     onClick={() => this.startReply(message)}
                     title="Reply to this message"
                 >
@@ -275,8 +330,6 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
                     {group.map((message, indexInGroup) => {
                         const msgElement = this.renderChatMessage(message, messageIndex, indexInGroup === 0);
                         messageIndex++;
-                        // Fetch user profile for this message
-                        this.fetchUserProfile(message.user_id);
                         return msgElement;
                     })}
                 </div>
@@ -294,7 +347,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
 
               <ChatBottomPanel
                 room_id={this.props.room_id}
-                replyingToMessage={this.state.replyingToMessage}
+                replyingToMessage={null}
                 onCancelReply={this.cancelReply}
               />
           </div>

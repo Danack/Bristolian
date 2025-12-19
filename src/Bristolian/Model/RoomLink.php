@@ -4,6 +4,9 @@ namespace Bristolian\Model;
 
 use Bristolian\ToArray;
 
+/**
+ * A link that has been added to a specific room.
+ */
 class RoomLink
 {
     use ToArray;

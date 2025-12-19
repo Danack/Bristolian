@@ -2,7 +2,7 @@
 
 namespace BristolianChat;
 
-use Bristolian\Model\ChatMessage;
+use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\ChatMessage\ChatType;
 use Monolog\Logger;
 
@@ -23,7 +23,7 @@ class ChatSpammer
         while (true) {
             $chat_message = generateFakeChatMessage();
 
-            send_message_to_clients(
+            send_user_message_to_clients(
                 $chat_message,
                 $this->logger,
                 $this->clientHandler

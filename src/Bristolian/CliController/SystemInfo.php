@@ -17,22 +17,7 @@ function isOverXHoursAgo(int $hours, \DateTimeInterface $datetime): bool
 }
 
 
-function isTimeToRunDailySystemInfo(): bool
-{
-    $now = new \DateTime(); // current time
 
-    // Create DateTime objects for today at 12:00 and 15:00
-    $start = (clone $now)->setTime(12, 0); // 12:00 PM
-    $end = (clone $now)->setTime(15, 0);   // 3:00 PM
-
-    if ($now >= $start && $now < $end) {
-        // echo "The time is between noon and 3 PM.";
-        return true;
-    }
-
-    // echo "The time is NOT between noon and 3 PM.";
-    return false;
-}
 
 
 class SystemInfo
@@ -89,7 +74,7 @@ class SystemInfo
         // Put it in the email queue
         $this->emailQueue->queueEmailToUsers(
             ['danack@basereality.com'],
-            $subject = "[Bristolian] daily system info",
+            $subject = "Daily system info",
             $body = generateSystemInfoEmailContent()
         );
 

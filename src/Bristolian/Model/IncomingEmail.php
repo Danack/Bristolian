@@ -4,6 +4,9 @@ namespace Bristolian\Model;
 
 use Bristolian\Exception\BristolianException;
 
+/**
+ * An email that has arrived and been stored in the database.
+ */
 class IncomingEmail
 {
     public function __construct(

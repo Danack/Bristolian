@@ -6,7 +6,7 @@ use Amp\Redis\RedisClient;
 use Bristolian\ChatMessage\ChatType;
 use Bristolian\Keys\RoomMessageKey;
 use Monolog\Logger;
-use Bristolian\Model\ChatMessage;
+use Bristolian\Model\Chat\UserChatMessage;
 
 /**
  * This sits watching for messages for rooms, and then dispatches them to clients.
@@ -29,9 +29,9 @@ class RedisWatcherRoomMessages
 
                 if ($item !== null) {
                     $this->logger->info("Received event from Redis: " . $item);
-                    $chat_message = ChatMessage::fromString($item);
+                    $chat_message = UserChatMessage::fromString($item);
 
-                    send_message_to_clients(
+                    send_user_message_to_clients(
                         $chat_message,
                         $this->logger,
                         $this->clientHandler
@@ -41,7 +41,7 @@ class RedisWatcherRoomMessages
                 $this->logger->error("Redis loop error: " . $e->getMessage());
             }
 
-            $this->logger->info("looping");
+            $this->logger->info("RedisWatcherRoomMessages is looping.");
             // TODO - think about rate limiting.
             \Amp\delay(0.5); // Wait a bit before retrying
         }

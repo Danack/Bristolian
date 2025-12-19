@@ -1,6 +1,12 @@
 
+
+$z_index_timestamp: 1;
+$z_index_chat_panel: 2;
+
+
 .chat_panel {
   min-width: 768px;
+  padding-bottom: 130px; // Account for fixed bottom bar (120px height + 10px padding)
 
   .message_group {
     margin-bottom: 10px;
@@ -93,6 +99,11 @@
       color: #222222;
       background-color: #f6f6f6
     }
+
+    button.reply_button {
+     color: red;
+    }
+
   }
 
 
@@ -110,7 +121,7 @@
     position: absolute;
     top: 5px;
     right: 5px;
-    z-index: 1
+    z-index: $z_index_timestamp
   }
 
 
@@ -127,6 +138,7 @@
     border-top: 1px solid #ccc;
     padding: 0 10px;
     box-sizing: border-box;
+    z-index: $z_index_chat_panel;
 
     display: flex;
     flex-direction: row;
@@ -164,6 +176,7 @@
       flex-basis: auto;
       align-self: auto;
       order: 0;
+
 
       .reply-indicator-top {
         width: 100%;
@@ -241,7 +254,6 @@
       right: 20px;
       font-size: 11px;
       color: #888;
-
 
       display: block;
       flex-grow: 0;

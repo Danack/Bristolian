@@ -5,6 +5,9 @@ namespace Bristolian\Model;
 use Bristolian\FromArray;
 use Bristolian\ToArray;
 
+/**
+ * A record of a background worker/processor running a task.
+ */
 class ProcessorRunRecord
 {
     use ToArray;

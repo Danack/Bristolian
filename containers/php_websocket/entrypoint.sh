@@ -2,7 +2,9 @@
 set -e
 set -x
 
-tail -f /var/app/containers/php_websocket/readme.MD
+# tail -f /var/app/containers/php_websocket/readme.MD
 
-# php index.php
+cd /var/app/chat/src
+
+exec php index.php
 

@@ -335,7 +335,7 @@ HTML;
         $template = <<< HTML
 <h1>:html_room_name</h1>
 <div class="text_note_layout">
-  <span>
+  <span class="text_note_iframe_container">
     <iframe class='text_note_iframe' id="pdf_iframe"
       src='/iframe/rooms/:attr_room_id/file_annotate/:attr_file_id' 
       title='A file to note text in'></iframe>
@@ -344,6 +344,7 @@ HTML;
     <div class='source_link_panel' data-widgety_json='$widget_data'></div>
   </span>
 </div>
+<script src="/js/text_note_iframe_resize.js"></script>
 HTML;
 
         $params = [

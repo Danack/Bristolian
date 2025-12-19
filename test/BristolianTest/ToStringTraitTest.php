@@ -4,7 +4,7 @@ namespace BristolianTest;
 
 use Bristolian\ToString;
 use Bristolian\FromString;
-use Bristolian\Model\ChatMessage;
+use Bristolian\Model\Chat\UserChatMessage;
 
 /**
  * Tests all Model classes that use the ToString trait
@@ -65,7 +65,7 @@ class ToStringTraitTest extends BaseTestCase
     {
         // Add factory methods for each class that uses ToString
         return match ($className) {
-            ChatMessage::class => new ChatMessage(
+            UserChatMessage::class => new UserChatMessage(
                 id: 123,
                 user_id: 'user-456',
                 room_id: 'room-789',
@@ -227,8 +227,8 @@ class ToStringTraitTest extends BaseTestCase
     {
         return [
             'ChatMessage with null reply_id' => [
-                ChatMessage::class,
-                new ChatMessage(
+                UserChatMessage::class,
+                new UserChatMessage(
                     id: 1,
                     user_id: 'user-123',
                     room_id: 'room-456',
@@ -260,7 +260,7 @@ class ToStringTraitTest extends BaseTestCase
      */
     public function testToArrayReturnsCorrectStructure(): void
     {
-        $chatMessage = new ChatMessage(
+        $chatMessage = new UserChatMessage(
             id: 999,
             user_id: 'user-abc',
             room_id: 'room-xyz',

@@ -8,6 +8,6 @@ echo "Updating/installing npm modules"
 
 echo "Updated. Running sass builder"
 
-npm run sass:build:watch
+exec npm run sass:build:watch
 
 # tail -f /var/app/README.md

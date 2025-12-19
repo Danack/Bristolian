@@ -4,13 +4,16 @@ namespace Bristolian\Repo\EmailQueue;
 
 use Bristolian\Model\Email;
 use Bristolian\PdoSimple\PdoSimple;
-//use Bristolian\Service\EmailSender\EmailSender;
+use Bristolian\Config\EnvironmentName;
 use Bristolian\CliController\Email as EmailController;
 use Bristolian\Database\email_send_queue;
 
 class PdoEmailQueue implements EmailQueue
 {
-    public function __construct(private PdoSimple $pdo)
+    public function __construct(
+        private PdoSimple $pdo,
+        private EnvironmentName $environmentName
+    )
     {
     }
 
@@ -39,6 +42,8 @@ values (
 )
 SQL;
 
+        $subject_with_prefix = $this->environmentName->getEnvironmentNameForEmailSubject() . " " . $subject;
+
         $this->pdo->beginTransaction();
 
         foreach ($users as $user) {
@@ -47,7 +52,7 @@ SQL;
                 ':recipient' => $user,
                 ':retries' => 0,
                 ':status' => EmailController::STATE_INITIAL,
-                ':subject' => $subject,
+                ':subject' => $subject_with_prefix,
             ];
             $this->pdo->insert($sql, $params);
         }

@@ -143,8 +143,10 @@ function registerServiceWorker() {
     then(() => {console.log("service worker registered")});
 }
 
-initByClass(panels, h, render);
+// Register service worker first, before initializing widgets that make API requests
 registerServiceWorker();
+
+initByClass(panels, h, render);
 
 // Add an event listener to receive messages
 window.addEventListener("message", receiveSelectionMessage);

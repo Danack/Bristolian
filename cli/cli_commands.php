@@ -24,6 +24,7 @@ function add_console_commands(Application $console)
     addOpenApiCommands($console);
 
     addMoonCommands($console);
+    addBccTroCommands($console);
 }
 
 function addEmailCommands(Application $console)
@@ -241,7 +242,7 @@ function addBristolStairsCommands(Application $console)
     $console->add($command);
 
     $command = new Command('stairs:check', 'Bristolian\CliController\BristolStairs::check_contents');
-    $command->setDescription("chcked stored sfilessfd.");
+    $command->setDescription("Chcked stored sfilessfd.");
     $console->add($command);
 
 }
@@ -260,4 +261,35 @@ function addOpenApiCommands(Application $console)
     $command = new Command('openapi:generate-and-validate', 'Bristolian\CliController\OpenApi::generateAndValidate');
     $command->setDescription("Generate OpenAPI specification and validate it");
     $console->add($command);
+}
+
+function addBccTroCommands(Application $console)
+{
+    $command = new Command(
+        'service:bcc_tro_fetch',
+        'Bristolian\CliController\BccTroFetcherCliController::fetchTros'
+    );
+
+    $command->addArgument(
+        'output',
+        InputArgument::OPTIONAL,
+        "One of 'CLI' or 'room'", 'CLI'
+    );
+
+    $command->setDescription("Fetch and display Bristol City Council Traffic Regulation Orders");
+    $console->add($command);
+
+//    $command = new Command(
+//        'process:generate:daily_bcc_tro',
+//        'Bristolian\CliController\BccTroFetcherCliController::daily_bcc_tro'
+//    );
+//    $command->addArgument(
+//        'output',
+//        InputArgument::OPTIONAL,
+//        "One of 'CLI_TEST' or 'NOTIFY'",
+//        'CLI_TEST'
+//    );
+//
+//    $command->setDescription("Fetch and send Bristol City Council Traffic Regulation Orders to rooms.");
+//    $console->add($command);
 }

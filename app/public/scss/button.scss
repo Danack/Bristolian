@@ -28,4 +28,15 @@ button {
       background: #aaa; // prevent hover effect when disabled
     }
   }
+
+}
+
+.unstyled {
+  border: initial;          /* resets border */
+  cursor: auto;             /* default cursor */
+  border-radius: 0;         /* remove rounding */
+  background-color: transparent; /* remove background */
+  color: inherit;           /* inherit text color */
+  padding: 0;               /* remove padding */
+  margin: 0;                /* remove margin */
 }

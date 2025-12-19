@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Send URL to Server",
+  "version": "1.0",
+  "description": "Adds a button to pages that sends the current URL to your server.",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["https://YOUR-SERVER-URL/*"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}

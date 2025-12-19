@@ -2,24 +2,58 @@
 
 
 use Bristolian\ChatMessage\ChatType;
-use Bristolian\Model\ChatMessage;
+use Bristolian\Model\Chat\UserChatMessage;
 use BristolianChat\ClientHandler;
+use Bristolian\Model\Chat\SystemChatMessage;
 use Monolog\Logger;
 
 
 
 
-function send_message_to_clients(
-    ChatMessage $chat_message,
-    Logger $logger,
-    ClientHandler $clientHandler
+function send_user_message_to_clients(
+    UserChatMessage $chat_message,
+    Logger          $logger,
+    ClientHandler   $clientHandler
 ): void {
 
     $data = [
-        'type' => ChatType::MESSAGE->value,
+        'type' => ChatType::USER_MESSAGE->value,
         'chat_message' => $chat_message
     ];
 
+    sent_data_to_clients(
+        $data,
+        $logger,
+        $clientHandler
+    );
+}
+
+
+function send_system_message_to_clients(
+    SystemChatMessage $system_chat_message,
+    Logger            $logger,
+    ClientHandler     $clientHandler
+): void {
+
+    $data = [
+        'type' => ChatType::SYSTEM_MESSAGE->value,
+        'system_message' => $system_chat_message
+    ];
+
+    sent_data_to_clients(
+        $data,
+        $logger,
+        $clientHandler
+    );
+}
+
+
+
+function sent_data_to_clients(
+    $data,
+    $logger,
+    $clientHandler
+){
     [$error, $values] = convertToValue($data);
 
     if ($error !== null) {
@@ -37,16 +71,20 @@ function send_message_to_clients(
     $logger->info("sending message to clients - $json");
 
     $clientHandler->getGateway()->broadcastText($json)->ignore();
+
 }
+
+
+
 
 /**
  * Generate a fake ChatMessage for testing purposes.
  * IDs start at 1000 and increment with each call.
  * 1 in 5 messages will have a message_reply_id set to one of the previous 10 messages.
  *
- * @return \Bristolian\Model\ChatMessage
+ * @return \Bristolian\Model\Chat\UserChatMessage
  */
-function generateFakeChatMessage(): \Bristolian\Model\ChatMessage
+function generateFakeChatMessage(): \Bristolian\Model\Chat\UserChatMessage
 {
     static $currentId = 1000;
     static $recentMessageIds = [];
@@ -107,7 +145,7 @@ function generateFakeChatMessage(): \Bristolian\Model\ChatMessage
     // Keep only the last 10 message IDs
     $recentMessageIds = array_slice($recentMessageIds, -10);
 
-    return new \Bristolian\Model\ChatMessage(
+    return new \Bristolian\Model\Chat\UserChatMessage(
         $id,
         $user_id,
         $room_id,

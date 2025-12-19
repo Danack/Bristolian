@@ -1,7 +1,23 @@
 #!/bin/sh
 
-set -e
 set -x
+
+echo "Setting up shutdown handler"
+shutdown() {
+    echo "Received shutdown signal, stopping varnish..."
+    echo "Sending SIGTERM to varnish processes"
+    killall -TERM varnishd 2>/dev/null || true
+    killall -TERM varnishncsa 2>/dev/null || true
+    echo "Waiting a moment for graceful shutdown"
+    sleep 1
+    echo "Force killing varnish processes if still running"
+    killall -KILL varnishd 2>/dev/null || true
+    killall -KILL varnishncsa 2>/dev/null || true
+    exit 0
+}
+
+echo "Trap TERM and INT signals"
+trap shutdown TERM INT
 
 if false      ; then
   varnishd -j unix,user=vcache \
@@ -16,6 +32,10 @@ else
 
   varnishncsa -a -c -w /dev/null -P /run/varnishncsa.pid
 
+  echo "Keeping the script running and waiting for signals"
+  while true; do
+    sleep 1
+  done
 fi
 
 

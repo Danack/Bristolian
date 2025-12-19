@@ -1,7 +1,7 @@
 <?php
 
 use Bristolian\InjectionParams;
-
+use Bristolian\Repo\BccTroRepo\BccTroRepo;
 
 
 function injectionParams() : InjectionParams
@@ -58,7 +58,15 @@ function injectionParams() : InjectionParams
           \Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::class,
 
         \Bristolian\Service\RoomMessageService\RoomMessageService::class =>
-          \Bristolian\Service\RoomMessageService\StandardRoomMessageService::class
+          \Bristolian\Service\RoomMessageService\StandardRoomMessageService::class,
+
+        \Bristolian\Config\EnvironmentName::class => \Bristolian\Config\Config::class,
+
+        \Bristolian\Service\BccTroFetcher\BccTroFetcher::class =>
+          \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::class,
+
+        \Bristolian\Repo\BccTroRepo\BccTroRepo::class =>
+            \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class,
 
     ];
 

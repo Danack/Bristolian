@@ -2,8 +2,14 @@
 
 namespace Bristolian\Repo\ProcessorRepo;
 
+/**
+ * A enum to represent the different types of background worker/job tasks.
+ */
 enum ProcessType: string
 {
+    // Worker task that generates the daily system info email
+    case daily_bcc_tro = "daily_bcc_tri";
+
     // Worker task that generates the daily system info email
     case daily_system_info = "daily_system_info";
 

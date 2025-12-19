@@ -3,13 +3,13 @@
 import {h} from "preact";
 import {useState} from "preact/hooks";
 import {use_logged_in, use_user_info} from "../store";
-import {ChatMessage} from "../generated/types";
+import {MessageEncapsulated} from "../ChatPanel";
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
 export interface ChatBottomPanelProps {
   room_id: string;
-  replyingToMessage?: ChatMessage | null;
+  replyingToMessage?: MessageEncapsulated | null;
   onCancelReply?: () => void;
 }
 
@@ -48,7 +48,7 @@ export function ChatBottomPanel(props: ChatBottomPanelProps) {
 
     // Add reply ID if replying to a message
     if (props.replyingToMessage) {
-      formData.append("message_reply_id", props.replyingToMessage.id.toString());
+      formData.append("message_reply_id", props.replyingToMessage.message.id.toString());
     }
 
     let params = {
@@ -109,7 +109,7 @@ export function ChatBottomPanel(props: ChatBottomPanelProps) {
   // Always show replying_section with fixed height
   if (props.replyingToMessage) {
     replying_section = <div className="reply-indicator-top">
-      <span>Replying to message {props.replyingToMessage.id}</span>
+      <span>Replying to message {props.replyingToMessage.message.id}</span>
       <button className="cancel-reply-btn" onClick={props.onCancelReply}>×</button>
     </div>;
   } else {

@@ -7,9 +7,6 @@
 
 // Global variables begin
 
-//
-let PAGE_HEIGHT;
-
 // The retrieved PDF document
 let g_pdf_document;
 
@@ -26,8 +23,12 @@ let g_page_canvas_context = [];
 // initialised to array in 'initial_render_scrolling'
 let g_textlayer_drawn = null;
 
+// Whether the annotation listeners have been setup
+// or whether messages are still being queued.
+let g_annotation_listener_setup = false;
 
 
+// Define what zoom levels are available
 let g_zoom_levels = [
     3 / 9,
     4 / 9,
@@ -107,7 +108,7 @@ function createEmptyPage(page_number) {
 function render_page_into_container(pdfPage, pageNum) {
     var viewport = pdfPage.getViewport({ scale: g_scale, });
 
-    PAGE_HEIGHT = viewport.height;
+    // PAGE_HEIGHT = viewport.height;
 
     g_pdf_page[pageNum] = pdfPage;
 
@@ -154,6 +155,10 @@ function render_page_into_container(pdfPage, pageNum) {
 }
 
 function renderPDFPage(pageNum) {
+
+    sendPdfRenderingToParent(pageNum, g_max_page);
+
+
     return g_pdf_document.getPage(pageNum + 1).
       then((pdfPage) => render_page_into_container(pdfPage, pageNum));
 }
@@ -170,19 +175,11 @@ function renderingTextLayerForPageIsFinished(pageNum) {
         return;
     }
 
-    console.log("All text layers are drawn.");
-    // The function 'processQueue' is written in the iFrame itself, so
-    // that it is always available when the iFrame loads.
-    // Final text layer is drawn
+    console.log("Final text layer has been drawn.");
 
-    // let setupRecevingDrawHightlightsMessage = () => {
-    //     console.log("setupRecevingDrawHightlightsMessage has been called");
-    //     window.addEventListener("message", receiveDrawHightlightsMessage);
-    // }
-    setTimeout(processQueue, 1);
-    // Inside the processQueue function is where we start listening to
-    //
-    // and shut the queue down.
+    setTimeout(process_annotation_queue_and_setup_annotation_listener, 1);
+
+    sendPdfReadyToParent();
 }
 
 
@@ -221,30 +218,6 @@ function start_rendering_pdf_into_document(pdf) {
     renderPDFPage(0);
 }
 
-// This code is not currently needed as all pages are rendered sequentially on
-// page load.
-// function handleWindowScroll() {
-//     let visiblePageNumTop = Math.round((window.scrollY / PAGE_HEIGHT));
-//     let visiblePageNumBottom = Math.round(((window.scrollY + window.innerHeight) / PAGE_HEIGHT));
-//
-//     // Prevent shenanigans if monitor is upside down?
-//     if (visiblePageNumBottom < visiblePageNumTop) {
-//         visiblePageNumBottom = visiblePageNumTop;
-//     }
-//
-//     // Loop over all the pages that could be visible, and
-//     // load those that haven't been loaded.
-//     for (let i = visiblePageNumTop; i <= visiblePageNumBottom; i += 1) {
-//         let visiblePage = document.querySelector(`.page[data-page-number="${i}"][data-loaded="false"]`);
-//
-//         if (visiblePage) {
-//             setTimeout(function () {
-//                 loadPage(i);
-//             });
-//         }
-//     }
-// }
-
 function sendSelectionPositionToParent(selection_data) {
     if (window.parent && window.parent !== window) {
         window.parent.postMessage({
@@ -263,24 +236,31 @@ function sendDeselectionMessageToParent() {
 }
 
 
-// function getSelectionPage(container) {
-//     // If the container is a text node, get its parent element
-//     if (container.nodeType === Node.TEXT_NODE) {
-//         container = container.parentElement;
-//     }
-//
-//     // Traverse up the DOM tree to find a suitable parent (e.g., with a specific class or tag)
-//     let pageElement = container;
-//     while (pageElement && pageElement.classList && !pageElement.classList.contains('page')) {
-//         pageElement = pageElement.parentElement;
-//     }
-//
-//     let page_number = pageElement.getAttribute('data-page-number')
-//
-//     return page_number;
-// }
 
 
+
+function sendPdfRenderingToParent(current_page, total_pages) {
+    if (window.parent && window.parent !== window) {
+        window.parent.postMessage({
+            type: "pdf_rendering",
+            current_page: current_page,
+            total_pages: total_pages
+        }, "*");
+    }
+}
+
+function sendPdfReadyToParent() {
+    if (window.parent && window.parent !== window) {
+        window.parent.postMessage({
+            type: "pdf_ready"
+        }, "*");
+    }
+}
+
+
+
+
+// Merge rectangles that are on the same 'line'
 function mergeRectsOnSameLine(rectangles, tolerance = 1) {
     // Group rectangles by lines based on vertical proximity
     const lines = [];
@@ -425,42 +405,17 @@ function processSelectionChange() {
     sendSelectionPositionToParent(selection_data);
 }
 
-
-function clearPageHighlights(pageNum) {
-    // if (pageNum < 0 || pageNum > g_max_page) {
-    //     console.warn("Invalid page number:", pageNum);
-    //     return;
-    // }
-    //
-    // // Clear the canvas
-    // const canvas = document.querySelector(`#page${pageNum}`);
-    // if (canvas) {
-    //     const context = canvas.getContext("2d");
-    //     context.clearRect(0, 0, canvas.width, canvas.height);
-    // }
-    //
-    // // Re-render the page
-    // const pdfPage = g_pdf_page[pageNum];
-    // if (pdfPage) {
-    //     render_page_into_container(pdfPage, pageNum);
-    // } else {
-    //     console.warn("Page data not available for page:", pageNum);
-    // }
-}
-
 function clearAllHighlights() {
 
     start_rendering_pdf_into_document(g_pdf_document);
-
-    // for (let i = 0; i <= g_max_page; i++) {
-    //     clearPageHighlights(i);
-    // }
 }
 
 
 function drawHighlights(highlights) {
 
     var outputScale = window.devicePixelRatio || 1;
+
+    outputScale = outputScale * g_scale;
 
     console.log("Drawing highlights", highlights);
 
@@ -532,7 +487,7 @@ export function receiveDrawHightlightsMessage(data) {
         clearAllHighlights();
     }
 }
-
+// Change the zoom level, clamping to the defined list of zoom levels
 function adjustZoomLevel(change)
 {
     g_current_zoom_level_index = g_current_zoom_level_index + change;
@@ -592,26 +547,28 @@ function setupZoomButtons(viewer_element) {
 
 
 // When your script is ready to handle messages, process the queue
-export function processQueue() {
-    // isReady = true;
+export function process_annotation_queue_and_setup_annotation_listener() {
 
-    console.log("Queue length for receiveDrawHightlightsMessage was " + messageQueue.length)
-    // Process all queued messages
-    while (messageQueue.length > 0) {
-        const message = messageQueue.shift();
-        receiveDrawHightlightsMessage(message);
+    if (g_annotation_listener_setup === false) {
+        console.log("Queue length for receiveDrawHightlightsMessage was " + messageQueue.length)
+
+        // Process all queued messages
+        while (messageQueue.length > 0) {
+            const message = messageQueue.shift();
+            receiveDrawHightlightsMessage(message);
+        }
+
+        g_annotation_listener_setup = true;
+        window.addEventListener("message", (event) => receiveDrawHightlightsMessage(event.data));
+        // Replace the queueMessages listener with the real handler
+        window.removeEventListener('message', queueMessage);
     }
-
-    window.addEventListener("message", (event) => receiveDrawHightlightsMessage(event.data));
-    // Replace the queueMessages listener with the real handler
-    window.removeEventListener('message', queueMessage);
 }
 
 
 function redrawWholePage() {
 
     loadingTask.promise.then(start_rendering_pdf_into_document);
-
 }
 
 

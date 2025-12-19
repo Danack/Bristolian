@@ -3,7 +3,7 @@
 namespace Bristolian\Service\RoomMessageService;
 
 use Bristolian\Keys\RoomMessageKey;
-use Bristolian\Model\ChatMessage;
+use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\Repo\ChatMessageRepo\ChatMessageRepo;
 use Bristolian\ToString;
@@ -18,7 +18,7 @@ class StandardRoomMessageService implements RoomMessageService
     }
 
 
-    public function sendMessage(string $user_id, ChatMessageParam $chatMessageParam): ChatMessage
+    public function sendMessage(string $user_id, ChatMessageParam $chatMessageParam): UserChatMessage
     {
         $chat_message = $this->chatMessageRepo->storeChatMessageForUser(
             $user_id,
@@ -34,7 +34,7 @@ class StandardRoomMessageService implements RoomMessageService
     }
 
 
-    public function sendMessageChatMessageAkaOld(ChatMessage $message): void
+    public function sendMessageChatMessageAkaOld(UserChatMessage $message): void
     {
         $this->redis->rPush(
             RoomMessageKey::getAbsoluteKeyName(),

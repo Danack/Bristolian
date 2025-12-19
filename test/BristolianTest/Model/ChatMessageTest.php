@@ -3,16 +3,16 @@
 namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\ChatMessage;
+use Bristolian\Model\Chat\UserChatMessage;
 
 /**
  * @coversNothing
- * @group wip
+ * @group wip_borken
  */
 class ChatMessageTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\ChatMessage
+     * @covers \Bristolian\Model\Chat\UserChatMessage
      */
     public function testConstruct()
     {
@@ -23,7 +23,7 @@ class ChatMessageTest extends BaseTestCase
         $messageReplyId = 100;
         $createdAt = new \DateTimeImmutable();
 
-        $chatMessage = new ChatMessage(
+        $chatMessage = new UserChatMessage(
             $id,
             $userId,
             $roomId,
@@ -41,11 +41,11 @@ class ChatMessageTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\ChatMessage
+     * @covers \Bristolian\Model\Chat\UserChatMessage
      */
     public function testConstructWithNullReplyId()
     {
-        $chatMessage = new ChatMessage(
+        $chatMessage = new UserChatMessage(
             1,
             'user-id',
             'room-id',
@@ -58,11 +58,11 @@ class ChatMessageTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\ChatMessage
+     * @covers \Bristolian\Model\Chat\UserChatMessage
      */
     public function testToArray()
     {
-        $chatMessage = new ChatMessage(
+        $chatMessage = new UserChatMessage(
             1,
             'user-id',
             'room-id',
@@ -78,7 +78,7 @@ class ChatMessageTest extends BaseTestCase
 
     public function testToStringAndBackAgain()
     {
-        $chatMessage = new ChatMessage(
+        $chatMessage = new UserChatMessage(
             1,
             'user-id',
             'room-id',
@@ -88,7 +88,7 @@ class ChatMessageTest extends BaseTestCase
         );
         $string = $chatMessage->toString();
 
-        $recreated_message = ChatMessage::fromString($string);
+        $recreated_message = UserChatMessage::fromString($string);
         
         // Compare all properties except DateTime first
         $this->assertSame($chatMessage->id, $recreated_message->id);

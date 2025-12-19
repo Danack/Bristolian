@@ -4,7 +4,7 @@ namespace Bristolian\CliController;
 
 use Bristolian\Config\Config;
 use Bristolian\Exception\BristolianException;
-use Bristolian\Model\ChatMessage;
+use Bristolian\Model\Chat\UserChatMessage;
 use PDO;
 
 function generate_table_strings($sorted_column_names)
@@ -149,6 +149,37 @@ function generate_table_helper_class(string $tableName, array $columns_info): vo
     \Safe\file_put_contents($output_filename, $contents);
 }
 
+function getTypeDocDescription(\ReflectionClass $rc)
+{
+    $description = '';
+
+    $doc = $rc->getDocComment();
+
+    // TODO - extract this to a tested function.
+    if ($doc === false) {
+        return 'no description available';
+    }
+
+    // Remove /** */ and leading * characters
+    $clean = preg_replace('/^\s*\/\*\*|\*\/\s*$/', '', $doc);
+    $clean = preg_replace('/^\s*\*\s?/m', '', $clean);
+
+    // If there's an @description tag, use that
+    if (preg_match('/@description\s+(.*)/i', $clean, $m)) {
+        $description = trim($m[1]);
+    } else {
+        // Otherwise take the first non-empty line as a summary
+        foreach (explode("\n", $clean) as $line) {
+            $line = trim($line);
+            if ($line !== '' && str_starts_with($line, '@') === false) {
+                $description = $line;
+                break;
+            }
+        }
+    }
+
+    return $description;
+}
 
 /**
  * Function to generate TypeScript definition of an interface for a PHP
@@ -172,8 +203,10 @@ function generateInterfaceForClass(string $type): array
 
     $rc = new \ReflectionClass($type);
 
+    $content .= "// " . getTypeDocDescription($rc) . "\n";;
+    $content .= "// Source type is $type\n";
+
     $name = $rc->getShortName();
-    $content .= "// $type\n";
     $content .= "export interface $name {\n";
 
     foreach ($rc->getProperties() as $property) {
@@ -266,9 +299,12 @@ function generateEnumForClass(string $type): string
     $cases = getEnumCases($type);
 
     $name = $rc->getShortName();
-    $content .= "// $type\n";
-    $content .= "export enum $name {\n";
 
+
+    $content .= "// " . getTypeDocDescription($rc) . "\n";
+    $content .= "// Source PHP type: $type\n";
+
+    $content .= "export enum $name {\n";
 
     // Iterate over all cases and print name and value
     foreach ($cases as $case) {
@@ -340,7 +376,9 @@ class GenerateFiles
 
         $types = [
             \Bristolian\Model\BristolStairInfo::class,
-            \Bristolian\Model\ChatMessage::class,
+            \Bristolian\Model\Chat\UserChatMessage::class,
+            \Bristolian\Model\Chat\SystemChatMessage::class,
+
             \Bristolian\Model\IncomingEmail::class,
             \Bristolian\Model\ProcessorRunRecord::class,
             \Bristolian\Model\RoomLink::class,

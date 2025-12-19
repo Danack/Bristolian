@@ -29,7 +29,6 @@ class Chat
 
         $html = <<< HTML
 <div>
-    <h3>Chat test</h3>
     <div class="chat_panel" data-widgety_json="$widget_data">
     </div>
 </div>
@@ -44,7 +43,23 @@ HTML;
     public function get_room_messages(
         ChatMessageRepo $chatMessageRepo,
         string $room_id
-    ): void {
+    ): JsonNoCacheResponse {
+        $messages = $chatMessageRepo->getMessagesForRoom($room_id);
+
+        // Convert messages to array format for JSON response
+        $messageData = [];
+        foreach ($messages as $message) {
+            $messageData[] = [
+                'id' => $message->id,
+                'user_id' => $message->user_id,
+                'room_id' => $message->room_id,
+                'text' => $message->text,
+                'reply_message_id' => $message->reply_message_id,
+                'created_at' => $message->created_at->format('Y-m-d H:i:s')
+            ];
+        }
+
+        return new JsonNoCacheResponse(['messages' => $messageData]);
     }
 
 

@@ -3,7 +3,7 @@
 namespace Bristolian\CliController;
 
 use Bristolian\App;
-use Bristolian\Model\ChatMessage;
+use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\Model\WebPushNotification;
 use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\Parameters\PropertyType\BasicString;

@@ -107,14 +107,34 @@ blockquote {
 
 .text_note_layout {
   display: flex;
+  align-items: flex-start;
 }
 
+.text_note_layout > span:last-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
 
-.text_note_iframe {
-  flex: 0 0 65%;
+.text_note_iframe_container {
+  flex: 0 1 65%;
+  flex-basis: 65%;
+  width: 65%;
+  height: 80vh;
+  max-width: none;
   min-width: 900px;
-  min-height: 900px;
+  min-height: 600px;
+  resize: both;
+  overflow: hidden;
+  display: block;
+  position: relative;
+}
+  
+.text_note_iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
   text-align: center;
+  display: block;
 }
 
 .text_note_panel {

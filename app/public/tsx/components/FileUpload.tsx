@@ -142,6 +142,8 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
       return;
     }
 
+    this.setState({ error: null });
+
     const formData = new FormData();
     formData.append(formFieldName, selectedFile, selectedFile.name);
 

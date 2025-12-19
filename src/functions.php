@@ -301,6 +301,8 @@ function fetchUri(string $uri, string $method, array $queryParams = [], string $
         curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
     }
 
+    curl_setopt($curl, CURLOPT_ENCODING, 'gzip,deflate');
+
 
     foreach ($headers as $header) {
         $allHeaders[] = $header;
@@ -315,6 +317,7 @@ function fetchUri(string $uri, string $method, array $queryParams = [], string $
     };
     curl_setopt($curl, CURLOPT_HEADERFUNCTION, $handleHeaderLine);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
 
     $body = curl_exec($curl);
     $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -1157,3 +1160,26 @@ function purgeVarnish(string $urlPath): bool
     }
 }
 
+
+/**
+ * We want notifications to happen during the middle of the day.
+ * This function checks that we are sometime between noon and 3pm.
+ *
+ * @return bool
+ */
+function isTimeToRunDailySystemInfo(): bool
+{
+    $now = new \DateTime(); // current time
+
+    // Create DateTime objects for today at 12:00 and 15:00
+    $start = (clone $now)->setTime(12, 0); // 12:00 PM
+    $end = (clone $now)->setTime(15, 0);   // 3:00 PM
+
+    if ($now >= $start && $now < $end) {
+        // echo "The time is between noon and 3 PM.";
+        return true;
+    }
+
+    // echo "The time is NOT between noon and 3 PM.";
+    return false;
+}
