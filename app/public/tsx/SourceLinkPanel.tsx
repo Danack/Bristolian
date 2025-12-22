@@ -4,7 +4,7 @@ import {registerMessageListener, sendMessage, unregisterListener} from "./messag
 import {RoomSourceLink} from "./generated/types";
 import {countWords} from "./functions";
 import {SOURCELINK_TITLE_MINIMUM_LENGTH} from "./generated/constants";
-
+import {api, GetRoomsFileSourcelinksResponse} from "./generated/api_routes";
 import {PdfSelectionType} from "./constants";
 
 export interface SelectionPosition {
@@ -57,14 +57,7 @@ export function receiveSelectionMessage(event: MessageEvent) {
 
     console.log("received current page " + event.data.current_page + " total pages " + event.data.total_pages);
   }
-
-
-
-
-
 }
-
-let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 
 export interface SourceLinkPanelProps {
   room_id: string,
@@ -167,18 +160,15 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
   }
 
   refreshRoomFileSourcelinks() {
-    const endpoint = `/api/rooms/${this.props.room_id}/file/${this.props.file_id}/sourcelinks`;
-
-    fetch(endpoint).
-    then((response:Response) => { if (response.status !== 200) {throw new Error("Server failed to return an OK response.") } return response;}).
-    then((response:Response) => response.json()).
-    then((data:any) =>this.processData(data)).
+    api.rooms.file.sourcelinks(this.props.room_id, this.props.file_id).
+    then((data:GetRoomsFileSourcelinksResponse) => this.processData(data)).
     catch((data:any) => this.processError(data));
   }
 
-  processData(data:any) {
+  processData(data:GetRoomsFileSourcelinksResponse) {
     if (data.data.sourcelinks === undefined) {
       this.setState({error: "Server response did not contains 'sourcelinks'."})
+      return;
     }
 
     this.setState({sourcelinks: data.data.sourcelinks})

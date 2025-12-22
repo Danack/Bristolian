@@ -2,9 +2,6 @@ import {h, Component} from "preact";
 
 import {MEME_FILE_UPLOAD_FORM_NAME} from "./generated/constants";
 
-
-let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
-
 export interface MemeUploadPanelProps {
     // no properties currently
 }

@@ -2,24 +2,15 @@ import {h, Component} from "preact";
 import {humanFileSize, formatDateTime} from "./functions";
 import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";
 import {PdfSelectionType} from "./constants";
-
-let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
+import {api, GetRoomsFilesResponse} from "./generated/api_routes";
+import {StoredFile, createStoredFile} from "./generated/types";
 
 export interface RoomFilesPanelProps {
     room_id: string
 }
 
-interface RoomFile {
-    id: string, //"01939c6d-42ef-706a-87d1-83313443d34b",
-    normalized_name: string, // "01939c6d-42ee-71c3-a90b-e9c943ea704c.pdf",
-    original_filename: string, //"sample.pdf",
-    state: string, // "uploaded",
-    size: number, // "18810",
-    created_at: Date
-}
-
 interface RoomFilesPanelState {
-    files: RoomFile[],
+    files: StoredFile[],
     error: string|null,
 }
 
@@ -50,45 +41,22 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
     }
 
     refreshFiles() {
-        const endpoint = `/api/rooms/${this.props.room_id}/files`;
-        fetch(endpoint).
-
-        then((response:Response) => { if (response.status !== 200) {throw new Error("Server failed to return an OK response.") } return response;}).
-        then((response:Response) => response.json()).
-        then((data:any) =>this.processData(data)).
+        api.rooms.files(this.props.room_id).
+        then((data:GetRoomsFilesResponse) => this.processData(data)).
         catch((data:any) => this.processError(data));
     }
 
-    processResponse(response:Response) {
-        if (response.status !== 200) {
-            this.setState({error: "Server failed to return an OK response."})
-            return;
-        }
-        let json = response.json();
-        this.processData(json);
-    }
-
-    processData(data:any) {
+    processData(data:GetRoomsFilesResponse) {
         if (data.data.files === undefined) {
             this.setState({error: "Server response did not contains 'files'."})
+            return;
         }
 
-        let files:RoomFile[] = [];
-        for(let i=0; i<data.data.files.length; i++) {
-            const entry = data.data.files[i]
-
-            // @ts-ignore: any ...
-            const file:RoomFile = {
-                id: entry.id,
-                normalized_name: entry.normalized_name,
-                original_filename: entry.original_filename,
-                size: entry.size,
-                // created_at: DateTime.fromISO(entry.created_at)
-                created_at: new Date(entry.created_at),
-            };
-
-            files.push(file);
-        }
+        // GetRoomsFilesResponse structure: { result: 'success', data: { files: DateToString<StoredFile>[] } }
+        // API returns dates as strings, so we convert them to Date objects using the generated conversion function
+        const files:StoredFile[] = data.data.files.map((file) => 
+            createStoredFile(file)
+        );
 
         this.setState({files: files})
     }
@@ -98,10 +66,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         console.log(data)
     }
 
-    restoreState(state_to_restore: object) {
-    }
-
-    renderRoomFile(file: RoomFile) {
+    renderRoomFile(file: StoredFile) {
         let file_url = `/rooms/${this.props.room_id}/file/${file.id}/${file.original_filename}`
         let annotate_url = `/rooms/${this.props.room_id}/file_annotate/${file.id}`
 
@@ -148,7 +113,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                     <td>Date</td>
                 </tr>
                 {Object.values(this.state.files).
-                map((roomFile: RoomFile) => this.renderRoomFile(roomFile))}
+                map((roomFile: StoredFile) => this.renderRoomFile(roomFile))}
               </tbody>
             </table>
         </div>

@@ -1,18 +1,9 @@
 import {h, Component} from "preact";
-
-let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
+import {api, GetMemesResponse} from "./generated/api_routes";
+import {Meme} from "./generated/types";
 
 export interface MemeManagementPanelProps {
     // no properties currently
-}
-
-
-interface Meme {
-    id: string;
-    user_id: string;
-    filename: string;
-    filetype: string;
-    filestate: string;
 }
 
 interface MemeTag {
@@ -73,14 +64,20 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
     restoreState(state_to_restore: object) {
     }
 
-    processData(data:any) {
-        this.setState({memes: data.memes})
+    processData(data:GetMemesResponse) {
+        if (data.data.memes === undefined) {
+            console.error("Server response did not contain 'memes'.");
+            return;
+        }
+        this.setState({memes: data.data.memes})
     }
 
     refreshMemes() {
-        fetch('/api/memes').
-          then((response:Response) => response.json()).
-          then((data:any) =>this.processData(data));
+        api.memes().
+        then((data:GetMemesResponse) => this.processData(data)).
+        catch((err:any) => {
+            console.error("Failed to fetch memes:", err);
+        });
     }
 
     processMemeTagData(memeTags: Array<MemeTag>) {

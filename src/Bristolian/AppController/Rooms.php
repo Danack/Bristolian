@@ -25,6 +25,10 @@ use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
 use VarMap\VarMap;
 use function DataType\createArrayOfTypeOrError;
+use Bristolian\Response\Typed\GetRoomsFilesResponse;
+use Bristolian\Response\Typed\GetRoomsLinksResponse;
+use Bristolian\Response\Typed\GetRoomsSourcelinksResponse;
+use Bristolian\Response\Typed\GetRoomsFileSourcelinksResponse;
 
 class Rooms
 {
@@ -139,14 +143,15 @@ class Rooms
     ) {
         $files = $roomfileRepo->getFilesForRoom($room_id);
 
-        return createJsonResponse(['files' => $files]);
+        return new GetRoomsFilesResponse($files);
+
+//        return createJsonResponse(['files' => $files]);
     }
 
     /**
      * @param RoomLinkRepo $roomLinkRepo
      * @param string $room_id
-     * @return JsonNoCacheResponse
-     * @throws \SlimDispatcher\Response\InvalidDataException
+     * @return GetRoomsLinksResponse
      */
     public function getLinks(
         RoomLinkRepo $roomLinkRepo,
@@ -154,7 +159,7 @@ class Rooms
     ) {
         $links = $roomLinkRepo->getLinksForRoom($room_id);
 
-        return createJsonResponse(['links' => $links]);
+        return new GetRoomsLinksResponse($links);
     }
 
 
@@ -164,23 +169,23 @@ class Rooms
         RoomSourceLinkRepo $roomLinkRepo,
         string $room_id,
         string $file_id,
-    ): JsonNoCacheResponse {
+    ): GetRoomsFileSourcelinksResponse {
         $sourcelinks = $roomLinkRepo->getSourceLinksForRoomAndFile(
             $room_id,
             $file_id
         );
 
-        return createJsonResponse(['sourcelinks' => $sourcelinks]);
+        return new GetRoomsFileSourcelinksResponse($sourcelinks);
     }
 
 
     public function getSourcelinks(
         RoomSourceLinkRepo $roomLinkRepo,
         string $room_id
-    ): JsonNoCacheResponse {
+    ): GetRoomsSourcelinksResponse {
         $sourcelinks = $roomLinkRepo->getSourceLinksForRoom($room_id);
 
-        return createJsonResponse(['sourcelinks' => $sourcelinks]);
+        return new GetRoomsSourcelinksResponse($sourcelinks);
     }
 
 

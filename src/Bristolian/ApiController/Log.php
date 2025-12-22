@@ -10,6 +10,7 @@ use SlimDispatcher\Response\JsonResponse;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use Bristolian\Parameters\ProcessorRunRecordTypeParam;
 use VarMap\VarMap;
+use Bristolian\Response\Typed\GetLogProcessor_run_recordsResponse;
 
 class Log
 {
@@ -46,13 +47,6 @@ class Log
             );
         }
 
-//        var_dump($value);
-
-//        $data = ['run_records' => $db_data];
-
-        $data = ['run_records' => $value];
-
-
-        return new JsonResponse(['status' => 'ok', 'data' => $data]);
+        return new GetLogProcessor_run_recordsResponse($db_data);
     }
 }

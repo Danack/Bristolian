@@ -1,8 +1,7 @@
 import { h, Component } from "preact";
 import { formatDateTimeForDB, humanFileSize } from "./functions";
-import { ProcessorRunRecord, ProcessType } from "./generated/types";
-
-let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
+import { ProcessorRunRecord, ProcessType, createProcessorRunRecord } from "./generated/types";
+import {GetLogProcessor_run_recordsResponse} from "./generated/api_routes";
 
 export interface ProcessorRunRecordPanelProps {
     room_id: string;
@@ -57,6 +56,8 @@ export class ProcessorRunRecordPanel extends Component<
 
         this.setState({ loading: true });
 
+        // Note: Using fetch directly here because we need to add query params
+        // The generated api.log.processorRunRecords() doesn't support query params yet
         fetch(endpoint)
           .then((response: Response) => {
               if (response.status !== 200) {
@@ -65,20 +66,11 @@ export class ProcessorRunRecordPanel extends Component<
               return response;
           })
           .then((response: Response) => response.json())
-          .then((data: any) => this.processData(data))
+          .then((data: GetLogProcessor_run_recordsResponse) => this.processData(data))
           .catch((data: any) => this.processError(data));
     }
 
-    processResponse(response: Response) {
-        if (response.status !== 200) {
-            this.setState({ error: "Server failed to return an OK response." });
-            return;
-        }
-        let json = response.json();
-        this.processData(json);
-    }
-
-    processData(data: any) {
+    processData(data: GetLogProcessor_run_recordsResponse) {
         if (data.data.run_records === undefined) {
             this.setState({
                 error: "Server response did not contain 'run_records'.",
@@ -87,22 +79,11 @@ export class ProcessorRunRecordPanel extends Component<
             return;
         }
 
-        let run_records_received = data.data.run_records;
-        let run_records: ProcessorRunRecord[] = [];
-
-        for (let i = 0; i < run_records_received.length; i++) {
-            const entry = run_records_received[i];
-            const run_record: ProcessorRunRecord = {
-                id: entry.id,
-                processor_type: entry.processor_type,
-                debug_info: entry.debug_info,
-                start_time: new Date(entry.start_time),
-                end_time: new Date(entry.end_time),
-                status: entry.status,
-            };
-
-            run_records.push(run_record);
-        }
+        // GetLogProcessor_run_recordsResponse structure: { result: 'success', data: { run_records: DateToString<ProcessorRunRecord>[] } }
+        // Convert date strings to Date objects using the generated helper
+        const run_records: ProcessorRunRecord[] = data.data.run_records.map((record) => 
+            createProcessorRunRecord(record)
+        );
 
         this.setState({
             error: null,

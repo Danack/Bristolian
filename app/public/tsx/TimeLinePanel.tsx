@@ -1,8 +1,5 @@
 import {h, Component} from "preact";
 
-
-let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
-
 export interface TimeLinePanelProps {
     // no properties currently
 }

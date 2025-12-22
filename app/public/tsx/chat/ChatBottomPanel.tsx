@@ -5,8 +5,6 @@ import {useState} from "preact/hooks";
 import {use_logged_in, use_user_info} from "../store";
 import {MessageEncapsulated} from "../ChatPanel";
 
-let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
-
 export interface ChatBottomPanelProps {
   room_id: string;
   replyingToMessage?: MessageEncapsulated | null;

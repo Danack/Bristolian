@@ -4,8 +4,6 @@ import {PdfSelectionType} from "./constants";
 import {sendMessage} from "./message/message";
 import {use_logged_in} from "./store";
 
-let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
-
 export interface RoomLinkAddPanelProps {
   room_id: string
 }

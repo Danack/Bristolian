@@ -1,8 +1,6 @@
 import {h, Component} from "preact";
-import {humanFileSize} from "./functions";
 import {RoomSourceLink} from "./generated/types";
-
-let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
+import {api, GetRoomsSourcelinksResponse} from "./generated/api_routes";
 
 
 export interface RoomSourcelinkPanelProps {
@@ -38,27 +36,15 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
     }
 
     refreshRoomSourcelinks() {
-        const endpoint = `/api/rooms/${this.props.room_id}/sourcelinks`;
-        fetch(endpoint).
-
-        then((response:Response) => { if (response.status !== 200) {throw new Error("Server failed to return an OK response.") } return response;}).
-        then((response:Response) => response.json()).
-        then((data:any) =>this.processData(data)).
+        api.rooms.sourcelinks(this.props.room_id).
+        then((data:GetRoomsSourcelinksResponse) => this.processData(data)).
         catch((data:any) => this.processError(data));
     }
 
-    processResponse(response:Response) {
-        if (response.status !== 200) {
-            this.setState({error: "Server failed to return an OK response."})
-            return;
-        }
-        let json = response.json();
-        this.processData(json);
-    }
-
-    processData(data:any) {
+    processData(data:GetRoomsSourcelinksResponse) {
         if (data.data.sourcelinks === undefined) {
             this.setState({error: "Server response did not contains 'sourcelinks'."})
+            return;
         }
 
         this.setState({sourcelinks: data.data.sourcelinks})

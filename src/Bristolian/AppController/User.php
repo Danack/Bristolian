@@ -12,6 +12,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
+use Bristolian\Response\Typed\GetMemesResponse;
 
 class User
 {
@@ -26,15 +27,7 @@ class User
 
         $memes = $memeStorageRepo->listMemesForUser($appSession->getUserId());
 
-
-        [$error, $values] = convertToValue($memes);
-
-        $data = [
-            'result' => 'success',
-            'memes' => $values
-        ];
-
-        return new JsonResponse($data);
+        return new GetMemesResponse($memes);
     }
 
 

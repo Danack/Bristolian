@@ -3,19 +3,11 @@ import {humanFileSize, isUrl} from "./functions";
 import {RoomLinkAddPanel} from "./RoomLinkAddPanel";
 import {registerMessageListener} from "./message/message";
 import {PdfSelectionType} from "./constants";
-
-let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
+import {api, GetRoomsLinksResponse} from "./generated/api_routes";
+import {RoomLink, createRoomLink} from "./generated/types";
 
 export interface RoomLinksPanelProps {
     room_id: string
-}
-
-interface RoomLink {
-    id: string,
-    link_id: string,
-    url: string,
-    title: string,
-    description: string,
 }
 
 interface RoomLinksPanelState {
@@ -31,7 +23,6 @@ function getDefaultState(): RoomLinksPanelState {
         error: null,
     };
 }
-
 
 export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPanelState> {
 
@@ -54,46 +45,22 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
     }
 
     refreshLinks() {
-        const endpoint = `/api/rooms/${this.props.room_id}/links`;
-        fetch(endpoint).
-
-        then((response:Response) => { if (response.status !== 200) {throw new Error("Server failed to return an OK response.") } return response;}).
-        then((response:Response) => response.json()).
-        then((data:any) =>this.processData(data)).
+        api.rooms.links(this.props.room_id).
+        then((data:GetRoomsLinksResponse) => this.processData(data)).
         catch((data:any) => this.processError(data));
     }
 
-    processResponse(response:Response) {
-        if (response.status !== 200) {
-            this.setState({error: "Server failed to return an OK response."})
-            return;
-        }
-        let json = response.json();
-        this.processData(json);
-    }
-
-    processData(data:any) {
+    processData(data:GetRoomsLinksResponse) {
         if (data.data.links === undefined) {
             this.setState({error: "Server response did not contains 'links'."})
+            return;
         }
 
-        let links = data.data.links;
-
-        let roomLinks:RoomLink[] = [];
-
-        for(let i=0; i<links.length; i++) {
-            const entry = links[i]
-
-            // @ts-ignore: any ...
-            const roomLink:RoomLink = {
-                id: entry.id,
-                url: entry.url,
-                title: entry.title,
-                description: entry.description,
-            };
-
-            roomLinks.push(roomLink);
-        }
+        // GetRoomsLinksResponse structure: { result: 'success', data: { links: DateToString<RoomLink>[] } }
+        // Convert date strings to Date objects using the generated helper
+        const roomLinks:RoomLink[] = data.data.links.map((link) => 
+            createRoomLink(link)
+        );
 
         this.setState({roomLinks: roomLinks})
     }

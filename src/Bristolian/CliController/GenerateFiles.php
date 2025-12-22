@@ -380,9 +380,11 @@ class GenerateFiles
             \Bristolian\Model\Chat\SystemChatMessage::class,
 
             \Bristolian\Model\IncomingEmail::class,
+            \Bristolian\Model\Meme::class,
             \Bristolian\Model\ProcessorRunRecord::class,
             \Bristolian\Model\RoomLink::class,
             \Bristolian\Model\RoomSourceLink::class,
+            \Bristolian\Model\StoredFile::class,
         ];
 
         $conversionFunctions = '';
@@ -530,5 +532,753 @@ SQL;
 
             generate_table_helper_class($tableName, $columns_info);
         }
+    }
+
+    /**
+     * Generate PHP response type classes from API routes that have type information.
+     * 
+     * @codeCoverageIgnore
+     */
+    public function generatePhpResponseTypes(): void
+    {
+        require_once __DIR__ . "/../../../api/src/api_routes.php";
+        
+        $routes = getAllApiRoutes();
+        $output_directory = __DIR__ . "/../../Bristolian/Response/Typed";
+        
+        // Ensure the directory exists
+        if (!is_dir($output_directory)) {
+            mkdir($output_directory, 0755, true);
+        }
+        
+        foreach ($routes as $route) {
+            // Route format: [path, method, controller, type_info, setup_callable]
+            if (count($route) < 4 || $route[3] === null) {
+                continue; // Skip routes without type information
+            }
+            
+            $path = $route[0];
+            $method = $route[1];
+            $type_info = $route[3];
+            
+            if (!is_array($type_info) || count($type_info) === 0) {
+                continue; // Skip if type_info is not a valid array
+            }
+            
+            // Generate class name from route path
+            $className = $this->generateClassNameFromRoute($path, $method);
+            $namespace = "Bristolian\\Response\\Typed";
+            
+            // Generate the PHP class content
+            $content = $this->generateResponseClassContent($className, $namespace, $type_info);
+
+
+
+            // Write the file
+            $output_filename = $output_directory . "/" . $className . ".php";
+
+//            echo "writing $output_filename";
+
+            $result = file_put_contents($output_filename, $content);
+            
+            if ($result === false) {
+                throw new BristolianException("Failed to write response type file: $output_filename");
+            }
+        }
+    }
+    
+    /**
+     * Convert a route path and method to a PHP class name.
+     * 
+     * Example: '/api/rooms/{room_id:.*}/files' + 'GET' -> 'GetRoomsFilesResponse'
+     */
+    private function generateClassNameFromRoute(string $path, string $method): string
+    {
+        // Remove leading /api if present
+        $path = preg_replace('#^/api#', '', $path);
+        
+        // Remove path parameters like {room_id:.*}
+        $path = preg_replace('#\{[^}]+\}#', '', $path);
+        
+        // Remove leading/trailing slashes
+        $path = trim($path, '/');
+        
+        // Split by slashes and capitalize each segment
+        $parts = explode('/', $path);
+        $className = '';
+        
+        foreach ($parts as $part) {
+            if (empty($part)) {
+                continue;
+            }
+            // Capitalize first letter of each part
+            $className .= ucfirst($part);
+        }
+        
+        // Add method prefix for disambiguation (e.g., Get, Post, Put, Delete)
+        $methodPrefix = ucfirst(strtolower($method));
+        $className = $methodPrefix . $className;
+        
+        // Add Response suffix
+        $className .= 'Response';
+        
+        // Ensure it's a valid PHP class name
+        $className = preg_replace('#[^a-zA-Z0-9_]#', '', $className);
+        
+        // If empty, use a default
+        if (empty($className)) {
+            $className = 'ApiResponse';
+        }
+        
+        return $className;
+    }
+    
+    /**
+     * Generate PHP class content for a response type.
+     * 
+     * @param array $type_info Array of [name, class, is_array] tuples
+     */
+    private function generateResponseClassContent(string $className, string $namespace, array $type_info): string
+    {
+        $content = "<?php\n\n";
+        $content .= "// Auto-generated file do not edit\n\n";
+        $content .= "// generated with 'php cli.php generate:php_response_types'\n\n";
+        $content .= "namespace $namespace;\n\n";
+        
+        // Collect all imports
+        $imports = [
+            'Bristolian\\Exception\\DataEncodingException',
+            'SlimDispatcher\\Response\\StubResponse',
+        ];
+        
+        $constructorParams = [];
+        $dataFields = [];
+        
+        foreach ($type_info as $field_info) {
+            if (!is_array($field_info) || count($field_info) < 2) {
+                continue;
+            }
+            
+            $field_name = $field_info[0];
+            $field_type = $field_info[1];
+            $is_array = isset($field_info[2]) && $field_info[2] === true;
+            
+            // Add import for the type
+            if (is_string($field_type) && class_exists($field_type)) {
+                $imports[] = $field_type;
+                $rc = new \ReflectionClass($field_type);
+                $short_name = $rc->getShortName();
+                
+                // Build constructor parameter type
+                if ($is_array) {
+                    $param_type = "array";
+                    $doc_type = $short_name . "[]";
+                } else {
+                    $param_type = $short_name;
+                    $doc_type = $short_name;
+                }
+                
+                $constructorParams[] = [
+                    'name' => $field_name,
+                    'type' => $param_type,
+                    'doc_type' => $doc_type,
+                    'short_name' => $short_name,
+                    'is_array' => $is_array,
+                ];
+                
+                $dataFields[] = [
+                    'name' => $field_name,
+                    'value' => '$' . $field_name,
+                ];
+            }
+        }
+        
+        // Remove duplicates from imports
+        $imports = array_unique($imports);
+        sort($imports);
+        
+        // Add imports
+        foreach ($imports as $import) {
+            $content .= "use $import;\n";
+        }
+        
+        $content .= "\n";
+        $content .= "class $className implements StubResponse\n";
+        $content .= "{\n";
+        $content .= "    private \$body;\n\n";
+        $content .= "    private \$headers = [];\n\n";
+        $content .= "    private \$status;\n\n";
+        
+        // Constructor
+        $param_doc = [];
+        $param_list = [];
+        foreach ($constructorParams as $param) {
+            $param_doc[] = "     * @param {$param['doc_type']} \${$param['name']}";
+            if ($param['is_array']) {
+                $param_list[] = "array \${$param['name']}";
+            } else {
+                $param_list[] = "{$param['short_name']} \${$param['name']}";
+            }
+        }
+        
+        $content .= "    /**\n";
+        $content .= implode("\n", $param_doc) . "\n";
+        $content .= "     */\n";
+        $content .= "    public function __construct(" . implode(", ", $param_list) . ")\n";
+        $content .= "    {\n";
+        
+        // Build the data array
+        // Convert each field to value
+        $content .= "        \$converted_data = [];\n";
+        foreach ($dataFields as $field) {
+            $content .= "        [\$error, \$converted_{$field['name']}] = \\convertToValue({$field['value']});\n";
+            $content .= "        if (\$error !== null) {\n";
+            $content .= "            throw new DataEncodingException(\"Could not convert {$field['name']} to a value. \", \$error);\n";
+            $content .= "        }\n";
+            $content .= "        \$converted_data['{$field['name']}'] = \$converted_{$field['name']};\n";
+        }
+        
+        $content .= "\n";
+        $content .= "        \$response_ok = [\n";
+        $content .= "            'result' => 'success',\n";
+        $content .= "            'data' => \$converted_data\n";
+        $content .= "        ];\n\n";
+        $content .= "        \$this->body = json_encode(\$response_ok, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);\n";
+        $content .= "    }\n\n";
+        
+        // getStatus method
+        $content .= "    public function getStatus(): int\n";
+        $content .= "    {\n";
+        $content .= "        return 200;\n";
+        $content .= "    }\n\n";
+        
+        // getHeaders method
+        $content .= "    public function getHeaders(): array\n";
+        $content .= "    {\n";
+        $content .= "        return [\n";
+        $content .= "            'Content-Type' => 'application/json'\n";
+        $content .= "        ];\n";
+        $content .= "    }\n\n";
+        
+        // getBody method
+        $content .= "    public function getBody(): string\n";
+        $content .= "    {\n";
+        $content .= "        return \$this->body;\n";
+        $content .= "    }\n";
+        
+        $content .= "}\n";
+        
+        return $content;
+    }
+
+    /**
+     * Generate TypeScript file with API route endpoints and response types.
+     * 
+     * @codeCoverageIgnore
+     */
+    public function generateTypeScriptApiRoutes(): void
+    {
+        require_once __DIR__ . "/../../../api/src/api_routes.php";
+        
+        $routes = getAllApiRoutes();
+        $output_filename = __DIR__ . "/../../../app/public/tsx/generated/api_routes.tsx";
+        
+        $content = "// This is an auto-generated file\n";
+        $content .= "// DO NOT EDIT\n\n";
+        $content .= "// You'll need to bounce the docker boxes to regenerate.\n";
+        $content .= "//\n";
+        $content .= "// or run 'php cli.php generate:typescript_api_routes'\n";
+        $content .= "// Code for generating this file is in \\Bristolian\\CliController\\GenerateFiles::generateTypeScriptApiRoutes\n\n";
+        
+        // Collect all unique model types that need to be imported
+        $modelTypes = [];
+        $routeData = [];
+        
+        foreach ($routes as $route) {
+            // Route format: [path, method, controller, type_info, setup_callable]
+            if (count($route) < 4 || $route[3] === null) {
+                continue; // Skip routes without type information
+            }
+            
+            $path = $route[0];
+            $method = $route[1];
+            $type_info = $route[3];
+            
+            if (!is_array($type_info) || count($type_info) === 0) {
+                continue; // Skip if type_info is not a valid array
+            }
+            
+            // Generate response type name
+            $responseTypeName = $this->generateTypeScriptResponseTypeName($path, $method);
+            
+            // Collect model types for imports
+            foreach ($type_info as $field_info) {
+                if (!is_array($field_info) || count($field_info) < 2) {
+                    continue;
+                }
+                
+                $field_type = $field_info[1];
+                if (is_string($field_type) && class_exists($field_type)) {
+                    $modelTypes[$field_type] = true;
+                }
+            }
+            
+            // Extract parameters from path
+            $params = $this->extractPathParameters($path);
+            
+            // Build nested path structure
+            $pathStructure = $this->buildPathStructure($path);
+            
+            $routeData[] = [
+                'path' => $path,
+                'method' => $method,
+                'response_type' => $responseTypeName,
+                'type_info' => $type_info,
+                'params' => $params,
+                'path_structure' => $pathStructure,
+            ];
+        }
+        
+        // Check if any response types use DateToString (i.e., have model types with date fields)
+        $needsDateToString = false;
+        foreach ($routeData as $route) {
+            foreach ($route['type_info'] as $field_info) {
+                if (!is_array($field_info) || count($field_info) < 2) {
+                    continue;
+                }
+                $field_type = $field_info[1];
+                if (is_string($field_type) && class_exists($field_type)) {
+                    [$interfaceContent, $dateFields] = generateInterfaceForClass($field_type);
+                    if (count($dateFields) > 0) {
+                        $needsDateToString = true;
+                        break 2; // Break out of both loops
+                    }
+                }
+            }
+        }
+        
+        // Add imports for model types
+        if (count($modelTypes) > 0 || $needsDateToString) {
+            $content .= "import { DateToString, convertDatesFromStrings } from '../functions';\n";
+        }
+        
+        if (count($modelTypes) > 0) {
+            $content .= "import type { ";
+            
+            $importNames = [];
+            foreach (array_keys($modelTypes) as $modelType) {
+                $rc = new \ReflectionClass($modelType);
+                $importNames[] = $rc->getShortName();
+            }
+            
+            sort($importNames);
+            $content .= implode(", ", $importNames);
+            $content .= " } from './types';\n\n";
+        } else if ($needsDateToString) {
+            $content .= "\n";
+        }
+        
+        // Add helper function for API calls
+        $content .= "// Helper function for API calls\n";
+        $content .= "function apiCall<T>(endpoint: string): Promise<T> {\n";
+        $content .= "  return fetch(endpoint)\n";
+        $content .= "    .then((response: Response) => {\n";
+        $content .= "      if (response.status !== 200) {\n";
+        $content .= "        throw new Error('Server failed to return an OK response.');\n";
+        $content .= "      }\n";
+        $content .= "      return response;\n";
+        $content .= "    })\n";
+        $content .= "    .then((response: Response) => response.json());\n";
+        $content .= "}\n\n";
+        
+        // Generate Laravel-style API route helpers
+        $content .= "// Laravel-style API route helpers\n";
+        $content .= "export const api = {\n";
+        $content .= $this->generateLaravelStyleRoutes($routeData);
+        $content .= "} as const;\n";
+        
+        $content .= "\n";
+        
+        // Generate response type interfaces
+        $content .= "// API Response Types\n";
+        foreach ($routeData as $routeInfo) {
+            $content .= $this->generateTypeScriptResponseInterface(
+                $routeInfo['response_type'],
+                $routeInfo['type_info']
+            );
+            $content .= "\n";
+        }
+        
+        $result = file_put_contents($output_filename, $content);
+        if ($result === false) {
+            throw new BristolianException("Failed to write TypeScript API routes file: $output_filename");
+        }
+    }
+    
+    /**
+     * Generate a TypeScript constant name from route path and method.
+     * 
+     * Example: '/api/rooms/{room_id:.*}/files' + 'GET' -> 'API_ROOMS_FILES_GET'
+     */
+    private function generateEndpointConstantName(string $path, string $method): string
+    {
+        // Remove leading /api if present
+        $path = preg_replace('#^/api#', '', $path);
+        
+        // Remove path parameters like {room_id:.*}
+        $path = preg_replace('#\{[^}]+\}#', '', $path);
+        
+        // Remove leading/trailing slashes
+        $path = trim($path, '/');
+        
+        // Replace slashes and special chars with underscores
+        $constant = strtoupper(str_replace(['/', '-'], '_', $path));
+        
+        // Add method suffix
+        $constant .= '_' . strtoupper($method);
+        
+        // Ensure it starts with API_
+        if (!str_starts_with($constant, 'API_')) {
+            $constant = 'API_' . $constant;
+        }
+        
+        // Clean up multiple underscores
+        $constant = preg_replace('#_+#', '_', $constant);
+        
+        // Remove trailing underscores
+        $constant = rtrim($constant, '_');
+        
+        return $constant;
+    }
+    
+    /**
+     * Generate a TypeScript type name from route path and method.
+     * 
+     * Example: '/api/rooms/{room_id:.*}/files' + 'GET' -> 'GetRoomsFilesResponse'
+     */
+    private function generateTypeScriptResponseTypeName(string $path, string $method): string
+    {
+        // Remove leading /api if present
+        $path = preg_replace('#^/api#', '', $path);
+        
+        // Remove path parameters like {room_id:.*}
+        $path = preg_replace('#\{[^}]+\}#', '', $path);
+        
+        // Remove leading/trailing slashes
+        $path = trim($path, '/');
+        
+        // Split by slashes and capitalize each segment
+        $parts = explode('/', $path);
+        $typeName = '';
+        
+        foreach ($parts as $part) {
+            if (empty($part)) {
+                continue;
+            }
+            // Capitalize first letter of each part
+            $typeName .= ucfirst($part);
+        }
+        
+        // Add method prefix
+        $methodPrefix = ucfirst(strtolower($method));
+        $typeName = $methodPrefix . $typeName;
+        
+        // Add Response suffix
+        $typeName .= 'Response';
+        
+        // Ensure it's a valid TypeScript type name
+        $typeName = preg_replace('#[^a-zA-Z0-9_]#', '', $typeName);
+        
+        // If empty, use a default
+        if (empty($typeName)) {
+            $typeName = 'ApiResponse';
+        }
+        
+        return $typeName;
+    }
+    
+    /**
+     * Generate TypeScript interface for a response type.
+     */
+    private function generateTypeScriptResponseInterface(string $typeName, array $type_info): string
+    {
+        $content = "export interface {$typeName} {\n";
+        $content .= "    result: 'success';\n";
+        $content .= "    data: {\n";
+        
+        foreach ($type_info as $field_info) {
+            if (!is_array($field_info) || count($field_info) < 2) {
+                continue;
+            }
+            
+            $field_name = $field_info[0];
+            $field_type = $field_info[1];
+            $is_array = isset($field_info[2]) && $field_info[2] === true;
+            
+            if (is_string($field_type) && class_exists($field_type)) {
+                $rc = new \ReflectionClass($field_type);
+                $short_name = $rc->getShortName();
+                
+                // Check if this model type has date fields by generating its interface
+                // and checking if date fields are returned
+                [$interfaceContent, $dateFields] = generateInterfaceForClass($field_type);
+                $hasDateFields = count($dateFields) > 0;
+                
+                // Reference the type from types.tsx (which should already be generated)
+                // If it's an array and has date fields, use DateToString<T>[] since API returns dates as strings
+                if ($is_array) {
+                    if ($hasDateFields) {
+                        $ts_type = "DateToString<{$short_name}>[]";
+                    } else {
+                        $ts_type = "{$short_name}[]";
+                    }
+                } else {
+                    if ($hasDateFields) {
+                        $ts_type = "DateToString<{$short_name}>";
+                    } else {
+                        $ts_type = $short_name;
+                    }
+                }
+                
+                $content .= "        {$field_name}: {$ts_type};\n";
+            } else {
+                // Fallback for unknown types
+                $ts_type = $is_array ? "any[]" : "any";
+                $content .= "        {$field_name}: {$ts_type};\n";
+            }
+        }
+        
+        $content .= "    };\n";
+        $content .= "}\n";
+        
+        return $content;
+    }
+    
+    /**
+     * Extract parameter names from a route path.
+     * Example: '/api/rooms/{room_id:.*}/files' -> ['room_id']
+     */
+    private function extractPathParameters(string $path): array
+    {
+        $params = [];
+        if (preg_match_all('#\{([^:}]+)(?::[^}]*)?\}#', $path, $matches)) {
+            $params = $matches[1];
+        }
+        return $params;
+    }
+    
+    /**
+     * Build a nested path structure from a route path.
+     * Example: '/api/rooms/{room_id:.*}/files' -> ['rooms', 'files']
+     */
+    private function buildPathStructure(string $path): array
+    {
+        // Remove leading /api if present
+        $path = preg_replace('#^/api#', '', $path);
+        
+        // Remove path parameters like {room_id:.*}
+        $path = preg_replace('#\{[^}]+\}#', '', $path);
+        
+        // Remove leading/trailing slashes
+        $path = trim($path, '/');
+        
+        // Split by slashes
+        $parts = explode('/', $path);
+        
+        // Filter out empty parts
+        return array_filter($parts, function($part) {
+            return !empty($part);
+        });
+    }
+    
+    /**
+     * Generate Laravel-style route helpers as a nested object structure.
+     */
+    private function generateLaravelStyleRoutes(array $routeData): string
+    {
+        // Organize routes into a nested structure
+        $routesTree = [];
+        
+        foreach ($routeData as $route) {
+            $structure = $route['path_structure'];
+            $params = $route['params'];
+            $path = $route['path'];
+            $method = strtolower($route['method']);
+            
+            // Build nested structure
+            $current = &$routesTree;
+            $pathParts = array_values($structure);
+            
+            // Navigate/create nested structure
+            for ($i = 0; $i < count($pathParts) - 1; $i++) {
+                $part = $this->camelCase($pathParts[$i]);
+                if (!isset($current[$part])) {
+                    $current[$part] = [];
+                }
+                $current = &$current[$part];
+            }
+            
+            // Add the final route function
+            $finalKey = $this->camelCase($pathParts[count($pathParts) - 1] ?? 'index');
+            
+            // Generate function parameters
+            $paramList = [];
+            $paramTypes = [];
+            foreach ($params as $param) {
+                $paramList[] = $param . ': string';
+                $paramTypes[] = $param;
+            }
+            
+            // Generate function body - build URL with template literals
+            $urlParts = $this->buildUrlTemplate($path, $params);
+            
+            // Get response type name
+            $responseTypeName = $route['response_type'];
+            
+            if (count($params) === 0) {
+                // No parameters - simple function
+                $current[$finalKey] = [
+                    'type' => 'function',
+                    'params' => [],
+                    'url' => $path,
+                    'response_type' => $responseTypeName,
+                ];
+            } else {
+                // Has parameters - function with params
+                $current[$finalKey] = [
+                    'type' => 'function',
+                    'params' => $paramTypes,
+                    'url' => $urlParts,
+                    'response_type' => $responseTypeName,
+                ];
+            }
+        }
+        
+        // Generate TypeScript code from the tree
+        return $this->generateTypeScriptFromTree($routesTree, 0);
+    }
+    
+    /**
+     * Convert a string to camelCase.
+     */
+    private function camelCase(string $str): string
+    {
+        // Handle snake_case and kebab-case
+        $str = str_replace(['-', '_'], ' ', $str);
+        $parts = explode(' ', $str);
+        $result = lcfirst($parts[0]);
+        for ($i = 1; $i < count($parts); $i++) {
+            $result .= ucfirst($parts[$i]);
+        }
+        return $result;
+    }
+    
+    /**
+     * Build URL template parts for generating the function body.
+     */
+    private function buildUrlTemplate(string $path, array $params): array
+    {
+        // Split path into parts, replacing parameters with placeholders
+        $parts = [];
+        $currentPos = 0;
+        
+        // Find all parameter positions
+        $paramPositions = [];
+        foreach ($params as $param) {
+            if (preg_match('#\{' . preg_quote($param, '#') . '(?::[^}]*)?\}#', $path, $matches, PREG_OFFSET_CAPTURE)) {
+                $paramPositions[] = [
+                    'param' => $param,
+                    'start' => $matches[0][1],
+                    'end' => $matches[0][1] + strlen($matches[0][0]),
+                ];
+            }
+        }
+        
+        // Sort by position
+        usort($paramPositions, function($a, $b) {
+            return $a['start'] <=> $b['start'];
+        });
+        
+        // Build parts
+        $lastPos = 0;
+        foreach ($paramPositions as $pos) {
+            // Add literal part before parameter
+            if ($pos['start'] > $lastPos) {
+                $literal = substr($path, $lastPos, $pos['start'] - $lastPos);
+                if (!empty($literal)) {
+                    $parts[] = ['type' => 'literal', 'value' => $literal];
+                }
+            }
+            
+            // Add parameter
+            $parts[] = ['type' => 'param', 'value' => $pos['param']];
+            
+            $lastPos = $pos['end'];
+        }
+        
+        // Add remaining literal part
+        if ($lastPos < strlen($path)) {
+            $literal = substr($path, $lastPos);
+            if (!empty($literal)) {
+                $parts[] = ['type' => 'literal', 'value' => $literal];
+            }
+        }
+        
+        return $parts;
+    }
+    
+    /**
+     * Generate TypeScript code from the routes tree structure.
+     */
+    private function generateTypeScriptFromTree(array $tree, int $indent): string
+    {
+        $indentStr = str_repeat('  ', $indent);
+        $content = "";
+        
+        $keys = array_keys($tree);
+        sort($keys);
+        
+        foreach ($keys as $key) {
+            $value = $tree[$key];
+            
+            if (isset($value['type']) && $value['type'] === 'function') {
+                // Generate function that returns Promise with fetch logic
+                $params = $value['params'];
+                $urlParts = $value['url'];
+                $responseType = $value['response_type'];
+                
+                if (count($params) === 0) {
+                    // No parameters
+                    $content .= "{$indentStr}  {$key}: (): Promise<{$responseType}> => {\n";
+                    $content .= "{$indentStr}    return apiCall<{$responseType}>(`{$urlParts}`);\n";
+                    $content .= "{$indentStr}  },\n";
+                } else {
+                    // Has parameters
+                    $paramList = implode(', ', array_map(function($p) { return "{$p}: string"; }, $params));
+                    $content .= "{$indentStr}  {$key}: ({$paramList}): Promise<{$responseType}> => {\n";
+                    
+                    // Build template literal for URL
+                    $urlTemplate = "{$indentStr}    const endpoint = `";
+                    foreach ($urlParts as $part) {
+                        if ($part['type'] === 'literal') {
+                            $urlTemplate .= $part['value'];
+                        } else {
+                            $urlTemplate .= '${' . $part['value'] . '}';
+                        }
+                    }
+                    $urlTemplate .= "`;\n";
+                    $content .= $urlTemplate;
+                    $content .= "{$indentStr}    return apiCall<{$responseType}>(endpoint);\n";
+                    $content .= "{$indentStr}  },\n";
+                }
+            } else {
+                // Nested object
+                $content .= "{$indentStr}  {$key}: {\n";
+                $content .= $this->generateTypeScriptFromTree($value, $indent + 1);
+                $content .= "{$indentStr}  },\n";
+            }
+        }
+        
+        return $content;
     }
 }

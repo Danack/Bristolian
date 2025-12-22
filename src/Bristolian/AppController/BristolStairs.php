@@ -28,6 +28,8 @@ use Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage;
 use Bristolian\Model\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsGpsParams;
 use VarMap\VarMap;
+use Bristolian\Response\Typed\GetBristol_stairsResponse;
+use Bristolian\Response\SuccessResponse;
 
 class BristolStairs
 {
@@ -42,26 +44,27 @@ class BristolStairs
         UserSession $userSession,
         BristolStairsRepo $bristolStairsRepo,
         BristolStairsInfoParams $stairs_info_params
-    ): JsonResponse {
+    ): SuccessResponse {
 
         $bristolStairsRepo->updateStairInfo($stairs_info_params);
 
-        return new JsonResponse(['success' => true]);
+//        return new JsonResponse(['success' => true]);
+
+        return new SuccessResponse();
     }
 
     public function update_stairs_position(
         UserSession $appSession,
         BristolStairsRepo $bristolStairsRepo,
         BristolStairsPositionParams $stairs_position_params
-        //        VarMap $varMap
-    ): JsonResponse {
-//        $stairs_position_params = BristolStairsPositionParams::createFromVarMap($varMap);
+    ): SuccessResponse {
+
         $bristolStairsRepo->updateStairPosition($stairs_position_params);
 
         // Usage after storing a post:
         purgeVarnish("/api/bristol_stairs");
 
-        return new JsonResponse(['success' => true]);
+        return new SuccessResponse();
     }
 
     public function stairs_page_stair_selected(
@@ -176,14 +179,11 @@ HTML;
     }
 
 
-    public function getData(BristolStairsRepo $stairs_repo): JsonResponse
+    public function getData(BristolStairsRepo $stairs_repo): GetBristol_stairsResponse
     {
         $markers = $stairs_repo->getAllStairsInfo();
 
-        return new JsonResponse([
-            'status' => 'ok',
-            'data' => $markers,
-        ]);
+        return new GetBristol_stairsResponse($markers);
     }
 
 

@@ -160,6 +160,20 @@ function addGenerateCommands(Application $console)
     );
     $command->setDescription("Generate documentation for the datatypes.");
     $console->add($command);
+
+    $command = new Command(
+        'generate:php_response_types',
+        'Bristolian\CliController\GenerateFiles::generatePhpResponseTypes'
+    );
+    $command->setDescription("Generate PHP response type classes from API routes.");
+    $console->add($command);
+
+    $command = new Command(
+        'generate:typescript_api_routes',
+        'Bristolian\CliController\GenerateFiles::generateTypeScriptApiRoutes'
+    );
+    $command->setDescription("Generate TypeScript API routes file with endpoints and response types.");
+    $console->add($command);
 }
 
 
