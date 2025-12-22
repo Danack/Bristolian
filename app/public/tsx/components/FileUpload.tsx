@@ -1,6 +1,4 @@
-// FileUpload.tsx
 import { h, Component } from "preact";
-// import * as exifr from "exifr";
 
 export interface FileUploadProps {
   uploadUrl: string; // endpoint to send files to
@@ -98,8 +96,6 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
         // }).catch(() => {
           this.requestBrowserLocation();
         // });
-
-        console.log("Hmm");
       }
     } else {
       const allowedList = allowedExtensions.length
@@ -224,11 +220,11 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
           />
           <button onClick={this.handleUpload}>Upload</button>
 
-          <div>
-            gps_latitude {this.state.gps_latitude}<br/>
-            gps_longtitude: {this.state.gps_longitude} <br/>
-            debug: {this.state.debug}
-          </div>
+          {/*<div>*/}
+          {/*  gps_latitude {this.state.gps_latitude}<br/>*/}
+          {/*  gps_longtitude: {this.state.gps_longitude} <br/>*/}
+          {/*  debug: {this.state.debug}*/}
+          {/*</div>*/}
 
         </div>
 

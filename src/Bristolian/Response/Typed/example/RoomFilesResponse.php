@@ -2,17 +2,20 @@
 
 namespace Bristolian\Response\Typed\example;
 
+use Bristolian\Exception\DataEncodingException;
 use Bristolian\Model\StoredFile;
-use Bristolian\Response\Typed\DataEncodingException;
 use SlimDispatcher\Response\StubResponse;
 
 class RoomFilesResponse implements StubResponse
 {
-    private $body;
+    private string $body;
 
-    private $headers = [];
+    /**
+     * @var array<string, string>
+     */
+    private array $headers = [];
 
-    private $status;
+    private int $status;
 
     /**
      * @param StoredFile[] $files
@@ -40,6 +43,9 @@ class RoomFilesResponse implements StubResponse
         return 200;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getHeaders(): array
     {
         return [
@@ -47,5 +53,8 @@ class RoomFilesResponse implements StubResponse
         ];
     }
 
-
+    public function getBody(): string
+    {
+        return $this->body;
+    }
 }
