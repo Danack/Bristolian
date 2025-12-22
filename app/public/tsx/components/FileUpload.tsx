@@ -81,21 +81,7 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
       });
 
       if (fetchGPS) {
-        // // Try to read EXIF GPS first
-        // exifr.gps(file).then((gps) => {
-        //   if (gps) {
-        //     this.setState({
-        //       gps_latitude: gps.latitude,
-        //       gps_longitude: gps.longitude,
-        //       debug: "gps set from exifr"
-        //     });
-        //   } else {
-        //     // No EXIF GPS → fall back to browser geolocation
-        //     this.requestBrowserLocation();
-        //   }
-        // }).catch(() => {
           this.requestBrowserLocation();
-        // });
       }
     } else {
       const allowedList = allowedExtensions.length
