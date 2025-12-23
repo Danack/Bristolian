@@ -7,7 +7,7 @@ use Bristolian\Model\BccTro;
 interface BccTroRepo
 {
     /**
-     * @param BccTro[] $json_data
+     * @param BccTro[] $tros
      * @return void
      */
     public function saveData(array $tros): void;

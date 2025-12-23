@@ -3,8 +3,21 @@ default:
     '': "%paths.base%/features/bootstrap"
   suites:
     default:
+      paths:
+        - "%paths.base%/features"
       contexts:
-        - FeatureContext:
+#        - FeatureContext:
+        - BristolianBehat\SiteContext
+      filters:
+        tags: "~@broken"
+#    app:
+#      remote_coverage_enabled: true
+#      paths:
+#        - "%paths.base%/test/features/app"
+#      contexts:
+#        - BristolianBehat\SiteContext
+#      filters:
+#        tags: "~@broken"
   extensions:
     DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
     Behat\MinkExtension:
@@ -12,6 +25,6 @@ default:
       sessions:
         default:
           chrome:
-#            api_url: "http://127.0.0.1:9222"
             api_url: "http://chrome_headless:9222"
             socket_timeout: 60
+            validate_certificate: false

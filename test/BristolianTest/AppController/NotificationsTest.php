@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace BristolianTest\AppController;
 
-use Behat\Mink\Mink;
-use Behat\Mink\Session;
+use BristolianBehat\Mink\Mink;
+use BristolianBehat\Mink\Session;
 use Bristolian\JsonInput\JsonInput;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use BristolianTest\Repo\TestPlaceholders;

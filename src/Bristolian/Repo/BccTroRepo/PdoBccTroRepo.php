@@ -13,7 +13,7 @@ class PdoBccTroRepo implements BccTroRepo
     }
 
     /**
-     * @param BccTro[] $json_data
+     * @param BccTro[] $tros
      * @return void
      */
     public function saveData(array $tros): void
@@ -34,7 +34,7 @@ class PdoBccTroRepo implements BccTroRepo
 
     public function getMostRecentData(): null
     {
-
+        return null;
     }
 
 }

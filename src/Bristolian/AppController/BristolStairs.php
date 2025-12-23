@@ -28,7 +28,7 @@ use Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage;
 use Bristolian\Model\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsGpsParams;
 use VarMap\VarMap;
-use Bristolian\Response\Typed\GetBristol_stairsResponse;
+use Bristolian\Response\Typed\GetBristolStairsResponse;
 use Bristolian\Response\SuccessResponse;
 
 class BristolStairs
@@ -179,11 +179,11 @@ HTML;
     }
 
 
-    public function getData(BristolStairsRepo $stairs_repo): GetBristol_stairsResponse
+    public function getData(BristolStairsRepo $stairs_repo): GetBristolStairsResponse
     {
         $markers = $stairs_repo->getAllStairsInfo();
 
-        return new GetBristol_stairsResponse($markers);
+        return new GetBristolStairsResponse($markers);
     }
 
 

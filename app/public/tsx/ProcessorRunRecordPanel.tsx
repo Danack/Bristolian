@@ -1,7 +1,7 @@
 import { h, Component } from "preact";
 import { formatDateTimeForDB, humanFileSize } from "./functions";
 import { ProcessorRunRecord, ProcessType, createProcessorRunRecord } from "./generated/types";
-import {GetLogProcessor_run_recordsResponse} from "./generated/api_routes";
+import {GetLogProcessorRunRecordsResponse} from "./generated/api_routes";
 
 export interface ProcessorRunRecordPanelProps {
     room_id: string;
@@ -66,11 +66,11 @@ export class ProcessorRunRecordPanel extends Component<
               return response;
           })
           .then((response: Response) => response.json())
-          .then((data: GetLogProcessor_run_recordsResponse) => this.processData(data))
+          .then((data: GetLogProcessorRunRecordsResponse) => this.processData(data))
           .catch((data: any) => this.processError(data));
     }
 
-    processData(data: GetLogProcessor_run_recordsResponse) {
+    processData(data: GetLogProcessorRunRecordsResponse) {
         if (data.data.run_records === undefined) {
             this.setState({
                 error: "Server response did not contain 'run_records'.",
@@ -79,7 +79,7 @@ export class ProcessorRunRecordPanel extends Component<
             return;
         }
 
-        // GetLogProcessor_run_recordsResponse structure: { result: 'success', data: { run_records: DateToString<ProcessorRunRecord>[] } }
+        // GetLogProcessorRunRecordsResponse structure: { result: 'success', data: { run_records: DateToString<ProcessorRunRecord>[] } }
         // Convert date strings to Date objects using the generated helper
         const run_records: ProcessorRunRecord[] = data.data.run_records.map((record) => 
             createProcessorRunRecord(record)

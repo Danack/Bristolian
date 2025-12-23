@@ -17,7 +17,7 @@ function getAllApiRoutes()
 // an api key, should call an appropriate callable.
     return [
 
-        [App::CSP_REPORT_PATH, 'POST', 'Bristolian\AppController\ContentSecurityPolicy::postReport', null],
+        [App::CSP_REPORT_PATH, 'POST', 'Bristolian\AppController\ContentSecurityPolicy::postReport', null], // TextResponse
 
         ['/api/save-subscription/', 'POST', 'Bristolian\AppController\Notifications::save_subscription', null],
 

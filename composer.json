@@ -18,7 +18,8 @@
         "danack/json-safe": "^0.1.1",
         "danack/slim-dispatcher": "dev-dev",
         "danack/datatype": "0.6.3",
-        "dmore/chrome-mink-driver": "2.8.1",
+        "dmore/behat-chrome-extension": "1.4.1",
+        "dmore/chrome-mink-driver": "2.10.0",
         "hashids/hashids": "5.0.2",
         "ext-redis": "*",
         "justinrainbow/json-schema": "^5.2.7",
@@ -57,6 +58,8 @@
         "ext-dom": "*"
     },
     "require-dev": {
+        "behat/behat": "^3.0",
+        "friends-of-behat/mink-extension": "^2.0",
         "danack/coding-standard": "0.3.0",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "9.5.6",
@@ -70,6 +73,7 @@
         "psr-0": {
             "Asm\\": "asm_in_project/lib/",
             "Bristolian\\": "src/",
+            "BristolianBehat\\": "src/",
             "Key\\": "src/",
             "OpenApi\\": "src/",
             "UrlFetcher\\": "src/"

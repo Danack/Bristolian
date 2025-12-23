@@ -24,7 +24,7 @@ class UserProfileWithDisplayName
 
     public function getDisplayName(): string
     {
-        return $this->display_name?->display_name ?? '';
+        return $this->display_name->display_name ?? '';
     }
 
     public function getAboutMe(): string|null

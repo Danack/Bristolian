@@ -9,21 +9,28 @@ services:
     networks:
       app_network:
     restart: always
-#  chrome_headless:
-#    image: alpeware/chrome-headless-trunk
-#    ports:
-#      - "9222:9222"
-#    cap_add:
-#      - SYS_ADMIN
-#    environment:
-#      - CHROME_OPTS=--window-size="800,800"
-#    networks:
-#      app_network:
-#    security_opt:
-#      - seccomp:unconfined
-#      #extra_hosts:
-#      #      - "local.phpimagick.com:imagick_php_backend"
-#      # - "local.phpimagick.com:162.242.195.82"
+  chrome_headless:
+    # build: containers/chrome_gaaaaaaah
+    image: chromedp/headless-shell
+    # image: browserless/chrome:latest
+    # image: femtopixel/google-chrome-headless
+    # image: zenika/alpine-chrome
+    # image: alpeware/chrome-headless-stable
+    ports:
+      - "9222:9222"
+      - "9223:9223"
+    cap_add:
+      - SYS_ADMIN
+    environment:
+      - CHROME_OPTS=--window-size="1024,800"
+    networks:
+      app_network:
+    security_opt:
+      - seccomp:unconfined
+      #extra_hosts:
+      #      - "local.phpimagick.com:imagick_php_backend"
+      # - "local.phpimagick.com:162.242.195.82"
+   # entrypoint: ['/usr/local/bin/dlv', '--listen=: 2345', '--headless=true', '--api-version=2', 'exec', 'cmd/main.go']
 
   mediawiki:
     image: mediawiki:latest

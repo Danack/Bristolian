@@ -1,7 +1,8 @@
-Feature: Books
+Feature: Basic
 
-  Scenario: List of books
-    When I go to "/books"
-    Then I should see a list of books
-    And I should see "Peopleware"
-    And I should see "Systemantics / The Systems Bible"
+  Scenario: Home page
+    When I go to "/"
+    Then take a screenshot
+    Then print current URL
+    Then take a screenshot
+    Then I should see "Eldon House music" on the page

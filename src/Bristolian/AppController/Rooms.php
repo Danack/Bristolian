@@ -134,13 +134,13 @@ class Rooms
     /**
      * @param RoomFileRepo $roomfileRepo
      * @param string $room_id
-     * @return JsonNoCacheResponse
+     * @return GetRoomsFilesResponse
      * @throws \SlimDispatcher\Response\InvalidDataException
      */
     public function getFiles(
         RoomFileRepo $roomfileRepo,
         string $room_id
-    ) {
+    ): GetRoomsFilesResponse {
         $files = $roomfileRepo->getFilesForRoom($room_id);
 
         return new GetRoomsFilesResponse($files);

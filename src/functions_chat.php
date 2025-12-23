@@ -50,10 +50,10 @@ function send_system_message_to_clients(
 
 
 function sent_data_to_clients(
-    $data,
-    $logger,
-    $clientHandler
-){
+    mixed $data,
+    Logger $logger,
+    ClientHandler $clientHandler
+): void {
     [$error, $values] = convertToValue($data);
 
     if ($error !== null) {

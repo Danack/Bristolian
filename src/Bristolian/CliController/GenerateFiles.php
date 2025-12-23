@@ -591,6 +591,7 @@ SQL;
      * Convert a route path and method to a PHP class name.
      * 
      * Example: '/api/rooms/{room_id:.*}/files' + 'GET' -> 'GetRoomsFilesResponse'
+     * Example: '/api/bristol_stairs' + 'GET' -> 'GetBristolStairsResponse'
      */
     private function generateClassNameFromRoute(string $path, string $method): string
     {
@@ -611,7 +612,8 @@ SQL;
             if (empty($part)) {
                 continue;
             }
-            // Capitalize first letter of each part
+            // Convert snake_case to CamelCase, then capitalize first letter
+            $part = $this->snakeCaseToCamelCase($part);
             $className .= ucfirst($part);
         }
         
@@ -622,8 +624,8 @@ SQL;
         // Add Response suffix
         $className .= 'Response';
         
-        // Ensure it's a valid PHP class name
-        $className = preg_replace('#[^a-zA-Z0-9_]#', '', $className);
+        // Ensure it's a valid PHP class name (remove any remaining invalid characters)
+        $className = preg_replace('#[^a-zA-Z0-9]#', '', $className);
         
         // If empty, use a default
         if (empty($className)) {
@@ -631,6 +633,23 @@ SQL;
         }
         
         return $className;
+    }
+    
+    /**
+     * Convert snake_case to CamelCase.
+     * 
+     * Example: 'bristol_stairs' -> 'bristolStairs'
+     * Example: 'processor_run_records' -> 'processorRunRecords'
+     */
+    private function snakeCaseToCamelCase(string $str): string
+    {
+        return preg_replace_callback(
+            '/_([a-z])/',
+            function ($matches) {
+                return strtoupper($matches[1]);
+            },
+            $str
+        );
     }
     
     /**
@@ -642,7 +661,11 @@ SQL;
     {
         $content = "<?php\n\n";
         $content .= "// Auto-generated file do not edit\n\n";
-        $content .= "// generated with 'php cli.php generate:php_response_types'\n\n";
+        $content .= "// generated with 'php cli.php generate:php_response_types'\n";
+        $content .= "// \n";
+        $content .= "// The code for the generation is in:\n";
+        $content .= "// \Bristolian\CliController\GenerateFiles::generateResponseClassContent\n";
+
         $content .= "namespace $namespace;\n\n";
         
         // Collect all imports
@@ -705,9 +728,9 @@ SQL;
         $content .= "\n";
         $content .= "class $className implements StubResponse\n";
         $content .= "{\n";
-        $content .= "    private \$body;\n\n";
-        $content .= "    private \$headers = [];\n\n";
-        $content .= "    private \$status;\n\n";
+        $content .= "    private string \$body;\n\n";
+//        $content .= "    private \$headers = [];\n\n";
+//        $content .= "    private \$status;\n\n";
         
         // Constructor
         $param_doc = [];
@@ -753,6 +776,12 @@ SQL;
         $content .= "    }\n\n";
         
         // getHeaders method
+
+
+        $content .= "    /**\n";
+        $content .= "     * @return array<string, string>\n";
+        $content .= "     */\n";
+
         $content .= "    public function getHeaders(): array\n";
         $content .= "    {\n";
         $content .= "        return [\n";
@@ -955,6 +984,7 @@ SQL;
      * Generate a TypeScript type name from route path and method.
      * 
      * Example: '/api/rooms/{room_id:.*}/files' + 'GET' -> 'GetRoomsFilesResponse'
+     * Example: '/api/bristol_stairs' + 'GET' -> 'GetBristolStairsResponse'
      */
     private function generateTypeScriptResponseTypeName(string $path, string $method): string
     {
@@ -975,7 +1005,8 @@ SQL;
             if (empty($part)) {
                 continue;
             }
-            // Capitalize first letter of each part
+            // Convert snake_case to CamelCase, then capitalize first letter
+            $part = $this->snakeCaseToCamelCase($part);
             $typeName .= ucfirst($part);
         }
         
@@ -986,8 +1017,8 @@ SQL;
         // Add Response suffix
         $typeName .= 'Response';
         
-        // Ensure it's a valid TypeScript type name
-        $typeName = preg_replace('#[^a-zA-Z0-9_]#', '', $typeName);
+        // Ensure it's a valid TypeScript type name (remove any remaining invalid characters)
+        $typeName = preg_replace('#[^a-zA-Z0-9]#', '', $typeName);
         
         // If empty, use a default
         if (empty($typeName)) {

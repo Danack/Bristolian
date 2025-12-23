@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace BristolianTest;
 
-use Behat\Mink\Mink;
-use Behat\Mink\Session;
+use BristolianBehat\Mink\Mink;
+use BristolianBehat\Mink\Session;
 use DMore\ChromeDriver\ChromeDriver;
 use PHPUnit\Framework\TestCase;
 use Bristolian\CSPViolation\RedisCSPViolationStorage;

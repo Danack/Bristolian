@@ -759,6 +759,9 @@ function get_supported_bristolian_stair_image_extensions(): array
     ];
 }
 
+/**
+ * @return array<string>
+ */
 function get_supported_avatar_image_extensions(): array
 {
     return [

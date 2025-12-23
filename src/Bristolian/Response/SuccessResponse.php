@@ -11,6 +11,9 @@ class SuccessResponse implements StubResponse
         return 200;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getHeaders(): array
     {
         return [

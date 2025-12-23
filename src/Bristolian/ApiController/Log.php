@@ -10,7 +10,7 @@ use SlimDispatcher\Response\JsonResponse;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use Bristolian\Parameters\ProcessorRunRecordTypeParam;
 use VarMap\VarMap;
-use Bristolian\Response\Typed\GetLogProcessor_run_recordsResponse;
+use Bristolian\Response\Typed\GetLogProcessorRunRecordsResponse;
 
 class Log
 {
@@ -18,7 +18,7 @@ class Log
         ProcessorRunRecordRepo $processorRunRecordRepo,
         PdoSimple $pdoSimple,
         VarMap $varMap,
-    ): JsonResponse {
+    ): GetLogProcessorRunRecordsResponse|JsonResponse {
         $params = [];
         // TODO - protect with login?
 
@@ -47,6 +47,6 @@ class Log
             );
         }
 
-        return new GetLogProcessor_run_recordsResponse($db_data);
+        return new GetLogProcessorRunRecordsResponse($db_data);
     }
 }
