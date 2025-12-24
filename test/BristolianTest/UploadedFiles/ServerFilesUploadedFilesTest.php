@@ -12,6 +12,9 @@ use Bristolian\UploadedFiles\ServerFilesUploadedFiles;
  */
 class ServerFilesUploadedFilesTest extends BaseTestCase
 {
+    /**
+     * @var array<string, array<string, int|string>>
+     */
     private array $originalFiles;
 
     public function setUp(): void

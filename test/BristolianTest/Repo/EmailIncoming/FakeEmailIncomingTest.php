@@ -40,8 +40,7 @@ class FakeEmailIncomingTest extends BaseTestCase
         $fakeEmailIncoming = new FakeEmailIncoming();
         
         $emails = $fakeEmailIncoming->getEmails();
-        
-        $this->assertIsArray($emails);
+
         $this->assertEmpty($emails);
     }
 

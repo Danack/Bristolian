@@ -136,8 +136,11 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
       });
     }
 
-    formData.append("gps_latitude", String(this.state.gps_latitude));
-    formData.append("gps_longitude", String(this.state.gps_longitude));
+    // Only append GPS coordinates if they are valid (not null)
+    if (this.state.gps_latitude !== null && this.state.gps_longitude !== null) {
+      formData.append("gps_latitude", String(this.state.gps_latitude));
+      formData.append("gps_longitude", String(this.state.gps_longitude));
+    }
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", uploadUrl, true);
@@ -200,6 +203,7 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
           </p>
           <input
             type="file"
+            name="image_file"
             accept={acceptValue}
             onChange={this.handleFileChange}
             style={{ display: "block", marginTop: "10px" }}

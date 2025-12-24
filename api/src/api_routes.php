@@ -17,7 +17,12 @@ function getAllApiRoutes()
 // an api key, should call an appropriate callable.
     return [
 
-        [App::CSP_REPORT_PATH, 'POST', 'Bristolian\AppController\ContentSecurityPolicy::postReport', null], // TextResponse
+        [
+            App::CSP_REPORT_PATH,
+            'POST',
+            'Bristolian\AppController\ContentSecurityPolicy::postReport',
+            null // TextResponse
+        ],
 
         ['/api/save-subscription/', 'POST', 'Bristolian\AppController\Notifications::save_subscription', null],
 
@@ -34,15 +39,21 @@ function getAllApiRoutes()
             null
         ],
 
-        ['/api/bristol_stairs_update_position/{bristol_stair_info_id:.*}', 'POST', 'Bristolian\AppController\BristolStairs::update_stairs_position', null],
+        [
+            '/api/bristol_stairs_update_position/{bristol_stair_info_id:.*}',
+            'POST',
+            'Bristolian\AppController\BristolStairs::update_stairs_position',
+            null
+        ],
 
-        ['/api/bristol_stairs_update/{bristol_stair_info_id:.*}', 'POST', 'Bristolian\AppController\BristolStairs::update_stairs_info', null],
+        [
+            '/api/bristol_stairs_update/{bristol_stair_info_id:.*}',
+            'POST',
+            'Bristolian\AppController\BristolStairs::update_stairs_info',
+            null
+        ],
 
-        ['/api/bristol_stairs_image', 'POST', 'Bristolian\AppController\BristolStairs::handleFileUpload', null],
 
-
-
-        ['/api/bristol_stairs/{bristol_stairs_image_id:.+}', 'GET', 'Bristolian\AppController\BristolStairs::getDetails', null],
         [
             '/api/bristol_stairs',
             'GET',
@@ -52,8 +63,20 @@ function getAllApiRoutes()
             ],
         ],
 
+        [
+            '/api/bristol_stairs_image',
+            'POST',
+            'Bristolian\AppController\BristolStairs::handleFileUpload',
+            null
+        ],
 
-        ['/api/services/email/mailgun', 'POST', 'Bristolian\ApiController\MailgunEmailHandler::handleIncomingEmail', null],
+        [
+            '/api/services/email/mailgun',
+            'POST',
+            'Bristolian\ApiController\MailgunEmailHandler::handleIncomingEmail',
+            null
+        ],
+
         [
             '/api/log/processor_run_records',
             'GET',
@@ -112,14 +135,6 @@ function getAllApiRoutes()
             'Bristolian\AppController\Chat::get_room_messages',
             null,
         ],
-
-        [
-            '/api/extension_test',
-            'POST',
-            'Bristolian\AppController\BristolStairs::handleFileUpload',
-            null,
-        ],
-
         [
             '/api/bristol_stairs_create',
             'POST',

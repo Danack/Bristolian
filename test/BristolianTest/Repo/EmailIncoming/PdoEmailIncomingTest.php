@@ -24,7 +24,8 @@ class PdoEmailIncomingTest extends BaseTestCase
         $pdoEmailIncoming->saveEmail($incoming_email);
         
         // If we got here, the email was saved successfully
-        $this->assertTrue(true);
+        // TODO - write useful assertions
+//        $this->assertTrue(true);
     }
 
     public function testSaveEmailWithAllFields()
@@ -44,8 +45,8 @@ class PdoEmailIncomingTest extends BaseTestCase
         
         $pdoEmailIncoming = $this->injector->make(PdoEmailIncoming::class);
         $pdoEmailIncoming->saveEmail($emailParam);
-        
-        $this->assertTrue(true);
+        // TODO - write useful assertions
+        //$this->assertTrue(true);
     }
 
     public function testSaveMultipleEmails()
@@ -68,8 +69,9 @@ class PdoEmailIncomingTest extends BaseTestCase
             
             $pdoEmailIncoming->saveEmail($emailParam);
         }
-        
-        $this->assertTrue(true);
+
+        // TODO - write useful assertions
+        //$this->assertTrue(true);
     }
 
     public function testSaveEmailWithLongContent()
@@ -91,8 +93,9 @@ class PdoEmailIncomingTest extends BaseTestCase
         
         $pdoEmailIncoming = $this->injector->make(PdoEmailIncoming::class);
         $pdoEmailIncoming->saveEmail($emailParam);
-        
-        $this->assertTrue(true);
+
+        // TODO - write useful assertions
+        // $this->assertTrue(true);
     }
 
     public function testSaveEmailWithSpecialCharacters()
@@ -112,8 +115,9 @@ class PdoEmailIncomingTest extends BaseTestCase
         
         $pdoEmailIncoming = $this->injector->make(PdoEmailIncoming::class);
         $pdoEmailIncoming->saveEmail($emailParam);
-        
-        $this->assertTrue(true);
+
+        // TODO - write useful assertions
+//        $this->assertTrue(true);
     }
 
     public function testSaveEmailWithUnicodeContent()
@@ -133,8 +137,9 @@ class PdoEmailIncomingTest extends BaseTestCase
         
         $pdoEmailIncoming = $this->injector->make(PdoEmailIncoming::class);
         $pdoEmailIncoming->saveEmail($emailParam);
-        
-        $this->assertTrue(true);
+
+        // TODO - write useful assertions
+//        $this->assertTrue(true);
     }
 
     public function testSaveEmailImplementsInterface()
@@ -164,7 +169,8 @@ class PdoEmailIncomingTest extends BaseTestCase
         
         $pdoEmailIncoming = $this->injector->make(PdoEmailIncoming::class);
         $pdoEmailIncoming->saveEmail($emailParam);
-        
-        $this->assertTrue(true);
+
+        // TODO - write useful assertions
+//        $this->assertTrue(true);
     }
 }

@@ -73,8 +73,8 @@ const highlightedIcon = L.icon({
     shadowSize: [41, 41]
 });
 
-function process_response_data(data) {
-    for (let stair_info of data.data) {
+function process_response_data(response_data) {
+    for (let stair_info of response_data.data.stair_infos) {
         stairsById[stair_info.id] = stair_info;
 
         // Create marker with default icon

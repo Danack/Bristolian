@@ -100,7 +100,7 @@ class BaseTestCase extends TestCase
         return $description;
     }
 
-    public function setupStandardWorkingFakes()
+    public function setupStandardWorkingFakes(): void
     {
         $standardFakes = [
           \Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage::class =>

@@ -36,7 +36,7 @@ class ChatMessageTest extends BaseTestCase
         $this->assertSame($userId, $chatMessage->user_id);
         $this->assertSame($roomId, $chatMessage->room_id);
         $this->assertSame($text, $chatMessage->text);
-        $this->assertSame($messageReplyId, $chatMessage->message_reply_id);
+        $this->assertSame($messageReplyId, $chatMessage->reply_message_id);
         $this->assertSame($createdAt, $chatMessage->created_at);
     }
 
@@ -54,7 +54,7 @@ class ChatMessageTest extends BaseTestCase
             new \DateTimeImmutable()
         );
 
-        $this->assertNull($chatMessage->message_reply_id);
+        $this->assertNull($chatMessage->reply_message_id);
     }
 
     /**
@@ -95,7 +95,7 @@ class ChatMessageTest extends BaseTestCase
         $this->assertSame($chatMessage->user_id, $recreated_message->user_id);
         $this->assertSame($chatMessage->room_id, $recreated_message->room_id);
         $this->assertSame($chatMessage->text, $recreated_message->text);
-        $this->assertSame($chatMessage->message_reply_id, $recreated_message->message_reply_id);
+        $this->assertSame($chatMessage->reply_message_id, $recreated_message->reply_message_id);
         
         // DateTime comparison: The serialization format may lose microsecond precision,
         // so we compare timestamps (second precision) rather than the objects directly

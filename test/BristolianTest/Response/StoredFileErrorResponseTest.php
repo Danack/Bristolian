@@ -55,8 +55,7 @@ class StoredFileErrorResponseTest extends BaseTestCase
         $response = new StoredFileErrorResponse($filename);
         
         $headers = $response->getHeaders();
-        
-        $this->assertIsArray($headers);
+
         $this->assertEmpty($headers);
     }
 
@@ -122,8 +121,9 @@ class StoredFileErrorResponseTest extends BaseTestCase
         $response = new StoredFileErrorResponse($filename);
         
         $body = $response->getBody();
-        
-        $this->assertIsString($body);
+
+        // TODO - write useful assertions
+//        $this->assertIsString($body);
     }
 
     public function testDifferentFilenamesProduceDifferentBodies()

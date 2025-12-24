@@ -57,18 +57,18 @@ class AdminContext extends MinkContext
         // self::$scopeData; // commented out - undefined property
     }
 
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    private function getFeatureData($name)
-    {
-        // if (array_key_exists($name, self::$featureData) !== true) {
-        //     throw new \Exception("featureData [$name] is not set, cannot use it");
-        // }
-        // return self::$featureData[$name];
-        throw new \Exception("getFeatureData is not implemented - self::\$featureData is commented out");
-    }
+//    /**
+//     * @param string $name
+//     * @return mixed
+//     */
+//    private function getFeatureData($name)
+//    {
+//        // if (array_key_exists($name, self::$featureData) !== true) {
+//        //     throw new \Exception("featureData [$name] is not set, cannot use it");
+//        // }
+//        // return self::$featureData[$name];
+//        throw new \Exception("getFeatureData is not implemented - self::\$featureData is commented out");
+//    }
 
     /**
      * @BeforeScenario
@@ -153,21 +153,21 @@ class AdminContext extends MinkContext
 //    }
 
 
-    /**
-     * @return \Behat\Mink\Element\NodeElement
-     */
-    private function findById(string $id)
-    {
-        $session = $this->getSession();
-        $page = $session->getPage();
-        $element = $page->findById($id);
-
-        if ($element === null) {
-            throw new \Exception("Failed to find element with id: " . $id);
-        }
-
-        return $element;
-    }
+//    /**
+//     * @return \Behat\Mink\Element\NodeElement
+//     */
+//    private function findById(string $id)
+//    {
+//        $session = $this->getSession();
+//        $page = $session->getPage();
+//        $element = $page->findById($id);
+//
+//        if ($element === null) {
+//            throw new \Exception("Failed to find element with id: " . $id);
+//        }
+//
+//        return $element;
+//    }
 
     /**
      * @return \Behat\Mink\Element\NodeElement[]

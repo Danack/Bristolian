@@ -70,7 +70,7 @@ class ToStringTraitTest extends BaseTestCase
                 user_id: 'user-456',
                 room_id: 'room-789',
                 text: 'Hello, world! This is a test message.',
-                message_reply_id: 100,
+                reply_message_id: 100,
                 created_at: new \DateTimeImmutable('2024-01-15 10:30:00')
             ),
             default => throw new \RuntimeException("No factory method defined for class: $className")
@@ -233,7 +233,7 @@ class ToStringTraitTest extends BaseTestCase
                     user_id: 'user-123',
                     room_id: 'room-456',
                     text: 'Message without reply',
-                    message_reply_id: null,
+                    reply_message_id: null,
                     created_at: new \DateTimeImmutable('2024-01-15 12:00:00')
                 )
             ],
@@ -265,14 +265,14 @@ class ToStringTraitTest extends BaseTestCase
             user_id: 'user-abc',
             room_id: 'room-xyz',
             text: 'Test array conversion',
-            message_reply_id: null,
+            reply_message_id: null,
             created_at: new \DateTimeImmutable('2024-01-15 14:30:00')
         );
 
         $array = $chatMessage->toArray();
 
         // Verify array has expected keys
-        $this->assertIsArray($array);
+//        $this->assertIsArray($array);
         $this->assertArrayHasKey('id', $array);
         $this->assertArrayHasKey('user_id', $array);
         $this->assertArrayHasKey('room_id', $array);

@@ -28,7 +28,6 @@ class NotificationsTest extends BaseTestCase
   /**
    * @covers \Bristolian\AppController\Notifications
    * @return void
-   * @throws \DI\InjectionException
    */
     public function testNotificationsEndPointIsWorking()
     {

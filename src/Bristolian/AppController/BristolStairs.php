@@ -47,9 +47,6 @@ class BristolStairs
     ): SuccessResponse {
 
         $bristolStairsRepo->updateStairInfo($stairs_info_params);
-
-//        return new JsonResponse(['success' => true]);
-
         return new SuccessResponse();
     }
 
