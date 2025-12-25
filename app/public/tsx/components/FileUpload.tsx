@@ -8,7 +8,7 @@ export interface FileUploadProps {
   extraFormData?: Record<string, string>;
   onUploadSuccess?: (data: any) => void;
   onUploadError?: (error: string) => void;
-  fetchGPS?: boolean; // <-- new optional prop
+  fetchGPS?: boolean; 
 }
 
 interface FileUploadState {
