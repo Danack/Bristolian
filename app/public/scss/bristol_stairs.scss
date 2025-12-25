@@ -33,7 +33,6 @@
             display: block;
             margin: 0;
             padding: 0;
-            max-width: 90vw;
             max-height: 40vh;
             border: 2px solid #000;
             width: auto;
@@ -87,6 +86,7 @@
         .bristol_stairs_map,
         .bristol_stairs_panel {
             width: 50%;
+            margin-left: 10px;
             min-height: 500px;      // map panel min-height
             display: flex;
             justify-content: center; // horizontal centering
@@ -99,7 +99,8 @@
             justify-content: center;
 
             img {
-                max-width: 500px;
+                //max-width: 500px;
+                max-width: 100%;
                 max-height: 500px;
             }
         }
