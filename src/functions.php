@@ -698,24 +698,6 @@ function createErrorJsonResponse(array $validation_problems): SlimDispatcher\Res
 }
 
 
-//function time_it()
-//{
-//    global $start_time;
-//
-//    $end_time = microtime(true);
-//
-//    var_dump($end_time, $start_time);
-//
-//    $time_taken = ($end_time - $start_time);
-//
-//    if ($time_taken < 0.001) {
-//        echo "Basically nothing.";
-//        exit(0);
-//    }
-//
-//    echo "Time taken = " . $time_taken  . " m'kay.\n";
-//    exit(0);
-//}
 
 /**
  * @param array<mixed> $data
