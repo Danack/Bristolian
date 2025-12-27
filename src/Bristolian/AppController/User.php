@@ -14,6 +14,7 @@ use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
 use Bristolian\Response\Typed\GetMemesResponse;
 use SlimDispatcher\Response\TextResponse;
+use Bristolian\Response\EndpointAccessedViaGetResponse;
 
 class User
 {
@@ -122,9 +123,9 @@ class User
         return new JsonResponse($data);
     }
 
-    public function handleMemeTagDelete_get(): TextResponse
+    public function handleMemeTagDelete_get(): EndpointAccessedViaGetResponse
     {
-        return new TextResponse("This is a DELETE only end-point");
+        return EndpointAccessedViaGetResponse::forDelete();
     }
 
 

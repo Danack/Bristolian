@@ -24,7 +24,7 @@ function getAllApiRoutes()
             App::CSP_REPORT_PATH,
             'POST',
             'Bristolian\AppController\ContentSecurityPolicy::postReport',
-            null // TextResponse
+            null // TextResponse, which is fine
         ],
 
         [
@@ -38,7 +38,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\Notifications::save_subscription_get',
             null
-        ], // TextResponse
+        ], // PostEndpointAccessedViaGetResponse
 
         [
             '/api/search_users',
@@ -61,7 +61,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\BristolStairs::update_stairs_info_get',
             null
-        ], // TextResponse
+        ], // PostEndpointAccessedViaGetResponse
 
         [
             '/api/bristol_stairs_update_position/{bristol_stair_info_id:.*}',
@@ -128,7 +128,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\MemeUpload::handleMemeUpload_get',
             null
-        ], // TextResponse
+        ], // PostEndpointAccessedViaGetResponse
 
         [
             '/api/meme-tag-add/',
@@ -158,7 +158,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\User::handleMemeTagDelete_get',
             null
-        ], // TextResponse
+        ], // EndpointAccessedViaGetResponse
 
         [
             '/api/memes',
@@ -214,7 +214,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\Chat::send_message_get',
             null,
-        ], // TextResponse
+        ], // PostEndpointAccessedViaGetResponse
 
         [
             '/api/chat/message',
@@ -249,7 +249,7 @@ function getAllApiRoutes()
             'GET',
             '\Bristolian\AppController\Rooms::handleFileUpload_get',
             null,
-        ], // TextResponse
+        ], // PostEndpointAccessedViaGetResponse
 
         [
             '/api/rooms/{room_id:.*}/links',

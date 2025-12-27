@@ -9,13 +9,13 @@ use SlimDispatcher\Response\JsonNoCacheResponse;
 use Bristolian\Service\RoomMessageService\RoomMessageService;
 use Bristolian\App;
 use VarMap\VarMap;
-use SlimDispatcher\Response\TextResponse;
+use Bristolian\Response\EndpointAccessedViaGetResponse;
 
 class Chat
 {
-    public function send_message_get(): TextResponse
+    public function send_message_get(): EndpointAccessedViaGetResponse
     {
-        return new TextResponse('this is meant to be a post end point.');
+        return new EndpointAccessedViaGetResponse();
     }
 
     public function get_test_page(): string

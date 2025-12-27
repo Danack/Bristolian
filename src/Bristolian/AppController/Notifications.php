@@ -5,10 +5,10 @@ namespace Bristolian\AppController;
 use Bristolian\Parameters\WebPushSubscriptionParams;
 use Bristolian\JsonInput\JsonInput;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
+use Bristolian\Response\EndpointAccessedViaGetResponse;
 use Bristolian\Response\SuccessResponse;
 use Bristolian\Session\UserSession;
 use Minishlink\WebPush\VAPID;
-use SlimDispatcher\Response\TextResponse;
 use Bristolian\Response\ValidationErrorResponse;
 
 class Notifications
@@ -21,13 +21,9 @@ class Notifications
         return $content;
     }
 
-    public function save_subscription_get(): TextResponse
+    public function save_subscription_get(): EndpointAccessedViaGetResponse
     {
-        return new TextResponse(
-            "You probably meant to do a POST to this endpoint.",
-            [],
-            200
-        );
+        return new EndpointAccessedViaGetResponse();
     }
 
     public function save_subscription(

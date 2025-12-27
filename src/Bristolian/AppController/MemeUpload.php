@@ -10,15 +10,15 @@ use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
-use SlimDispatcher\Response\TextResponse;
+use Bristolian\Response\EndpointAccessedViaGetResponse;
 
 class MemeUpload
 {
     public const MEME_FILE_UPLOAD_FORM_NAME = "meme_file";
 
-    public function handleMemeUpload_get(): TextResponse
+    public function handleMemeUpload_get(): EndpointAccessedViaGetResponse
     {
-        return new TextResponse("You probably meant to do a POST to this endpoint.");
+        return new EndpointAccessedViaGetResponse();
     }
 
     public function handleMemeUpload(

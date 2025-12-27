@@ -29,20 +29,16 @@ use Bristolian\Model\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsGpsParams;
 use VarMap\VarMap;
 use Bristolian\Response\Typed\GetBristolStairsResponse;
+use Bristolian\Response\EndpointAccessedViaGetResponse;
 use Bristolian\Response\SuccessResponse;
-use SlimDispatcher\Response\TextResponse;
 
 class BristolStairs
 {
     public const BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME = "stair_file";
 
-    public function update_stairs_info_get(): TextResponse
+    public function update_stairs_info_get(): EndpointAccessedViaGetResponse
     {
-        return new TextResponse(
-            "This is a GET end point. You probably meant to POST.",
-            [],
-            200
-        );
+        return new EndpointAccessedViaGetResponse();
     }
 
     public function update_stairs_info(
