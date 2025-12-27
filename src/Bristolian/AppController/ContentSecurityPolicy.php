@@ -28,7 +28,6 @@ class ContentSecurityPolicy
     public function clearReports(CSPViolationStorage $csppvReporter): TextResponse
     {
         $csppvReporter->clearReports();
-//        return new JsonNoCacheResponse(['ok']);
 
         return new TextResponse("Reports cleared.\n", [], 201);
     }

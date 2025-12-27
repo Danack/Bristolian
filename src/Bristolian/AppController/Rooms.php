@@ -23,6 +23,7 @@ use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
+use SlimDispatcher\Response\TextResponse;
 use VarMap\VarMap;
 use function DataType\createArrayOfTypeOrError;
 use Bristolian\Response\Typed\GetRoomsFilesResponse;
@@ -58,9 +59,9 @@ class Rooms
         return $content;
     }
 
-    public function handleFileUpload_get(): string
+    public function handleFileUpload_get(): TextResponse
     {
-        return "You probably meant to do a POST to this endpoint.";
+        return new TextResponse("You probably meant to do a POST to this endpoint.");
     }
 
 

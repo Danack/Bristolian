@@ -13,6 +13,7 @@ use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
 use Bristolian\Response\Typed\GetMemesResponse;
+use SlimDispatcher\Response\TextResponse;
 
 class User
 {
@@ -89,9 +90,9 @@ class User
         return new JsonResponse($data);
     }
 
-    public function handleMemeTagAdd_get(): string
+    public function handleMemeTagAdd_get(): TextResponse
     {
-        return "This is a GET only end-point";
+        return new TextResponse("This is a GET only end-point");
     }
 
 
@@ -112,16 +113,18 @@ class User
             $memeTagDeleteParam->meme_tag_id
         );
 
+        // Why are we doing this? Seems like early optimisation.
         $data = $memeTagRepo->getUserTagsForMeme(
             $appSession->getUserId(),
             $memeTagDeleteParam->meme_id
         );
+
         return new JsonResponse($data);
     }
 
-    public function handleMemeTagDelete_get(): string
+    public function handleMemeTagDelete_get(): TextResponse
     {
-        return "This is a GET only end-point";
+        return new TextResponse("This is a DELETE only end-point");
     }
 
 

@@ -5,9 +5,11 @@ namespace Bristolian\AppController;
 use Bristolian\Parameters\WebPushSubscriptionParams;
 use Bristolian\JsonInput\JsonInput;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
+use Bristolian\Response\SuccessResponse;
 use Bristolian\Session\UserSession;
 use Minishlink\WebPush\VAPID;
-use SlimDispatcher\Response\JsonResponse;
+use SlimDispatcher\Response\TextResponse;
+use Bristolian\Response\ValidationErrorResponse;
 
 class Notifications
 {
@@ -19,16 +21,20 @@ class Notifications
         return $content;
     }
 
-    public function save_subscription_get(): string
+    public function save_subscription_get(): TextResponse
     {
-        return "You probably meant to do a POST to this endpoint.";
+        return new TextResponse(
+            "You probably meant to do a POST to this endpoint.",
+            [],
+            200
+        );
     }
 
     public function save_subscription(
         JsonInput $jsonInput,
         UserSession $appSession,
         WebPushSubscriptionRepo $webPushSubscriptionRepo
-    ): JsonResponse {
+    ): SuccessResponse|ValidationErrorResponse {
 
 //        if ($appSession->isLoggedIn() !== true) {
 //            $data = ['not logged in' => true];
@@ -36,10 +42,10 @@ class Notifications
 //        }
 
         [$webPushSubscriptionParam, $validation_problems] =
-        WebPushSubscriptionParams::createOrErrorFromArray($jsonInput->getData());
+          WebPushSubscriptionParams::createOrErrorFromArray($jsonInput->getData());
 
-        if ($errorResponse = createErrorJsonResponse($validation_problems)) {
-            return $errorResponse;
+        if (count($validation_problems)) {
+            return ValidationErrorResponse::fromProblems($validation_problems);
         }
 
         $webPushSubscriptionRepo->save(
@@ -48,6 +54,6 @@ class Notifications
             $payload = @file_get_contents("php://input")
         );
 
-        return new JsonResponse(['success' => true]);
+        return new SuccessResponse();
     }
 }

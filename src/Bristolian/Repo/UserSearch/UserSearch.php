@@ -11,5 +11,5 @@ interface UserSearch
      * @param $username
      * @return mixed
      */
-    public function searchUsernamesByPrefix(string $username);
+    public function searchUsernamesByPrefix(string $username_prefix);
 }

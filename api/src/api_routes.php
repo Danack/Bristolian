@@ -3,6 +3,9 @@
 //namespace Bristolian\Route;
 
 use Bristolian\App;
+use Bristolian\Response\SuccessResponse;
+use Bristolian\Response\ValidationErrorResponse;
+use SlimDispatcher\Response\TextResponse;
 
 function getAllApiRoutes()
 {
@@ -24,35 +27,55 @@ function getAllApiRoutes()
             null // TextResponse
         ],
 
-        ['/api/save-subscription/', 'POST', 'Bristolian\AppController\Notifications::save_subscription', null],
+        [
+            '/api/save-subscription/',
+            'POST', 'Bristolian\AppController\Notifications::save_subscription',
+            null
+        ], // SuccessResponse|ValidationErrorResponse
 
-        ['/api/save-subscription/', 'GET', 'Bristolian\AppController\Notifications::save_subscription_get', null],
+        [
+            '/api/save-subscription/',
+            'GET',
+            'Bristolian\AppController\Notifications::save_subscription_get',
+            null
+        ], // TextResponse
 
-        ['/api/search_users', 'GET', 'Bristolian\AppController\Admin::search_users', null],
+        [
+            '/api/search_users',
+            'GET',
+            'Bristolian\AppController\Admin::search_users',
+            null
+        ], // TODO - needs converting to reasonable response.
+           // details are buried in code.
 
-        ['/api/ping_user', 'GET', 'Bristolian\AppController\Admin::ping_user', null],
+        [
+            '/api/ping_user',
+            'GET',
+            'Bristolian\AppController\Admin::ping_user',
+            null
+        ], // TODO - needs converting to reasonable response.
+        // details are buried in code.
 
         [
             '/api/bristol_stairs_update/{bristol_stair_info_id:.*}',
             'GET',
             'Bristolian\AppController\BristolStairs::update_stairs_info_get',
             null
-        ],
+        ], // TextResponse
 
         [
             '/api/bristol_stairs_update_position/{bristol_stair_info_id:.*}',
             'POST',
             'Bristolian\AppController\BristolStairs::update_stairs_position',
             null
-        ],
+        ], // SuccessResponse
 
         [
             '/api/bristol_stairs_update/{bristol_stair_info_id:.*}',
             'POST',
             'Bristolian\AppController\BristolStairs::update_stairs_info',
             null
-        ],
-
+        ], // SuccessResponse
 
         [
             '/api/bristol_stairs',
@@ -68,14 +91,15 @@ function getAllApiRoutes()
             'POST',
             'Bristolian\AppController\BristolStairs::handleFileUpload',
             null
-        ],
+        ], // Needs to be generated response. Seems to be currently returning a
+          // custom response.
 
         [
             '/api/services/email/mailgun',
             'POST',
             'Bristolian\ApiController\MailgunEmailHandler::handleIncomingEmail',
             null
-        ],
+        ], // Should be changed to // SuccessResponse?
 
         [
             '/api/log/processor_run_records',
@@ -85,13 +109,57 @@ function getAllApiRoutes()
                 ['run_records', \Bristolian\Model\ProcessorRunRecord::class, true]
             ],
         ],
-        ['/api/login-status', 'GET', 'Bristolian\AppController\User::get_login_status', null],
-        ['/api/meme-upload/', 'POST', 'Bristolian\AppController\MemeUpload::handleMemeUpload', null],
-        ['/api/meme-upload/', 'GET', 'Bristolian\AppController\MemeUpload::handleMemeUpload_get', null],
-        ['/api/meme-tag-add/', 'POST', 'Bristolian\AppController\User::handleMemeTagAdd', null],
-        ['/api/meme-tag-add/', 'GET', 'Bristolian\AppController\User::handleMemeTagAdd_get', null],
-        ['/api/meme-tag-delete/', 'DELETE', 'Bristolian\AppController\User::handleMemeTagDelete', null],
-        ['/api/meme-tag-delete/', 'GET', 'Bristolian\AppController\User::handleMemeTagDelete_get', null],
+        [
+            '/api/login-status',
+            'GET',
+            'Bristolian\AppController\User::get_login_status',
+            null
+        ], // Needs to be changed to a custom response?
+
+        [
+            '/api/meme-upload/',
+            'POST',
+            'Bristolian\AppController\MemeUpload::handleMemeUpload',
+            null
+        ], // Should be changed to custom response with 'meme_id'
+
+        [
+            '/api/meme-upload/',
+            'GET',
+            'Bristolian\AppController\MemeUpload::handleMemeUpload_get',
+            null
+        ], // TextResponse
+
+        [
+            '/api/meme-tag-add/',
+            'POST',
+            'Bristolian\AppController\User::handleMemeTagAdd',
+            null
+        ], // Probably change to just SuccessResponse, and remove early optimisation of
+        // returning current tags.
+
+        [
+            '/api/meme-tag-add/',
+            'GET',
+            'Bristolian\AppController\User::handleMemeTagAdd_get',
+            null
+        ],// TextResponse
+
+        [
+            '/api/meme-tag-delete/',
+            'DELETE',
+            'Bristolian\AppController\User::handleMemeTagDelete',
+            null
+        ], // Change to Success Response, and remove early optimisation of
+           // returning current tags.
+
+        [
+            '/api/meme-tag-delete/',
+            'GET',
+            'Bristolian\AppController\User::handleMemeTagDelete_get',
+            null
+        ], // TextResponse
+
         [
             '/api/memes',
             'GET',
@@ -100,10 +168,37 @@ function getAllApiRoutes()
                 ['memes', \Bristolian\Model\Meme::class, true]
             ],
         ],
-        ['/api/memes/{meme_id:.+}/tags', 'GET', 'Bristolian\AppController\User::getTagsForMeme', null],
-        ['/api/user/profile', 'POST', 'Bristolian\AppController\Users::updateProfile', null],
-        ['/api/user/avatar', 'POST', 'Bristolian\AppController\Users::uploadAvatar', null],
-        ['/api/users/{user_id:.*}', 'GET', 'Bristolian\AppController\Users::getUserInfo', null],
+
+        [
+            '/api/memes/{meme_id:.+}/tags',
+            'GET',
+            'Bristolian\AppController\User::getTagsForMeme',
+            null
+        ], // need to extract details from service layer
+           // JsonResponse
+
+        [
+            '/api/user/profile',
+            'POST',
+            'Bristolian\AppController\Users::updateProfile',
+            null
+        ],  // Needs SuccessResponse extracting:
+            // 'success' => true,
+            //            'profile' => $values
+
+        [
+            '/api/user/avatar',
+            'POST',
+            'Bristolian\AppController\Users::uploadAvatar',
+            null
+        ], // Needs SuccessResponse - possibly with ID
+
+        [
+            '/api/users/{user_id:.*}',
+            'GET',
+            'Bristolian\AppController\Users::getUserInfo',
+            null
+        ], // Need shape and error extracting.
 
         [
             '/api/rooms/{room_id:.*}/files',
@@ -114,52 +209,55 @@ function getAllApiRoutes()
             ],
         ],
 
-
         [
             '/api/chat/message',
             'GET',
             'Bristolian\AppController\Chat::send_message_get',
             null,
-        ],
+        ], // TextResponse
 
         [
             '/api/chat/message',
             'POST',
             'Bristolian\AppController\Chat::send_message',
             null,
-        ],
+        ], // Extract shape - JsonNoCacheResponse(['data' => $chat_message]);
 
         [
             '/api/chat/room_messages/{room_id:.*}/',
             'GET',
             'Bristolian\AppController\Chat::get_room_messages',
             null,
-        ],
+        ], // Extract shape of $messageData JsonNoCacheResponse
+
         [
             '/api/bristol_stairs_create',
             'POST',
             'Bristolian\AppController\BristolStairs::handleFileUpload',
             null,
-        ],
+        ], // Change to SuccessResponse and errors.
 
         [
             '/api/rooms/{room_id:.*}/file-upload',
             'POST',
             'Bristolian\AppController\Rooms::handleFileUpload',
             null,
-        ],
+        ], // Chnage to SuccessResponse and ErrorResponse.
+
         [
             '/api/rooms/{room_id:.*}/file-upload',
             'GET',
             '\Bristolian\AppController\Rooms::handleFileUpload_get',
             null,
-        ],
+        ], // TextResponse
+
         [
             '/api/rooms/{room_id:.*}/links',
             'POST',
             'Bristolian\AppController\Rooms::addLink',
             null,
-        ],
+        ], // Change to a SuccessResponse.
+
         [
             '/api/rooms/{room_id:.*}/links',
             'GET',
@@ -168,12 +266,14 @@ function getAllApiRoutes()
                 ['links', \Bristolian\Model\RoomLink::class, true]
             ],
         ],
+
         [
             '/api/rooms/{room_id:.*}/source_link/{file_id:.*}',
             'POST',
             '\Bristolian\AppController\Rooms::handleAddSourceLink',
             null,
-        ],
+        ], // Change to a SuccessResponse.
+
         [
             '/api/rooms/{room_id}/file/{file_id}/sourcelinks',
             'GET',
@@ -182,6 +282,7 @@ function getAllApiRoutes()
                 ['sourcelinks', \Bristolian\Model\RoomSourceLink::class, true]
             ],
         ],
+
         [
             '/api/rooms/{room_id:.*}/sourcelinks',
             'GET',
@@ -190,12 +291,48 @@ function getAllApiRoutes()
                 ['sourcelinks', \Bristolian\Model\RoomSourceLink::class, true]
             ],
         ],
-        ['/api/system/csp/reports_for_page', 'GET', 'Bristolian\ApiController\Csp::get_reports_for_page', null],
-        ['/api/test/caught_exception', 'GET', 'Bristolian\ApiController\Debug::testCaughtException', null],
-        ['/api/test/uncaught_exception', 'GET', 'Bristolian\ApiController\Debug::testUncaughtException', null],
-        ['/api/test/xdebug', 'GET', 'Bristolian\ApiController\Debug::testXdebugWorking', null],
-        ['/api/status', 'GET', 'Bristolian\ApiController\HealthCheck::get', null],
-        ['/api', 'GET', 'Bristolian\ApiController\Index::getRouteList', null],
+
+        [
+            '/api/system/csp/reports_for_page',
+            'GET',
+            'Bristolian\ApiController\Csp::get_reports_for_page',
+            null
+        ], // Need to extract a shape.
+
+        [
+            '/api/test/caught_exception',
+            'GET',
+            'Bristolian\ApiController\Debug::testCaughtException',
+            null
+        ],  // Never returns.
+
+        [
+            '/api/test/uncaught_exception',
+            'GET',
+            'Bristolian\ApiController\Debug::testUncaughtException',
+            null
+        ], // Never returns.
+
+        [
+            '/api/test/xdebug',
+            'GET',
+            'Bristolian\ApiController\Debug::testXdebugWorking',
+            null
+        ], // Change to SuccessResponse and ErrorResponse
+
+        [
+            '/api/status',
+            'GET',
+            'Bristolian\ApiController\HealthCheck::get',
+            null
+        ], // maybe extract a shape? Not sure I care.
+
+        [
+            '/api',
+            'GET',
+            'Bristolian\ApiController\Index::getRouteList',
+            null
+        ], // maybe extract a shape? Not sure I care.
     ];
 
 }
