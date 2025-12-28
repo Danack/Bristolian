@@ -143,7 +143,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\User::handleMemeTagAdd_get',
             null
-        ],// TextResponse
+        ],// EndpointAccessedViaGetResponse
 
         [
             '/api/meme-tag-delete/',
@@ -173,32 +173,35 @@ function getAllApiRoutes()
             '/api/memes/{meme_id:.+}/tags',
             'GET',
             'Bristolian\AppController\User::getTagsForMeme',
-            null
-        ], // need to extract details from service layer
-           // JsonResponse
+            [
+                ['meme_tags', \Bristolian\Model\MemeTag::class, true]
+            ]
+        ], // GetMemeTagsResponse
 
         [
             '/api/user/profile',
             'POST',
             'Bristolian\AppController\Users::updateProfile',
-            null
-        ],  // Needs SuccessResponse extracting:
-            // 'success' => true,
-            //            'profile' => $values
+            [
+                ['profile', \Bristolian\Model\UserProfileWithDisplayName::class, false]
+            ]
+        ],  // UpdateUserProfileResponse
 
         [
             '/api/user/avatar',
             'POST',
             'Bristolian\AppController\Users::uploadAvatar',
             null
-        ], // Needs SuccessResponse - possibly with ID
+        ], // UploadAvatarResponse
 
         [
             '/api/users/{user_id:.*}',
             'GET',
             'Bristolian\AppController\Users::getUserInfo',
-            null
-        ], // Need shape and error extracting.
+            [
+                ['user_info', \Bristolian\Model\UserProfileWithDisplayName::class, false]
+            ]
+        ], // GetUserInfoResponse
 
         [
             '/api/rooms/{room_id:.*}/files',
@@ -227,22 +230,26 @@ function getAllApiRoutes()
             '/api/chat/room_messages/{room_id:.*}/',
             'GET',
             'Bristolian\AppController\Chat::get_room_messages',
-            null,
-        ], // Extract shape of $messageData JsonNoCacheResponse
+            [
+                ['messages', \Bristolian\Model\Chat\UserChatMessage::class, true]
+            ],
+        ], // GetChatRoomMessagesResponse
 
         [
             '/api/bristol_stairs_create',
             'POST',
             'Bristolian\AppController\BristolStairs::handleFileUpload',
-            null,
-        ], // Change to SuccessResponse and errors.
+            [
+                ['stair_info', \Bristolian\Model\BristolStairInfo::class, false]
+            ],
+        ], // UploadBristolStairsImageResponse
 
         [
             '/api/rooms/{room_id:.*}/file-upload',
             'POST',
             'Bristolian\AppController\Rooms::handleFileUpload',
             null,
-        ], // Chnage to SuccessResponse and ErrorResponse.
+        ], // SuccessResponse|ValidationErrorResponse
 
         [
             '/api/rooms/{room_id:.*}/file-upload',
@@ -256,7 +263,7 @@ function getAllApiRoutes()
             'POST',
             'Bristolian\AppController\Rooms::addLink',
             null,
-        ], // Change to a SuccessResponse.
+        ], // SuccessResponse
 
         [
             '/api/rooms/{room_id:.*}/links',
@@ -297,7 +304,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\ApiController\Csp::get_reports_for_page',
             null
-        ], // Need to extract a shape.
+        ], // GetCspReportsResponse
 
         [
             '/api/test/caught_exception',

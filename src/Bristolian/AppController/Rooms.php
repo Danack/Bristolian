@@ -15,6 +15,7 @@ use Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo;
 use Bristolian\Response\IframeHtmlResponse;
 use Bristolian\Response\StreamingResponse;
 use Bristolian\Response\StoredFileErrorResponse;
+use Bristolian\Response\SuccessResponse;
 use Bristolian\Service\RoomFileStorage\UploadError;
 use Bristolian\Service\RequestNonce;
 use Bristolian\Service\RoomFileStorage\RoomFileStorage;
@@ -200,7 +201,7 @@ class Rooms
         LinkParam $linkParam,
         //        VarMap $varMap,
         string $room_id
-    ): JsonResponse {
+    ): SuccessResponse {
 //        // TODO - check user logged in
 //        if ($appSession->isLoggedIn() !== true) {
 //            $data = ['not logged in' => true];
@@ -217,14 +218,8 @@ class Rooms
             $linkParam
         );
 
-        $response = [
-            'status' => 'success',
-            'data' => [
-                'room_link_id' => $room_link_id,
-            ]
-        ];
-
-        return new JsonResponse($response);
+        // room_link_id currently unused by frontend; SuccessResponse is sufficient.
+        return new SuccessResponse();
     }
 
 

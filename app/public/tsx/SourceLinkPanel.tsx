@@ -254,15 +254,21 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
   processAddSourceLinkResponse(data: any) {
       console.log("Source link Response");
       console.log(data);
-      if (data.data["/title"]) {
-        this.setState({error: data.data["/title"]})
-      }
-      else {
-        this.setState({create_status: "Source Link created. Make a new selection to create another."})
+      // New expected shape: SuccessResponse => { result: "success" }
+      if (data.result === 'success') {
+        this.setState({create_status: "Source Link created. Make a new selection to create another.", error: null})
         this.refreshRoomFileSourcelinks();
+        return;
       }
 
+      // If validation errors are provided, surface title error when present
+      if (data.data && data.data["/title"]) {
+        this.setState({error: data.data["/title"]})
+        return;
+      }
 
+      // Unknown response shape
+      this.setState({error: "Failed to create source link"});
   }
   clearSelectedSourceLink() {
     this.setState({ selected_sourcelink_id: null })

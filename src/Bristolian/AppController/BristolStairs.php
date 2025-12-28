@@ -30,6 +30,7 @@ use Bristolian\Parameters\BristolStairsGpsParams;
 use VarMap\VarMap;
 use Bristolian\Response\Typed\GetBristolStairsResponse;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
+use Bristolian\Response\UploadBristolStairsImageResponse;
 use Bristolian\Response\SuccessResponse;
 
 class BristolStairs
@@ -223,14 +224,7 @@ HTML;
             return new JsonNoCacheResponse($data, [], 400);
         }
 
-        [$error, $values] = convertToValue($stairInfoOrError);
-
-        $response = [
-            'result' => 'success',
-            'stair_info' => $values
-        ];
-
-        $response = new JsonNoCacheResponse($response);
+        $response = new UploadBristolStairsImageResponse($stairInfoOrError);
 
         // Usage after storing a post:
         purgeVarnish("/api/bristol_stairs");

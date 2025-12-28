@@ -96,7 +96,10 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         let url = "/api/memes/" + meme.id + "/tags";
         fetch(url).
           then((response:Response) => response.json()).
-          then((memeTags: Array<MemeTag>) =>this.processMemeTagData(memeTags));
+          then((data: any) => {
+              const tags = data.data.meme_tags;
+              this.processMemeTagData(tags);
+          });
     }
 
     cancelMemeEditing() {

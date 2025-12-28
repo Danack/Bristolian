@@ -297,11 +297,16 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
             formFieldName={BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME}
             allowedTypes={["image/jpeg", "image/heic"]}
             allowedExtensions={["jpg", "jpeg", "heic"]}
-            onUploadSuccess={(data) => {
-                console.log("Upload success", data);
-                const newUrl = `/tools/bristol_stairs/${data.stair_info.id}`;
+        onUploadSuccess={(data) => {
+            console.log("Upload success", data);
+            const stairInfo = data?.data?.stair_info ?? data?.stair_info;
+            if (stairInfo?.id) {
+                const newUrl = `/tools/bristol_stairs/${stairInfo.id}`;
                 window.location.href = newUrl;
-            }}
+            } else {
+                console.error("Upload succeeded but stair_info.id missing", data);
+            }
+        }}
             onUploadError={(error) => {
                 console.error("Upload error:", error);
             }}

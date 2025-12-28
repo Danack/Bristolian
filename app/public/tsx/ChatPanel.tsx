@@ -79,9 +79,10 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         fetch(endpoint)
             .then((response: Response) => response.json())
             .then((data: any) => {
-                if (data.messages) {
+                const messages = data?.data?.messages ?? data?.messages;
+                if (messages) {
                     // Convert API response format to ChatMessage objects
-                    const existingMessages: UserChatMessage[] = data.messages.map((msgData: any) => {
+                    const existingMessages: UserChatMessage[] = messages.map((msgData: any) => {
                         return createUserChatMessage({
                             id: msgData.id,
                             user_id: msgData.user_id,

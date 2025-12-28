@@ -13,6 +13,7 @@ use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
 use Bristolian\Response\Typed\GetMemesResponse;
+use Bristolian\Response\GetMemeTagsResponse;
 use SlimDispatcher\Response\TextResponse;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
 
@@ -50,7 +51,7 @@ class User
         UserSession $userSession,
         string      $meme_id,
         MemeTagRepo $memeTagRepo
-    ): JsonResponse {
+    ): GetMemeTagsResponse {
 
 //        if ($appSession->isLoggedIn() !== true) {
 //            return new JsonResponse([]);
@@ -61,7 +62,7 @@ class User
             $meme_id
         );
 
-        return new JsonResponse($data);
+        return new GetMemeTagsResponse($data);
     }
 
 
@@ -91,9 +92,10 @@ class User
         return new JsonResponse($data);
     }
 
-    public function handleMemeTagAdd_get(): TextResponse
+    public function handleMemeTagAdd_get(): EndpointAccessedViaGetResponse
     {
-        return new TextResponse("This is a GET only end-point");
+        return new EndpointAccessedViaGetResponse();
+//        return new TextResponse("This is a GET only end-point");
     }
 
 

@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Bristolian\ApiController;
 
 use Bristolian\CSPViolation\CSPViolationStorage;
-use SlimDispatcher\Response\JsonResponse;
+use Bristolian\Response\Typed\GetCspReportsResponse;
 use VarMap\VarMap;
 
 class Csp
@@ -14,7 +14,7 @@ class Csp
     public function get_reports_for_page(
         VarMap $varMap,
         CSPViolationStorage $cspViolationStorage
-    ): JsonResponse {
+    ): GetCspReportsResponse {
 
         $page = 0;
 
@@ -25,18 +25,18 @@ class Csp
         $count = $cspViolationStorage->getCount();
         $reports = $cspViolationStorage->getReportsByPage($page);
 
+//
+//        $data = [
+//            'count' => $count,
+//            'reports' => []
+//        ];
+//
+//
+//        foreach ($reports as $report) {
+//            [$error, $value] = convertToValue($report);
+//            $data['reports'][] = $value;
+//        }
 
-        $data = [
-            'count' => $count,
-            'reports' => []
-        ];
-
-
-        foreach ($reports as $report) {
-            [$error, $value] = convertToValue($report);
-            $data['reports'][] = $value;
-        }
-
-        return new JsonResponse($data);
+        return new GetCspReportsResponse($count, $reports);
     }
 }

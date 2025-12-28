@@ -6,17 +6,26 @@ use SlimDispatcher\Response\JsonResponse;
 use Bristolian\Service\Mailgun\PayloadValidator;
 use VarMap\VarMap;
 use Bristolian\App;
-
+use Bristolian\Response\SuccessResponse;
 use Bristolian\Model\IncomingEmailParam;
 
 class MailgunEmailHandler
 {
     // https://bristolian.org/api/mail
 
+    /**
+     *
+     *
+     * //200 (Success) When Mailgun receives this code, it will determine the webhook POST is successful and will not be retried.
+     * //406 (Not Applicable)  When this code is received, Mailgun will determine the POST is rejected and it will not be retried.
+     * //Any other code    Mailgun will try POSTing according to the schedule (below) for webhooks other than the delivery notification.
+     *
+     *
+     */
     public function handleIncomingEmail(
         PayloadValidator $payloadValidator,
         VarMap $varMap
-    ): JsonResponse {
+    ): SuccessResponse|JsonResponse {
 
         if ($payloadValidator->validate($varMap) === false) {
             return new JsonResponse(['error' => 'invalid payload'], [], 406);
@@ -29,16 +38,14 @@ class MailgunEmailHandler
             json_encode($varMap->toArray(), JSON_PRETTY_PRINT)
         );
 
+        $incoming_email = IncomingEmailParam::createFromData($varMap->toArray());
 
+        // TODO - We should put the incoming email somewhere.
 
-        $incomine_email = IncomingEmailParam::createFromData($varMap->toArray());
-
-        return new JsonResponse(['success' => 'Signature passed'], [], 406);
+        return new SuccessResponse();
     }
 
-//200 (Success) When Mailgun receives this code, it will determine the webhook POST is successful and will not be retried.
-//406 (Not Applicable)  When this code is received, Mailgun will determine the POST is rejected and it will not be retried.
-//Any other code    Mailgun will try POSTing according to the schedule (below) for webhooks other than the delivery notification.
+
 }
 
 

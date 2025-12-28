@@ -8,6 +8,9 @@ use Bristolian\Repo\UserProfileRepo\UserProfileRepo;
 use Bristolian\Parameters\UserProfileUpdateParams;
 use Bristolian\Session\UserSession;
 use SlimDispatcher\Response\JsonResponse;
+use Bristolian\Response\GetUserInfoResponse;
+use Bristolian\Response\UpdateUserProfileResponse;
+use Bristolian\Response\UploadAvatarResponse;
 
 class Users
 {
@@ -62,7 +65,7 @@ class Users
     public function getUserInfo(
         UserProfileRepo $userProfileRepo,
         string $user_id
-    ): JsonResponse|\SlimDispatcher\Response\HtmlResponse {
+    ): GetUserInfoResponse|\SlimDispatcher\Response\HtmlResponse {
         $user_profile = $userProfileRepo->getUserProfile($user_id);
         
         if (!$user_profile) {
@@ -81,7 +84,7 @@ class Users
 
         [$error, $values] = convertToValue($data);
 
-        return new JsonResponse($values);
+        return new GetUserInfoResponse($values);
     }
 
     public function getUserAvatar(
@@ -219,7 +222,7 @@ HTML;
         UserSession $userSession,
         UserProfileRepo $userProfileRepo,
         UserProfileUpdateParams $params
-    ): JsonResponse {
+    ): UpdateUserProfileResponse {
         // User can only update their own profile
         $updated_profile = $userProfileRepo->updateProfile(
             $userSession->getUserId(),
@@ -228,10 +231,7 @@ HTML;
 
         [$error, $values] = convertToValue($updated_profile);
 
-        return new JsonResponse([
-            'success' => true,
-            'profile' => $values
-        ]);
+        return new UpdateUserProfileResponse($values);
     }
 
     public function uploadAvatar(
@@ -268,10 +268,7 @@ HTML;
             $avatarImageIdOrError
         );
 
-        return new \SlimDispatcher\Response\JsonNoCacheResponse([
-            'success' => true,
-            'avatar_image_id' => $avatarImageIdOrError
-        ]);
+        return new UploadAvatarResponse($avatarImageIdOrError);
     }
 
     public function getAvatarImage(

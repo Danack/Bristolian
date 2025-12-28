@@ -5,11 +5,12 @@ namespace Bristolian\AppController;
 use Bristolian\Repo\ChatMessageRepo\ChatMessageRepo;
 use Bristolian\Session\AppSession;
 use Bristolian\Parameters\ChatMessageParam;
-use SlimDispatcher\Response\JsonNoCacheResponse;
 use Bristolian\Service\RoomMessageService\RoomMessageService;
 use Bristolian\App;
 use VarMap\VarMap;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
+use Bristolian\Response\GetChatRoomMessagesResponse;
+use Bristolian\Response\SendChatMessageResponse;
 
 class Chat
 {
@@ -44,7 +45,7 @@ HTML;
     public function get_room_messages(
         ChatMessageRepo $chatMessageRepo,
         string $room_id
-    ): JsonNoCacheResponse {
+    ): GetChatRoomMessagesResponse {
         $messages = $chatMessageRepo->getMessagesForRoom($room_id);
 
         // Convert messages to array format for JSON response
@@ -60,7 +61,7 @@ HTML;
             ];
         }
 
-        return new JsonNoCacheResponse(['messages' => $messageData]);
+        return new GetChatRoomMessagesResponse($messageData);
     }
 
 
@@ -68,7 +69,7 @@ HTML;
         RoomMessageService $roomMessageService,
         AppSession $appSession,
         VarMap $varMap
-    ): JsonNoCacheResponse {
+    ): SendChatMessageResponse {
 
         $messageParams = ChatMessageParam::createFromVarMap($varMap);
 
@@ -77,6 +78,6 @@ HTML;
             $messageParams
         );
 
-        return new JsonNoCacheResponse(['data' => $chat_message]);
+        return new SendChatMessageResponse($chat_message);
     }
 }

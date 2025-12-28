@@ -72,8 +72,8 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
   }
 
   processData(data:any) {
-    // success
-    if (data.status === 'success') {
+    // New shape: SuccessResponse -> { result: "success" }
+    if (data.result === 'success') {
 
       let new_state = getDefaultState();
       new_state.result = "Link added";
@@ -81,20 +81,10 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
       sendMessage(PdfSelectionType.ROOM_LINKS_CHANGED, {});
     }
 
-    // failure
-    if (data.status === 'fail') {
-      if (data.data['/url'] !== undefined) {
-        // @ts-ignore
-        this.setState({error_url: data.data['/url']})
-      }
-      if (data.data['/title'] !== undefined) {
-        // @ts-ignore
-        this.setState({error_title: data.data['/title']})
-      }
-      if (data.data['/description'] !== undefined) {
-        // @ts-ignore
-        this.setState({error_description: data.data['/description']})
-      }
+    // For any non-success, just log for now; validation responses will be handled
+    // when the backend emits a new, non-legacy shape.
+    if (data.result !== 'success') {
+      console.log("Add link failed", data);
     }
   }
 
