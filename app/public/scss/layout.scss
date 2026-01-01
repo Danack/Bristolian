@@ -115,3 +115,18 @@
     align-items: stretch;
   }
 }
+
+
+.roompage {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.roompage__left {
+  flex: 0 0 60%;
+}
+
+.roompage__right {
+  flex: 1; // takes the remaining ~40%
+}

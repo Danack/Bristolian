@@ -7,7 +7,5 @@ use Bristolian\Parameters\ChatMessageParam;
 
 interface RoomMessageService
 {
-    public function sendMessageChatMessageAkaOld(UserChatMessage $message): void;
-
     public function sendMessage(string $user_id, ChatMessageParam $chatMessageParam): UserChatMessage;
 }

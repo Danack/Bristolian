@@ -30,6 +30,8 @@ trait FromString
             }
 
             // Detect DateTime-like parameters
+            // TODO - why is $type unused?
+            // TODO - Why is PhpStan not detecting $type as unused.
             $type = $param->getType();
             $isDateField = in_array($name, ['created_at', 'updated_at'], true);
             if ($isDateField && is_string($value)) {

@@ -2,6 +2,7 @@
 
 namespace Bristolian\AppController;
 
+use Bristolian\App;
 use Bristolian\Exception\BristolianException;
 use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Filesystem\RoomFileFilesystem;
@@ -296,12 +297,20 @@ class Rooms
         ]);
 
         $template = <<< HTML
+<div class="roompage">
+  <div class="roompage__left">
+    <div class="chat_panel" data-widgety_json="$widget_data">
+    </div>
+  </div>
+  <div class="roompage__right"> 
     <h1>:html_room_name</h1>
     <p>:html_room_description</p>
     <div class='room_files_panel' data-widgety_json='$widget_data'></div>
     <div class='room_file_upload_panel' data-widgety_json='$widget_data'></div>
     <div class='room_links_panel' data-widgety_json='$widget_data'></div>
     <div class='room_sourcelinks_panel' data-widgety_json='$widget_data'></div>
+  </div>
+</div>
 HTML;
         $params = [
             ':html_room_name' => $room->getName(),

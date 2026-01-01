@@ -23,11 +23,25 @@ function getAllAppRoutes()
         ['/login', 'POST', '\Bristolian\AppController\Login::processLoginPage'],
         ['/logout', 'GET', '\Bristolian\AppController\Login::logout'],
         ['/tools', 'GET', 'Bristolian\AppController\Tools::index'],
+
+
+
+        [
+            '/user/profile',
+            'GET',
+            'Bristolian\AppController\Users::showOwnProfile'
+        ],
+
+
+
         [
             '/users/{username:.*}/docs/{title:.*}',
             'GET',
             'Bristolian\AppController\Users::showUserDocument'
         ],
+
+
+
 
         ['/users/whoami', 'GET', 'Bristolian\AppController\Users::whoami'],
 

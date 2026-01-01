@@ -2,6 +2,7 @@
 
 namespace Bristolian\Model;
 
+use Bristolian\FromArray;
 use Bristolian\FromString;
 use Bristolian\Parameters\PropertyType\BasicString;
 use Bristolian\Parameters\PropertyType\ChatMessageReplyId;
@@ -15,6 +16,7 @@ class ChatMessage
 {
     use ToString;
     use FromString;
+
 
     public function __construct(
         public readonly int $id,

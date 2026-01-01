@@ -20,6 +20,8 @@ class StandardRoomMessageService implements RoomMessageService
 
     public function sendMessage(string $user_id, ChatMessageParam $chatMessageParam): UserChatMessage
     {
+        // TODO - some security?
+
         $chat_message = $this->chatMessageRepo->storeChatMessageForUser(
             $user_id,
             $chatMessageParam
@@ -31,14 +33,5 @@ class StandardRoomMessageService implements RoomMessageService
         );
 
         return $chat_message;
-    }
-
-
-    public function sendMessageChatMessageAkaOld(UserChatMessage $message): void
-    {
-        $this->redis->rPush(
-            RoomMessageKey::getAbsoluteKeyName(),
-            $message->toString()
-        );
     }
 }

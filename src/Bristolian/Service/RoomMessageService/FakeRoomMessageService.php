@@ -37,10 +37,10 @@ class FakeRoomMessageService implements RoomMessageService
         return $message;
     }
 
-    public function sendMessageChatMessageAkaOld(UserChatMessage $message): void
-    {
-        $this->chat_messages[] = $message;
-    }
+//    public function sendMessageChatMessageAkaOld(UserChatMessage $message): void
+//    {
+//        $this->chat_messages[] = $message;
+//    }
 
     /**
      * @return UserChatMessage[]

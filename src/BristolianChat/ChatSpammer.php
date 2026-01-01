@@ -30,8 +30,8 @@ class ChatSpammer
             );
 
             $this->logger->info("message sent - looping");
-            // TODO - think about rate limiting.
-            \Amp\delay(20); // Wait a bit before retrying
+            // Send a fake message every 20 seconds
+            \Amp\delay(20);
         }
     }
 }

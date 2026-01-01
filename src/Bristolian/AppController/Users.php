@@ -133,6 +133,44 @@ class Users
         );
     }
 
+    public function showOwnProfile(
+        \Bristolian\Session\AppSessionManager $appSessionManager,
+        UserProfileRepo $userProfileRepo,
+    ) {
+
+        $appSession = $appSessionManager->getCurrentAppSession();
+        $user_id = $appSession->getUserId();
+
+        // Get full user profile
+        $user_profile = $userProfileRepo->getUserProfile($user_id);
+
+        // Check if logged-in user is viewing their own profile
+        $is_own_profile = true;
+
+        // Prepare widget data - flatten the nested structure
+        $data = [
+            'user_id' => $user_id,
+            'display_name' => $user_profile->getDisplayName(),
+            'about_me' => $user_profile->getAboutMe(),
+            'avatar_image_id' => $user_profile->getAvatarImageId(),
+            'is_own_profile' => $is_own_profile
+        ];
+
+        [$error, $values] = convertToValue($data);
+        $widget_json = json_encode_safe($values);
+        $widget_data = htmlspecialchars($widget_json);
+
+
+        $content = "<h1>User Profile</h1>";
+        $content .= <<< HTML
+<div class="user_profile_panel" data-widgety_json="$widget_data"></div>
+HTML;
+
+        return $content;
+
+    }
+
+
 
     public function showUserProfile(
         \Bristolian\Session\AppSessionManager $appSessionManager,

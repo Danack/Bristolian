@@ -34,7 +34,6 @@ class Chat
     <div class="chat_panel" data-widgety_json="$widget_data">
     </div>
 </div>
-
 HTML;
 
         return $html;

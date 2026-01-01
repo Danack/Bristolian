@@ -1,0 +1,28 @@
+{
+    "name": "bristolian/chat",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "amphp/amp": "^v3.1.1",
+        "amphp/http-server": "^3.4",
+        "amphp/http-server-router": "^2.0.0",
+        "amphp/http-server-static-content": "^2.0.0",
+        "amphp/mysql": "^3.0.0",
+        "amphp/socket": "^2.3",
+        "amphp/websocket-server": "^4.0.0",
+        "monolog/monolog": "^3.7",
+        "ext-pcntl": "*",
+        "amphp/http-client": "^5.3",
+        "amphp/log": "^2.0",
+        "amphp/redis": "^2.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Bristolian\\": "../src/",
+            "BristolianChat\\": "../src/"
+        },
+        "psr-4": {
+            "Bristolian\\Database\\": "../src/Bristolian/Database"
+        }
+    }
+}

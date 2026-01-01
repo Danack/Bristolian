@@ -71,7 +71,6 @@ function sent_data_to_clients(
     $logger->info("sending message to clients - $json");
 
     $clientHandler->getGateway()->broadcastText($json)->ignore();
-
 }
 
 
