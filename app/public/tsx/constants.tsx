@@ -16,4 +16,6 @@ export enum PdfSelectionType {
 
   ROOM_LINKS_CHANGED = "room_links_changed",
 
+  APPEND_TO_MESSAGE_INPUT = "append_to_message_input",
+
 }

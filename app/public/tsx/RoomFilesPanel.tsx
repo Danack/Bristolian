@@ -4,6 +4,7 @@ import {registerMessageListener, sendMessage, unregisterListener} from "./messag
 import {PdfSelectionType} from "./constants";
 import {api, GetRoomsFilesResponse} from "./generated/api_routes";
 import {StoredFile, createStoredFile} from "./generated/types";
+import {use_logged_in} from "./store";
 
 export interface RoomFilesPanelProps {
     room_id: string
@@ -66,7 +67,14 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         console.log(data)
     }
 
-    renderRoomFile(file: StoredFile) {
+    shareFile(file: StoredFile, file_url: string) {
+        // Build the full URL including the origin
+        const full_url = window.location.origin + file_url;
+        const markdown_link = `[${file.original_filename}](${full_url})`;
+        sendMessage(PdfSelectionType.APPEND_TO_MESSAGE_INPUT, {text: markdown_link});
+    }
+
+    renderRoomFile(file: StoredFile, logged_in: boolean) {
         let file_url = `/rooms/${this.props.room_id}/file/${file.id}/${file.original_filename}`
         let annotate_url = `/rooms/${this.props.room_id}/file_annotate/${file.id}`
 
@@ -95,6 +103,13 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             <td>
                 {annotate_block}
             </td>
+            {logged_in && (
+                <td>
+                    <button onClick={() => this.shareFile(file, file_url)} title="Share file link to chat">
+                        Share
+                    </button>
+                </td>
+            )}
         </tr>
     }
 
@@ -102,6 +117,8 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         if (this.state.files.length === 0) {
             return <span>No files.</span>
         }
+
+        const logged_in = use_logged_in();
 
         return <div>
             <h2>Files</h2>
@@ -111,9 +128,11 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                     <td>Name</td>
                     <td>Size</td>
                     <td>Date</td>
+                    <td></td>
+                    {logged_in && <td></td>}
                 </tr>
                 {Object.values(this.state.files).
-                map((roomFile: StoredFile) => this.renderRoomFile(roomFile))}
+                map((roomFile: StoredFile) => this.renderRoomFile(roomFile, logged_in))}
               </tbody>
             </table>
         </div>

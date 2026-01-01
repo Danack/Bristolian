@@ -1,9 +1,11 @@
 
 
 import {h} from "preact";
-import {useState} from "preact/hooks";
+import {useState, useEffect, useRef} from "preact/hooks";
 import {use_logged_in, use_user_info} from "../store";
 import {MessageEncapsulated} from "../ChatPanel";
+import {registerMessageListener, unregisterListener} from "../message/message";
+import {PdfSelectionType} from "../constants";
 
 export interface ChatBottomPanelProps {
   room_id: string;
@@ -13,12 +15,46 @@ export interface ChatBottomPanelProps {
 
 export function ChatBottomPanel(props: ChatBottomPanelProps) {
   const [messageToSend, setMessageToSend] = useState("");
+  const [cursorPosition, setCursorPosition] = useState(0);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const logged_in = use_logged_in();
   const user_info = use_user_info();
 
+  // Insert text at the current cursor position
+  const insertTextAtCursor = (textToInsert: string) => {
+    setMessageToSend((prev) => {
+      const before = prev.substring(0, cursorPosition);
+      const after = prev.substring(cursorPosition);
+      const newText = before + textToInsert + after;
+      setCursorPosition(cursorPosition + textToInsert.length);
+      return newText;
+    });
+  };
+
+  // Listen for messages to insert text at cursor position
+  useEffect(() => {
+    const listenerId = registerMessageListener(
+      PdfSelectionType.APPEND_TO_MESSAGE_INPUT,
+      (params: {text: string}) => {
+        insertTextAtCursor(params.text);
+      }
+    );
+    return () => {
+      unregisterListener(listenerId);
+    };
+  }, [cursorPosition]);
+
+  // Update cursor position when textarea selection changes
+  const updateCursorPosition = () => {
+    if (textareaRef.current) {
+      setCursorPosition(textareaRef.current.selectionStart);
+    }
+  };
+
   const handleInputChange = (e: Event) => {
-    const target = e.target as HTMLInputElement;
+    const target = e.target as HTMLTextAreaElement;
     setMessageToSend(target.value);
+    setCursorPosition(target.selectionStart);
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -81,10 +117,14 @@ export function ChatBottomPanel(props: ChatBottomPanelProps) {
     interactive_section = <div>
       <div className="input-row">
         <textarea
+          ref={textareaRef}
           className="message-input"
           placeholder={props.replyingToMessage ? "Reply... (Enter to send)" : "Write a message... (Enter to send)"}
           onInput={handleInputChange}
           onKeyDown={handleKeyDown}
+          onKeyUp={updateCursorPosition}
+          onClick={updateCursorPosition}
+          onSelect={updateCursorPosition}
           value={messageToSend}>
         </textarea>
         <button className="send-btn" onClick={handleMessageSend}>Send</button>
