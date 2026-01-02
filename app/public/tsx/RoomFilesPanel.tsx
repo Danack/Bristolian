@@ -4,7 +4,7 @@ import {registerMessageListener, sendMessage, unregisterListener} from "./messag
 import {PdfSelectionType} from "./constants";
 import {api, GetRoomsFilesResponse} from "./generated/api_routes";
 import {StoredFile, createStoredFile} from "./generated/types";
-import {use_logged_in} from "./store";
+import {get_logged_in, subscribe_logged_in} from "./store";
 
 export interface RoomFilesPanelProps {
     room_id: string
@@ -13,18 +13,21 @@ export interface RoomFilesPanelProps {
 interface RoomFilesPanelState {
     files: StoredFile[],
     error: string|null,
+    logged_in: boolean,
 }
 
 function getDefaultState(): RoomFilesPanelState {
     return {
         files: [],
         error: null,
+        logged_in: get_logged_in(),
     };
 }
 
 export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPanelState> {
 
     message_listener: number|null;
+    unsubscribe_logged_in: (() => void)|null = null;
 
     constructor(props: RoomFilesPanelProps) {
         super(props);
@@ -33,12 +36,22 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
 
     componentDidMount() {
         this.refreshFiles();
-        this.message_listener = registerMessageListener(PdfSelectionType.ROOM_FILES_CHANGED, () => this.refreshFiles())
+        this.message_listener = registerMessageListener(PdfSelectionType.ROOM_FILES_CHANGED, () => this.refreshFiles());
+        
+        // Subscribe to login state changes to re-render when login status changes
+        this.unsubscribe_logged_in = subscribe_logged_in((logged_in: boolean) => {
+            this.setState({logged_in: logged_in});
+        });
     }
 
     componentWillUnmount() {
         unregisterListener(this.message_listener);
         this.message_listener = null;
+        
+        if (this.unsubscribe_logged_in) {
+            this.unsubscribe_logged_in();
+            this.unsubscribe_logged_in = null;
+        }
     }
 
     refreshFiles() {
@@ -118,7 +131,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             return <span>No files.</span>
         }
 
-        const logged_in = use_logged_in();
+        const logged_in = this.state.logged_in;
 
         return <div>
             <h2>Files</h2>

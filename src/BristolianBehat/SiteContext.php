@@ -32,6 +32,56 @@ use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 //AfterStep
 
 
+/**
+ * Convert a container path under /var/app to the corresponding host path.
+ *
+ * Uses the HOST_PATH environment variable for the host root.
+ *
+ * @param string $containerPath Absolute path as printed inside the container
+ * @return string|null Host machine absolute path, or null if HOST_PATH is not set
+ * @throws \InvalidArgumentException If the path is outside /var/app
+ */
+function containerPathToHostPath(string $containerPath): ?string
+{
+    $containerRoot = '/var/app';
+    $hostRoot = getenv('BRISTOLIAN_HOST_PATH');
+
+    if ($hostRoot === false) {
+        $hostRoot = null;
+    }
+
+    if ($hostRoot === null || $hostRoot === '') {
+        return null;
+    }
+
+    // Normalise path (resolve ".." and ".")
+    $parts = [];
+    foreach (explode('/', $containerPath) as $part) {
+        if ($part === '' || $part === '.') {
+            continue;
+        }
+        if ($part === '..') {
+            array_pop($parts);
+            continue;
+        }
+        $parts[] = $part;
+    }
+
+    $normalised = '/' . implode('/', $parts);
+
+    if (!str_starts_with($normalised, $containerRoot . '/')
+        && $normalised !== $containerRoot
+    ) {
+        throw new \InvalidArgumentException(
+            "Path is not under {$containerRoot}: {$containerPath}"
+        );
+    }
+
+    return rtrim($hostRoot, '/') . substr($normalised, strlen($containerRoot));
+}
+
+
+
 class SiteContext extends MinkContext
 {
 //    private static $scopeData = [];
@@ -140,6 +190,12 @@ class SiteContext extends MinkContext
         @mkdir(dirname($filename), 0755, true);
         file_put_contents($filename, $screenshot);
         echo "Screenshot saved to: $filename\n";
+
+        $host_filename = containerPathToHostPath($filename);
+
+        if ($host_filename !== null) {
+            echo "Clickable version: $host_filename\n";
+        }
     }
 
     public function getNumberOfIframes(): int
@@ -1787,6 +1843,314 @@ JS
         
         if (strpos($pageText, $expectedMessage) === false) {
             throw new \Exception("Expected to see error message '$expectedMessage', but page text was: " . substr($pageText, 0, 200));
+        }
+    }
+
+    /**
+     * @Given /^I am logged out$/
+     */
+    public function iAmLoggedOut(): void
+    {
+        $session = $this->getSession();
+        
+        // Go to logout page
+        $this->visitPath('/logout');
+        
+        // Wait for logout to complete
+        sleep(1);
+    }
+
+    /**
+     * @When /^I click on the first room link$/
+     */
+    public function iClickOnTheFirstRoomLink(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        
+        // Find the first room link in the table
+        $roomLink = $page->find('css', 'table a');
+        
+        if ($roomLink === null) {
+            throw new \Exception("No room link found on the rooms page.");
+        }
+        
+        $roomLink->click();
+        
+        // Wait for page to load
+        sleep(2);
+    }
+
+    /**
+     * @When /^I wait for the room files panel to load$/
+     */
+    public function iWaitForTheRoomFilesPanelToLoad(): void
+    {
+        $session = $this->getSession();
+        $maxAttempts = 30; // 3 seconds
+        $attempt = 0;
+        
+        while ($attempt < $maxAttempts) {
+            $page = $session->getPage();
+            
+            // Check if the files panel has loaded by looking for the Files heading or "No files" text
+            $filesHeading = $page->find('xpath', '//h2[contains(text(), "Files")]');
+            $noFilesText = $page->find('xpath', '//*[contains(text(), "No files")]');
+            $refreshButton = $page->find('xpath', '//div[contains(@class, "room_files_panel")]//button[contains(text(), "Refresh")]');
+            
+            if ($filesHeading !== null || $noFilesText !== null || $refreshButton !== null) {
+                return;
+            }
+            
+            usleep(100 * 1000); // 100ms
+            $attempt++;
+        }
+        
+        throw new \Exception("Room files panel did not load within timeout.");
+    }
+
+    /**
+     * @Then /^I should see a "([^"]*)" button if files exist$/
+     */
+    public function iShouldSeeButtonIfFilesExist(string $buttonText): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        
+        // Check if there are files (look for file links in the table)
+        $fileLinks = $page->findAll('css', '.room_files_panel_react table a');
+        
+        if (count($fileLinks) === 0) {
+            // No files, so button won't be visible - this is OK
+            return;
+        }
+        
+        // Files exist, so button should be visible
+        $button = $page->findButton($buttonText);
+        
+        if ($button === null) {
+            // Try finding by text content
+            $xpath = sprintf('//button[contains(text(), "%s")]', $buttonText);
+            $button = $page->find('xpath', $xpath);
+        }
+        
+        if ($button === null) {
+            throw new \Exception("Button with text '$buttonText' not found, but files exist on the page.");
+        }
+    }
+
+    /**
+     * @When /^I click a Share button if files exist$/
+     */
+    public function iClickAShareButtonIfFilesExist(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        
+        // Check if there are files (wait for them to load)
+        $maxAttempts = 30; // 3 seconds
+        $attempt = 0;
+        $fileLinks = [];
+        
+        while ($attempt < $maxAttempts) {
+            $page = $session->getPage();
+            $fileLinks = $page->findAll('css', '.room_files_panel_react table a');
+            
+            if (count($fileLinks) > 0) {
+                break;
+            }
+            
+            // Also check for "No files" text
+            $noFilesText = $page->find('xpath', '//*[contains(text(), "No files")]');
+            if ($noFilesText !== null) {
+                // No files, skip this step
+                return;
+            }
+            
+            usleep(100 * 1000); // 100ms
+            $attempt++;
+        }
+        
+        if (count($fileLinks) === 0) {
+            // No files after waiting, skip this step
+            return;
+        }
+        
+        // Wait for Share button to appear (React needs time to render after login state updates)
+        $shareButton = null;
+        $maxAttempts = 30; // 3 seconds
+        $attempt = 0;
+        
+        while ($attempt < $maxAttempts) {
+            $page = $session->getPage();
+            $shareButton = $page->find('xpath', '//button[contains(text(), "Share")]');
+            
+            if ($shareButton !== null) {
+                break;
+            }
+            
+            usleep(100 * 1000); // 100ms
+            $attempt++;
+        }
+        
+        if ($shareButton === null) {
+            throw new \Exception("Share button not found on the page after waiting. Files exist but Share button is not visible - user may not be logged in.");
+        }
+        
+        $shareButton->click();
+        
+        // Wait for the message to be processed
+        sleep(1);
+
+        $this->takeDebugScreenshot('shareButton');
+    }
+
+    /**
+     * @Then /^the message input should contain a markdown link$/
+     */
+    public function theMessageInputShouldContainAMarkdownLink(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        
+        // Check if there are files (if no files, skip this check)
+        $fileLinks = $page->findAll('css', '.room_files_panel_react table a');
+        
+        if (count($fileLinks) === 0) {
+            // No files, so no link would have been added - this is OK
+            return;
+        }
+        
+        // Find the message input
+        $messageInput = $page->find('css', '.message-input');
+        
+        if ($messageInput === null) {
+            throw new \Exception("Message input not found.");
+        }
+        
+        $value = $messageInput->getValue();
+        
+        // Check if value contains markdown link pattern [text](url)
+        if (preg_match('/\[.+\]\(https?:\/\/.+\)/', $value) !== 1) {
+            throw new \Exception("Message input does not contain a markdown link. Value: " . $value);
+        }
+    }
+
+    /**
+     * @When /^I type "([^"]*)" in the message input$/
+     */
+    public function iTypeInTheMessageInput(string $text): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        
+        // Find the message input
+        $messageInput = $page->find('css', '.message-input');
+        
+        if ($messageInput === null) {
+            throw new \Exception("Message input not found.");
+        }
+        
+        $messageInput->setValue($text);
+        
+        // Trigger input event
+        $session->executeScript(
+            <<<JS
+(function() {
+    var input = document.querySelector('.message-input');
+    if (input) {
+        var event = new Event('input', { bubbles: true });
+        input.dispatchEvent(event);
+    }
+})();
+JS
+        );
+    }
+
+    /**
+     * @When /^I position the cursor after "([^"]*)" in the message input$/
+     */
+    public function iPositionTheCursorAfterInTheMessageInput(string $textBefore): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        
+        // Find the message input
+        $messageInput = $page->find('css', '.message-input');
+        
+        if ($messageInput === null) {
+            throw new \Exception("Message input not found.");
+        }
+        
+        $currentValue = $messageInput->getValue();
+        $position = strpos($currentValue, $textBefore);
+        
+        if ($position === false) {
+            throw new \Exception("Text '$textBefore' not found in message input. Current value: $currentValue");
+        }
+        
+        $cursorPosition = $position + strlen($textBefore);
+        
+        // Set cursor position via JavaScript and trigger events to update React state
+        $session->executeScript(sprintf(
+            <<<JS
+(function() {
+    var input = document.querySelector('.message-input');
+    if (input) {
+        input.focus();
+        input.setSelectionRange(%d, %d);
+        // Trigger events to update React state
+        var clickEvent = new MouseEvent('click', { bubbles: true });
+        input.dispatchEvent(clickEvent);
+        var selectEvent = new Event('select', { bubbles: true });
+        input.dispatchEvent(selectEvent);
+    }
+})();
+JS
+            ,
+            $cursorPosition,
+            $cursorPosition
+        ));
+        
+        // Small wait for React to process
+        usleep(200 * 1000);
+    }
+
+    /**
+     * @Then /^the message input should contain "([^"]*)" followed by a markdown link followed by "([^"]*)"$/
+     */
+    public function theMessageInputShouldContainFollowedByMarkdownLinkFollowedBy(string $before, string $after): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        
+        // Check if there are files (if no files, skip this check)
+        $fileLinks = $page->findAll('css', '.room_files_panel_react table a');
+        
+        if (count($fileLinks) === 0) {
+            // No files, so no link would have been added - this is OK
+            return;
+        }
+        
+        // Find the message input
+        $messageInput = $page->find('css', '.message-input');
+        
+        if ($messageInput === null) {
+            throw new \Exception("Message input not found.");
+        }
+        
+        $value = $messageInput->getValue();
+        
+        // Check if value matches pattern: before + markdown link + after
+        // Pattern: before[text](url)after
+        $pattern = '/' . preg_quote($before, '/') . '\[.+\]\(https?:\/\/.+\)' . preg_quote($after, '/') . '/';
+        
+        if (preg_match($pattern, $value) !== 1) {
+            throw new \Exception(
+                "Message input does not match expected pattern. " .
+                "Expected: '{$before}[link](url){$after}'. " .
+                "Actual: '$value'"
+            );
         }
     }
 }

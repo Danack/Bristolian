@@ -21,6 +21,22 @@ export function use_logged_in() {
   return logged_in;
 }
 
+// Non-hook version for use in class components
+// Note: This will return the current value but won't trigger re-renders when it changes
+// Class components using this should re-render via other means (e.g., state changes)
+export function get_logged_in(): boolean {
+  return _logged_in;
+}
+
+// Subscribe to login state changes (for class components)
+// Returns an unsubscribe function
+export function subscribe_logged_in(callback: (logged_in: boolean) => void): () => void {
+  listeners.push(callback);
+  return () => {
+    listeners = listeners.filter(l => l !== callback);
+  };
+}
+
 // User info store
 interface UserInfo {
   user_id: string | null;

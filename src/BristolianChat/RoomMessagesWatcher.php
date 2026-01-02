@@ -54,8 +54,6 @@ class RoomMessagesWatcher
             $params
         );
 
-        echo "previous_id = previous_id";
-
         $row = $result->fetchRow();
 
         if ($row === null) {
@@ -74,9 +72,6 @@ class RoomMessagesWatcher
             try {
 
                 $chat_message = $this->getMessage();
-
-                var_dump($chat_message);
-
 
                 if ($chat_message !== null) {
 

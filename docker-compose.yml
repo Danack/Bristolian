@@ -101,6 +101,7 @@ services:
    environment:
       - COMPOSER_CACHE_DIR=/var/app/var/cache/composer
       - COMPOSER_ALLOW_SUPERUSER=1
+      - BRISTOLIAN_HOST_PATH=${BRISTOLIAN_HOST_PATH}
    networks:
       app_network:
    restart: always
@@ -112,6 +113,7 @@ services:
       - COMPOSER_CACHE_DIR=/var/app/var/cache/composer
       - COMPOSER_ALLOW_SUPERUSER=1
       - PHP_IDE_CONFIG=serverName=BRISTOLIAN_DEBUG
+      - BRISTOLIAN_HOST_PATH=${BRISTOLIAN_HOST_PATH}
     depends_on:
       - php_fpm
     networks:
