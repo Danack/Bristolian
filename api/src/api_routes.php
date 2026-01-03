@@ -143,7 +143,21 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\User::handleMemeTagAdd_get',
             null
-        ],// EndpointAccessedViaGetResponse
+        ], // EndpointAccessedViaGetResponse
+
+        [
+            '/api/meme-tag-update/',
+            'PUT',
+            'Bristolian\AppController\User::handleMemeTagUpdate',
+            null
+        ], // SuccessResponse
+
+        [
+            '/api/meme-tag-update/',
+            'GET',
+            'Bristolian\AppController\User::handleMemeTagUpdate_get',
+            null
+        ], // EndpointAccessedViaGetResponse
 
         [
             '/api/meme-tag-delete/',
@@ -168,6 +182,15 @@ function getAllApiRoutes()
                 ['memes', \Bristolian\Model\Meme::class, true]
             ],
         ],
+
+        [
+            '/api/memes/search',
+            'GET',
+            'Bristolian\AppController\User::searchMemes',
+            [
+                ['memes', \Bristolian\Model\Meme::class, true]
+            ],
+        ], // Search memes by tag text and/or tag type
 
         [
             '/api/memes/{meme_id:.+}/tags',

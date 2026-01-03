@@ -6,15 +6,26 @@ export interface MemeUploadPanelProps {
     // no properties currently
 }
 
-
+enum UploadStatus {
+    Idle = 'idle',
+    Uploading = 'uploading',
+    Success = 'success',
+    Error = 'error'
+}
 
 interface MemeUploadPanelState {
     selectedFile: File|null,
+    isDragging: boolean,
+    uploadStatus: UploadStatus,
+    uploadMessage: string|null,
 }
 
 function getDefaultState(): MemeUploadPanelState {
     return {
         selectedFile: null,
+        isDragging: false,
+        uploadStatus: UploadStatus.Idle,
+        uploadMessage: null,
     };
 }
 
@@ -51,24 +62,46 @@ export class MemeUploadPanel extends Component<MemeUploadPanelProps, MemeUploadP
         // this.triggerSetImageParams();
     }
 
-    handleDragEnter(event: any) { //DragEvent<HTMLDivElement>) {
+    handleDragEnter(event: DragEvent) {
         event.preventDefault();
-        console.log("handleDragEnter");
+        event.stopPropagation();
+        this.setState({ isDragging: true });
     }
 
-    handleDragOver(event: any) { //DragEvent<HTMLDivElement>) {
+    handleDragOver(event: DragEvent) {
         event.preventDefault();
-        console.log("handleDragOver");
+        event.stopPropagation();
+        this.setState({ isDragging: true });
     }
 
-    handleDragLeave(event: any) { //DragEvent<HTMLDivElement>) {
+    handleDragLeave(event: DragEvent) {
         event.preventDefault();
-        console.log("handleDragLeave");
+        event.stopPropagation();
+        this.setState({ isDragging: false });
     }
 
-    handleDrop  (event: any) { //DragEvent<HTMLDivElement>){
+    handleDrop(event: DragEvent) {
         event.preventDefault();
-        console.log("Here we'll handle the dropped files");
+        event.stopPropagation();
+        this.setState({ isDragging: false });
+
+        const files = event.dataTransfer?.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            // Check if it's an image file
+            if (file.type.startsWith('image/')) {
+                this.setState({ 
+                    selectedFile: file,
+                    uploadStatus: UploadStatus.Idle,
+                    uploadMessage: null
+                });
+            } else {
+                this.setState({
+                    uploadStatus: UploadStatus.Error,
+                    uploadMessage: 'Please drop an image file.'
+                });
+            }
+        }
     }
 
     // On file select (from the pop up)
@@ -90,11 +123,16 @@ export class MemeUploadPanel extends Component<MemeUploadPanelProps, MemeUploadP
 
     // On file upload (click the upload button)
     onFileUpload = () => {
+        if (!this.state.selectedFile) {
+            this.setState({
+                uploadStatus: UploadStatus.Error,
+                uploadMessage: 'No file selected.'
+            });
+            return;
+        }
+
         // Create an object of formData
         const formData = new FormData();
-
-        // Details of the uploaded file
-        console.log("selectedFile ", this.state.selectedFile);
 
         // Update the formData object
         formData.append(
@@ -103,14 +141,35 @@ export class MemeUploadPanel extends Component<MemeUploadPanelProps, MemeUploadP
             this.state.selectedFile.name
         );
 
-        // Request made to the backend api
-        console.log("Should upload ", formData);
+        this.setState({ uploadStatus: UploadStatus.Uploading, uploadMessage: null });
 
         let params = {
             method: 'POST',
             body: formData
         }
-        fetch('/api/meme-upload/', params);
+        
+        fetch('/api/meme-upload/', params)
+            .then((response: Response) => response.json())
+            .then((data: any) => {
+                if (data.result === 'success') {
+                    this.setState({
+                        uploadStatus: UploadStatus.Success,
+                        uploadMessage: 'Meme uploaded successfully!',
+                        selectedFile: null
+                    });
+                } else {
+                    this.setState({
+                        uploadStatus: UploadStatus.Error,
+                        uploadMessage: data.error || 'Upload failed.'
+                    });
+                }
+            })
+            .catch((err: any) => {
+                this.setState({
+                    uploadStatus: UploadStatus.Error,
+                    uploadMessage: 'Upload failed: ' + err.message
+                });
+            });
     };
 
 
@@ -151,32 +210,55 @@ export class MemeUploadPanel extends Component<MemeUploadPanelProps, MemeUploadP
     // };
 
     render(props: MemeUploadPanelProps, state: MemeUploadPanelState) {
-         let error_block = <span>&nbsp;</span>;
-        // if (this.state.last_error != null) {
-        //     error_block = <div class="error">Last error: {this.state.last_error}</div>
-        // }
+        const dropZoneClass = state.isDragging 
+            ? 'meme_drop_zone meme_drop_zone_dragging' 
+            : 'meme_drop_zone';
 
-        // {/*onDragEnd={onDragEnd}*/}
-        // {/*onDragStart={() => setDraggedIndex(index)}*/}
+        let statusBlock = null;
+        if (state.uploadStatus === UploadStatus.Uploading) {
+            statusBlock = <div class="upload_status uploading">Uploading...</div>;
+        } else if (state.uploadStatus === UploadStatus.Success) {
+            statusBlock = <div class="upload_status success">{state.uploadMessage}</div>;
+        } else if (state.uploadStatus === UploadStatus.Error) {
+            statusBlock = <div class="upload_status error">{state.uploadMessage}</div>;
+        }
 
+        let selectedFileInfo = null;
+        if (state.selectedFile) {
+            selectedFileInfo = <div class="selected_file_info">
+                Selected: {state.selectedFile.name} ({Math.round(state.selectedFile.size / 1024)} KB)
+            </div>;
+        }
 
-        return  <div class='meme_upload_panel_react'>
-            <h3>Drag a file here to upload a meme.</h3>
+        const isUploading = state.uploadStatus === UploadStatus.Uploading;
+
+        return <div class='meme_upload_panel_react'>
             <div
-                 onDragEnter={(something:any) => this.handleDragEnter(something)}
-                 onDragOver={(something:any) => this.handleDragOver(something)}
-                 onDrop={(something:any) => this.handleDrop(something)}>
+                class={dropZoneClass}
+                onDragEnter={(e: DragEvent) => this.handleDragEnter(e)}
+                onDragOver={(e: DragEvent) => this.handleDragOver(e)}
+                onDragLeave={(e: DragEvent) => this.handleDragLeave(e)}
+                onDrop={(e: DragEvent) => this.handleDrop(e)}>
+                <p class="drop_zone_text">
+                    {state.isDragging 
+                        ? 'Drop your image here!' 
+                        : 'Drag and drop an image here, or use the button below'}
+                </p>
                 <input
-                  type="file"
-                  onChange={this.onFileChange}
+                    type="file"
+                    accept="image/*"
+                    onChange={this.onFileChange}
+                    disabled={isUploading}
                 />
-                <button onClick={this.onFileUpload}>
-                    Upload!
+                {selectedFileInfo}
+                <button 
+                    onClick={this.onFileUpload} 
+                    disabled={isUploading || !state.selectedFile}
+                    class="upload_button">
+                    {isUploading ? 'Uploading...' : 'Upload!'}
                 </button>
             </div>
-
-            {error_block}
-
+            {statusBlock}
         </div>;
     }
 }

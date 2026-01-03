@@ -16,6 +16,21 @@ class PdoMemeStorageRepo implements MemeStorageRepo
     {
     }
 
+
+    public function getMeme(string $id): Meme|null
+    {
+        $sql = stored_meme::SELECT;
+        $sql .= " where id = :id";
+
+        $params = [':id' => $id];
+
+        return $this->pdo_simple->fetchOneAsObjectOrNullConstructor(
+            $sql,
+            $params,
+            Meme::class
+        );
+    }
+
     /**
      * @return Meme[]
      */
@@ -40,7 +55,58 @@ SQL;
         return $memes;
     }
 
+    /**
+     * @return Meme[]
+     */
+    public function searchMemesForUser(
+        string $user_id,
+        ?string $query,
+        ?string $tag_type
+    ): array {
+        // If no search criteria, return all memes
+        if ($query === null && $tag_type === null) {
+            return $this->listMemesForUser($user_id);
+        }
 
+        $sql = <<< SQL
+SELECT DISTINCT
+  sm.id,
+  sm.normalized_name,
+  sm.original_filename,
+  sm.state,
+  sm.size,
+  sm.user_id
+FROM
+  stored_meme sm
+JOIN
+  meme_tag mt ON sm.id = mt.meme_id
+WHERE
+  sm.user_id = :user_id AND
+  sm.state = :state
+SQL;
+
+        $params = [
+            ':user_id' => $user_id,
+            ':state' => FileState::UPLOADED->value
+        ];
+
+        if ($query !== null && $query !== '') {
+            $sql .= " AND mt.text LIKE :query";
+            $params[':query'] = '%' . $query . '%';
+        }
+
+        if ($tag_type !== null && $tag_type !== '') {
+            $sql .= " AND mt.type = :tag_type";
+            $params[':tag_type'] = $tag_type;
+        }
+
+        $memes = $this->pdo_simple->fetchAllAsObjectConstructor(
+            $sql,
+            $params,
+            Meme::class
+        );
+        return $memes;
+    }
 
     public function storeMeme(
         string $user_id,

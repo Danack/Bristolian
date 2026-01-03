@@ -697,6 +697,51 @@ function createErrorJsonResponse(array $validation_problems): SlimDispatcher\Res
     return new SlimDispatcher\Response\JsonResponse($data, [], 400);
 }
 
+/**
+ * Ensures a file is cached locally. If it doesn't exist in the cache,
+ * reads it from the source filesystem and writes it to the cache.
+ *
+ * @param \Bristolian\Filesystem\LocalCacheFilesystem $localCacheFilesystem The local cache filesystem
+ * @param \League\Flysystem\Filesystem $sourceFilesystem The filesystem to read from if not cached
+ * @param string $normalized_name The normalized filename
+ * @return string The file contents
+ * @throws \League\Flysystem\UnableToReadFile If the file cannot be read from the source filesystem
+ */
+function ensureFileCachedFromString(
+    \Bristolian\Filesystem\LocalCacheFilesystem $localCacheFilesystem,
+    \League\Flysystem\Filesystem $sourceFilesystem,
+    string $normalized_name
+): string {
+    if ($localCacheFilesystem->fileExists($normalized_name) === true) {
+        return $localCacheFilesystem->read($normalized_name);
+    }
+
+    $contents = $sourceFilesystem->read($normalized_name);
+    $localCacheFilesystem->write($normalized_name, $contents);
+
+    return $contents;
+}
+
+/**
+ * Ensures a file is cached locally as a stream. If it doesn't exist in the cache,
+ * reads it as a stream from the source filesystem and writes it to the cache.
+ *
+ * @param \Bristolian\Filesystem\LocalCacheFilesystem $localCacheFilesystem The local cache filesystem
+ * @param \League\Flysystem\Filesystem $sourceFilesystem The filesystem to read from if not cached
+ * @param string $normalized_name The normalized filename
+ * @throws \League\Flysystem\UnableToReadFile If the file cannot be read from the source filesystem
+ */
+function ensureFileCachedFromStream(
+    \Bristolian\Filesystem\LocalCacheFilesystem $localCacheFilesystem,
+    \League\Flysystem\Filesystem $sourceFilesystem,
+    string $normalized_name
+): void {
+    if ($localCacheFilesystem->fileExists($normalized_name) !== true) {
+        $stream = $sourceFilesystem->readStream($normalized_name);
+        $localCacheFilesystem->writeStream($normalized_name, $stream);
+    }
+}
+
 
 
 /**

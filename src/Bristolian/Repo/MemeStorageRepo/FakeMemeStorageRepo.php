@@ -14,6 +14,12 @@ class FakeMemeStorageRepo implements MemeStorageRepo
      */
     private array $storedMemes = [];
 
+    public function getMeme(string $id): Meme|null
+    {
+        return null;
+    }
+
+
     public function storeMeme(
         string $user_id,
         string $normalized_filename,
@@ -50,6 +56,18 @@ class FakeMemeStorageRepo implements MemeStorageRepo
         return $memes_for_user;
     }
 
+    /**
+     * @return Meme[]
+     */
+    public function searchMemesForUser(
+        string $user_id,
+        ?string $query,
+        ?string $tag_type
+    ): array {
+        // Fake implementation just returns all memes for user
+        // In a real test scenario, you'd want to set up tag data and filter accordingly
+        return $this->listMemesForUser($user_id);
+    }
 
     public function setUploaded(string $meme_id): void
     {

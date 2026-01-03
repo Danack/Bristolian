@@ -252,19 +252,16 @@ class Rooms
         }
 
         $normalized_name = $fileDetails->normalized_name;
-        if ($localCacheFilesystem->fileExists($normalized_name) === true) {
+        try {
             // TODO - why is contents unused?
-            $contents = $localCacheFilesystem->read($normalized_name);
+            $contents = ensureFileCachedFromString(
+                $localCacheFilesystem,
+                $roomFilesystem,
+                $normalized_name
+            );
         }
-        else {
-            try {
-                $contents = $roomFilesystem->read($normalized_name);
-            }
-            catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
-                return new StoredFileErrorResponse($normalized_name);
-            }
-
-            $localCacheFilesystem->write($normalized_name, $contents);
+        catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
+            return new StoredFileErrorResponse($normalized_name);
         }
 
         $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;

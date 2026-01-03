@@ -209,7 +209,6 @@ function createLocalCacheFilesystem(): \Bristolian\Filesystem\LocalCacheFilesyst
     return $filesystem;
 }
 
-
 function createMemeFilesystem(Config $config): \Bristolian\Filesystem\MemeFilesystem
 {
     $bucketName = 'bristolian-memes';

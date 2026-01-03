@@ -41,6 +41,15 @@ function addEmailCommands(Application $console)
     $console->add($command);
 
 
+    $command = new Command(
+        'process:meme_ocr',
+        'Bristolian\CliController\MemeOcr::process'
+    );
+    $command->setDescription("Run image ocr for the next meme");
+    $console->add($command);
+
+
+
     $command = new Command('queue:email_clear', 'Bristolian\CliController\Email::clearEmailQueue');
     $command->setDescription("Clear any pending emails.");
     $console->add($command);

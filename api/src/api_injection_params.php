@@ -117,6 +117,7 @@ function apiInjectionParams() : InjectionParams
 
         \Bristolian\Service\RoomMessageService\RoomMessageService::class =>
             \Bristolian\Service\RoomMessageService\StandardRoomMessageService::class,
+
     ];
 
     // Delegate the creation of types to callables.

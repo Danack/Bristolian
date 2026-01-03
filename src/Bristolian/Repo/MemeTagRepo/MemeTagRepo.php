@@ -3,6 +3,7 @@
 namespace Bristolian\Repo\MemeTagRepo;
 
 use Bristolian\Parameters\MemeTagParams;
+use Bristolian\Parameters\MemeTagUpdateParams;
 
 interface MemeTagRepo
 {
@@ -20,6 +21,11 @@ interface MemeTagRepo
         string $user_id,
         string $meme_id
     ): array;
+
+    public function updateTagForUser(
+        string $user_id,
+        MemeTagUpdateParams $memeTagUpdateParams,
+    ): int;
 
     public function deleteTagForUser(
         string $user_id,

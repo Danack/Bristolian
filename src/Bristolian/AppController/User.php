@@ -2,8 +2,11 @@
 
 namespace Bristolian\AppController;
 
+use Bristolian\Parameters\MemeSearchParams;
 use Bristolian\Parameters\MemeTagDeleteParams;
 use Bristolian\Parameters\MemeTagParams;
+use Bristolian\Parameters\MemeTagUpdateParams;
+use Bristolian\Response\SuccessResponse;
 use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Repo\MemeTagRepo\MemeTagRepo;
 use Bristolian\Session\AppSessionManager;
@@ -23,16 +26,24 @@ class User
         MemeStorageRepo $memeStorageRepo,
         UserSession $appSession,
     ): StubResponse {
-//        if ($appSession->isLoggedIn() !== true) {
-//            $data = ['not logged in' => true];
-//            return new JsonResponse($data, [], 400);
-//        }
-
         $memes = $memeStorageRepo->listMemesForUser($appSession->getUserId());
 
         return new GetMemesResponse($memes);
     }
 
+    public function searchMemes(
+        MemeStorageRepo $memeStorageRepo,
+        UserSession $appSession,
+        MemeSearchParams $memeSearchParams,
+    ): GetMemesResponse {
+        $memes = $memeStorageRepo->searchMemesForUser(
+            $appSession->getUserId(),
+            $memeSearchParams->query,
+            $memeSearchParams->tag_type
+        );
+
+        return new GetMemesResponse($memes);
+    }
 
     public function manageMemes(): string
     {
@@ -95,9 +106,27 @@ class User
     public function handleMemeTagAdd_get(): EndpointAccessedViaGetResponse
     {
         return new EndpointAccessedViaGetResponse();
-//        return new TextResponse("This is a GET only end-point");
     }
 
+    public function handleMemeTagUpdate(
+        UserSession $appSession,
+        Request $request,
+        MemeTagRepo $memeTagRepo
+    ): SuccessResponse {
+        $memeTagUpdateParams = MemeTagUpdateParams::createFromRequest($request);
+
+        $memeTagRepo->updateTagForUser(
+            $appSession->getUserId(),
+            $memeTagUpdateParams
+        );
+
+        return new SuccessResponse();
+    }
+
+    public function handleMemeTagUpdate_get(): EndpointAccessedViaGetResponse
+    {
+        return new EndpointAccessedViaGetResponse();
+    }
 
     public function handleMemeTagDelete(
         UserSession $appSession,

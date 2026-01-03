@@ -16,6 +16,24 @@ RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee -a /
     php8.2-intl php8.2-redis php8.2-zip \
     supervisor
 
+
+
+#    libgl1 \
+#    libglib2.0-0 \
+#    libsm6 \
+#    libxext6 \
+#    libxrender1 \
+# python3-pip
+
+
+# 2. Install EasyOCR (this will pull torch + models)
+#RUN pip install --no-cache-dir easyocr
+
+
+#  pre-download models at build time
+#    (avoids first-run network access)
+# RUN /var/app/containers/supervisord/easyocr_install.sh
+
 WORKDIR /var/app
 
 RUN mkdir -p /var/log/supervisor
@@ -23,7 +41,6 @@ RUN mkdir -p /var/log/supervisor
 #COPY supervisord.conf /etc/supervisor/supervisord.conf
 #COPY tasks/*.conf /etc/supervisor/conf.d/
 
-# CMD tail -f README.md
-CMD sh /var/app/containers/supervisord/entrypoint.sh
-
+CMD tail -f /var/app/containers/supervisord/README.md
+#CMD sh /var/app/containers/supervisord/entrypoint.sh
 

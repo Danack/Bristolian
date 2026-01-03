@@ -33,6 +33,12 @@ interface MemeManagementPanelState {
     meme_edit_type: string;
     meme_edit_text: string;
     confirmMemeTagDelete: null|MemeTag;
+    memeTagBeingEdited: MemeTag|null;
+    editTag_type: string;
+    editTag_text: string;
+    searchQuery: string;
+    searchTagType: string;
+    isSearching: boolean;
 }
 
 function getDefaultState(/*initialControlParams: object*/): MemeManagementPanelState {
@@ -43,7 +49,13 @@ function getDefaultState(/*initialControlParams: object*/): MemeManagementPanelS
         memeBeingEdited_memetags: null,
         meme_edit_type: 'text',
         meme_edit_text: '',
-        confirmMemeTagDelete: null
+        confirmMemeTagDelete: null,
+        memeTagBeingEdited: null,
+        editTag_type: '',
+        editTag_text: '',
+        searchQuery: '',
+        searchTagType: '',
+        isSearching: false
     };
 }
 
@@ -80,6 +92,51 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         });
     }
 
+    handleSearchQueryChange(event: Event) {
+        // @ts-ignore: It does exist.
+        this.setState({ searchQuery: event.currentTarget.value });
+    }
+
+    handleSearchTagTypeChange(event: Event) {
+        // @ts-ignore: It does exist.
+        this.setState({ searchTagType: event.currentTarget.value });
+    }
+
+    searchMemes() {
+        const params = new URLSearchParams();
+        if (this.state.searchQuery) {
+            params.append('query', this.state.searchQuery);
+        }
+        if (this.state.searchTagType) {
+            params.append('tag_type', this.state.searchTagType);
+        }
+
+        const url = '/api/memes/search' + (params.toString() ? '?' + params.toString() : '');
+        
+        this.setState({ isSearching: true });
+
+        fetch(url)
+            .then((response: Response) => response.json())
+            .then((data: GetMemesResponse) => {
+                this.setState({ 
+                    memes: data.data.memes,
+                    isSearching: false 
+                });
+            })
+            .catch((err: any) => {
+                console.error("Failed to search memes:", err);
+                this.setState({ isSearching: false });
+            });
+    }
+
+    clearSearch() {
+        this.setState({
+            searchQuery: '',
+            searchTagType: ''
+        });
+        this.refreshMemes();
+    }
+
     processMemeTagData(memeTags: Array<MemeTag>) {
         this.setState({
             memeBeingEdited_memetags: memeTags
@@ -113,11 +170,11 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             </td>
             <td>
                 {meme.id}
-                <span
-                  class="button"
-                  onClick={() => this.startEditing(meme)}
-                >Edit tags</span>
-
+                <button
+                    type="button"
+                    class="button"
+                    onClick={() => this.startEditing(meme)}
+                >Edit tags</button>
             </td>
         </tr>
     }
@@ -178,7 +235,68 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
     }
 
     handleEditMemeTag(memeTag: MemeTag) {
+        this.setState({
+            memeTagBeingEdited: memeTag,
+            editTag_type: memeTag.type,
+            editTag_text: memeTag.text
+        });
+    }
 
+    handleEditTagTypeChange(event: Event) {
+        // @ts-ignore: It does exist.
+        this.setState({ editTag_type: event.currentTarget.value });
+    }
+
+    handleEditTagTextChange(event: Event) {
+        // @ts-ignore: It does exist.
+        this.setState({ editTag_text: event.currentTarget.value });
+    }
+
+    handleSaveEditTag() {
+        if (!this.state.memeTagBeingEdited) return;
+
+        const formData = new FormData();
+        formData.append("meme_tag_id", this.state.memeTagBeingEdited.id);
+        formData.append("type", this.state.editTag_type);
+        formData.append("text", this.state.editTag_text);
+
+        fetch('/api/meme-tag-update/', {
+            method: 'PUT',
+            body: formData
+        })
+        .then((response: Response) => response.json())
+        .then((data: any) => {
+            // Update the tag in the local state
+            if (this.state.memeBeingEdited_memetags) {
+                const updatedTags = this.state.memeBeingEdited_memetags.map((tag: MemeTag) => {
+                    if (tag.id === this.state.memeTagBeingEdited?.id) {
+                        return {
+                            ...tag,
+                            type: this.state.editTag_type,
+                            text: this.state.editTag_text
+                        };
+                    }
+                    return tag;
+                });
+                this.setState({
+                    memeBeingEdited_memetags: updatedTags,
+                    memeTagBeingEdited: null,
+                    editTag_type: '',
+                    editTag_text: ''
+                });
+            }
+        })
+        .catch((err: any) => {
+            console.error("Failed to update tag:", err);
+        });
+    }
+
+    handleCancelEditTag() {
+        this.setState({
+            memeTagBeingEdited: null,
+            editTag_type: '',
+            editTag_text: ''
+        });
     }
 
     handleConfirmDeleteMemeTag() {
@@ -227,6 +345,44 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         </div>
     }
 
+    renderMemeTagEditModal() {
+        if (!this.state.memeTagBeingEdited) return null;
+
+        return <div class="modal">
+            <div class="modal-content">
+                <h3>Edit Tag</h3>
+                <div class="edit-tag-form">
+                    <div>
+                        <label>Type:</label>
+                        <select
+                            value={this.state.editTag_type}
+                            onChange={(e) => this.handleEditTagTypeChange(e)}>
+                            <option value="text">Text</option>
+                            <option value="type">Type</option>
+                            <option value="source">Source</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Text:</label>
+                        <textarea
+                            rows={4}
+                            cols={60}
+                            value={this.state.editTag_text}
+                            onChange={(e) => this.handleEditTagTextChange(e)} />
+                    </div>
+                    <div class="modal-buttons">
+                        <span
+                            className="button"
+                            onClick={() => this.handleSaveEditTag()}>Save</span>
+                        <span
+                            className="button"
+                            onClick={() => this.handleCancelEditTag()}>Cancel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
     renderMemeTag(memeTag: MemeTag) {
         return <tr key={memeTag.id}>
             <td>
@@ -251,81 +407,148 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
 
     renderCurrentMemeTags() {
         if (this.state.memeBeingEdited_memetags === null) {
-            return <span>memetags being loaded</span>
+            return <span class="loading_message">Loading tags...</span>
         }
 
-        return <div>Current Meme tags go here.
-            <table>
+        if (this.state.memeBeingEdited_memetags.length === 0) {
+            return <span class="no_tags_message">No tags yet. Add one below.</span>
+        }
+
+        return <table class="meme_tags_table">
+            <thead>
                 <tr>
-                    <td>Type</td>
-                    <td>Text</td>
-                    <td></td>
-                    <td></td>
+                    <th>Type</th>
+                    <th>Text</th>
+                    <th></th>
+                    <th></th>
                 </tr>
-            {Object.values(this.state.memeBeingEdited_memetags).
-              map((memeTag: MemeTag) => this.renderMemeTag(memeTag))}
-            </table>
-        </div>
+            </thead>
+            <tbody>
+                {Object.values(this.state.memeBeingEdited_memetags).
+                    map((memeTag: MemeTag) => this.renderMemeTag(memeTag))}
+            </tbody>
+        </table>
     }
 
     renderMemeEdit() {
         let meme_url = "/images/memes/" + this.state.memeBeingEdited.id + ".jpg";
         let current_tags = this.renderCurrentMemeTags();
 
-        return <span>
-          <span>Need to edit meme {this.state.memeBeingEdited.id}</span>
-            <span><img src={meme_url} alt="some meme"/></span>
-          <span>Type would be: {this.state.meme_edit_type}</span>
-            {current_tags}
-          <span>
-              <span>
-                  <select
-                    value={this.state.meme_edit_type}
-                    onChange={(something) => this.changeMemeType(something)}>
-                      <option value="text">Text</option>
-                      <option value="type">Type</option>
-                      <option value="source">Source</option>
-                  </select>
-              </span>
-              <span>
-                  <textarea
-                    rows={4}
-                    cols={80}
-                    value={this.state.meme_edit_text}
-                    onChange={(event) => this.handleTextChange(event)} />
-              </span>
-              <span class="button" onClick={() => this.handleAddTag()}>Add tag</span>
-          </span>
+        return <div class="meme_edit_container">
+            <div class="meme_edit_header">
+                <h3>Editing meme</h3>
+                <span class="meme_id">{this.state.memeBeingEdited.id}</span>
+                <span className="button" onClick={() => this.cancelMemeEditing()}>Done</span>
+            </div>
 
-          <span className="button" onClick={() => this.cancelMemeEditing()}>Done</span>
-        </span>
+            <div class="meme_edit_content">
+                <div class="meme_image_container">
+                    <img src={meme_url} alt="meme being edited" class="meme_preview_image" />
+                </div>
+
+                <div class="meme_edit_sidebar">
+                    <div class="meme_tags_section">
+                        <h4>Current Tags</h4>
+                        {current_tags}
+                    </div>
+
+                    <div class="meme_add_tag_section">
+                        <h4>Add New Tag</h4>
+                        <div class="add_tag_form">
+                            <div class="form_row">
+                                <label>Type:</label>
+                                <select
+                                    value={this.state.meme_edit_type}
+                                    onChange={(something) => this.changeMemeType(something)}>
+                                    <option value="text">Text</option>
+                                    <option value="type">Type</option>
+                                    <option value="source">Source</option>
+                                </select>
+                            </div>
+                            <div class="form_row">
+                                <label>Tag text:</label>
+                                <textarea
+                                    rows={4}
+                                    value={this.state.meme_edit_text}
+                                    onChange={(event) => this.handleTextChange(event)}
+                                    placeholder="Enter tag text..." />
+                            </div>
+                            <span class="button" onClick={() => this.handleAddTag()}>Add tag</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
 
     render(props: MemeManagementPanelProps, state: MemeManagementPanelState) {
-        let error_block = <span>&nbsp;</span>;
-
-        let deleteMemeTagModal = <span>{this.state.confirmMemeTagDelete}</span>;
-
+        let deleteMemeTagModal = null;
         if (this.state.confirmMemeTagDelete !== null) {
-            console.log("this.state.confirmMemeTagDelete !== null ?");
             deleteMemeTagModal = this.renderMemeTagDeleteModal();
+        }
+
+        let editMemeTagModal = null;
+        if (this.state.memeTagBeingEdited !== null) {
+            editMemeTagModal = this.renderMemeTagEditModal();
         }
 
         if (this.state.memeBeingEdited !== null) {
             let this_bit = this.renderMemeEdit();
             return <div class='meme_management_panel_react'>
                 {deleteMemeTagModal}
+                {editMemeTagModal}
                 {this_bit}
             </div>;
         }
 
         let meme_block = this.renderMemeBlock();
 
-        return  <div class='meme_management_panel_react'>
-            {deleteMemeTagModal}
-            I am the happy fun time meme management panel.
+        const searchSection = <div class="meme_search_section">
+            <h4>Search Memes</h4>
+            <div class="search_controls">
+                <div class="search_input_group">
+                    <label>Tag text:</label>
+                    <input
+                        type="text"
+                        value={this.state.searchQuery}
+                        onChange={(e) => this.handleSearchQueryChange(e)}
+                        placeholder="Search in tag text..."
+                    />
+                </div>
+                <div class="search_input_group">
+                    <label>Tag type:</label>
+                    <select
+                        value={this.state.searchTagType}
+                        onChange={(e) => this.handleSearchTagTypeChange(e)}>
+                        <option value="">All types</option>
+                        <option value="text">Text</option>
+                        <option value="type">Type</option>
+                        <option value="source">Source</option>
+                    </select>
+                </div>
+                <div class="search_buttons">
+                    <span 
+                        class="button" 
+                        onClick={() => this.searchMemes()}>
+                        {this.state.isSearching ? 'Searching...' : 'Search'}
+                    </span>
+                    <span 
+                        class="button" 
+                        onClick={() => this.clearSearch()}>
+                        Clear
+                    </span>
+                </div>
+            </div>
+        </div>;
 
-            <span class="button" onClick={() => this.refreshMemes()}>Refresh</span>
+        return <div class='meme_management_panel_react'>
+            {deleteMemeTagModal}
+            {editMemeTagModal}
+            <h3>Meme Management Panel</h3>
+            {searchSection}
+            <div class="meme_list_controls">
+                <span class="button" onClick={() => this.refreshMemes()}>Refresh All</span>
+            </div>
             {meme_block}
         </div>;
     }

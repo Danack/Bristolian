@@ -25,10 +25,26 @@ interface MemeStorageRepo
         UploadedFile $uploadedFile,
     ): string;
 
+    public function getMeme(string $id): Meme|null;
+
     /**
      * @return Meme[]
      */
     public function listMemesForUser(string $user_id): array;
+
+    /**
+     * Search memes for a user by tag text content and/or tag type.
+     *
+     * @param string $user_id
+     * @param string|null $query Search query for tag text (uses LIKE matching)
+     * @param string|null $tag_type Filter by tag type
+     * @return Meme[]
+     */
+    public function searchMemesForUser(
+        string $user_id,
+        ?string $query,
+        ?string $tag_type
+    ): array;
 
     public function setUploaded(string $meme_id): void;
 }

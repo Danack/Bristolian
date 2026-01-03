@@ -2,7 +2,9 @@
 
 namespace Bristolian\Repo\MemeTagRepo;
 
+use Bristolian\Database\meme_tag;
 use Bristolian\Parameters\MemeTagParams;
+use Bristolian\Parameters\MemeTagUpdateParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 
@@ -17,22 +19,7 @@ class PdoMemeTagRepo implements MemeTagRepo
         string        $user_id,
         MemeTagParams $memeTagParam,
     ): void {
-        $sql = <<< SQL
-insert into meme_tag (
-  id,
-  user_id,
-  meme_id,
-  type,
-  text
-)
-values (
-  :id,
-  :user_id,
-  :meme_id,
-  :type,
-  :text
-)
-SQL;
+        $sql = meme_tag::INSERT;
 
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
@@ -58,15 +45,7 @@ SQL;
         string $user_id,
         string $meme_id
     ): array {
-        $sql = <<< SQL
-select
-  id,
-  user_id,
-  meme_id,
-  type,
-  text
-from
-  meme_tag
+        $sql = meme_tag::SELECT . <<< SQL
 where
   user_id = :user_id and
   meme_id = :meme_id
@@ -77,9 +56,33 @@ SQL;
             ':meme_id' => $meme_id
         ];
 
-
         // @phpstan-ignore-next-line
         return $this->pdoSimple->fetchAllAsData($sql, $params);
+    }
+
+    public function updateTagForUser(
+        string $user_id,
+        MemeTagUpdateParams $memeTagUpdateParams,
+    ): int {
+        $sql = <<< SQL
+update
+  meme_tag
+set
+  type = :type,
+  text = :text
+where
+  user_id = :user_id and
+  id = :meme_tag_id
+SQL;
+
+        $params = [
+            ':user_id' => $user_id,
+            ':meme_tag_id' => $memeTagUpdateParams->meme_tag_id,
+            ':type' => $memeTagUpdateParams->type,
+            ':text' => $memeTagUpdateParams->text,
+        ];
+
+        return $this->pdoSimple->execute($sql, $params);
     }
 
     public function deleteTagForUser(

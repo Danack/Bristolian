@@ -138,6 +138,10 @@ function injectionParams()
 
         Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::class =>
             \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class,
+
+        \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::class =>
+            \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class
+
     ];
 
 

@@ -109,14 +109,11 @@ class Users
         }
 
         $normalized_name = $fileDetails->normalized_name;
-        if ($localCacheFilesystem->fileExists($normalized_name) !== true) {
-            try {
-                $stream = $avatarFilesystem->readStream($normalized_name);
-            }
-            catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
-                return new \Bristolian\Response\StoredFileErrorResponse($normalized_name);
-            }
-            $localCacheFilesystem->writeStream($normalized_name, $stream);
+        try {
+            ensureFileCachedFromStream($localCacheFilesystem, $avatarFilesystem, $normalized_name);
+        }
+        catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
+            return new \Bristolian\Response\StoredFileErrorResponse($normalized_name);
         }
 
         $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;
@@ -322,14 +319,11 @@ HTML;
         }
 
         $normalized_name = $fileDetails->normalized_name;
-        if ($localCacheFilesystem->fileExists($normalized_name) !== true) {
-            try {
-                $stream = $avatarFilesystem->readStream($normalized_name);
-            }
-            catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
-                return new \Bristolian\Response\StoredFileErrorResponse($normalized_name);
-            }
-            $localCacheFilesystem->writeStream($normalized_name, $stream);
+        try {
+            ensureFileCachedFromStream($localCacheFilesystem, $avatarFilesystem, $normalized_name);
+        }
+        catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
+            return new \Bristolian\Response\StoredFileErrorResponse($normalized_name);
         }
 
         $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;

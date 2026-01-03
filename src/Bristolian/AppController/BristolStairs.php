@@ -153,14 +153,11 @@ HTML;
         $fileDetails = $bristolStairImageStorageInfoRepo->getById($stored_stair_image_file_id);
 
         $normalized_name = $fileDetails->normalized_name;
-        if ($localCacheFilesystem->fileExists($normalized_name) !== true) {
-            try {
-                $stream = $roomFilesystem->readStream($normalized_name);
-            }
-            catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
-                return new StoredFileErrorResponse($normalized_name);
-            }
-            $localCacheFilesystem->writeStream($normalized_name, $stream);
+        try {
+            ensureFileCachedFromStream($localCacheFilesystem, $roomFilesystem, $normalized_name);
+        }
+        catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
+            return new StoredFileErrorResponse($normalized_name);
         }
 
         $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;

@@ -8,4 +8,10 @@ class ContentNotFoundException extends BristolianException
     {
         return new self("stairs with id ($stairs_id) not found");
     }
+
+
+    public static function meme_id_not_found(string $meme_id): self
+    {
+        return new self("meme with id ($meme_id) not found");
+    }
 }
