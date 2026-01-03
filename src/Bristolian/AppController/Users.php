@@ -133,7 +133,7 @@ class Users
     public function showOwnProfile(
         \Bristolian\Session\AppSessionManager $appSessionManager,
         UserProfileRepo $userProfileRepo,
-    ) {
+    ): string {
 
         $appSession = $appSessionManager->getCurrentAppSession();
         $user_id = $appSession->getUserId();

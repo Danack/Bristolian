@@ -68,6 +68,7 @@ class RoomMessagesWatcher
     {
         $this->initialize_previous_id();
 
+        /* @phpstan-ignore while.alwaysTrue */
         while (true) {
             try {
 

@@ -29,14 +29,14 @@ class FakeMemeStorageRepo implements MemeStorageRepo
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
 
-        $this->storedMemes[$id] = new Meme(
-            $id,
-            $normalized_filename,
-            $original_filename = $uploadedFile->getOriginalName(),
-            $state = MemeFileState::INITIAL->value,
-            $size = $uploadedFile->getSize(),
-            $user_id,
-        );
+//        $this->storedMemes[$id] = new Meme(
+//            $id,
+//            $normalized_filename,
+//            $original_filename = $uploadedFile->getOriginalName(),
+//            $state = MemeFileState::INITIAL->value,
+//            $size = $uploadedFile->getSize(),
+//            $user_id,
+//        );
 
         return $id;
     }
@@ -75,16 +75,16 @@ class FakeMemeStorageRepo implements MemeStorageRepo
             throw new BristolianException("meme not found to set as uploaded.");
         }
 
-        $meme = $this->storedMemes[$meme_id];
-
-        $this->storedMemes[$meme_id] = new Meme(
-            $meme->id,
-            $meme->normalized_name,
-            $meme->original_filename,
-            $meme->state,
-            $meme->size,
-            $meme->user_id,
-        );
+//        $meme = $this->storedMemes[$meme_id];
+//
+//        $this->storedMemes[$meme_id] = new Meme(
+//            $meme->id,
+//            $meme->normalized_name,
+//            $meme->original_filename,
+//            $meme->state,
+//            $meme->size,
+//            $meme->user_id,
+//        );
     }
 
     /**

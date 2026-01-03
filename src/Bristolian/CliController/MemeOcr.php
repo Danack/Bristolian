@@ -14,7 +14,7 @@ class MemeOcr
 
     }
 
-    public function process()
+    public function process(): void
     {
         echo "Woot would have run.";
 
@@ -25,7 +25,7 @@ class MemeOcr
             return;
         }
 
-        $next_meme->normalized_name
+//        $next_meme->normalized_name
 
         // download the image to a temp location
 
@@ -37,7 +37,7 @@ class MemeOcr
     }
 
 
-    private function run_the_ocr()
+    private function run_the_ocr(): string
     {
         $pythonScript = '/path/to/ocr.py';
         $imageFile = '/path/to/image.jpg';
