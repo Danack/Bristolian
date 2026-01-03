@@ -809,6 +809,7 @@ $html = esprintf($template, $params);
 - Minimize the initial data passed via `data-widgety_json`
 - Use lazy loading for large datasets
 - Consider caching strategies for frequently accessed data
+- **Never fetch data inside render loops** - this causes performance issues and multiple API calls on every render. Use `componentDidMount()` or `componentDidUpdate()` instead, or implement proper caching strategies
 
 ## Example: Creating a Simple "Hello World" Page
 
