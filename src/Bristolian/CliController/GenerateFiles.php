@@ -46,6 +46,142 @@ function generate_table_update_strings($sorted_column_names)
     return $update_strings;
 }
 
+/**
+ * Convert table name (snake_case) to class name (PascalCase)
+ * 
+ * @codeCoverageIgnore
+ */
+function table_name_to_class_name(string $tableName): string
+{
+    $parts = explode('_', $tableName);
+    $className = '';
+    foreach ($parts as $part) {
+        $className .= ucfirst($part);
+    }
+    return $className;
+}
+
+/**
+ * Map MySQL column type to PHP type
+ * 
+ * @codeCoverageIgnore
+ * @param array<string, mixed> $column
+ * @return string PHP type (e.g., 'string', 'int', 'DateTimeInterface')
+ */
+function map_column_to_php_type(array $column): string
+{
+    $dataType = strtolower($column['DATA_TYPE']);
+    $isNullable = $column['IS_NULLABLE'] === 'YES';
+    $columnName = strtolower($column['COLUMN_NAME']);
+
+    // Check for datetime columns
+    $datetimeColumns = ['created_at', 'updated_at', 'start_time', 'end_time'];
+    if (in_array($columnName, $datetimeColumns, true)) {
+        return $isNullable ? '?\DateTimeInterface' : '\DateTimeInterface';
+    }
+
+    // Map MySQL types to PHP types
+    switch ($dataType) {
+        case 'tinyint':
+        case 'smallint':
+        case 'mediumint':
+        case 'int':
+        case 'integer':
+        case 'bigint':
+            return $isNullable ? '?int' : 'int';
+        
+        case 'decimal':
+        case 'numeric':
+        case 'float':
+        case 'double':
+        case 'real':
+            return $isNullable ? '?float' : 'float';
+        
+        case 'char':
+        case 'varchar':
+        case 'text':
+        case 'tinytext':
+        case 'mediumtext':
+        case 'longtext':
+        case 'enum':
+        case 'set':
+        case 'binary':
+        case 'varbinary':
+        case 'blob':
+        case 'tinyblob':
+        case 'mediumblob':
+        case 'longblob':
+            return $isNullable ? '?string' : 'string';
+        
+        case 'date':
+        case 'time':
+        case 'datetime':
+        case 'timestamp':
+        case 'year':
+            return $isNullable ? '?\DateTimeInterface' : '\DateTimeInterface';
+        
+        case 'json':
+            return $isNullable ? '?string' : 'string'; // JSON stored as string, can be decoded later
+        
+        case 'bit':
+            return $isNullable ? '?bool' : 'bool';
+        
+        default:
+            // Default to string for unknown types
+            return $isNullable ? '?string' : 'string';
+    }
+}
+
+/**
+ * Generate a model class from database table schema
+ * 
+ * @codeCoverageIgnore
+ * @param string $tableName
+ * @param array<array<string, mixed>> $columns_info
+ * @param string $output_directory
+ * @return void
+ * @throws \Safe\Exceptions\FilesystemException
+ */
+function generate_model_class(string $tableName, array $columns_info, string $output_directory): void
+{
+    $className = table_name_to_class_name($tableName);
+    $output_filename = $output_directory . "/" . $className . ".php";
+
+    $contents = "<?php\n\n";
+    $contents .= "declare(strict_types = 1);\n\n";
+    $contents .= "// Auto-generated file do not edit\n\n";
+    $contents .= "// generated with 'php cli.php generate:model_classes'\n\n";
+    $contents .= "namespace Bristolian\\Model\\Generated;\n\n";
+    $contents .= "use Bristolian\\ToArray;\n\n";
+    $contents .= "class $className\n";
+    $contents .= "{\n";
+    $contents .= "    use ToArray;\n\n";
+
+    // Generate constructor parameters
+    $constructorParams = [];
+    foreach ($columns_info as $column) {
+        $columnName = $column['COLUMN_NAME'];
+        $phpType = map_column_to_php_type($column);
+        $constructorParams[] = [
+            'type' => $phpType,
+            'name' => $columnName,
+        ];
+    }
+
+    // Generate constructor
+    $contents .= "    public function __construct(\n";
+    $paramCount = count($constructorParams);
+    foreach ($constructorParams as $index => $param) {
+        $comma = ($index < $paramCount - 1) ? ',' : '';
+        $contents .= "        public readonly {$param['type']} \${$param['name']}$comma\n";
+    }
+    $contents .= "    ) {\n";
+    $contents .= "    }\n";
+    $contents .= "}\n";
+
+    \Safe\file_put_contents($output_filename, $contents);
+}
+
 
 
 
@@ -1311,5 +1447,52 @@ SQL;
         }
         
         return $content;
+    }
+
+    /**
+     * Generate model classes from database schema.
+     * 
+     * @codeCoverageIgnore
+     */
+    public function generateModelClasses(
+        Config $config,
+        PDO $pdo
+    ) {
+        $schema = $config->getDatabaseSchema();
+
+        $table_query = "SELECT table_name FROM information_schema.tables
+        WHERE table_schema = '$schema'";
+
+        $statement = $pdo->query($table_query);
+
+        if ($statement === false) {
+            echo "Query failed.";
+            exit(-1);
+        }
+
+        $rows = $statement->fetchAll();
+
+        $column_query = <<< SQL
+SELECT *
+  FROM INFORMATION_SCHEMA.COLUMNS
+  WHERE TABLE_SCHEMA = '$schema' AND TABLE_NAME = '%s'
+  ORDER BY ORDINAL_POSITION;
+SQL;
+
+        $output_directory = __DIR__ . "/../../Bristolian/Model/Generated";
+        
+        // Ensure the directory exists
+        if (!is_dir($output_directory)) {
+            mkdir($output_directory, 0755, true);
+        }
+
+        foreach ($rows as $row) {
+            $tableName = $row['TABLE_NAME'];
+            $query = sprintf($column_query, $tableName);
+            $columns_statement = $pdo->query($query);
+            $columns_info = $columns_statement->fetchAll();
+
+            generate_model_class($tableName, $columns_info, $output_directory);
+        }
     }
 }

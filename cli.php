@@ -48,6 +48,7 @@ catch (\Exception $e) {
 
 $exceptionMappers = [
     Auryn\InjectionException::class => 'cliHandleInjectionException',
+    \DI\InjectionException::class => 'cliHandleInjectionException',
 ];
 
 try {

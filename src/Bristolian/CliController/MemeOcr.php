@@ -2,45 +2,79 @@
 
 namespace Bristolian\CliController;
 
+use Bristolian\Filesystem\LocalCacheFilesystem;
+use Bristolian\Filesystem\MemeFilesystem;
+use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Repo\MemeTextRepo\MemeTextRepo;
-
-
+//private MemeStorageRepo $memeStorageRepo,
 
 class MemeOcr
 {
+    const MAX_MEME_TEXT_LENGTH = 4095;
+
     public function __construct(
+        private MemeFilesystem $memeFilesystem,
+        private LocalCacheFilesystem $localCacheFilesystem,
         private MemeTextRepo $memeTextRepo
     ) {
-
     }
 
     public function process(): void
     {
-        echo "Woot would have run.";
-
         // find next image to process in database
         $next_meme = $this->memeTextRepo->getNextMemeToOCR();
 
         if ($next_meme === null) {
+            echo "No memes need text generating.\n";
             return;
         }
 
-//        $next_meme->normalized_name
+        try {
+            ensureFileCachedFromStream(
+                $this->localCacheFilesystem,
+                $this->memeFilesystem,
+                $next_meme->normalized_name
+            );
+        }
+        catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
+            echo "Failed to download file:\n";
+            echo "  " . $unableToReadFile->getMessage();
+            echo "\n";
+            $previous = $unableToReadFile->getPrevious();
+
+            if ($previous !== null) {
+                echo "Previous: \n" . $previous->getMessage();
+                echo "\n";
+            }
+            echo "\n";
+            exit(-1);
+        }
+
 
         // download the image to a temp location
 
+        $localCacheFilename = $this->localCacheFilesystem->getFullPath() . "/" . $next_meme->normalized_name;
+        $filenameToServe = realpath($localCacheFilename);
+
         // run the OCR,
+        $found_text = $this->run_the_ocr($filenameToServe);
 
-        // If it worked, save the text.
+        if (strlen($found_text) >= self::MAX_MEME_TEXT_LENGTH) {
+            $found_text = substr($found_text, 0, self::MAX_MEME_TEXT_LENGTH - 1);
+        }
 
-        // If if failed, increment some attempts marker.
+
+        $this->memeTextRepo->saveMemeText(
+            $next_meme,
+            $found_text
+        );
+
     }
 
 
-    private function run_the_ocr(): string
+    private function run_the_ocr(string $imageFile): string
     {
-        $pythonScript = '/path/to/ocr.py';
-        $imageFile = '/path/to/image.jpg';
+        $pythonScript = '/var/app/containers/supervisord/image_ocr.py';
 
         $cmd = [
             '/usr/bin/env',

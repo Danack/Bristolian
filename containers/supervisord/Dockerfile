@@ -17,22 +17,21 @@ RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee -a /
     supervisor
 
 
-
-#    libgl1 \
-#    libglib2.0-0 \
-#    libsm6 \
-#    libxext6 \
-#    libxrender1 \
-# python3-pip
-
+RUN apt install -y \
+  libgl1 \
+  libglib2.0-0 \
+  libsm6 \
+  libxext6 \
+  libxrender1 \
+  python3-pip
 
 # 2. Install EasyOCR (this will pull torch + models)
-#RUN pip install --no-cache-dir easyocr
+RUN pip install --no-cache-dir easyocr
 
 
 #  pre-download models at build time
-#    (avoids first-run network access)
-# RUN /var/app/containers/supervisord/easyocr_install.sh
+#  (avoids first-run network access)
+RUN sh /var/app/containers/supervisord/easyocr_install.sh
 
 WORKDIR /var/app
 

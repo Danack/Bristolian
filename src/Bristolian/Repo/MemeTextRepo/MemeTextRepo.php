@@ -2,11 +2,18 @@
 
 namespace Bristolian\Repo\MemeTextRepo;
 
-use Bristolian\Model\Meme;
+
+use Bristolian\Model\Generated\StoredMeme;
+
 
 interface MemeTextRepo
 {
-    public function getNextMemeToOCR(): Meme|null;
+    public function getNextMemeToOCR(): StoredMeme|null;
+
+    public function saveMemeText(
+        StoredMeme $storedMeme,
+        string $found_text
+    );
 }
 
 

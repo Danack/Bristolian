@@ -162,6 +162,13 @@ function addGenerateCommands(Application $console)
     $command->setDescription("Generate Helper classes, to avoid having to type column names out.");
     $console->add($command);
 
+    $command = new Command(
+        'generate:model_classes',
+        'Bristolian\CliController\GenerateFiles::generateModelClasses'
+    );
+    $command->setDescription("Generate model classes from database schema.");
+    $console->add($command);
+
 
     $command = new Command(
         'generate:datatype_docs',

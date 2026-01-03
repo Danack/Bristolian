@@ -141,9 +141,7 @@ function injectionParams()
 
         \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::class =>
             \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class
-
     ];
-
 
     // Delegate the creation of types to callables.
     $delegates = [

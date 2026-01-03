@@ -6,8 +6,10 @@ use Danack\Console\Application;
 
 // Holds functions that convert exceptions into command
 // line output for use in the command line tools.
-function cliHandleInjectionException(Application $console, \Auryn\InjectionException $ie)
-{
+function cliHandleInjectionException(
+    Application $console,
+    \DI\InjectionException|\Auryn\InjectionException $ie
+) {
     fwrite(STDERR, "time: " . date(\Bristolian\App::DATE_TIME_FORMAT) . " ");
 //    $output = new \Danack\Console\Output\BufferedOutput();
 //    $console->renderException($ie, $output);

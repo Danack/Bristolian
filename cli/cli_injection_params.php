@@ -65,6 +65,9 @@ function injectionParams() : InjectionParams
         \Bristolian\Service\BccTroFetcher\BccTroFetcher::class =>
           \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::class,
 
+        Bristolian\Repo\MemeTextRepo\MemeTextRepo::class =>
+            \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class,
+
         \Bristolian\Repo\BccTroRepo\BccTroRepo::class =>
             \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class,
 
@@ -73,19 +76,17 @@ function injectionParams() : InjectionParams
     // Delegate the creation of types to callables.
     $delegates = [
         \PDO::class => 'createPDOForUser',
-
         \Bristolian\Filesystem\LocalFilesystem::class =>
             'createLocalFilesystem',
+        \Bristolian\Filesystem\LocalCacheFilesystem::class =>
+            'createLocalCacheFilesystem',
         \Bristolian\Filesystem\MemeFilesystem::class =>
             'createMemeFilesystem',
         \Mailgun\Mailgun::class => 'createMailgun',
-
         \Bristolian\Filesystem\UserDocumentsFilesystem::class =>
             'createUserDocumentsFilesystem',
-
         \Redis::class =>
             'createRedis',
-
         \Bristolian\Filesystem\BristolStairsFilesystem::class => 'createBristolStairsFilesystem'
     ];
 
