@@ -6,6 +6,9 @@ use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Filesystem\MemeFilesystem;
 use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Repo\MemeTextRepo\MemeTextRepo;
+use Bristolian\Repo\ProcessorRepo\ProcessType;
+use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
+use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 //private MemeStorageRepo $memeStorageRepo,
 
 class MemeOcr
@@ -15,18 +18,42 @@ class MemeOcr
     public function __construct(
         private MemeFilesystem $memeFilesystem,
         private LocalCacheFilesystem $localCacheFilesystem,
-        private MemeTextRepo $memeTextRepo
+        private MemeTextRepo $memeTextRepo,
+        private ProcessorRunRecordRepo $processorRunRecordRepo,
+        private ProcessorRepo $processorRepo
     ) {
     }
 
     public function process(): void
     {
+        $callable = function () {
+            $this->runInternal();
+        };
+
+        continuallyExecuteCallable(
+            $callable,
+            $secondsBetweenRuns = 5,
+            $sleepTime = 1,
+            $maxRunTime = 600
+        );
+    }
+
+    public function runInternal(): void
+    {
+        if ($this->processorRepo->getProcessorEnabled(ProcessType::meme_ocr) !== true) {
+            echo "ProcessType::meme_ocr is not enabled.\n";
+            return;
+        }
+
+        $run_id = $this->processorRunRecordRepo->startRun(ProcessType::meme_ocr);
+
         // find next image to process in database
         $next_meme = $this->memeTextRepo->getNextMemeToOCR();
 
         if ($next_meme === null) {
             echo "No memes need text generating.\n";
-            return;
+            $debug_info = "No memes need text generating.";
+            goto finish;
         }
 
         try {
@@ -47,7 +74,8 @@ class MemeOcr
                 echo "\n";
             }
             echo "\n";
-            exit(-1);
+            $debug_info = "Failed to download file: " . $unableToReadFile->getMessage();
+            goto finish;
         }
 
 
@@ -56,19 +84,38 @@ class MemeOcr
         $localCacheFilename = $this->localCacheFilesystem->getFullPath() . "/" . $next_meme->normalized_name;
         $filenameToServe = realpath($localCacheFilename);
 
-        // run the OCR,
-        $found_text = $this->run_the_ocr($filenameToServe);
+        try {
+            // run the OCR,
+            $found_text = $this->run_the_ocr($filenameToServe);
 
-        if (strlen($found_text) >= self::MAX_MEME_TEXT_LENGTH) {
-            $found_text = substr($found_text, 0, self::MAX_MEME_TEXT_LENGTH - 1);
+            if (strlen($found_text) >= self::MAX_MEME_TEXT_LENGTH) {
+                $found_text = substr($found_text, 0, self::MAX_MEME_TEXT_LENGTH - 1);
+            }
+
+            $this->memeTextRepo->saveMemeText(
+                $next_meme,
+                $found_text
+            );
+
+            $debug_info = "Processed meme: " . $next_meme->normalized_name;
+        }
+        catch (\Exception $exception) {
+            echo "Failed to process OCR:\n";
+            echo "  " . $exception->getMessage();
+            echo "\n";
+            $previous = $exception->getPrevious();
+
+            if ($previous !== null) {
+                echo "Previous: \n" . $previous->getMessage();
+                echo "\n";
+            }
+            echo "\n";
+            $debug_info = "Failed to process OCR: " . $exception->getMessage();
+            goto finish;
         }
 
-
-        $this->memeTextRepo->saveMemeText(
-            $next_meme,
-            $found_text
-        );
-
+finish:
+        $this->processorRunRecordRepo->setRunFinished($run_id, $debug_info);
     }
 
 

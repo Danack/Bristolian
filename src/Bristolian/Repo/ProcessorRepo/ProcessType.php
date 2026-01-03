@@ -18,4 +18,7 @@ enum ProcessType: string
 
     // Worker task that generates the moon alerts for full moons near sunset
     case moon_alert = "moon_alert";
+
+    // Worker task that processes OCR for memes
+    case meme_ocr = "meme_ocr";
 }
