@@ -90,6 +90,69 @@
       margin: 0 0 1rem 0;
     }
 
+    h5 {
+      margin: 0 0 0.5rem 0;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .selected_tags_box,
+    .suggested_tags_box {
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      background-color: #fff;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+    }
+
+    .tag_list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.35rem 0.75rem;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .suggested_tag {
+      background-color: #e3f2fd;
+      color: #1565c0;
+      border: 1px solid #90caf9;
+
+      &:hover {
+        background-color: #bbdefb;
+        border-color: #64b5f6;
+      }
+
+      &.tag_selected {
+        background-color: #1976d2;
+        color: #fff;
+        border-color: #1565c0;
+
+        &:hover {
+          background-color: #1565c0;
+        }
+      }
+    }
+
+    .selected_tag {
+      background-color: #4caf50;
+      color: #fff;
+      border: 1px solid #388e3c;
+      padding-right: 0.5rem;
+
+      &:hover {
+        background-color: #388e3c;
+      }
+    }
+
     .search_controls {
       display: flex;
       flex-wrap: wrap;

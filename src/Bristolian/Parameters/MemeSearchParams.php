@@ -22,6 +22,8 @@ class MemeSearchParams implements DataType, StaticFactory
         public readonly ?string $tag_type,
         #[OptionalBasicString('text_search')]
         public readonly ?string $text_search,
+        #[OptionalBasicString('tags')]
+        public readonly ?string $tags, // Comma-separated list of exact tag texts to search for
     ) {
     }
 }

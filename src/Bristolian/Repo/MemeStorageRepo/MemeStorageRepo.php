@@ -47,4 +47,17 @@ interface MemeStorageRepo
     ): array;
 
     public function setUploaded(string $meme_id): void;
+
+    /**
+     * Search memes for a user by exact tag texts (all tags must match).
+     * Returns memes that have ALL of the specified tags.
+     *
+     * @param string $user_id
+     * @param string[] $tagTexts Array of exact tag texts to search for
+     * @return Meme[]
+     */
+    public function searchMemesByExactTags(
+        string $user_id,
+        array $tagTexts
+    ): array;
 }

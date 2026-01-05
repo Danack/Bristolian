@@ -126,4 +126,114 @@ SQL;
 
         return $this->pdoSimple->execute($sql, $params);
     }
+
+    /**
+     * @return array<array{text: string, count: int}>
+     */
+    public function getMostCommonTags(
+        string $user_id,
+        int $limit
+    ): array {
+        $sql = <<< SQL
+SELECT 
+    mt.text,
+    COUNT(*) as count
+FROM
+    meme_tag mt
+INNER JOIN stored_meme sm ON mt.meme_id = sm.id
+WHERE
+    sm.user_id = :user_id AND
+    mt.type = :user_tag_type AND
+    sm.state = :state
+GROUP BY
+    mt.text
+ORDER BY
+    count DESC,
+    mt.text ASC
+LIMIT :limit
+SQL;
+
+        $params = [
+            ':user_id' => $user_id,
+            ':user_tag_type' => MemeTagType::USER_TAG->value,
+            ':state' => \Bristolian\Repo\RoomFileObjectInfoRepo\FileState::UPLOADED->value,
+            ':limit' => $limit
+        ];
+
+        $results = $this->pdoSimple->fetchAllAsData($sql, $params);
+        
+        // Convert to expected format
+        $tags = [];
+        foreach ($results as $row) {
+            $tags[] = [
+                'text' => $row['text'],
+                'count' => (int)$row['count']
+            ];
+        }
+        
+        return $tags;
+    }
+
+    /**
+     * @return array<array{text: string, count: int}>
+     */
+    public function getMostCommonTagsForMemes(
+        string $user_id,
+        array $meme_ids,
+        int $limit
+    ): array {
+        if (count($meme_ids) === 0) {
+            return [];
+        }
+
+        // Create placeholders for IN clause
+        $placeholders = [];
+        $params = [
+            ':user_id' => $user_id,
+            ':user_tag_type' => MemeTagType::USER_TAG->value,
+            ':state' => \Bristolian\Repo\RoomFileObjectInfoRepo\FileState::UPLOADED->value,
+            ':limit' => $limit
+        ];
+
+        foreach ($meme_ids as $index => $meme_id) {
+            $placeholder = ':meme_id_' . $index;
+            $placeholders[] = $placeholder;
+            $params[$placeholder] = $meme_id;
+        }
+
+        $inClause = implode(', ', $placeholders);
+
+        $sql = <<< SQL
+SELECT 
+    mt.text,
+    COUNT(*) as count
+FROM
+    meme_tag mt
+INNER JOIN stored_meme sm ON mt.meme_id = sm.id
+WHERE
+    sm.user_id = :user_id AND
+    mt.type = :user_tag_type AND
+    sm.state = :state AND
+    sm.id IN ($inClause)
+GROUP BY
+    mt.text
+ORDER BY
+    count DESC,
+    mt.text ASC
+LIMIT :limit
+SQL;
+
+        $results = $this->pdoSimple->fetchAllAsData($sql, $params);
+        
+        // Convert to expected format
+        $tags = [];
+        foreach ($results as $row) {
+            $tags[] = [
+                'text' => $row['text'],
+                'count' => (int)$row['count']
+            ];
+        }
+        
+        return $tags;
+    }
 }

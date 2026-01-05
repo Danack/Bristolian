@@ -202,6 +202,20 @@ function getAllApiRoutes()
         ], // GetMemeTagsResponse
 
         [
+            '/api/memes/tag-suggestions',
+            'GET',
+            'Bristolian\AppController\User::getMemeTagSuggestions',
+            null,
+        ], // Get most common tags for suggestions
+
+        [
+            '/api/memes/tag-suggestions',
+            'POST',
+            'Bristolian\AppController\User::getMemeTagSuggestions_get',
+            null,
+        ], // EndpointAccessedViaGetResponse
+
+        [
             '/api/user/profile',
             'POST',
             'Bristolian\AppController\Users::updateProfile',

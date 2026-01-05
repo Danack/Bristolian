@@ -19,6 +19,7 @@ use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
 use Bristolian\Response\Typed\GetMemesResponse;
 use Bristolian\Response\GetMemeTagsResponse;
+use Bristolian\Response\GetMemeTagSuggestionsResponse;
 use SlimDispatcher\Response\TextResponse;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
 
@@ -40,9 +41,21 @@ class User
         MemeSearchParams $memeSearchParams,
     ): GetMemesResponse {
         $tag_search_memes = [];
+        $exact_tag_search_memes = [];
         $text_search_memes = [];
 
-        // Search by tags if query is provided
+        // Search by exact tags if tags parameter is provided (comma-separated)
+        if ($memeSearchParams->tags !== null && $memeSearchParams->tags !== '') {
+            $tagTexts = array_filter(array_map('trim', explode(',', $memeSearchParams->tags)));
+            if (count($tagTexts) > 0) {
+                $exact_tag_search_memes = $memeStorageRepo->searchMemesByExactTags(
+                    $appSession->getUserId(),
+                    $tagTexts
+                );
+            }
+        }
+
+        // Search by tags if query is provided (LIKE search for backward compatibility)
         if ($memeSearchParams->query !== null && $memeSearchParams->query !== '') {
             $tag_search_memes = $memeStorageRepo->searchMemesForUser(
                 $appSession->getUserId(),
@@ -68,13 +81,20 @@ class User
             }
         }
 
-        // Combine results (union - memes that match either tag or text search)
+        // Combine results (union - memes that match any search criteria)
         $all_meme_ids = [];
         $memes_by_id = [];
         
-        foreach ($tag_search_memes as $meme) {
+        foreach ($exact_tag_search_memes as $meme) {
             $all_meme_ids[$meme->id] = true;
             $memes_by_id[$meme->id] = $meme;
+        }
+        
+        foreach ($tag_search_memes as $meme) {
+            if (!isset($all_meme_ids[$meme->id])) {
+                $all_meme_ids[$meme->id] = true;
+                $memes_by_id[$meme->id] = $meme;
+            }
         }
         
         foreach ($text_search_memes as $meme) {
@@ -85,7 +105,9 @@ class User
         }
 
         // If no search criteria provided, return all memes
-        if ($memeSearchParams->query === null && $memeSearchParams->text_search === null) {
+        if ($memeSearchParams->query === null && 
+            $memeSearchParams->text_search === null && 
+            ($memeSearchParams->tags === null || $memeSearchParams->tags === '')) {
             $memes = $memeStorageRepo->listMemesForUser($appSession->getUserId());
         } else {
             $memes = array_values($memes_by_id);
@@ -239,5 +261,41 @@ class User
         }
 
         return new JsonNoCacheResponse($data);
+    }
+
+    public function getMemeTagSuggestions(
+        UserSession $userSession,
+        MemeTagRepo $memeTagRepo,
+        Request $request
+    ): GetMemeTagSuggestionsResponse {
+        $queryParams = $request->getQueryParams();
+        $memeIds = [];
+        
+        // If meme_ids parameter is provided, get tags for those specific memes
+        if (isset($queryParams['meme_ids']) && is_string($queryParams['meme_ids'])) {
+            $memeIds = array_filter(array_map('trim', explode(',', $queryParams['meme_ids'])));
+        }
+
+        $limit = isset($queryParams['limit']) ? (int)$queryParams['limit'] : 10;
+
+        if (count($memeIds) > 0) {
+            $tags = $memeTagRepo->getMostCommonTagsForMemes(
+                $userSession->getUserId(),
+                $memeIds,
+                $limit
+            );
+        } else {
+            $tags = $memeTagRepo->getMostCommonTags(
+                $userSession->getUserId(),
+                $limit
+            );
+        }
+
+        return new GetMemeTagSuggestionsResponse($tags);
+    }
+
+    public function getMemeTagSuggestions_get(): EndpointAccessedViaGetResponse
+    {
+        return new EndpointAccessedViaGetResponse();
     }
 }

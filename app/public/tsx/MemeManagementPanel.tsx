@@ -26,6 +26,11 @@ interface MemeInfo {
 
 
 
+interface TagSuggestion {
+    text: string;
+    count: number;
+}
+
 interface MemeManagementPanelState {
     memes: Array<Meme>;
     memeBeingEdited: Meme|null;
@@ -39,6 +44,8 @@ interface MemeManagementPanelState {
     editTagError: string|null;
     searchQuery: string;
     searchTextQuery: string;
+    selectedTags: Array<string>; // Array of tag texts that are selected for search
+    suggestedTags: Array<TagSuggestion>; // Suggested tags to show
     isSearching: boolean;
     timeoutId?: number;
 }
@@ -59,6 +66,8 @@ function getDefaultState(/*initialControlParams: object*/): MemeManagementPanelS
         editTagError: null,
         searchQuery: '',
         searchTextQuery: '',
+        selectedTags: [],
+        suggestedTags: [],
         isSearching: false,
         timeoutId: undefined
     };
@@ -73,6 +82,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
 
     componentDidMount() {
         this.refreshMemes();
+        this.loadSuggestedTags();
         this.keydownHandler = (e: KeyboardEvent) => {
             if (e.key === 'Escape' && this.state.confirmMemeTagDelete !== null) {
                 this.handleCancelDeleteMemeTag();
@@ -105,7 +115,11 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
 
     refreshMemes() {
         api.memes().
-        then((data:GetMemesResponse) => this.processData(data)).
+        then((data:GetMemesResponse) => {
+            this.processData(data);
+            // Load suggested tags when refreshing (showing all memes)
+            this.loadSuggestedTags();
+        }).
         catch((err:any) => {
             console.error("Failed to fetch memes:", err);
         });
@@ -145,6 +159,9 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         if (this.state.searchTextQuery) {
             params.append('text_search', this.state.searchTextQuery);
         }
+        if (this.state.selectedTags.length > 0) {
+            params.append('tags', this.state.selectedTags.join(','));
+        }
 
         const url = '/api/memes/search' + (params.toString() ? '?' + params.toString() : '');
         
@@ -157,6 +174,8 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                     memes: data.data.memes,
                     isSearching: false 
                 });
+                // Update suggested tags based on search results
+                this.loadSuggestedTagsForMemes(data.data.memes);
             })
             .catch((err: any) => {
                 console.error("Failed to search memes:", err);
@@ -176,9 +195,69 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
     clearSearch() {
         this.setState({
             searchQuery: '',
-            searchTextQuery: ''
+            searchTextQuery: '',
+            selectedTags: []
         });
         this.refreshMemes();
+        this.loadSuggestedTags();
+    }
+
+    loadSuggestedTags() {
+        fetch('/api/memes/tag-suggestions?limit=10')
+            .then((response: Response) => response.json())
+            .then((data: any) => {
+                this.setState({ 
+                    suggestedTags: data.data.tags || []
+                });
+            })
+            .catch((err: any) => {
+                console.error("Failed to load suggested tags:", err);
+            });
+    }
+
+    loadSuggestedTagsForMemes(memes: Array<Meme>) {
+        if (memes.length === 0) {
+            this.loadSuggestedTags();
+            return;
+        }
+
+        const memeIds = memes.map(m => m.id).join(',');
+        fetch(`/api/memes/tag-suggestions?meme_ids=${memeIds}&limit=10`)
+            .then((response: Response) => response.json())
+            .then((data: any) => {
+                this.setState({ 
+                    suggestedTags: data.data.tags || []
+                });
+            })
+            .catch((err: any) => {
+                console.error("Failed to load suggested tags for memes:", err);
+            });
+    }
+
+    handleTagClick(tagText: string) {
+        const selectedTags = [...this.state.selectedTags];
+        const index = selectedTags.indexOf(tagText);
+        
+        if (index === -1) {
+            // Add tag
+            selectedTags.push(tagText);
+        } else {
+            // Remove tag
+            selectedTags.splice(index, 1);
+        }
+        
+        this.setState({ selectedTags }, () => {
+            // Perform search after updating selected tags
+            this.performSearch();
+        });
+    }
+
+    handleRemoveSelectedTag(tagText: string) {
+        const selectedTags = this.state.selectedTags.filter(t => t !== tagText);
+        this.setState({ selectedTags }, () => {
+            // Perform search after removing tag
+            this.performSearch();
+        });
     }
 
     processMemeTagData(memeTags: Array<MemeTag>) {
@@ -596,8 +675,49 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
 
         let meme_block = this.renderMemeBlock();
 
+        const selectedTagsBox = this.state.selectedTags.length > 0 ? (
+            <div class="selected_tags_box">
+                <h5>Selected Tags:</h5>
+                <div class="tag_list">
+                    {this.state.selectedTags.map((tagText: string) => (
+                        <span 
+                            key={tagText}
+                            class="tag selected_tag"
+                            onClick={() => this.handleRemoveSelectedTag(tagText)}
+                            title="Click to remove"
+                        >
+                            {tagText} ×
+                        </span>
+                    ))}
+                </div>
+            </div>
+        ) : null;
+
+        const suggestedTagsBox = this.state.suggestedTags.length > 0 ? (
+            <div class="suggested_tags_box">
+                <h5>Suggested Tags:</h5>
+                <div class="tag_list">
+                    {this.state.suggestedTags.map((tag: TagSuggestion) => {
+                        const isSelected = this.state.selectedTags.indexOf(tag.text) !== -1;
+                        return (
+                            <span
+                                key={tag.text}
+                                class={`tag suggested_tag ${isSelected ? 'tag_selected' : ''}`}
+                                onClick={() => this.handleTagClick(tag.text)}
+                                title={`${tag.count} memes (Click to ${isSelected ? 'remove' : 'add'})`}
+                            >
+                                {tag.text} ({tag.count})
+                            </span>
+                        );
+                    })}
+                </div>
+            </div>
+        ) : null;
+
         const searchSection = <div class="meme_search_section">
             <h4>Search Memes</h4>
+            {selectedTagsBox}
+            {suggestedTagsBox}
             <div class="search_controls">
                 <div class="search_input_group">
                     <label>Search by tags:</label>

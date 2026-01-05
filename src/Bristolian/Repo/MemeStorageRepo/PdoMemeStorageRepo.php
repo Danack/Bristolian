@@ -108,6 +108,68 @@ SQL;
         return $memes;
     }
 
+    /**
+     * @return Meme[]
+     */
+    public function searchMemesByExactTags(
+        string $user_id,
+        array $tagTexts
+    ): array {
+        if (count($tagTexts) === 0) {
+            return $this->listMemesForUser($user_id);
+        }
+
+        // Create placeholders for tag texts
+        $tagPlaceholders = [];
+        $params = [
+            ':user_id' => $user_id,
+            ':state' => FileState::UPLOADED->value,
+            ':user_tag_type' => MemeTagType::USER_TAG->value
+        ];
+
+        foreach ($tagTexts as $index => $tagText) {
+            $placeholder = ':tag_text_' . $index;
+            $tagPlaceholders[] = $placeholder;
+            $params[$placeholder] = $tagText;
+        }
+
+        $tagInClause = implode(', ', $tagPlaceholders);
+
+        // Find memes that have ALL of the specified tags
+        // This uses a subquery to count how many of the requested tags each meme has
+        $sql = <<< SQL
+SELECT DISTINCT
+  sm.id,
+  sm.normalized_name,
+  sm.original_filename,
+  sm.state,
+  sm.size,
+  sm.user_id,
+  sm.created_at
+FROM
+  stored_meme sm
+WHERE
+  sm.user_id = :user_id AND
+  sm.state = :state AND
+  (
+    SELECT COUNT(DISTINCT mt.text)
+    FROM meme_tag mt
+    WHERE mt.meme_id = sm.id
+      AND mt.type = :user_tag_type
+      AND mt.text IN ($tagInClause)
+  ) = :tag_count
+SQL;
+
+        $params[':tag_count'] = count($tagTexts);
+
+        $memes = $this->pdo_simple->fetchAllAsObjectConstructor(
+            $sql,
+            $params,
+            Meme::class
+        );
+        return $memes;
+    }
+
     public function storeMeme(
         string $user_id,
         string $normalized_filename,
