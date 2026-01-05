@@ -213,6 +213,14 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
+  .meme_thumbnail {
+    max-width: 200px;
+    max-height: 200px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
   .meme_edit_sidebar {
     flex: 1;
     display: flex;
@@ -262,6 +270,21 @@
         font-size: 0.9rem;
         color: #666;
         font-weight: 500;
+      }
+
+      .input_row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+
+        input[type="text"] {
+          flex: 1;
+          padding: 0.5rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 1rem;
+        }
       }
 
       select,

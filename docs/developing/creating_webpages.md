@@ -738,6 +738,35 @@ Used for API endpoints. Has a separate, smaller set of dependencies.
 - Clean up listeners in `componentWillUnmount()`
 - Extract complex logic into separate functions or utility modules
 
+### 2.1. Event Handlers for Input Fields
+
+**Use `onInput` instead of `onChange` for real-time input handling in Preact.**
+
+In Preact, `onChange` may only fire when an input field loses focus, not on every keystroke. For real-time input handling (e.g., search-as-you-type, live validation), use `onInput` which fires on every keystroke.
+
+**Example:**
+```typescript
+// Good - fires on every keystroke
+<input
+    type="text"
+    value={this.state.searchQuery}
+    onInput={(e) => this.handleSearchQueryChange(e)}
+    placeholder="Search..."
+/>
+
+// Avoid - may only fire on blur
+<input
+    type="text"
+    value={this.state.searchQuery}
+    onChange={(e) => this.handleSearchQueryChange(e)}  // May not fire while typing
+    placeholder="Search..."
+/>
+```
+
+**When to use each:**
+- **`onInput`**: For real-time updates (search, live validation, character counting)
+- **`onChange`**: For form fields where you only need to know when the user finishes editing (though `onInput` works for this too)
+
 ### 3. Styling
 - Scope styles to your component to avoid conflicts
 - Use responsive design principles (mobile-first)

@@ -19,9 +19,29 @@ password: testing
 - `src/Bristolian/AppController/User.php` - Controller methods for meme operations
 - `src/Bristolian/Repo/MemeStorageRepo/PdoMemeStorageRepo.php` - Meme database operations
 - `src/Bristolian/Repo/MemeTagRepo/PdoMemeTagRepo.php` - Meme tag database operations
+- `src/Bristolian/Repo/MemeTextRepo/PdoMemeTextRepo.php` - Meme text (OCR) database operations
 - `src/Bristolian/Parameters/MemeTagParams.php` - Add tag params
 - `src/Bristolian/Parameters/MemeTagUpdateParams.php` - Update tag params
 - `src/Bristolian/Parameters/MemeSearchParams.php` - Search params
+
+## Data Model
+
+### Meme Text Storage
+
+- Meme text (OCR-extracted text from images) is stored in the `meme_text` table
+- Each meme can have associated text stored for search purposes
+- The `meme_text` table links to `stored_meme` via `meme_id`
+
+### Tag Types
+
+- **User Tags**: All tags created by users are of type `"user_tag"`
+  - Users can create, edit, and delete any `user_tag` tags on their memes (not just tags they created)
+  - These are the only tags that users can modify
+  - The `user_id` field in the `meme_tag` table tracks which user created each tag
+  - **Note**: The main purpose of tracking `user_id` when adding tags is to make certain types of sabotage easy to undo (e.g., mass tag adding by a malicious user)
+- **System Tags** (future): Tags like NSFW, age rating, etc. that are managed by the system
+  - Users cannot edit or delete system tags
+  - These will be added in future updates
 
 ## Current Functionality
 
@@ -39,13 +59,14 @@ password: testing
 - Refresh button to reload the meme list
 - Search/filter functionality:
   - Search by tag text content (partial match)
-  - Filter by tag type (text, type, source)
+  - Only searches tags of type `"user_tag"` - system tags are not included in search results and are not visible to users in search
   - Clear button to reset search and show all memes
 - Edit tags functionality for each meme:
-  - View existing tags for a meme
-  - Add new tags with type (text, type, or source) and text content
-  - Edit existing tags via modal dialog
-  - Delete existing tags (with confirmation modal)
+  - View existing tags for a meme (both user tags and system tags, if any)
+  - Add new `user_tag` tags with text content
+  - Edit existing `user_tag` tags via modal dialog (only user tags can be edited)
+  - Delete existing `user_tag` tags (with confirmation modal; only user tags can be deleted)
+  - System tags are displayed but cannot be edited or deleted by users
 
 ### Backend API Endpoints
 
@@ -59,6 +80,8 @@ password: testing
 | `/api/meme-tag-update/` | PUT | Update an existing meme tag |
 | `/api/meme-tag-delete/` | DELETE | Delete a meme tag |
 
-## Not Yet Implemented
+## Future Features
 
-- Meme deletion (soft-delete by setting state to 'deleted')
+- **Meme deletion**: Soft-delete by setting state to 'deleted'
+- **Tag suggestions**: When editing tags for a meme, suggest similar `user_tag` tags based on tags that other memes have that share some tags with the current meme
+- **System tags**: Implementation of non-editable system tags (e.g., NSFW, age rating) that are managed by the system rather than users

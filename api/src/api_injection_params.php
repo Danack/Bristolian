@@ -118,6 +118,11 @@ function apiInjectionParams() : InjectionParams
         \Bristolian\Service\RoomMessageService\RoomMessageService::class =>
             \Bristolian\Service\RoomMessageService\StandardRoomMessageService::class,
 
+        \Bristolian\Repo\MemeTagRepo\MemeTagRepo::class =>
+            \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class,
+
+        \Bristolian\Repo\MemeTextRepo\MemeTextRepo::class =>
+            \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class,
     ];
 
     // Delegate the creation of types to callables.

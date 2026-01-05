@@ -43,13 +43,8 @@ HTML;
             return "You're not logged in, so currently you can't see any memes.";
         }
 
-
-        $content .= "This is the memes page.";
-
         $content .= "<h3>Upload memes</h3>";
         $content .= "<div class='meme_upload_panel' ></div>";
-
-        $content .= "<h3>Meme management</h3>";
         $content .= "<div class='meme_management_panel' ></div>";
 
         return $content;

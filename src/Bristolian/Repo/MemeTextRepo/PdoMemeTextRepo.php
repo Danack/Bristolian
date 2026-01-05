@@ -70,4 +70,37 @@ SQL;
 
         return $meme;
     }
+
+    /**
+     * Search for meme IDs by text content (case-insensitive).
+     * 
+     * @param string $user_id
+     * @param string $search_text
+     * @return array<string> Array of meme IDs
+     */
+    public function searchMemeIdsByText(
+        string $user_id,
+        string $search_text
+    ): array {
+        $sql = <<< SQL
+SELECT DISTINCT
+  sm.id
+FROM
+  stored_meme sm
+JOIN
+  meme_text mt ON sm.id = mt.meme_id
+WHERE
+  sm.user_id = :user_id AND
+  LOWER(mt.text) LIKE LOWER(:search_text)
+SQL;
+
+        $escaped_text = escapeMySqlLikeString($search_text);
+        $params = [
+            ':user_id' => $user_id,
+            ':search_text' => '%' . $escaped_text . '%'
+        ];
+
+        $meme_ids = $this->pdo_simple->fetchAllRowsAsScalar($sql, $params);
+        return $meme_ids;
+    }
 }

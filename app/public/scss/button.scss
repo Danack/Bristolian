@@ -1,4 +1,5 @@
-button {
+button,
+.button {
 
   /* clicking buttons leads to accidental text selection far too often */
   -webkit-user-select: none; /* Safari */

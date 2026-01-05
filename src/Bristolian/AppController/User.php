@@ -9,6 +9,8 @@ use Bristolian\Parameters\MemeTagUpdateParams;
 use Bristolian\Response\SuccessResponse;
 use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Repo\MemeTagRepo\MemeTagRepo;
+use Bristolian\Repo\MemeTagRepo\MemeTagType;
+use Bristolian\Repo\MemeTextRepo\MemeTextRepo;
 use Bristolian\Session\AppSessionManager;
 use Bristolian\Session\UserSession;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -33,14 +35,61 @@ class User
 
     public function searchMemes(
         MemeStorageRepo $memeStorageRepo,
+        MemeTextRepo $memeTextRepo,
         UserSession $appSession,
         MemeSearchParams $memeSearchParams,
     ): GetMemesResponse {
-        $memes = $memeStorageRepo->searchMemesForUser(
-            $appSession->getUserId(),
-            $memeSearchParams->query,
-            $memeSearchParams->tag_type
-        );
+        $tag_search_memes = [];
+        $text_search_memes = [];
+
+        // Search by tags if query is provided
+        if ($memeSearchParams->query !== null && $memeSearchParams->query !== '') {
+            $tag_search_memes = $memeStorageRepo->searchMemesForUser(
+                $appSession->getUserId(),
+                $memeSearchParams->query,
+                MemeTagType::USER_TAG->value
+            );
+        }
+
+        // Search by text if text_search is provided
+        if ($memeSearchParams->text_search !== null && $memeSearchParams->text_search !== '') {
+            $text_search_meme_ids = $memeTextRepo->searchMemeIdsByText(
+                $appSession->getUserId(),
+                $memeSearchParams->text_search
+            );
+
+            // Fetch memes by IDs
+            $text_search_memes = [];
+            foreach ($text_search_meme_ids as $meme_id) {
+                $meme = $memeStorageRepo->getMeme($meme_id);
+                if ($meme !== null) {
+                    $text_search_memes[] = $meme;
+                }
+            }
+        }
+
+        // Combine results (union - memes that match either tag or text search)
+        $all_meme_ids = [];
+        $memes_by_id = [];
+        
+        foreach ($tag_search_memes as $meme) {
+            $all_meme_ids[$meme->id] = true;
+            $memes_by_id[$meme->id] = $meme;
+        }
+        
+        foreach ($text_search_memes as $meme) {
+            if (!isset($all_meme_ids[$meme->id])) {
+                $all_meme_ids[$meme->id] = true;
+                $memes_by_id[$meme->id] = $meme;
+            }
+        }
+
+        // If no search criteria provided, return all memes
+        if ($memeSearchParams->query === null && $memeSearchParams->text_search === null) {
+            $memes = $memeStorageRepo->listMemesForUser($appSession->getUserId());
+        } else {
+            $memes = array_values($memes_by_id);
+        }
 
         return new GetMemesResponse($memes);
     }
@@ -49,10 +98,9 @@ class User
     {
         $content = "";
 
-        $content .= "Meme upload panel:";
+        $content .= "<h2>Here be memes</h2>";
         $content .= "<div class='meme_upload_panel'></div>";
 
-        $content .= "Meme management panel:";
         $content .= "<div class='meme_management_panel'></div>";
 
         return $content;
@@ -90,6 +138,13 @@ class User
 //            return new JsonResponse($data, [], 400);
 //        }
 
+        // Override type to always be 'user_tag' - users can only create user tags
+        $memeTagParam = new MemeTagParams(
+            $memeTagParam->meme_id,
+            MemeTagType::USER_TAG->value,
+            $memeTagParam->text
+        );
+
         $memeTagRepo->addTagForMeme(
             $appSession->getUserId(),
             $memeTagParam
@@ -115,6 +170,13 @@ class User
     ): SuccessResponse {
         $memeTagUpdateParams = MemeTagUpdateParams::createFromRequest($request);
 
+        // Override type to always be 'user_tag' - users can only edit user tags
+        $memeTagUpdateParams = new MemeTagUpdateParams(
+            $memeTagUpdateParams->meme_tag_id,
+            MemeTagType::USER_TAG->value,
+            $memeTagUpdateParams->text
+        );
+
         $memeTagRepo->updateTagForUser(
             $appSession->getUserId(),
             $memeTagUpdateParams
@@ -137,6 +199,9 @@ class User
 //            $data = ['not logged in' => true];
 //            return new JsonResponse($data, [], 400);
 //        }
+
+        // TODO: Add body parsing for DELETE requests. Currently using POST because PHP doesn't parse DELETE request bodies by default.
+        // PHP 8.4+ has request_parse_body() function that could be used, or we could manually parse php://input for DELETE requests.
 
         $memeTagDeleteParam = MemeTagDeleteParams::createFromRequest($request);
 

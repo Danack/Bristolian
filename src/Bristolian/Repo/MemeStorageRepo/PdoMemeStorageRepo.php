@@ -5,6 +5,7 @@ namespace Bristolian\Repo\MemeStorageRepo;
 use Bristolian\Database\stored_meme;
 use Bristolian\Model\Meme;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Repo\MemeTagRepo\MemeTagType;
 use Bristolian\Repo\RoomFileObjectInfoRepo\FileState;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\UploadedFiles\UploadedFile;
@@ -68,6 +69,7 @@ SQL;
             return $this->listMemesForUser($user_id);
         }
 
+        // Always search only user_tag tags - system tags are not visible in search
         $sql = <<< SQL
 SELECT DISTINCT
   sm.id,
@@ -75,29 +77,27 @@ SELECT DISTINCT
   sm.original_filename,
   sm.state,
   sm.size,
-  sm.user_id
+  sm.user_id,
+    sm.created_at
 FROM
   stored_meme sm
 JOIN
   meme_tag mt ON sm.id = mt.meme_id
 WHERE
   sm.user_id = :user_id AND
-  sm.state = :state
+  sm.state = :state AND
+  mt.type = :user_tag_type
 SQL;
 
         $params = [
             ':user_id' => $user_id,
-            ':state' => FileState::UPLOADED->value
+            ':state' => FileState::UPLOADED->value,
+            ':user_tag_type' => MemeTagType::USER_TAG->value
         ];
 
         if ($query !== null && $query !== '') {
             $sql .= " AND mt.text LIKE :query";
             $params[':query'] = '%' . $query . '%';
-        }
-
-        if ($tag_type !== null && $tag_type !== '') {
-            $sql .= " AND mt.type = :tag_type";
-            $params[':tag_type'] = $tag_type;
         }
 
         $memes = $this->pdo_simple->fetchAllAsObjectConstructor(

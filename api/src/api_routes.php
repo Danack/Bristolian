@@ -161,7 +161,7 @@ function getAllApiRoutes()
 
         [
             '/api/meme-tag-delete/',
-            'DELETE',
+            'POST',
             'Bristolian\AppController\User::handleMemeTagDelete',
             null
         ], // Change to Success Response, and remove early optimisation of

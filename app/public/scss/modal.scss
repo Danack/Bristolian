@@ -25,6 +25,23 @@
     padding: 20px;
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
+
+    &.delete-modal-content {
+      width: auto;
+      max-width: 400px;
+      min-width: 300px;
+      text-align: center;
+
+      .delete-modal-text {
+        margin-bottom: 1.5rem;
+      }
+
+      .modal-buttons {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: center;
+      }
+    }
   }
 
   .close:hover,

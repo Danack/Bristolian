@@ -152,10 +152,12 @@ function generate_model_class(string $tableName, array $columns_info, string $ou
     $contents .= "// Auto-generated file do not edit\n\n";
     $contents .= "// generated with 'php cli.php generate:model_classes'\n\n";
     $contents .= "namespace Bristolian\\Model\\Generated;\n\n";
-    $contents .= "use Bristolian\\ToArray;\n\n";
+    $contents .= "use Bristolian\\FromArray;\n";
+    $contents .= "use Bristolian\\ToString;\n\n";
     $contents .= "class $className\n";
     $contents .= "{\n";
-    $contents .= "    use ToArray;\n\n";
+    $contents .= "    use FromArray;\n";
+    $contents .= "    use ToString;\n\n";
 
     // Generate constructor parameters
     $constructorParams = [];
