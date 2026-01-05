@@ -99,6 +99,21 @@ function addDebugCommands(Application $console)
     $command->setDescription("Test sending message to a room.");
     $command->addArgument('message', InputArgument::REQUIRED, "The message to send");
     $console->add($command);
+
+    // Add a meme file with optional tags and text
+    // Usage examples:
+    //   php cli.php debug:add_meme /path/to/image.jpg
+    //   php cli.php debug:add_meme /path/to/image.jpg "tag1,tag2,tag3"
+    //   php cli.php debug:add_meme /path/to/image.jpg "tag1,tag2" "OCR extracted text content"
+    $command = new Command(
+        'debug:add_meme',
+        'Bristolian\CliController\Debug::add_meme'
+    );
+    $command->setDescription("Add a meme file with optional tags and text.");
+    $command->addArgument('file_path', InputArgument::REQUIRED, "Path to the meme file to upload");
+    $command->addArgument('tags', InputArgument::OPTIONAL, "Comma-separated list of tags to add");
+    $command->addArgument('text', InputArgument::OPTIONAL, "Text content for the meme (OCR text)");
+    $console->add($command);
 }
 
 function addSeedCommands(Application $console)

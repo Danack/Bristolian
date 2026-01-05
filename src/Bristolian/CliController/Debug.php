@@ -4,16 +4,28 @@ namespace Bristolian\CliController;
 
 use Bristolian\App;
 use Bristolian\Model\Chat\UserChatMessage;
+use Bristolian\Model\Generated\StoredMeme;
 use Bristolian\Model\WebPushNotification;
 use Bristolian\Parameters\ChatMessageParam;
+use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\PropertyType\BasicString;
 use Bristolian\Parameters\PropertyType\ChatMessageReplyId;
+use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\AdminRepo\AdminRepo;
+use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
+use Bristolian\Repo\MemeTagRepo\MemeTagRepo;
+use Bristolian\Repo\MemeTagRepo\MemeTagType;
+use Bristolian\Repo\MemeTextRepo\MemeTextRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
+use Bristolian\Service\MemeStorageProcessor\MemeStorageProcessor;
+use Bristolian\Service\MemeStorageProcessor\UploadError;
+use Bristolian\Service\ObjectStore\MemeObjectStore;
 use Bristolian\Service\WebPushService\WebPushService;
 use Bristolian\Keys\RoomMessageKey;
 use Bristolian\Service\RoomMessageService\RoomMessageService;
 use Bristolian\ChatMessage\ChatType;
+use Bristolian\UploadedFiles\UploadedFile;
+use Bristolian\Database\stored_meme;
 
 
 function fn_level_1(): void
@@ -121,5 +133,99 @@ class Debug
             'Victor',
             'Walter',
         ];
+    }
+
+    /**
+     * Add a meme file with optional tags and text.
+     * 
+     * Usage examples:
+     *   php cli.php debug:add_meme /path/to/image.jpg
+     *   php cli.php debug:add_meme /path/to/image.jpg "tag1,tag2,tag3"
+     *   php cli.php debug:add_meme /path/to/image.jpg "tag1,tag2" "OCR extracted text content"
+     * 
+     * @param AdminRepo $adminRepo
+     * @param MemeStorageProcessor $memeStorageProcessor
+     * @param MemeObjectStore $memeObjectStore
+     * @param MemeTagRepo $memeTagRepo
+     * @param MemeTextRepo $memeTextRepo
+     * @param PdoSimple $pdoSimple
+     * @param string $file_path Path to the meme file to upload
+     * @param string|null $tags Comma-separated list of tags to add (e.g., "funny,memes,cats")
+     * @param string|null $text Text content for the meme (OCR text)
+     */
+    public function add_meme(
+        AdminRepo $adminRepo,
+        MemeStorageProcessor $memeStorageProcessor,
+        MemeObjectStore $memeObjectStore,
+        MemeTagRepo $memeTagRepo,
+        MemeTextRepo $memeTextRepo,
+        PdoSimple $pdoSimple,
+        string $file_path,
+        ?string $tags = null,
+        ?string $text = null,
+    ): void {
+        $user_id = $adminRepo->getAdminUserId(getAdminEmailAddress());
+        if ($user_id === null) {
+            echo "Failed to find admin user\n";
+            exit(-1);
+        }
+
+        if (!file_exists($file_path)) {
+            echo "File not found: $file_path\n";
+            exit(-1);
+        }
+
+        $uploadedFile = UploadedFile::fromFile($file_path);
+
+        $storedFileOrError = $memeStorageProcessor->storeMemeForUser(
+            $user_id,
+            $uploadedFile,
+            get_supported_meme_file_extensions(),
+            $memeObjectStore
+        );
+
+        if ($storedFileOrError instanceof UploadError) {
+            echo "Failed to store meme: " . $storedFileOrError->error_message . "\n";
+            exit(-1);
+        }
+
+        $meme_id = $storedFileOrError->meme_id;
+        echo "Meme stored with ID: $meme_id\n";
+
+        // Get StoredMeme object for text storage
+        $sql = stored_meme::SELECT . " where id = :id";
+        $storedMeme = $pdoSimple->fetchOneAsObjectOrNullConstructor(
+            $sql,
+            [':id' => $meme_id],
+            StoredMeme::class
+        );
+
+        if ($storedMeme === null) {
+            echo "Warning: Could not retrieve stored meme for text storage\n";
+        }
+
+        // Add tags if provided
+        if ($tags !== null && $tags !== '') {
+            $tagList = array_map('trim', explode(',', $tags));
+            foreach ($tagList as $tagText) {
+                if ($tagText !== '') {
+                    $memeTagParam = new MemeTagParams(
+                        $meme_id,
+                        MemeTagType::USER_TAG->value,
+                        $tagText
+                    );
+                    $memeTagRepo->addTagForMeme($user_id, $memeTagParam);
+                    echo "Added tag: $tagText\n";
+                }
+            }
+        }
+
+        // Save text if provided
+        if ($text !== null && $text !== '' && $storedMeme !== null) {
+            $memeTextRepo->saveMemeText($storedMeme, $text);
+            echo "Saved text for meme\n";
+        }
+
+        echo "Meme added successfully\n";
     }
 }

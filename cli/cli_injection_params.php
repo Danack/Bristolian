@@ -71,6 +71,21 @@ function injectionParams() : InjectionParams
         \Bristolian\Repo\BccTroRepo\BccTroRepo::class =>
             \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class,
 
+        \Bristolian\Service\MemeStorageProcessor\MemeStorageProcessor::class =>
+            \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::class,
+
+        \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::class =>
+            \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class,
+
+        \Bristolian\Service\ObjectStore\MemeObjectStore::class =>
+            \Bristolian\Service\ObjectStore\StandardMemeObjectStore::class,
+
+        \Bristolian\Repo\MemeTagRepo\MemeTagRepo::class =>
+            \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class,
+
+        \Bristolian\Repo\MemeTextRepo\MemeTextRepo::class =>
+            \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class,
+
     ];
 
     // Delegate the creation of types to callables.
