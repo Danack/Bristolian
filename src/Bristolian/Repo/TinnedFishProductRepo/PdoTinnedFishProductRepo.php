@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Bristolian\Repo\TinnedFishProductRepo;
 
+use Bristolian\Database\tinned_fish_product;
 use Bristolian\Model\TinnedFish\Product;
-use Bristolian\PdoSimple;
+use Bristolian\PdoSimple\PdoSimple;
 
 /**
  * PDO-based implementation of TinnedFishProductRepo.
@@ -20,22 +21,8 @@ class PdoTinnedFishProductRepo implements TinnedFishProductRepo
 
     public function getByBarcode(string $barcode): ?Product
     {
-        $sql = <<<SQL
-SELECT
-    id,
-    barcode,
-    name,
-    brand,
-    species,
-    weight,
-    weight_drained,
-    product_code,
-    image_url,
-    created_at,
-    updated_at
-FROM tinned_fish_product
-WHERE barcode = :barcode
-SQL;
+        $sql = tinned_fish_product::SELECT;
+        $sql .= " WHERE barcode = :barcode";
 
         $row = $this->pdo_simple->fetchOneAsDataOrNull(
             $sql,

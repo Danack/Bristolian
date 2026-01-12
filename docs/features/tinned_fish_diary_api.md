@@ -48,3 +48,12 @@ This feature provides a REST API for the Tinned Fish Diary mobile app to look up
 ### Configuration
 - `api/src/api_routes.php` - Route registration
 - `api/src/api_injection_params.php` - Dependency injection config
+- `test/test_injection_params.php` - Test dependency injection config
+
+### Tests
+- `test/BristolianTest/Repo/TinnedFishProductRepo/PdoTinnedFishProductRepoTest.php` - Repository tests
+- `test/BristolianTest/Service/TinnedFish/ProductNormalizerTest.php` - Normalizer tests
+- `test/BristolianTest/Parameters/TinnedFish/BarcodeLookupParamsTest.php` - Parameter tests
+- `test/BristolianTest/Parameters/ProcessRule/StringToBoolDefaultTrueTest.php` - ProcessRule tests
+- `test/BristolianTest/Model/TinnedFish/ProductErrorTest.php` - ProductError model tests
+- `test/BristolianTest/Model/TinnedFish/CopyrightTest.php` - Copyright model tests

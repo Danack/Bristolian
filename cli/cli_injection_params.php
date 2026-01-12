@@ -84,7 +84,7 @@ function injectionParams() : InjectionParams
             \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class,
 
         \Bristolian\Repo\MemeTextRepo\MemeTextRepo::class =>
-            \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class, q
+            \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class,
 
     ];
 

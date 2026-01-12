@@ -73,6 +73,39 @@ These tests ensure the class properly implements the expected contracts.
 
 ## General Testing Guidelines
 
+### DataProviders
+
+When tests have multiple input/output cases, use PHPUnit DataProviders to separate test data from test logic.
+
+**Naming convention:**
+- DataProvider method name should be `provides_` + test method name (without `test_` prefix)
+- Example: Test method `test_parses_weight_formats` → DataProvider `provides_parses_weight_formats`
+
+**Use `yield` instead of returning arrays:**
+
+```php
+public static function provides_parses_weight_formats(): \Generator
+{
+    yield 'with space' => ['125 g', 125.0];
+    yield 'without space' => ['125g', 125.0];
+    yield 'decimal with comma' => ['125,5 g', 125.5];
+}
+
+/**
+ * @dataProvider provides_parses_weight_formats
+ */
+public function test_parses_weight_formats(string $input, float $expected): void
+{
+    // Test implementation
+}
+```
+
+**Benefits of using `yield`:**
+- Cleaner syntax with less nesting
+- Each case is clearly labeled
+- Easier to add/remove cases
+- Better memory efficiency for large datasets
+
 ### Use Real Objects, Not Mocks
 
 **Never use mock objects in tests.** This project uses real objects and Fake implementations instead of mocking frameworks.
