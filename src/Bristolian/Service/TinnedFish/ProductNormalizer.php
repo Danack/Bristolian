@@ -75,7 +75,7 @@ class ProductNormalizer
         // Try to extract drained weight
         // Patterns: "égoutté: 90g", "drained: 90g", "(90g drained)", "net wt 90g"
         $drainedPatterns = [
-            '/[ée]goutt[ée]\s*:?\s*(\d+(?:[.,]\d+)?)\s*g/i',
+            '/[ée]goutt[ée]\s*:?\s*(\d+(?:[.,]\d+)?)\s*g/iu',
             '/drained\s*:?\s*(\d+(?:[.,]\d+)?)\s*g/i',
             '/\((\d+(?:[.,]\d+)?)\s*g\s*drained\)/i',
             '/net\s*(?:wt|weight)\s*:?\s*(\d+(?:[.,]\d+)?)\s*g/i',

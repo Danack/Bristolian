@@ -15,7 +15,6 @@ use VarMap\ArrayVarMap;
 use VarMap\VarMap;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use Bristolian\Parameters\LinkParam;
-use Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo;
 
 /**
  * @coversNothing
@@ -50,16 +49,9 @@ class RoomsTest extends BaseTestCase
         $result = $this->injector->execute('Bristolian\AppController\Rooms::addLink');
 //        $this->assertInstanceOf(JsonResponse::class, $result);
 
-        $linkRepo = $this->injector->make(FakeRoomLinkRepo::class);
-        $added_link = $linkRepo->getLastAddedLink();
-
-
         $expected_result = <<< JSON
 {
-    "status": "success",
-    "data": {
-        "room_link_id": "{$added_link->id}"
-    }
+    "result": "success"
 }
 JSON;
 

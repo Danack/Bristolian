@@ -840,6 +840,25 @@ $html = esprintf($template, $params);
 - Consider caching strategies for frequently accessed data
 - **Never fetch data inside render loops** - this causes performance issues and multiple API calls on every render. Use `componentDidMount()` or `componentDidUpdate()` instead, or implement proper caching strategies
 
+### 6. PHP Coding Guidelines
+
+**Regular Expressions - Always use the `u` modifier:**
+
+When writing regex patterns in PHP, always include the `u` modifier to enable proper UTF-8 handling. Without this modifier, multi-byte characters (like accented letters `é`, `ü`, `ñ`) may not match correctly.
+
+```php
+// Good - UTF-8 safe
+preg_match('/[ée]goutt[ée]/u', $text, $matches);
+
+// Bad - may fail with UTF-8 characters
+preg_match('/[ée]goutt[ée]/', $text, $matches);
+```
+
+The `u` modifier:
+- Treats the pattern and subject strings as UTF-8
+- Ensures character classes like `[ée]` work correctly with multi-byte characters
+- Required when matching any non-ASCII characters (accents, umlauts, etc.)
+
 ## Example: Creating a Simple "Hello World" Page
 
 ### 1. Add the route

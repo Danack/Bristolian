@@ -162,6 +162,35 @@ public function testWithPdfFile(): void
 
 **Do not create temporary files with `sys_get_temp_dir()` or similar** - use the existing test fixtures instead.
 
+## Running PHP Tests
+
+### Running All PHPUnit Tests
+
+```bash
+docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh"
+```
+
+### Running Specific Tests
+
+Use the `--filter` option to run specific tests by name:
+
+```bash
+# Run a specific test method
+docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c test/phpunit.xml --filter testRooms_addLink_working"
+
+# Run all tests in a specific test class
+docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c test/phpunit.xml --filter RoomsTest"
+
+# Run tests matching a pattern
+docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c test/phpunit.xml --filter 'testRooms_'"
+```
+
+### Running a Specific Test File
+
+```bash
+docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c test/phpunit.xml test/BristolianTest/AppController/RoomsTest.php"
+```
+
 ## JavaScript/TypeScript Testing
 
 ### Running Jest Tests
