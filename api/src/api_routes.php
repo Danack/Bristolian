@@ -377,6 +377,16 @@ function getAllApiRoutes()
             'Bristolian\ApiController\Index::getRouteList',
             null
         ], // maybe extract a shape? Not sure I care.
+
+        // Tinned Fish Diary API
+        [
+            '/api/tfd/v1/products/barcode/{barcode:.*}',
+            'GET',
+            'Bristolian\ApiController\TinnedFish::getProductByBarcode',
+            [
+                ['product', \Bristolian\Model\TinnedFish\Product::class, false]
+            ]
+        ], // ProductLookupResponse | ProductNotFoundResponse | InvalidBarcodeResponse | ExternalApiErrorResponse
     ];
 
 }
