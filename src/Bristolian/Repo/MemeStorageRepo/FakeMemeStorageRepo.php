@@ -94,4 +94,9 @@ class FakeMemeStorageRepo implements MemeStorageRepo
     {
         return $this->storedMemes;
     }
+
+    public function searchMemesByExactTags(string $user_id, array $tagTexts): array
+    {
+        throw new \Exception("Implement searchMemesByExactTags() method.");
+    }
 }
