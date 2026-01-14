@@ -2,11 +2,11 @@
 
 namespace BristolianTest\Service\BccTroFetcher;
 
-use BristolianTest\BaseTestCase;
-use Bristolian\Service\BccTroFetcher\StandardBccTroFetcher;
 use Bristolian\Filesystem\LocalCacheFilesystem;
-use Bristolian\Model\BccTro;
-use Bristolian\Model\BccTroDocument;
+use Bristolian\Model\Types\BccTro;
+use Bristolian\Model\Types\BccTroDocument;
+use Bristolian\Service\BccTroFetcher\StandardBccTroFetcher;
+use BristolianTest\BaseTestCase;
 
 /**
  * @covers \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher

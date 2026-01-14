@@ -2,11 +2,10 @@
 
 namespace Bristolian\Repo\RoomLinkRepo;
 
-use Bristolian\App;
 use Bristolian\Parameters\LinkParam;
-use Bristolian\Model\RoomLink;
 use Bristolian\Repo\LinkRepo\LinkRepo;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Model\Generated\RoomLink;
 
 class FakeRoomLinkRepo implements RoomLinkRepo
 {
@@ -59,13 +58,11 @@ class FakeRoomLinkRepo implements RoomLinkRepo
 
         $roomLink = new RoomLink(
             $id,
-            $link_id,
-            $linkParam->url,
-            $title = $linkParam->title,
-            $description = $linkParam->description,
             $room_id,
-            $user_id,
-            $created_at = $time
+            $link_id,
+            $linkParam->title,
+            $linkParam->description,
+            $time
         );
 
         $this->roomLinks[] = $roomLink;

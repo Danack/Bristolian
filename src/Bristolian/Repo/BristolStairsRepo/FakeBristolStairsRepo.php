@@ -3,9 +3,9 @@
 namespace Bristolian\Repo\BristolStairsRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
+use Bristolian\Model\Generated\BristolStairInfo;
 
 class FakeBristolStairsRepo implements BristolStairsRepo
 {
@@ -20,9 +20,9 @@ class FakeBristolStairsRepo implements BristolStairsRepo
         $this->stairs = [
             new BristolStairInfo(
                 '1',
-                '51.4556',
-                '-2.5943',
                 'Steep stairs near Park Street',
+                51.4556,
+                -2.5943,
                 'fake_image_1',
                 45,
                 0,
@@ -31,9 +31,9 @@ class FakeBristolStairsRepo implements BristolStairsRepo
             ),
             new BristolStairInfo(
                 '2',
-                '51.4516',
-                '-2.5883',
                 'Historic stairs near Harbourside',
+                51.4516,
+                -2.5883,
                 'fake_image_2',
                 32,
                 0,
@@ -42,9 +42,9 @@ class FakeBristolStairsRepo implements BristolStairsRepo
             ),
             new BristolStairInfo(
                 '3',
-                '51.4576',
-                '-2.5963',
                 'Modern stairs at Clifton Triangle',
+                51.4576,
+                -2.5963,
                 'fake_image_3',
                 28,
                 0,
@@ -66,8 +66,8 @@ class FakeBristolStairsRepo implements BristolStairsRepo
 
         $stair_info = new BristolStairInfo(
             $new_id,
-            (string)$latitude,
-            (string)$longitude,
+            $latitude,
+            $longitude,
             $description,
             $stored_stair_image_file_id,
             $steps,

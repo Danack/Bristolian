@@ -3,12 +3,11 @@
 namespace Bristolian\Repo\BristolStairsRepo;
 
 use Bristolian\Database\bristol_stair_info;
-use Bristolian\Model\BristolStairInfo;
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
 use Bristolian\PdoSimple\PdoSimple;
-use Ramsey\Uuid\Uuid;
-use Bristolian\Exception\ContentNotFoundException;
+use Bristolian\Model\Generated\BristolStairInfo;
 
 class PdoBristolStairsRepo implements BristolStairsRepo
 {
@@ -131,6 +130,7 @@ SQL;
             $sql,
             [':id' => $id],
             BristolStairInfo::class
+
         );
     }
 

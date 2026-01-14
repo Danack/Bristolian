@@ -2,12 +2,12 @@
 
 namespace Bristolian\ApiController;
 
-use SlimDispatcher\Response\JsonResponse;
-use Bristolian\Service\Mailgun\PayloadValidator;
-use VarMap\VarMap;
 use Bristolian\App;
+use Bristolian\Model\Types\IncomingEmailParam;
 use Bristolian\Response\SuccessResponse;
-use Bristolian\Model\IncomingEmailParam;
+use Bristolian\Service\Mailgun\PayloadValidator;
+use SlimDispatcher\Response\JsonResponse;
+use VarMap\VarMap;
 
 class MailgunEmailHandler
 {

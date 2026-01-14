@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\MemeStorageRepo;
 
 use Bristolian\Database\stored_meme;
-use Bristolian\Model\Meme;
+use Bristolian\Model\Types\Meme;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\MemeTagRepo\MemeTagType;
 use Bristolian\Repo\RoomFileObjectInfoRepo\FileState;

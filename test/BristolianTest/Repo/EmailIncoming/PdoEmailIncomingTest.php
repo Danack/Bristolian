@@ -2,9 +2,9 @@
 
 namespace BristolianTest\Repo\EmailIncoming;
 
-use BristolianTest\BaseTestCase;
+use Bristolian\Model\Types\IncomingEmailParam;
 use Bristolian\Repo\EmailIncoming\PdoEmailIncoming;
-use Bristolian\Model\IncomingEmailParam;
+use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 
 /**

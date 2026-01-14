@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\LinkRepo;
 
-use Bristolian\Model\Link;
+use \Bristolian\Model\Generated\Link;
 use Ramsey\Uuid\Uuid;
 
 class FakeLinkRepo implements LinkRepo
@@ -26,7 +26,7 @@ class FakeLinkRepo implements LinkRepo
             $id,
             $user_id,
             $url,
-            $created_at = $datetime->format("Y-m-d H:i:s")
+            $created_at = $datetime //->format("Y-m-d H:i:s")
         );
 
         return $id;

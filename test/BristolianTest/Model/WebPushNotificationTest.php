@@ -2,8 +2,8 @@
 
 namespace BristolianTest\Model;
 
+use Bristolian\Model\Types\WebPushNotification;
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\WebPushNotification;
 
 /**
  * @coversNothing
@@ -11,7 +11,7 @@ use Bristolian\Model\WebPushNotification;
 class WebPushNotificationTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\WebPushNotification
+     * @covers \Bristolian\Model\Types\WebPushNotification
      */
     public function testCreate()
     {
@@ -25,7 +25,7 @@ class WebPushNotificationTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\WebPushNotification
+     * @covers \Bristolian\Model\Types\WebPushNotification
      */
     public function testGetters()
     {

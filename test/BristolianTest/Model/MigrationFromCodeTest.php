@@ -2,8 +2,8 @@
 
 namespace BristolianTest\Model;
 
+use Bristolian\Model\Types\MigrationFromCode;
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\MigrationFromCode;
 
 /**
  * @coversNothing
@@ -11,7 +11,7 @@ use Bristolian\Model\MigrationFromCode;
 class MigrationFromCodeTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\MigrationFromCode
+     * @covers \Bristolian\Model\Types\MigrationFromCode
      */
     public function testConstruct()
     {

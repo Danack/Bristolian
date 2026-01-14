@@ -3,7 +3,6 @@
 namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\Meme;
 
 /**
  * @coversNothing
@@ -11,7 +10,7 @@ use Bristolian\Model\Meme;
 class MemeTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\Meme
+     * @covers \Bristolian\Model\Types\Meme
      */
     public function testConstruct()
     {
@@ -40,7 +39,7 @@ class MemeTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\Meme
+     * @covers \Bristolian\Model\Types\Meme
      */
     public function testToArray()
     {

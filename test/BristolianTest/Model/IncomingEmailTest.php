@@ -2,8 +2,8 @@
 
 namespace BristolianTest\Model;
 
+use Bristolian\Model\Types\IncomingEmailParam;
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\IncomingEmailParam;
 
 /**
  * @coversNothing
@@ -11,7 +11,7 @@ use Bristolian\Model\IncomingEmailParam;
 class IncomingEmailTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\IncomingEmailParam
+     * @covers \Bristolian\Model\Types\IncomingEmailParam
      */
     public function testWorks()
     {

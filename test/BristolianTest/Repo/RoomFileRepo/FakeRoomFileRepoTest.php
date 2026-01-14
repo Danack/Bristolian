@@ -2,9 +2,9 @@
 
 namespace BristolianTest\Repo\RoomFileRepo;
 
-use Bristolian\Model\StoredFile;
-use BristolianTest\BaseTestCase;
 use Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo;
+use BristolianTest\BaseTestCase;
+use StoredFile;
 
 /**
  * Tests for FakeRoomFileRepo

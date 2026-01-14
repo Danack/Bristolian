@@ -101,7 +101,7 @@ class SourceLinkTextTest extends BaseTestCase
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/text_input' => Messages::STRING_REQUIRED_FOUND_NULL]
+                ['/text_input' => Messages::STRING_EXPECTED]
             );
         }
     }

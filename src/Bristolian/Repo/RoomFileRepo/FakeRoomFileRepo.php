@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\RoomFileRepo;
 
-use Bristolian\Model\StoredFile;
+use StoredFile;
 
 class FakeRoomFileRepo implements RoomFileRepo
 {

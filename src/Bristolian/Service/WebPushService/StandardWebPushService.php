@@ -2,7 +2,7 @@
 
 namespace Bristolian\Service\WebPushService;
 
-use Bristolian\Model\WebPushNotification;
+use Bristolian\Model\Types\WebPushNotification;
 use Minishlink\WebPush\Subscription;
 use Minishlink\WebPush\WebPush;
 
@@ -10,8 +10,8 @@ class StandardWebPushService implements WebPushService
 {
     /**
      * @param WebPushNotification $webPushNotification
-     * @param \Bristolian\Model\UserWebPushSubscription[] $userWebPushSubscriptions
-     * @return \Bristolian\Model\UserWebPushSubscription[]
+     * @param \Bristolian\Model\Types\UserWebPushSubscription[] $userWebPushSubscriptions
+     * @return \Bristolian\Model\Types\UserWebPushSubscription[]
      * @throws \ErrorException
      */
     public function sendWebPushToSubscriptions(

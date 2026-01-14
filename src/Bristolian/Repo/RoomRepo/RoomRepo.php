@@ -2,7 +2,8 @@
 
 namespace Bristolian\Repo\RoomRepo;
 
-use Bristolian\Model\Room;
+use Bristolian\Model\Generated\Room;
+
 
 interface RoomRepo
 {

@@ -4,7 +4,6 @@ namespace Bristolian\CliController;
 
 use Bristolian\Config\Config;
 use Bristolian\Exception\BristolianException;
-use Bristolian\Model\Chat\UserChatMessage;
 use PDO;
 
 function generate_table_strings($sorted_column_names)
@@ -513,16 +512,16 @@ class GenerateFiles
         $content .= "import { DateToString, convertDatesFromStrings } from '../functions';\n\n";
 
         $types = [
-            \Bristolian\Model\BristolStairInfo::class,
+            \BristolStairInfo::class,
             \Bristolian\Model\Chat\UserChatMessage::class,
             \Bristolian\Model\Chat\SystemChatMessage::class,
 
-            \Bristolian\Model\IncomingEmail::class,
-            \Bristolian\Model\Meme::class,
-            \Bristolian\Model\ProcessorRunRecord::class,
-            \Bristolian\Model\RoomLink::class,
-            \Bristolian\Model\RoomSourceLink::class,
-            \Bristolian\Model\StoredFile::class,
+            \Bristolian\Model\Types\IncomingEmail::class,
+            \Bristolian\Model\Types\Meme::class,
+            \ProcessorRunRecord::class,
+            \RoomLink::class,
+            \RoomSourceLink::class,
+            \StoredFile::class,
         ];
 
         $conversionFunctions = '';

@@ -2,8 +2,8 @@
 
 namespace Bristolian\Repo\BristolStairImageStorageInfoRepo;
 
-use Bristolian\Model\BristolStairImageFile;
 use Bristolian\UploadedFiles\UploadedFile;
+use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
 use Ramsey\Uuid\Uuid;
 
 class FakeBristolStairImageStorageInfoRepo implements BristolStairImageStorageInfoRepo

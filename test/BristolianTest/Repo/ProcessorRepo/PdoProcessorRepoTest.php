@@ -2,7 +2,7 @@
 
 namespace BristolianTest\Repo\ProcessorRepo;
 
-use Bristolian\Model\ProcessorState;
+use Bristolian\Model\Types\ProcessorState;
 use Bristolian\Repo\ProcessorRepo\PdoProcessorRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use BristolianTest\BaseTestCase;

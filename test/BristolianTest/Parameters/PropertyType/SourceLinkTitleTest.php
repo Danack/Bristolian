@@ -99,7 +99,7 @@ class SourceLinkTitleTest extends BaseTestCase
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/title_input' => Messages::STRING_REQUIRED_FOUND_NULL]
+                ['/title_input' => Messages::STRING_EXPECTED]
             );
         }
     }

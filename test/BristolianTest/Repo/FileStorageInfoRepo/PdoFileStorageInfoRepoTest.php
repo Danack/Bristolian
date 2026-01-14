@@ -2,11 +2,9 @@
 
 namespace BristolianTest\Repo\FileStorageInfoRepo;
 
-use Bristolian\Model\Meme;
+use Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
-
-use Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use Ramsey\Uuid\Uuid;
 

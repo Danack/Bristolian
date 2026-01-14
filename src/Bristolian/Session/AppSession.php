@@ -3,7 +3,7 @@
 namespace Bristolian\Session;
 
 use Asm\Session as RawSession;
-use Bristolian\Model\AdminUser;
+use Bristolian\Model\Types\AdminUser;
 
 /**
  * This class is only instantiable if the user is logged in.

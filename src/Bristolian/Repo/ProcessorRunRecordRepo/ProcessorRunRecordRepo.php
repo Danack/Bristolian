@@ -22,7 +22,7 @@ interface ProcessorRunRecordRepo
 
     /**
      * @param ProcessType|null $processType
-     * @return \Bristolian\Model\ProcessorRunRecord[]
+     * @return \ProcessorRunRecord[]
      */
     public function getRunRecords(ProcessType|null $processType): array;
 }

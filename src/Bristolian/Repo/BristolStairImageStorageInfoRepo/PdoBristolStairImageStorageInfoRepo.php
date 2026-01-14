@@ -3,11 +3,10 @@
 namespace Bristolian\Repo\BristolStairImageStorageInfoRepo;
 
 use Bristolian\Database\stair_image_object_info;
-use Bristolian\Model\BristolStairImageFile;
-use Bristolian\Model\BristolStairInfo;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\UploadedFiles\UploadedFile;
+use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
 use Ramsey\Uuid\Uuid;
 
 class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInfoRepo

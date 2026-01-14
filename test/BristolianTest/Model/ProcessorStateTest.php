@@ -2,8 +2,8 @@
 
 namespace BristolianTest\Model;
 
+use Bristolian\Model\Types\ProcessorState;
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\ProcessorState;
 
 /**
  * @coversNothing
@@ -11,7 +11,7 @@ use Bristolian\Model\ProcessorState;
 class ProcessorStateTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\ProcessorState
+     * @covers \Bristolian\Model\Types\ProcessorState
      */
     public function testConstruct()
     {
@@ -29,7 +29,7 @@ class ProcessorStateTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\ProcessorState
+     * @covers \Bristolian\Model\Types\ProcessorState
      */
     public function testConstructWithDisabled()
     {

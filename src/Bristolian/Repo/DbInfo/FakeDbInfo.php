@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\DbInfo;
 
-use Bristolian\Model\MigrationThatHasBeenRun;
+use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use Bristolian\Parameters\Table;
 
 class FakeDbInfo implements DbInfo

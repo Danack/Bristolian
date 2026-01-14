@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\ProcessorRepo;
 
-use Bristolian\Model\ProcessorState;
+use Bristolian\Model\Types\ProcessorState;
 
 interface ProcessorRepo
 {

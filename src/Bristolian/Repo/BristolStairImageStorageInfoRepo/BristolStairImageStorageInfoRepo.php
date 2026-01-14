@@ -3,7 +3,8 @@
 namespace Bristolian\Repo\BristolStairImageStorageInfoRepo;
 
 use Bristolian\UploadedFiles\UploadedFile;
-use Bristolian\Model\BristolStairImageFile;
+//use BristolStairImageFile;
+use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
 
 /**
  * Stores information about an image in the local database.

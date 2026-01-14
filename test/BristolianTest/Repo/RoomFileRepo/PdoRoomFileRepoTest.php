@@ -2,10 +2,11 @@
 
 namespace BristolianTest\Repo\RoomFileRepo;
 
-use Bristolian\Model\StoredFile;
-use BristolianTest\BaseTestCase;
 use Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo;
+use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
+use Bristolian\Model\Generated\RoomFileObjectInfo;
+use Bristolian\Model\Generated\RoomFile;
 
 /**
  * Tests for PdoRoomFileRepo
@@ -42,7 +43,7 @@ class PdoRoomFileRepoTest extends BaseTestCase
         $roomFileRepo->addFileToRoom($file_id, $room->getRoomId());
         $files = $roomFileRepo->getFilesForRoom($room->getRoomId());
         $this->assertCount(1, $files);
-        $this->assertInstanceOf(StoredFile::class, $files[0]);
+        $this->assertInstanceOf(RoomFileObjectInfo::class, $files[0]);
 
         // Check other room still has no files listed
         $files = $roomFileRepo->getFilesForRoom("some other room");

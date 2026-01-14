@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Bristolian\Repo\AdminRepo;
 
+use Bristolian\Model\Types\AdminUser;
 use Bristolian\Parameters\CreateUserParams;
-use Bristolian\Model\AdminUser;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 
@@ -124,7 +124,7 @@ SQL;
         $adminUser = $this->pdo->fetchOneAsObjectOrNull(
             $sql,
             [':email_address' => $username],
-            \Bristolian\Model\AdminUser::class
+            \Bristolian\Model\Types\AdminUser::class
         );
 
         if ($adminUser === null) {

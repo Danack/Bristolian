@@ -2,11 +2,11 @@
 
 namespace Bristolian\Repo\EmailQueue;
 
-use Bristolian\Model\Email;
-use Bristolian\PdoSimple\PdoSimple;
-use Bristolian\Config\EnvironmentName;
 use Bristolian\CliController\Email as EmailController;
+use Bristolian\Config\EnvironmentName;
 use Bristolian\Database\email_send_queue;
+use Bristolian\Model\Types\Email;
+use Bristolian\PdoSimple\PdoSimple;
 
 class PdoEmailQueue implements EmailQueue
 {

@@ -99,7 +99,7 @@ class UrlTest extends BaseTestCase
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/url_input' => Messages::STRING_REQUIRED_FOUND_NULL]
+                ['/url_input' => Messages::STRING_EXPECTED]
             );
         }
     }

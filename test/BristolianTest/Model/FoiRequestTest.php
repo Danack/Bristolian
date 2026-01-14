@@ -2,8 +2,8 @@
 
 namespace BristolianTest\Model;
 
+use Bristolian\Model\Types\FoiRequest;
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\FoiRequest;
 
 /**
  * @coversNothing
@@ -11,7 +11,7 @@ use Bristolian\Model\FoiRequest;
 class FoiRequestTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\FoiRequest
+     * @covers \Bristolian\Model\Types\FoiRequest
      */
     public function testCreate()
     {

@@ -3,9 +3,6 @@
 //namespace Bristolian\Route;
 
 use Bristolian\App;
-use Bristolian\Response\SuccessResponse;
-use Bristolian\Response\ValidationErrorResponse;
-use SlimDispatcher\Response\TextResponse;
 
 function getAllApiRoutes()
 {
@@ -82,7 +79,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\BristolStairs::getData',
             [
-                ['stair_infos', \Bristolian\Model\BristolStairInfo::class, true]
+                ['stair_infos', \BristolStairInfo::class, true]
             ],
         ],
 
@@ -106,7 +103,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\ApiController\Log::get_processor_run_records',
             [
-                ['run_records', \Bristolian\Model\ProcessorRunRecord::class, true]
+                ['run_records', \ProcessorRunRecord::class, true]
             ],
         ],
         [
@@ -179,7 +176,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\User::listMemes',
             [
-                ['memes', \Bristolian\Model\Meme::class, true]
+                ['memes', \Bristolian\Model\Types\Meme::class, true]
             ],
         ],
 
@@ -188,7 +185,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\User::searchMemes',
             [
-                ['memes', \Bristolian\Model\Meme::class, true]
+                ['memes', \Bristolian\Model\Types\Meme::class, true]
             ],
         ], // Search memes by tag text and/or tag type
 
@@ -220,7 +217,7 @@ function getAllApiRoutes()
             'POST',
             'Bristolian\AppController\Users::updateProfile',
             [
-                ['profile', \Bristolian\Model\UserProfileWithDisplayName::class, false]
+                ['profile', \Bristolian\Model\Types\UserProfileWithDisplayName::class, false]
             ]
         ],  // UpdateUserProfileResponse
 
@@ -236,7 +233,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\Users::getUserInfo',
             [
-                ['user_info', \Bristolian\Model\UserProfileWithDisplayName::class, false]
+                ['user_info', \Bristolian\Model\Types\UserProfileWithDisplayName::class, false]
             ]
         ], // GetUserInfoResponse
 
@@ -245,7 +242,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\Rooms::getFiles',
             [
-                ['files', \Bristolian\Model\StoredFile::class, true]
+                ['files', \StoredFile::class, true]
             ],
         ],
 
@@ -277,7 +274,7 @@ function getAllApiRoutes()
             'POST',
             'Bristolian\AppController\BristolStairs::handleFileUpload',
             [
-                ['stair_info', \Bristolian\Model\BristolStairInfo::class, false]
+                ['stair_info', \BristolStairInfo::class, false]
             ],
         ], // UploadBristolStairsImageResponse
 
@@ -307,7 +304,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\Rooms::getLinks',
             [
-                ['links', \Bristolian\Model\RoomLink::class, true]
+                ['links', \RoomLink::class, true]
             ],
         ],
 
@@ -323,7 +320,7 @@ function getAllApiRoutes()
             'GET',
             '\Bristolian\AppController\Rooms::getSourcelinksForFile',
             [
-                ['sourcelinks', \Bristolian\Model\RoomSourceLink::class, true]
+                ['sourcelinks', \RoomSourceLink::class, true]
             ],
         ],
 
@@ -332,7 +329,7 @@ function getAllApiRoutes()
             'GET',
             '\Bristolian\AppController\Rooms::getSourcelinks',
             [
-                ['sourcelinks', \Bristolian\Model\RoomSourceLink::class, true]
+                ['sourcelinks', \RoomSourceLink::class, true]
             ],
         ],
 

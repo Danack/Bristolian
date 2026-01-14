@@ -137,7 +137,7 @@ class SourceLinkHighlightsJsonTest extends BaseTestCase
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/highlights_json' => Messages::STRING_REQUIRED_FOUND_NULL]
+                ['/highlights_json' => Messages::STRING_EXPECTED]
             );
         }
     }

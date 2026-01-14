@@ -5,11 +5,9 @@ declare(strict_types = 1);
 namespace Bristolian\CliController;
 
 use Bristolian\Config\Config;
-use Bristolian\Model\MigrationThatHasBeenRun;
+use Bristolian\Model\Types\MigrationFromCode;
+use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use Bristolian\PdoSimple\PdoSimple;
-use PDO;
-use function DataType\createArrayOfType;
-use Bristolian\Model\MigrationFromCode;
 
 /**
  * @codeCoverageIgnore

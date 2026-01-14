@@ -3,9 +3,9 @@
 namespace Bristolian\Repo\RoomRepo;
 
 use Bristolian\Exception\BristolianException;
-use Bristolian\Model\Room;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Model\Generated\Room;
 
 class PdoRoomRepo implements RoomRepo
 {
@@ -15,7 +15,7 @@ class PdoRoomRepo implements RoomRepo
     }
 
 
-    public function createRoom(string $owner_user_id, string $name, string $purpose): Room
+    public function createRoom(string $user_id, string $name, string $purpose): Room
     {
         $sql = <<< SQL
 insert into room (
@@ -36,7 +36,7 @@ SQL;
 
         $params = [
             ':id' => $id,
-             ':owner_user_id' => $owner_user_id,
+             ':owner_user_id' => $user_id,
              ':name' => $name,
              ':purpose' => $purpose
         ];
@@ -54,7 +54,7 @@ SQL;
     }
 
 
-    public function getRoomById(string $room_id): Room|null
+    public function getRoomById(string $id): Room|null
     {
         $sql = <<< SQL
 select
@@ -68,7 +68,7 @@ where
   id = :room_id
 SQL;
         $params = [
-          ':room_id' => $room_id
+          ':room_id' => $id
         ];
 
         return $this->pdoSimple->fetchOneAsObjectOrNullConstructor(

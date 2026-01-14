@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Bristolian\Repo\AdminRepo;
 
+use Bristolian\Model\Types\AdminUser;
 use Bristolian\Parameters\CreateUserParams;
-use Bristolian\Model\AdminUser;
 
 /**
  * Allows admins to interact with the Admin repo.

@@ -3,14 +3,14 @@
 namespace BristolianTest\Repo\BristolStairsRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
-use Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo;
+use Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
+use BristolStairInfo;
 use Ramsey\Uuid\Uuid;
 use VarMap\ArrayVarMap;
 
@@ -420,14 +420,14 @@ class PdoBristolStairsRepoTest extends BaseTestCase
         $final_stair = $repo->getStairInfoById($stair_id);
         $this->assertSame('Updated sequential stairs', $final_stair->description);
         $this->assertSame(70, $final_stair->steps);
-        $this->assertSame('51.48', $final_stair->latitude);
-        $this->assertSame('-2.62', $final_stair->longitude);
+        $this->assertSame(51.48, $final_stair->latitude);
+        $this->assertSame(-2.62, $final_stair->longitude);
     }
 
     /**
      * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
      */
-    public function test_store_stairs_info_with_precise_coordinates(): void
+    public function     test_store_stairs_info_with_precise_coordinates(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
         $imageFileId = $this->createTestStairImageFileId();
@@ -440,13 +440,13 @@ class PdoBristolStairsRepoTest extends BaseTestCase
             10
         );
 
-        $this->assertSame('51.123456', $stair->latitude);
-        $this->assertSame('-2.654321', $stair->longitude);
+        $this->assertSame(51.123456, $stair->latitude);
+        $this->assertSame(-2.654321, $stair->longitude);
 
         // Verify it persists correctly
         $retrieved_stair = $repo->getStairInfoById((int)$stair->id);
-        $this->assertSame('51.123456', $retrieved_stair->latitude);
-        $this->assertSame('-2.654321', $retrieved_stair->longitude);
+        $this->assertSame(51.123456, $retrieved_stair->latitude);
+        $this->assertSame(-2.654321, $retrieved_stair->longitude);
     }
 
     /**

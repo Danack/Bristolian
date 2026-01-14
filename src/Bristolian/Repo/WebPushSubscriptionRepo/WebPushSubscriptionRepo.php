@@ -8,7 +8,7 @@ interface WebPushSubscriptionRepo
 {
     /**
      * @param string $username
-     * @return \Bristolian\Model\UserWebPushSubscription[]
+     * @return \Bristolian\Model\Types\UserWebPushSubscription[]
      */
     public function getUserSubscriptions(string $username): array;
 

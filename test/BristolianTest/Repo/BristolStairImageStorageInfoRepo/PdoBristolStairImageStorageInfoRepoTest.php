@@ -2,12 +2,12 @@
 
 namespace BristolianTest\Repo\BristolStairImageStorageInfoRepo;
 
-use Bristolian\Model\BristolStairImageFile;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\FileState;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
+use BristolStairImageFile;
 use Ramsey\Uuid\Uuid;
 
 /**

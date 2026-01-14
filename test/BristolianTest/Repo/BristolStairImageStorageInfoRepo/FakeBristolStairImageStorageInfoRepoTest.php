@@ -2,12 +2,11 @@
 
 namespace BristolianTest\Repo\BristolStairImageStorageInfoRepo;
 
-use Bristolian\Model\BristolStairImageFile;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\FileState;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
-use Ramsey\Uuid\Uuid;
+use BristolStairImageFile;
 
 /**
  * Tests for FakeBristolStairImageStorageInfoRepo
@@ -101,7 +100,7 @@ class FakeBristolStairImageStorageInfoRepoTest extends BaseTestCase
         $files = $repo->getStoredFileInfo();
         $storedFile = $files[$file_id];
 
-        $this->assertInstanceOf(\Bristolian\Model\BristolStairImageFile::class, $storedFile);
+        $this->assertInstanceOf(\BristolStairImageFile::class, $storedFile);
         $this->assertSame($file_id, $storedFile->id);
         $this->assertSame($normalized_filename, $storedFile->normalized_name);
         $this->assertSame($uploadedFile->getOriginalName(), $storedFile->original_filename);
@@ -158,7 +157,7 @@ class FakeBristolStairImageStorageInfoRepoTest extends BaseTestCase
 
         $file = $repo->getById($file_id);
 
-        $this->assertInstanceOf(\Bristolian\Model\BristolStairImageFile::class, $file);
+        $this->assertInstanceOf(\BristolStairImageFile::class, $file);
         $this->assertSame($file_id, $file->id);
         $this->assertSame('file1.jpg', $file->normalized_name);
     }
@@ -187,7 +186,7 @@ class FakeBristolStairImageStorageInfoRepoTest extends BaseTestCase
 
         $file = $repo->getByNormalizedName('test-file.jpg');
 
-        $this->assertInstanceOf(\Bristolian\Model\BristolStairImageFile::class, $file);
+        $this->assertInstanceOf(\BristolStairImageFile::class, $file);
         $this->assertSame($file_id, $file->id);
         $this->assertSame('test-file.jpg', $file->normalized_name);
     }

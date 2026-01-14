@@ -2,8 +2,8 @@
 
 namespace Bristolian\Repo\UserRepo;
 
-use Bristolian\Model\User;
 use Bristolian\Types\UserList;
+use User;
 
 class HardcodedUserRepo implements UserRepo
 {

@@ -3,7 +3,7 @@
 namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\StoredFile;
+use StoredFile;
 
 /**
  * @coversNothing
@@ -11,7 +11,7 @@ use Bristolian\Model\StoredFile;
 class StoredFileTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\StoredFile
+     * @covers \StoredFile
      */
     public function testConstruct()
     {
@@ -43,7 +43,7 @@ class StoredFileTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\StoredFile
+     * @covers \StoredFile
      */
     public function testToArray()
     {

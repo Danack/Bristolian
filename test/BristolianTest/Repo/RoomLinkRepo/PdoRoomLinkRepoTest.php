@@ -4,10 +4,10 @@ namespace BristolianTest\Repo\RoomLinkRepo;
 
 use Bristolian\Exception\BristolianException;
 use Bristolian\Parameters\LinkParam;
-use Bristolian\Model\RoomLink;
 use Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
+use Bristolian\Model\Generated\RoomLink;
 
 class PdoRoomLinkRepoTest extends BaseTestCase
 {

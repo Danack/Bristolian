@@ -2,15 +2,15 @@
 
 namespace Bristolian\Service\WebPushService;
 
-use Bristolian\Model\UserWebPushSubscription;
-use Bristolian\Model\WebPushNotification;
+use Bristolian\Model\Types\UserWebPushSubscription;
+use Bristolian\Model\Types\WebPushNotification;
 
 interface WebPushService
 {
     /**
      * @param WebPushNotification $webPushNotification
      * @param UserWebPushSubscription[] $userWebPushSubscriptions
-     * @return \Bristolian\Model\UserWebPushSubscription[]
+     * @return \Bristolian\Model\Types\UserWebPushSubscription[]
      */
     public function sendWebPushToSubscriptions(
         WebPushNotification $webPushNotification,

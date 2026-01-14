@@ -2,11 +2,9 @@
 
 namespace BristolianTest\Repo\MemeStorageRepo;
 
-use Bristolian\Model\Meme;
+use Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
-
-use Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use Ramsey\Uuid\Uuid;
 

@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\RoomLinkRepo;
 
 use Bristolian\Parameters\LinkParam;
-use Bristolian\Model\RoomLink;
+use Bristolian\Model\Generated\RoomLink;
 
 /**
  * Stores and retrieves information about which links are in which rooms.

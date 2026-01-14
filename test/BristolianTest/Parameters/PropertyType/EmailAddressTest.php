@@ -99,7 +99,7 @@ class EmailAddressTest extends BaseTestCase
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/email_input' => Messages::STRING_REQUIRED_FOUND_NULL]
+                ['/email_input' => Messages::STRING_EXPECTED]
             );
         }
     }

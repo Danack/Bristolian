@@ -3,7 +3,8 @@
 namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\ProcessorRunRecord;
+
+use Bristolian\Model\Generated\ProcessorRunRecord;
 
 /**
  * @coversNothing
@@ -11,7 +12,7 @@ use Bristolian\Model\ProcessorRunRecord;
 class ProcessorRunRecordTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\ProcessorRunRecord
+     * @covers \Bristolian\Model\Generated\ProcessorRunRecord
      */
     public function testConstruct()
     {
@@ -24,11 +25,12 @@ class ProcessorRunRecordTest extends BaseTestCase
 
         $record = new ProcessorRunRecord(
             $id,
-            $startTime,
-            $endTime,
-            $status,
+            $processorType,
             $debugInfo,
-            $processorType
+            $startTime,
+            $status,
+            $endTime
+
         );
 
         $this->assertSame($id, $record->id);
@@ -40,34 +42,34 @@ class ProcessorRunRecordTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\ProcessorRunRecord
+     * @covers \Bristolian\Model\Generated\ProcessorRunRecord
      */
     public function testConstructWithNullEndTime()
     {
         $record = new ProcessorRunRecord(
             1,
-            new \DateTimeImmutable(),
-            null,
-            'running',
+            'test_processor',
             'Still processing',
-            'test_processor'
+            new \DateTimeImmutable(),
+            'running',
+            null,
         );
 
         $this->assertNull($record->end_time);
     }
 
     /**
-     * @covers \Bristolian\Model\ProcessorRunRecord
+     * @covers \Bristolian\Model\Generated\ProcessorRunRecord
      */
     public function testToArray()
     {
         $record = new ProcessorRunRecord(
             1,
+            'test_processor',
+            'Still processing',
             new \DateTimeImmutable(),
-            null,
             'running',
-            'Debug',
-            'processor'
+            null,
         );
 
         $array = $record->toArray();

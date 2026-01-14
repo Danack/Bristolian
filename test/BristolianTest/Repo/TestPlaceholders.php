@@ -5,11 +5,10 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo;
 
 use Bristolian\Data\ContentPolicyViolationReport;
-use Bristolian\Parameters\CreateUserParams;
 use Bristolian\JsonInput\JsonInput;
-use Bristolian\Model\AdminUser;
-use Bristolian\Model\IncomingEmailParam;
-use Bristolian\Model\Room;
+use Bristolian\Model\Types\AdminUser;
+use Bristolian\Model\Types\IncomingEmailParam;
+use Bristolian\Parameters\CreateUserParams;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo;
 use Bristolian\Repo\RoomRepo\PdoRoomRepo;
@@ -17,6 +16,7 @@ use Bristolian\Session\UserSession;
 use Bristolian\UploadedFiles\UploadedFile;
 use DI\ConfigException;
 use DI\InjectionException;
+use Room;
 
 /**
  * Trait to make write tests easier.

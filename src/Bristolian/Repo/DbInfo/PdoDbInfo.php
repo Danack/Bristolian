@@ -2,10 +2,10 @@
 
 namespace Bristolian\Repo\DbInfo;
 
-use Bristolian\Model\MigrationThatHasBeenRun;
+use Bristolian\Database\migrations;
+use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use Bristolian\Parameters\Table;
 use Bristolian\PdoSimple\PdoSimple;
-use Bristolian\Database\migrations;
 use PDO;
 
 class PdoDbInfo implements DbInfo

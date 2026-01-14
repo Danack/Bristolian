@@ -7,9 +7,9 @@ namespace Bristolian\Parameters\PropertyType;
 use DataType\ExtractRule\GetString;
 use DataType\HasInputType;
 use DataType\InputType;
+use DataType\ProcessRule\CheckOnlyAllowedCharacters;
 use DataType\ProcessRule\MaxLength;
 use DataType\ProcessRule\MinLength;
-use DataType\ProcessRule\Regex;
 
 /**
  * Property type for EAN/UPC/GTIN barcode validation.
@@ -30,7 +30,7 @@ class Barcode implements HasInputType
             new GetString(),
             new MinLength(8),
             new MaxLength(13),
-            new Regex('/^\d{8,13}$/', 'Barcode must be 8-13 digits'),
+            new CheckOnlyAllowedCharacters('0-9'),
         );
     }
 }

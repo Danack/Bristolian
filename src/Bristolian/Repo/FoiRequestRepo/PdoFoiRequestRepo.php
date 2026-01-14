@@ -3,11 +3,10 @@
 namespace Bristolian\Repo\FoiRequestRepo;
 
 use Bristolian\Database\foi_requests;
+use Bristolian\Model\Types\FoiRequest;
 use Bristolian\Parameters\FoiRequestParams;
-use Bristolian\Model\FoiRequest;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
-
 
 
 class PdoFoiRequestRepo implements FoiRequestRepo
@@ -46,7 +45,7 @@ class PdoFoiRequestRepo implements FoiRequestRepo
     }
 
     /**
-     * @return \Bristolian\Model\FoiRequest[]
+     * @return \Bristolian\Model\Types\FoiRequest[]
      */
     public function getAllFoiRequests(): array
     {

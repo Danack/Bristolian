@@ -310,12 +310,12 @@ TEXT;
     {
         $this->markTestSkipped('Test not implemented yet');
 
-        $document = new \Bristolian\Model\UserDocument(
+        $document = new \Bristolian\Model\Types\UserDocument(
             \Bristolian\Types\DocumentType::markdown_file->value,
             "Some title",
             "FOIA Section 12 and the 18-hour time_cost limit.md"
         );
-        $user = new \Bristolian\Model\User(\Bristolian\Types\UserList::sid->value);
+        $user = new \User(\Bristolian\Types\UserList::sid->value);
 
         $document->setUser($user);
 

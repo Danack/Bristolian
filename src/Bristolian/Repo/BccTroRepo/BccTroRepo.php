@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\BccTroRepo;
 
-use Bristolian\Model\BccTro;
+use Bristolian\Model\Types\BccTro;
 
 interface BccTroRepo
 {

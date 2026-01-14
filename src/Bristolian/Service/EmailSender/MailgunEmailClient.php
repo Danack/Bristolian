@@ -2,8 +2,8 @@
 
 namespace Bristolian\Service\EmailSender;
 
+use Bristolian\Model\Types\Email;
 use Mailgun\Mailgun;
-use Bristolian\Model\Email;
 
 class MailgunEmailClient implements EmailClient
 {

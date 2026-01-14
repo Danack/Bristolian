@@ -2,12 +2,12 @@
 
 namespace Bristolian\Repo\UserRepo;
 
-use Bristolian\Model\User;
+use User;
 
 interface UserRepo
 {
     /**
-     * @return \Bristolian\Model\User[]
+     * @return \User[]
      */
     public function getUsers(): array;
 

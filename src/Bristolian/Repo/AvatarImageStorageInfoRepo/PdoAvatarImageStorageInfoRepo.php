@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\AvatarImageStorageInfoRepo;
 
 use Bristolian\Database\avatar_image_object_info;
-use Bristolian\Model\AvatarImageFile;
+use Bristolian\Model\Types\AvatarImageFile;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\UploadedFiles\UploadedFile;

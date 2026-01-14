@@ -67,7 +67,7 @@ class BasicStringTest extends BaseTestCase
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/string_input' => Messages::STRING_REQUIRED_FOUND_NULL]
+                ['/string_input' => Messages::STRING_EXPECTED]
             );
         }
     }

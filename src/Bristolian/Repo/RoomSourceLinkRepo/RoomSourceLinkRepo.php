@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\RoomSourceLinkRepo;
 
 use Bristolian\Parameters\SourceLinkParam;
-use Bristolian\Model\RoomSourceLink;
+use RoomSourceLink;
 
 interface RoomSourceLinkRepo
 {

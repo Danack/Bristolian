@@ -15,7 +15,7 @@ class ProductNormalizer
      * Normalize OpenFoodFacts API response into a Product object.
      *
      * @param string $barcode The barcode used for lookup
-     * @param array $rawData The raw API response from OpenFoodFacts
+     * @param array<string, mixed> $rawData The raw API response from OpenFoodFacts
      * @return Product The normalized product
      */
     public function normalizeOpenFoodFactsData(string $barcode, array $rawData): Product
@@ -94,7 +94,7 @@ class ProductNormalizer
     /**
      * Try to extract fish species from product data.
      *
-     * @param array $product The product data from OpenFoodFacts
+     * @param array<string, mixed> $product The product data from OpenFoodFacts
      * @return string|null The fish species if found
      */
     private function extractSpecies(array $product): ?string

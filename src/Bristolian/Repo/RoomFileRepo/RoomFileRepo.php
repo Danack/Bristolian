@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\RoomFileRepo;
 
-use Bristolian\Model\StoredFile;
+use StoredFile;
 
 /**
  * Stores and retrieves information about which files are in which rooms.

@@ -2,8 +2,8 @@
 
 namespace Bristolian\Repo\TagRepo;
 
+use Bristolian\Model\Types\Tag;
 use Bristolian\Parameters\TagParams;
-use Bristolian\Model\Tag;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 
@@ -44,7 +44,7 @@ SQL;
 
 
     /**
-     * @return \Bristolian\Model\Tag[]
+     * @return \Bristolian\Model\Types\Tag[]
      */
     public function getAllTags(): array
     {

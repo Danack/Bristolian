@@ -3,7 +3,7 @@
 namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\User;
+use User;
 
 /**
  * @coversNothing
@@ -11,7 +11,7 @@ use Bristolian\Model\User;
 class UserTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\User
+     * @covers \User
      */
     public function testConstruct()
     {

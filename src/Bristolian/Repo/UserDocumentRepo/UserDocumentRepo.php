@@ -2,8 +2,8 @@
 
 namespace Bristolian\Repo\UserDocumentRepo;
 
-use Bristolian\Model\User;
-use Bristolian\Model\UserDocument;
+use Bristolian\Model\Types\UserDocument;
+use User;
 
 interface UserDocumentRepo
 {

@@ -2,9 +2,9 @@
 
 namespace Bristolian\Repo\BccTroRepo;
 
-use Bristolian\Model\BccTro;
-use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Database\bcc_tro_information;
+use Bristolian\Model\Types\BccTro;
+use Bristolian\PdoSimple\PdoSimple;
 
 class PdoBccTroRepo implements BccTroRepo
 {

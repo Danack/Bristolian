@@ -2,13 +2,13 @@
 
 namespace Bristolian\Repo\FoiRequestRepo;
 
+use Bristolian\Model\Types\FoiRequest;
 use Bristolian\Parameters\FoiRequestParams;
-use Bristolian\Model\FoiRequest;
 
 interface FoiRequestRepo
 {
     /**
-     * @return \Bristolian\Model\FoiRequest[]
+     * @return \Bristolian\Model\Types\FoiRequest[]
      */
     public function getAllFoiRequests(): array;
 

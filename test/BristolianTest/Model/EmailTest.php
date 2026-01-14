@@ -2,8 +2,8 @@
 
 namespace BristolianTest\Model;
 
+use Bristolian\Model\Types\Email;
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\Email;
 
 /**
  * @coversNothing
@@ -11,7 +11,7 @@ use Bristolian\Model\Email;
 class EmailTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\Email
+     * @covers \Bristolian\Model\Types\Email
      */
     public function testConstruct()
     {

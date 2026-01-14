@@ -18,7 +18,7 @@ class OpenFoodFactsFetcher
      * Fetch product data by barcode from OpenFoodFacts API.
      *
      * @param string $barcode The EAN/UPC/GTIN barcode
-     * @return array|null The raw API response data, or null if product not found
+     * @return array<string, mixed>|null The raw API response data, or null if product not found
      * @throws OpenFoodFactsApiException If the API request fails
      */
     public function fetchProduct(string $barcode): ?array

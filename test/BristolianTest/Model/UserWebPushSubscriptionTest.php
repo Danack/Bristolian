@@ -2,8 +2,8 @@
 
 namespace BristolianTest\Model;
 
+use Bristolian\Model\Types\UserWebPushSubscription;
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\UserWebPushSubscription;
 
 /**
  * @coversNothing
@@ -11,7 +11,7 @@ use Bristolian\Model\UserWebPushSubscription;
 class UserWebPushSubscriptionTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\UserWebPushSubscription
+     * @covers \Bristolian\Model\Types\UserWebPushSubscription
      */
     public function testConstruct()
     {
@@ -27,7 +27,7 @@ class UserWebPushSubscriptionTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\UserWebPushSubscription
+     * @covers \Bristolian\Model\Types\UserWebPushSubscription
      */
     public function testGetters()
     {

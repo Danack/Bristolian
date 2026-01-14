@@ -2,9 +2,8 @@
 
 namespace Bristolian\Repo\UserProfileRepo;
 
-use Bristolian\Model\UserDisplayName;
-use Bristolian\Model\UserProfile;
-use Bristolian\Model\UserProfileWithDisplayName;
+use Bristolian\Model\Types\UserProfileWithDisplayName;
+use UserDisplayName;
 
 interface UserProfileRepo
 {

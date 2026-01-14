@@ -2,15 +2,10 @@
 
 namespace BristolianTest\Repo\UserSearch;
 
-use Bristolian\Parameters\CreateUserParams;
-use Bristolian\Model\Room;
-use Bristolian\Repo\AdminRepo\PdoAdminRepo;
-use Bristolian\Repo\DbInfo\PdoDbInfo;
+use Bristolian\Repo\RoomRepo\PdoRoomRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
-use Bristolian\Repo\UserSearch\PdoUserSearch;
-use Bristolian\Repo\UserSearch\UserSearch;
-use Bristolian\Repo\RoomRepo\PdoRoomRepo;
+use Room;
 
 /**
  * @coversNothing

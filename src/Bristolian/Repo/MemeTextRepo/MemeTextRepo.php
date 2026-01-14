@@ -13,7 +13,7 @@ interface MemeTextRepo
     public function saveMemeText(
         StoredMeme $storedMeme,
         string $found_text
-    );
+    ): void;
 
     /**
      * Search for meme IDs by text content (case-insensitive).

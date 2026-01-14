@@ -2,7 +2,6 @@
 
 declare(strict_types = 1);
 
-use Bristolian\Model\StoredFile;
 use Bristolian\Types\DocumentType;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 
@@ -530,7 +529,7 @@ function escapeMySqlLikeString(string $string)
 }
 
 
-function render_markdown_file(Bristolian\Model\UserDocument $document): string
+function render_markdown_file(\Bristolian\Model\Types\UserDocument $document): string
 {
     global $injector;
 
@@ -570,7 +569,7 @@ function get_external_source_link(string $raw): string
     );
 }
 
-function render_markdown_url(Bristolian\Model\UserDocument $document): string
+function render_markdown_url(\Bristolian\Model\Types\UserDocument $document): string
 {
     global $injector;
 
@@ -589,10 +588,10 @@ function render_markdown_url(Bristolian\Model\UserDocument $document): string
 
 
 /**
- * @param \Bristolian\Model\UserDocument $document
+ * @param \Bristolian\Model\Types\UserDocument $document
  * @return string
  */
-function render_user_document(Bristolian\Model\UserDocument $document): string
+function render_user_document(\Bristolian\Model\Types\UserDocument $document): string
 {
     global $injector;
 

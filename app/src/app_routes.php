@@ -147,7 +147,7 @@ function getAllAppRoutes()
         ['/system/debugging', 'GET', 'Bristolian\AppController\System::debugging'],
         ['/system/swagger', 'GET', 'Bristolian\AppController\System::display_swagger'],
         ['/system/route_explorer', 'GET', 'Bristolian\AppController\System::route_explorer'],
-
+        ['/system/tinned_fish_products', 'GET', 'Bristolian\AppController\System::tinned_fish_products'],
 
         ['/system', 'GET', 'Bristolian\AppController\System::index'],
         ['/files', 'GET', '\Bristolian\AppController\Docs::files'],

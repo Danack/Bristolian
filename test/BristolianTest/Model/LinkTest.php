@@ -3,7 +3,7 @@
 namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\Link;
+use Bristolian\Model\Generated\Link;
 
 /**
  * @coversNothing
@@ -11,14 +11,14 @@ use Bristolian\Model\Link;
 class LinkTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\Link
+     * @covers \Link
      */
     public function testConstruct()
     {
         $id = 'link-123';
         $userId = 'user-456';
         $url = 'https://example.com';
-        $createdAt = '2025-10-09 12:00:00';
+        $createdAt = new \DateTimeImmutable('2025-10-09 12:00:00');
 
         $link = new Link($id, $userId, $url, $createdAt);
 

@@ -83,7 +83,7 @@ class UsernameTest extends BaseTestCase
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/username_input' => Messages::STRING_REQUIRED_FOUND_NULL]
+                ['/username_input' => Messages::STRING_EXPECTED]
             );
         }
     }

@@ -123,8 +123,8 @@ class DebugParamsTest extends BaseTestCase
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
                 [
-                    '/message' => \DataType\Messages::STRING_REQUIRED_FOUND_NULL,
-                    '/detail' => \DataType\Messages::STRING_REQUIRED_FOUND_NULL
+                    '/message' => \DataType\Messages::STRING_EXPECTED,
+                    '/detail' => \DataType\Messages::STRING_EXPECTED
                 ]
             );
         }

@@ -153,7 +153,7 @@ SQL;
         $sql = pdo_simple_test::SELECT;
 
         // TODO - fix this
-        $this->markTestSkipped("need to review coverage of PdoSimple");
+//        $this->markTestSkipped("need to review coverage of PdoSimple");
         $result = $pdo_simple->fetchOneAsObject($sql, [], PdoSimpleTestObjectProperties::class);
         $this->assertInstanceOf(PdoSimpleTestObjectProperties::class, $result);
 

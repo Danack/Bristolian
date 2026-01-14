@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\EmailIncoming;
 
-use Bristolian\Model\IncomingEmailParam;
+use Bristolian\Model\Types\IncomingEmailParam;
 
 interface EmailIncoming
 {

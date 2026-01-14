@@ -3,11 +3,11 @@
 namespace BristolianTest\Repo\BristolStairsRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
 use Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo;
 use BristolianTest\BaseTestCase;
+use BristolStairInfo;
 use VarMap\ArrayVarMap;
 
 /**

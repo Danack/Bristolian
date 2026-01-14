@@ -14,6 +14,9 @@ class Product
 {
     use ToArray;
 
+    /**
+     * @param ?array<string, mixed> $raw_data
+     */
     public function __construct(
         public readonly string $barcode,
         public readonly string $name,

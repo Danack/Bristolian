@@ -2,11 +2,12 @@
 
 namespace Bristolian\Repo\ProcessorRunRecordRepo;
 
-use Bristolian\PdoSimple\PdoSimple;
-use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use Bristolian\Database\processor_run_record;
-use Bristolian\Model\ProcessorRunRecord;
+use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
+//use ProcessorRunRecord;
+
+use Bristolian\Model\Generated\ProcessorRunRecord;
 
 class PdoProcessorRunRecordRepo implements ProcessorRunRecordRepo
 {
@@ -78,7 +79,7 @@ SQL;
 
     /**
      * @param ProcessType|null $processType
-     * @return \Bristolian\Model\ProcessorRunRecord[]
+     * @return \ProcessorRunRecord[]
      */
     public function getRunRecords(ProcessType|null $processType): array
     {

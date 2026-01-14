@@ -2,8 +2,8 @@
 
 namespace BristolianTest\Model;
 
+use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\MigrationThatHasBeenRun;
 
 /**
  * @coversNothing
@@ -11,7 +11,7 @@ use Bristolian\Model\MigrationThatHasBeenRun;
 class MigrationThatHasBeenRunTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\MigrationThatHasBeenRun
+     * @covers \Bristolian\Model\Types\MigrationThatHasBeenRun
      */
     public function testConstruct()
     {

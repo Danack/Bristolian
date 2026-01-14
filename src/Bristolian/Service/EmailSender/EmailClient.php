@@ -2,7 +2,7 @@
 
 namespace Bristolian\Service\EmailSender;
 
-use Bristolian\Model\Email;
+use Bristolian\Model\Types\Email;
 
 interface EmailClient
 {

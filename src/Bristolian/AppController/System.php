@@ -7,15 +7,15 @@ namespace Bristolian\AppController;
 use Bristolian\App;
 use Bristolian\Config\Config;
 use Bristolian\CSPViolation\CSPViolationStorage;
-use Bristolian\Model\MigrationThatHasBeenRun;
+use Bristolian\Model\TinnedFish\Product;
+use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use Bristolian\Repo\DbInfo\DbInfo;
+use Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo;
 use Bristolian\Service\DeployLogRenderer\DeployLogRenderer;
 use Bristolian\Session\UserSession;
 use OpenApi\OpenApiGenerator;
 use SlimDispatcher\Response\JsonResponse;
 use function Bristolian\createReactWidget;
-use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
-use Bristolian\Repo\ProcessorRepo\ProcessType;
 
 class System
 {
@@ -32,6 +32,7 @@ class System
   <li><a href="/system/database_tables">Database tables</a></li>
   <li><a href="/system/deploy_log">Deploy log</a></li>
   <li><a href="/system/route_explorer">Route explorer</a></li>
+  <li><a href="/system/tinned_fish_products">Tinned fish products</a></li>
   <li><a href="/system/debugging">Debugging</a></li>
 </ul>
 HTML;
@@ -220,6 +221,42 @@ HTML;
         $html .= renderTableHtml(
             $headers,
             $app_routes,
+            $rowFns
+        );
+
+        return $html;
+    }
+
+    public function tinned_fish_products(TinnedFishProductRepo $productRepo): string
+    {
+        $products = $productRepo->getAll();
+        $html = "<h2>Tinned Fish Products</h2>";
+
+        $headers = [
+            'Barcode',
+            'Name',
+            'Brand',
+            'Species',
+            'Weight',
+            'Weight Drained',
+            'Product Code',
+            'Created At'
+        ];
+
+        $rowFns = [
+            ':html_barcode' => fn(Product $product) => $product->barcode,
+            ':html_name' => fn(Product $product) => $product->name,
+            ':html_brand' => fn(Product $product) => $product->brand,
+            ':html_species' => fn(Product $product) => $product->species ?? '',
+            ':html_weight' => fn(Product $product) => $product->weight !== null ? $product->weight . 'g' : '',
+            ':html_weight_drained' => fn(Product $product) => $product->weight_drained !== null ? $product->weight_drained . 'g' : '',
+            ':html_product_code' => fn(Product $product) => $product->product_code ?? '',
+            ':html_created_at' => fn(Product $product) => $product->created_at?->format(App::DATE_TIME_FORMAT) ?? '',
+        ];
+
+        $html .= renderTableHtml(
+            $headers,
+            $products,
             $rowFns
         );
 

@@ -3,7 +3,7 @@
 namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\BristolStairInfo;
+use Bristolian\Model\Generated\BristolStairInfo;
 
 /**
  * @coversNothing
@@ -11,7 +11,7 @@ use Bristolian\Model\BristolStairInfo;
 class BristolStairInfoTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\BristolStairInfo
+     * @covers Bristolian\Model\Generated\BristolStairInfo
      */
     public function testConstruct()
     {
@@ -49,15 +49,15 @@ class BristolStairInfoTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\BristolStairInfo
+     * @covers \Bristolian\Model\Generated\BristolStairInfo
      */
     public function testToArray()
     {
         $stairInfo = new BristolStairInfo(
             'id-123',
-            '51.454513',
-            '-2.587910',
             'Description',
+            51.454513,
+            -2.587910,
             'image-id',
             10,
             0,

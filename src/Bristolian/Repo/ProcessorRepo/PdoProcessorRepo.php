@@ -2,10 +2,9 @@
 
 namespace Bristolian\Repo\ProcessorRepo;
 
-use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Database\processor;
-use Bristolian\Repo\ProcessorRepo\ProcessType;
-use Bristolian\Model\ProcessorState;
+use Bristolian\Model\Types\ProcessorState;
+use Bristolian\PdoSimple\PdoSimple;
 
 class PdoProcessorRepo implements ProcessorRepo
 {

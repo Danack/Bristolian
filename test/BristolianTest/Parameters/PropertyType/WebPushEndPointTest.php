@@ -115,7 +115,7 @@ class WebPushEndPointTest extends BaseTestCase
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/endpoint_input' => Messages::STRING_REQUIRED_FOUND_NULL]
+                ['/endpoint_input' => Messages::STRING_EXPECTED]
             );
         }
     }

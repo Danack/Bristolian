@@ -2,8 +2,8 @@
 
 namespace Bristolian\Repo\AvatarImageStorageInfoRepo;
 
+use Bristolian\Model\Types\AvatarImageFile;
 use Bristolian\UploadedFiles\UploadedFile;
-use Bristolian\Model\AvatarImageFile;
 
 /**
  * Stores information about an avatar image in the local database.

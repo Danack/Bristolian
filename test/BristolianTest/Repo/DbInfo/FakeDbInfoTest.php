@@ -2,10 +2,10 @@
 
 namespace BristolianTest\Repo\DbInfo;
 
+use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use Bristolian\Repo\DbInfo\FakeDbInfo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
-use Bristolian\Model\MigrationThatHasBeenRun;
 
 /**
  * @coversNothing

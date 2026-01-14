@@ -2,11 +2,11 @@
 
 namespace BristolianTest\Repo\ProcessorRunRecordRepo;
 
-use Bristolian\Model\ProcessorRunRecord;
+use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
-use Bristolian\Repo\ProcessorRepo\ProcessType;
 use BristolianTest\BaseTestCase;
+use Bristolian\Model\Generated\ProcessorRunRecord;
 
 /**
  * Tests for PdoProcessorRunRecordRepo

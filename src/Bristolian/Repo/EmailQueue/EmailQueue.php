@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\EmailQueue;
 
-use Bristolian\Model\Email;
+use Bristolian\Model\Types\Email;
 
 interface EmailQueue
 {

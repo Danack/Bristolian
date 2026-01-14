@@ -3,11 +3,9 @@
 namespace BristolianTest\Repo\RoomLinkRepo;
 
 use Bristolian\Parameters\LinkParam;
-use Bristolian\Model\RoomLink;
 use Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
-use PHPUnit\Framework\TestCase;
 use VarMap\ArrayVarMap;
 
 class FakeRoomLinkRepoTest extends BaseTestCase

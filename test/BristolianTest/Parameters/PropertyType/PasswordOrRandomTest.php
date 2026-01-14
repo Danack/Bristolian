@@ -44,7 +44,7 @@ class PasswordOrRandomTest extends BaseTestCase
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/password_input' => Messages::STRING_REQUIRED_FOUND_NULL]
+                ['/password_input' => Messages::STRING_EXPECTED]
             );
         }
     }

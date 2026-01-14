@@ -2,8 +2,8 @@
 
 namespace BristolianTest\Model;
 
+use Bristolian\Model\Types\AdminUser;
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\AdminUser;
 
 /**
  * @coversNothing
@@ -11,7 +11,7 @@ use Bristolian\Model\AdminUser;
 class AdminUserTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\AdminUser
+     * @covers \Bristolian\Model\Types\AdminUser
      */
     public function testNew()
     {
@@ -27,7 +27,7 @@ class AdminUserTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\AdminUser
+     * @covers \Bristolian\Model\Types\AdminUser
      */
     public function testFromPartial()
     {
@@ -41,7 +41,7 @@ class AdminUserTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\AdminUser
+     * @covers \Bristolian\Model\Types\AdminUser
      */
     public function testToArray()
     {

@@ -79,6 +79,9 @@ class TinnedFish
         // Normalize the external data
         $product = $normalizer->normalizeOpenFoodFactsData($barcode, $rawData);
 
+        // Cache the product in the canonical database for future lookups
+        $productRepo->save($product);
+
         // Return with copyright attribution
         return new ProductLookupResponse(
             source: 'external',

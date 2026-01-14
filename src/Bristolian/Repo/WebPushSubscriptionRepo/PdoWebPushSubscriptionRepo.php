@@ -2,8 +2,8 @@
 
 namespace Bristolian\Repo\WebPushSubscriptionRepo;
 
+use Bristolian\Model\Types\UserWebPushSubscription;
 use Bristolian\Parameters\WebPushSubscriptionParams;
-use Bristolian\Model\UserWebPushSubscription;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 

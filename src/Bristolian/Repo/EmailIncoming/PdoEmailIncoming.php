@@ -2,9 +2,9 @@
 
 namespace Bristolian\Repo\EmailIncoming;
 
-use Bristolian\Model\IncomingEmailParam;
-use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Database\email_incoming;
+use Bristolian\Model\Types\IncomingEmailParam;
+use Bristolian\PdoSimple\PdoSimple;
 
 class PdoEmailIncoming implements EmailIncoming
 {
