@@ -48,7 +48,7 @@ class PdoRoomSourceLinkRepoTest extends BaseTestCase
 
         $pdoRoomSourceLinkRepo->addSourceLink(
             $user->getUserId(),
-            $room->getRoomId(),
+            $room->id,
             $file_id,
             $sourcelink_param
         );

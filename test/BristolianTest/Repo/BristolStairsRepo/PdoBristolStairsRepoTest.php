@@ -10,7 +10,7 @@ use Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
-use BristolStairInfo;
+use Bristolian\Model\Generated\BristolStairInfo;
 use Ramsey\Uuid\Uuid;
 use VarMap\ArrayVarMap;
 
@@ -75,8 +75,8 @@ class PdoBristolStairsRepoTest extends BaseTestCase
 
         $this->assertInstanceOf(BristolStairInfo::class, $stair_info);
         $this->assertSame('Test stairs description', $stair_info->description);
-        $this->assertSame('51.46', $stair_info->latitude);
-        $this->assertSame('-2.6', $stair_info->longitude);
+        $this->assertSame(51.46, $stair_info->latitude);
+        $this->assertSame(-2.6, $stair_info->longitude);
         $this->assertSame(50, $stair_info->steps);
         $this->assertSame(0, $stair_info->is_deleted);
         $this->assertInstanceOf(\DateTimeInterface::class, $stair_info->created_at);
@@ -105,8 +105,8 @@ class PdoBristolStairsRepoTest extends BaseTestCase
         $this->assertSame($created_stair->id, $found_stair->id);
         $this->assertSame('Findable stairs', $found_stair->description);
         $this->assertSame(45, $found_stair->steps);
-        $this->assertSame('51.4556', $found_stair->latitude);
-        $this->assertSame('-2.5943', $found_stair->longitude);
+        $this->assertSame(51.4556, $found_stair->latitude);
+        $this->assertSame(-2.5943, $found_stair->longitude);
     }
 
     /**
@@ -190,7 +190,7 @@ class PdoBristolStairsRepoTest extends BaseTestCase
         );
 
         $params = BristolStairsInfoParams::createFromVarMap(new ArrayVarMap([
-            'bristol_stair_info_id' => $created_stair->id,
+            'bristol_stair_info_id' => (string)$created_stair->id,
             'description' => 'Updated description',
             'steps' => '80'
         ]));
@@ -223,7 +223,7 @@ class PdoBristolStairsRepoTest extends BaseTestCase
         $original_image_id = $created_stair->stored_stair_image_file_id;
 
         $params = BristolStairsInfoParams::createFromVarMap(new ArrayVarMap([
-            'bristol_stair_info_id' => $created_stair->id,
+            'bristol_stair_info_id' => (string)$created_stair->id,
             'description' => 'Updated description',
             'steps' => '80'
         ]));
@@ -271,7 +271,7 @@ class PdoBristolStairsRepoTest extends BaseTestCase
         );
 
         $params = BristolStairsPositionParams::createFromVarMap(new ArrayVarMap([
-            'bristol_stair_info_id' => $created_stair->id,
+            'bristol_stair_info_id' => (string)$created_stair->id,
             'latitude' => 51.5000,
             'longitude' => -2.7000
         ]));
@@ -279,8 +279,8 @@ class PdoBristolStairsRepoTest extends BaseTestCase
         $repo->updateStairPosition($params);
 
         $updated_stair = $repo->getStairInfoById((int)$created_stair->id);
-        $this->assertSame('51.5', $updated_stair->latitude);
-        $this->assertSame('-2.7', $updated_stair->longitude);
+        $this->assertSame(51.5, $updated_stair->latitude);
+        $this->assertSame(-2.7, $updated_stair->longitude);
     }
 
     /**
@@ -304,7 +304,7 @@ class PdoBristolStairsRepoTest extends BaseTestCase
         $original_image_id = $created_stair->stored_stair_image_file_id;
 
         $params = BristolStairsPositionParams::createFromVarMap(new ArrayVarMap([
-            'bristol_stair_info_id' => $created_stair->id,
+            'bristol_stair_info_id' => (string)$created_stair->id,
             'latitude' => 51.5000,
             'longitude' => -2.7000
         ]));

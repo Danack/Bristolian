@@ -48,19 +48,13 @@ class PdoRoomLinkRepo implements RoomLinkRepo
         $sql = <<< SQL
 select
     rl.id,
+    rl.room_id,
     rl.link_id,
-    l.url,
     rl.title,
     rl.description,
-    rl.room_id,
-    l.user_id,
     rl.created_at
 from
   room_link rl
-left join 
-  link l
-on
-  l.id = rl.link_id
 where
   rl.id = :id
 SQL;
@@ -90,21 +84,15 @@ SQL;
         $sql = <<< SQL
 select
     rl.id,
-    l.user_id,
-    l.url,
-    rl.title,
-    rl.link_id,
-    rl.description,
     rl.room_id,
+    rl.link_id,
+    rl.title,
+    rl.description,
     rl.created_at
 from
-  link as l
-left join
    room_link as rl
-on 
- l.id = rl.link_id
 where
-  room_id = :room_id
+  rl.room_id = :room_id
 SQL;
         $params = [
           ':room_id' => $room_id

@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\RoomFileRepo;
 
-use StoredFile;
+use Bristolian\Model\Generated\RoomFileObjectInfo;
 
 /**
  * Stores and retrieves information about which files are in which rooms.
@@ -13,7 +13,7 @@ interface RoomFileRepo
 
     /**
      * @param string $room_id
-     * @return StoredFile[]
+     * @return RoomFileObjectInfo[]
      */
     public function getFilesForRoom(string $room_id);
 
@@ -23,7 +23,7 @@ interface RoomFileRepo
      *
      * @param string $room_id
      * @param string $file_id
-     * @return StoredFile|null
+     * @return RoomFileObjectInfo|null
      */
-    public function getFileDetails(string $room_id, string $file_id): StoredFile|null;
+    public function getFileDetails(string $room_id, string $file_id): RoomFileObjectInfo|null;
 }

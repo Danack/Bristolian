@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\RoomFileRepo;
 
 use Bristolian\PdoSimple\PdoSimple;
-use StoredFile;
+use Bristolian\Model\Generated\RoomFileObjectInfo;
 
 class PdoRoomFileRepo implements RoomFileRepo
 {
@@ -36,7 +36,7 @@ SQL;
 
     /**
      * @param string $room_id
-     * @return StoredFile[]
+     * @return RoomFileObjectInfo[]
      * @throws \ReflectionException
      */
     public function getFilesForRoom(string $room_id): array
@@ -66,12 +66,12 @@ SQL;
         return $this->pdoSimple->fetchAllAsObjectConstructor(
             $sql,
             $params,
-            StoredFile::class
+            RoomFileObjectInfo::class
         );
     }
 
 
-    public function getFileDetails(string $room_id, string $file_id): StoredFile|null
+    public function getFileDetails(string $room_id, string $file_id): RoomFileObjectInfo|null
     {
         $sql = <<< SQL
 select  
@@ -101,7 +101,7 @@ SQL;
         return $this->pdoSimple->fetchOneAsObjectOrNullConstructor(
             $sql,
             $params,
-            StoredFile::class
+            RoomFileObjectInfo::class
         );
     }
 }

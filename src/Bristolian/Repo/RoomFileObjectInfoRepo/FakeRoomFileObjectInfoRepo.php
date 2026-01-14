@@ -3,13 +3,13 @@
 namespace Bristolian\Repo\RoomFileObjectInfoRepo;
 
 use Bristolian\UploadedFiles\UploadedFile;
+use Bristolian\Model\Generated\RoomFileObjectInfo;
 use Ramsey\Uuid\Uuid;
-use StoredFile;
 
 class FakeRoomFileObjectInfoRepo implements RoomFileObjectInfoRepo
 {
     /**
-     * @var StoredFile[]
+     * @var RoomFileObjectInfo[]
      */
     private array $storedFileInfo = [];
 
@@ -22,7 +22,7 @@ class FakeRoomFileObjectInfoRepo implements RoomFileObjectInfoRepo
         $datetime = new \DateTimeImmutable();
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
-        $this->storedFileInfo[$id] = new StoredFile(
+        $this->storedFileInfo[$id] = new RoomFileObjectInfo(
             $id,
             $normalized_filename,
             $original_filename = $uploadedFile->getOriginalName(),
@@ -41,7 +41,7 @@ class FakeRoomFileObjectInfoRepo implements RoomFileObjectInfoRepo
     }
 
     /**
-     * @return StoredFile[]
+     * @return RoomFileObjectInfo[]
      */
     public function getStoredFileInfo(): array
     {

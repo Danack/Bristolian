@@ -19,7 +19,7 @@ class FakeBristolStairsRepo implements BristolStairsRepo
     {
         $this->stairs = [
             new BristolStairInfo(
-                '1',
+                1,
                 'Steep stairs near Park Street',
                 51.4556,
                 -2.5943,
@@ -30,7 +30,7 @@ class FakeBristolStairsRepo implements BristolStairsRepo
                 new \DateTimeImmutable('2024-01-15 10:00:00')
             ),
             new BristolStairInfo(
-                '2',
+                2,
                 'Historic stairs near Harbourside',
                 51.4516,
                 -2.5883,
@@ -41,7 +41,7 @@ class FakeBristolStairsRepo implements BristolStairsRepo
                 new \DateTimeImmutable('2024-02-20 14:30:00')
             ),
             new BristolStairInfo(
-                '3',
+                3,
                 'Modern stairs at Clifton Triangle',
                 51.4576,
                 -2.5963,
@@ -61,14 +61,14 @@ class FakeBristolStairsRepo implements BristolStairsRepo
         float $longitude,
         int $steps
     ): BristolStairInfo {
-        $new_id = (string)(count($this->stairs) + 1);
+        $new_id = count($this->stairs) + 1;
         $now = new \DateTimeImmutable();
 
         $stair_info = new BristolStairInfo(
             $new_id,
+            $description,
             $latitude,
             $longitude,
-            $description,
             $stored_stair_image_file_id,
             $steps,
             0,
@@ -104,7 +104,7 @@ class FakeBristolStairsRepo implements BristolStairsRepo
     public function getStairInfoById(int $id): BristolStairInfo|null
     {
         foreach ($this->stairs as $stair) {
-            if ($stair->id === (string)$id && $stair->is_deleted === 0) {
+            if ($stair->id === $id && $stair->is_deleted === 0) {
                 return $stair;
             }
         }
@@ -116,13 +116,14 @@ class FakeBristolStairsRepo implements BristolStairsRepo
 
     public function updateStairInfo(BristolStairsInfoParams $stairs_info_params): void
     {
+        $id = (int)$stairs_info_params->bristol_stair_info_id;
         foreach ($this->stairs as $index => $stair) {
-            if ($stair->id === $stairs_info_params->bristol_stair_info_id) {
+            if ($stair->id === $id) {
                 $this->stairs[$index] = new BristolStairInfo(
                     $stair->id,
+                    $stairs_info_params->description,
                     $stair->latitude,
                     $stair->longitude,
-                    $stairs_info_params->description,
                     $stair->stored_stair_image_file_id,
                     (int)$stairs_info_params->steps,
                     $stair->is_deleted,
@@ -140,13 +141,14 @@ class FakeBristolStairsRepo implements BristolStairsRepo
 
     public function updateStairPosition(BristolStairsPositionParams $stairs_position_params): void
     {
+        $id = (int)$stairs_position_params->bristol_stair_info_id;
         foreach ($this->stairs as $index => $stair) {
-            if ($stair->id === $stairs_position_params->bristol_stair_info_id) {
+            if ($stair->id === $id) {
                 $this->stairs[$index] = new BristolStairInfo(
                     $stair->id,
-                    (string)$stairs_position_params->latitude,
-                    (string)$stairs_position_params->longitude,
                     $stair->description,
+                    (float)$stairs_position_params->latitude,
+                    (float)$stairs_position_params->longitude,
                     $stair->stored_stair_image_file_id,
                     $stair->steps,
                     $stair->is_deleted,

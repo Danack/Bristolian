@@ -5,7 +5,7 @@ namespace BristolianTest\Repo\UserSearch;
 use Bristolian\Repo\RoomRepo\PdoRoomRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
-use Room;
+use Bristolian\Model\Generated\Room;
 
 /**
  * @coversNothing
@@ -34,7 +34,7 @@ class PdoRoomRepoTest extends BaseTestCase
             $room_description
         );
 
-        $room_from_db = $pdoRoomRepo->getRoomById($room_created->getRoomId());
+        $room_from_db = $pdoRoomRepo->getRoomById($room_created->id);
         $this->assertEquals($room_created, $room_from_db);
 
         $rooms = $pdoRoomRepo->getAllRooms();

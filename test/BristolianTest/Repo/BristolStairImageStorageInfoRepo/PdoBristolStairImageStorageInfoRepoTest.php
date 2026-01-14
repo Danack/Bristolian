@@ -7,7 +7,7 @@ use Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorage
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
-use BristolStairImageFile;
+use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
 use Ramsey\Uuid\Uuid;
 
 /**

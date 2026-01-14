@@ -2,12 +2,12 @@
 
 namespace Bristolian\Repo\RoomFileRepo;
 
-use StoredFile;
+use Bristolian\Model\Generated\RoomFileObjectInfo;
 
 class FakeRoomFileRepo implements RoomFileRepo
 {
     /**
-     * @var array<string, StoredFile>
+     * @var array<string, RoomFileObjectInfo>
      */
     private array $files = [];
 
@@ -24,9 +24,9 @@ class FakeRoomFileRepo implements RoomFileRepo
         
         $this->roomFiles[$room_id][] = $fileStorageId;
         
-        // Create a fake StoredFile if it doesn't exist
+        // Create a fake RoomFileObjectInfo if it doesn't exist
         if (!isset($this->files[$fileStorageId])) {
-            $this->files[$fileStorageId] = new StoredFile(
+            $this->files[$fileStorageId] = new RoomFileObjectInfo(
                 id: $fileStorageId,
                 normalized_name: 'normalized_' . $fileStorageId . '.txt',
                 original_filename: 'original_' . $fileStorageId . '.txt',
@@ -40,7 +40,7 @@ class FakeRoomFileRepo implements RoomFileRepo
 
     /**
      * @param string $room_id
-     * @return StoredFile[]
+     * @return RoomFileObjectInfo[]
      */
     public function getFilesForRoom(string $room_id): array
     {
@@ -58,7 +58,7 @@ class FakeRoomFileRepo implements RoomFileRepo
         return $filesForRoom;
     }
 
-    public function getFileDetails(string $room_id, string $file_id): StoredFile|null
+    public function getFileDetails(string $room_id, string $file_id): RoomFileObjectInfo|null
     {
         if (!isset($this->roomFiles[$room_id])) {
             return null;

@@ -7,7 +7,7 @@ use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
 use Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo;
 use BristolianTest\BaseTestCase;
-use BristolStairInfo;
+use Bristolian\Model\Generated\BristolStairInfo;
 use VarMap\ArrayVarMap;
 
 /**
@@ -66,19 +66,19 @@ class FakeBristolStairsRepoTest extends BaseTestCase
         $stairs_array = array_values($all_stairs);
 
         // Check first stair
-        $this->assertSame('1', $stairs_array[0]->id);
-        $this->assertSame('51.4556', $stairs_array[0]->latitude);
-        $this->assertSame('-2.5943', $stairs_array[0]->longitude);
+        $this->assertSame(1, $stairs_array[0]->id);
+        $this->assertSame(51.4556, $stairs_array[0]->latitude);
+        $this->assertSame(-2.5943, $stairs_array[0]->longitude);
         $this->assertSame('Steep stairs near Park Street', $stairs_array[0]->description);
         $this->assertSame('fake_image_1', $stairs_array[0]->stored_stair_image_file_id);
         $this->assertSame(45, $stairs_array[0]->steps);
 
         // Check second stair
-        $this->assertSame('2', $stairs_array[1]->id);
+        $this->assertSame(2, $stairs_array[1]->id);
         $this->assertSame(32, $stairs_array[1]->steps);
 
         // Check third stair
-        $this->assertSame('3', $stairs_array[2]->id);
+        $this->assertSame(3, $stairs_array[2]->id);
         $this->assertSame(28, $stairs_array[2]->steps);
     }
 
@@ -91,7 +91,7 @@ class FakeBristolStairsRepoTest extends BaseTestCase
         $stair = $repo->getStairInfoById(1);
 
         $this->assertInstanceOf(BristolStairInfo::class, $stair);
-        $this->assertSame('1', $stair->id);
+        $this->assertSame(1, $stair->id);
         $this->assertSame('Steep stairs near Park Street', $stair->description);
         $this->assertSame(45, $stair->steps);
     }
@@ -104,13 +104,13 @@ class FakeBristolStairsRepoTest extends BaseTestCase
         $repo = new FakeBristolStairsRepo();
 
         $stair1 = $repo->getStairInfoById(1);
-        $this->assertSame('1', $stair1->id);
+        $this->assertSame(1, $stair1->id);
 
         $stair2 = $repo->getStairInfoById(2);
-        $this->assertSame('2', $stair2->id);
+        $this->assertSame(2, $stair2->id);
 
         $stair3 = $repo->getStairInfoById(3);
-        $this->assertSame('3', $stair3->id);
+        $this->assertSame(3, $stair3->id);
     }
 
     /**
@@ -140,9 +140,9 @@ class FakeBristolStairsRepoTest extends BaseTestCase
         );
 
         $this->assertInstanceOf(BristolStairInfo::class, $new_stair);
-        $this->assertSame('4', $new_stair->id); // Should be 4th item
-        $this->assertSame('51.46', $new_stair->latitude);
-        $this->assertSame('-2.6', $new_stair->longitude);
+        $this->assertSame(4, $new_stair->id); // Should be 4th item
+        $this->assertSame(51.46, $new_stair->latitude);
+        $this->assertSame(-2.6, $new_stair->longitude);
         $this->assertSame('Test stairs description', $new_stair->description);
         $this->assertSame('test_image_id', $new_stair->stored_stair_image_file_id);
         $this->assertSame(50, $new_stair->steps);
@@ -353,8 +353,8 @@ class FakeBristolStairsRepoTest extends BaseTestCase
         $repo->updateStairPosition($params);
 
         $updated_stair = $repo->getStairInfoById(1);
-        $this->assertSame('51.5', $updated_stair->latitude);
-        $this->assertSame('-2.7', $updated_stair->longitude);
+        $this->assertSame(51.5, $updated_stair->latitude);
+        $this->assertSame(-2.7, $updated_stair->longitude);
     }
 
     /**
@@ -443,7 +443,7 @@ class FakeBristolStairsRepoTest extends BaseTestCase
             -2.6100,
             60
         );
-        $this->assertSame('4', $new_stair->id);
+        $this->assertSame(4, $new_stair->id);
 
         // Update its info
         $info_params = BristolStairsInfoParams::createFromVarMap(new ArrayVarMap([
@@ -465,8 +465,8 @@ class FakeBristolStairsRepoTest extends BaseTestCase
         $final_stair = $repo->getStairInfoById(4);
         $this->assertSame('Updated new stairs', $final_stair->description);
         $this->assertSame(70, $final_stair->steps);
-        $this->assertSame('51.48', $final_stair->latitude);
-        $this->assertSame('-2.62', $final_stair->longitude);
+        $this->assertSame(51.48, $final_stair->latitude);
+        $this->assertSame(-2.62, $final_stair->longitude);
 
         // Verify total count
         [$flights, $total_steps] = $repo->get_total_number_of_steps();
@@ -489,8 +489,8 @@ class FakeBristolStairsRepoTest extends BaseTestCase
             -2.654321,
             10
         );
-        $this->assertSame('51.123456', $stair1->latitude);
-        $this->assertSame('-2.654321', $stair1->longitude);
+        $this->assertSame(51.123456, $stair1->latitude);
+        $this->assertSame(-2.654321, $stair1->longitude);
 
         // Test with integer-like coordinates
         $stair2 = $repo->store_stairs_info(
@@ -500,8 +500,8 @@ class FakeBristolStairsRepoTest extends BaseTestCase
             -2.0,
             15
         );
-        $this->assertSame('51', $stair2->latitude);
-        $this->assertSame('-2', $stair2->longitude);
+        $this->assertSame(51.0, $stair2->latitude);
+        $this->assertSame(-2.0, $stair2->longitude);
     }
 
     /**

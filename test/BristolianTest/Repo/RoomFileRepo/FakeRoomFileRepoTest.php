@@ -4,7 +4,7 @@ namespace BristolianTest\Repo\RoomFileRepo;
 
 use Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo;
 use BristolianTest\BaseTestCase;
-use StoredFile;
+use Bristolian\Model\Generated\RoomFileObjectInfo;
 
 /**
  * Tests for FakeRoomFileRepo
@@ -74,7 +74,7 @@ class FakeRoomFileRepoTest extends BaseTestCase
         $files = $roomFileRepo->getFilesForRoom($room_id);
 
         $this->assertCount(1, $files);
-        $this->assertInstanceOf(StoredFile::class, $files[0]);
+        $this->assertInstanceOf(RoomFileObjectInfo::class, $files[0]);
         $this->assertSame($file_id, $files[0]->id);
     }
 
@@ -116,7 +116,7 @@ class FakeRoomFileRepoTest extends BaseTestCase
 
         $fileDetails = $roomFileRepo->getFileDetails($room_id, $file_id);
 
-        $this->assertInstanceOf(StoredFile::class, $fileDetails);
+        $this->assertInstanceOf(RoomFileObjectInfo::class, $fileDetails);
         $this->assertSame($file_id, $fileDetails->id);
     }
 
@@ -222,7 +222,7 @@ class FakeRoomFileRepoTest extends BaseTestCase
         $files = $roomFileRepo->getFilesForRoom($room_id);
 
         $this->assertCount(3, $files);
-        $this->assertContainsOnlyInstancesOf(StoredFile::class, $files);
+        $this->assertContainsOnlyInstancesOf(RoomFileObjectInfo::class, $files);
     }
 
     /**

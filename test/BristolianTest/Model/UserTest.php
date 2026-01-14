@@ -3,7 +3,7 @@
 namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
-use User;
+use Bristolian\Model\Generated\User;
 
 /**
  * @coversNothing
@@ -11,14 +11,17 @@ use User;
 class UserTest extends BaseTestCase
 {
     /**
-     * @covers \User
+     * @covers \Bristolian\Model\Generated\User
      */
     public function testConstruct()
     {
-        $username = 'testuser';
-        $user = new User($username);
+        // User constructor takes: id (string), created_at (DateTimeInterface)
+        $id = 'test-user-id';
+        $createdAt = new \DateTimeImmutable();
+        $user = new User($id, $createdAt);
 
-        $this->assertSame($username, $user->username);
+        $this->assertSame($id, $user->id);
+        $this->assertSame($createdAt, $user->created_at);
     }
 }
 

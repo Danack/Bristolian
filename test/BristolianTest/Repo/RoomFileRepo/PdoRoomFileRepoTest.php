@@ -36,12 +36,12 @@ class PdoRoomFileRepoTest extends BaseTestCase
         $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
 
         // Check room has no files listed
-        $files = $roomFileRepo->getFilesForRoom($room->getRoomId());
+        $files = $roomFileRepo->getFilesForRoom($room->id);
         $this->assertEmpty($files);
 
         // Check adding files works
-        $roomFileRepo->addFileToRoom($file_id, $room->getRoomId());
-        $files = $roomFileRepo->getFilesForRoom($room->getRoomId());
+        $roomFileRepo->addFileToRoom($file_id, $room->id);
+        $files = $roomFileRepo->getFilesForRoom($room->id);
         $this->assertCount(1, $files);
         $this->assertInstanceOf(RoomFileObjectInfo::class, $files[0]);
 
@@ -75,14 +75,14 @@ class PdoRoomFileRepoTest extends BaseTestCase
         $file_id_2 = $this->createTestFile($user);
         $file_id_3 = $this->createTestFile($user);
 
-        $roomFileRepo->addFileToRoom($file_id_1, $room->getRoomId());
-        $roomFileRepo->addFileToRoom($file_id_2, $room->getRoomId());
-        $roomFileRepo->addFileToRoom($file_id_3, $room->getRoomId());
+        $roomFileRepo->addFileToRoom($file_id_1, $room->id);
+        $roomFileRepo->addFileToRoom($file_id_2, $room->id);
+        $roomFileRepo->addFileToRoom($file_id_3, $room->id);
 
-        $files = $roomFileRepo->getFilesForRoom($room->getRoomId());
+        $files = $roomFileRepo->getFilesForRoom($room->id);
 
         $this->assertCount(3, $files);
-        $this->assertContainsOnlyInstancesOf(StoredFile::class, $files);
+        $this->assertContainsOnlyInstancesOf(RoomFileObjectInfo::class, $files);
     }
 
     /**
@@ -97,11 +97,11 @@ class PdoRoomFileRepoTest extends BaseTestCase
         $file_id_1 = $this->createTestFile($user);
         $file_id_2 = $this->createTestFile($user);
 
-        $roomFileRepo->addFileToRoom($file_id_1, $room1->getRoomId());
-        $roomFileRepo->addFileToRoom($file_id_2, $room2->getRoomId());
+        $roomFileRepo->addFileToRoom($file_id_1, $room1->id);
+        $roomFileRepo->addFileToRoom($file_id_2, $room2->id);
 
-        $room1_files = $roomFileRepo->getFilesForRoom($room1->getRoomId());
-        $room2_files = $roomFileRepo->getFilesForRoom($room2->getRoomId());
+        $room1_files = $roomFileRepo->getFilesForRoom($room1->id);
+        $room2_files = $roomFileRepo->getFilesForRoom($room2->id);
 
         $this->assertCount(1, $room1_files);
         $this->assertCount(1, $room2_files);
@@ -120,8 +120,8 @@ class PdoRoomFileRepoTest extends BaseTestCase
         $file_id = $this->createTestFile($user);
         $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
 
-        $roomFileRepo->addFileToRoom($file_id, $room->getRoomId());
-        $files = $roomFileRepo->getFilesForRoom($room->getRoomId());
+        $roomFileRepo->addFileToRoom($file_id, $room->id);
+        $files = $roomFileRepo->getFilesForRoom($room->id);
 
         $file = $files[0];
         $this->assertIsString($file->id);
@@ -142,11 +142,11 @@ class PdoRoomFileRepoTest extends BaseTestCase
         $file_id = $this->createTestFile($user);
         $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
 
-        $roomFileRepo->addFileToRoom($file_id, $room->getRoomId());
+        $roomFileRepo->addFileToRoom($file_id, $room->id);
 
-        $fileDetails = $roomFileRepo->getFileDetails($room->getRoomId(), $file_id);
+        $fileDetails = $roomFileRepo->getFileDetails($room->id, $file_id);
 
-        $this->assertInstanceOf(StoredFile::class, $fileDetails);
+        $this->assertInstanceOf(RoomFileObjectInfo::class, $fileDetails);
         $this->assertSame($file_id, $fileDetails->id);
     }
 
@@ -158,7 +158,7 @@ class PdoRoomFileRepoTest extends BaseTestCase
         [$room, $user] = $this->createTestUserAndRoom();
         $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
 
-        $fileDetails = $roomFileRepo->getFileDetails($room->getRoomId(), 'nonexistent-file-id');
+        $fileDetails = $roomFileRepo->getFileDetails($room->id, 'nonexistent-file-id');
 
         $this->assertNull($fileDetails);
     }
@@ -174,10 +174,10 @@ class PdoRoomFileRepoTest extends BaseTestCase
         $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
 
         // Add file to room1
-        $roomFileRepo->addFileToRoom($file_id, $room1->getRoomId());
+        $roomFileRepo->addFileToRoom($file_id, $room1->id);
 
         // Try to get file details for room2
-        $fileDetails = $roomFileRepo->getFileDetails($room2->getRoomId(), $file_id);
+        $fileDetails = $roomFileRepo->getFileDetails($room2->id, $file_id);
 
         // Should be null because file is not in room2
         $this->assertNull($fileDetails);
@@ -192,12 +192,12 @@ class PdoRoomFileRepoTest extends BaseTestCase
         $file_id = $this->createTestFile($user);
         $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
 
-        $roomFileRepo->addFileToRoom($file_id, $room->getRoomId());
+        $roomFileRepo->addFileToRoom($file_id, $room->id);
 
-        $files_list = $roomFileRepo->getFilesForRoom($room->getRoomId());
+        $files_list = $roomFileRepo->getFilesForRoom($room->id);
         $file_from_list = $files_list[0];
 
-        $file_details = $roomFileRepo->getFileDetails($room->getRoomId(), $file_id);
+        $file_details = $roomFileRepo->getFileDetails($room->id, $file_id);
 
         // Verify properties match between both methods
         $this->assertSame($file_from_list->id, $file_details->id);
@@ -219,11 +219,11 @@ class PdoRoomFileRepoTest extends BaseTestCase
         $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
 
         // Add same file to both rooms
-        $roomFileRepo->addFileToRoom($file_id, $room1->getRoomId());
-        $roomFileRepo->addFileToRoom($file_id, $room2->getRoomId());
+        $roomFileRepo->addFileToRoom($file_id, $room1->id);
+        $roomFileRepo->addFileToRoom($file_id, $room2->id);
 
-        $room1_files = $roomFileRepo->getFilesForRoom($room1->getRoomId());
-        $room2_files = $roomFileRepo->getFilesForRoom($room2->getRoomId());
+        $room1_files = $roomFileRepo->getFilesForRoom($room1->id);
+        $room2_files = $roomFileRepo->getFilesForRoom($room2->id);
 
         // Both rooms should have the file
         $this->assertCount(1, $room1_files);

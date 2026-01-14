@@ -38,8 +38,9 @@ class FakeRoomLinkRepoTest extends BaseTestCase
         );
 
         $roomLink = $roomLinkRepo->getRoomLink($roomLinkId);
-        $this->assertSame($userSession->getUserId(), $roomLink->user_id);
-        $this->assertSame($url, $roomLink->url);
+        // RoomLink no longer has user_id or url properties - these are in the Link table
+        $this->assertNotNull($roomLink);
+        $this->assertSame($room_id, $roomLink->room_id);
     }
 
     /**
