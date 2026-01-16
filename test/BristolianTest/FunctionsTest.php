@@ -310,7 +310,7 @@ TEXT;
     {
         $this->markTestSkipped('Test not implemented yet');
 
-        $document = new \Bristolian\Model\Types\UserDocument(
+        $document = new \deadish\UserDocument(
             \Bristolian\Types\DocumentType::markdown_file->value,
             "Some title",
             "FOIA Section 12 and the 18-hour time_cost limit.md"

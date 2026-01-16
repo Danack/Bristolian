@@ -25,7 +25,7 @@ function createReactWidget(string $type, array $data): string
 
     $html = <<< HTML
 <div>
-<span class="widget_csp_violation_reports" data-widgety_json="$widget_data">
+<span class="$type" data-widgety_json="$widget_data">
   <!-- Hello, I am a react widget. -->
 </span>
 </div>

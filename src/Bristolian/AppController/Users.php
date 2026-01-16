@@ -2,15 +2,15 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\Repo\UserDocumentRepo\UserDocumentRepo;
-use Bristolian\Repo\UserRepo\UserRepo;
-use Bristolian\Repo\UserProfileRepo\UserProfileRepo;
 use Bristolian\Parameters\UserProfileUpdateParams;
-use Bristolian\Session\UserSession;
-use SlimDispatcher\Response\JsonResponse;
+use Bristolian\Repo\UserProfileRepo\UserProfileRepo;
+use Bristolian\Repo\UserRepo\UserRepo;
 use Bristolian\Response\GetUserInfoResponse;
 use Bristolian\Response\UpdateUserProfileResponse;
 use Bristolian\Response\UploadAvatarResponse;
+use Bristolian\Session\UserSession;
+use deadish\UserDocumentRepo\UserDocumentRepo;
+use SlimDispatcher\Response\JsonResponse;
 
 class Users
 {
@@ -22,15 +22,17 @@ class Users
         // I need to go back through and 'normalise' a whole load of code.
         $template = "<a href='/users/:attr_user_id/:attr_username'>:html_username</a>";
 
-        foreach ($userRepo->getUsers() as $user) {
-            $params = [
-//                ':attr_user_id' => $user->user_id,
-                ':attr_username' => $user->username,
-                ':html_username' => $user->username,
-            ];
+//        foreach ($userRepo->getUsers() as $user) {
+//            $params = [
+////                ':attr_user_id' => $user->user_id,
+//                ':attr_username' => $user->username,
+//                ':html_username' => $user->username,
+//            ];
+//
+//            $contents .= esprintf($template, $params);
+//        }
 
-            $contents .= esprintf($template, $params);
-        }
+        $contents .= "This is a little broken";
 
         return $contents;
     }
@@ -209,7 +211,7 @@ HTML;
 
     public function showUser(
         UserRepo $userRepo,
-        UserDocumentRepo $userDocumentRepo,
+//        UserDocumentRepo $userDocumentRepo,
         string $username
     ): string {
         $user = $userRepo->findUser($username);
@@ -218,40 +220,42 @@ HTML;
             return "User not found.";
         }
 
-        $documents = $userDocumentRepo->getUserDocuments($user);
         $contents = "<h1>User has these documents</h1>";
-        $template = "<a href='/users/:uri_username/docs/:uri_link'>:html_title</a>";
 
-        foreach ($documents as $document) {
-            $params = [
-                ':uri_username' => $user->username,
-                ':uri_link' => slugify($document->title),
-                ':html_title' => $document->title
-            ];
+//        $documents = $userDocumentRepo->getUserDocuments($user);
+//        $contents = "<h1>User has these documents</h1>";
+//        $template = "<a href='/users/:uri_username/docs/:uri_link'>:html_title</a>";
+//
+//        foreach ($documents as $document) {
+//            $params = [
+//                ':uri_username' => $user->username,
+//                ':uri_link' => slugify($document->title),
+//                ':html_title' => $document->title
+//            ];
+//
+//            $contents .= esprintf($template, $params);
+//            $contents .= "<br/>";
+//        }
 
-            $contents .= esprintf($template, $params);
-            $contents .= "<br/>";
-        }
-
-        $contents .= "<br/><br/><br/><br/><br/>";
+        $contents .= "<br/><br/>This is a little broken<br/><br/><br/>";
 
         return $contents;
     }
 
-    public function showUserDocument(
-        UserRepo $userRepo,
-        UserDocumentRepo $userDocumentRepo,
-        string $username,
-        string $title
-    ): string {
-        $user = $userRepo->findUser($username);
-
-        if ($user === null) {
-            return "User not found.";
-        }
-
-        return $userDocumentRepo->renderUserDocument($user, $title);
-    }
+//    public function showUserDocument(
+//        UserRepo $userRepo,
+//        UserDocumentRepo $userDocumentRepo,
+//        string $username,
+//        string $title
+//    ): string {
+//        $user = $userRepo->findUser($username);
+//
+//        if ($user === null) {
+//            return "User not found.";
+//        }
+//
+//        return $userDocumentRepo->renderUserDocument($user, $title);
+//    }
 
     public function updateProfile(
         UserSession $userSession,

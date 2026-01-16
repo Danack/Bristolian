@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Bristolian\Response;
 
 use Bristolian\Exception\DataEncodingException;
-use BristolStairInfo;
+use Bristolian\Model\Generated\BristolStairInfo;
 use SlimDispatcher\Response\StubResponse;
 
 class UploadBristolStairsImageResponse implements StubResponse

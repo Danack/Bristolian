@@ -1,7 +1,8 @@
 <?php
 
-namespace Bristolian\Repo\UserRepo;
+namespace deadish;
 
+use Bristolian\Repo\UserRepo\UserRepo;
 use Bristolian\Types\UserList;
 use User;
 

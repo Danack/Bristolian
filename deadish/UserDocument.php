@@ -1,7 +1,8 @@
 <?php
 
-namespace Bristolian\Model\Types;
+namespace deadish;
 
+use Bristolian\Model\Generated\User;
 use Bristolian\Parameters\PropertyType\BasicString;
 use Bristolian\Types\DocumentType;
 use Bristolian\Types\UserList;
@@ -10,7 +11,6 @@ use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 use DataType\SafeAccess;
-use User;
 
 class UserDocument implements DataType
 {

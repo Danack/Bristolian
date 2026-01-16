@@ -1,6 +1,6 @@
 import {h, Component} from "preact";
 import {api, GetMemesResponse} from "./generated/api_routes";
-import {Meme} from "./generated/types";
+import {StoredMeme, createStoredMeme} from "./generated/types";
 import {MemeTagType} from "./MemeTagType";
 
 export interface MemeManagementPanelProps {
@@ -32,8 +32,8 @@ interface TagSuggestion {
 }
 
 interface MemeManagementPanelState {
-    memes: Array<Meme>;
-    memeBeingEdited: Meme|null;
+    memes: Array<StoredMeme>;
+    memeBeingEdited: StoredMeme|null;
     memeInfo: Array<MemeInfo>;
     memeBeingEdited_memetags: Array<MemeTag>|null;
     meme_edit_text: string;
@@ -110,7 +110,12 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             console.error("Server response did not contain 'memes'.");
             return;
         }
-        this.setState({memes: data.data.memes})
+        // GetMemesResponse structure: { result: 'success', data: { memes: DateToString<StoredMeme>[] } }
+        // Convert date strings to Date objects using the generated helper
+        const memes: StoredMeme[] = data.data.memes.map((meme) => 
+            createStoredMeme(meme)
+        );
+        this.setState({memes: memes})
     }
 
     refreshMemes() {
@@ -170,12 +175,17 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         fetch(url)
             .then((response: Response) => response.json())
             .then((data: GetMemesResponse) => {
+                // GetMemesResponse structure: { result: 'success', data: { memes: DateToString<StoredMeme>[] } }
+                // Convert date strings to Date objects using the generated helper
+                const memes: StoredMeme[] = data.data.memes.map((meme) => 
+                    createStoredMeme(meme)
+                );
                 this.setState({ 
-                    memes: data.data.memes,
+                    memes: memes,
                     isSearching: false 
                 });
                 // Update suggested tags based on search results
-                this.loadSuggestedTagsForMemes(data.data.memes);
+                this.loadSuggestedTagsForMemes(memes);
             })
             .catch((err: any) => {
                 console.error("Failed to search memes:", err);
@@ -215,7 +225,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             });
     }
 
-    loadSuggestedTagsForMemes(memes: Array<Meme>) {
+    loadSuggestedTagsForMemes(memes: Array<StoredMeme>) {
         if (memes.length === 0) {
             this.loadSuggestedTags();
             return;
@@ -266,7 +276,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         });
     }
 
-    startEditing(meme: Meme) {
+    startEditing(meme: StoredMeme) {
         this.setState({
             memeBeingEdited: meme,
             memeInfo: null,
@@ -286,7 +296,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         this.setState({memeBeingEdited: null})
     }
 
-    renderMeme(meme: Meme) {
+    renderMeme(meme: StoredMeme) {
         const meme_url = `/images/memes/${meme.id}.jpg`;
         
         return <tr key={meme.id}>
@@ -317,7 +327,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                 {/*<th>Name</th>*/}
                 <th>Edit</th>
             </tr>
-            {Object.values(this.state.memes).map((meme: Meme) => this.renderMeme(meme))}
+            {Object.values(this.state.memes).map((meme: StoredMeme) => this.renderMeme(meme))}
         </table>
     }
 

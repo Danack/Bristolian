@@ -16,7 +16,7 @@ use Bristolian\Session\UserSession;
 use Bristolian\UploadedFiles\UploadedFile;
 use DI\ConfigException;
 use DI\InjectionException;
-use Room;
+use Bristolian\Model\Generated\Room;
 
 /**
  * Trait to make write tests easier.

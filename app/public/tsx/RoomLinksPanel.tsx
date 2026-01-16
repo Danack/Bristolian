@@ -81,11 +81,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
     }
 
     renderRoomLink(link: RoomLink) {
-        let resolved_title = link.url;
-
-        if (link.title) {
-            resolved_title = link.title;
-        }
+        let resolved_title = link.title || link.link_id;
 
         // if (this.state.linkBeingEdited !== null &&
         //     this.state.linkBeingEdited.id == link.id) {
@@ -108,9 +104,9 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
 
         return <tr key={link.id}>
             <td>
-              <a href={link.url} target="_blank">
+              <span>
                 {resolved_title}
-              </a>
+              </span>
             </td>
             <td>
               <button onClick={() => this.startEditingRoomLink(link)}>Edit</button>
@@ -157,15 +153,9 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         //     error_description = <span class="error">{this.state.error_description}</span>
         // }
 
-        let isValidUrl = isUrl(this.state.linkBeingEdited.url);
-
-        let add_button = <span><button disabled={true}>Add link</button>Url is not valid.</span>
-
-        if (isValidUrl) {
-            // add_button = <button type="submit" onClick={() => this.addLink()}>Add link</button>
-        }
-
-
+        // Note: RoomLink doesn't have a url property, only link_id
+        // The URL editing functionality is not currently implemented
+        let add_button = <span><button disabled={true}>Save</button>Editing not fully implemented.</span>
 
         // @ts-ignore
         return <div class='room_links_add_panel_react'>
@@ -173,16 +163,12 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
                 <tbody>
                 <tr>
                     <td>
-                        <label for={"url"}>
-                            Url
+                        <label>
+                            Link ID
                         </label>
                     </td>
                     <td>
-                        <input name="url"
-                               size={100}
-                               value={this.state.linkBeingEdited.url}
-                          // @ts-ignore
-                               onChange={ e => this.setState({url: e.target.value})}/>
+                        <span>{this.state.linkBeingEdited.link_id}</span>
                         {error_url}
                     </td>
                 </tr>

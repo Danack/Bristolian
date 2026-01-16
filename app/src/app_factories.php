@@ -21,6 +21,7 @@ function createExceptionToErrorPageResponseMiddleware(Injector $injector): Excep
     $exceptionHandlers = [
         \Bristolian\Exception\DebuggingCaughtException::class => 'renderDebuggingCaughtExceptionToHtml',
         \Bristolian\MarkdownRenderer\MarkdownRendererException::class => 'renderMarkdownRendererException',
+        \Bristolian\PdoSimple\PdoSimpleWithPreviousException::class => 'renderPdoSimpleWithPreviousExceptionToHtml',
         \ParseError::class => 'renderParseErrorToHtml',
         DI\InjectionException::class => 'renderInjectionExceptionToHtml',
 

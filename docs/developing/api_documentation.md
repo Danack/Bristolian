@@ -15,6 +15,101 @@ The API uses session-based authentication. Most endpoints require a valid user s
 
 All API responses are JSON formatted. Error responses include appropriate HTTP status codes and error details.
 
+## Response Type Implementation
+
+When creating new API endpoints, **always create specific response classes** rather than using generic `JsonResponse`. This ensures:
+
+- **Type safety**: Response structure is enforced at the PHP level
+- **Consistency**: All responses follow the same pattern
+- **Maintainability**: Response format is centralized in one class
+- **Documentation**: Response structure is self-documenting
+
+### Creating Response Classes
+
+Response classes should:
+1. Be placed in `src/Bristolian/Response/` (or a subdirectory like `src/Bristolian/Response/TinnedFish/`)
+2. Implement `SlimDispatcher\Response\StubResponse`
+3. Define the response structure in the constructor
+4. Return appropriate HTTP status codes via `getStatus()`
+5. Set `Content-Type: application/json` header
+
+### Example Response Class
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Bristolian\Response\TinnedFish;
+
+use SlimDispatcher\Response\StubResponse;
+
+class GetAllProductsResponse implements StubResponse
+{
+    private string $body;
+
+    /**
+     * @param Product[] $products
+     */
+    public function __construct(array $products)
+    {
+        $productsData = [];
+        foreach ($products as $product) {
+            $productsData[] = [
+                'barcode' => $product->barcode,
+                'name' => $product->name,
+                // ... other fields
+            ];
+        }
+
+        $response = [
+            'success' => true,
+            'products' => $productsData,
+        ];
+
+        $this->body = json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    }
+
+    public function getStatus(): int
+    {
+        return 200;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getHeaders(): array
+    {
+        return [
+            'Content-Type' => 'application/json'
+        ];
+    }
+
+    public function getBody(): string
+    {
+        return $this->body;
+    }
+}
+```
+
+### Using Response Classes
+
+In your API controller, return the response class instead of `JsonResponse`:
+
+```php
+public function getAllProducts(
+    TinnedFishProductRepo $productRepo
+): StubResponse {
+    $products = $productRepo->getAll();
+    return new GetAllProductsResponse($products);
+}
+```
+
+See existing examples in:
+- `src/Bristolian/Response/TinnedFish/ProductLookupResponse.php`
+- `src/Bristolian/Response/TinnedFish/ProductNotFoundResponse.php`
+- `src/Bristolian/Response/TinnedFish/GetAllProductsResponse.php`
+
 ## Endpoints
 
 ### System & Health

@@ -21,7 +21,7 @@ use Bristolian\Service\BristolStairImageStorage\UploadError;
 use Bristolian\Session\UserSession;
 use Bristolian\SiteHtml\ExtraAssets;
 use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
-use BristolStairInfo;
+use Bristolian\Model\Generated\BristolStairInfo;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\StubResponse;
 use VarMap\VarMap;

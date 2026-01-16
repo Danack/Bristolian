@@ -2,8 +2,8 @@
 
 namespace otw_test;
 
-use Bristolian\Model\Types\UserDocument;
 use BristolianTest\BaseTestCase;
+use deadish\UserDocument;
 use User;
 
 /**
@@ -12,7 +12,7 @@ use User;
 class UserDocumentTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\Types\UserDocument
+     * @covers \deadish\UserDocument
      */
     public function testConstruct()
     {
@@ -29,7 +29,7 @@ class UserDocumentTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\Types\UserDocument
+     * @covers \deadish\UserDocument
      */
     public function testGetUser()
     {
@@ -40,7 +40,7 @@ class UserDocumentTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\Types\UserDocument
+     * @covers \deadish\UserDocument
      */
     public function testSetUser()
     {
@@ -53,7 +53,7 @@ class UserDocumentTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\Types\UserDocument
+     * @covers \deadish\UserDocument
      */
     public function testConstructWithInvalidType()
     {

@@ -55,27 +55,27 @@ class ToStringTraitTest extends BaseTestCase
         return $classes;
     }
 
-    /**
-     * Factory method to create instances of Model classes for testing
-     *
-     * @param class-string $className
-     * @return object
-     */
-    private function createModelInstance(string $className): object
-    {
-        // Add factory methods for each class that uses ToString
-        return match ($className) {
-            UserChatMessage::class => new UserChatMessage(
-                id: 123,
-                user_id: 'user-456',
-                room_id: 'room-789',
-                text: 'Hello, world! This is a test message.',
-                reply_message_id: 100,
-                created_at: new \DateTimeImmutable('2024-01-15 10:30:00')
-            ),
-            default => throw new \RuntimeException("No factory method defined for class: $className")
-        };
-    }
+//    /**
+//     * Factory method to create instances of Model classes for testing
+//     *
+//     * @param class-string $className
+//     * @return object
+//     */
+//    private function createModelInstance(string $className): object
+//    {
+//        // Add factory methods for each class that uses ToString
+//        return match ($className) {
+//            UserChatMessage::class => new UserChatMessage(
+//                id: 123,
+//                user_id: 'user-456',
+//                room_id: 'room-789',
+//                text: 'Hello, world! This is a test message.',
+//                reply_message_id: 100,
+//                created_at: new \DateTimeImmutable('2024-01-15 10:30:00')
+//            ),
+//            default => throw new \RuntimeException("No factory method defined for class: $className")
+//        };
+//    }
 
     /**
      * Get expected values for a model instance's properties
@@ -242,20 +242,20 @@ class ToStringTraitTest extends BaseTestCase
         ];
     }
 
-    /**
-     * Helper to assert a method exists on an object or class
-     *
-     * @param object|class-string $objectOrClass
-     * @param string $methodName
-     */
-    private function assertMethodExists($objectOrClass, string $methodName): void
-    {
-        $className = is_object($objectOrClass) ? get_class($objectOrClass) : $objectOrClass;
-        $this->assertTrue(
-            method_exists($objectOrClass, $methodName),
-            "Class $className should have method $methodName"
-        );
-    }
+//    /**
+//     * Helper to assert a method exists on an object or class
+//     *
+//     * @param object|class-string $objectOrClass
+//     * @param string $methodName
+//     */
+//    private function assertMethodExists($objectOrClass, string $methodName): void
+//    {
+//        $className = is_object($objectOrClass) ? get_class($objectOrClass) : $objectOrClass;
+//        $this->assertTrue(
+//            method_exists($objectOrClass, $methodName),
+//            "Class $className should have method $methodName"
+//        );
+//    }
 
     /**
      * Test that toArray method works correctly

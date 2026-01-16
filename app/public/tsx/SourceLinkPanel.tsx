@@ -1,7 +1,7 @@
 
 import {h, Component} from "preact";
 import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";
-import {RoomSourceLink} from "./generated/types";
+import {RoomSourceLinkView} from "./generated/types";
 import {countWords} from "./functions";
 import {SOURCELINK_TITLE_MINIMUM_LENGTH} from "./generated/constants";
 import {api, GetRoomsFileSourcelinksResponse} from "./generated/api_routes";
@@ -69,7 +69,7 @@ interface SourceLinkPanelState {
   selection_data: SelectionData|null,
   title: string,
   text: string,
-  sourcelinks: RoomSourceLink[],
+  sourcelinks: RoomSourceLinkView[],
   selected_sourcelink_id: string|null,
   create_status: string|null,
   error: string|null,
@@ -218,7 +218,12 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
       return;
     }
 
-    const selectionDataJson = selectedSourcelink ? selectedSourcelink.highlights_json : null;
+    // RoomSourceLinkView has highlights_json directly from the joined query
+    const selectionDataJson = selectedSourcelink?.highlights_json || null;
+    if (!selectionDataJson) {
+      console.warn("highlights_json not available for selected sourcelink");
+      return;
+    }
     let highlights = JSON.parse(selectionDataJson)
 
     // console.log("sendHighlightsToDraw");

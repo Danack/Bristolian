@@ -50,8 +50,8 @@ class Rooms
 
         foreach ($rooms as $room) {
             $params = [
-                ':attr_room_id' => $room->getRoomId(),
-                ':html_name' => $room->getName()
+                ':attr_room_id' => $room->id,
+                ':html_name' => $room->name
             ];
             $content .= esprintf($template, $params);
         }
@@ -128,7 +128,7 @@ class Rooms
 
         $response = [
             'result' => 'success',
-//            'file_id' => $storedFileOrError->fileStorageId
+            'file_id' => $storedFileOrError
         ];
 
         return new JsonNoCacheResponse($response);
@@ -310,8 +310,8 @@ class Rooms
 </div>
 HTML;
         $params = [
-            ':html_room_name' => $room->getName(),
-            ':html_room_description' => $room->getPurpose(),
+            ':html_room_name' => $room->name,
+            ':html_room_description' => $room->purpose,
         ];
 
         $content = esprintf($template, $params);
@@ -355,7 +355,7 @@ HTML;
 HTML;
 
         $params = [
-            ':html_room_name' => $room->getName(),
+            ':html_room_name' => $room->name,
             ':attr_file_id' => $file_id,
             ':attr_room_id' => $room_id
         ];

@@ -350,29 +350,85 @@ function generateInterfaceForClass(string $type): array
         $nullable = false;
 
         $php_type = $property->getType();
-        $php_type = (string)$php_type;
-
-        if (str_starts_with($php_type, "?") === true) {
-            $php_type = ltrim($php_type, '?');
-            $nullable = true;
+        
+        // Handle union types (e.g., "Type|null")
+        if ($php_type instanceof \ReflectionUnionType) {
+            $types = $php_type->getTypes();
+            $hasNull = false;
+            $nonNullTypes = [];
+            
+            foreach ($types as $unionType) {
+                if ((string)$unionType === 'null') {
+                    $hasNull = true;
+                } else {
+                    $nonNullTypes[] = $unionType;
+                }
+            }
+            
+            if (count($nonNullTypes) === 1) {
+                $php_type = $nonNullTypes[0];
+                $nullable = $hasNull;
+            } else {
+                // Multiple non-null types - use 'any' for now
+                $php_type_str = 'any';
+                if ($hasNull) {
+                    $php_type_str .= "|null";
+                }
+                $content .= "    " . $property->getName() . ": " . $php_type_str . ";\n";
+                continue;
+            }
+        }
+        
+        // Handle ReflectionNamedType (PHP 7.0+)
+        if ($php_type instanceof \ReflectionNamedType) {
+            $nullable = $php_type->allowsNull();
+            $php_type_str = $php_type->getName();
+        } else {
+            $php_type_str = (string)$php_type;
         }
 
-        if (strcasecmp($php_type, 'DateTimeImmutable') === 0 ||
-            strcasecmp($php_type, 'DateTimeInterface') === 0 ||
-            strcasecmp($php_type, 'DateTime') === 0) {
-            $php_type = "Date";
+        $typescript_type_string = null;
+
+        // Handle DateTime types FIRST (before checking if it's a class/interface)
+        if (strcasecmp($php_type_str, 'DateTimeImmutable') === 0 ||
+            strcasecmp($php_type_str, 'DateTimeInterface') === 0 ||
+            strcasecmp($php_type_str, 'DateTime') === 0) {
+            $php_type_str = "Date";
+            $typescript_type_string = "Date";
             $dateFields[] = $property->getName();
+        } elseif (strcasecmp($php_type_str, 'int') === 0) {
+            $php_type_str = "number";
+            $typescript_type_string = "number";
+        } elseif (strcasecmp($php_type_str, 'float') === 0) {
+            $php_type_str = "number";
+            $typescript_type_string = "number";
+        } elseif (strcasecmp($php_type_str, 'bool') === 0) {
+            $php_type_str = "boolean";
+            $typescript_type_string = "boolean";
+        } elseif (strcasecmp($php_type_str, 'string') === 0) {
+            $php_type_str = "string";
+            $typescript_type_string = "string";
+        } elseif (strcasecmp($php_type_str, 'array') === 0) {
+//            $php_type_str = "array";
+            $typescript_type_string = "Object";
+        } elseif (class_exists($php_type_str) || interface_exists($php_type_str)) {
+            // Check if it's a class type (but not DateTime types which we already handled)
+            $type_rc = new \ReflectionClass($php_type_str);
+            $php_type_str = $type_rc->getShortName();
+            $typescript_type_string = $type_rc->getShortName();
         }
 
-        if (strcasecmp($php_type, 'int') === 0) {
-            $php_type = "number";
+        if ($typescript_type_string === null) {
+            echo "Failed to find typescript_type_string - php_type_str was $php_type_str\n";
+            exit(-1);
         }
 
         if ($nullable === true) {
-            $php_type .= "|null";
+            $php_type_str .= "|null";
+            $typescript_type_string .= "|null";
         }
 
-        $content .= "    " . $property->getName() . ": " . $php_type . ";\n";
+        $content .= "    " . $property->getName() . ": " . $typescript_type_string . ";\n";
     }
 
     $content .= "}\n";
@@ -512,16 +568,19 @@ class GenerateFiles
         $content .= "import { DateToString, convertDatesFromStrings } from '../functions';\n\n";
 
         $types = [
-            \BristolStairInfo::class,
-            \Bristolian\Model\Chat\UserChatMessage::class,
-            \Bristolian\Model\Chat\SystemChatMessage::class,
-
-            \Bristolian\Model\Types\IncomingEmail::class,
-            \Bristolian\Model\Types\Meme::class,
-            \ProcessorRunRecord::class,
-            \RoomLink::class,
-            \RoomSourceLink::class,
-            \StoredFile::class,
+            \Bristolian\Model\Generated\BristolStairInfo::class,
+            \Bristolian\Model\Generated\ChatMessage::class,
+            \Bristolian\Model\Generated\EmailIncoming::class,
+            \Bristolian\Model\Generated\StoredMeme::class,
+            \Bristolian\Model\Generated\ProcessorRunRecord::class,
+            \Bristolian\Model\Generated\RoomLink::class,
+            \Bristolian\Model\Generated\RoomSourcelink::class,
+            \Bristolian\Model\Generated\RoomFileObjectInfo::class,
+            \Bristolian\Model\Types\RoomSourceLinkView::class,
+            \Bristolian\Model\Types\UserProfile::class,
+            \Bristolian\Model\Types\UserDisplayName::class,
+            \Bristolian\Model\Types\UserProfileWithDisplayName::class,
+            \Bristolian\Model\TinnedFish\Product::class,
         ];
 
         $conversionFunctions = '';
@@ -541,6 +600,7 @@ class GenerateFiles
         $enums = [
             \Bristolian\ChatMessage\ChatType::class,
             \Bristolian\Repo\ProcessorRepo\ProcessType::class,
+            \Bristolian\Model\TinnedFish\ValidationStatus::class,
         ];
 
 

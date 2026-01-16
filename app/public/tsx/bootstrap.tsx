@@ -7,7 +7,7 @@ import type { WidgetClassBinding } from "./widgety/widgety";
 
 import { BristolStairsPanel } from "./BristolStairsPanel";
 import { CSPViolationReportsPanel } from "./CSPViolationReportsPanel";
-import { ChatPanel } from "./ChatPanel";
+// import { ChatPanel } from "./ChatPanel";
 import { UserProfilePanel } from "./UserProfilePanel";
 import { EmailLinkGeneratorPanel } from "./EmailLinkGenerator";
 import { FloatingPointPanel } from "./FloatingPointPanel";
@@ -26,6 +26,7 @@ import { RoomSourcelinksPanel } from "./RoomSourcelinksPanel";
 import { SourceLinkPanel } from "./SourceLinkPanel";
 import { TeleprompterPanel } from "./TeleprompterPanel";
 import { TimeLinePanel } from "./TimeLinePanel";
+import { TinnedFishProductsAdminPanel } from "./TinnedFishProductsAdminPanel";
 import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
 import { receiveSelectionMessage } from "./SourceLinkPanel";
 
@@ -36,11 +37,10 @@ let panels: WidgetClassBinding[] = [
         class: 'bristol_stairs_panel',
         component: BristolStairsPanel
     },
-    {
-        class: 'chat_panel',
-        component: ChatPanel
-    },
-
+    // {
+    //     class: 'chat_panel',
+    //     component: ChatPanel
+    // },
     {
         class: 'email_link_generator_panel',
         component: EmailLinkGeneratorPanel
@@ -125,6 +125,10 @@ let panels: WidgetClassBinding[] = [
     {
         class: 'widget_csp_violation_reports',
         component: CSPViolationReportsPanel
+    },
+    {
+        class: 'tinned_fish_products_admin',
+        component: TinnedFishProductsAdminPanel
     },
 ];
 

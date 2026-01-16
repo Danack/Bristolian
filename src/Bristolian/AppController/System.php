@@ -8,6 +8,7 @@ use Bristolian\App;
 use Bristolian\Config\Config;
 use Bristolian\CSPViolation\CSPViolationStorage;
 use Bristolian\Model\TinnedFish\Product;
+use Bristolian\Model\TinnedFish\ValidationStatus;
 use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use Bristolian\Repo\DbInfo\DbInfo;
 use Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo;
@@ -227,39 +228,73 @@ HTML;
         return $html;
     }
 
-    public function tinned_fish_products(TinnedFishProductRepo $productRepo): string
-    {
+    public function tinned_fish_products(
+        TinnedFishProductRepo $productRepo,
+        \Bristolian\SiteHtml\ExtraAssets $extraAssets
+    ): string {
         $products = $productRepo->getAll();
+        
+        // Convert products to array for React component
+        $productsData = array_map(function (Product $product) {
+            return [
+                'barcode' => $product->barcode,
+                'name' => $product->name,
+                'brand' => $product->brand,
+                'species' => $product->species,
+                'weight' => $product->weight,
+                'weight_drained' => $product->weight_drained,
+                'product_code' => $product->product_code,
+                'image_url' => $product->image_url,
+                'validation_status' => $product->validation_status->value,
+                'created_at' => $product->created_at?->format(App::DATE_TIME_FORMAT) ?? '',
+            ];
+        }, $products);
+
+        $widget = createReactWidget('tinned_fish_products_admin', [
+            'products' => $productsData,
+            'validation_statuses' => [
+                ['value' => ValidationStatus::NOT_VALIDATED->value, 'label' => ValidationStatus::NOT_VALIDATED->getDisplayName()],
+                ['value' => ValidationStatus::VALIDATED_NOT_FISH->value, 'label' => ValidationStatus::VALIDATED_NOT_FISH->getDisplayName()],
+                ['value' => ValidationStatus::VALIDATED_IS_FISH->value, 'label' => ValidationStatus::VALIDATED_IS_FISH->getDisplayName()],
+            ],
+        ]);
+
         $html = "<h2>Tinned Fish Products</h2>";
-
-        $headers = [
-            'Barcode',
-            'Name',
-            'Brand',
-            'Species',
-            'Weight',
-            'Weight Drained',
-            'Product Code',
-            'Created At'
-        ];
-
-        $rowFns = [
-            ':html_barcode' => fn(Product $product) => $product->barcode,
-            ':html_name' => fn(Product $product) => $product->name,
-            ':html_brand' => fn(Product $product) => $product->brand,
-            ':html_species' => fn(Product $product) => $product->species ?? '',
-            ':html_weight' => fn(Product $product) => $product->weight !== null ? $product->weight . 'g' : '',
-            ':html_weight_drained' => fn(Product $product) => $product->weight_drained !== null ? $product->weight_drained . 'g' : '',
-            ':html_product_code' => fn(Product $product) => $product->product_code ?? '',
-            ':html_created_at' => fn(Product $product) => $product->created_at?->format(App::DATE_TIME_FORMAT) ?? '',
-        ];
-
-        $html .= renderTableHtml(
-            $headers,
-            $products,
-            $rowFns
-        );
+        $html .= "<p>Manage validation status for products. All products start as 'Not Validated' and can be marked as validated by admin users.</p>";
+        $html .= $widget;
 
         return $html;
+    }
+
+    public function updateProductValidationStatus(
+        string $barcode,
+        \VarMap\VarMap $varMap,
+        TinnedFishProductRepo $productRepo
+    ): \SlimDispatcher\Response\JsonResponse {
+        $validation_status = $varMap->getStringOrNull('validation_status');
+        
+        if ($validation_status === null) {
+            return new \SlimDispatcher\Response\JsonResponse(
+                ['success' => false, 'error' => 'validation_status parameter is required'],
+                400
+            );
+        }
+
+        try {
+            $validationStatus = ValidationStatus::from($validation_status);
+        } catch (\ValueError $e) {
+            return new \SlimDispatcher\Response\JsonResponse(
+                ['success' => false, 'error' => 'Invalid validation status'],
+                400
+            );
+        }
+
+        $productRepo->updateValidationStatus($barcode, $validationStatus);
+
+        return new \SlimDispatcher\Response\JsonResponse([
+            'success' => true,
+            'barcode' => $barcode,
+            'validation_status' => $validationStatus->value,
+        ]);
     }
 }

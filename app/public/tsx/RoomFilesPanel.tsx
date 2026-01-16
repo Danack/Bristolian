@@ -3,7 +3,7 @@ import {humanFileSize, formatDateTime} from "./functions";
 import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";
 import {PdfSelectionType} from "./constants";
 import {api, GetRoomsFilesResponse} from "./generated/api_routes";
-import {StoredFile, createStoredFile} from "./generated/types";
+import {RoomFileObjectInfo, createRoomFileObjectInfo} from "./generated/types";
 import {get_logged_in, subscribe_logged_in} from "./store";
 
 export interface RoomFilesPanelProps {
@@ -11,7 +11,7 @@ export interface RoomFilesPanelProps {
 }
 
 interface RoomFilesPanelState {
-    files: StoredFile[],
+    files: RoomFileObjectInfo[],
     error: string|null,
     logged_in: boolean,
 }
@@ -66,10 +66,10 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             return;
         }
 
-        // GetRoomsFilesResponse structure: { result: 'success', data: { files: DateToString<StoredFile>[] } }
+        // GetRoomsFilesResponse structure: { result: 'success', data: { files: DateToString<RoomFileObjectInfo>[] } }
         // API returns dates as strings, so we convert them to Date objects using the generated conversion function
-        const files:StoredFile[] = data.data.files.map((file) => 
-            createStoredFile(file)
+        const files:RoomFileObjectInfo[] = data.data.files.map((file) => 
+            createRoomFileObjectInfo(file)
         );
 
         this.setState({files: files})
@@ -80,14 +80,14 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         console.log(data)
     }
 
-    shareFile(file: StoredFile, file_url: string) {
+    shareFile(file: RoomFileObjectInfo, file_url: string) {
         // Build the full URL including the origin
         const full_url = window.location.origin + file_url;
         const markdown_link = `[${file.original_filename}](${full_url})`;
         sendMessage(PdfSelectionType.APPEND_TO_MESSAGE_INPUT, {text: markdown_link});
     }
 
-    renderRoomFile(file: StoredFile, logged_in: boolean) {
+    renderRoomFile(file: RoomFileObjectInfo, logged_in: boolean) {
         let file_url = `/rooms/${this.props.room_id}/file/${file.id}/${file.original_filename}`
         let annotate_url = `/rooms/${this.props.room_id}/file_annotate/${file.id}`
 
@@ -145,7 +145,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                     {logged_in && <td></td>}
                 </tr>
                 {Object.values(this.state.files).
-                map((roomFile: StoredFile) => this.renderRoomFile(roomFile, logged_in))}
+                map((roomFile: RoomFileObjectInfo) => this.renderRoomFile(roomFile, logged_in))}
               </tbody>
             </table>
         </div>

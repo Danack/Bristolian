@@ -26,6 +26,7 @@ class Product
         public readonly ?float $weight_drained,
         public readonly ?string $product_code,
         public readonly ?string $image_url,
+        public readonly ValidationStatus $validation_status = ValidationStatus::NOT_VALIDATED,
         public readonly ?array $raw_data = null,
         public readonly ?\DateTimeInterface $created_at = null,
         public readonly ?\DateTimeInterface $updated_at = null

@@ -1,9 +1,9 @@
 <?php
 
-namespace Bristolian\Repo\UserDocumentRepo;
+namespace deadish\UserDocumentRepo;
 
-use Bristolian\Model\Types\UserDocument;
 use Bristolian\Types\UserList;
+use deadish\UserDocument;
 use User;
 
 class HardcodedUserDocumentRepo implements UserDocumentRepo

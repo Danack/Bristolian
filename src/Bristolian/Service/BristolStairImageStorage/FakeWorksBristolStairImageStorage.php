@@ -4,11 +4,13 @@ namespace Bristolian\Service\BristolStairImageStorage;
 
 use Bristolian\Parameters\BristolStairsGpsParams;
 use Bristolian\UploadedFiles\UploadedFile;
-use BristolStairInfo;
+use Bristolian\Model\Generated\BristolStairInfo;
 use Ramsey\Uuid\Uuid;
 
 class FakeWorksBristolStairImageStorage implements BristolStairImageStorage
 {
+    private int $count = 0;
+
     /**
      * @param string $user_id
      * @param UploadedFile $uploadedFile
@@ -27,12 +29,15 @@ class FakeWorksBristolStairImageStorage implements BristolStairImageStorage
         $uuid = Uuid::uuid7();
         $fileStorageId = $uuid->toString();
 
+        $id = $this->count;
+        $this->count += 1;
+
         // Return a fake BristolStairInfo object for testing
         return new BristolStairInfo(
-            id: $fileStorageId,
-            latitude: "51.4536491", // Bristol centre
-            longitude: "-2.5913353",
+            id: $id,
             description: "Fake stair info for testing",
+            latitude: 51.4536491, // Bristol centre
+            longitude: -2.5913353,
             stored_stair_image_file_id: $fileStorageId,
             steps: 10,
             is_deleted: 0,

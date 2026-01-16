@@ -8,13 +8,15 @@ use Bristolian\Model\TinnedFish\Copyright;
 use Bristolian\Parameters\TinnedFish\BarcodeLookupParams;
 use Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo;
 use Bristolian\Response\TinnedFish\ExternalApiErrorResponse;
+use Bristolian\Response\TinnedFish\GetAllProductsResponse;
 use Bristolian\Response\TinnedFish\InvalidBarcodeResponse;
 use Bristolian\Response\TinnedFish\ProductLookupResponse;
 use Bristolian\Response\TinnedFish\ProductNotFoundResponse;
 use Bristolian\Service\TinnedFish\OpenFoodFactsApiException;
 use Bristolian\Service\TinnedFish\OpenFoodFactsFetcher;
-use Bristolian\Service\TinnedFish\ProductNormalizer;
 use SlimDispatcher\Response\StubResponse;
+
+use function normalizeOpenFoodFactsData;
 
 /**
  * API controller for Tinned Fish Diary product lookup.
@@ -31,15 +33,13 @@ class TinnedFish
      * @param string $barcode The barcode from URL path
      * @param TinnedFishProductRepo $productRepo Repository for canonical database
      * @param OpenFoodFactsFetcher $fetcher External API fetcher
-     * @param ProductNormalizer $normalizer Data normalizer
      * @return StubResponse
      */
     public function getProductByBarcode(
         BarcodeLookupParams $params,
         string $barcode,
         TinnedFishProductRepo $productRepo,
-        OpenFoodFactsFetcher $fetcher,
-        ProductNormalizer $normalizer
+        OpenFoodFactsFetcher $fetcher
     ): StubResponse {
         // Validate barcode format (8-13 digits)
         if (!$this->isValidBarcode($barcode)) {
@@ -77,7 +77,7 @@ class TinnedFish
         }
 
         // Normalize the external data
-        $product = $normalizer->normalizeOpenFoodFactsData($barcode, $rawData);
+        $product = normalizeOpenFoodFactsData($barcode, $rawData);
 
         // Cache the product in the canonical database for future lookups
         $productRepo->save($product);
@@ -88,6 +88,20 @@ class TinnedFish
             product: $product,
             copyright: Copyright::openFoodFacts()
         );
+    }
+
+    /**
+     * Get all products from the canonical database.
+     *
+     * @param TinnedFishProductRepo $productRepo Repository for canonical database
+     * @return StubResponse
+     */
+    public function getAllProducts(
+        TinnedFishProductRepo $productRepo
+    ): StubResponse {
+        $products = $productRepo->getAll();
+        
+        return new GetAllProductsResponse($products);
     }
 
     /**

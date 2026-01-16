@@ -79,7 +79,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\BristolStairs::getData',
             [
-                ['stair_infos', \BristolStairInfo::class, true]
+                ['stair_infos', \Bristolian\Model\Generated\BristolStairInfo::class, true]
             ],
         ],
 
@@ -176,7 +176,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\User::listMemes',
             [
-                ['memes', \Bristolian\Model\Types\Meme::class, true]
+                ['memes', \Bristolian\Model\Generated\StoredMeme::class, true]
             ],
         ],
 
@@ -185,7 +185,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\User::searchMemes',
             [
-                ['memes', \Bristolian\Model\Types\Meme::class, true]
+                ['memes', \Bristolian\Model\Generated\StoredMeme::class, true]
             ],
         ], // Search memes by tag text and/or tag type
 
@@ -242,7 +242,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\Rooms::getFiles',
             [
-                ['files', \StoredFile::class, true]
+                ['files', \Bristolian\Model\Generated\RoomFileObjectInfo::class, true]
             ],
         ],
 
@@ -265,7 +265,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\Chat::get_room_messages',
             [
-                ['messages', \Bristolian\Model\Chat\UserChatMessage::class, true]
+                ['messages', \Bristolian\Model\Generated\ChatMessage::class, true]
             ],
         ], // GetChatRoomMessagesResponse
 
@@ -274,7 +274,7 @@ function getAllApiRoutes()
             'POST',
             'Bristolian\AppController\BristolStairs::handleFileUpload',
             [
-                ['stair_info', \BristolStairInfo::class, false]
+                ['stair_info', \Bristolian\Model\Generated\BristolStairInfo::class, false]
             ],
         ], // UploadBristolStairsImageResponse
 
@@ -320,7 +320,7 @@ function getAllApiRoutes()
             'GET',
             '\Bristolian\AppController\Rooms::getSourcelinksForFile',
             [
-                ['sourcelinks', \RoomSourceLink::class, true]
+                ['sourcelinks', \Bristolian\Model\Types\RoomSourceLinkView::class, true]
             ],
         ],
 
@@ -329,7 +329,7 @@ function getAllApiRoutes()
             'GET',
             '\Bristolian\AppController\Rooms::getSourcelinks',
             [
-                ['sourcelinks', \RoomSourceLink::class, true]
+                ['sourcelinks', \Bristolian\Model\Types\RoomSourceLinkView::class, true]
             ],
         ],
 
@@ -377,6 +377,13 @@ function getAllApiRoutes()
 
         // Tinned Fish Diary API
         [
+            '/api/tfd/v1/products',
+            'GET',
+            'Bristolian\ApiController\TinnedFish::getAllProducts',
+            null
+        ], // GetAllProductsResponse
+
+        [
             '/api/tfd/v1/products/barcode/{barcode:.*}',
             'GET',
             'Bristolian\ApiController\TinnedFish::getProductByBarcode',
@@ -384,6 +391,13 @@ function getAllApiRoutes()
                 ['product', \Bristolian\Model\TinnedFish\Product::class, false]
             ]
         ], // ProductLookupResponse | ProductNotFoundResponse | InvalidBarcodeResponse | ExternalApiErrorResponse
+
+        [
+            '/api/tfd/v1/products/{barcode:.*}/validation_status',
+            'POST',
+            'Bristolian\AppController\System::updateProductValidationStatus',
+            null
+        ], // JsonResponse with success status
     ];
 
 }

@@ -737,6 +737,82 @@ Used for API endpoints. Has a separate, smaller set of dependencies.
 - Use TypeScript interfaces for all props and state
 - Clean up listeners in `componentWillUnmount()`
 - Extract complex logic into separate functions or utility modules
+- **Prefer named functions/class methods over inline function blocks** - Extract inline arrow functions (e.g., in `.then()`, `.catch()`, `.map()`, event handlers) into named class methods or standalone functions. This improves readability, testability, and maintainability.
+
+#### 2.2. Named Functions Over Inline Blocks
+
+**Prefer named functions/class methods over inline arrow functions** for better code organization and maintainability.
+
+**Why:**
+- Named functions are easier to read and understand
+- They can be tested independently
+- They make the code more maintainable
+- They reduce nesting and improve code flow
+
+**Bad Example:**
+```typescript
+fetch(url)
+    .then((response: Response) => {
+        if (!response.ok) {
+            return response.json().then((data: any) => {
+                throw new Error(data.error || `HTTP ${response.status}`);
+            });
+        }
+        return response.json();
+    })
+    .then((data: any) => {
+        const products = this.state.products.map((product) => {
+            if (product.barcode === barcode) {
+                return { ...product, validation_status: data.validation_status };
+            }
+            return product;
+        });
+        this.setState({ products });
+    })
+    .catch((error: Error) => {
+        const errors = new Map(this.state.errors);
+        errors.set(barcode, error.message);
+        this.setState({ errors });
+    });
+```
+
+**Good Example:**
+```typescript
+private handleResponse(response: Response): Promise<any> {
+    if (!response.ok) {
+        return response.json().then((data: any) => {
+            throw new Error(data.error || `HTTP ${response.status}`);
+        });
+    }
+    return response.json();
+}
+
+private handleSuccess(data: any, barcode: string): void {
+    const products = this.state.products.map((product) => {
+        if (product.barcode === barcode) {
+            return { ...product, validation_status: data.validation_status };
+        }
+        return product;
+    });
+    this.setState({ products });
+}
+
+private handleError(error: Error, barcode: string): void {
+    const errors = new Map(this.state.errors);
+    errors.set(barcode, error.message);
+    this.setState({ errors });
+}
+
+fetch(url)
+    .then((response: Response) => this.handleResponse(response))
+    .then((data: any) => this.handleSuccess(data, barcode))
+    .catch((error: Error) => this.handleError(error, barcode));
+```
+
+**When inline functions are acceptable:**
+- Very simple, single-line operations (e.g., `onClick={() => this.doSomething()}`)
+- Simple array transformations that are self-explanatory
+- When the inline function improves readability more than extracting it would
 
 ### 2.1. Event Handlers for Input Fields
 

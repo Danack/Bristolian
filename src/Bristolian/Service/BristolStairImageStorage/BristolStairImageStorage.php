@@ -4,7 +4,7 @@ namespace Bristolian\Service\BristolStairImageStorage;
 
 use Bristolian\Parameters\BristolStairsGpsParams;
 use Bristolian\UploadedFiles\UploadedFile;
-use BristolStairInfo;
+use Bristolian\Model\Generated\BristolStairInfo;
 
 /**
  * Processes a file, by checking it is valid, stores information

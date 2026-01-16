@@ -7,7 +7,7 @@ use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInf
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Service\ObjectStore\BristolianStairImageObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
-use BristolStairInfo;
+use Bristolian\Model\Generated\BristolStairInfo;
 use Ramsey\Uuid\Uuid;
 
 class StandardBristolStairImageStorage implements BristolStairImageStorage

@@ -132,7 +132,7 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
         const endpoint = `/api/bristol_stairs_update/${stair_info.id}`;
         const form_data = new FormData();
 
-        form_data.append("bristol_stair_info_id", stair_info.id);
+        form_data.append("bristol_stair_info_id", String(stair_info.id));
         form_data.append("description", stair_info.description);
         form_data.append("steps", "" + stair_info.steps);
 
@@ -169,15 +169,15 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
     processUpdatePosition() {
         const stair_info: BristolStairInfo = {
             ...this.state.selected_stair_info,
-            latitude: this.state.position_latitude.toString(),
-            longitude: this.state.position_longitude.toString(),
+            latitude: this.state.position_latitude,
+            longitude: this.state.position_longitude,
         };
 
         const endpoint = `/api/bristol_stairs_update_position/${stair_info.id}`;
         const form_data = new FormData();
-        form_data.append("bristol_stair_info_id", stair_info.id);
-        form_data.append("latitude", stair_info.latitude);
-        form_data.append("longitude", stair_info.longitude);
+        form_data.append("bristol_stair_info_id", String(stair_info.id));
+        form_data.append("latitude", String(stair_info.latitude ?? ''));
+        form_data.append("longitude", String(stair_info.longitude ?? ''));
 
         call_api(endpoint, form_data)
           .then((data: any) => this.handlePositionUpdated(data, stair_info))

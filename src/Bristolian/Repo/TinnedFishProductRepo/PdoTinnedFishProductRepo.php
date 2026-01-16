@@ -6,6 +6,7 @@ namespace Bristolian\Repo\TinnedFishProductRepo;
 
 use Bristolian\Database\tinned_fish_product;
 use Bristolian\Model\TinnedFish\Product;
+use Bristolian\Model\TinnedFish\ValidationStatus;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 
@@ -65,7 +66,8 @@ class PdoTinnedFishProductRepo implements TinnedFishProductRepo
             weight = :weight_update,
             weight_drained = :weight_drained_update,
             product_code = :product_code_update,
-            image_url = :image_url_update";
+            image_url = :image_url_update,
+            validation_status = :validation_status_update";
 
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
@@ -80,6 +82,7 @@ class PdoTinnedFishProductRepo implements TinnedFishProductRepo
             ':weight_drained' => $product->weight_drained,
             ':product_code' => $product->product_code,
             ':image_url' => $product->image_url,
+            ':validation_status' => $product->validation_status->value,
             // Duplicate params for ON DUPLICATE KEY UPDATE
             ':name_update' => $product->name,
             ':brand_update' => $product->brand,
@@ -88,9 +91,23 @@ class PdoTinnedFishProductRepo implements TinnedFishProductRepo
             ':weight_drained_update' => $product->weight_drained,
             ':product_code_update' => $product->product_code,
             ':image_url_update' => $product->image_url,
+            ':validation_status_update' => $product->validation_status->value,
         ];
 
         $this->pdo_simple->execute($sql, $params);
+    }
+
+    public function updateValidationStatus(string $barcode, ValidationStatus $validationStatus): void
+    {
+        $sql = "UPDATE tinned_fish_product 
+                SET validation_status = :validation_status 
+                WHERE barcode = :barcode 
+                LIMIT 1";
+
+        $this->pdo_simple->execute($sql, [
+            ':barcode' => $barcode,
+            ':validation_status' => $validationStatus->value,
+        ]);
     }
 
     /**
@@ -98,6 +115,11 @@ class PdoTinnedFishProductRepo implements TinnedFishProductRepo
      */
     private function rowToProduct(array $row): Product
     {
+        $validationStatus = ValidationStatus::NOT_VALIDATED;
+        if (isset($row['validation_status'])) {
+            $validationStatus = ValidationStatus::from($row['validation_status']);
+        }
+
         return new Product(
             barcode: $row['barcode'],
             name: $row['name'],
@@ -107,6 +129,7 @@ class PdoTinnedFishProductRepo implements TinnedFishProductRepo
             weight_drained: $row['weight_drained'] !== null ? (float)$row['weight_drained'] : null,
             product_code: $row['product_code'],
             image_url: $row['image_url'],
+            validation_status: $validationStatus,
             raw_data: null,
             created_at: new \DateTimeImmutable($row['created_at']),
             updated_at: new \DateTimeImmutable($row['updated_at'])

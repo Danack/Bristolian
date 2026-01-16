@@ -3,8 +3,9 @@
 namespace Bristolian\Model\Types;
 
 use Bristolian\ToArray;
-use UserDisplayName;
-use UserProfile;
+use Bristolian\Model\Generated\UserDisplayName;
+use Bristolian\Model\Generated\UserProfile;
+
 
 /**
  * Combines UserProfile (non-versioned data) with the latest UserDisplayName (versioned)

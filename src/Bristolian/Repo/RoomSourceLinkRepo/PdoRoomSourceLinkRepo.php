@@ -7,7 +7,8 @@ use Bristolian\Database\sourcelink;
 use Bristolian\Parameters\SourceLinkParam;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
-use RoomSourceLink;
+use Bristolian\Model\Generated\RoomSourcelink;
+use Bristolian\Model\Types\RoomSourceLinkView;
 
 class PdoRoomSourceLinkRepo implements RoomSourceLinkRepo
 {
@@ -51,7 +52,7 @@ class PdoRoomSourceLinkRepo implements RoomSourceLinkRepo
 
     /**
      * @param string $room_id
-     * @return RoomSourceLink[]
+     * @return RoomSourceLinkView[]
      */
     public function getSourceLinksForRoom(string $room_id): array
     {
@@ -81,11 +82,16 @@ SQL;
         return $this->pdoSimple->fetchAllAsObjectConstructor(
             $sql,
             $params,
-            RoomSourceLink::class
+            RoomSourceLinkView::class
         );
     }
 
 
+    /**
+     * @param string $room_id
+     * @param string $file_id
+     * @return RoomSourceLinkView[]
+     */
     public function getSourceLinksForRoomAndFile(
         string $room_id,
         string $file_id
@@ -120,7 +126,7 @@ SQL;
         return $this->pdoSimple->fetchAllAsObjectConstructor(
             $sql,
             $params,
-            RoomSourceLink::class
+            RoomSourceLinkView::class
         );
     }
 }

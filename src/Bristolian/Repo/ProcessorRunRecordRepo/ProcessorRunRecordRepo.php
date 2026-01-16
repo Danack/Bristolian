@@ -6,13 +6,12 @@ namespace Bristolian\Repo\ProcessorRunRecordRepo;
 
 //use Bristolian\Database\processor_run_records;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
+use Bristolian\Model\Generated\ProcessorRunRecord;
 
 interface ProcessorRunRecordRepo
 {
     const STATE_INITIAL = 'initial';
-//    const STATE_RUNNING = 'running';
     const STATE_FINISHED = 'finished';
-    // const STATE_ABORTED = 'aborted'; // not used yet.
 
     public function getLastRunDateTime(ProcessType $process_type): \DateTimeInterface|null;
 
@@ -22,7 +21,7 @@ interface ProcessorRunRecordRepo
 
     /**
      * @param ProcessType|null $processType
-     * @return \ProcessorRunRecord[]
+     * @return \Bristolian\Model\Generated\ProcessorRunRecord[]
      */
     public function getRunRecords(ProcessType|null $processType): array;
 }

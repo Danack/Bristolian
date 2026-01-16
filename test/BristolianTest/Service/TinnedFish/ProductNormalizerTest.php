@@ -3,13 +3,16 @@
 namespace BristolianTest\Service\TinnedFish;
 
 use Bristolian\Model\TinnedFish\Product;
-use Bristolian\Service\TinnedFish\ProductNormalizer;
 use BristolianTest\BaseTestCase;
 
+use function normalizeOpenFoodFactsData;
+
 /**
- * Tests for ProductNormalizer
+ * Tests for tinned fish normalization functions
  *
- * @covers \Bristolian\Service\TinnedFish\ProductNormalizer
+ * @covers \normalizeOpenFoodFactsData
+ * @covers \parseTinnedFishWeight
+ * @covers \extractTinnedFishSpecies
  */
 class ProductNormalizerTest extends BaseTestCase
 {
@@ -38,7 +41,7 @@ class ProductNormalizerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Service\TinnedFish\ProductNormalizer::normalizeOpenFoodFactsData
+     * @covers \normalizeOpenFoodFactsData
      * @dataProvider provides_normalizes_basic_product_data
      */
     public function test_normalizes_basic_product_data(
@@ -46,9 +49,7 @@ class ProductNormalizerTest extends BaseTestCase
         array $rawData,
         array $expected
     ): void {
-        $normalizer = new ProductNormalizer();
-
-        $product = $normalizer->normalizeOpenFoodFactsData($barcode, $rawData);
+        $product = normalizeOpenFoodFactsData($barcode, $rawData);
 
         $this->assertInstanceOf(Product::class, $product);
         $this->assertSame($expected['barcode'], $product->barcode);
@@ -80,7 +81,7 @@ class ProductNormalizerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Service\TinnedFish\ProductNormalizer::normalizeOpenFoodFactsData
+     * @covers \normalizeOpenFoodFactsData
      * @dataProvider provides_parses_weight_with_drained_weight
      */
     public function test_parses_weight_with_drained_weight(
@@ -88,8 +89,6 @@ class ProductNormalizerTest extends BaseTestCase
         float $expectedWeight,
         float $expectedWeightDrained
     ): void {
-        $normalizer = new ProductNormalizer();
-
         $rawData = [
             'status' => 1,
             'product' => [
@@ -99,7 +98,7 @@ class ProductNormalizerTest extends BaseTestCase
             ]
         ];
 
-        $product = $normalizer->normalizeOpenFoodFactsData('1234567890123', $rawData);
+        $product = normalizeOpenFoodFactsData('1234567890123', $rawData);
 
         $this->assertSame($expectedWeight, $product->weight);
         $this->assertSame($expectedWeightDrained, $product->weight_drained);
@@ -116,13 +115,11 @@ class ProductNormalizerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Service\TinnedFish\ProductNormalizer::normalizeOpenFoodFactsData
+     * @covers \normalizeOpenFoodFactsData
      * @dataProvider provides_parses_weight_formats
      */
     public function test_parses_weight_formats(string $quantity, float $expectedWeight): void
     {
-        $normalizer = new ProductNormalizer();
-
         $rawData = [
             'status' => 1,
             'product' => [
@@ -132,7 +129,7 @@ class ProductNormalizerTest extends BaseTestCase
             ]
         ];
 
-        $product = $normalizer->normalizeOpenFoodFactsData('1234567890123', $rawData);
+        $product = normalizeOpenFoodFactsData('1234567890123', $rawData);
 
         $this->assertSame($expectedWeight, $product->weight);
     }
@@ -155,15 +152,13 @@ class ProductNormalizerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Service\TinnedFish\ProductNormalizer::normalizeOpenFoodFactsData
+     * @covers \normalizeOpenFoodFactsData
      * @dataProvider provides_extracts_species_from_product_name
      */
     public function test_extracts_species_from_product_name(
         string $productName,
         string $expectedSpecies
     ): void {
-        $normalizer = new ProductNormalizer();
-
         $rawData = [
             'status' => 1,
             'product' => [
@@ -172,7 +167,7 @@ class ProductNormalizerTest extends BaseTestCase
             ]
         ];
 
-        $product = $normalizer->normalizeOpenFoodFactsData('1234567890123', $rawData);
+        $product = normalizeOpenFoodFactsData('1234567890123', $rawData);
 
         $this->assertSame($expectedSpecies, $product->species);
     }
@@ -197,7 +192,7 @@ class ProductNormalizerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Service\TinnedFish\ProductNormalizer::normalizeOpenFoodFactsData
+     * @covers \normalizeOpenFoodFactsData
      * @dataProvider provides_extracts_species_from_categories
      */
     public function test_extracts_species_from_categories(
@@ -205,8 +200,6 @@ class ProductNormalizerTest extends BaseTestCase
         string $categories,
         string $expectedSpecies
     ): void {
-        $normalizer = new ProductNormalizer();
-
         $rawData = [
             'status' => 1,
             'product' => [
@@ -216,7 +209,7 @@ class ProductNormalizerTest extends BaseTestCase
             ]
         ];
 
-        $product = $normalizer->normalizeOpenFoodFactsData('1234567890123', $rawData);
+        $product = normalizeOpenFoodFactsData('1234567890123', $rawData);
 
         $this->assertSame($expectedSpecies, $product->species);
     }
@@ -229,13 +222,11 @@ class ProductNormalizerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Service\TinnedFish\ProductNormalizer::normalizeOpenFoodFactsData
+     * @covers \normalizeOpenFoodFactsData
      * @dataProvider provides_returns_null_species_when_not_found
      */
     public function test_returns_null_species_when_not_found(string $productName): void
     {
-        $normalizer = new ProductNormalizer();
-
         $rawData = [
             'status' => 1,
             'product' => [
@@ -244,7 +235,7 @@ class ProductNormalizerTest extends BaseTestCase
             ]
         ];
 
-        $product = $normalizer->normalizeOpenFoodFactsData('1234567890123', $rawData);
+        $product = normalizeOpenFoodFactsData('1234567890123', $rawData);
 
         $this->assertNull($product->species);
     }
@@ -280,7 +271,7 @@ class ProductNormalizerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Service\TinnedFish\ProductNormalizer::normalizeOpenFoodFactsData
+     * @covers \normalizeOpenFoodFactsData
      * @dataProvider provides_handles_missing_product_data
      */
     public function test_handles_missing_product_data(
@@ -288,9 +279,7 @@ class ProductNormalizerTest extends BaseTestCase
         array $rawData,
         array $expected
     ): void {
-        $normalizer = new ProductNormalizer();
-
-        $product = $normalizer->normalizeOpenFoodFactsData($barcode, $rawData);
+        $product = normalizeOpenFoodFactsData($barcode, $rawData);
 
         $this->assertSame($expected['barcode'], $product->barcode);
         $this->assertSame($expected['name'], $product->name);
@@ -354,7 +343,7 @@ class ProductNormalizerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Service\TinnedFish\ProductNormalizer::normalizeOpenFoodFactsData
+     * @covers \normalizeOpenFoodFactsData
      * @dataProvider provides_uses_fallback_fields
      */
     public function test_uses_fallback_fields(
@@ -362,9 +351,7 @@ class ProductNormalizerTest extends BaseTestCase
         string $fieldToCheck,
         string $expectedValue
     ): void {
-        $normalizer = new ProductNormalizer();
-
-        $product = $normalizer->normalizeOpenFoodFactsData('1234567890123', $rawData);
+        $product = normalizeOpenFoodFactsData('1234567890123', $rawData);
 
         $this->assertSame($expectedValue, $product->$fieldToCheck);
     }

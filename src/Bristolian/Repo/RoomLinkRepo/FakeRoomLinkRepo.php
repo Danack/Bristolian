@@ -26,14 +26,11 @@ class FakeRoomLinkRepo implements RoomLinkRepo
     {
         $linksForRoom = [];
 
-//        foreach ($this->roomLinks as $roomLink) {
-//            [$link_id, $file_room_id] = $roomLink->link_id;
-//            $file_room_id = $roomLink->l;
-//
-//            if ($room_id === $file_room_id) {
-//                $linksForRoom[] = $link_id;
-//            }
-//        }
+        foreach ($this->roomLinks as $roomLink) {
+            if ($room_id === $roomLink->room_id) {
+                $linksForRoom[] = $roomLink;
+            }
+        }
 
         return $linksForRoom;
     }

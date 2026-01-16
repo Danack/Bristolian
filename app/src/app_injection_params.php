@@ -1,7 +1,6 @@
 <?php
 
 use Bristolian\InjectionParams;
-use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
 
 
 function injectionParams()
@@ -80,10 +79,10 @@ function injectionParams()
             \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class,
 
         Bristolian\Repo\UserRepo\UserRepo::class =>
-          Bristolian\Repo\UserRepo\HardcodedUserRepo::class,
+          deadish\HardcodedUserRepo::class,
 
-        Bristolian\Repo\UserDocumentRepo\UserDocumentRepo::class =>
-          Bristolian\Repo\UserDocumentRepo\HardcodedUserDocumentRepo::class,
+        \deadish\UserDocumentRepo\UserDocumentRepo::class =>
+          \deadish\UserDocumentRepo\HardcodedUserDocumentRepo::class,
 
         \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::class =>
           \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::class,
@@ -140,7 +139,11 @@ function injectionParams()
             \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class,
 
         \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::class =>
-            \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class
+            \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class,
+
+
+        Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::class =>
+            \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::class,
     ];
 
     // Delegate the creation of types to callables.

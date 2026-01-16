@@ -23,7 +23,8 @@ class PdoMemeTextRepo implements MemeTextRepo
     public function saveMemeText(
         StoredMeme $storedMeme,
         string $found_text
-    ) {
+    ): void
+    {
         $sql = meme_text::INSERT;
 
         $params = [

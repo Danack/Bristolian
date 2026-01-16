@@ -1,5 +1,5 @@
 import {h, Component} from "preact";
-import {RoomSourceLink} from "./generated/types";
+import {RoomSourceLinkView} from "./generated/types";
 import {api, GetRoomsSourcelinksResponse} from "./generated/api_routes";
 
 
@@ -8,7 +8,7 @@ export interface RoomSourcelinkPanelProps {
 }
 
 interface RoomSourcelinkPanelState {
-    sourcelinks: RoomSourceLink[],
+    sourcelinks: RoomSourceLinkView[],
     error: string|null,
 }
 
@@ -58,8 +58,8 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
     restoreState(state_to_restore: object) {
     }
 
-    renderRoomSourcelink(sourceLink: RoomSourceLink) {
-        const sourcelinkUrl = `/rooms/${this.props.room_id}/file/${sourceLink.file_id}/sourcelinks/${sourceLink.id}/view`;
+    renderRoomSourcelink(sourceLink: RoomSourceLinkView) {
+        const sourcelinkUrl = `/rooms/${this.props.room_id}/file/${sourceLink.file_id}/sourcelinks/${sourceLink.room_sourcelink_id}/view`;
 
         return (
           <tr key={sourceLink.id}>
@@ -92,7 +92,7 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
                     <td>Size</td>
                     <td></td>
                 </tr>
-                {Object.values(this.state.sourcelinks).map((sourceLink: RoomSourceLink) => this.renderRoomSourcelink(sourceLink))}
+                {Object.values(this.state.sourcelinks).map((sourceLink: RoomSourceLinkView) => this.renderRoomSourcelink(sourceLink))}
               </tbody>
             </table>
         </div>

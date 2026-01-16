@@ -529,19 +529,19 @@ function escapeMySqlLikeString(string $string)
 }
 
 
-function render_markdown_file(\Bristolian\Model\Types\UserDocument $document): string
-{
-    global $injector;
-
-    $renderer = $injector->make(\Bristolian\MarkdownRenderer\MarkdownRenderer::class);
-
-    // TODO - escaper needs a file path type.
-    $path = standardise_username_to_filename($document->getUser()->username);
-
-    $filename = __DIR__ . '/../user_data/' . $path . '/' . $document->source;
-
-    return $renderer->renderFile($filename);
-}
+//function render_markdown_file(deadish\UserDocument $document): string
+//{
+//    global $injector;
+//
+//    $renderer = $injector->make(\Bristolian\MarkdownRenderer\MarkdownRenderer::class);
+//
+//    // TODO - escaper needs a file path type.
+//    $path = standardise_username_to_filename($document->getUser()->username);
+//
+//    $filename = __DIR__ . '/../user_data/' . $path . '/' . $document->source;
+//
+//    return $renderer->renderFile($filename);
+//}
 
 /**
  * Extracts a link to a Github gist from the link to a raw file
@@ -569,41 +569,41 @@ function get_external_source_link(string $raw): string
     );
 }
 
-function render_markdown_url(\Bristolian\Model\Types\UserDocument $document): string
-{
-    global $injector;
+//function render_markdown_url(deadish\UserDocument $document): string
+//{
+//    global $injector;
+//
+//    $renderer = $injector->make(\Bristolian\ExternalMarkdownRenderer\ExternalMarkdownRenderer::class);
+//
+//    $contents = $renderer->renderUrl($document->source);
+//
+//    $contents .= "<hr/>";
+//
+//
+//
+//    $contents .= get_external_source_link($document->source);
+//
+//    return $contents;
+//}
 
-    $renderer = $injector->make(\Bristolian\ExternalMarkdownRenderer\ExternalMarkdownRenderer::class);
 
-    $contents = $renderer->renderUrl($document->source);
-
-    $contents .= "<hr/>";
-
-
-
-    $contents .= get_external_source_link($document->source);
-
-    return $contents;
-}
-
-
-/**
- * @param \Bristolian\Model\Types\UserDocument $document
- * @return string
- */
-function render_user_document(\Bristolian\Model\Types\UserDocument $document): string
-{
-    global $injector;
-
-    if ($injector === null) {
-        return "Oops, injector is null.";
-    }
-
-    return match ($document->type) {
-        DocumentType::markdown_file => render_markdown_file($document),
-        DocumentType::markdown_url => render_markdown_url($document)
-    };
-}
+///**
+// * @param \deadish\UserDocument $document
+// * @return string
+// */
+//function render_user_document(deadish\UserDocument $document): string
+//{
+//    global $injector;
+//
+//    if ($injector === null) {
+//        return "Oops, injector is null.";
+//    }
+//
+//    return match ($document->type) {
+//        DocumentType::markdown_file => render_markdown_file($document),
+//        DocumentType::markdown_url => render_markdown_url($document)
+//    };
+//}
 
 
 /**
@@ -980,7 +980,10 @@ function get_readable_variable_type(mixed $value): string
 }
 
 
-function getRouteForStoredFile(string $room_id, StoredFile $storedFile): string
+function getRouteForStoredFile(
+    string $room_id,
+    Bristolian\Model\Generated\RoomFileObjectInfo $storedFile
+): string
 {
     $template = '/rooms/:uri_room_id/file/:uri_file_id/:uri_filename';
     $params = [

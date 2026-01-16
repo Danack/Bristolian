@@ -15,6 +15,7 @@ require_once __DIR__ . '/api_serve_request.php';
 
 require_once __DIR__ . '/../../src/factories.php';
 require_once __DIR__ . '/../../src/functions.php';
+require_once __DIR__ . '/../../src/functions_tinned_fish.php';
 require_once __DIR__ . '/../../src/error_functions.php';
 
 require __DIR__ . "/../../config.generated.php";

@@ -2,14 +2,14 @@ import { h, Component } from "preact";
 import { registerMessageListener, sendMessage, unregisterListener } from "./message/message";
 import { EventType } from "./events";
 import {ChatBottomPanel} from "./chat/ChatBottomPanel";
-import {UserChatMessage, ChatType, createUserChatMessage, SystemChatMessage} from "./generated/types";
+import {ChatMessage, ChatType, createChatMessage} from "./generated/types";
 import {localTimeSimple} from "./functions";
 
 
 export interface ConnectionPanelProps {
     username: string;
     room_id: string;
-    replyingToMessage?: UserChatMessage | null;
+    replyingToMessage?: ChatMessage | null;
     onCancelReply?: () => void;
 }
 
@@ -21,7 +21,7 @@ interface UserProfile {
 
 export interface MessageEncapsulated {
     type: ChatType;
-    message: SystemChatMessage|UserChatMessage;
+    message: ChatMessage;
 }
 
 
@@ -31,10 +31,10 @@ interface ConnectionPanelState {
     lastMessageReceived: string;  // last message from websocket
 
     // TODO - Messages needs to be changed to an array of MessageEncapsulated
-    messages: UserChatMessage[];
+    messages: ChatMessage[];
     userProfiles: Map<string, UserProfile>;
     messageHeights: Map<number, number>;
-    replyingToMessage: UserChatMessage | null;  // message being replied to
+    replyingToMessage: ChatMessage | null;  // message being replied to
 }
 
 export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelState> {
@@ -82,8 +82,8 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
                 const messages = data?.data?.messages ?? data?.messages;
                 if (messages) {
                     // Convert API response format to ChatMessage objects
-                    const existingMessages: UserChatMessage[] = messages.map((msgData: any) => {
-                        return createUserChatMessage({
+                    const existingMessages: ChatMessage[] = messages.map((msgData: any) => {
+                        return createChatMessage({
                             id: msgData.id,
                             user_id: msgData.user_id,
                             room_id: msgData.room_id,
@@ -143,7 +143,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
 
         if (data.type === ChatType.USER_MESSAGE) {
             let current_messages = [...this.state.messages]; // Create a copy to avoid mutating state
-            let message = createUserChatMessage(data.chat_message);
+            let message = createChatMessage(data.chat_message);
             current_messages.push(message);
 
             // Sort messages by ID (ascending order - oldest first)
@@ -224,7 +224,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         return parts[parts.length - 1];
     }
 
-    startReply = (message: UserChatMessage) => {
+    startReply = (message: ChatMessage) => {
         this.setState({ replyingToMessage: message });
     }
 
@@ -233,9 +233,9 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
     }
 
     // Group messages from the same user within 600 seconds
-    groupMessages(): UserChatMessage[][] {
-        const groups: UserChatMessage[][] = [];
-        let currentGroup: UserChatMessage[] = [];
+    groupMessages(): ChatMessage[][] {
+        const groups: ChatMessage[][] = [];
+        let currentGroup: ChatMessage[] = [];
 
         for (let i = 0; i < this.state.messages.length; i++) {
             const message = this.state.messages[i];
@@ -266,7 +266,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         return groups;
     }
 
-    renderChatMessage(message: UserChatMessage, index: number, isFirstInGroup: boolean) {
+    renderChatMessage(message: ChatMessage, index: number, isFirstInGroup: boolean) {
         const userProfile = this.state.userProfiles.get(message.user_id);
         const shortUserId = this.getShortUserId(message.user_id);
         const displayName = userProfile?.display_name || shortUserId;

@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\UserProfileRepo;
 
 use Bristolian\Model\Types\UserProfileWithDisplayName;
-use UserDisplayName;
+use Bristolian\Model\Generated\UserDisplayName;
 
 interface UserProfileRepo
 {

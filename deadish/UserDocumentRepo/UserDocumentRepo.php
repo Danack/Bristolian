@@ -1,8 +1,8 @@
 <?php
 
-namespace Bristolian\Repo\UserDocumentRepo;
+namespace deadish\UserDocumentRepo;
 
-use Bristolian\Model\Types\UserDocument;
+use deadish\UserDocument;
 use User;
 
 interface UserDocumentRepo

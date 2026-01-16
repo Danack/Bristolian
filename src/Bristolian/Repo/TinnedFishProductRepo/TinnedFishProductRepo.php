@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bristolian\Repo\TinnedFishProductRepo;
 
 use Bristolian\Model\TinnedFish\Product;
+use Bristolian\Model\TinnedFish\ValidationStatus;
 
 /**
  * Repository interface for accessing the canonical tinned fish product database.
@@ -33,4 +34,12 @@ interface TinnedFishProductRepo
      * @param Product $product The product to save
      */
     public function save(Product $product): void;
+
+    /**
+     * Update the validation status of a product.
+     *
+     * @param string $barcode The product barcode
+     * @param ValidationStatus $validationStatus The new validation status
+     */
+    public function updateValidationStatus(string $barcode, ValidationStatus $validationStatus): void;
 }

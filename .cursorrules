@@ -79,6 +79,7 @@ Common container names (may vary based on Docker Compose project name):
 5. **Use `bash -c` for non-interactive commands** to avoid TTY issues
 6. **Check js_builder logs after editing TypeScript files** - Use `docker logs bristolian-js_builder-1 --tail 100` to verify TypeScript compilation succeeded (look for "webpack compiled" message)
 7. Frontend and backend are deployed together; avoid legacy/fallback response handling—prefer updating both sides in tandem.
+8. Never edit generated files, always fix the generation if there is a problem.
 
 ## Example Workflow
 
