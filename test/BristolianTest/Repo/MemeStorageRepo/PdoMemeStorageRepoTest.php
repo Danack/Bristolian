@@ -27,6 +27,8 @@ class PdoMemeStorageRepoTest extends BaseTestCase
         $normalized_name = $uuid->toString() . ".jpg";
         $testUser = $this->createTestAdminUser();
 
+//        normalised name  = 019b8e45-7240-73f6-9342-876214f0a99d.jpeg
+
         $file_id = $pdoMemeStorageRepo->storeMeme(
             $testUser->getUserId(),
             $normalized_name,

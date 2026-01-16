@@ -21,13 +21,25 @@ class PdoMemeStorageRepo implements MemeStorageRepo
     public function getMeme(string $id): Meme|null
     {
         $sql = stored_meme::SELECT;
-        $sql .= " where id = :id";
+        $sql .= " where id = :id AND deleted = 0";
 
         $params = [':id' => $id];
 
         return $this->pdo_simple->fetchOneAsObjectOrNullConstructor(
             $sql,
             $params,
+            Meme::class
+        );
+    }
+
+    public function getByNormalizedName(string $normalized_name): Meme|null
+    {
+        $sql = stored_meme::SELECT;
+        $sql .= " WHERE normalized_name = :normalized_name AND deleted = 0";
+
+        return $this->pdo_simple->fetchOneAsObjectOrNullConstructor(
+            $sql,
+            [':normalized_name' => $normalized_name],
             Meme::class
         );
     }
@@ -40,7 +52,8 @@ class PdoMemeStorageRepo implements MemeStorageRepo
         $sql = stored_meme::SELECT . <<< SQL
 where
   user_id = :user_id and
-  state = :state
+  state = :state and
+  deleted = 0
 SQL;
 
         $params = [
@@ -86,6 +99,7 @@ JOIN
 WHERE
   sm.user_id = :user_id AND
   sm.state = :state AND
+  sm.deleted = 0 AND
   mt.type = :user_tag_type
 SQL;
 
@@ -151,6 +165,7 @@ FROM
 WHERE
   sm.user_id = :user_id AND
   sm.state = :state AND
+  sm.deleted = 0 AND
   (
     SELECT COUNT(DISTINCT mt.text)
     FROM meme_tag mt
@@ -188,6 +203,7 @@ SQL;
             ':original_filename' => $uploadedFile->getOriginalName(),
             ':state' => MemeFileState::INITIAL->value,
             ':size' => $uploadedFile->getSize(),
+            ':deleted' => 0
         ];
 
         try {
@@ -229,5 +245,22 @@ SQL;
         if ($rows_affected !== 1) {
             // maybe do something
         }
+    }
+
+    public function markAsDeleted(string $meme_id): void
+    {
+        $sql = <<< SQL
+update
+  stored_meme 
+set
+  deleted = 1
+where
+  id = :id
+SQL;
+        $params = [
+            ':id' => $meme_id
+        ];
+
+        $this->pdo_simple->execute($sql, $params);
     }
 }

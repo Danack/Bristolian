@@ -9,7 +9,6 @@ use Bristolian\Repo\MemeTextRepo\MemeTextRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
-//private MemeStorageRepo $memeStorageRepo,
 
 class MemeOcr
 {
@@ -20,7 +19,8 @@ class MemeOcr
         private LocalCacheFilesystem $localCacheFilesystem,
         private MemeTextRepo $memeTextRepo,
         private ProcessorRunRecordRepo $processorRunRecordRepo,
-        private ProcessorRepo $processorRepo
+        private ProcessorRepo $processorRepo,
+        private MemeStorageRepo $memeStorageRepo
     ) {
     }
 
@@ -56,6 +56,7 @@ class MemeOcr
             goto finish;
         }
 
+
         try {
             ensureFileCachedFromStream(
                 $this->localCacheFilesystem,
@@ -69,9 +70,19 @@ class MemeOcr
             echo "\n";
             $previous = $unableToReadFile->getPrevious();
 
+
             if ($previous !== null) {
-                echo "Previous: \n" . $previous->getMessage();
-                echo "\n";
+                if ($previous instanceof \Aws\S3\Exception\S3Exception) {
+                    if ($previous->getStatusCode() === 404) {
+                        echo "Meme file not found in storage, marking as deleted.\n";
+                        $this->memeStorageRepo->markAsDeleted($next_meme->id);
+                    }
+                }
+                else {
+                    echo "Previous type: " . get_class($previous) . "\n";
+                    echo "Previous: \n" . $previous->getMessage();
+                    echo "\n";
+                }
             }
             echo "\n";
             $debug_info = "Failed to download file: " . $unableToReadFile->getMessage();
@@ -81,7 +92,11 @@ class MemeOcr
 
         // download the image to a temp location
 
-        $localCacheFilename = $this->localCacheFilesystem->getFullPath() . "/" . $next_meme->normalized_name;
+        $localCacheFilename = sprintf(
+            "%s/%s",
+            $this->localCacheFilesystem->getFullPath(),
+            $next_meme->normalized_name
+        );
         $filenameToServe = realpath($localCacheFilename);
 
         try {

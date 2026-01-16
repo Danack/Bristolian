@@ -27,6 +27,8 @@ interface MemeStorageRepo
 
     public function getMeme(string $id): Meme|null;
 
+    public function getByNormalizedName(string $normalized_name): Meme|null;
+
     /**
      * @return Meme[]
      */
@@ -47,6 +49,8 @@ interface MemeStorageRepo
     ): array;
 
     public function setUploaded(string $meme_id): void;
+
+    public function markAsDeleted(string $meme_id): void;
 
     /**
      * Search memes for a user by exact tag texts (all tags must match).

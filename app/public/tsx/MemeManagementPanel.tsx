@@ -37,6 +37,8 @@ interface MemeManagementPanelState {
     memeInfo: Array<MemeInfo>;
     memeBeingEdited_memetags: Array<MemeTag>|null;
     meme_edit_text: string;
+    meme_text: string|null; // OCR text for the meme being edited
+    meme_text_error: string|null;
     addTagError: string|null;
     confirmMemeTagDelete: null|MemeTag;
     memeTagBeingEdited: MemeTag|null;
@@ -59,6 +61,8 @@ function getDefaultState(/*initialControlParams: object*/): MemeManagementPanelS
         memeInfo: null,
         memeBeingEdited_memetags: null,
         meme_edit_text: '',
+        meme_text: null,
+        meme_text_error: null,
         addTagError: null,
         confirmMemeTagDelete: null,
         memeTagBeingEdited: null,
@@ -280,7 +284,9 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         this.setState({
             memeBeingEdited: meme,
             memeInfo: null,
-            memeBeingEdited_memetags: null
+            memeBeingEdited_memetags: null,
+            meme_text: null,
+            meme_text_error: null
         });
 
         let url = "/api/memes/" + meme.id + "/tags";
@@ -289,6 +295,23 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
           then((data: any) => {
               const tags = data.data.meme_tags;
               this.processMemeTagData(tags);
+          });
+
+        // Fetch meme text
+        let textUrl = "/api/memes/" + meme.id + "/text";
+        fetch(textUrl).
+          then((response:Response) => response.json()).
+          then((data: any) => {
+              const memeTextData = data.data.meme_text;
+              this.setState({
+                  meme_text: memeTextData === null ? '' : memeTextData.text
+              });
+          }).
+          catch((err: any) => {
+              console.error("Failed to fetch meme text:", err);
+              this.setState({
+                  meme_text_error: "Failed to load meme text"
+              });
           });
     }
 
@@ -311,7 +334,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                     type="button"
                     className="button"
                     onClick={() => this.startEditing(meme)}
-                >Edit tags</button>
+                >Edit</button>
             </td>
         </tr>
     }
@@ -340,6 +363,57 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             // @ts-ignore: It does exist.
             meme_edit_text: text,
             addTagError: null
+        });
+    }
+
+    handleMemeTextChange(event: Event) {
+        // @ts-ignore: It does exist.
+        const text = event.currentTarget.value;
+        this.setState({
+            meme_text: text,
+            meme_text_error: null
+        });
+    }
+
+    handleSaveMemeText() {
+        if (this.state.memeBeingEdited === null) {
+            return;
+        }
+
+        const text = this.state.meme_text || '';
+
+        // Validate text length (matches backend limit)
+        if (text.length > 4096) {
+            this.setState({
+                meme_text_error: "Meme text cannot exceed 4096 characters"
+            });
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("text", text);
+
+        fetch('/api/memes/' + this.state.memeBeingEdited.id + '/text', {
+            method: 'PUT',
+            body: formData
+        })
+        .then((response: Response) => response.json())
+        .then((data: any) => {
+            if (data.result === 'success') {
+                this.setState({
+                    meme_text_error: null
+                });
+            } else {
+                this.setState({
+                    meme_text_error: "Failed to save meme text"
+                });
+            }
+        })
+        .catch((err: any) => {
+            console.error("Failed to save meme text:", err);
+            this.setState({
+                meme_text_error: "Failed to save meme text. Please try again."
+            });
         });
     }
 
@@ -632,6 +706,27 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                 </div>
 
                 <div className="meme_edit_sidebar">
+                    <div className="meme_text_section">
+                        <h4>Meme Text (OCR)</h4>
+                        <textarea
+                            rows={8}
+                            cols={60}
+                            value={this.state.meme_text === null ? '' : this.state.meme_text}
+                            onChange={(e) => this.handleMemeTextChange(e)}
+                            onBlur={() => this.handleSaveMemeText()}
+                            placeholder="Meme text from OCR (if available)..."
+                            style={{width: '100%', minHeight: '120px'}}
+                        />
+                        {this.state.meme_text_error !== null && (
+                            <span class="error">{this.state.meme_text_error}</span>
+                        )}
+                        {this.state.meme_text !== null && this.state.meme_text.length > 0 && (
+                            <div style={{marginTop: '8px', fontSize: '0.9em', color: '#666'}}>
+                                Text auto-saves when you click outside the textarea. ({this.state.meme_text.length}/4096 characters)
+                            </div>
+                        )}
+                    </div>
+
                     <div className="meme_tags_section">
                         {current_tags}
                     </div>

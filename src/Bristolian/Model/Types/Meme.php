@@ -16,6 +16,7 @@ class Meme
         public readonly string $state,
         public readonly int $size,
         public readonly \DateTimeInterface $created_at,
+        public readonly bool $deleted = false,
     ) {
     }
 }

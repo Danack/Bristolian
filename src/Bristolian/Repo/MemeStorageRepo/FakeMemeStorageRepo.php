@@ -16,9 +16,19 @@ class FakeMemeStorageRepo implements MemeStorageRepo
 
     public function getMeme(string $id): Meme|null
     {
-        return null;
+        return $this->storedMemes[$id] ?? null;
     }
 
+    public function getByNormalizedName(string $normalized_name): Meme|null
+    {
+        foreach ($this->storedMemes as $storedMeme) {
+            if ($storedMeme->normalized_name === $normalized_name) {
+                return $storedMeme;
+            }
+        }
+        
+        return null;
+    }
 
     public function storeMeme(
         string $user_id,
@@ -98,5 +108,16 @@ class FakeMemeStorageRepo implements MemeStorageRepo
     public function searchMemesByExactTags(string $user_id, array $tagTexts): array
     {
         throw new \Exception("Implement searchMemesByExactTags() method.");
+    }
+
+    public function markAsDeleted(string $meme_id): void
+    {
+        if (array_key_exists($meme_id, $this->storedMemes) === false) {
+            throw new BristolianException("meme not found to mark as deleted.");
+        }
+
+        // Note: In a real implementation, we'd need to update the Meme object
+        // Since Meme is readonly, this is a limitation of the fake implementation
+        // For tests, you'd need to create a new Meme with deleted=true
     }
 }

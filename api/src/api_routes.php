@@ -199,6 +199,20 @@ function getAllApiRoutes()
         ], // GetMemeTagsResponse
 
         [
+            '/api/memes/{meme_id:.+}/text',
+            'GET',
+            'Bristolian\AppController\User::getMemeText',
+            null
+        ], // GetMemeTextResponse
+
+        [
+            '/api/memes/{meme_id:.+}/text',
+            'PUT',
+            'Bristolian\AppController\User::updateMemeText',
+            null
+        ], // SuccessResponse
+
+        [
             '/api/memes/tag-suggestions',
             'GET',
             'Bristolian\AppController\User::getMemeTagSuggestions',

@@ -20,6 +20,7 @@ use SlimDispatcher\Response\StubResponse;
 use Bristolian\Response\Typed\GetMemesResponse;
 use Bristolian\Response\GetMemeTagsResponse;
 use Bristolian\Response\GetMemeTagSuggestionsResponse;
+use Bristolian\Response\GetMemeTextResponse;
 use SlimDispatcher\Response\TextResponse;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
 
@@ -146,7 +147,55 @@ class User
         return new GetMemeTagsResponse($data);
     }
 
+    public function getMemeText(
+        UserSession $userSession,
+        string $meme_id,
+        MemeTextRepo $memeTextRepo,
+        MemeStorageRepo $memeStorageRepo
+    ): GetMemeTextResponse {
+        // Verify the meme belongs to the user
+        $meme = $memeStorageRepo->getMeme($meme_id);
+        if ($meme === null || $meme->user_id !== $userSession->getUserId()) {
+            return new GetMemeTextResponse(null);
+        }
 
+        $meme_text = $memeTextRepo->getMemeText($meme_id);
+        return new GetMemeTextResponse($meme_text);
+    }
+
+    public function updateMemeText(
+        UserSession $userSession,
+        string $meme_id,
+        Request $request,
+        MemeTextRepo $memeTextRepo,
+        MemeStorageRepo $memeStorageRepo
+    ): SuccessResponse {
+        // Verify the meme belongs to the user
+        $meme = $memeStorageRepo->getMeme($meme_id);
+        if ($meme === null || $meme->user_id !== $userSession->getUserId()) {
+            return new SuccessResponse(); // Return success even if not found for security
+        }
+
+        // Get text from request body - FormData should be parsed by Slim middleware
+        $body = $request->getParsedBody();
+        $text = '';
+        if (is_array($body) && isset($body['text'])) {
+            $text = $body['text'];
+        } elseif ($body instanceof \ArrayAccess && isset($body['text'])) {
+            $text = $body['text'];
+        } else {
+            // Fallback: try getting from $_POST (FormData might populate it)
+            $text = $_POST['text'] ?? '';
+        }
+
+        // Validate text length (matches the database column size)
+        if (strlen($text) > 4096) {
+            $text = substr($text, 0, 4096);
+        }
+
+        $memeTextRepo->updateMemeText($meme_id, $text);
+        return new SuccessResponse();
+    }
 
     public function handleMemeTagAdd(
         UserSession $appSession,

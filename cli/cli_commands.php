@@ -21,6 +21,7 @@ function add_console_commands(Application $console)
     addGenerateCommands($console);
 
     addBristolStairsCommands($console);
+    addMemeCommands($console);
     addOpenApiCommands($console);
 
     addMoonCommands($console);
@@ -287,9 +288,16 @@ function addBristolStairsCommands(Application $console)
     $console->add($command);
 
     $command = new Command('stairs:check', 'Bristolian\CliController\BristolStairs::check_contents');
-    $command->setDescription("Chcked stored sfilessfd.");
+    $command->setDescription("Check for files in stair image storage that don't have corresponding database entries (orphaned files).");
     $console->add($command);
 
+}
+
+function addMemeCommands(Application $console)
+{
+    $command = new Command('meme:check', 'Bristolian\CliController\Meme::check_contents');
+    $command->setDescription("Check for files in meme image storage that don't have corresponding database entries (orphaned files).");
+    $console->add($command);
 }
 
 function addOpenApiCommands(Application $console)
