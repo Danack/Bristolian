@@ -81,6 +81,41 @@ Common container names (may vary based on Docker Compose project name):
 7. Frontend and backend are deployed together; avoid legacy/fallback response handling—prefer updating both sides in tandem.
 8. Never edit generated files, always fix the generation if there is a problem.
 
+## Sharing Constants Between PHP and TypeScript
+
+When you need to share constants between PHP and TypeScript (e.g., error codes, form field names, validation limits):
+
+1. **Define the constant in a PHP class** as a `public const`:
+   ```php
+   class UploadError {
+       public const DUPLICATE_FILENAME = 'DUPLICATE_FILENAME';
+   }
+   ```
+
+2. **Add it to the constants array** in `src/Bristolian/CliController/GenerateFiles::generateJavaScriptConstants()`:
+   ```php
+   $constants = [
+       'DUPLICATE_FILENAME' => \Bristolian\Service\MemeStorageProcessor\UploadError::DUPLICATE_FILENAME,
+       // ... other constants
+   ];
+   ```
+
+3. **Regenerate the constants file**:
+   ```bash
+   docker exec bristolian-php_fpm-1 bash -c "php cli.php generate:javascript_constants"
+   ```
+
+4. **Import and use in TypeScript**:
+   ```typescript
+   import {DUPLICATE_FILENAME} from "./generated/constants";
+   
+   if (data.error_code === DUPLICATE_FILENAME) {
+       // handle error
+   }
+   ```
+
+The generated file is `app/public/tsx/generated/constants.tsx` - do not edit it manually.
+
 ## Example Workflow
 
 ```bash

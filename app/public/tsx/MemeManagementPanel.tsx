@@ -2,7 +2,7 @@ import {h, Component} from "preact";
 import {api, GetMemesResponse} from "./generated/api_routes";
 import {StoredMeme, createStoredMeme} from "./generated/types";
 import {MemeTagType} from "./MemeTagType";
-import {MEME_FILE_UPLOAD_FORM_NAME} from "./generated/constants";
+import {MEME_FILE_UPLOAD_FORM_NAME, DUPLICATE_FILENAME} from "./generated/constants";
 
 export interface MemeManagementPanelProps {
     // no properties currently
@@ -850,10 +850,16 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                     // Refresh the memes list after successful upload
                     this.refreshMemes();
                 } else {
+                    // Handle duplicate filename error with user-friendly message
+                    let errorMessage = data.error || 'Upload failed.';
+                    if (data.error_code === DUPLICATE_FILENAME && data.error_data?.filename) {
+                        errorMessage = `A file named "${data.error_data.filename}" has already been uploaded. Please rename the file and try again.`;
+                    }
+                    
                     this.setState(prevState => ({
                         fileUploads: prevState.fileUploads.map(item => 
                             item.id === uploadItem.id 
-                                ? { ...item, status: UploadStatus.Error, message: data.error || 'Upload failed.' }
+                                ? { ...item, status: UploadStatus.Error, message: errorMessage }
                                 : item
                         )
                     }));

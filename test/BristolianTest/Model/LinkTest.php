@@ -11,7 +11,7 @@ use Bristolian\Model\Generated\Link;
 class LinkTest extends BaseTestCase
 {
     /**
-     * @covers Link
+     * @covers \Bristolian\Model\Generated\Link
      */
     public function testConstruct()
     {

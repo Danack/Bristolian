@@ -1,6 +1,6 @@
 <?php /** @noinspection ALL */
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 /**
  * This file contains factory functions that create objects from either

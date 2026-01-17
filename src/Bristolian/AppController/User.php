@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Bristolian\AppController;
 
 use Bristolian\Parameters\MemeSearchParams;
@@ -18,11 +20,13 @@ use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
 use Bristolian\Response\Typed\GetMemesResponse;
-use Bristolian\Response\GetMemeTagsResponse;
+use Bristolian\Response\Typed\GetMemesTagsResponse;
 use Bristolian\Response\GetMemeTagSuggestionsResponse;
 use Bristolian\Response\GetMemeTextResponse;
 use SlimDispatcher\Response\TextResponse;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
+use Bristolian\Model\Generated\StoredMeme;
+use Bristolian\Model\Generated\MemeTag;
 
 class User
 {
@@ -32,7 +36,20 @@ class User
     ): StubResponse {
         $memes = $memeStorageRepo->listMemesForUser($appSession->getUserId());
 
-        return new GetMemesResponse($memes);
+        $storedMemes = array_map(
+            fn($meme) => new StoredMeme(
+                $meme->id,
+                $meme->normalized_name,
+                $meme->original_filename,
+                $meme->state,
+                $meme->size,
+                $meme->user_id,
+                $meme->created_at
+            ),
+            $memes
+        );
+
+        return new GetMemesResponse($storedMemes);
     }
 
     public function searchMemes(
@@ -114,7 +131,20 @@ class User
             $memes = array_values($memes_by_id);
         }
 
-        return new GetMemesResponse($memes);
+        $storedMemes = array_map(
+            fn($meme) => new StoredMeme(
+                $meme->id,
+                $meme->normalized_name,
+                $meme->original_filename,
+                $meme->state,
+                $meme->size,
+                $meme->user_id,
+                $meme->created_at
+            ),
+            $memes
+        );
+
+        return new GetMemesResponse($storedMemes);
     }
 
     public function manageMemes(): string
@@ -131,7 +161,7 @@ class User
         UserSession $userSession,
         string      $meme_id,
         MemeTagRepo $memeTagRepo
-    ): GetMemeTagsResponse {
+    ): GetMemesTagsResponse {
 
 //        if ($appSession->isLoggedIn() !== true) {
 //            return new JsonResponse([]);
@@ -142,7 +172,20 @@ class User
             $meme_id
         );
 
-        return new GetMemeTagsResponse($data);
+        /** @var array<int, array<string, mixed>> $data */
+        $memeTags = array_map(
+            fn(array $row) => new MemeTag(
+                $row['id'],
+                $row['user_id'],
+                $row['meme_id'],
+                $row['type'],
+                $row['text'],
+                new \DateTimeImmutable($row['created_at'])
+            ),
+            $data
+        );
+
+        return new GetMemesTagsResponse($memeTags);
     }
 
     public function getMemeText(

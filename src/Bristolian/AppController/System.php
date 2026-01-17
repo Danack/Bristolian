@@ -10,12 +10,15 @@ use Bristolian\CSPViolation\CSPViolationStorage;
 use Bristolian\Model\TinnedFish\Product;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use Bristolian\Model\Types\MigrationThatHasBeenRun;
+use Bristolian\Parameters\TinnedFish\UpdateProductValidationStatusParams;
 use Bristolian\Repo\DbInfo\DbInfo;
 use Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo;
+use Bristolian\Response\TinnedFish\UpdateProductValidationStatusResponse;
 use Bristolian\Service\DeployLogRenderer\DeployLogRenderer;
 use Bristolian\Session\UserSession;
 use OpenApi\OpenApiGenerator;
 use SlimDispatcher\Response\JsonResponse;
+use SlimDispatcher\Response\StubResponse;
 use function Bristolian\createReactWidget;
 
 class System
@@ -268,33 +271,14 @@ HTML;
 
     public function updateProductValidationStatus(
         string $barcode,
-        \VarMap\VarMap $varMap,
+        UpdateProductValidationStatusParams $params,
         TinnedFishProductRepo $productRepo
-    ): \SlimDispatcher\Response\JsonResponse {
-        $validation_status = $varMap->getStringOrNull('validation_status');
-        
-        if ($validation_status === null) {
-            return new \SlimDispatcher\Response\JsonResponse(
-                ['success' => false, 'error' => 'validation_status parameter is required'],
-                400
-            );
-        }
+    ): StubResponse {
+        $productRepo->updateValidationStatus($barcode, $params->validation_status);
 
-        try {
-            $validationStatus = ValidationStatus::from($validation_status);
-        } catch (\ValueError $e) {
-            return new \SlimDispatcher\Response\JsonResponse(
-                ['success' => false, 'error' => 'Invalid validation status'],
-                400
-            );
-        }
-
-        $productRepo->updateValidationStatus($barcode, $validationStatus);
-
-        return new \SlimDispatcher\Response\JsonResponse([
-            'success' => true,
-            'barcode' => $barcode,
-            'validation_status' => $validationStatus->value,
-        ]);
+        return new UpdateProductValidationStatusResponse(
+            $barcode,
+            $params->validation_status
+        );
     }
 }

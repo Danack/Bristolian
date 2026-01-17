@@ -28,6 +28,7 @@ interface TinnedFishProductsAdminPanelState {
     updating: Set<string>; // Set of barcodes currently being updated
     errors: Map<string, string>; // Map of barcode to error message
     refreshing: boolean; // Whether products are being refreshed
+    filterValidationStatus: string; // Selected validation status filter, empty string means "all"
 }
 
 function getDefaultState(props: TinnedFishProductsAdminPanelProps): TinnedFishProductsAdminPanelState {
@@ -39,6 +40,7 @@ function getDefaultState(props: TinnedFishProductsAdminPanelProps): TinnedFishPr
         updating: new Set(),
         errors: new Map(),
         refreshing: false,
+        filterValidationStatus: '', // Empty string means show all
     };
 }
 
@@ -224,12 +226,27 @@ export class TinnedFishProductsAdminPanel extends Component<
         this.refreshProducts();
     }
 
+    private handleFilterChange(event: Event): void {
+        const target = event.target as HTMLSelectElement;
+        this.setState({ filterValidationStatus: target.value });
+    }
+
+    private getFilteredProducts(): Product[] {
+        if (this.state.filterValidationStatus === '') {
+            return this.state.products;
+        }
+        return this.state.products.filter(
+            (product) => product.validation_status === this.state.filterValidationStatus
+        );
+    }
+
     private renderProductRowInTable(product: Product, index: number) {
         return this.renderProductRow(product, index);
     }
 
     render() {
         const refreshError = this.state.errors.get('refresh');
+        const filteredProducts = this.getFilteredProducts();
 
         return (
             <div class="tinned_fish_products_admin_panel">
@@ -240,13 +257,27 @@ export class TinnedFishProductsAdminPanel extends Component<
                     >
                         {this.state.refreshing ? 'Refreshing...' : 'Refresh'}
                     </button>
+                    <label style="margin-left: 1em; margin-right: 0.5em;">
+                        Filter by Validation Status:
+                    </label>
+                    <select
+                        value={this.state.filterValidationStatus}
+                        onChange={(e) => this.handleFilterChange(e)}
+                    >
+                        <option value="">All</option>
+                        {this.state.validation_statuses.map((status) => (
+                            <option key={status.value} value={status.value}>
+                                {status.label}
+                            </option>
+                        ))}
+                    </select>
                     {refreshError && (
                         <span style="color: red; margin-left: 1em;">
                             Error: {refreshError}
                         </span>
                     )}
                 </div>
-                {this.state.products.length === 0 ? (
+                {filteredProducts.length === 0 ? (
                     <div>No products found.</div>
                 ) : (
                     <table>
@@ -264,7 +295,7 @@ export class TinnedFishProductsAdminPanel extends Component<
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.products.map((product, index) => this.renderProductRowInTable(product, index))}
+                            {filteredProducts.map((product, index) => this.renderProductRowInTable(product, index))}
                         </tbody>
                     </table>
                 )}

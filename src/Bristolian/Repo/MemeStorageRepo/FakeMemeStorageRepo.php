@@ -120,4 +120,17 @@ class FakeMemeStorageRepo implements MemeStorageRepo
         // Since Meme is readonly, this is a limitation of the fake implementation
         // For tests, you'd need to create a new Meme with deleted=true
     }
+
+    public function getMemeByOriginalFilename(string $user_id, string $original_filename): Meme|null
+    {
+        foreach ($this->storedMemes as $storedMeme) {
+            if ($storedMeme->user_id === $user_id && 
+                $storedMeme->original_filename === $original_filename &&
+                $storedMeme->deleted === false) {
+                return $storedMeme;
+            }
+        }
+        
+        return null;
+    }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Bristolian\ApiController;
 
 use Bristolian\PdoSimple\PdoSimple;
@@ -26,9 +28,7 @@ class Log
 
         $params = ProcessorRunRecordTypeParam::createFromVarMap($varMap);
 
-        if ($params->task_type !== null) {
-            $task_type = ProcessType::from($params->task_type);
-        }
+        $task_type = $params->task_type;
 
         $db_data = $processorRunRecordRepo->getRunRecords($task_type);
 

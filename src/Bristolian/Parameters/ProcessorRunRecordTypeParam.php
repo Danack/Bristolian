@@ -15,7 +15,7 @@ class ProcessorRunRecordTypeParam implements DataType
 
     public function __construct(
         #[BasicPhpEnumTypeOrNull('task_type', ProcessType::class)]
-        public readonly string|null $task_type,
+        public readonly ProcessType|null $task_type,
     ) {
     }
 }

@@ -16,15 +16,18 @@ class ProcessorRunRecordTypeParamTest extends BaseTestCase
 {
     public function testWorks()
     {
-        $task_type = 'email_send';
+        $task_type_value = 'email_send';
 
         $params = [
-            'task_type' => $task_type,
+            'task_type' => $task_type_value,
         ];
 
         $processorRunRecordTypeParam = ProcessorRunRecordTypeParam::createFromVarMap(new ArrayVarMap($params));
 
-        $this->assertSame($task_type, $processorRunRecordTypeParam->task_type);
+        $this->assertSame(
+            \Bristolian\Repo\ProcessorRepo\ProcessType::email_send,
+            $processorRunRecordTypeParam->task_type
+        );
     }
 
     public function testWorksWithNoOptionalParameters()

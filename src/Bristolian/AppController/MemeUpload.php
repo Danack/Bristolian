@@ -49,8 +49,17 @@ class MemeUpload
         if ($storedFileOrError instanceof UploadError) {
             $data = [
                 'result' => 'error',
-                'error' => $storedFileOrError->error_message
+                'error' => $storedFileOrError->error_message,
             ];
+            
+            // Include error code and data if available (for duplicate filename errors)
+            if ($storedFileOrError->error_code !== null) {
+                $data['error_code'] = $storedFileOrError->error_code;
+            }
+            if ($storedFileOrError->error_data !== null) {
+                $data['error_data'] = $storedFileOrError->error_data;
+            }
+            
             // todo - change to helper function
             return new JsonNoCacheResponse($data, [], 400);
         }

@@ -43,6 +43,8 @@ class ProductNormalizerTest extends BaseTestCase
     /**
      * @covers \normalizeOpenFoodFactsData
      * @dataProvider provides_normalizes_basic_product_data
+     * @param array<string, mixed> $rawData
+     * @param array<string, mixed> $expected
      */
     public function test_normalizes_basic_product_data(
         string $barcode,
@@ -273,6 +275,8 @@ class ProductNormalizerTest extends BaseTestCase
     /**
      * @covers \normalizeOpenFoodFactsData
      * @dataProvider provides_handles_missing_product_data
+     * @param array<string, mixed> $rawData
+     * @param array<string, mixed> $expected
      */
     public function test_handles_missing_product_data(
         string $barcode,
@@ -345,6 +349,7 @@ class ProductNormalizerTest extends BaseTestCase
     /**
      * @covers \normalizeOpenFoodFactsData
      * @dataProvider provides_uses_fallback_fields
+     * @param array<string, mixed> $rawData
      */
     public function test_uses_fallback_fields(
         array $rawData,

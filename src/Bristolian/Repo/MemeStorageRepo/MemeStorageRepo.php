@@ -64,4 +64,14 @@ interface MemeStorageRepo
         string $user_id,
         array $tagTexts
     ): array;
+
+    /**
+     * Check if a user already has a meme with the given original filename.
+     * Only checks non-deleted memes.
+     *
+     * @param string $user_id
+     * @param string $original_filename
+     * @return Meme|null Returns the existing meme if found, null otherwise
+     */
+    public function getMemeByOriginalFilename(string $user_id, string $original_filename): Meme|null;
 }

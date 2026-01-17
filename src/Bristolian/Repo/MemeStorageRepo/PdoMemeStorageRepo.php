@@ -263,4 +263,21 @@ SQL;
 
         $this->pdo_simple->execute($sql, $params);
     }
+
+    public function getMemeByOriginalFilename(string $user_id, string $original_filename): Meme|null
+    {
+        $sql = stored_meme::SELECT;
+        $sql .= " WHERE user_id = :user_id AND original_filename = :original_filename AND deleted = 0";
+
+        $params = [
+            ':user_id' => $user_id,
+            ':original_filename' => $original_filename
+        ];
+
+        return $this->pdo_simple->fetchOneAsObjectOrNullConstructor(
+            $sql,
+            $params,
+            Meme::class
+        );
+    }
 }

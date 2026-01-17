@@ -1,6 +1,6 @@
 import {h, Component} from "preact";
 
-import {MEME_FILE_UPLOAD_FORM_NAME} from "./generated/constants";
+import {MEME_FILE_UPLOAD_FORM_NAME, DUPLICATE_FILENAME} from "./generated/constants";
 
 export interface MemeUploadPanelProps {
     // no properties currently
@@ -158,9 +158,15 @@ export class MemeUploadPanel extends Component<MemeUploadPanelProps, MemeUploadP
                         selectedFile: null
                     });
                 } else {
+                    // Handle duplicate filename error with user-friendly message
+                    let errorMessage = data.error || 'Upload failed.';
+                    if (data.error_code === DUPLICATE_FILENAME && data.error_data?.filename) {
+                        errorMessage = `A file named "${data.error_data.filename}" has already been uploaded. Please rename the file and try again.`;
+                    }
+                    
                     this.setState({
                         uploadStatus: UploadStatus.Error,
-                        uploadMessage: data.error || 'Upload failed.'
+                        uploadMessage: errorMessage
                     });
                 }
             })

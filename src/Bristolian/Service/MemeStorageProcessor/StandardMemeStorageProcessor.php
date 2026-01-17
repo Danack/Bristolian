@@ -34,6 +34,16 @@ class StandardMemeStorageProcessor implements MemeStorageProcessor
             return UploadError::uploadedFileUnreadable();
         }
 
+        // Check for duplicate original filename
+        $existingMeme = $this->memeStorageRepo->getMemeByOriginalFilename(
+            $user_id,
+            $uploadedFile->getOriginalName()
+        );
+
+        if ($existingMeme !== null) {
+            return UploadError::duplicateOriginalFilename($uploadedFile->getOriginalName());
+        }
+
         // Normalize extension.
         $extension = normalize_file_extension(
             $uploadedFile->getOriginalName(),

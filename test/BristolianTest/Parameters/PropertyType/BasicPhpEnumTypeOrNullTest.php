@@ -21,7 +21,7 @@ class BasicPhpEnumTypeOrNullTest extends BaseTestCase
         $data = ['enum_input' => $value];
 
         $enumParamTest = BasicPhpEnumTypeOrNullFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame($value, $enumParamTest->value);
+        $this->assertSame(TestEnum::VALUE1, $enumParamTest->value);
     }
 
     public function testFailsWithNull()
@@ -87,7 +87,7 @@ class BasicPhpEnumTypeOrNullFixture implements DataType
 
     public function __construct(
         #[BasicPhpEnumTypeOrNull('enum_input', TestEnum::class)]
-        public readonly ?string $value,
+        public readonly ?TestEnum $value,
     ) {
     }
 }

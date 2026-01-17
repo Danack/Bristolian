@@ -344,6 +344,68 @@ docker-compose logs -f [service_name]
 - **Tests**: `/test` (PHP), `/app/public/tsx` (Jest)
 - **Docker**: `/containers` (service configurations)
 
+## Service Implementation Naming Convention
+
+The project uses a consistent naming convention for service implementations to clearly communicate when implementations differ and how they're selected.
+
+### Naming Rules
+
+#### 1. "Standard" Prefix
+Use the `Standard` prefix when there's a **single, default implementation** that works for all environments.
+
+**Examples:**
+- `StandardBccTroFetcher` - fetches BCC TRO data
+- `StandardChatMessageService` - handles chat messages
+- `StandardWebPushService` - sends web push notifications
+- `StandardAvatarImageStorage` - stores avatar images
+
+These represent the normal/production implementation that's used across all environments.
+
+#### 2. Environment-Specific Names
+Use environment names (`Local`, `Prod`, `Dev`) when implementations **differ by environment** and are selected via factory functions.
+
+**Examples:**
+- `LocalDeployLogRenderer` / `ProdDeployLogRenderer` - different log sources for local vs production
+- `DevEnvironmentMemoryWarning` / `ProdMemoryWarningCheck` - different memory monitoring strategies
+
+**Factory Function Pattern:**
+Factory functions in `factories.php` select the appropriate implementation based on `Config::isProductionEnv()`:
+
+```php
+function createDeployLogRenderer(Config $config): DeployLogRenderer
+{
+    if ($config->isProductionEnv()) {
+        return new \Bristolian\Service\DeployLogRenderer\ProdDeployLogRenderer();
+    }
+    return new \Bristolian\Service\DeployLogRenderer\LocalDeployLogRenderer();
+}
+```
+
+The naming clearly indicates which environment each implementation is for, making the code more maintainable.
+
+#### 3. Vendor/Technology-Specific Names
+When an implementation is tied to a specific technology or vendor, use the vendor/technology name directly.
+
+**Examples:**
+- `MailgunEmailClient` - Mailgun email service implementation
+- `MailgunEmailReceiver` - Mailgun webhook receiver
+
+These don't use "Standard" prefix because they're already specific to a technology.
+
+#### 4. Fake Implementations
+All fake implementations for testing use the `Fake` prefix:
+
+**Examples:**
+- `FakeAdminRepo` - fake admin repository for tests
+- `FakeUserSession` - fake user session for tests
+- `FakeMemoryWarningCheck` - fake memory check for tests
+
+**Why This Pattern?**
+- **Clarity**: The naming immediately tells you if there's one implementation or multiple environment-specific ones
+- **Discoverability**: Easy to find environment-specific implementations
+- **Maintainability**: Factory functions clearly show which implementation is used where
+- **Consistency**: Matches common patterns (Standard Library, Standard Template Library)
+
 ## Additional Resources
 
 - [Jest Testing](https://jestjs.io/)

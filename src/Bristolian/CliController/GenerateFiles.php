@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Bristolian\CliController;
 
 use Bristolian\Config\Config;
@@ -651,6 +653,8 @@ class GenerateFiles
 
             'MINIMUM_ABOUT_ME_LENGTH' => \Bristolian\Parameters\PropertyType\AboutMeText::MINIMUM_ABOUT_ME_LENGTH,
             'MAXIMUM_ABOUT_ME_LENGTH' => \Bristolian\Parameters\PropertyType\AboutMeText::MAXIMUM_ABOUT_ME_LENGTH,
+
+            'DUPLICATE_FILENAME' => \Bristolian\Service\MemeStorageProcessor\UploadError::DUPLICATE_FILENAME,
         ];
 
         $string_template = <<< TEMPLATE
@@ -774,7 +778,7 @@ SQL;
                 echo "here";
             }
 
-            $content = $this->generateResponseClassContent($className, $namespace, $type_info);
+            $content = $this->generateResponseClassContent($className, $namespace, $type_info, $path, $method);
 
 
 
@@ -859,16 +863,60 @@ SQL;
     /**
      * Generate PHP class content for a response type.
      * 
+     * @param string $className The generated class name
+     * @param string $namespace The namespace for the class
      * @param array $type_info Array of [name, class, is_array] tuples
+     * @param string $path The route path
+     * @param string $method The HTTP method
      */
-    private function generateResponseClassContent(string $className, string $namespace, array $type_info): string
+    private function generateResponseClassContent(string $className, string $namespace, array $type_info, string $path, string $method): string
     {
         $content = "<?php\n\n";
         $content .= "// Auto-generated file do not edit\n\n";
         $content .= "// generated with 'php cli.php generate:php_response_types'\n";
         $content .= "// \n";
+        $content .= "// The information used to generate this file comes from:\n";
+        $content .= "// api/src/api_routes.php - specifically from routes that have type information\n";
+        $content .= "// \n";
+        $content .= "// In api_routes.php, each route is an array with the format:\n";
+        $content .= "// [path, method, controller, type_info, setup_callable]\n";
+        $content .= "// \n";
+        $content .= "// The type_info (at index 3) is an array of field definitions:\n";
+        $content .= "// [\n";
+        $content .= "//     ['field_name', ClassName::class, is_array],\n";
+        $content .= "//     ...\n";
+        $content .= "// ]\n";
+        $content .= "// \n";
+        $content .= "// Each field definition is: [field_name, fully_qualified_class_name, is_array]\n";
+        $content .= "// - field_name: the name of the field in the JSON response\n";
+        $content .= "// - fully_qualified_class_name: the model class (usually from Bristolian\\Model\\Generated)\n";
+        $content .= "// - is_array: true for arrays of objects, false for single objects\n";
+        $content .= "// \n";
+        $content .= "// This response class is used by the route:\n";
+        $content .= "//   Path: $path\n";
+        $content .= "//   Method: $method\n";
+        $content .= "// \n";
+        $content .= "// The actual field definitions for this route are:\n";
+        
+        // Build the actual field definitions comment
+        foreach ($type_info as $field_info) {
+            if (!is_array($field_info) || count($field_info) < 2) {
+                continue;
+            }
+            
+            $field_name = $field_info[0];
+            $field_type = $field_info[1];
+            $is_array = isset($field_info[2]) && $field_info[2] === true;
+            
+            if (is_string($field_type)) {
+                $is_array_str = $is_array ? 'true' : 'false';
+                $content .= "//   ['$field_name', \\$field_type::class, $is_array_str]\n";
+            }
+        }
+        
+        $content .= "// \n";
         $content .= "// The code for the generation is in:\n";
-        $content .= "// \Bristolian\CliController\GenerateFiles::generateResponseClassContent\n";
+        $content .= "// \\Bristolian\\CliController\\GenerateFiles::generateResponseClassContent\n";
 
         $content .= "namespace $namespace;\n\n";
         

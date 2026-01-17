@@ -19,7 +19,7 @@ class PhpEnumTest extends BaseTestCase
      */
     public function testValidationWorks()
     {
-        $testValue = FixtureEnum::APPLES->value;
+        $testEnum = FixtureEnum::APPLES;
 
         $rule = new PhpEnum(FixtureEnum::class);
 
@@ -29,7 +29,7 @@ class PhpEnumTest extends BaseTestCase
             FixtureEnum::APPLES->value, $processedValues, $dataStorage
         );
         $this->assertNoProblems($validationResult);
-        $this->assertSame($validationResult->getValue(), $testValue);
+        $this->assertSame($validationResult->getValue(), $testEnum);
 
         $invalid_case = 'not valid';
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Bristolian\AppController;
 
 use Bristolian\Repo\UserSearch\UserSearch;

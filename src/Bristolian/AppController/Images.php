@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Bristolian\AppController;
 
 use Bristolian\Filesystem\LocalCacheFilesystem;
@@ -25,7 +27,7 @@ class Images
         $meme = $this->memeStorageRepo->getMeme($id);
 
         if ($meme === null) {
-            return ContentNotFoundException::meme_id_not_found($id);
+            throw ContentNotFoundException::meme_id_not_found($id);
         }
 
         $normalized_name = $meme->normalized_name;

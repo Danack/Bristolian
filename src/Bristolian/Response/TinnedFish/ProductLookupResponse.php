@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Bristolian\Response\TinnedFish;
 
@@ -40,7 +40,7 @@ class ProductLookupResponse implements StubResponse
             'copyright' => $copyrightData,
         ];
 
-        $this->body = json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $this->body = json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_PRESERVE_ZERO_FRACTION);
     }
 
     public function getStatus(): int
