@@ -1,7 +1,5 @@
 import { h, Component } from "preact";
 
-let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
-
 export interface TinnedFishProductsAdminPanelProps {
     initial_json_data: any;
 }
@@ -102,7 +100,7 @@ export class TinnedFishProductsAdminPanel extends Component<
         
         this.setState({ updating, errors });
 
-        const url = `${api_url}/api/tfd/v1/products/${encodeURIComponent(barcode)}/validation_status`;
+        const url = `/api/tfd/v1/products/${encodeURIComponent(barcode)}/validation_status`;
         
         console.log('Updating validation status:', { barcode, validationStatus, url });
         
@@ -163,7 +161,7 @@ export class TinnedFishProductsAdminPanel extends Component<
         
         this.setState({ refreshing: true, errors });
 
-        const url = `${api_url}/api/tfd/v1/products`;
+        const url = `/api/tfd/v1/products`;
         
         fetch(url, {
             method: 'GET',

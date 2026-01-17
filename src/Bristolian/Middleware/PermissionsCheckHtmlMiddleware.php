@@ -24,11 +24,6 @@ class PermissionsCheckHtmlMiddleware implements MiddlewareInterface
         '/api/services/email/mailgun' // mailgun has token based access
     ];
 
-    // Allow token based access for paths
-    private $tinned_fish_paths = [
-        "/api/tfd/v1"
-    ];
-
 
     public function __construct(
         private AppSessionManagerInterface $appSessionManager
@@ -51,14 +46,6 @@ class PermissionsCheckHtmlMiddleware implements MiddlewareInterface
                     $check_logged_in = false;
                     break;
                 }
-            }
-        }
-
-        // TODO - add api keys
-        foreach ($this->tinned_fish_paths as $allowed_path) {
-            if (str_starts_with($request->getUri()->getPath(), $allowed_path) === true) {
-                $check_logged_in = false;
-                break;
             }
         }
 
