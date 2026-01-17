@@ -107,6 +107,8 @@ class MemeOcr
                 $found_text = substr($found_text, 0, self::MAX_MEME_TEXT_LENGTH - 1);
             }
 
+            echo "OCRed meme text: " . $found_text . "\n";
+
             $this->memeTextRepo->saveMemeText(
                 $next_meme,
                 $found_text

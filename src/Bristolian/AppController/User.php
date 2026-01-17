@@ -122,8 +122,6 @@ class User
         $content = "";
 
         $content .= "<h2>Here be memes</h2>";
-        $content .= "<div class='meme_upload_panel'></div>";
-
         $content .= "<div class='meme_management_panel'></div>";
 
         return $content;

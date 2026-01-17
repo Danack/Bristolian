@@ -80,6 +80,291 @@
     margin-top: 0;
   }
 
+  .meme_search_bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+  }
+
+  .meme_search_box {
+    flex: 1;
+    min-width: 200px;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    h5 {
+      margin: 0 0 0.5rem 0;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    label {
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: 500;
+    }
+
+    input[type="text"] {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+    }
+
+    .selected_tags_box,
+    .suggested_tags_box {
+      margin-bottom: 0;
+      padding: 0.75rem;
+      background-color: #fff;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+    }
+
+    .tag_list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.35rem 0.75rem;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .suggested_tag {
+      background-color: #e3f2fd;
+      color: #1565c0;
+      border: 1px solid #90caf9;
+
+      &:hover {
+        background-color: #bbdefb;
+        border-color: #64b5f6;
+      }
+
+      &.tag_selected {
+        background-color: #1976d2;
+        color: #fff;
+        border-color: #1565c0;
+
+        &:hover {
+          background-color: #1565c0;
+        }
+      }
+    }
+
+    .selected_tag {
+      background-color: #4caf50;
+      color: #fff;
+      border: 1px solid #388e3c;
+      padding-right: 0.5rem;
+
+      &:hover {
+        background-color: #388e3c;
+      }
+    }
+
+    .search_buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
+
+  .meme_upload_button_section {
+    flex: 0 0 auto;
+    padding: 1rem;
+    display: flex;
+    align-items: flex-start;
+
+    .meme_upload_button {
+      padding: 0.75rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+  }
+
+  .meme_upload_fullwidth {
+    margin-bottom: 1.5rem;
+
+    .meme_upload_header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+
+      h3 {
+        margin: 0;
+      }
+    }
+
+    .meme_drop_zone {
+      border: 2px dashed #666;
+      border-radius: 8px;
+      padding: 3rem;
+      text-align: center;
+      transition: all 0.2s ease;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+
+      &.meme_drop_zone_dragging {
+        border-color: #4a90d9;
+        background-color: rgba(74, 144, 217, 0.1);
+        border-style: solid;
+      }
+
+      .drop_zone_text {
+        margin: 0;
+        color: #666;
+        font-size: 1rem;
+      }
+
+      input[type="file"] {
+        margin: 0.5rem 0;
+      }
+
+      .selected_file_info {
+        font-size: 0.9rem;
+        color: #333;
+        padding: 0.5rem;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+      }
+
+      .upload_button {
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+        cursor: pointer;
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    .upload_status {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      border-radius: 4px;
+      text-align: center;
+
+      &.uploading {
+        background-color: #e3f2fd;
+        color: #1565c0;
+      }
+
+      &.success {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+      }
+
+      &.error {
+        background-color: #ffebee;
+        color: #c62828;
+      }
+    }
+
+    .file_upload_list {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .file_upload_item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      background-color: #f5f5f5;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      gap: 1rem;
+
+      &.upload_item_idle {
+        background-color: #f5f5f5;
+        border-color: #ddd;
+      }
+
+      &.upload_item_uploading {
+        background-color: #e3f2fd;
+        border-color: #90caf9;
+      }
+
+      &.upload_item_success {
+        background-color: #e8f5e9;
+        border-color: #81c784;
+      }
+
+      &.upload_item_error {
+        background-color: #ffebee;
+        border-color: #ef5350;
+      }
+
+      .file_upload_info {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .file_name {
+          font-weight: 500;
+          color: #333;
+        }
+
+        .file_size {
+          font-size: 0.85rem;
+          color: #666;
+        }
+      }
+
+      .file_upload_status {
+        flex: 1;
+        font-size: 0.9rem;
+
+        .status_success {
+          color: #2e7d32;
+          font-weight: 500;
+        }
+
+        .status_error {
+          color: #c62828;
+          font-weight: 500;
+        }
+      }
+
+      .remove_file_button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    .upload_actions {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
   .meme_search_section {
     margin-bottom: 1.5rem;
     padding: 1rem;
@@ -276,12 +561,51 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
-  .meme_thumbnail {
-    max-width: 200px;
-    max-height: 200px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
+  .meme_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .meme_card {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .meme_card_image_container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      min-height: 200px;
+    }
+
+    .meme_thumbnail {
+      max-width: 100%;
+      max-height: 200px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    .meme_card_actions {
+      display: flex;
+      justify-content: center;
+      padding-top: 0.5rem;
+      border-top: 1px solid #eee;
+    }
   }
 
   .meme_edit_sidebar {

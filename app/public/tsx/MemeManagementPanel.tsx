@@ -2,6 +2,7 @@ import {h, Component} from "preact";
 import {api, GetMemesResponse} from "./generated/api_routes";
 import {StoredMeme, createStoredMeme} from "./generated/types";
 import {MemeTagType} from "./MemeTagType";
+import {MEME_FILE_UPLOAD_FORM_NAME} from "./generated/constants";
 
 export interface MemeManagementPanelProps {
     // no properties currently
@@ -31,6 +32,20 @@ interface TagSuggestion {
     count: number;
 }
 
+enum UploadStatus {
+    Idle = 'idle',
+    Uploading = 'uploading',
+    Success = 'success',
+    Error = 'error'
+}
+
+interface FileUploadItem {
+    file: File;
+    id: string;
+    status: UploadStatus;
+    message: string|null;
+}
+
 interface MemeManagementPanelState {
     memes: Array<StoredMeme>;
     memeBeingEdited: StoredMeme|null;
@@ -50,6 +65,10 @@ interface MemeManagementPanelState {
     suggestedTags: Array<TagSuggestion>; // Suggested tags to show
     isSearching: boolean;
     timeoutId?: number;
+    // Upload state
+    showUploadPanel: boolean;
+    fileUploads: Array<FileUploadItem>;
+    isDragging: boolean;
 }
 
 const MINIMUM_TAG_LENGTH = 4;
@@ -73,7 +92,10 @@ function getDefaultState(/*initialControlParams: object*/): MemeManagementPanelS
         selectedTags: [],
         suggestedTags: [],
         isSearching: false,
-        timeoutId: undefined
+        timeoutId: undefined,
+        showUploadPanel: false,
+        fileUploads: [],
+        isDragging: false
     };
 }
 
@@ -322,21 +344,18 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
     renderMeme(meme: StoredMeme) {
         const meme_url = `/images/memes/${meme.id}.jpg`;
         
-        return <tr key={meme.id}>
-            <td>
+        return <div key={meme.id} className="meme_card">
+            <div className="meme_card_image_container">
                 <img src={meme_url} alt={meme.normalized_name} className="meme_thumbnail" />
-            </td>
-            {/*<td>*/}
-            {/*    {meme.original_filename}*/}
-            {/*</td>*/}
-            <td>
+            </div>
+            <div className="meme_card_actions">
                 <button
                     type="button"
                     className="button"
                     onClick={() => this.startEditing(meme)}
                 >Edit</button>
-            </td>
-        </tr>
+            </div>
+        </div>
     }
 
     renderMemeBlock() {
@@ -344,14 +363,9 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             return <span>You don't have any memes uploaded. If you did, you could manage them here.</span>
         }
 
-        return <table>
-            <tr key={"header"}>
-                <th>Image</th>
-                {/*<th>Name</th>*/}
-                <th>Edit</th>
-            </tr>
+        return <div className="meme_grid">
             {Object.values(this.state.memes).map((meme: StoredMeme) => this.renderMeme(meme))}
-        </table>
+        </div>
     }
 
     handleTextChange(something: Event) {
@@ -592,6 +606,156 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         this.setState({confirmMemeTagDelete: memeTag });
     }
 
+    handleShowUpload() {
+        this.setState({ showUploadPanel: true });
+    }
+
+    handleHideUpload() {
+        this.setState({ 
+            showUploadPanel: false,
+            fileUploads: [],
+            isDragging: false
+        });
+    }
+
+    addFilesToUpload(files: FileList | null) {
+        if (!files || files.length === 0) return;
+
+        const imageFiles: File[] = [];
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (file.type.startsWith('image/')) {
+                imageFiles.push(file);
+            }
+        }
+
+        if (imageFiles.length === 0) {
+            return;
+        }
+
+        const newUploads: FileUploadItem[] = imageFiles.map(file => ({
+            file: file,
+            id: `${file.name}-${Date.now()}-${Math.random()}`,
+            status: UploadStatus.Idle,
+            message: null as string|null
+        }));
+
+        this.setState(prevState => ({
+            fileUploads: [...prevState.fileUploads, ...newUploads]
+        }));
+    }
+
+    handleDragEnter(event: DragEvent) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.setState({ isDragging: true });
+    }
+
+    handleDragOver(event: DragEvent) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.setState({ isDragging: true });
+    }
+
+    handleDragLeave(event: DragEvent) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.setState({ isDragging: false });
+    }
+
+    handleDrop(event: DragEvent) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.setState({ isDragging: false });
+
+        const files = event.dataTransfer?.files;
+        this.addFilesToUpload(files || null);
+    }
+
+    onFileChange = (event: any) => {
+        const files = event.target.files;
+        this.addFilesToUpload(files);
+        // Reset the input so the same file can be selected again
+        event.target.value = '';
+    };
+
+    uploadFile(uploadItem: FileUploadItem) {
+        // Update status to uploading
+        this.setState(prevState => ({
+            fileUploads: prevState.fileUploads.map(item => 
+                item.id === uploadItem.id 
+                    ? { ...item, status: UploadStatus.Uploading, message: 'Uploading...' }
+                    : item
+            )
+        }));
+
+        const formData = new FormData();
+        formData.append(
+            MEME_FILE_UPLOAD_FORM_NAME,
+            uploadItem.file,
+            uploadItem.file.name
+        );
+
+        let params = {
+            method: 'POST',
+            body: formData
+        }
+        
+        fetch('/api/meme-upload/', params)
+            .then((response: Response) => response.json())
+            .then((data: any) => {
+                if (data.result === 'success') {
+                    this.setState(prevState => ({
+                        fileUploads: prevState.fileUploads.map(item => 
+                            item.id === uploadItem.id 
+                                ? { ...item, status: UploadStatus.Success, message: 'Uploaded successfully!' }
+                                : item
+                        )
+                    }));
+                    // Refresh the memes list after successful upload
+                    this.refreshMemes();
+                } else {
+                    this.setState(prevState => ({
+                        fileUploads: prevState.fileUploads.map(item => 
+                            item.id === uploadItem.id 
+                                ? { ...item, status: UploadStatus.Error, message: data.error || 'Upload failed.' }
+                                : item
+                        )
+                    }));
+                }
+            })
+            .catch((err: any) => {
+                this.setState(prevState => ({
+                    fileUploads: prevState.fileUploads.map(item => 
+                        item.id === uploadItem.id 
+                            ? { ...item, status: UploadStatus.Error, message: 'Upload failed: ' + err.message }
+                            : item
+                    )
+                }));
+            });
+    }
+
+    onFileUpload = () => {
+        const filesToUpload = this.state.fileUploads.filter(item => item.status === UploadStatus.Idle);
+        
+        if (filesToUpload.length === 0) {
+            return;
+        }
+
+        // Upload files sequentially to avoid overwhelming the server
+        filesToUpload.forEach((uploadItem, index) => {
+            setTimeout(() => {
+                this.uploadFile(uploadItem);
+            }, index * 100); // Small delay between uploads
+        });
+    };
+
+    removeUploadItem(uploadId: string) {
+        this.setState(prevState => ({
+            fileUploads: prevState.fileUploads.filter(item => item.id !== uploadId)
+        }));
+    }
+
     renderMemeTagDeleteModal() {
         if (!this.state.confirmMemeTagDelete) return null;
 
@@ -819,51 +983,144 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             </div>
         ) : null;
 
-        const searchSection = <div class="meme_search_section">
-            <h4>Search Memes</h4>
-            {selectedTagsBox}
-            {suggestedTagsBox}
-            <div class="search_controls">
-                <div class="search_input_group">
-                    <label>Search by tags:</label>
-                    <input
-                        type="text"
-                        value={this.state.searchQuery}
-                        onChange={(e) => this.handleSearchQueryChange(e)}
-                        placeholder="Search in tag text..."
-                    />
-                </div>
-                <div class="search_input_group">
-                    <label>Search by meme text:</label>
-                    <input
-                        type="text"
-                        value={this.state.searchTextQuery}
-                        onInput={(e) => this.handleSearchTextQueryChange(e)}
-                        placeholder="Search in meme text (OCR)..."
-                    />
-                    {this.state.timeoutId !== undefined && (
-                        <span style="font-size: 0.8em; color: #666;">(Timeout active: {this.state.timeoutId})</span>
+        // Upload panel (shown when showUploadPanel is true)
+        if (this.state.showUploadPanel) {
+            const dropZoneClass = this.state.isDragging 
+                ? 'meme_drop_zone meme_drop_zone_dragging' 
+                : 'meme_drop_zone';
+
+            const hasFilesToUpload = this.state.fileUploads.length > 0;
+            const isUploading = this.state.fileUploads.some(item => item.status === UploadStatus.Uploading);
+            const hasIdleFiles = this.state.fileUploads.some(item => item.status === UploadStatus.Idle);
+
+            return <div class='meme_management_panel_react'>
+                {deleteMemeTagModal}
+                {editMemeTagModal}
+                <div class="meme_upload_fullwidth">
+                    <div class="meme_upload_header">
+                        <h3>Upload Memes</h3>
+                        <span class="button" onClick={() => this.handleHideUpload()}>Close</span>
+                    </div>
+                    <div
+                        class={dropZoneClass}
+                        onDragEnter={(e: DragEvent) => this.handleDragEnter(e)}
+                        onDragOver={(e: DragEvent) => this.handleDragOver(e)}
+                        onDragLeave={(e: DragEvent) => this.handleDragLeave(e)}
+                        onDrop={(e: DragEvent) => this.handleDrop(e)}>
+                        <p class="drop_zone_text">
+                            {this.state.isDragging 
+                                ? 'Drop your images here!' 
+                                : 'Drag and drop images here, or use the button below'}
+                        </p>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={this.onFileChange}
+                            disabled={isUploading}
+                        />
+                    </div>
+                    
+                    {hasFilesToUpload && (
+                        <div class="file_upload_list">
+                            {this.state.fileUploads.map((uploadItem) => {
+                                let statusClass = 'upload_item_idle';
+                                if (uploadItem.status === UploadStatus.Uploading) {
+                                    statusClass = 'upload_item_uploading';
+                                } else if (uploadItem.status === UploadStatus.Success) {
+                                    statusClass = 'upload_item_success';
+                                } else if (uploadItem.status === UploadStatus.Error) {
+                                    statusClass = 'upload_item_error';
+                                }
+
+                                return <div key={uploadItem.id} class={`file_upload_item ${statusClass}`}>
+                                    <div class="file_upload_info">
+                                        <span class="file_name">{uploadItem.file.name}</span>
+                                        <span class="file_size">({Math.round(uploadItem.file.size / 1024)} KB)</span>
+                                    </div>
+                                    <div class="file_upload_status">
+                                        {uploadItem.status === UploadStatus.Idle && <span>Ready to upload</span>}
+                                        {uploadItem.status === UploadStatus.Uploading && <span>Uploading...</span>}
+                                        {uploadItem.status === UploadStatus.Success && <span class="status_success">✓ {uploadItem.message}</span>}
+                                        {uploadItem.status === UploadStatus.Error && <span class="status_error">✗ {uploadItem.message}</span>}
+                                    </div>
+                                    {(uploadItem.status === UploadStatus.Idle || uploadItem.status === UploadStatus.Error) && (
+                                        <button 
+                                            class="button remove_file_button"
+                                            onClick={() => this.removeUploadItem(uploadItem.id)}>
+                                            Remove
+                                        </button>
+                                    )}
+                                </div>;
+                            })}
+                        </div>
+                    )}
+
+                    {hasIdleFiles && (
+                        <div class="upload_actions">
+                            <button 
+                                onClick={this.onFileUpload} 
+                                disabled={isUploading}
+                                class="upload_button">
+                                {isUploading ? 'Uploading...' : `Upload ${this.state.fileUploads.filter(item => item.status === UploadStatus.Idle).length} file(s)`}
+                            </button>
+                        </div>
                     )}
                 </div>
-                <div class="search_buttons">
-                    <span 
-                        class="button" 
-                        onClick={() => this.searchMemes()}>
-                        {this.state.isSearching ? 'Searching...' : 'Search'}
-                    </span>
-                    <span 
-                        class="button" 
-                        onClick={() => this.clearSearch()}>
-                        Clear
-                    </span>
-                </div>
+            </div>;
+        }
+
+        // Normal view with horizontal layout
+        const searchByTextSection = <div class="meme_search_box">
+            <label>Search by text:</label>
+            <input
+                type="text"
+                value={this.state.searchTextQuery}
+                onInput={(e) => this.handleSearchTextQueryChange(e)}
+                placeholder="Search in meme text (OCR)..."
+            />
+        </div>;
+
+        const searchByTagsSection = <div class="meme_search_box">
+            {selectedTagsBox}
+            {suggestedTagsBox}
+            <label>Search by tags:</label>
+            <input
+                type="text"
+                value={this.state.searchQuery}
+                onChange={(e) => this.handleSearchQueryChange(e)}
+                placeholder="Search in tag text..."
+            />
+            <div class="search_buttons">
+                <span 
+                    class="button" 
+                    onClick={() => this.searchMemes()}>
+                    {this.state.isSearching ? 'Searching...' : 'Search'}
+                </span>
+                <span 
+                    class="button" 
+                    onClick={() => this.clearSearch()}>
+                    Clear
+                </span>
             </div>
+        </div>;
+
+        const uploadButtonSection = <div class="meme_upload_button_section">
+            <span 
+                class="button meme_upload_button"
+                onClick={() => this.handleShowUpload()}>
+                Upload Meme
+            </span>
         </div>;
 
         return <div class='meme_management_panel_react'>
             {deleteMemeTagModal}
             {editMemeTagModal}
-            {searchSection}
+            <div class="meme_search_bar">
+                {searchByTextSection}
+                {searchByTagsSection}
+                {uploadButtonSection}
+            </div>
             <div class="meme_list_controls">
                 <span class="button" onClick={() => this.refreshMemes()}>Refresh All</span>
             </div>
