@@ -69,6 +69,11 @@ interface MemeManagementPanelState {
     showUploadPanel: boolean;
     fileUploads: Array<FileUploadItem>;
     isDragging: boolean;
+    uploadSelectedTags: Array<string>; // Tags to apply to all uploaded memes
+    uploadTagSearchQuery: string; // Search query for filtering tags
+    uploadNewTagText: string; // Text for creating a new tag
+    uploadAddTagError: string|null; // Error message for adding new tag
+    uploadTagSearchTimeoutId?: number; // Timeout for tag search
 }
 
 const MINIMUM_TAG_LENGTH = 4;
@@ -95,7 +100,12 @@ function getDefaultState(/*initialControlParams: object*/): MemeManagementPanelS
         timeoutId: undefined,
         showUploadPanel: false,
         fileUploads: [],
-        isDragging: false
+        isDragging: false,
+        uploadSelectedTags: [],
+        uploadTagSearchQuery: '',
+        uploadNewTagText: '',
+        uploadAddTagError: null,
+        uploadTagSearchTimeoutId: undefined
     };
 }
 
@@ -608,14 +618,128 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
 
     handleShowUpload() {
         this.setState({ showUploadPanel: true });
+        // Load suggested tags when opening upload panel
+        if (this.state.suggestedTags.length === 0) {
+            this.loadSuggestedTags();
+        }
     }
 
     handleHideUpload() {
         this.setState({ 
             showUploadPanel: false,
             fileUploads: [],
-            isDragging: false
+            isDragging: false,
+            uploadSelectedTags: [],
+            uploadTagSearchQuery: '',
+            uploadNewTagText: '',
+            uploadAddTagError: null,
+            uploadTagSearchTimeoutId: undefined
         });
+        if (this.state.uploadTagSearchTimeoutId !== undefined) {
+            clearTimeout(this.state.uploadTagSearchTimeoutId);
+        }
+    }
+
+    handleUploadTagSearchChange(event: Event) {
+        // @ts-ignore: It does exist.
+        const newValue = event.currentTarget.value;
+        
+        // Clear any existing timeout
+        if (this.state.uploadTagSearchTimeoutId !== undefined) {
+            clearTimeout(this.state.uploadTagSearchTimeoutId);
+        }
+
+        // Set a new timeout to search after user stops typing
+        const timeoutId = window.setTimeout(() => {
+            this.setState({ uploadTagSearchTimeoutId: undefined });
+            // Could fetch tag suggestions here if we had a search endpoint
+            // For now, we'll filter client-side
+        }, 300);
+
+        this.setState({ 
+            uploadTagSearchQuery: newValue,
+            uploadTagSearchTimeoutId: timeoutId
+        });
+    }
+
+    handleUploadNewTagTextChange(event: Event) {
+        // @ts-ignore: It does exist.
+        const text = event.currentTarget.value;
+        this.setState({
+            uploadNewTagText: text,
+            uploadAddTagError: null
+        });
+    }
+
+    handleAddUploadTag() {
+        const tagText = this.state.uploadNewTagText.trim();
+        
+        // Validate minimum length
+        if (tagText.length < MINIMUM_TAG_LENGTH) {
+            this.setState({
+                uploadAddTagError: `Tag text must be at least ${MINIMUM_TAG_LENGTH} characters long.`
+            });
+            return;
+        }
+
+        // Check if tag already exists
+        if (this.state.uploadSelectedTags.indexOf(tagText) !== -1) {
+            this.setState({
+                uploadAddTagError: 'This tag is already selected.'
+            });
+            return;
+        }
+
+        // Add tag to selected tags
+        this.setState({
+            uploadSelectedTags: [...this.state.uploadSelectedTags, tagText],
+            uploadNewTagText: '',
+            uploadAddTagError: null
+        });
+    }
+
+    handleUploadTagClick(tagText: string) {
+        const uploadSelectedTags = [...this.state.uploadSelectedTags];
+        const index = uploadSelectedTags.indexOf(tagText);
+        
+        if (index === -1) {
+            uploadSelectedTags.push(tagText);
+        } else {
+            uploadSelectedTags.splice(index, 1);
+        }
+        
+        this.setState({ uploadSelectedTags });
+    }
+
+    handleRemoveUploadTag(tagText: string) {
+        const uploadSelectedTags = this.state.uploadSelectedTags.filter(t => t !== tagText);
+        this.setState({ uploadSelectedTags });
+    }
+
+    addTagsToMeme(memeId: string, tagTexts: Array<string>): Promise<void> {
+        if (tagTexts.length === 0) {
+            return Promise.resolve();
+        }
+
+        // Add tags sequentially to avoid overwhelming the server
+        const addTagPromises = tagTexts.map(tagText => {
+            const formData = new FormData();
+            formData.append("meme_id", memeId);
+            formData.append("type", MemeTagType.USER_TAG);
+            formData.append("text", tagText);
+
+            return fetch('/api/meme-tag-add/', {
+                method: 'POST',
+                body: formData
+            }).then((response: Response) => {
+                if (!response.ok) {
+                    console.error(`Failed to add tag "${tagText}" to meme ${memeId}`);
+                }
+                return response.json();
+            });
+        });
+
+        return Promise.all(addTagPromises).then(() => {});
     }
 
     addFilesToUpload(files: FileList | null) {
@@ -705,6 +829,19 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             .then((response: Response) => response.json())
             .then((data: any) => {
                 if (data.result === 'success') {
+                    const memeId = data.meme_id;
+                    
+                    // Add selected tags to the uploaded meme
+                    if (this.state.uploadSelectedTags.length > 0) {
+                        this.addTagsToMeme(memeId, this.state.uploadSelectedTags)
+                            .then(() => {
+                                // Tags added successfully
+                            })
+                            .catch((err: any) => {
+                                console.error("Failed to add tags to meme:", err);
+                            });
+                    }
+
                     this.setState(prevState => ({
                         fileUploads: prevState.fileUploads.map(item => 
                             item.id === uploadItem.id 
@@ -993,6 +1130,57 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             const isUploading = this.state.fileUploads.some(item => item.status === UploadStatus.Uploading);
             const hasIdleFiles = this.state.fileUploads.some(item => item.status === UploadStatus.Idle);
 
+            // Upload tag selection panel
+            const uploadSelectedTagsBox = this.state.uploadSelectedTags.length > 0 ? (
+                <div class="selected_tags_box">
+                    <h5>Selected Tags (will be applied to all uploads):</h5>
+                    <div class="tag_list">
+                        {this.state.uploadSelectedTags.map((tagText: string) => (
+                            <span 
+                                key={tagText}
+                                class="tag selected_tag"
+                                onClick={() => this.handleRemoveUploadTag(tagText)}
+                                title="Click to remove"
+                            >
+                                {tagText} ×
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            ) : null;
+
+            // Filter suggested tags based on search query
+            const filteredSuggestedTags = this.state.uploadTagSearchQuery.trim() === ''
+                ? this.state.suggestedTags
+                : this.state.suggestedTags.filter((tag: TagSuggestion) =>
+                    tag.text.toLowerCase().includes(this.state.uploadTagSearchQuery.toLowerCase())
+                );
+
+            const uploadSuggestedTagsBox = filteredSuggestedTags.length > 0 ? (
+                <div class="suggested_tags_box">
+                    <h5>Suggested Tags:</h5>
+                    <div class="tag_list">
+                        {filteredSuggestedTags.map((tag: TagSuggestion) => {
+                            const isSelected = this.state.uploadSelectedTags.indexOf(tag.text) !== -1;
+                            return (
+                                <span
+                                    key={tag.text}
+                                    class={`tag suggested_tag ${isSelected ? 'tag_selected' : ''}`}
+                                    onClick={() => this.handleUploadTagClick(tag.text)}
+                                    title={`${tag.count} memes (Click to ${isSelected ? 'remove' : 'add'})`}
+                                >
+                                    {tag.text} ({tag.count})
+                                </span>
+                            );
+                        })}
+                    </div>
+                </div>
+            ) : this.state.uploadTagSearchQuery.trim() !== '' ? (
+                <div class="suggested_tags_box">
+                    <p style="font-size: 0.9rem; color: #666; margin: 0;">No matching tags found. Create a new tag below.</p>
+                </div>
+            ) : null;
+
             return <div class='meme_management_panel_react'>
                 {deleteMemeTagModal}
                 {editMemeTagModal}
@@ -1001,24 +1189,74 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                         <h3>Upload Memes</h3>
                         <span class="button" onClick={() => this.handleHideUpload()}>Close</span>
                     </div>
-                    <div
-                        class={dropZoneClass}
-                        onDragEnter={(e: DragEvent) => this.handleDragEnter(e)}
-                        onDragOver={(e: DragEvent) => this.handleDragOver(e)}
-                        onDragLeave={(e: DragEvent) => this.handleDragLeave(e)}
-                        onDrop={(e: DragEvent) => this.handleDrop(e)}>
-                        <p class="drop_zone_text">
-                            {this.state.isDragging 
-                                ? 'Drop your images here!' 
-                                : 'Drag and drop images here, or use the button below'}
-                        </p>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            onChange={this.onFileChange}
-                            disabled={isUploading}
-                        />
+                    <div class="meme_upload_content">
+                        <div class="meme_upload_left">
+                            <div
+                                class={dropZoneClass}
+                                onDragEnter={(e: DragEvent) => this.handleDragEnter(e)}
+                                onDragOver={(e: DragEvent) => this.handleDragOver(e)}
+                                onDragLeave={(e: DragEvent) => this.handleDragLeave(e)}
+                                onDrop={(e: DragEvent) => this.handleDrop(e)}>
+                                <p class="drop_zone_text">
+                                    {this.state.isDragging 
+                                        ? 'Drop your images here!' 
+                                        : 'Drag and drop images here, or use the button below'}
+                                </p>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    multiple
+                                    onChange={this.onFileChange}
+                                    disabled={isUploading}
+                                />
+                            </div>
+                        </div>
+                        <div class="meme_upload_right">
+                            <div class="meme_upload_tag_panel">
+                                <h4>Tags to Apply</h4>
+                                <p class="tag_panel_description">Select tags to apply to all uploaded images:</p>
+                                {uploadSelectedTagsBox}
+                                
+                                <div class="tag_search_section">
+                                    <label>Search tags:</label>
+                                    <input
+                                        type="text"
+                                        value={this.state.uploadTagSearchQuery}
+                                        onInput={(e) => this.handleUploadTagSearchChange(e)}
+                                        placeholder="Type to search tags..."
+                                    />
+                                </div>
+
+                                {uploadSuggestedTagsBox}
+
+                                <div class="add_tag_section">
+                                    <label>Create new tag:</label>
+                                    <div class="add_tag_input_group">
+                                        <input
+                                            type="text"
+                                            value={this.state.uploadNewTagText}
+                                            onChange={(e) => this.handleUploadNewTagTextChange(e)}
+                                            placeholder="Enter new tag text..."
+                                            onKeyDown={(e: KeyboardEvent) => {
+                                                if (e.key === 'Enter') {
+                                                    this.handleAddUploadTag();
+                                                }
+                                            }}
+                                        />
+                                        <span 
+                                            class="button" 
+                                            onClick={() => this.handleAddUploadTag()}>
+                                            Add Tag
+                                        </span>
+                                    </div>
+                                    {this.state.uploadAddTagError !== null && (
+                                        <span class="error" style="font-size: 0.85rem; margin-top: 0.5rem; display: block;">
+                                            {this.state.uploadAddTagError}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     {hasFilesToUpload && (

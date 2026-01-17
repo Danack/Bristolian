@@ -121,61 +121,10 @@
       width: 100%;
     }
 
+    // Override margin for tag boxes since parent uses gap
     .selected_tags_box,
     .suggested_tags_box {
       margin-bottom: 0;
-      padding: 0.75rem;
-      background-color: #fff;
-      border-radius: 6px;
-      border: 1px solid #ddd;
-    }
-
-    .tag_list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 0.35rem 0.75rem;
-      border-radius: 16px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      user-select: none;
-    }
-
-    .suggested_tag {
-      background-color: #e3f2fd;
-      color: #1565c0;
-      border: 1px solid #90caf9;
-
-      &:hover {
-        background-color: #bbdefb;
-        border-color: #64b5f6;
-      }
-
-      &.tag_selected {
-        background-color: #1976d2;
-        color: #fff;
-        border-color: #1565c0;
-
-        &:hover {
-          background-color: #1565c0;
-        }
-      }
-    }
-
-    .selected_tag {
-      background-color: #4caf50;
-      color: #fff;
-      border: 1px solid #388e3c;
-      padding-right: 0.5rem;
-
-      &:hover {
-        background-color: #388e3c;
-      }
     }
 
     .search_buttons {
@@ -209,6 +158,89 @@
 
       h3 {
         margin: 0;
+      }
+    }
+
+    .meme_upload_content {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+
+      @media (max-width: 900px) {
+        flex-direction: column;
+      }
+    }
+
+    .meme_upload_left {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .meme_upload_right {
+      flex: 0 0 350px;
+      min-width: 0;
+
+      @media (max-width: 900px) {
+        flex: 1;
+      }
+    }
+
+    .meme_upload_tag_panel {
+      padding: 1rem;
+      background-color: #f5f5f5;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      h4 {
+        margin: 0 0 0.5rem 0;
+      }
+
+      .tag_panel_description {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      // Override margin for tag boxes since parent uses gap
+      .selected_tags_box,
+      .suggested_tags_box {
+        margin-bottom: 0;
+      }
+
+      .tag_search_section,
+      .add_tag_section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        label {
+          font-size: 0.9rem;
+          color: #666;
+          font-weight: 500;
+        }
+
+        input[type="text"] {
+          padding: 0.5rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          width: 100%;
+        }
+      }
+
+      .add_tag_input_group {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+
+        input[type="text"] {
+          flex: 1;
+        }
+
+        .button {
+          flex-shrink: 0;
+        }
       }
     }
 
@@ -379,63 +411,6 @@
       margin: 0 0 0.5rem 0;
       font-size: 0.95rem;
       color: #333;
-    }
-
-    .selected_tags_box,
-    .suggested_tags_box {
-      margin-bottom: 1rem;
-      padding: 0.75rem;
-      background-color: #fff;
-      border-radius: 6px;
-      border: 1px solid #ddd;
-    }
-
-    .tag_list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 0.35rem 0.75rem;
-      border-radius: 16px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      user-select: none;
-    }
-
-    .suggested_tag {
-      background-color: #e3f2fd;
-      color: #1565c0;
-      border: 1px solid #90caf9;
-
-      &:hover {
-        background-color: #bbdefb;
-        border-color: #64b5f6;
-      }
-
-      &.tag_selected {
-        background-color: #1976d2;
-        color: #fff;
-        border-color: #1565c0;
-
-        &:hover {
-          background-color: #1565c0;
-        }
-      }
-    }
-
-    .selected_tag {
-      background-color: #4caf50;
-      color: #fff;
-      border: 1px solid #388e3c;
-      padding-right: 0.5rem;
-
-      &:hover {
-        background-color: #388e3c;
-      }
     }
 
     .search_controls {
