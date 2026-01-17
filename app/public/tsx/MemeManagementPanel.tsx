@@ -354,16 +354,14 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
     renderMeme(meme: StoredMeme) {
         const meme_url = `/images/memes/${meme.id}.jpg`;
         
-        return <div key={meme.id} className="meme_card">
+        return <div 
+            key={meme.id} 
+            className="meme_card"
+            onClick={() => this.startEditing(meme)}
+            style={{cursor: 'pointer'}}
+        >
             <div className="meme_card_image_container">
                 <img src={meme_url} alt={meme.normalized_name} className="meme_thumbnail" />
-            </div>
-            <div className="meme_card_actions">
-                <button
-                    type="button"
-                    className="button"
-                    onClick={() => this.startEditing(meme)}
-                >Edit</button>
             </div>
         </div>
     }

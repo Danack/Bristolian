@@ -767,6 +767,13 @@ SQL;
             $namespace = "Bristolian\\Response\\Typed";
             
             // Generate the PHP class content
+
+            echo "$className\n";
+
+            if ($className === "GetRoomsLinksResponse") {
+                echo "here";
+            }
+
             $content = $this->generateResponseClassContent($className, $namespace, $type_info);
 
 
@@ -884,7 +891,12 @@ SQL;
             $is_array = isset($field_info[2]) && $field_info[2] === true;
             
             // Add import for the type
-            if (is_string($field_type) && class_exists($field_type)) {
+            if (is_string($field_type) ) {
+
+                if (class_exists($field_type) === false) {
+                    throw new BristolianException("Class '$field_type' does not exist, cannot generate code for $className response");
+                }
+
                 $imports[] = $field_type;
                 $rc = new \ReflectionClass($field_type);
                 $short_name = $rc->getShortName();

@@ -103,7 +103,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\ApiController\Log::get_processor_run_records',
             [
-                ['run_records', \ProcessorRunRecord::class, true]
+                ['run_records', \Bristolian\Model\Generated\ProcessorRunRecord::class, true]
             ],
         ],
         [
@@ -194,7 +194,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\User::getTagsForMeme',
             [
-                ['meme_tags', \Bristolian\Model\MemeTag::class, true]
+                ['meme_tags', \Bristolian\Model\Generated\MemeTag::class, true]
             ]
         ], // GetMemeTagsResponse
 
@@ -318,7 +318,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\Rooms::getLinks',
             [
-                ['links', \RoomLink::class, true]
+                ['links', \Bristolian\Model\Generated\RoomLink::class, true]
             ],
         ],
 

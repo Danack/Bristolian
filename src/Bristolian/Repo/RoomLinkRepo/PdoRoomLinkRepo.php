@@ -45,19 +45,8 @@ class PdoRoomLinkRepo implements RoomLinkRepo
 
     public function getRoomLink(string $room_link_id): RoomLink|null
     {
-        $sql = <<< SQL
-select
-    rl.id,
-    rl.room_id,
-    rl.link_id,
-    rl.title,
-    rl.description,
-    rl.created_at
-from
-  room_link rl
-where
-  rl.id = :id
-SQL;
+        $sql = room_link::SELECT;
+        $sql .=  "where id = :id";
 
         $params = ['id' => $room_link_id];
 
@@ -81,19 +70,9 @@ SQL;
      */
     public function getLinksForRoom(string $room_id): array
     {
-        $sql = <<< SQL
-select
-    rl.id,
-    rl.room_id,
-    rl.link_id,
-    rl.title,
-    rl.description,
-    rl.created_at
-from
-   room_link as rl
-where
-  rl.room_id = :room_id
-SQL;
+        $sql = room_link::SELECT;
+        $sql .= "where room_id = :room_id";
+
         $params = [
           ':room_id' => $room_id
         ];

@@ -32,20 +32,20 @@ class Log
 
         $db_data = $processorRunRecordRepo->getRunRecords($task_type);
 
-        [$error, $value] = \convertToValue($db_data);
-
-        if ($error !== null) {
-            $data = [
-                'status' => 'error',
-                'message' => $error,
-                'description' => $error,
-            ];
-            return new JsonResponse(
-                $data,
-                [],
-                500
-            );
-        }
+//        [$error, $value] = \convertToValue($db_data);
+//
+//        if ($error !== null) {
+//            $data = [
+//                'status' => 'error',
+//                'message' => $error,
+//                'description' => $error,
+//            ];
+//            return new JsonResponse(
+//                $data,
+//                [],
+//                500
+//            );
+//        }
 
         return new GetLogProcessorRunRecordsResponse($db_data);
     }
