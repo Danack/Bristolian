@@ -52,4 +52,3 @@ class StoredFileTest extends BaseTestCase
         $this->markTestSkipped('RoomFileObjectInfo uses FromArray trait, not ToArray - toArray() method not available');
     }
 }
-

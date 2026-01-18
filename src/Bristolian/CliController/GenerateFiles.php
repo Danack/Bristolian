@@ -49,7 +49,7 @@ function generate_table_update_strings($sorted_column_names)
 
 /**
  * Convert table name (snake_case) to class name (PascalCase)
- * 
+ *
  * @codeCoverageIgnore
  */
 function table_name_to_class_name(string $tableName): string
@@ -64,7 +64,7 @@ function table_name_to_class_name(string $tableName): string
 
 /**
  * Map MySQL column type to PHP type
- * 
+ *
  * @codeCoverageIgnore
  * @param array<string, mixed> $column
  * @return string PHP type (e.g., 'string', 'int', 'DateTimeInterface')
@@ -135,7 +135,7 @@ function map_column_to_php_type(array $column): string
 
 /**
  * Generate a model class from database table schema
- * 
+ *
  * @codeCoverageIgnore
  * @param string $tableName
  * @param array<array<string, mixed>> $columns_info
@@ -306,7 +306,8 @@ function getTypeDocDescription(\ReflectionClass $rc)
     // If there's an @description tag, use that
     if (preg_match('/@description\s+(.*)/i', $clean, $m)) {
         $description = trim($m[1]);
-    } else {
+    }
+    else {
         // Otherwise take the first non-empty line as a summary
         foreach (explode("\n", $clean) as $line) {
             $line = trim($line);
@@ -342,7 +343,8 @@ function generateInterfaceForClass(string $type): array
 
     $rc = new \ReflectionClass($type);
 
-    $content .= "// " . getTypeDocDescription($rc) . "\n";;
+    $content .= "// " . getTypeDocDescription($rc) . "\n";
+    ;
     $content .= "// Source type is $type\n";
 
     $name = $rc->getShortName();
@@ -362,7 +364,8 @@ function generateInterfaceForClass(string $type): array
             foreach ($types as $unionType) {
                 if ((string)$unionType === 'null') {
                     $hasNull = true;
-                } else {
+                }
+                else {
                     $nonNullTypes[] = $unionType;
                 }
             }
@@ -370,7 +373,8 @@ function generateInterfaceForClass(string $type): array
             if (count($nonNullTypes) === 1) {
                 $php_type = $nonNullTypes[0];
                 $nullable = $hasNull;
-            } else {
+            }
+            else {
                 // Multiple non-null types - use 'any' for now
                 $php_type_str = 'any';
                 if ($hasNull) {
@@ -385,7 +389,8 @@ function generateInterfaceForClass(string $type): array
         if ($php_type instanceof \ReflectionNamedType) {
             $nullable = $php_type->allowsNull();
             $php_type_str = $php_type->getName();
-        } else {
+        }
+        else {
             $php_type_str = (string)$php_type;
         }
 
@@ -398,22 +403,28 @@ function generateInterfaceForClass(string $type): array
             $php_type_str = "Date";
             $typescript_type_string = "Date";
             $dateFields[] = $property->getName();
-        } elseif (strcasecmp($php_type_str, 'int') === 0) {
+        }
+        elseif (strcasecmp($php_type_str, 'int') === 0) {
             $php_type_str = "number";
             $typescript_type_string = "number";
-        } elseif (strcasecmp($php_type_str, 'float') === 0) {
+        }
+        elseif (strcasecmp($php_type_str, 'float') === 0) {
             $php_type_str = "number";
             $typescript_type_string = "number";
-        } elseif (strcasecmp($php_type_str, 'bool') === 0) {
+        }
+        elseif (strcasecmp($php_type_str, 'bool') === 0) {
             $php_type_str = "boolean";
             $typescript_type_string = "boolean";
-        } elseif (strcasecmp($php_type_str, 'string') === 0) {
+        }
+        elseif (strcasecmp($php_type_str, 'string') === 0) {
             $php_type_str = "string";
             $typescript_type_string = "string";
-        } elseif (strcasecmp($php_type_str, 'array') === 0) {
+        }
+        elseif (strcasecmp($php_type_str, 'array') === 0) {
 //            $php_type_str = "array";
             $typescript_type_string = "Object";
-        } elseif (class_exists($php_type_str) || interface_exists($php_type_str)) {
+        }
+        elseif (class_exists($php_type_str) || interface_exists($php_type_str)) {
             // Check if it's a class type (but not DateTime types which we already handled)
             $type_rc = new \ReflectionClass($php_type_str);
             $php_type_str = $type_rc->getShortName();
@@ -737,7 +748,7 @@ SQL;
 
     /**
      * Generate PHP response type classes from API routes that have type information.
-     * 
+     *
      * @codeCoverageIgnore
      */
     public function generatePhpResponseTypes(): void
@@ -797,7 +808,7 @@ SQL;
     
     /**
      * Convert a route path and method to a PHP class name.
-     * 
+     *
      * Example: '/api/rooms/{room_id:.*}/files' + 'GET' -> 'GetRoomsFilesResponse'
      * Example: '/api/bristol_stairs' + 'GET' -> 'GetBristolStairsResponse'
      */
@@ -845,7 +856,7 @@ SQL;
     
     /**
      * Convert snake_case to CamelCase.
-     * 
+     *
      * Example: 'bristol_stairs' -> 'bristolStairs'
      * Example: 'processor_run_records' -> 'processorRunRecords'
      */
@@ -862,7 +873,7 @@ SQL;
     
     /**
      * Generate PHP class content for a response type.
-     * 
+     *
      * @param string $className The generated class name
      * @param string $namespace The namespace for the class
      * @param array $type_info Array of [name, class, is_array] tuples
@@ -939,8 +950,7 @@ SQL;
             $is_array = isset($field_info[2]) && $field_info[2] === true;
             
             // Add import for the type
-            if (is_string($field_type) ) {
-
+            if (is_string($field_type)) {
                 if (class_exists($field_type) === false) {
                     throw new BristolianException("Class '$field_type' does not exist, cannot generate code for $className response");
                 }
@@ -953,7 +963,8 @@ SQL;
                 if ($is_array) {
                     $param_type = "array";
                     $doc_type = $short_name . "[]";
-                } else {
+                }
+                else {
                     $param_type = $short_name;
                     $doc_type = $short_name;
                 }
@@ -996,7 +1007,8 @@ SQL;
             $param_doc[] = "     * @param {$param['doc_type']} \${$param['name']}";
             if ($param['is_array']) {
                 $param_list[] = "array \${$param['name']}";
-            } else {
+            }
+            else {
                 $param_list[] = "{$param['short_name']} \${$param['name']}";
             }
         }
@@ -1059,7 +1071,7 @@ SQL;
 
     /**
      * Generate TypeScript file with API route endpoints and response types.
-     * 
+     *
      * @codeCoverageIgnore
      */
     public function generateTypeScriptApiRoutes(): void
@@ -1160,7 +1172,8 @@ SQL;
             sort($importNames);
             $content .= implode(", ", $importNames);
             $content .= " } from './types';\n\n";
-        } else if ($needsDateToString) {
+        }
+        else if ($needsDateToString) {
             $content .= "\n";
         }
         
@@ -1203,7 +1216,7 @@ SQL;
     
     /**
      * Generate a TypeScript constant name from route path and method.
-     * 
+     *
      * Example: '/api/rooms/{room_id:.*}/files' + 'GET' -> 'API_ROOMS_FILES_GET'
      */
     private function generateEndpointConstantName(string $path, string $method): string
@@ -1239,7 +1252,7 @@ SQL;
     
     /**
      * Generate a TypeScript type name from route path and method.
-     * 
+     *
      * Example: '/api/rooms/{room_id:.*}/files' + 'GET' -> 'GetRoomsFilesResponse'
      * Example: '/api/bristol_stairs' + 'GET' -> 'GetBristolStairsResponse'
      */
@@ -1317,19 +1330,23 @@ SQL;
                 if ($is_array) {
                     if ($hasDateFields) {
                         $ts_type = "DateToString<{$short_name}>[]";
-                    } else {
+                    }
+                    else {
                         $ts_type = "{$short_name}[]";
                     }
-                } else {
+                }
+                else {
                     if ($hasDateFields) {
                         $ts_type = "DateToString<{$short_name}>";
-                    } else {
+                    }
+                    else {
                         $ts_type = $short_name;
                     }
                 }
                 
                 $content .= "        {$field_name}: {$ts_type};\n";
-            } else {
+            }
+            else {
                 // Fallback for unknown types
                 $ts_type = $is_array ? "any[]" : "any";
                 $content .= "        {$field_name}: {$ts_type};\n";
@@ -1374,7 +1391,7 @@ SQL;
         $parts = explode('/', $path);
         
         // Filter out empty parts
-        return array_filter($parts, function($part) {
+        return array_filter($parts, function ($part) {
             return !empty($part);
         });
     }
@@ -1431,7 +1448,8 @@ SQL;
                     'url' => $path,
                     'response_type' => $responseTypeName,
                 ];
-            } else {
+            }
+            else {
                 // Has parameters - function with params
                 $current[$finalKey] = [
                     'type' => 'function',
@@ -1483,7 +1501,7 @@ SQL;
         }
         
         // Sort by position
-        usort($paramPositions, function($a, $b) {
+        usort($paramPositions, function ($a, $b) {
             return $a['start'] <=> $b['start'];
         });
         
@@ -1540,9 +1558,12 @@ SQL;
                     $content .= "{$indentStr}  {$key}: (): Promise<{$responseType}> => {\n";
                     $content .= "{$indentStr}    return apiCall<{$responseType}>(`{$urlParts}`);\n";
                     $content .= "{$indentStr}  },\n";
-                } else {
+                }
+                else {
                     // Has parameters
-                    $paramList = implode(', ', array_map(function($p) { return "{$p}: string"; }, $params));
+                    $paramList = implode(', ', array_map(function ($p) {
+                        return "{$p}: string";
+                    }, $params));
                     $content .= "{$indentStr}  {$key}: ({$paramList}): Promise<{$responseType}> => {\n";
                     
                     // Build template literal for URL
@@ -1550,7 +1571,8 @@ SQL;
                     foreach ($urlParts as $part) {
                         if ($part['type'] === 'literal') {
                             $urlTemplate .= $part['value'];
-                        } else {
+                        }
+                        else {
                             $urlTemplate .= '${' . $part['value'] . '}';
                         }
                     }
@@ -1559,7 +1581,8 @@ SQL;
                     $content .= "{$indentStr}    return apiCall<{$responseType}>(endpoint);\n";
                     $content .= "{$indentStr}  },\n";
                 }
-            } else {
+            }
+            else {
                 // Nested object
                 $content .= "{$indentStr}  {$key}: {\n";
                 $content .= $this->generateTypeScriptFromTree($value, $indent + 1);
@@ -1572,7 +1595,7 @@ SQL;
 
     /**
      * Generate model classes from database schema.
-     * 
+     *
      * @codeCoverageIgnore
      */
     public function generateModelClasses(

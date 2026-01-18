@@ -5,7 +5,6 @@ namespace BristolianTest\CliController;
 use BristolianTest\BaseTestCase;
 use Bristolian\CliController\Debug;
 
-
 /**
  * @coversNothing
  * @group wip

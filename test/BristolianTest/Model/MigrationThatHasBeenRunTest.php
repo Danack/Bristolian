@@ -33,4 +33,3 @@ class MigrationThatHasBeenRunTest extends BaseTestCase
         $this->assertSame($createdAt, $migration->created_at);
     }
 }
-

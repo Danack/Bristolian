@@ -58,4 +58,3 @@ class BristolStairInfoTest extends BaseTestCase
         $this->markTestSkipped('BristolStairInfo uses FromArray trait, not ToArray - toArray() method not available');
     }
 }
-

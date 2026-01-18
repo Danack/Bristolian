@@ -144,6 +144,9 @@ function injectionParams()
 
         Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::class =>
             \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::class,
+
+        Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::class =>
+            \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::class,
     ];
 
     // Delegate the creation of types to callables.

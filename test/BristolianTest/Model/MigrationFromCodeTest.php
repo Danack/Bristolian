@@ -31,4 +31,3 @@ class MigrationFromCodeTest extends BaseTestCase
         $this->assertCount(2, $migration->queries_to_run);
     }
 }
-

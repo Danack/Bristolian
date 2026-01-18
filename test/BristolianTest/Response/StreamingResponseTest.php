@@ -204,4 +204,3 @@ class StreamingResponseTest extends BaseTestCase
         $this->assertArrayHasKey('Content-Type', $headers);
     }
 }
-

@@ -8,4 +8,3 @@ enum FileState: string
     case UPLOADED = 'uploaded';
     case DELETED = 'deleted';
 }
-

@@ -45,4 +45,3 @@ class RunTimeRecordTest extends BaseTestCase
         $this->assertNull($record->start_time);
     }
 }
-

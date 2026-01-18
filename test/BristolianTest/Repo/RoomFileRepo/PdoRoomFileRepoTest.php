@@ -231,5 +231,4 @@ class PdoRoomFileRepoTest extends BaseTestCase
         $this->assertSame($file_id, $room1_files[0]->id);
         $this->assertSame($file_id, $room2_files[0]->id);
     }
-
 }

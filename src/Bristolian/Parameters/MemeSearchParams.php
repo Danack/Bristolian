@@ -27,4 +27,3 @@ class MemeSearchParams implements DataType, StaticFactory
     ) {
     }
 }
-

@@ -13,8 +13,7 @@ class PdoEmailQueue implements EmailQueue
     public function __construct(
         private PdoSimple $pdo,
         private EnvironmentName $environmentName
-    )
-    {
+    ) {
     }
 
     /**

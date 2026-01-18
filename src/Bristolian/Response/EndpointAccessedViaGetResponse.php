@@ -47,4 +47,3 @@ class EndpointAccessedViaGetResponse implements StubResponse
         return $this->message;
     }
 }
-

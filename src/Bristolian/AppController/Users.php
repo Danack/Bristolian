@@ -166,7 +166,6 @@ class Users
 HTML;
 
         return $content;
-
     }
 
 
@@ -211,7 +210,7 @@ HTML;
 
     public function showUser(
         UserRepo $userRepo,
-//        UserDocumentRepo $userDocumentRepo,
+        //        UserDocumentRepo $userDocumentRepo,
         string $username
     ): string {
         $user = $userRepo->findUser($username);

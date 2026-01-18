@@ -26,4 +26,3 @@ class MemeTagUpdateParams implements DataType, StaticFactory
     ) {
     }
 }
-

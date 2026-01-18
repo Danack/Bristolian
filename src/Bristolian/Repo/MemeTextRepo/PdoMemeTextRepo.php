@@ -16,7 +16,7 @@ class PdoMemeTextRepo implements MemeTextRepo
 
     /**
      * Stores the text for a meme.
-     * 
+     *
      * @param StoredMeme $storedMeme
      * @param string $found_text
      * @return void
@@ -24,8 +24,7 @@ class PdoMemeTextRepo implements MemeTextRepo
     public function saveMemeText(
         StoredMeme $storedMeme,
         string $found_text
-    ): void
-    {
+    ): void {
         $sql = meme_text::INSERT;
 
         $params = [
@@ -39,7 +38,7 @@ class PdoMemeTextRepo implements MemeTextRepo
 
     /**
      * Finds the first meme that does not have a corresponding entry in the meme_text table.
-     * 
+     *
      * @return StoredMeme|null
      */
     public function getNextMemeToOCR(): StoredMeme|null
@@ -76,7 +75,7 @@ SQL;
 
     /**
      * Search for meme IDs by text content (case-insensitive).
-     * 
+     *
      * @param string $user_id
      * @param string $search_text
      * @return array<string> Array of meme IDs
@@ -110,7 +109,7 @@ SQL;
 
     /**
      * Gets the text for a meme (returns the most recent entry if multiple exist).
-     * 
+     *
      * @param string $meme_id
      * @return MemeText|null
      */
@@ -137,7 +136,7 @@ SQL;
 
     /**
      * Updates the text for a meme. If text exists, updates it; if not, inserts it.
-     * 
+     *
      * @param string $meme_id
      * @param string $text
      * @return void
@@ -155,7 +154,8 @@ SQL;
                 ':text' => $text
             ];
             $this->pdo_simple->execute($sql, $params);
-        } else {
+        }
+        else {
             // Insert new entry
             $sql = meme_text::INSERT;
             $params = [

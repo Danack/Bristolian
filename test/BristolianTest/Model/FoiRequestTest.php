@@ -28,4 +28,3 @@ class FoiRequestTest extends BaseTestCase
         $this->assertSame($description, $foiRequest->getDescription());
     }
 }
-

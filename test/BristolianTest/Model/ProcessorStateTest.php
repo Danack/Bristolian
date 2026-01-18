@@ -43,4 +43,3 @@ class ProcessorStateTest extends BaseTestCase
         $this->assertFalse($state->enabled);
     }
 }
-

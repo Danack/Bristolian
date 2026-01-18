@@ -12,6 +12,7 @@ use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
+
 //use Behat\Mink\Element\DocumentElement;
 //use Osf\Repo\StripeCheckoutSessionRepo\StripeCheckoutSessionRepo;
 //use Osf\Model\StripeCheckoutSession;
@@ -183,7 +184,8 @@ class SiteContext extends MinkContext
             $sanitized = preg_replace('/[^a-zA-Z0-9_-]/', '_', $testIdentifier);
             $sanitized = substr($sanitized, 0, 100); // Limit length
             $filename = __DIR__ . "/../../screenshot/debug_{$sanitized}_{$timestamp}.png";
-        } else {
+        }
+        else {
             $filename = __DIR__ . "/../../screenshot/debug_{$timestamp}.png";
         }
         
@@ -1178,7 +1180,7 @@ JS
             $pageText = $page->getText();
             
             // Check if FileUpload component has rendered by looking for its text
-            if (strpos($pageText, 'Drag a file here to upload') !== false || 
+            if (strpos($pageText, 'Drag a file here to upload') !== false ||
                 strpos($pageText, 'Drop files here') !== false ||
                 strpos($pageText, 'Selected file:') !== false) {
                 $uploadPanelVisible = true;
@@ -1254,7 +1256,6 @@ JS
 
             usleep(100 * 1000); // 100ms
             $attempt++;
-
         }
         
         if ($uploadButton === null) {
@@ -1623,10 +1624,12 @@ JS
             $descriptionSpan = $page->findById('desc');
             if ($descriptionSpan !== null && $descriptionSpan->getTagName() === 'span') {
                 $actualDescription = trim($descriptionSpan->getText());
-            } else {
+            }
+            else {
                 throw new \Exception("Description field not found on page.");
             }
-        } else {
+        }
+        else {
             $actualDescription = $descriptionInput->getValue();
         }
         

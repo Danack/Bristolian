@@ -12,7 +12,6 @@ use SlimDispatcher\Response\StubResponse;
 use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Exception\ContentNotFoundException;
 
-
 class Images
 {
     public function __construct(

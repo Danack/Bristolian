@@ -24,4 +24,3 @@ class OptionalBasicString implements HasInputType
         );
     }
 }
-

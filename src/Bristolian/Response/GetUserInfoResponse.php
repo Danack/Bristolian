@@ -41,4 +41,3 @@ class GetUserInfoResponse implements StubResponse
         return $this->body;
     }
 }
-

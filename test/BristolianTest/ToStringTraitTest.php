@@ -151,7 +151,8 @@ class ToStringTraitTest extends BaseTestCase
                     $recreatedValue->getTimestamp(),
                     "DateTime property '$propertyName' should match at second precision"
                 );
-            } else {
+            }
+            else {
                 $this->assertSame(
                     $originalValue,
                     $recreatedValue,
@@ -192,7 +193,8 @@ class ToStringTraitTest extends BaseTestCase
                     $recreatedValue->getTimestamp(),
                     "DateTime property '$propertyName' should match at second precision"
                 );
-            } else {
+            }
+            else {
                 $this->assertSame(
                     $originalValue,
                     $recreatedValue,
@@ -291,4 +293,3 @@ class ToStringTraitTest extends BaseTestCase
         $this->assertIsString($array['created_at']);
     }
 }
-

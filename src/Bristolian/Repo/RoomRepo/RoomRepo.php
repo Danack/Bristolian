@@ -4,7 +4,6 @@ namespace Bristolian\Repo\RoomRepo;
 
 use Bristolian\Model\Generated\Room;
 
-
 interface RoomRepo
 {
     public function createRoom(string $user_id, string $name, string $purpose): Room;

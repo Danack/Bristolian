@@ -34,7 +34,7 @@ interface MemeTagRepo
 
     /**
      * Get the most common tags for a user's memes.
-     * 
+     *
      * @param string $user_id
      * @param int $limit Maximum number of tags to return
      * @return array<array{text: string, count: int}> Array of tags with their counts, sorted by count descending
@@ -46,7 +46,7 @@ interface MemeTagRepo
 
     /**
      * Get the most common tags that are shared by the specified memes.
-     * 
+     *
      * @param string $user_id
      * @param string[] $meme_ids Array of meme IDs to find common tags for
      * @param int $limit Maximum number of tags to return

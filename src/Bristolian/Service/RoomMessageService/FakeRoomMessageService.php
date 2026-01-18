@@ -17,8 +17,8 @@ class FakeRoomMessageService implements RoomMessageService
 
     private static int $nextId = 1;
 
-    public function __construct(
-    ) {
+    public function __construct()
+    {
     }
 
     public function sendMessage(string $user_id, ChatMessageParam $chatMessageParam): UserChatMessage
@@ -50,5 +50,3 @@ class FakeRoomMessageService implements RoomMessageService
         return $this->chat_messages;
     }
 }
-
-

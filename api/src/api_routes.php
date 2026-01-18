@@ -412,6 +412,13 @@ function getAllApiRoutes()
             'Bristolian\AppController\System::updateProductValidationStatus',
             null
         ], // JsonResponse with success status
+
+        [
+            '/api/tfd/v1/admin/api-token/generate',
+            'POST',
+            'Bristolian\ApiController\TinnedFish::generateApiToken',
+            null
+        ], // GenerateApiTokenResponse
     ];
 
 }

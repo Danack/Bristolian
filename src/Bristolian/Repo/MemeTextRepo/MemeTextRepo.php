@@ -2,9 +2,7 @@
 
 namespace Bristolian\Repo\MemeTextRepo;
 
-
 use Bristolian\Model\Generated\StoredMeme;
-
 
 interface MemeTextRepo
 {
@@ -17,7 +15,7 @@ interface MemeTextRepo
 
     /**
      * Search for meme IDs by text content (case-insensitive).
-     * 
+     *
      * @param string $user_id
      * @param string $search_text
      * @return array<string> Array of meme IDs
@@ -29,7 +27,7 @@ interface MemeTextRepo
 
     /**
      * Gets the text for a meme (returns the most recent entry if multiple exist).
-     * 
+     *
      * @param string $meme_id
      * @return \Bristolian\Model\Generated\MemeText|null
      */
@@ -37,12 +35,10 @@ interface MemeTextRepo
 
     /**
      * Updates the text for a meme. If text exists, updates it; if not, inserts it.
-     * 
+     *
      * @param string $meme_id
      * @param string $text
      * @return void
      */
     public function updateMemeText(string $meme_id, string $text): void;
 }
-
-

@@ -53,4 +53,3 @@ class AdminUserTest extends BaseTestCase
         $this->assertArrayHasKey('password_hash', $array);
     }
 }
-

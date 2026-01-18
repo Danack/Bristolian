@@ -291,4 +291,3 @@ class PdoProcessorRepoTest extends BaseTestCase
         $this->assertFalse($repo->getProcessorEnabled(ProcessType::daily_system_info));
     }
 }
-

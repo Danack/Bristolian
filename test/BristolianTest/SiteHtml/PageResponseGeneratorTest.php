@@ -240,4 +240,3 @@ class PageResponseGeneratorTest extends BaseTestCase
         $this->assertStringContainsString($contentHtml, $html);
     }
 }
-

@@ -194,4 +194,3 @@ class PageStubResponseGeneratorTest extends BaseTestCase
         $this->assertSame(404, $response->getStatus());
     }
 }
-

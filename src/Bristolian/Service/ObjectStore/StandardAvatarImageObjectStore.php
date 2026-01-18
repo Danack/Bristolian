@@ -18,4 +18,3 @@ class StandardAvatarImageObjectStore implements AvatarImageObjectStore
         $this->avatarImageFilesystem->write($filename, $contents);
     }
 }
-

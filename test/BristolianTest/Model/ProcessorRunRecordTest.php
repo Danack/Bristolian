@@ -30,7 +30,6 @@ class ProcessorRunRecordTest extends BaseTestCase
             $startTime,
             $status,
             $endTime
-
         );
 
         $this->assertSame($id, $record->id);
@@ -77,4 +76,3 @@ class ProcessorRunRecordTest extends BaseTestCase
         $this->assertArrayHasKey('status', $array);
     }
 }
-

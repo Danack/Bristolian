@@ -140,6 +140,4 @@ class Config implements AssetLinkEmitterConfig, EnvironmentName
 
         return "[BristolianDev]";
     }
-
-
 }

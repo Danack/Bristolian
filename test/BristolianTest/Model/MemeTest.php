@@ -57,4 +57,3 @@ class MemeTest extends BaseTestCase
 //        $this->assertArrayHasKey('normalized_name', $array);
     }
 }
-

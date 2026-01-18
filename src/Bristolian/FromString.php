@@ -23,9 +23,11 @@ trait FromString
 
             if (array_key_exists($name, $data)) {
                 $value = $data[$name];
-            } elseif ($param->isDefaultValueAvailable()) {
+            }
+            elseif ($param->isDefaultValueAvailable()) {
                 $value = $param->getDefaultValue();
-            } else {
+            }
+            else {
                 throw new \InvalidArgumentException("Missing required key '$name' in data for " . static::class);
             }
 

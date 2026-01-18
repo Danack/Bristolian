@@ -6,14 +6,19 @@ namespace Bristolian\ApiController;
 
 use Bristolian\Model\TinnedFish\Copyright;
 use Bristolian\Parameters\TinnedFish\BarcodeLookupParams;
+use Bristolian\Parameters\TinnedFish\GenerateApiTokenParams;
+use Bristolian\Repo\ApiTokenRepo\ApiTokenRepo;
 use Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo;
 use Bristolian\Response\TinnedFish\ExternalApiErrorResponse;
+use Bristolian\Response\TinnedFish\GenerateApiTokenResponse;
 use Bristolian\Response\TinnedFish\GetAllProductsResponse;
 use Bristolian\Response\TinnedFish\InvalidBarcodeResponse;
 use Bristolian\Response\TinnedFish\ProductLookupResponse;
 use Bristolian\Response\TinnedFish\ProductNotFoundResponse;
+use Bristolian\Service\ApiToken\ApiTokenGenerator;
 use Bristolian\Service\TinnedFish\OpenFoodFactsApiException;
 use Bristolian\Service\TinnedFish\OpenFoodFactsFetcher;
+use Bristolian\Session\UserSession;
 use SlimDispatcher\Response\StubResponse;
 
 use function normalizeOpenFoodFactsData;
@@ -102,6 +107,40 @@ class TinnedFish
         $products = $productRepo->getAll();
         
         return new GetAllProductsResponse($products);
+    }
+
+    /**
+     * Generate a new API token for mobile app authentication.
+     *
+     * Requires admin authentication via UserSession.
+     *
+     * @param GenerateApiTokenParams $params Parameters containing token name
+     * @param UserSession $userSession Admin user session (required for authentication)
+     * @param ApiTokenRepo $tokenRepo Repository for token storage
+     * @param ApiTokenGenerator $tokenGenerator Service for generating secure tokens
+     * @return StubResponse
+     */
+    public function generateApiToken(
+        GenerateApiTokenParams $params,
+        UserSession $userSession,
+        ApiTokenRepo $tokenRepo,
+        ApiTokenGenerator $tokenGenerator
+    ): StubResponse {
+        // Generate a secure token
+        $token = $tokenGenerator->generateSecureToken();
+        
+        // Store the token in the database
+        $apiToken = $tokenRepo->createToken($params->name, $token);
+        
+        // Generate QR code URL - the QR code will contain the token string itself
+        $qrCodeUrl = '/qr/code/token?token=' . urlencode($token);
+        
+        return new GenerateApiTokenResponse(
+            token: $token,
+            name: $apiToken->name,
+            qr_code_url: $qrCodeUrl,
+            created_at: $apiToken->created_at
+        );
     }
 
     /**

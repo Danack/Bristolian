@@ -983,8 +983,7 @@ function get_readable_variable_type(mixed $value): string
 function getRouteForStoredFile(
     string $room_id,
     Bristolian\Model\Generated\RoomFileObjectInfo $storedFile
-): string
-{
+): string {
     $template = '/rooms/:uri_room_id/file/:uri_file_id/:uri_filename';
     $params = [
         ':uri_room_id' => $room_id,

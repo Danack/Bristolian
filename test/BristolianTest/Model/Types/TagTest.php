@@ -41,4 +41,3 @@ class TagTest extends BaseTestCase
         $this->assertSame('My tag description', $tag->getDescription());
     }
 }
-

@@ -8,9 +8,6 @@ use BristolianChat\ClientHandler;
 use Bristolian\Model\Chat\SystemChatMessage;
 use Monolog\Logger;
 
-
-
-
 function send_user_message_to_clients(
     UserChatMessage $chat_message,
     Logger          $logger,

@@ -24,4 +24,3 @@ class UserTest extends BaseTestCase
         $this->assertSame($createdAt, $user->created_at);
     }
 }
-

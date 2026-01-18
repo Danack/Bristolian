@@ -8,7 +8,6 @@ use Bristolian\Parameters\FoiRequestParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 
-
 class PdoFoiRequestRepo implements FoiRequestRepo
 {
     public function __construct(private PdoSimple $pdo_simple)

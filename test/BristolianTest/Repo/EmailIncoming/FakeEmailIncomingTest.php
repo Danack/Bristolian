@@ -210,4 +210,3 @@ class FakeEmailIncomingTest extends BaseTestCase
         $this->assertSame('second', $emails[1]->message_id);
     }
 }
-

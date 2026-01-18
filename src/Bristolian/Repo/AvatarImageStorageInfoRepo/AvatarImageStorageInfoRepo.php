@@ -31,4 +31,3 @@ interface AvatarImageStorageInfoRepo
 
     public function setUploaded(string $file_storage_id): void;
 }
-

@@ -106,4 +106,3 @@ class ChatMessageTest extends BaseTestCase
         );
     }
 }
-

@@ -46,4 +46,3 @@ class UpdateUserProfileResponse implements StubResponse
         return $this->body;
     }
 }
-

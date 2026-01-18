@@ -66,4 +66,3 @@ class RoomSourceLinkTest extends BaseTestCase
         $this->assertArrayHasKey('text', $array);
     }
 }
-

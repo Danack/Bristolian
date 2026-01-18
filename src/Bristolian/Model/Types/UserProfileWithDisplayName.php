@@ -6,7 +6,6 @@ use Bristolian\ToArray;
 use Bristolian\Model\Generated\UserDisplayName;
 use Bristolian\Model\Generated\UserProfile;
 
-
 /**
  * Combines UserProfile (non-versioned data) with the latest UserDisplayName (versioned)
  */

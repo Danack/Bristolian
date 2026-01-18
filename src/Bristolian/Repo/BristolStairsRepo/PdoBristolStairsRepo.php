@@ -130,7 +130,6 @@ SQL;
             $sql,
             [':id' => $id],
             BristolStairInfo::class
-
         );
     }
 

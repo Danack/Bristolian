@@ -22,6 +22,13 @@ interface ValidationStatusOption {
     label: string;
 }
 
+interface ApiTokenData {
+    token: string;
+    name: string;
+    qr_code_url: string;
+    created_at: string;
+}
+
 interface TinnedFishProductsAdminPanelState {
     products: Product[];
     validation_statuses: ValidationStatusOption[];
@@ -29,6 +36,11 @@ interface TinnedFishProductsAdminPanelState {
     errors: Map<string, string>; // Map of barcode to error message
     refreshing: boolean; // Whether products are being refreshed
     filterValidationStatus: string; // Selected validation status filter, empty string means "all"
+    // API Token generation
+    tokenName: string; // Input field for token name
+    generatingToken: boolean; // Whether token is being generated
+    generatedToken: ApiTokenData | null; // Generated token data
+    tokenError: string | null; // Error message for token generation
 }
 
 function getDefaultState(props: TinnedFishProductsAdminPanelProps): TinnedFishProductsAdminPanelState {
@@ -41,6 +53,10 @@ function getDefaultState(props: TinnedFishProductsAdminPanelProps): TinnedFishPr
         errors: new Map(),
         refreshing: false,
         filterValidationStatus: '', // Empty string means show all
+        tokenName: '',
+        generatingToken: false,
+        generatedToken: null,
+        tokenError: null,
     };
 }
 
@@ -244,12 +260,133 @@ export class TinnedFishProductsAdminPanel extends Component<
         return this.renderProductRow(product, index);
     }
 
+    private handleTokenNameChange(event: Event): void {
+        const target = event.target as HTMLInputElement;
+        this.setState({ tokenName: target.value, tokenError: null });
+    }
+
+    private handleGenerateTokenResponse(response: Response): Promise<any> {
+        if (!response.ok) {
+            return response.json().then((data: any) => {
+                throw new Error(data.error || `HTTP ${response.status}`);
+            });
+        }
+        return response.json();
+    }
+
+    private handleGenerateTokenSuccess(data: any): void {
+        if (data.success && data.token && data.qr_code_url) {
+            this.setState({
+                generatingToken: false,
+                generatedToken: {
+                    token: data.token,
+                    name: data.name,
+                    qr_code_url: data.qr_code_url,
+                    created_at: data.created_at,
+                },
+                tokenError: null,
+                tokenName: '', // Clear the input after successful generation
+            });
+        } else {
+            throw new Error('Invalid response format');
+        }
+    }
+
+    private handleGenerateTokenError(error: Error): void {
+        this.setState({
+            generatingToken: false,
+            tokenError: error.message,
+        });
+    }
+
+    generateApiToken() {
+        if (!this.state.tokenName.trim()) {
+            this.setState({ tokenError: 'Token name is required' });
+            return;
+        }
+
+        this.setState({ generatingToken: true, tokenError: null });
+
+        const url = '/api/tfd/v1/admin/api-token/generate';
+        
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                name: this.state.tokenName.trim(),
+            }),
+            credentials: 'include',
+        })
+            .then((response: Response) => this.handleGenerateTokenResponse(response))
+            .then((data: any) => this.handleGenerateTokenSuccess(data))
+            .catch((error: Error) => this.handleGenerateTokenError(error));
+    }
+
+    private handleGenerateTokenButtonClick(): void {
+        this.generateApiToken();
+    }
+
     render() {
         const refreshError = this.state.errors.get('refresh');
         const filteredProducts = this.getFilteredProducts();
 
         return (
             <div class="tinned_fish_products_admin_panel">
+                <div style="margin-bottom: 2em; padding: 1em; border: 1px solid #ccc; border-radius: 4px;">
+                    <h3 style="margin-top: 0;">API Token Generation</h3>
+                    <p style="margin-bottom: 1em;">Generate an API token for the mobile app. The token will be displayed as a QR code that can be scanned.</p>
+                    <div style="margin-bottom: 1em;">
+                        <label style="display: block; margin-bottom: 0.5em;">
+                            Token Name:
+                        </label>
+                        <input
+                            type="text"
+                            value={this.state.tokenName}
+                            onChange={(e) => this.handleTokenNameChange(e)}
+                            placeholder="e.g., John's iPhone, Test Device"
+                            style="width: 300px; padding: 0.5em;"
+                            disabled={this.state.generatingToken}
+                        />
+                    </div>
+                    <button
+                        onClick={() => this.handleGenerateTokenButtonClick()}
+                        disabled={this.state.generatingToken || !this.state.tokenName.trim()}
+                        style="margin-bottom: 1em;"
+                    >
+                        {this.state.generatingToken ? 'Generating...' : 'Generate API Token'}
+                    </button>
+                    {this.state.tokenError && (
+                        <div style="color: red; margin-top: 0.5em;">
+                            Error: {this.state.tokenError}
+                        </div>
+                    )}
+                    {this.state.generatedToken && (
+                        <div style="margin-top: 1.5em; padding: 1em; background-color: #f5f5f5; border-radius: 4px;">
+                            <h4 style="margin-top: 0;">Token Generated Successfully</h4>
+                            <p><strong>Name:</strong> {this.state.generatedToken.name}</p>
+                            <p><strong>Created:</strong> {this.state.generatedToken.created_at}</p>
+                            <div style="margin: 1em 0;">
+                                <p><strong>QR Code:</strong></p>
+                                <img 
+                                    src={this.state.generatedToken.qr_code_url} 
+                                    alt="API Token QR Code"
+                                    style="border: 1px solid #ccc; padding: 0.5em; background-color: white;"
+                                />
+                            </div>
+                            <div style="margin-top: 1em;">
+                                <p><strong>Token (for manual entry):</strong></p>
+                                <code style="display: block; padding: 0.5em; background-color: #f0f0f0; border-radius: 4px; word-break: break-all;">
+                                    {this.state.generatedToken.token}
+                                </code>
+                            </div>
+                            <p style="margin-top: 1em; font-size: 0.9em; color: #666;">
+                                Scan the QR code with the mobile app to store the token. The token will be used to authenticate API requests.
+                            </p>
+                        </div>
+                    )}
+                </div>
                 <div style="margin-bottom: 1em;">
                     <button 
                         onClick={() => this.handleRefreshButtonClick()}

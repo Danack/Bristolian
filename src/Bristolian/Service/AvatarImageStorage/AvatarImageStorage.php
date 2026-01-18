@@ -19,4 +19,3 @@ interface AvatarImageStorage
         array $allowedExtensions
     ): string|UploadError;
 }
-

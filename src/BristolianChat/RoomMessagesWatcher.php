@@ -71,11 +71,9 @@ class RoomMessagesWatcher
         /* @phpstan-ignore while.alwaysTrue */
         while (true) {
             try {
-
                 $chat_message = $this->getMessage();
 
                 if ($chat_message !== null) {
-
                     $this->logger->info("Updated previous_id to " . $this->previous_id);
                     $this->previous_id = $chat_message->id;
 

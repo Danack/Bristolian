@@ -12,7 +12,8 @@ class ValidationErrorResponse implements StubResponse
      * @param \DataType\ValidationProblem[] $validation_problems
      * @return ValidationErrorResponse
      */
-    public static function fromProblems(array $validation_problems): self {
+    public static function fromProblems(array $validation_problems): self
+    {
 
         $response = [
             'success' => false,

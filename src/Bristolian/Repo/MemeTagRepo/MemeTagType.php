@@ -13,4 +13,3 @@ enum MemeTagType: string
 {
     case USER_TAG = 'user_tag';
 }
-

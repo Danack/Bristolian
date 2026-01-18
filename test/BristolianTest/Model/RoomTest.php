@@ -59,4 +59,3 @@ class RoomTest extends BaseTestCase
         $this->assertArrayHasKey('name', $array);
     }
 }
-

@@ -74,7 +74,6 @@ class StandardAvatarImageStorage implements AvatarImageStorage
             // Get the resized image data
             $contents = $image->getImageBlob();
             $extension = 'jpg';  // Always save as JPG after processing
-            
         } catch (\ImagickException $e) {
             return UploadError::uploadedFileUnreadable();
         }
@@ -95,4 +94,3 @@ class StandardAvatarImageStorage implements AvatarImageStorage
         return $fileStorageId;
     }
 }
-

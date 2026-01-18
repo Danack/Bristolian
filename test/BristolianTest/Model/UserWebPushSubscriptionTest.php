@@ -42,4 +42,3 @@ class UserWebPushSubscriptionTest extends BaseTestCase
         $this->assertSame('{"data": "test"}', $subscription->getRaw());
     }
 }
-

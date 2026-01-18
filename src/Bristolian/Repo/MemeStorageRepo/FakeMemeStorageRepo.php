@@ -124,7 +124,7 @@ class FakeMemeStorageRepo implements MemeStorageRepo
     public function getMemeByOriginalFilename(string $user_id, string $original_filename): Meme|null
     {
         foreach ($this->storedMemes as $storedMeme) {
-            if ($storedMeme->user_id === $user_id && 
+            if ($storedMeme->user_id === $user_id &&
                 $storedMeme->original_filename === $original_filename &&
                 $storedMeme->deleted === false) {
                 return $storedMeme;

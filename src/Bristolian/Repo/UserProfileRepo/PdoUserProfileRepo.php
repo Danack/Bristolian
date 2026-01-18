@@ -141,4 +141,3 @@ SQL;
         $this->pdo_simple->execute($sql, $params);
     }
 }
-

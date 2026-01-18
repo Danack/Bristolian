@@ -28,4 +28,3 @@ class LinkTest extends BaseTestCase
         $this->assertSame($createdAt, $link->created_at);
     }
 }
-

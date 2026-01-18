@@ -9,4 +9,3 @@ namespace Bristolian\Service\ObjectStore;
 interface AvatarImageObjectStore extends FileObjectStore
 {
 }
-

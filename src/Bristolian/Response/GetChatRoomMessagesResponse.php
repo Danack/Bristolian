@@ -51,4 +51,3 @@ class GetChatRoomMessagesResponse implements StubResponse
         return $this->body;
     }
 }
-

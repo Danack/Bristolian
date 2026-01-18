@@ -166,4 +166,3 @@ class ExtraAssetsTest extends BaseTestCase
         $this->assertStringContainsString("</script>\n", $html);
     }
 }
-

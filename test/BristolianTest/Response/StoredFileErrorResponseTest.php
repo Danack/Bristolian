@@ -142,4 +142,3 @@ class StoredFileErrorResponseTest extends BaseTestCase
         $this->assertStringContainsString($filename2, $body2);
     }
 }
-

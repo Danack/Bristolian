@@ -49,4 +49,3 @@ class UploadBristolStairsImageResponse implements StubResponse
         return $this->body;
     }
 }
-

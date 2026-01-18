@@ -7,13 +7,11 @@ use Bristolian\Model\Chat\UserChatMessage;
 use Amp\Mysql\MysqlConnection;
 use Monolog\Logger;
 
-
 class RoomFilesWatcher
 {
 
     public function __construct(
-//        private readonly MysqlConnection $mysql_connection,
-
+        //        private readonly MysqlConnection $mysql_connection,
         /* @phpstan-ignore property.onlyWritten */
         private readonly ClientHandler $clientHandler,
         /* @phpstan-ignore property.onlyWritten */

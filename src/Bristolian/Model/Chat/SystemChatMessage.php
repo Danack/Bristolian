@@ -21,7 +21,7 @@ class SystemChatMessage
 
     public function __construct(
         public readonly int $id,
-//        public readonly string $user_id,
+        //        public readonly string $user_id,
         public readonly string $room_id,
         public readonly string $text,
         public readonly int|null $reply_message_id,

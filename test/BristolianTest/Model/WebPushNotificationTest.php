@@ -36,4 +36,3 @@ class WebPushNotificationTest extends BaseTestCase
         $this->assertSame('/sounds/meow.mp3', $notification->getSound());
     }
 }
-

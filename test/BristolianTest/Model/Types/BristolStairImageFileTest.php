@@ -52,4 +52,3 @@ class BristolStairImageFileTest extends BaseTestCase
         $this->markTestSkipped('StairImageObjectInfo uses FromArray trait, not ToArray - toArray() method not available');
     }
 }
-

@@ -377,4 +377,3 @@ class PdoBristolStairImageStorageInfoRepoTest extends BaseTestCase
         $this->assertSame($uploadedFile->getOriginalName(), $file_info->original_filename);
     }
 }
-

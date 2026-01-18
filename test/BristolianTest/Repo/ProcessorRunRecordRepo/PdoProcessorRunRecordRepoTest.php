@@ -385,4 +385,3 @@ class PdoProcessorRunRecordRepoTest extends BaseTestCase
         $this->assertLessThanOrEqual(50, count($records), 'Should respect the limit of 50 records');
     }
 }
-

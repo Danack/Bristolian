@@ -25,4 +25,3 @@ class UserProfileUpdateParams implements DataType, StaticFactory
     ) {
     }
 }
-

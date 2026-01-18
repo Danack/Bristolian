@@ -24,4 +24,3 @@ class UploadError
         return new self("Image is too small ({$width}x{$height}). Must be at least {$min_size}x{$min_size} pixels");
     }
 }
-

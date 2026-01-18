@@ -45,4 +45,3 @@ class EmailTest extends BaseTestCase
         $this->assertSame($updatedAt, $email->updated_at);
     }
 }
-

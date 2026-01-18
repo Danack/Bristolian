@@ -40,4 +40,3 @@ class UploadAvatarResponse implements StubResponse
         return $this->body;
     }
 }
-

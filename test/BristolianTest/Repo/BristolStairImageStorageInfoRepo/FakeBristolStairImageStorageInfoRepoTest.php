@@ -371,4 +371,3 @@ class FakeBristolStairImageStorageInfoRepoTest extends BaseTestCase
         $this->assertArrayHasKey($file_id, $files);
     }
 }
-

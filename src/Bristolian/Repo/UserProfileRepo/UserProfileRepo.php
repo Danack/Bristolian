@@ -30,4 +30,3 @@ interface UserProfileRepo
      */
     public function updateAvatarImage(string $user_id, string $avatar_image_id): void;
 }
-

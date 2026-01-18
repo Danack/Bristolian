@@ -25,7 +25,6 @@ class RoomLinkTest extends BaseTestCase
         $createdAt = new \DateTimeImmutable();
 
         $roomLink = new RoomLink(
-
             $id,
             $room_id = $roomId,
             $link_id = $linkId,
@@ -87,4 +86,3 @@ class RoomLinkTest extends BaseTestCase
         $this->assertArrayHasKey('url', $array);
     }
 }
-

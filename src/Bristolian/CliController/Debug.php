@@ -23,7 +23,6 @@ use Bristolian\Service\RoomMessageService\RoomMessageService;
 use Bristolian\Service\WebPushService\WebPushService;
 use Bristolian\UploadedFiles\UploadedFile;
 
-
 function fn_level_1(): void
 {
     fn_level_2();
@@ -133,12 +132,12 @@ class Debug
 
     /**
      * Add a meme file with optional tags and text.
-     * 
+     *
      * Usage examples:
      *   php cli.php debug:add_meme /path/to/image.jpg
      *   php cli.php debug:add_meme /path/to/image.jpg "tag1,tag2,tag3"
      *   php cli.php debug:add_meme /path/to/image.jpg "tag1,tag2" "OCR extracted text content"
-     * 
+     *
      * @param AdminRepo $adminRepo
      * @param MemeStorageProcessor $memeStorageProcessor
      * @param MemeObjectStore $memeObjectStore

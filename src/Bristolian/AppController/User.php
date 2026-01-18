@@ -123,11 +123,12 @@ class User
         }
 
         // If no search criteria provided, return all memes
-        if ($memeSearchParams->query === null && 
-            $memeSearchParams->text_search === null && 
+        if ($memeSearchParams->query === null &&
+            $memeSearchParams->text_search === null &&
             ($memeSearchParams->tags === null || $memeSearchParams->tags === '')) {
             $memes = $memeStorageRepo->listMemesForUser($appSession->getUserId());
-        } else {
+        }
+        else {
             $memes = array_values($memes_by_id);
         }
 
@@ -222,9 +223,11 @@ class User
         $text = '';
         if (is_array($body) && isset($body['text'])) {
             $text = $body['text'];
-        } elseif ($body instanceof \ArrayAccess && isset($body['text'])) {
+        }
+        elseif ($body instanceof \ArrayAccess && isset($body['text'])) {
             $text = $body['text'];
-        } else {
+        }
+        else {
             // Fallback: try getting from $_POST (FormData might populate it)
             $text = $_POST['text'] ?? '';
         }
@@ -374,7 +377,8 @@ class User
                 $memeIds,
                 $limit
             );
-        } else {
+        }
+        else {
             $tags = $memeTagRepo->getMostCommonTags(
                 $userSession->getUserId(),
                 $limit

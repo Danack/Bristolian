@@ -52,6 +52,7 @@ function getAllAppRoutes()
         ['/users/{user_id:.*}/{username:.*}', 'GET', 'Bristolian\AppController\Users::showUser'],
         ['/users', 'GET', 'Bristolian\AppController\Users::index'],
         ['/qr/code', 'GET', '\Bristolian\AppController\QRCode::get'],
+        ['/qr/code/token', 'GET', '\Bristolian\AppController\QRCode::getToken'],
         [
             '/questions/1_weca_active_travel',
             'GET',

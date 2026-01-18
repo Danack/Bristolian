@@ -49,4 +49,3 @@ class SendChatMessageResponse implements StubResponse
         return $this->body;
     }
 }
-

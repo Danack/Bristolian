@@ -13,8 +13,7 @@ class UserWebPushSubscription
         string $endpoint,
         string $expiration_time,
         string $raw
-    )
-    {
+    ) {
         $this->endpoint = $endpoint;
         $this->expiration_time = $expiration_time;
         $this->raw = $raw;

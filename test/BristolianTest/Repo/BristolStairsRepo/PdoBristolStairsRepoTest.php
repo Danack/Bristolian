@@ -427,7 +427,7 @@ class PdoBristolStairsRepoTest extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
      */
-    public function     test_store_stairs_info_with_precise_coordinates(): void
+    public function test_store_stairs_info_with_precise_coordinates(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
         $imageFileId = $this->createTestStairImageFileId();

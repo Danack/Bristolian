@@ -44,8 +44,6 @@ class MailgunEmailHandler
 
         return new SuccessResponse();
     }
-
-
 }
 
 
