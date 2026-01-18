@@ -1,0 +1,105 @@
+button,
+.button {
+
+  /* clicking buttons leads to accidental text selection far too often */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+
+  border: 1px solid #000;
+  cursor: pointer;
+  border-radius: 3px;
+  background-color: #2782ff;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  margin: 3px;
+
+  &:hover {
+    background: #d2e3ff;
+    color: black;
+  }
+
+  &:disabled {
+    background: #aaa;
+    color: #eee;
+    cursor: not-allowed;
+
+    &:hover {
+      background: #aaa; // prevent hover effect when disabled
+    }
+  }
+
+}
+
+.unstyled {
+  border: initial;          /* resets border */
+  cursor: auto;             /* default cursor */
+  border-radius: 0;         /* remove rounding */
+  background-color: transparent; /* remove background */
+  color: inherit;           /* inherit text color */
+  padding: 0;               /* remove padding */
+  margin: 0;                /* remove margin */
+}
+
+// Tag styling - reusable across the project
+.selected_tags_box,
+.suggested_tags_box {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: #fff;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.tag_list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.suggested_tag {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #90caf9;
+
+  &:hover {
+    background-color: #bbdefb;
+    border-color: #64b5f6;
+  }
+
+  &.tag_selected {
+    background-color: #1976d2;
+    color: #fff;
+    border-color: #1565c0;
+
+    &:hover {
+      background-color: #1565c0;
+    }
+  }
+}
+
+.selected_tag {
+  background-color: #4caf50;
+  color: #fff;
+  border: 1px solid #388e3c;
+  padding-right: 0.5rem;
+
+  &:hover {
+    background-color: #388e3c;
+  }
+}
