@@ -585,6 +585,7 @@ class GenerateFiles
             \Bristolian\Model\Generated\ChatMessage::class,
             \Bristolian\Model\Generated\EmailIncoming::class,
             \Bristolian\Model\Generated\StoredMeme::class,
+            \Bristolian\Model\Generated\MemeTag::class,
             \Bristolian\Model\Generated\ProcessorRunRecord::class,
             \Bristolian\Model\Generated\RoomLink::class,
             \Bristolian\Model\Generated\RoomSourcelink::class,
