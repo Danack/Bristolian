@@ -353,7 +353,7 @@ export class TinnedFishProductsAdminPanel extends Component<
                     <button
                         onClick={() => this.handleGenerateTokenButtonClick()}
                         disabled={this.state.generatingToken || !this.state.tokenName.trim()}
-                        style="margin-bottom: 1em;"
+                        style="margin-bottom: 1em; background-color: #2782ff; color: white; border: 1px solid #000; border-radius: 3px; padding: 0.4rem 0.8rem; cursor: pointer;"
                     >
                         {this.state.generatingToken ? 'Generating...' : 'Generate API Token'}
                     </button>
@@ -372,7 +372,7 @@ export class TinnedFishProductsAdminPanel extends Component<
                                 <img 
                                     src={this.state.generatedToken.qr_code_url} 
                                     alt="API Token QR Code"
-                                    style="border: 1px solid #ccc; padding: 0.5em; background-color: white;"
+                                    style="border: 1px solid #ccc; padding: 0.5em; background-color: white; max-width: 250px; max-height: 250px; width: auto; height: auto;"
                                 />
                             </div>
                             <div style="margin-top: 1em;">

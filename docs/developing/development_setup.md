@@ -127,10 +127,11 @@ npm run test
 PHPStan is used for static analysis of PHP code to catch potential bugs and type issues.
 
 ```bash
-# Run PHPStan analysis
-docker exec -it bristolian-php_fpm_debug-1 bash
-sh runPhpStan.sh
+# Run PHPStan analysis (uses --no-progress by default)
+docker exec bristolian-php_fpm-1 bash -c "sh runPhpStan.sh"
 ```
+
+**Note**: The script runs PHPStan with `--no-progress` by default to keep output clean. Additional flags can be passed as arguments to the script.
 
 **Configuration**: `phpstan.neon`
 - **Analysis Level**: 6 (strict)

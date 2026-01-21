@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace BristolianTest\Repo\BristolStairsRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
+use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo;
-use BristolianTest\BaseTestCase;
 use Bristolian\Model\Generated\BristolStairInfo;
 use VarMap\ArrayVarMap;
 
@@ -14,9 +16,17 @@ use VarMap\ArrayVarMap;
  * Tests for FakeBristolStairsRepo
  *
  * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo
+ * @group standard_repo
  */
-class FakeBristolStairsRepoTest extends BaseTestCase
+class FakeBristolStairsRepoTest extends BristolStairsRepoTest
 {
+    /**
+     * @return BristolStairsRepo
+     */
+    public function getTestInstance(): BristolStairsRepo
+    {
+        return new FakeBristolStairsRepo();
+    }
     /**
      * Test that the repo is initialized with 3 fake stairs
      */

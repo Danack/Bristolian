@@ -4,16 +4,21 @@ namespace BristolianTest\Repo\MemeStorageRepo;
 
 use Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo;
 use Bristolian\UploadedFiles\UploadedFile;
-use BristolianTest\BaseTestCase;
+use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use Ramsey\Uuid\Uuid;
 
 /**
- * @coversNothing
+ * @group db
  */
-class PdoMemeStorageRepoTest extends BaseTestCase
+class PdoMemeStorageRepoTest extends MemeStorageRepoTest
 {
     use TestPlaceholders;
+
+    public function getTestInstance(): MemeStorageRepo
+    {
+        return $this->injector->make(PdoMemeStorageRepo::class);
+    }
 
     /**
      * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo

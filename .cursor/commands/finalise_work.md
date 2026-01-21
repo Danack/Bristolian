@@ -13,9 +13,10 @@ PHPStan performs static analysis to find bugs and type errors in PHP code.
 docker exec bristolian-php_fpm-1 bash -c "sh runPhpStan.sh"
 ```
 
+This runs PHPStan with `--no-progress` by default to keep output clean.
+
 **Additional flags:** You can pass extra flags to PHPStan:
 ```bash
-docker exec bristolian-php_fpm-1 bash -c "sh runPhpStan.sh --no-progress"
 docker exec bristolian-php_fpm-1 bash -c "sh runPhpStan.sh --error-format=table"
 ```
 

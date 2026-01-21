@@ -2,6 +2,7 @@
 
 namespace BristolianTest\Middleware;
 
+use Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo;
 use Bristolian\Session\FakeAppSessionManager;
 use BristolianTest\BaseTestCase;
 use Bristolian\Middleware\PermissionsCheckHtmlMiddleware;
@@ -17,8 +18,9 @@ class PermissionsCheckHtmlMiddlewareTest extends BaseTestCase
     public function testWorks_standard_get()
     {
         $appSessionManager = new FakeAppSessionManager();
+        $apiTokenRepo = new FakeApiTokenRepo();
 
-        $middleware = new PermissionsCheckHtmlMiddleware($appSessionManager);
+        $middleware = new PermissionsCheckHtmlMiddleware($appSessionManager, $apiTokenRepo);
 
         $request = new ServerRequest();
         $request_handler = new FakeRequestHandler();
@@ -29,8 +31,9 @@ class PermissionsCheckHtmlMiddlewareTest extends BaseTestCase
     public function testWorks_standard_POST_not_logged_in()
     {
         $appSessionManager = new FakeAppSessionManager();
+        $apiTokenRepo = new FakeApiTokenRepo();
 
-        $middleware = new PermissionsCheckHtmlMiddleware($appSessionManager);
+        $middleware = new PermissionsCheckHtmlMiddleware($appSessionManager, $apiTokenRepo);
 
         $request = new ServerRequest(method: 'POST');
         $request_handler = new FakeRequestHandler();
@@ -42,8 +45,9 @@ class PermissionsCheckHtmlMiddlewareTest extends BaseTestCase
     public function testWorks_standard_POST_logged_in()
     {
         $appSessionManager = FakeAppSessionManager::createLoggedIn();
+        $apiTokenRepo = new FakeApiTokenRepo();
 
-        $middleware = new PermissionsCheckHtmlMiddleware($appSessionManager);
+        $middleware = new PermissionsCheckHtmlMiddleware($appSessionManager, $apiTokenRepo);
 
         $request = new ServerRequest(method: 'POST');
         $request_handler = new FakeRequestHandler();
@@ -66,8 +70,9 @@ class PermissionsCheckHtmlMiddlewareTest extends BaseTestCase
     public function testWorks_standard_POST_to_optional_login_route(string $route)
     {
         $appSessionManager = new FakeAppSessionManager();
+        $apiTokenRepo = new FakeApiTokenRepo();
 
-        $middleware = new PermissionsCheckHtmlMiddleware($appSessionManager);
+        $middleware = new PermissionsCheckHtmlMiddleware($appSessionManager, $apiTokenRepo);
 
         $request = new ServerRequest(
             method: 'POST',

@@ -1,18 +1,28 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace BristolianTest\Repo\RoomFileRepo;
 
-use Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo;
-use BristolianTest\BaseTestCase;
 use Bristolian\Model\Generated\RoomFileObjectInfo;
+use Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo;
+use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
 
 /**
  * Tests for FakeRoomFileRepo
  *
  * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
+ * @group standard_repo
  */
-class FakeRoomFileRepoTest extends BaseTestCase
+class FakeRoomFileRepoTest extends RoomFileRepoTest
 {
+    /**
+     * @return RoomFileRepo
+     */
+    public function getTestInstance(): RoomFileRepo
+    {
+        return new FakeRoomFileRepo();
+    }
     /**
      * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
      */

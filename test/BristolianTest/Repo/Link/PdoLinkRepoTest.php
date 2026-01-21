@@ -3,15 +3,20 @@
 namespace BristolianTest\Repo\Link;
 
 use Bristolian\Repo\LinkRepo\PdoLinkRepo;
-use BristolianTest\BaseTestCase;
+use Bristolian\Repo\LinkRepo\LinkRepo;
 use BristolianTest\Repo\TestPlaceholders;
 
 /**
- * @coversNothing
+ * @group db
  */
-class PdoLinkRepoTest extends BaseTestCase
+class PdoLinkRepoTest extends LinkRepoTest
 {
     use TestPlaceholders;
+
+    public function getTestInstance(): LinkRepo
+    {
+        return $this->injector->make(PdoLinkRepo::class);
+    }
 
     /**
      * @covers \Bristolian\Repo\LinkRepo\PdoLinkRepo

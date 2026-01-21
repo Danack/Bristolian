@@ -8,20 +8,28 @@ use Bristolian\Parameters\BristolStairsPositionParams;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo;
 use Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo;
 use Bristolian\UploadedFiles\UploadedFile;
-use BristolianTest\BaseTestCase;
+use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use Bristolian\Model\Generated\BristolStairInfo;
 use Ramsey\Uuid\Uuid;
 use VarMap\ArrayVarMap;
 
 /**
- * Tests for PdoBristolStairsRepo
- *
- * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
+ * @group db
  */
-class PdoBristolStairsRepoTest extends BaseTestCase
+class PdoBristolStairsRepoTest extends BristolStairsRepoTest
 {
     use TestPlaceholders;
+
+    public function getTestInstance(): BristolStairsRepo
+    {
+        return $this->injector->make(PdoBristolStairsRepo::class);
+    }
+
+    protected function getTestStairImageFileId(): string
+    {
+        return $this->createTestStairImageFileId();
+    }
 
     /**
      * Helper method to create a valid stair image file ID

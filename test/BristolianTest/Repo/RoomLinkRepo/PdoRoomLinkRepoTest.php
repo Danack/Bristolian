@@ -5,13 +5,21 @@ namespace BristolianTest\Repo\RoomLinkRepo;
 use Bristolian\Exception\BristolianException;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo;
-use BristolianTest\BaseTestCase;
+use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use Bristolian\Model\Generated\RoomLink;
 
-class PdoRoomLinkRepoTest extends BaseTestCase
+/**
+ * @group db
+ */
+class PdoRoomLinkRepoTest extends RoomLinkRepoTest
 {
     use TestPlaceholders;
+
+    public function getTestInstance(): RoomLinkRepo
+    {
+        return $this->injector->make(PdoRoomLinkRepo::class);
+    }
 
     /**
      * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo

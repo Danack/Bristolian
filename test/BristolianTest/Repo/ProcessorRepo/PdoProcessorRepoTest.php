@@ -5,22 +5,16 @@ namespace BristolianTest\Repo\ProcessorRepo;
 use Bristolian\Model\Types\ProcessorState;
 use Bristolian\Repo\ProcessorRepo\PdoProcessorRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
-use BristolianTest\BaseTestCase;
+use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
 
 /**
- * Tests for PdoProcessorRepo
- *
- * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo
+ * @group db
  */
-class PdoProcessorRepoTest extends BaseTestCase
+class PdoProcessorRepoTest extends ProcessorRepoTest
 {
-    /**
-     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo
-     */
-    public function test_constructor(): void
+    public function getTestInstance(): ProcessorRepo
     {
-        $repo = $this->injector->make(PdoProcessorRepo::class);
-        $this->assertInstanceOf(PdoProcessorRepo::class, $repo);
+        return $this->injector->make(PdoProcessorRepo::class);
     }
 
     /**

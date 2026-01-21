@@ -4,16 +4,20 @@ namespace BristolianTest\Repo\EmailIncoming;
 
 use Bristolian\Model\Types\IncomingEmailParam;
 use Bristolian\Repo\EmailIncoming\PdoEmailIncoming;
-use BristolianTest\BaseTestCase;
+use Bristolian\Repo\EmailIncoming\EmailIncoming;
 use BristolianTest\Repo\TestPlaceholders;
 
 /**
- * @covers \Bristolian\Repo\EmailIncoming\PdoEmailIncoming
  * @group db
  */
-class PdoEmailIncomingTest extends BaseTestCase
+class PdoEmailIncomingTest extends EmailIncomingTest
 {
     use TestPlaceholders;
+
+    public function getTestInstance(): EmailIncoming
+    {
+        return $this->injector->make(PdoEmailIncoming::class);
+    }
 
     public function testSaveEmail()
     {

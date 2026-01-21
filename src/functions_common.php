@@ -34,6 +34,12 @@ function convertToValue(mixed $value)
                 $value->format("Y-m-d\TH:i:sP")
             ];
         }
+        if ($value instanceof \BackedEnum) {
+            return [
+                null,
+                $value->value
+            ];
+        }
     }
 
     if (is_array($value) === true) {

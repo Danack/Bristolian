@@ -3,27 +3,21 @@
 namespace BristolianTest\Repo\RoomFileRepo;
 
 use Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo;
-use BristolianTest\BaseTestCase;
+use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use Bristolian\Model\Generated\RoomFileObjectInfo;
 use Bristolian\Model\Generated\RoomFile;
 
 /**
- * Tests for PdoRoomFileRepo
- *
- * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo
+ * @group db
  */
-class PdoRoomFileRepoTest extends BaseTestCase
+class PdoRoomFileRepoTest extends RoomFileRepoTest
 {
     use TestPlaceholders;
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo
-     */
-    public function test_constructor(): void
+    public function getTestInstance(): RoomFileRepo
     {
-        $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
-        $this->assertInstanceOf(PdoRoomFileRepo::class, $roomFileRepo);
+        return $this->injector->make(PdoRoomFileRepo::class);
     }
 
     /**

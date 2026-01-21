@@ -1,45 +1,19 @@
 <?php
 
-namespace BristolianTest\Repo\UserSearch;
+declare(strict_types = 1);
+
+namespace BristolianTest\Repo\RoomRepo;
 
 use Bristolian\Repo\RoomRepo\PdoRoomRepo;
-use BristolianTest\BaseTestCase;
-use BristolianTest\Repo\TestPlaceholders;
-use Bristolian\Model\Generated\Room;
+use Bristolian\Repo\RoomRepo\RoomRepo;
 
 /**
- * @coversNothing
+ * @group db
  */
-class PdoRoomRepoTest extends BaseTestCase
+class PdoRoomRepoTest extends RoomRepoTest
 {
-    use TestPlaceholders;
-
-    /**
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo
-     * @return void
-     * @throws \DI\InjectionException
-     */
-    public function testWorks()
+    public function getTestInstance(): RoomRepo
     {
-        $adminUser = $this->createTestAdminUser();
-
-        $pdoRoomRepo = $this->injector->make(PdoRoomRepo::class);
-
-        $room_name = $this->getTestRoomName();
-        $room_description = $this->getTestRoomDescription();
-
-        $room_created = $pdoRoomRepo->createRoom(
-            $adminUser->getUserId(),
-            $room_name,
-            $room_description
-        );
-
-        $room_from_db = $pdoRoomRepo->getRoomById($room_created->id);
-        $this->assertEquals($room_created, $room_from_db);
-
-        $rooms = $pdoRoomRepo->getAllRooms();
-        foreach ($rooms as $room) {
-            $this->assertInstanceOf(Room::class, $room);
-        }
+        return $this->injector->make(PdoRoomRepo::class);
     }
 }

@@ -6,15 +6,20 @@ namespace BristolianTest\Repo\AdminRepo;
 
 use Bristolian\Parameters\CreateUserParams;
 use BristolianTest\Repo\TestPlaceholders;
-use BristolianTest\BaseTestCase;
+use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 
 /**
- * @coversNothing
+ * @group db
  */
-class PdoAdminRepoTest extends BaseTestCase
+class PdoAdminRepoTest extends AdminRepoTest
 {
     use TestPlaceholders;
+
+    public function getTestInstance(): AdminRepo
+    {
+        return $this->injector->make(PdoAdminRepo::class);
+    }
 
     /**
      * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo

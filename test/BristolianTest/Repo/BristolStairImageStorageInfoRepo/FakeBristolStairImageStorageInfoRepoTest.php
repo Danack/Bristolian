@@ -1,20 +1,30 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace BristolianTest\Repo\BristolStairImageStorageInfoRepo;
 
+use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\FileState;
 use Bristolian\UploadedFiles\UploadedFile;
-use BristolianTest\BaseTestCase;
 use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
 
 /**
  * Tests for FakeBristolStairImageStorageInfoRepo
  *
  * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
+ * @group standard_repo
  */
-class FakeBristolStairImageStorageInfoRepoTest extends BaseTestCase
+class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageInfoRepoTest
 {
+    /**
+     * @return BristolStairImageStorageInfoRepo
+     */
+    public function getTestInstance(): BristolStairImageStorageInfoRepo
+    {
+        return new FakeBristolStairImageStorageInfoRepo();
+    }
     /**
      * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
      */

@@ -5,27 +5,21 @@ namespace BristolianTest\Repo\BristolStairImageStorageInfoRepo;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\FileState;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo;
 use Bristolian\UploadedFiles\UploadedFile;
-use BristolianTest\BaseTestCase;
+use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
 use Ramsey\Uuid\Uuid;
 
 /**
- * Tests for PdoBristolStairImageStorageInfoRepo
- *
- * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
+ * @group db
  */
-class PdoBristolStairImageStorageInfoRepoTest extends BaseTestCase
+class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageInfoRepoTest
 {
     use TestPlaceholders;
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
-     */
-    public function test_constructor(): void
+    public function getTestInstance(): BristolStairImageStorageInfoRepo
     {
-        $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
-        $this->assertInstanceOf(PdoBristolStairImageStorageInfoRepo::class, $repo);
+        return $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
     }
 
     /**

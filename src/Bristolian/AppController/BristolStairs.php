@@ -176,19 +176,19 @@ HTML;
     }
 
 
+    //        // TODO - check user logged in
+//        TODO - check the post 'is user logged in' check working.
+//        if ($appSession->isLoggedIn() !== true) {
+//            $data = ['not logged in' => true];
+//            return new JsonResponse($data, [], 400);
+//        }
+
     public function handleFileUpload(
         BristolStairImageStorage     $bristolStairImageStorage,
         UserSession                  $appSession,
         UserSessionFileUploadHandler $usfuh,
         VarMap                       $varMap
     ): StubResponse {
-
-//        // TODO - check user logged in
-//        TODO - check the post 'is user logged in' check working.
-//        if ($appSession->isLoggedIn() !== true) {
-//            $data = ['not logged in' => true];
-//            return new JsonResponse($data, [], 400);
-//        }
 
         $gpsParams = BristolStairsGpsParams::createFromVarMap($varMap);
 

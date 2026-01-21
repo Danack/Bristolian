@@ -5,23 +5,16 @@ namespace BristolianTest\Repo\ProcessorRunRecordRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
-use BristolianTest\BaseTestCase;
 use Bristolian\Model\Generated\ProcessorRunRecord;
 
 /**
- * Tests for PdoProcessorRunRecordRepo
- *
- * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
+ * @group db
  */
-class PdoProcessorRunRecordRepoTest extends BaseTestCase
+class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoTest
 {
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
-    public function test_constructor(): void
+    public function getTestInstance(): ProcessorRunRecordRepo
     {
-        $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
-        $this->assertInstanceOf(PdoProcessorRunRecordRepo::class, $repo);
+        return $this->injector->make(PdoProcessorRunRecordRepo::class);
     }
 
     /**

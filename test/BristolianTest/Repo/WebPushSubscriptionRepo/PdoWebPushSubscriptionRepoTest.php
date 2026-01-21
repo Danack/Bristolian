@@ -11,16 +11,42 @@ use Bristolian\Parameters\WebPushSubscriptionParams;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use VarMap\ArrayVarMap;
-use BristolianTest\BaseTestCase;
+use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 
 /**
- * @coversNothing
+ * @group db
  */
-class PdoWebPushSubscriptionRepoTest extends BaseTestCase
+class PdoWebPushSubscriptionRepoTest extends WebPushSubscriptionRepoTest
 {
     use TestPlaceholders;
+
+    private ?string $testUserId = null;
+    private ?string $testUserId2 = null;
+
+    public function getTestInstance(): WebPushSubscriptionRepo
+    {
+        return $this->injector->make(PdoWebPushSubscriptionRepo::class);
+    }
+
+    protected function getTestUserId(): string
+    {
+        if ($this->testUserId === null) {
+            $adminUser = $this->createTestAdminUser();
+            $this->testUserId = $adminUser->getUserId();
+        }
+        return $this->testUserId;
+    }
+
+    protected function getTestUserId2(): string
+    {
+        if ($this->testUserId2 === null) {
+            $adminUser = $this->createTestAdminUser();
+            $this->testUserId2 = $adminUser->getUserId();
+        }
+        return $this->testUserId2;
+    }
 
     /**
      * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo

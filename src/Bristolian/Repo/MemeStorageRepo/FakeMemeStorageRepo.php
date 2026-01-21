@@ -38,15 +38,18 @@ class FakeMemeStorageRepo implements MemeStorageRepo
 
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
+        $datetime = new \DateTimeImmutable();
 
-//        $this->storedMemes[$id] = new Meme(
-//            $id,
-//            $normalized_filename,
-//            $original_filename = $uploadedFile->getOriginalName(),
-//            $state = MemeFileState::INITIAL->value,
-//            $size = $uploadedFile->getSize(),
-//            $user_id,
-//        );
+        $this->storedMemes[$id] = new Meme(
+            $id,
+            $user_id,
+            $normalized_filename,
+            $original_filename = $uploadedFile->getOriginalName(),
+            $state = MemeFileState::INITIAL->value,
+            $size = $uploadedFile->getSize(),
+            $created_at = $datetime,
+            $deleted = false
+        );
 
         return $id;
     }
@@ -85,16 +88,18 @@ class FakeMemeStorageRepo implements MemeStorageRepo
             throw new BristolianException("meme not found to set as uploaded.");
         }
 
-//        $meme = $this->storedMemes[$meme_id];
-//
-//        $this->storedMemes[$meme_id] = new Meme(
-//            $meme->id,
-//            $meme->normalized_name,
-//            $meme->original_filename,
-//            $meme->state,
-//            $meme->size,
-//            $meme->user_id,
-//        );
+        $meme = $this->storedMemes[$meme_id];
+
+        $this->storedMemes[$meme_id] = new Meme(
+            $meme->id,
+            $meme->user_id,
+            $meme->normalized_name,
+            $meme->original_filename,
+            $state = MemeFileState::UPLOADED->value,
+            $meme->size,
+            $meme->created_at,
+            $meme->deleted
+        );
     }
 
     /**
@@ -107,7 +112,15 @@ class FakeMemeStorageRepo implements MemeStorageRepo
 
     public function searchMemesByExactTags(string $user_id, array $tagTexts): array
     {
-        throw new \Exception("Implement searchMemesByExactTags() method.");
+        // Fake implementation: return all memes for user if no tags specified
+        // For a full implementation, this would need to check tags via MemeTagRepo
+        if (empty($tagTexts)) {
+            return $this->listMemesForUser($user_id);
+        }
+        
+        // Basic implementation: return empty array when tags are specified
+        // A complete fake would need integration with FakeMemeTagRepo
+        return [];
     }
 
     public function markAsDeleted(string $meme_id): void
@@ -116,9 +129,18 @@ class FakeMemeStorageRepo implements MemeStorageRepo
             throw new BristolianException("meme not found to mark as deleted.");
         }
 
-        // Note: In a real implementation, we'd need to update the Meme object
-        // Since Meme is readonly, this is a limitation of the fake implementation
-        // For tests, you'd need to create a new Meme with deleted=true
+        $meme = $this->storedMemes[$meme_id];
+
+        $this->storedMemes[$meme_id] = new Meme(
+            $meme->id,
+            $meme->user_id,
+            $meme->normalized_name,
+            $meme->original_filename,
+            $meme->state,
+            $meme->size,
+            $meme->created_at,
+            $deleted = true
+        );
     }
 
     public function getMemeByOriginalFilename(string $user_id, string $original_filename): Meme|null

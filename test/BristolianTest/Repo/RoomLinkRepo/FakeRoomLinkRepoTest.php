@@ -1,16 +1,30 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace BristolianTest\Repo\RoomLinkRepo;
 
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo;
-use BristolianTest\BaseTestCase;
+use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use VarMap\ArrayVarMap;
 
-class FakeRoomLinkRepoTest extends BaseTestCase
+/**
+ * @group standard_repo
+ */
+class FakeRoomLinkRepoTest extends RoomLinkRepoTest
 {
     use TestPlaceholders;
+
+    /**
+     * @return RoomLinkRepo
+     */
+    public function getTestInstance(): RoomLinkRepo
+    {
+        $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
+        return new FakeRoomLinkRepo($linkRepo);
+    }
 
     /**
      * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo
