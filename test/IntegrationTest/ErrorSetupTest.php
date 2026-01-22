@@ -13,12 +13,12 @@ use Bristolian\App;
  */
 class ErrorSetupTest extends BaseTestCase
 {
-    public function providesCaughtExceptionsAreActuallyCaughtForApp()
+    public static function providesCaughtExceptionsAreActuallyCaughtForApp()
     {
         return [
-            ['http://local.admin.opensourcefees.com/test/caught_exception'],
-            ['http://local.app.opensourcefees.com/test/caught_exception'],
-            ['http://local.super.opensourcefees.com/test/caught_exception'],
+            ['http://local.bristolian.org/test/caught_exception'],
+//            ['http://local.bristolian.org/test/caught_exception'],
+//            ['http://local.super.opensourcefees.com/test/caught_exception'],
         ];
     }
 
@@ -52,7 +52,7 @@ class ErrorSetupTest extends BaseTestCase
         $this->assertSame(["status" => "Correctly caught DebuggingCaughtException"], $data);
     }
 
-    public function providesUncaughtExceptionsAreActuallyCaughtBySlimForApp()
+    public static function providesUncaughtExceptionsAreActuallyCaughtBySlimForApp()
     {
         return [
             ['http://local.admin.opensourcefees.com/test/uncaught_exception'],

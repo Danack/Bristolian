@@ -196,7 +196,7 @@ TEXT;
         $this->assertGreaterThanOrEqual(12, $options["cost"]);
     }
 
-    public function provides_slugify()
+    public static function provides_slugify()
     {
         yield ['Cómo hablar en sílabas', 'como-hablar-en-silabas'];
         yield ['Álix Ãxel', 'alix-axel'];
@@ -229,7 +229,7 @@ TEXT;
 
 
 
-    public function provides_sanitise_filename()
+    public static function provides_sanitise_filename()
     {
         yield ['John..Anyman', 'john_anyman'];
         yield ['John/Anyman', 'john_anyman'];
@@ -249,7 +249,7 @@ TEXT;
         $this->assertSame($expected, $result);
     }
 
-    public function provides_standardise_username_to_filename()
+    public static function provides_standardise_username_to_filename()
     {
         yield ['John Anyman', 'john_anyman'];
         yield ['John..Anyman', 'john_anyman'];
@@ -270,7 +270,7 @@ TEXT;
         $this->assertSame($expected, $result);
     }
 
-    public function provides_escapeMySqlLikeString()
+    public static function provides_escapeMySqlLikeString()
     {
         yield ['foo\\bar', 'foo\\\\bar'];
         yield ['foo_bar', 'foo\\_bar'];
@@ -351,7 +351,7 @@ TEXT;
         convertToArrayOfObjects(\StdClass::class, []);
     }
 
-    public function provides_normalize_file_extension_works()
+    public static function provides_normalize_file_extension_works()
     {
         yield ["sample.pdf", ['pdf']];
         yield ["sample.pdf", ['pdf', 'txt', 'jpg']];
@@ -388,7 +388,7 @@ TEXT;
         );
     }
 
-    public function provides_normalize_file_extension_null()
+    public static function provides_normalize_file_extension_null()
     {
         // file type is not allowed
         yield ["sample.pdf", ['txt']];
@@ -416,7 +416,7 @@ TEXT;
 
 
 
-    public function provides_convertToValue_works()
+    public static function provides_convertToValue_works()
     {
         yield ['foo', 'foo'];
         yield [null, null];
@@ -441,7 +441,7 @@ TEXT;
         $this->assertSame($expected_value, $value);
     }
 
-    public function provides_get_readable_variable_type_works()
+    public static function provides_get_readable_variable_type_works()
     {
         yield ['some string', "a string"];
         yield [5, "an int"];

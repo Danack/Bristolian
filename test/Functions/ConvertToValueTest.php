@@ -16,7 +16,7 @@ use function convertToValue;
 class ConvertToValueTest extends BaseTestCase
 {
 
-    public function provides_convertToValue_works()
+    public static function provides_convertToValue_works()
     {
         yield [123, 123];
 
@@ -43,7 +43,7 @@ class ConvertToValueTest extends BaseTestCase
 
 
 
-    public function provides_convertToValue_fails()
+    public static function provides_convertToValue_fails()
     {
         yield [new \StdClass, "Unsupported type [%s] of class [%s] for toArray."];
 

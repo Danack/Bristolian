@@ -38,7 +38,6 @@
         "spatie/yaml-front-matter": "^2.0",
         "ext-pdo": "*",
         "chillerlan/php-qrcode": "^4.3",
-
         "minishlink/web-push": "^8.0",
         "league/flysystem": "^3.0",
         "league/flysystem-aws-s3-v3": "^3.0",
@@ -62,7 +61,7 @@
         "friends-of-behat/mink-extension": "^2.0",
         "danack/coding-standard": "0.3.0",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "9.5.6",
+        "phpunit/phpunit": "11.5.48",
         "phpstan/phpstan-strict-rules": "^0.12.9",
         "slevomat/coding-standard": "^7.2.1",
         "squizlabs/php_codesniffer": "^3.7.0",

@@ -58,7 +58,7 @@ class PermissionsCheckHtmlMiddlewareTest extends BaseTestCase
         $this->assertInstanceOf(Response::class, $result);
     }
 
-    public function provides_login_route()
+    public static function provides_login_route()
     {
         yield ['/login'];
         yield ['/api/login-status'];

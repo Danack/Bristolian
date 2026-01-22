@@ -15,7 +15,7 @@ use BristolianTest\BaseTestCase;
 class LinkParamTest extends BaseTestCase
 {
 
-    public function provides_test_works()
+    public static function provides_test_works()
     {
         $unique = date("Ymdhis").uniqid();
 

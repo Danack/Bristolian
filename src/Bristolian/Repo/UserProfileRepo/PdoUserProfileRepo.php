@@ -15,7 +15,7 @@ class PdoUserProfileRepo implements UserProfileRepo
     {
     }
 
-    public function getUserProfile(string $user_id): UserProfileWithDisplayName|null
+    public function getUserProfile(string $user_id): UserProfileWithDisplayName
     {
         // Get the latest display name
         $display_name_sql = user_display_name::SELECT;

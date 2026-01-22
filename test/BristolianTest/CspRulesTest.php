@@ -96,9 +96,8 @@ class CspRulesTest extends TestCase
     /**
      * @group needs_fixing
      */
-    public function providesNoOtherPagesGiveACspReport()
+    public static function providesNoOtherPagesGiveACspReport()
     {
-        $this->markTestSkipped("grrr");
         $routes = require __DIR__ . '/../../routes/app_routes.php';
         $testData = [];
 
@@ -127,41 +126,41 @@ class CspRulesTest extends TestCase
         return $testData;
     }
 
-    /**
-     * @group needs_fixing
-     * @group slow
-     * @dataProvider providesNoOtherPagesGiveACspReport
-     */
-    public function testNoOtherPagesGiveACspReport(string $path)
-    {
-        $this->markTestSkipped("grrr");
-
-        $chromeDriver = new ChromeDriver(
-            'http://10.254.254.254:9222',
-            null,
-            self::CSP_VIOLATION_PAGE
-        );
-
-        $mink = new Mink(array(
-            'browser' => new Session($chromeDriver)
-        ));
-
-        $mink->setDefaultSessionName('browser');
-        $this->assertEquals(200, $mink->getSession()->getStatusCode());
-
-        $injector = createInjector();
-        $cspStorage = $injector->make(RedisCSPViolationStorage::class);
-
-        $url = 'http://local.app.opensourcefees.com' . $path;
-
-        $cspStorage->clearReports();
-        $mink->getSession()->visit($url);
-        $reports = $cspStorage->getReports();
-
-        $this->assertCount(
-            0,
-            $reports,
-            "The page at $path apparently issued a CSP report: " . \json_encode($reports)
-        );
-    }
+//    /**
+//     * @group needs_fixing
+//     * @group slow
+//     * @dataProvider providesNoOtherPagesGiveACspReport
+//     */
+//    public function testNoOtherPagesGiveACspReport(string $path)
+//    {
+//        $this->markTestSkipped("grrr");
+//
+//        $chromeDriver = new ChromeDriver(
+//            'http://10.254.254.254:9222',
+//            null,
+//            self::CSP_VIOLATION_PAGE
+//        );
+//
+//        $mink = new Mink(array(
+//            'browser' => new Session($chromeDriver)
+//        ));
+//
+//        $mink->setDefaultSessionName('browser');
+//        $this->assertEquals(200, $mink->getSession()->getStatusCode());
+//
+//        $injector = createInjector();
+//        $cspStorage = $injector->make(RedisCSPViolationStorage::class);
+//
+//        $url = 'http://local.app.opensourcefees.com' . $path;
+//
+//        $cspStorage->clearReports();
+//        $mink->getSession()->visit($url);
+//        $reports = $cspStorage->getReports();
+//
+//        $this->assertCount(
+//            0,
+//            $reports,
+//            "The page at $path apparently issued a CSP report: " . \json_encode($reports)
+//        );
+//    }
 }

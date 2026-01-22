@@ -14,7 +14,7 @@ use BristolianTest\BaseTestCase;
 class VarnishTest extends BaseTestCase
 {
 
-    public function providesCountryLookupWorks()
+    public static function providesCountryLookupWorks()
     {
         return [
             ['85.214.132.117', 'DE'],
@@ -43,7 +43,7 @@ class VarnishTest extends BaseTestCase
         $this->assertEquals($expectedCountry, $countryCodeFound);
     }
 
-    public function providesCountryLookupBlank()
+    public static function providesCountryLookupBlank()
     {
         return [
             ['0.0.0.0'],

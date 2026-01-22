@@ -10,7 +10,7 @@ use Bristolian\Middleware\MiddlewareException;
  */
 class MiddlewareExceptionTest extends BaseTestCase
 {
-    public function provides_works()
+    public static function provides_works()
     {
         yield ['some string', "a string"];
         yield [new \StdClass, "an object of type [stdClass]"];

@@ -14,46 +14,46 @@ use Bristolian\Model\Chat\UserChatMessage;
  */
 class ToStringTraitTest extends BaseTestCase
 {
-    /**
-     * Get all classes in the Model directory that use the ToString trait
-     *
-     * @return array<class-string>
-     */
-    private function getModelClassesWithToStringTrait(): array
-    {
-        $modelDir = __DIR__ . '/../../src/Bristolian/Model';
-        $classes = [];
-
-        if (!is_dir($modelDir)) {
-            return [];
-        }
-
-        $files = scandir($modelDir);
-        if ($files === false) {
-            return [];
-        }
-
-        foreach ($files as $file) {
-            if (pathinfo($file, PATHINFO_EXTENSION) !== 'php') {
-                continue;
-            }
-
-            $className = 'Bristolian\\Model\\' . pathinfo($file, PATHINFO_FILENAME);
-
-            if (!class_exists($className)) {
-                continue;
-            }
-
-            $reflection = new \ReflectionClass($className);
-            $traits = $reflection->getTraitNames();
-
-            if (in_array(ToString::class, $traits, true)) {
-                $classes[] = $className;
-            }
-        }
-
-        return $classes;
-    }
+//    /**
+//     * Get all classes in the Model directory that use the ToString trait
+//     *
+//     * @return array<class-string>
+//     */
+//    private static function getModelClassesWithToStringTrait(): array
+//    {
+//        $modelDir = __DIR__ . '/../../src/Bristolian/Model/Generated';
+//        $classes = [];
+//
+//        if (!is_dir($modelDir)) {
+//            return [];
+//        }
+//
+//        $files = scandir($modelDir);
+//        if ($files === false) {
+//            return [];
+//        }
+//
+//        foreach ($files as $file) {
+//            if (pathinfo($file, PATHINFO_EXTENSION) !== 'php') {
+//                continue;
+//            }
+//
+//            $className = 'Bristolian\\Model\\Generated\\' . pathinfo($file, PATHINFO_FILENAME);
+//
+//            if (!class_exists($className)) {
+//                continue;
+//            }
+//
+//            $reflection = new \ReflectionClass($className);
+//            $traits = $reflection->getTraitNames();
+//
+//            if (in_array(ToString::class, $traits, true)) {
+//                $classes[] = $className;
+//            }
+//        }
+//
+//        return $classes;
+//    }
 
 //    /**
 //     * Factory method to create instances of Model classes for testing
@@ -106,11 +106,13 @@ class ToStringTraitTest extends BaseTestCase
     /**
      * Test that all Model classes with ToString trait can serialize and deserialize correctly
      *
-     * @dataProvider modelClassProvider
+     *
      * @param class-string $className
      */
-    public function testToStringAndFromStringRoundTrip(string $className): void
+    public function testToStringAndFromStringRoundTrip(/*string $className*/): void
     {
+        $className = 'Bob';
+
         $this->markTestSkipped("Need to fix this");
 
         // Create an instance
@@ -209,9 +211,9 @@ class ToStringTraitTest extends BaseTestCase
      *
      * @return array<string, array{class-string}>
      */
-    public function modelClassProvider(): array
+    public static function modelClassProvider(): array
     {
-        $classes = $this->getModelClassesWithToStringTrait();
+        $classes = self::getModelClassesWithToStringTrait();
         $data = [];
 
         foreach ($classes as $className) {
@@ -227,7 +229,7 @@ class ToStringTraitTest extends BaseTestCase
      *
      * @return array<string, array{class-string, object}>
      */
-    public function modelClassWithNullValuesProvider(): array
+    public static function modelClassWithNullValuesProvider(): array
     {
         return [
             'ChatMessage with null reply_id' => [
