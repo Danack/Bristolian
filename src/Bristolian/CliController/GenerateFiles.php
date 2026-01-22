@@ -995,6 +995,11 @@ SQL;
         }
         
         $content .= "\n";
+        $content .= "/**\n";
+        $content .= " * Auto-generated class - do not edit manually\n";
+        $content .= " * No need to test this class as it is auto-generated\n";
+        $content .= " * @codeCoverageIgnore\n";
+        $content .= " */\n";
         $content .= "class $className implements StubResponse\n";
         $content .= "{\n";
         $content .= "    private string \$body;\n\n";

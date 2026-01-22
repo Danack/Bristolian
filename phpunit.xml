@@ -1,43 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="test/phpunit_bootstrap.php"
-         beStrictAboutCoversAnnotation="false"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="test/phpunit_bootstrap.php"
+         cacheDirectory=".phpunit.cache"
+         executionOrder="depends,defects"
+
+         requireCoverageMetadata="true"
+         beStrictAboutCoverageMetadata="false"
          beStrictAboutOutputDuringTests="true"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage>
+         displayDetailsOnPhpunitDeprecations="true"
+         failOnPhpunitDeprecation="true"
+         failOnRisky="true"
+         failOnWarning="true">
+
+  <testsuites>
+    <testsuite name="default">
+      <directory>test</directory>
+    </testsuite>
+  </testsuites>
+
+  <source restrictNotices="true" restrictWarnings="true">
     <include>
-      <directory suffix=".php">src</directory>
+      <directory>src</directory>
     </include>
     <exclude>
       <directory>src/TypeSpec/OpenApi</directory>
       <file>src/TypeSpec/OpenApi/OpenApiV300Description.php</file>
       <file>src/TypeSpec/OpenApi/ShouldNeverBeCalledParamDescription.php</file>
     </exclude>
+  </source>
+
+  <coverage includeUncoveredFiles="true"
+            pathCoverage="false"
+            ignoreDeprecatedCodeUnits="true"
+            disableCodeCoverageIgnore="false">
     <report>
-      <html outputDirectory="tmp/coverage" lowUpperBound="35" highLowerBound="70"/>
-      <text outputFile="php://stdout" showUncoveredFiles="false" showOnlySummary="true"/>
+<!--      <clover outputFile="clover.xml"/>-->
+<!--      <cobertura outputFile="cobertura.xml"/>-->
+<!--      <crap4j outputFile="crap4j.xml" threshold="50"/>-->
+      <html outputDirectory="tmp/coverage" lowUpperBound="50" highLowerBound="90"/>
+<!--      <php outputFile="coverage.php"/>-->
+<!--      <text outputFile="coverage.txt" showUncoveredFiles="false" showOnlySummary="false"/>-->
+<!--      <xml outputDirectory="xml-coverage"/>-->
     </report>
   </coverage>
 
-  <php>
-    </php>
-  <testsuites>
-    <testsuite name="Test Suite">
-      <directory>test/</directory>
-    </testsuite>
-  </testsuites>
   <groups>
     <exclude>
       <group>needs_fixing</group>
       <group>external</group>
       <group>xdebug</group>
       <group>deadish</group>
-<!--      <group>db</group>-->
+      <!-- <group>db</group>-->
       <!-- <group>slow</group> -->
     </exclude>
   </groups>
-<!--  <extensions>-->
+
+  <!--  <extensions>-->
 <!--    <extension class="BristolianTest\TestDurationListener"/>-->
 <!--  </extensions>-->
+
   <logging>
     <!-- <log type="coverage-php" target="../tmp/coverage/unittest.cov"/> -->
   </logging>

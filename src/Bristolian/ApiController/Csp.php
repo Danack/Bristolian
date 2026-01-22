@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Bristolian\ApiController;
 
 use Bristolian\CSPViolation\CSPViolationStorage;
-use Bristolian\Response\Typed\GetCspReportsResponse;
+use Bristolian\Response\GetCspReportsResponse;
 use VarMap\VarMap;
 
 class Csp

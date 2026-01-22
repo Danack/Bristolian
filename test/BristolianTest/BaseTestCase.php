@@ -49,6 +49,9 @@ class BaseTestCase extends TestCase
         );
     }
 
+    /**
+     * @coversNothing
+     */
     public function testPHPUnitApparentlyGetsConfused(): void
     {
         //Basically despite having:
