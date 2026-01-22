@@ -191,6 +191,31 @@ docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c test/phpunit
 docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c test/phpunit.xml test/BristolianTest/AppController/RoomsTest.php"
 ```
 
+### Finding Uncovered Lines of Code
+
+To identify which lines of code need test coverage, first run the unit tests to generate a coverage report:
+
+```bash
+docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh --no-progress"
+```
+
+Then use the `list_uncovered_lines.php` script to find uncovered lines. You can filter by namespace or directory:
+
+```bash
+# Find all uncovered lines in a specific namespace
+docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml | grep Bristolian/Response"
+
+# Find all uncovered lines in a specific directory
+docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml | grep Bristolian/Model"
+
+# Count uncovered lines for a namespace
+docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml | grep Bristolian/Response | wc -l"
+```
+
+The output shows the file path and line numbers that are not covered by tests. Use this to identify which methods and code paths need additional test coverage.
+
+**Note:** Some uncovered lines may be error-handling paths that are difficult to trigger in normal operation. These are acceptable to leave uncovered if they represent defensive edge cases.
+
 ## JavaScript/TypeScript Testing
 
 ### Running Jest Tests

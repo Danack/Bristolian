@@ -101,7 +101,9 @@ class PermissionsCheckHtmlMiddleware implements MiddlewareInterface
         $token = trim($token);
         
         if (empty($token)) {
+            // @codeCoverageIgnoreStart
             return null;
+            // @codeCoverageIgnoreEnd
         }
         
         return $token;

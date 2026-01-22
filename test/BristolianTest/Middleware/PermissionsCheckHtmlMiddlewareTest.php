@@ -83,4 +83,102 @@ class PermissionsCheckHtmlMiddlewareTest extends BaseTestCase
         $result = $middleware->process($request, $request_handler);
         $this->assertInstanceOf(Response::class, $result);
     }
+
+    public function testWorks_POST_with_valid_bearer_token()
+    {
+        $appSessionManager = new FakeAppSessionManager();
+        $token = 'valid_token_123';
+        $apiToken = new \Bristolian\Model\Types\ApiToken(
+            id: 'token_id_1',
+            token: $token,
+            name: 'Test Token',
+            created_at: new \DateTimeImmutable(),
+            is_revoked: false,
+            revoked_at: null
+        );
+        $apiTokenRepo = new FakeApiTokenRepo([$apiToken]);
+
+        $middleware = new PermissionsCheckHtmlMiddleware($appSessionManager, $apiTokenRepo);
+
+        $request = new ServerRequest(method: 'POST');
+        $request = $request->withHeader('Authorization', 'Bearer ' . $token);
+        $request_handler = new FakeRequestHandler();
+
+        $result = $middleware->process($request, $request_handler);
+        $this->assertInstanceOf(Response::class, $result);
+    }
+
+    public function testWorks_POST_with_invalid_bearer_token()
+    {
+        $appSessionManager = new FakeAppSessionManager();
+        $apiTokenRepo = new FakeApiTokenRepo();
+
+        $middleware = new PermissionsCheckHtmlMiddleware($appSessionManager, $apiTokenRepo);
+
+        $request = new ServerRequest(method: 'POST');
+        $request = $request->withHeader('Authorization', 'Bearer invalid_token');
+        $request_handler = new FakeRequestHandler();
+
+        $this->expectException(InvalidPermissionsException::class);
+        $middleware->process($request, $request_handler);
+    }
+
+    public function testWorks_POST_with_missing_authorization_header()
+    {
+        $appSessionManager = new FakeAppSessionManager();
+        $apiTokenRepo = new FakeApiTokenRepo();
+
+        $middleware = new PermissionsCheckHtmlMiddleware($appSessionManager, $apiTokenRepo);
+
+        $request = new ServerRequest(method: 'POST');
+        $request_handler = new FakeRequestHandler();
+
+        $this->expectException(InvalidPermissionsException::class);
+        $middleware->process($request, $request_handler);
+    }
+
+    public function testWorks_POST_with_authorization_header_not_bearer()
+    {
+        $appSessionManager = new FakeAppSessionManager();
+        $apiTokenRepo = new FakeApiTokenRepo();
+
+        $middleware = new PermissionsCheckHtmlMiddleware($appSessionManager, $apiTokenRepo);
+
+        $request = new ServerRequest(method: 'POST');
+        $request = $request->withHeader('Authorization', 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=');
+        $request_handler = new FakeRequestHandler();
+
+        $this->expectException(InvalidPermissionsException::class);
+        $middleware->process($request, $request_handler);
+    }
+
+    public function testWorks_POST_with_empty_bearer_token()
+    {
+        $appSessionManager = new FakeAppSessionManager();
+        $apiTokenRepo = new FakeApiTokenRepo();
+
+        $middleware = new PermissionsCheckHtmlMiddleware($appSessionManager, $apiTokenRepo);
+
+        $request = new ServerRequest(method: 'POST');
+        $request = $request->withHeader('Authorization', 'Bearer ');
+        $request_handler = new FakeRequestHandler();
+
+        $this->expectException(InvalidPermissionsException::class);
+        $middleware->process($request, $request_handler);
+    }
+
+    public function testWorks_POST_with_bearer_token_with_whitespace()
+    {
+        $appSessionManager = new FakeAppSessionManager();
+        $apiTokenRepo = new FakeApiTokenRepo();
+
+        $middleware = new PermissionsCheckHtmlMiddleware($appSessionManager, $apiTokenRepo);
+
+        $request = new ServerRequest(method: 'POST');
+        $request = $request->withHeader('Authorization', 'Bearer    ');
+        $request_handler = new FakeRequestHandler();
+
+        $this->expectException(InvalidPermissionsException::class);
+        $middleware->process($request, $request_handler);
+    }
 }
