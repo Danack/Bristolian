@@ -20,17 +20,11 @@ class ProductLookupResponse implements StubResponse
         Product $product,
         ?Copyright $copyright = null
     ) {
-        [$error, $productData] = \convertToValue($product);
-        if ($error !== null) {
-            throw new \RuntimeException("Failed to convert product to value: $error");
-        }
+        $productData = \convertToValueSafe($product);
 
         $copyrightData = null;
         if ($copyright !== null) {
-            [$error, $copyrightData] = \convertToValue($copyright);
-            if ($error !== null) {
-                throw new \RuntimeException("Failed to convert copyright to value: $error");
-            }
+            $copyrightData = \convertToValueSafe($copyright);
         }
 
         $response = [

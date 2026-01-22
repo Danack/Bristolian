@@ -1,5 +1,22 @@
 <?php
 
+
+use Bristolian\Exception\DataEncodingException;
+
+function convertToValueSafe(mixed $value)
+{
+    [$error, $info] = \convertToValue($value);
+
+    if ($error !== null) {
+        // @codeCoverageIgnoreStart
+        throw new DataEncodingException("Could not convert object to flat - non-objects variables. ", $error);
+        // @codeCoverageIgnoreEnd
+    }
+
+    return $info;
+}
+
+
 /**
  * @param $value
  *

@@ -14,10 +14,7 @@ class UploadBristolStairsImageResponse implements StubResponse
 
     public function __construct(BristolStairInfo $stair_info)
     {
-        [$error, $converted_stair_info] = \convertToValue($stair_info);
-        if ($error !== null) {
-            throw new DataEncodingException("Could not convert stair_info to a value. ", $error);
-        }
+        $converted_stair_info = \convertToValueSafe($stair_info);
 
         $response_ok = [
             'result' => 'success',

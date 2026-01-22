@@ -16,10 +16,7 @@ class GetChatRoomMessagesResponse implements StubResponse
      */
     public function __construct(array $messages)
     {
-        [$error, $converted_messages] = \convertToValue($messages);
-        if ($error !== null) {
-            throw new DataEncodingException("Could not convert messages to a value. ", $error);
-        }
+        $converted_messages = \convertToValueSafe($messages);
 
         $response_ok = [
             'result' => 'success',

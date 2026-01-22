@@ -16,10 +16,7 @@ class GetCspReportsResponse implements StubResponse
      */
     public function __construct(int $count, array $reports)
     {
-        [$error, $converted_reports] = \convertToValue($reports);
-        if ($error !== null) {
-            throw new DataEncodingException("Could not convert reports to a value. ", $error);
-        }
+        $converted_reports = \convertToValueSafe($reports);
 
         $response_ok = [
             'result' => 'success',

@@ -14,10 +14,7 @@ class SendChatMessageResponse implements StubResponse
 
     public function __construct(UserChatMessage $chatMessage)
     {
-        [$error, $converted_message] = \convertToValue($chatMessage);
-        if ($error !== null) {
-            throw new DataEncodingException("Could not convert chat message to a value. ", $error);
-        }
+        $converted_message = \convertToValueSafe($chatMessage);
 
         $response_ok = [
             'result' => 'success',
