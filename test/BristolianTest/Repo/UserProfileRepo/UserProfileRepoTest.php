@@ -38,11 +38,12 @@ abstract class UserProfileRepoTest extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $result = $repo->getUserProfile('nonexistent-user-id-' . uniqid());
+        $user_id = 'nonexistent-user-id-' . uniqid();
 
-        // PDO implementation returns UserProfileWithDisplayName with default profile (never null)
+        $result = $repo->getUserProfile($user_id);
+
         $this->assertInstanceOf(UserProfileWithDisplayName::class, $result);
-        $this->assertSame('nonexistent-user-id', $result->getUserId());
+        $this->assertSame($user_id, $result->getUserId());
         $this->assertNull($result->getAvatarImageId());
         $this->assertNull($result->getAboutMe());
         $this->assertSame('', $result->getDisplayName()); // No display name yet

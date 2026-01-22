@@ -55,16 +55,16 @@ class AdminUser
         return $this->password_hash;
     }
 
-    public static function fromPartial(
-        string $email_address,
-        string $password_hash,
-    ): self {
-        $instance = new self();
-        $instance->email_address = $email_address;
-        $instance->password_hash = $password_hash;
-
-        return $instance;
-    }
+//    public static function fromPartial(
+//        string $email_address,
+//        string $password_hash,
+//    ): self {
+//        $instance = new self();
+//        $instance->email_address = $email_address;
+//        $instance->password_hash = $password_hash;
+//
+//        return $instance;
+//    }
 
 
 //

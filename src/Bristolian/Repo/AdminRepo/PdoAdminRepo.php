@@ -64,16 +64,6 @@ SQL;
         );
     }
 
-//    public function setPasswordForAdminUser(AdminUser $adminUser, string $newPassword)
-//    {
-//        $password_hash = generate_password_hash($newPassword);
-//        $adminUser->setPasswordHash($password_hash);
-//
-//        $this->em->persist($adminUser);
-//        $this->em->flush($adminUser);
-//    }
-
-
     /**
      * For security reasons (for now) if you only have the username, you
      * can only get the user_id

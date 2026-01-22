@@ -6,23 +6,29 @@ namespace Bristolian\Repo\AdminRepo;
 
 use Bristolian\Model\Types\AdminUser;
 use Bristolian\Parameters\CreateUserParams;
+use Ramsey\Uuid\Uuid;
 
 class FakeAdminRepo implements AdminRepo
 {
-    /**
-     * @var mixed[]
-     *
-     * should probably be  array<array{0: string, 1: string, 2: AdminUser}> or similar
-     */
-    private array $email_addresses_PasswordsAndUsers = [];
 
     /**
-     *
-     * @param mixed[] $usernamesPasswordsAndUsers Example [['John', 'password123']]
+     * @var AdminUser[]
+     */
+    private array $adminUsers = [];
+
+    /**
+     * @param AdminUser[] $usernamesPasswordsAndUsers
      */
     public function __construct(array $usernamesPasswordsAndUsers)
     {
-        $this->email_addresses_PasswordsAndUsers = $usernamesPasswordsAndUsers;
+        $this->adminUsers = $usernamesPasswordsAndUsers;
+    }
+
+    private function createUser(): string
+    {
+        $uuid = Uuid::uuid7();
+
+        return $uuid->toString();
     }
 
     public function addUser(CreateUserParams $createAdminUserParams): AdminUser
@@ -30,36 +36,23 @@ class FakeAdminRepo implements AdminRepo
         $email_address = $createAdminUserParams->getEmailaddress();
         $password = $createAdminUserParams->getPassword();
 
-        $adminUser = AdminUser::fromPartial($email_address, $password);
+        $user_id = $this->createUser();
+        $password_hash = generate_password_hash($password);
 
-        $this->email_addresses_PasswordsAndUsers[] = [$email_address, $password, $adminUser];
+        $adminUser = AdminUser::new($user_id, $email_address, $password_hash);
+
+        $this->adminUsers[] = $adminUser;
 
         return $adminUser;
     }
 
-    /**
-     * @param string $email_address
-     * @param mixed[] $usernamesPasswordsAndUser
-     * @return AdminUser|null
-     */
-    private function matchUser(
-        string $email_address,
-        array $usernamesPasswordsAndUser
-    ): ?AdminUser {
-
-        if ($email_address !== $usernamesPasswordsAndUser[0]) {
-            return null;
-        }
-
-        return $usernamesPasswordsAndUser[2];
-    }
 
     public function getAdminUserId(string $username): ?string
     {
-        foreach ($this->email_addresses_PasswordsAndUsers as $usernamesPasswordsAndUser) {
-            $user = $this->matchUser($username, $usernamesPasswordsAndUser);
-            if ($user !== null) {
-                return $user->getEmailAddress();
+        foreach ($this->adminUsers as $adminUser) {
+
+            if ($adminUser->getEmailAddress() === $username) {
+                return $adminUser->getUserId();
             }
         }
 
@@ -74,11 +67,12 @@ class FakeAdminRepo implements AdminRepo
      */
     public function getAdminUser(string $email_address, string $password): ?AdminUser
     {
-        foreach ($this->email_addresses_PasswordsAndUsers as $usernamesPasswordsAndUser) {
-            $user = $this->matchUser($email_address, $usernamesPasswordsAndUser);
-            if ($user !== null) {
-                if ($password === $usernamesPasswordsAndUser[1]) {
-                    return $user;
+        foreach ($this->adminUsers as $adminUser) {
+            if ($adminUser->getEmailAddress() === $email_address) {
+                $password_hash = $adminUser->getPasswordHash();
+
+                if (password_verify($password, $password_hash) === true) {
+                    return $adminUser;
                 }
             }
         }

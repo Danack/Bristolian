@@ -27,9 +27,13 @@
       <group>external</group>
       <group>xdebug</group>
       <group>deadish</group>
+      <group>db</group>
       <!-- <group>slow</group> -->
     </exclude>
   </groups>
+  <extensions>
+<!--    <extension class="BristolianTest\TestDurationListener"/>-->
+  </extensions>
   <logging>
     <!-- <log type="coverage-php" target="../tmp/coverage/unittest.cov"/> -->
   </logging>

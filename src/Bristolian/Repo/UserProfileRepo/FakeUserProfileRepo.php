@@ -28,16 +28,10 @@ class FakeUserProfileRepo implements UserProfileRepo
 
     private int $nextDisplayNameId = 1;
 
-    public function getUserProfile(string $user_id): UserProfileWithDisplayName|null
+    public function getUserProfile(string $user_id): UserProfileWithDisplayName
     {
         // Get profile (create default if doesn't exist, matching PDO behavior)
-        $profile = $this->profiles[$user_id] ?? new UserProfile(
-            user_id: $user_id,
-            avatar_image_id: null,
-            about_me: null,
-            created_at: new \DateTimeImmutable(),
-            updated_at: new \DateTimeImmutable(),
-        );
+        $profile = $this->profiles[$user_id] ??  UserProfile::createBlankForUserId($user_id);
 
         // Get latest display name (highest version)
         $displayName = null;

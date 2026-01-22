@@ -9,8 +9,9 @@ interface UserProfileRepo
 {
     /**
      * Get the current user profile including latest display name
+     * Or a default blank profile.
      */
-    public function getUserProfile(string $user_id): UserProfileWithDisplayName|null;
+    public function getUserProfile(string $user_id): UserProfileWithDisplayName;
 
     /**
      * Get all display names for a user, ordered by version descending (newest first)

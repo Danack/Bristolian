@@ -12,9 +12,16 @@ use Bristolian\Parameters\CreateUserParams;
  */
 interface AdminRepo
 {
-    public function addUser(CreateUserParams $createUserParams): AdminUser;
+    public function addUser(CreateUserParams $createAdminUserParams): AdminUser;
 
     public function getAdminUserId(string $username): ?string;
 
+    /**
+     * We really need to standardise on username or email. Or something.
+     *
+     * @param string $username
+     * @param string $password
+     * @return AdminUser|null
+     */
     public function getAdminUser(string $username, string $password): ?AdminUser;
 }

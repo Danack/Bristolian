@@ -26,19 +26,19 @@ class AdminUserTest extends BaseTestCase
         $this->assertSame($passwordHash, $adminUser->getPasswordHash());
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\AdminUser
-     */
-    public function testFromPartial()
-    {
-        $emailAddress = 'partial@example.com';
-        $passwordHash = 'hashed-password-partial';
-
-        $adminUser = AdminUser::fromPartial($emailAddress, $passwordHash);
-
-        $this->assertSame($emailAddress, $adminUser->getEmailAddress());
-        $this->assertSame($passwordHash, $adminUser->getPasswordHash());
-    }
+//    /**
+//     * @covers \Bristolian\Model\Types\AdminUser
+//     */
+//    public function testFromPartial()
+//    {
+//        $emailAddress = 'partial@example.com';
+//        $passwordHash = 'hashed-password-partial';
+//
+//        $adminUser = AdminUser::fromPartial($emailAddress, $passwordHash);
+//
+//        $this->assertSame($emailAddress, $adminUser->getEmailAddress());
+//        $this->assertSame($passwordHash, $adminUser->getPasswordHash());
+//    }
 
     /**
      * @covers \Bristolian\Model\Types\AdminUser
