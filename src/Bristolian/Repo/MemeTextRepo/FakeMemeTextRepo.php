@@ -24,6 +24,7 @@ class FakeMemeTextRepo implements MemeTextRepo
     /**
      * @var MemeText[]
      * All texts stored, ordered by creation
+     * @phpstan-ignore-next-line property.onlyWritten
      */
     private array $allTexts = [];
 

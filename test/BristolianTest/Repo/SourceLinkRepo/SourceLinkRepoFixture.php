@@ -50,7 +50,6 @@ abstract class SourceLinkRepoFixture extends BaseTestCase
 
         $sourceLinkId = $repo->addSourceLink($user_id, $title, $highlights);
 
-        $this->assertIsString($sourceLinkId);
         $this->assertNotEmpty($sourceLinkId);
     }
 
@@ -86,7 +85,6 @@ abstract class SourceLinkRepoFixture extends BaseTestCase
 
         $sourceLinkId = $repo->addSourceLink($user_id, $title, $highlights);
 
-        $this->assertIsString($sourceLinkId);
         $this->assertNotEmpty($sourceLinkId);
     }
 
@@ -115,7 +113,6 @@ abstract class SourceLinkRepoFixture extends BaseTestCase
 
         $sourceLinkId = $repo->addSourceLink($user_id, $title, $highlights);
 
-        $this->assertIsString($sourceLinkId);
         $this->assertNotEmpty($sourceLinkId);
     }
 }

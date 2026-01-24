@@ -40,7 +40,6 @@ class PdoBristolStairImageStorageInfoRepoFixture extends BristolStairImageStorag
             $uploadedFile
         );
 
-        $this->assertIsString($file_id);
         $this->assertNotEmpty($file_id);
     }
 
@@ -185,12 +184,7 @@ class PdoBristolStairImageStorageInfoRepoFixture extends BristolStairImageStorag
         $file_info = $repo->getById($file_id);
 
         // Verify all properties
-        $this->assertIsString($file_info->id);
-        $this->assertIsString($file_info->user_id);
-        $this->assertIsString($file_info->normalized_name);
-        $this->assertIsString($file_info->original_filename);
         $this->assertIsInt($file_info->size);
-        $this->assertIsString($file_info->state);
         $this->assertInstanceOf(\DateTimeInterface::class, $file_info->created_at);
 
         // Verify specific values
@@ -366,7 +360,6 @@ class PdoBristolStairImageStorageInfoRepoFixture extends BristolStairImageStorag
         $file_info = $repo->getById($file_id);
 
         // Verify original filename is stored
-        $this->assertIsString($file_info->original_filename);
         $this->assertNotEmpty($file_info->original_filename);
         $this->assertSame($uploadedFile->getOriginalName(), $file_info->original_filename);
     }

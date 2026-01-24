@@ -29,7 +29,6 @@ abstract class LinkRepoFixture extends BaseTestCase
 
         $link_id_1 = $linkRepo->store_link($user_id, $url_1);
         $this->assertNotEmpty($link_id_1);
-        $this->assertIsString($link_id_1);
     }
 
 

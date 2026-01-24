@@ -107,10 +107,10 @@ class InjectionParamsTest extends BaseTestCase
     public function testWorks_share_with_string()
     {
         $params = new InjectionParams();
-        $params->share('ClassName');
+        $params->share(\stdClass::class);
 
         $this->assertCount(1, $params->shares);
-        $this->assertSame('ClassName', $params->shares[0]);
+        $this->assertSame(\stdClass::class, $params->shares[0]);
     }
 
     /**
@@ -196,7 +196,7 @@ class InjectionParamsTest extends BaseTestCase
         // This should not throw an exception
         $params->addToInjector($injector);
 
-        // Verify the injector was configured
-        $this->assertTrue(true); // If we get here, no exception was thrown
+        // Verify the injector was configured - if we get here, no exception was thrown
+        $this->assertInstanceOf(Injector::class, $injector);
     }
 }

@@ -21,7 +21,7 @@ class PdoLinkRepoFixture extends LinkRepoFixture
     /**
      * @covers \Bristolian\Repo\LinkRepo\PdoLinkRepo
      */
-    public function test_createEntry()
+    public function test_createEntry(): void
     {
         $pdoLinkRepo = $this->make(PdoLinkRepo::class);
 

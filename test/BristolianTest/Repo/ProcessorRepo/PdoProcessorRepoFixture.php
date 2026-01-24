@@ -201,10 +201,8 @@ class PdoProcessorRepoFixture extends ProcessorRepoFixture
             $state = $states[ProcessType::email_send->value];
 
             // Verify all properties exist and have correct types
-            $this->assertIsString($state->id);
             $this->assertNotEmpty($state->id);
             $this->assertIsBool($state->enabled);
-            $this->assertIsString($state->type);
             $this->assertSame(ProcessType::email_send->value, $state->type);
             $this->assertInstanceOf(\DateTimeInterface::class, $state->updated_at);
         }

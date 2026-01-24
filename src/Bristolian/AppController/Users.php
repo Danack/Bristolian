@@ -56,7 +56,7 @@ class Users
 
         $data = [
             'user_id' => $user_id,
-            'avatar_image_id' => $user_profile ? $user_profile->getAvatarImageId() : null,
+            'avatar_image_id' => $user_profile->getAvatarImageId(),
         ];
 
         [$error, $values] = convertToValue($data);
@@ -67,16 +67,8 @@ class Users
     public function getUserInfo(
         UserProfileRepo $userProfileRepo,
         string $user_id
-    ): GetUserInfoResponse|\SlimDispatcher\Response\HtmlResponse {
+    ): GetUserInfoResponse {
         $user_profile = $userProfileRepo->getUserProfile($user_id);
-        
-        if (!$user_profile) {
-            return new \SlimDispatcher\Response\HtmlResponse(
-                'User not found',
-                [],
-                404
-            );
-        }
 
         $data = [
             'user_id' => $user_id,
@@ -99,7 +91,7 @@ class Users
         // Get the user's profile to find their avatar_image_id
         $user_profile = $userProfileRepo->getUserProfile($user_id);
         
-        if (!$user_profile || !$user_profile->getAvatarImageId()) {
+        if (!$user_profile->getAvatarImageId()) {
             return new \Bristolian\Response\StoredFileErrorResponse('No avatar for user: ' . $user_id);
         }
 

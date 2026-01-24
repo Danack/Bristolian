@@ -118,12 +118,7 @@ class PdoRoomFileRepoFixture extends RoomFileRepoFixture
         $files = $roomFileRepo->getFilesForRoom($room->id);
 
         $file = $files[0];
-        $this->assertIsString($file->id);
-        $this->assertIsString($file->normalized_name);
-        $this->assertIsString($file->original_filename);
-        $this->assertIsString($file->state);
         $this->assertIsInt($file->size);
-        $this->assertIsString($file->user_id);
         $this->assertInstanceOf(\DateTimeInterface::class, $file->created_at);
     }
 

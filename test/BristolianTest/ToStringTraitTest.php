@@ -292,6 +292,5 @@ class ToStringTraitTest extends BaseTestCase
         $this->assertSame('room-xyz', $array['room_id']);
         $this->assertSame('Test array conversion', $array['text']);
         $this->assertNull($array['reply_message_id']);
-        $this->assertIsString($array['created_at']);
     }
 }

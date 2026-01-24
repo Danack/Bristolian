@@ -32,8 +32,6 @@ abstract class EmailQueueFixture extends BaseTestCase
 
         // Should not throw exception
         $repo->queueEmailToUsers($users, $subject, $body);
-
-        $this->assertTrue(true);
     }
 
 
@@ -46,8 +44,6 @@ abstract class EmailQueueFixture extends BaseTestCase
 
         // Should not throw exception
         $repo->queueEmailToUsers([], $subject, $body);
-
-        $this->assertTrue(true);
     }
 
 
@@ -88,9 +84,7 @@ abstract class EmailQueueFixture extends BaseTestCase
         $this->assertNotNull($email1);
 
         // Set to retry
-        if ($email1 !== null) {
-            $repo->setEmailToRetry($email1);
-        }
+        $repo->setEmailToRetry($email1);
 
         // Should be able to get it again
         $email2 = $repo->getEmailToSendAndUpdateState();
@@ -107,11 +101,7 @@ abstract class EmailQueueFixture extends BaseTestCase
         $this->assertNotNull($email);
 
         // Should not throw exception
-        if ($email !== null) {
-            $repo->setEmailSent($email);
-        }
-
-        $this->assertTrue(true);
+        $repo->setEmailSent($email);
     }
 
 
@@ -124,11 +114,7 @@ abstract class EmailQueueFixture extends BaseTestCase
         $this->assertNotNull($email);
 
         // Should not throw exception
-        if ($email !== null) {
-            $repo->setEmailFailed($email);
-        }
-
-        $this->assertTrue(true);
+        $repo->setEmailFailed($email);
     }
 
 
@@ -142,11 +128,7 @@ abstract class EmailQueueFixture extends BaseTestCase
         $this->assertSame(0, $email->retries);
 
         // Should not throw exception
-        if ($email !== null) {
-            $repo->setEmailToRetry($email);
-        }
-
-        $this->assertTrue(true);
+        $repo->setEmailToRetry($email);
     }
 
 
@@ -158,7 +140,6 @@ abstract class EmailQueueFixture extends BaseTestCase
 
         $count = $repo->clearQueue();
 
-        $this->assertIsInt($count);
         $this->assertGreaterThanOrEqual(0, $count);
     }
 
@@ -203,9 +184,7 @@ abstract class EmailQueueFixture extends BaseTestCase
         $this->assertInstanceOf(Email::class, $email);
 
         // Mark as sent
-        if ($email !== null) {
-            $repo->setEmailSent($email);
-        }
+        $repo->setEmailSent($email);
 
         // Should not be able to get it again
         $email2 = $repo->getEmailToSendAndUpdateState();
@@ -223,12 +202,10 @@ abstract class EmailQueueFixture extends BaseTestCase
         // Get email to send
         $email1 = $repo->getEmailToSendAndUpdateState();
         $this->assertNotNull($email1);
-        $initialRetries = $email1 !== null ? $email1->retries : 0;
+        $initialRetries = $email1->retries;
 
         // Set to retry (should increment retries)
-        if ($email1 !== null) {
-            $repo->setEmailToRetry($email1);
-        }
+        $repo->setEmailToRetry($email1);
 
         // Get email again (should return it with RETRY status)
         $email2 = $repo->getEmailToSendAndUpdateState();

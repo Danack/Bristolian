@@ -40,8 +40,6 @@ abstract class EmailIncomingFixture extends BaseTestCase
 
         // Should not throw exception
         $repo->saveEmail($emailParam);
-
-        $this->assertTrue(true);
     }
 
 
@@ -78,7 +76,5 @@ abstract class EmailIncomingFixture extends BaseTestCase
         // Should not throw exception
         $repo->saveEmail($email1);
         $repo->saveEmail($email2);
-
-        $this->assertTrue(true);
     }
 }

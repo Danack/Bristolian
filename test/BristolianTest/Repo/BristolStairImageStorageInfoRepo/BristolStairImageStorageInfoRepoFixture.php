@@ -37,6 +37,7 @@ abstract class BristolStairImageStorageInfoRepoFixture extends BaseTestCase
         );
 
         $this->assertNotEmpty($file_id);
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsString($file_id);
     }
 
@@ -118,6 +119,5 @@ abstract class BristolStairImageStorageInfoRepoFixture extends BaseTestCase
 
         // Should not throw an exception
         $repo->setUploaded($file_id);
-        $this->assertTrue(true);
     }
 }

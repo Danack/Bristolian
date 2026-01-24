@@ -39,8 +39,6 @@ abstract class BccTroRepoFixture extends BaseTestCase
 
         // Should not throw exception
         $repo->saveData([$tro1]);
-
-        $this->assertTrue(true);
     }
 
 
@@ -50,7 +48,5 @@ abstract class BccTroRepoFixture extends BaseTestCase
 
         // Should not throw exception
         $repo->saveData([]);
-
-        $this->assertTrue(true);
     }
 }

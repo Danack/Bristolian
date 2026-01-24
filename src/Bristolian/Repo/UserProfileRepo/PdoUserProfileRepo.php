@@ -110,15 +110,7 @@ SQL;
         $this->pdo_simple->execute($profile_sql, $profile_params);
 
         // 3. Fetch and return the complete updated profile
-        $result = $this->getUserProfile($user_id);
-
-        if ($result === null) {
-            throw new \Bristolian\Exception\BristolianException(
-                "Failed to fetch updated profile for user: " . $user_id
-            );
-        }
-
-        return $result;
+        return $this->getUserProfile($user_id);
     }
 
     public function updateAvatarImage(string $user_id, string $avatar_image_id): void

@@ -12,7 +12,16 @@ use BristolianTest\Repo\TestPlaceholders;
 class PdoMoonAlertRunTimeRecorderTest extends BaseTestCase
 {
     use TestPlaceholders;
-//
+
+    /**
+     * @coversNothing
+     */
+    public function testPHPUnitDoesntLikeEmptyTestClasses(): void
+    {
+        $this->assertTrue(true);
+    }
+
+
 //    public function testWorks()
 //    {
 //        $runTimeRecorder = $this->injector->make(PdoMoonAlertRunTimeRecorder::class);

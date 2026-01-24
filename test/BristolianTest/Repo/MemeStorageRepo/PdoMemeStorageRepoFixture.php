@@ -23,7 +23,7 @@ class PdoMemeStorageRepoFixture extends MemeStorageRepoFixture
     /**
      * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo
      */
-    public function test_createEntry()
+    public function test_createEntry(): void
     {
         $pdoMemeStorageRepo = $this->make(PdoMemeStorageRepo::class);
         $uploadedFile = UploadedFile::fromFile(__FILE__);

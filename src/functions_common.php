@@ -3,7 +3,7 @@
 
 use Bristolian\Exception\DataEncodingException;
 
-function convertToValueSafe(mixed $value)
+function convertToValueSafe(mixed $value): mixed
 {
     [$error, $info] = \convertToValue($value);
 

@@ -58,7 +58,6 @@ abstract class MemeTagRepoFixture extends BaseTestCase
 
         // Should not throw an exception
         $repo->addTagForMeme($user_id, $memeTagParam);
-        $this->assertTrue(true);
     }
 
 
@@ -70,7 +69,6 @@ abstract class MemeTagRepoFixture extends BaseTestCase
         $meme_id = $this->getTestMemeId();
 
         $tags = $repo->getUserTagsForMeme($user_id, $meme_id);
-        $this->assertIsArray($tags);
         $this->assertEmpty($tags);
     }
 
@@ -93,7 +91,6 @@ abstract class MemeTagRepoFixture extends BaseTestCase
         $repo->addTagForMeme($user_id, $memeTagParam);
 
         $tags = $repo->getUserTagsForMeme($user_id, $meme_id);
-        $this->assertIsArray($tags);
         $this->assertContains($text, $tags);
     }
 
@@ -128,7 +125,6 @@ abstract class MemeTagRepoFixture extends BaseTestCase
         ]));
 
         $count = $repo->updateTagForUser($user_id, $updateParams);
-        $this->assertIsInt($count);
     }
 
 
@@ -141,7 +137,6 @@ abstract class MemeTagRepoFixture extends BaseTestCase
 
         // Deleting a non-existent tag should return 0
         $count = $repo->deleteTagForUser($user_id, $meme_id);
-        $this->assertIsInt($count);
     }
 
 
@@ -153,15 +148,12 @@ abstract class MemeTagRepoFixture extends BaseTestCase
         $limit = 10;
 
         $tags = $repo->getMostCommonTags($user_id, $limit);
-        $this->assertIsArray($tags);
 
         // Each item should have 'text' and 'count' keys
         foreach ($tags as $tag) {
             $this->assertIsArray($tag);
             $this->assertArrayHasKey('text', $tag);
             $this->assertArrayHasKey('count', $tag);
-            $this->assertIsString($tag['text']);
-            $this->assertIsInt($tag['count']);
         }
     }
 
@@ -186,15 +178,12 @@ abstract class MemeTagRepoFixture extends BaseTestCase
         $limit = 10;
 
         $tags = $repo->getMostCommonTagsForMemes($user_id, $meme_ids, $limit);
-        $this->assertIsArray($tags);
 
         // Each item should have 'text' and 'count' keys
         foreach ($tags as $tag) {
             $this->assertIsArray($tag);
             $this->assertArrayHasKey('text', $tag);
             $this->assertArrayHasKey('count', $tag);
-            $this->assertIsString($tag['text']);
-            $this->assertIsInt($tag['count']);
         }
     }
 

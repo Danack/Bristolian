@@ -49,17 +49,17 @@ class BaseTestCase extends TestCase
         );
     }
 
-    /**
-     * @coversNothing
-     */
-    public function testPHPUnitApparentlyGetsConfused(): void
-    {
-        //Basically despite having:
-        //<exclude>*/BaseTestCase.php</exclude>
-        //in the phpunit.xml file it still thinks this file is a test class.
-        //and then complains about it not having any tests.
-//        $this->assertTrue(true);
-    }
+//    /**
+//     * @coversNothing
+//     */
+//    public function testPHPUnitApparentlyGetsConfused(): void
+//    {
+//        //Basically despite having:
+//        //<exclude>*/BaseTestCase.php</exclude>
+//        //in the phpunit.xml file it still thinks this file is a test class.
+//        //and then complains about it not having any tests.
+////        $this->assertTrue(true);
+//    }
 
     /**
      * @template T of object

@@ -46,7 +46,6 @@ abstract class RoomFileObjectInfoRepoFixture extends BaseTestCase
         );
 
         $this->assertNotEmpty($file_id);
-        $this->assertIsString($file_id);
     }
 
     public function test_setRoomFileObjectUploaded(): void

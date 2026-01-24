@@ -36,7 +36,6 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
 
         $id = $repo->startRun(ProcessType::email_send);
 
-        $this->assertIsString($id);
         $this->assertNotEmpty($id);
     }
 

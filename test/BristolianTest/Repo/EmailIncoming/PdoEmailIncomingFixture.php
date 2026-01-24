@@ -19,7 +19,7 @@ class PdoEmailIncomingFixture extends EmailIncomingFixture
         return $this->injector->make(PdoEmailIncoming::class);
     }
 
-    public function testSaveEmail()
+    public function testSaveEmail(): void
     {
         $incoming_email = $this->getTestIncomingEmeail();
         $pdoEmailIncoming = $this->injector->make(PdoEmailIncoming::class);
@@ -32,7 +32,7 @@ class PdoEmailIncomingFixture extends EmailIncomingFixture
 //        $this->assertTrue(true);
     }
 
-    public function testSaveEmailWithAllFields()
+    public function testSaveEmailWithAllFields(): void
     {
         $emailParam = new IncomingEmailParam(
             message_id: 'test-message-id-' . uniqid(),
@@ -53,7 +53,7 @@ class PdoEmailIncomingFixture extends EmailIncomingFixture
         //$this->assertTrue(true);
     }
 
-    public function testSaveMultipleEmails()
+    public function testSaveMultipleEmails(): void
     {
         $pdoEmailIncoming = $this->injector->make(PdoEmailIncoming::class);
         
@@ -78,7 +78,7 @@ class PdoEmailIncomingFixture extends EmailIncomingFixture
         //$this->assertTrue(true);
     }
 
-    public function testSaveEmailWithLongContent()
+    public function testSaveEmailWithLongContent(): void
     {
         $longText = str_repeat('This is a long email body. ', 100);
         
@@ -102,7 +102,7 @@ class PdoEmailIncomingFixture extends EmailIncomingFixture
         // $this->assertTrue(true);
     }
 
-    public function testSaveEmailWithSpecialCharacters()
+    public function testSaveEmailWithSpecialCharacters(): void
     {
         $emailParam = new IncomingEmailParam(
             message_id: 'test-special-' . uniqid(),
@@ -124,7 +124,7 @@ class PdoEmailIncomingFixture extends EmailIncomingFixture
 //        $this->assertTrue(true);
     }
 
-    public function testSaveEmailWithUnicodeContent()
+    public function testSaveEmailWithUnicodeContent(): void
     {
         $emailParam = new IncomingEmailParam(
             message_id: 'test-unicode-' . uniqid(),
@@ -146,7 +146,7 @@ class PdoEmailIncomingFixture extends EmailIncomingFixture
 //        $this->assertTrue(true);
     }
 
-    public function testSaveEmailImplementsInterface()
+    public function testSaveEmailImplementsInterface(): void
     {
         $pdoEmailIncoming = $this->injector->make(PdoEmailIncoming::class);
         
@@ -156,7 +156,7 @@ class PdoEmailIncomingFixture extends EmailIncomingFixture
         );
     }
 
-    public function testSaveEmailWithEmptyRetries()
+    public function testSaveEmailWithEmptyRetries(): void
     {
         $emailParam = new IncomingEmailParam(
             message_id: 'test-retries-' . uniqid(),

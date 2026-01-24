@@ -53,6 +53,10 @@ After creating tests, I run the tests again to verify:
 - Coverage has improved
 - No regressions were introduced
 
+**Running only the tests you mean to test:** When invoking PHPUnit for a specific test class, **use `--filter`** with the test class name or with specific test method names. Running only the test file path (e.g. `php vendor/bin/phpunit test/BristolianTest/PageTest.php`) also executes **inherited** tests from the base class. For example, `BaseTestCase` defines `testPHPUnitApparentlyGetsConfused`; running a subclass such as `PageTest` that way runs that base-class test as well, so the reported test count can be higher than the number of tests you added. To run only the tests you intend to verify, filter by the test class (e.g. `--filter 'BristolianTest\\\\PageTest'`) or by specific methods (e.g. `--filter 'BristolianTest\\\\PageTest::testGetQrShareMessage'`). Note: filtering by class still runs inherited tests; to run *only* your new tests, filter by those methods explicitly.
+
+**Unexpected behaviour from tools:** If you see unexpected behaviour from a tool (e.g. test count, failures, or odd output), tell the user what happened—we probably need to clean that up.
+
 ## Examples
 
 ### Example 1: Improve Coverage for a Namespace
@@ -90,12 +94,12 @@ After creating tests, I run the tests again to verify:
 
 ## Notes
 
-- **Error-handling paths**: Some uncovered lines may be defensive error-handling code that's difficult to trigger. These are acceptable to leave uncovered if they represent edge cases that are unlikely to occur in normal operation.
-
 - **Test structure**: I follow the patterns established in existing test files, using the same naming conventions, structure, and testing approaches.
 
 - **No mocks**: Per project guidelines, I use real objects and Fake implementations instead of mock objects.
 
-- **Coverage goal**: The aim is to significantly improve coverage, not necessarily achieve 100% (which may be impractical for some error paths).
+- **Coverage goal**: 100% coverage is the goal. It's okay to take our time. If something is difficult to test, ask for guidance. If a small refactor would make the code easier to test, that may be a better path than leaving it uncovered.
+
+- **Error-handling paths**: Some uncovered lines may be defensive error-handling code that's difficult to trigger. These are acceptable to leave uncovered if they represent edge cases that are difficult to test for.
 
 - **Scope boundaries**: If I encounter a situation where I cannot write passing tests without modifying code outside the specified namespace or directory, I will **stop and describe the problem** to you rather than making changes outside the requested scope. This ensures that improvements stay focused on the target area and any necessary broader changes can be discussed and approved first.

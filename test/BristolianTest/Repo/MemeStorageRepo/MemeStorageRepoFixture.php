@@ -37,7 +37,6 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
         );
 
         $this->assertNotEmpty($meme_id);
-        $this->assertIsString($meme_id);
     }
 
 
@@ -108,7 +107,6 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
         $user_id = 'user_123';
 
         $memes = $repo->listMemesForUser($user_id);
-        $this->assertIsArray($memes);
         $this->assertEmpty($memes);
     }
 
@@ -124,7 +122,6 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
         $repo->storeMeme($user_id, $normalized_filename, $uploadedFile);
 
         $memes = $repo->listMemesForUser($user_id);
-        $this->assertIsArray($memes);
         $this->assertNotEmpty($memes);
         $this->assertContainsOnlyInstancesOf(Meme::class, $memes);
     }
@@ -137,7 +134,6 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
         $user_id = 'user_123';
 
         $memes = $repo->searchMemesForUser($user_id, null, null);
-        $this->assertIsArray($memes);
     }
 
 
@@ -148,7 +144,6 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
         $user_id = 'user_123';
 
         $memes = $repo->searchMemesForUser($user_id, 'test', null);
-        $this->assertIsArray($memes);
         $this->assertContainsOnlyInstancesOf(Meme::class, $memes);
     }
 
@@ -160,7 +155,6 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
         $user_id = 'user_123';
 
         $memes = $repo->searchMemesForUser($user_id, null, 'character');
-        $this->assertIsArray($memes);
         $this->assertContainsOnlyInstancesOf(Meme::class, $memes);
     }
 
@@ -181,7 +175,6 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
 
         // Should not throw an exception
         $repo->setUploaded($meme_id);
-        $this->assertTrue(true);
     }
 
 
@@ -201,7 +194,6 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
 
         // Should not throw an exception
         $repo->markAsDeleted($meme_id);
-        $this->assertTrue(true);
     }
 
 
@@ -213,7 +205,6 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
         $tagTexts = ['tag1', 'tag2'];
 
         $memes = $repo->searchMemesByExactTags($user_id, $tagTexts);
-        $this->assertIsArray($memes);
         $this->assertContainsOnlyInstancesOf(Meme::class, $memes);
     }
 
@@ -225,7 +216,6 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
         $user_id = 'user_123';
 
         $memes = $repo->searchMemesByExactTags($user_id, []);
-        $this->assertIsArray($memes);
     }
 
 

@@ -23,7 +23,6 @@ class ReactWidgetsTest extends BaseTestCase
 
         $result = createReactWidget($type, $data);
 
-        $this->assertIsString($result);
         $this->assertStringContainsString('<div>', $result);
         $this->assertStringContainsString('</div>', $result);
         $this->assertStringContainsString("<span class=\"$type\"", $result);
@@ -50,7 +49,6 @@ class ReactWidgetsTest extends BaseTestCase
 
         $result = createReactWidget($type, $data);
 
-        $this->assertIsString($result);
         $this->assertStringContainsString("<span class=\"$type\"", $result);
         $this->assertStringContainsString('data-widgety_json=', $result);
         
@@ -76,7 +74,6 @@ class ReactWidgetsTest extends BaseTestCase
 
         $result = createReactWidget($type, $data);
 
-        $this->assertIsString($result);
         $this->assertStringContainsString("<span class=\"$type\"", $result);
         $this->assertStringContainsString('data-widgety_json=', $result);
         
@@ -170,7 +167,6 @@ class ReactWidgetsTest extends BaseTestCase
         $decoded = json_decode($jsonData, true);
         
         // convertToValue should convert DateTime to ISO string
-        $this->assertIsString($decoded['initial_json_data']['created_at']);
         $this->assertStringContainsString('2024-01-15', $decoded['initial_json_data']['created_at']);
     }
 }

@@ -26,7 +26,6 @@ class PdoProcessorRunRecordRepoFixture extends ProcessorRunRecordRepoFixture
 
         $id = $repo->startRun(ProcessType::email_send);
 
-        $this->assertIsString($id);
         $this->assertNotEmpty($id);
     }
 
@@ -173,10 +172,7 @@ class PdoProcessorRunRecordRepoFixture extends ProcessorRunRecordRepoFixture
         $this->assertIsInt($foundRecord->id);
         $this->assertInstanceOf(\DateTimeInterface::class, $foundRecord->start_time);
         $this->assertTrue($foundRecord->end_time === null || $foundRecord->end_time instanceof \DateTimeInterface);
-        $this->assertIsString($foundRecord->status);
         $this->assertSame(ProcessorRunRecordRepo::STATE_INITIAL, $foundRecord->status);
-        $this->assertIsString($foundRecord->debug_info);
-        $this->assertIsString($foundRecord->processor_type);
         $this->assertSame(ProcessType::moon_alert->value, $foundRecord->processor_type);
     }
 
@@ -238,7 +234,6 @@ class PdoProcessorRunRecordRepoFixture extends ProcessorRunRecordRepoFixture
 
         // Start a run
         $id = $repo->startRun(ProcessType::moon_alert);
-        $this->assertIsString($id);
 
         // Get the last run time
         $lastRun = $repo->getLastRunDateTime(ProcessType::moon_alert);

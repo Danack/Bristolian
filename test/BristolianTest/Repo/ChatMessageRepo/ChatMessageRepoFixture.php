@@ -83,6 +83,7 @@ abstract class ChatMessageRepoFixture extends BaseTestCase
 
         $messages = $repo->getMessagesForRoom($this->getTestRoomId());
 
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($messages);
         $this->assertEmpty($messages);
     }

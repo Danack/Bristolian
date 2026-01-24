@@ -44,7 +44,8 @@ class User
                 $meme->state,
                 $meme->size,
                 $meme->user_id,
-                $meme->created_at
+                $meme->created_at,
+                $meme->deleted ? 1 : 0
             ),
             $memes
         );
@@ -140,7 +141,8 @@ class User
                 $meme->state,
                 $meme->size,
                 $meme->user_id,
-                $meme->created_at
+                $meme->created_at,
+                $meme->deleted ? 1 : 0
             ),
             $memes
         );

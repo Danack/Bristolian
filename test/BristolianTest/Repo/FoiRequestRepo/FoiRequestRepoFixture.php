@@ -29,7 +29,6 @@ abstract class FoiRequestRepoFixture extends BaseTestCase
 
         $requests = $repo->getAllFoiRequests();
 
-        $this->assertIsArray($requests);
         $this->assertEmpty($requests);
     }
 

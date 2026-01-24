@@ -12,8 +12,11 @@ class TestFromArrayClass
 {
     use FromArray;
 
+    /** @var string */
     public $name;
+    /** @var int */
     public $age;
+    /** @var bool */
     public $active;
 }
 

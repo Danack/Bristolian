@@ -47,7 +47,6 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
         $roomLinkId = $repo->addLinkToRoomFromParam($user_id, $room_id, $linkParam);
 
         $this->assertNotEmpty($roomLinkId);
-        $this->assertIsString($roomLinkId);
     }
 
     public function test_getLinksForRoom_returns_links_after_adding(): void

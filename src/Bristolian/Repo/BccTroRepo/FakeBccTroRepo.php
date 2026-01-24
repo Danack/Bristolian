@@ -13,6 +13,7 @@ class FakeBccTroRepo implements BccTroRepo
 {
     /**
      * @var array<string, mixed>
+     * @phpstan-ignore-next-line property.onlyWritten
      */
     private array $savedData = [];
 

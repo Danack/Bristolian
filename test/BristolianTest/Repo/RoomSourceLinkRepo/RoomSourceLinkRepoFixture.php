@@ -39,7 +39,6 @@ abstract class RoomSourceLinkRepoFixture extends BaseTestCase
             $sourceLinkParam
         );
 
-        $this->assertIsString($room_sourcelink_id);
         $this->assertNotEmpty($room_sourcelink_id);
     }
 

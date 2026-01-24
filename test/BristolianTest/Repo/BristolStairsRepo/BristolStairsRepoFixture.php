@@ -68,7 +68,9 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
 
         [$flights_of_stairs, $total_steps] = $repo->get_total_number_of_steps();
 
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsInt($flights_of_stairs);
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsInt($total_steps);
         $this->assertGreaterThanOrEqual(0, $flights_of_stairs);
         $this->assertGreaterThanOrEqual(0, $total_steps);
@@ -81,6 +83,7 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
 
         $all_stairs = $repo->getAllStairsInfo();
 
+        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
         $this->assertIsArray($all_stairs);
         foreach ($all_stairs as $stair) {
             $this->assertInstanceOf(BristolStairInfo::class, $stair);
@@ -144,7 +147,6 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
 
         // Should not throw an exception
         $repo->updateStairInfo($params);
-        $this->assertTrue(true);
     }
 
 
@@ -168,6 +170,5 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
 
         // Should not throw an exception
         $repo->updateStairPosition($params);
-        $this->assertTrue(true);
     }
 }

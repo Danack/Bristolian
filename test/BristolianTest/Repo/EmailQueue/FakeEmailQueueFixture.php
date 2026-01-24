@@ -69,13 +69,11 @@ class FakeEmailQueueFixture extends EmailQueueFixture
         $email = $fakeQueue->getEmailToSendAndUpdateState();
         $this->assertNotNull($email);
 
-        if ($email !== null) {
-            $fakeQueue->setEmailSent($email);
+        $fakeQueue->setEmailSent($email);
 
-            $storedEmail = $fakeQueue->getEmailById($email->id);
-            $this->assertNotNull($storedEmail);
-            $this->assertSame(EmailController::STATE_SENT, $storedEmail->status);
-        }
+        $storedEmail = $fakeQueue->getEmailById($email->id);
+        $this->assertNotNull($storedEmail);
+        $this->assertSame(EmailController::STATE_SENT, $storedEmail->status);
     }
 
     /**
@@ -89,13 +87,11 @@ class FakeEmailQueueFixture extends EmailQueueFixture
         $email = $fakeQueue->getEmailToSendAndUpdateState();
         $this->assertNotNull($email);
 
-        if ($email !== null) {
-            $fakeQueue->setEmailFailed($email);
+        $fakeQueue->setEmailFailed($email);
 
-            $storedEmail = $fakeQueue->getEmailById($email->id);
-            $this->assertNotNull($storedEmail);
-            $this->assertSame(EmailController::STATE_FAILED, $storedEmail->status);
-        }
+        $storedEmail = $fakeQueue->getEmailById($email->id);
+        $this->assertNotNull($storedEmail);
+        $this->assertSame(EmailController::STATE_FAILED, $storedEmail->status);
     }
 
     /**
@@ -110,14 +106,12 @@ class FakeEmailQueueFixture extends EmailQueueFixture
         $this->assertNotNull($email);
         $this->assertSame(0, $email->retries);
 
-        if ($email !== null) {
-            $fakeQueue->setEmailToRetry($email);
+        $fakeQueue->setEmailToRetry($email);
 
-            $storedEmail = $fakeQueue->getEmailById($email->id);
-            $this->assertNotNull($storedEmail);
-            $this->assertSame(1, $storedEmail->retries);
-            $this->assertSame(EmailController::STATE_RETRY, $storedEmail->status);
-        }
+        $storedEmail = $fakeQueue->getEmailById($email->id);
+        $this->assertNotNull($storedEmail);
+        $this->assertSame(1, $storedEmail->retries);
+        $this->assertSame(EmailController::STATE_RETRY, $storedEmail->status);
     }
 
     /**
@@ -131,19 +125,17 @@ class FakeEmailQueueFixture extends EmailQueueFixture
         $email = $fakeQueue->getEmailToSendAndUpdateState();
         $this->assertNotNull($email);
 
-        if ($email !== null) {
-            $fakeQueue->setEmailToRetry($email);
-            $email1 = $fakeQueue->getEmailById($email->id);
-            $this->assertSame(1, $email1->retries);
+        $fakeQueue->setEmailToRetry($email);
+        $email1 = $fakeQueue->getEmailById($email->id);
+        $this->assertSame(1, $email1->retries);
 
-            $fakeQueue->setEmailToRetry($email1);
-            $email2 = $fakeQueue->getEmailById($email->id);
-            $this->assertSame(2, $email2->retries);
+        $fakeQueue->setEmailToRetry($email1);
+        $email2 = $fakeQueue->getEmailById($email->id);
+        $this->assertSame(2, $email2->retries);
 
-            $fakeQueue->setEmailToRetry($email2);
-            $email3 = $fakeQueue->getEmailById($email->id);
-            $this->assertSame(3, $email3->retries);
-        }
+        $fakeQueue->setEmailToRetry($email2);
+        $email3 = $fakeQueue->getEmailById($email->id);
+        $this->assertSame(3, $email3->retries);
     }
 
     /**

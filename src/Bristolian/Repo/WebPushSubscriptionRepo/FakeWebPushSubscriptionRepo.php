@@ -13,7 +13,7 @@ use Bristolian\Parameters\WebPushSubscriptionParams;
 class FakeWebPushSubscriptionRepo implements WebPushSubscriptionRepo
 {
     /**
-     * @var array<string, array{endpoint: string, expiration_time: string|null, raw: string}>
+     * @var array<string, array<string, array{endpoint: string, expiration_time: string|null, raw: string}>>
      * Keyed by user_id, then by endpoint
      */
     private array $subscriptions = [];
