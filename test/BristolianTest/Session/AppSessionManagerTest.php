@@ -12,6 +12,6 @@ class AppSessionManagerTest extends BaseTestCase
      */
     public function testPHPUnitDoesntLikeEmptyTestClasses(): void
     {
-        $this->assertTrue(true);
+        // Empty test to satisfy PHPUnit requirement for non-empty test classes
     }
 }

@@ -29,7 +29,6 @@ abstract class RoomFileRepoFixture extends BaseTestCase
 
         // Should not throw an exception
         $repo->addFileToRoom($fileStorageId, $room_id);
-        $this->assertTrue(true);
     }
 
     public function test_getFilesForRoom_returns_empty_initially(): void
@@ -39,7 +38,6 @@ abstract class RoomFileRepoFixture extends BaseTestCase
         $room_id = 'room_456';
 
         $files = $repo->getFilesForRoom($room_id);
-        $this->assertIsArray($files);
         $this->assertEmpty($files);
     }
 
@@ -53,7 +51,6 @@ abstract class RoomFileRepoFixture extends BaseTestCase
         $repo->addFileToRoom($fileStorageId, $room_id);
 
         $files = $repo->getFilesForRoom($room_id);
-        $this->assertIsArray($files);
         $this->assertNotEmpty($files);
         $this->assertContainsOnlyInstancesOf(RoomFileObjectInfo::class, $files);
     }

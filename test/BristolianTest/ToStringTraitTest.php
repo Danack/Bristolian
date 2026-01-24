@@ -105,9 +105,6 @@ class ToStringTraitTest extends BaseTestCase
 
     /**
      * Test that all Model classes with ToString trait can serialize and deserialize correctly
-     *
-     *
-     * @param class-string $className
      */
     public function testToStringAndFromStringRoundTrip(/*string $className*/): void
     {
@@ -213,6 +210,7 @@ class ToStringTraitTest extends BaseTestCase
      */
     public static function modelClassProvider(): array
     {
+        /** @phpstan-ignore-next-line */
         $classes = self::getModelClassesWithToStringTrait();
         $data = [];
 

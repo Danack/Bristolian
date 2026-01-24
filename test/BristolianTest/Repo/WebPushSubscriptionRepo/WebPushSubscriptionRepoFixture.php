@@ -47,7 +47,6 @@ abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
 
         $subscriptions = $repo->getUserSubscriptions($this->getTestUserId());
 
-        $this->assertIsArray($subscriptions);
         $this->assertEmpty($subscriptions);
     }
 
@@ -63,8 +62,6 @@ abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
 
         // Should not throw exception
         $repo->save($this->getTestUserId(), $webPushSubscriptionParam, '{"raw": "subscription data"}');
-
-        $this->assertTrue(true);
     }
 
     public function test_getUserSubscriptions_returns_saved_subscriptions(): void

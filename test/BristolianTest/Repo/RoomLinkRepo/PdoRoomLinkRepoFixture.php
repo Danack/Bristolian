@@ -24,7 +24,7 @@ class PdoRoomLinkRepoFixture extends RoomLinkRepoFixture
     /**
      * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo
      */
-    public function testAddLinkToRoom()
+    public function testAddLinkToRoom(): void
     {
         $this->initPdoTestObjects();
         [$room, $user] = $this->createTestUserAndRoom();
@@ -50,7 +50,7 @@ class PdoRoomLinkRepoFixture extends RoomLinkRepoFixture
     /**
      * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo
      */
-    public function testAddLinkToRoomWithTitleAndDescription()
+    public function testAddLinkToRoomWithTitleAndDescription(): void
     {
         $this->initPdoTestObjects();
         [$room, $user] = $this->createTestUserAndRoom();
@@ -82,7 +82,7 @@ class PdoRoomLinkRepoFixture extends RoomLinkRepoFixture
     /**
      * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo
      */
-    public function testGetLinksForRoom()
+    public function testGetLinksForRoom(): void
     {
         $this->initPdoTestObjects();
         [$room, $user] = $this->createTestUserAndRoom();
@@ -138,7 +138,7 @@ class PdoRoomLinkRepoFixture extends RoomLinkRepoFixture
     /**
      * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo
      */
-    public function testGetLinksForRoomReturnsEmptyArrayForNonExistentRoom()
+    public function testGetLinksForRoomReturnsEmptyArrayForNonExistentRoom(): void
     {
         $this->initPdoTestObjects();
         $roomLinkRepo = $this->injector->make(PdoRoomLinkRepo::class);
@@ -146,14 +146,13 @@ class PdoRoomLinkRepoFixture extends RoomLinkRepoFixture
         // Try to get links for a room that doesn't exist
         $roomLinks = $roomLinkRepo->getLinksForRoom('non-existent-room-id');
 
-        $this->assertIsArray($roomLinks);
         $this->assertEmpty($roomLinks);
     }
 
     /**
      * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo
      */
-    public function testGetRoomLinkThrowsExceptionForNonExistentLink()
+    public function testGetRoomLinkThrowsExceptionForNonExistentLink(): void
     {
         $this->initPdoTestObjects();
         $roomLinkRepo = $this->injector->make(PdoRoomLinkRepo::class);
@@ -167,7 +166,7 @@ class PdoRoomLinkRepoFixture extends RoomLinkRepoFixture
     /**
      * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo
      */
-    public function testMultipleLinksFromDifferentUsers()
+    public function testMultipleLinksFromDifferentUsers(): void
     {
         $this->initPdoTestObjects();
         [$room, $user1] = $this->createTestUserAndRoom();

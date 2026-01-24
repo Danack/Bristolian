@@ -64,6 +64,5 @@ abstract class RoomFileObjectInfoRepoFixture extends BaseTestCase
 
         // Should not throw an exception
         $repo->setRoomFileObjectUploaded($file_id);
-        $this->assertTrue(true);
     }
 }

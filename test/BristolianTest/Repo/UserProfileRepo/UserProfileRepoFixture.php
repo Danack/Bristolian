@@ -55,7 +55,6 @@ abstract class UserProfileRepoFixture extends BaseTestCase
 
         $history = $repo->getDisplayNameHistory('user-123');
 
-        $this->assertIsArray($history);
         $this->assertEmpty($history);
     }
 
@@ -137,7 +136,6 @@ abstract class UserProfileRepoFixture extends BaseTestCase
         $repo->updateAvatarImage($this->getTestUserId(), 'avatar-image-id-456');
 
         $profile = $repo->getUserProfile($this->getTestUserId());
-        $this->assertNotNull($profile);
         $this->assertSame('avatar-image-id-456', $profile->getAvatarImageId());
     }
 
@@ -154,7 +152,6 @@ abstract class UserProfileRepoFixture extends BaseTestCase
         $repo->updateAvatarImage('user-123', 'new-avatar-id');
 
         $profile = $repo->getUserProfile($this->getTestUserId());
-        $this->assertNotNull($profile);
         $this->assertSame('new-avatar-id', $profile->getAvatarImageId());
         $this->assertSame('About me', $profile->getAboutMe()); // Should preserve about_me
     }
@@ -176,7 +173,6 @@ abstract class UserProfileRepoFixture extends BaseTestCase
         $repo->updateProfile('user-123', $params2);
 
         $profile = $repo->getUserProfile($this->getTestUserId());
-        $this->assertNotNull($profile);
         $this->assertSame('New Name', $profile->getDisplayName());
     }
 }

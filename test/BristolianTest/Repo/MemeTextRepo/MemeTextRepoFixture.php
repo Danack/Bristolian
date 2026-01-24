@@ -185,8 +185,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
 
         // Should not throw exception
         $repo->saveMemeText($storedMeme, 'Found text from OCR');
-
-        $this->assertTrue(true);
     }
 
     public function test_getMemeText_returns_null_for_nonexistent_meme(): void
@@ -238,7 +236,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
 
         $result = $repo->searchMemeIdsByText($this->getTestUserId(), 'search term');
 
-        $this->assertIsArray($result);
         $this->assertEmpty($result);
     }
 

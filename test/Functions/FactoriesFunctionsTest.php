@@ -101,7 +101,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $config = $this->injector->make(Config::class);
         $result = getRedisConfig($config);
         
-        $this->assertIsArray($result);
         $this->assertArrayHasKey('scheme', $result);
         $this->assertArrayHasKey('host', $result);
         $this->assertArrayHasKey('port', $result);
@@ -116,7 +115,6 @@ class FactoriesFunctionsTest extends BaseTestCase
     {
         $result = getRedisOptions();
         
-        $this->assertIsArray($result);
         $this->assertArrayHasKey('profile', $result);
         $this->assertArrayHasKey('prefix', $result);
         $this->assertSame('2.6', $result['profile']);
@@ -399,6 +397,7 @@ class FactoriesFunctionsTest extends BaseTestCase
             $result = $this->injector->execute(createAppSession(...));
             
             $this->assertInstanceOf(\Bristolian\Session\AppSession::class, $result);
+        /** @phpstan-ignore-next-line */
         } catch (\DI\InjectionException | \Bristolian\Exception\UnauthorisedException $e) {
             // If dependencies aren't available or user not logged in, that's okay
             // The function is tested through integration tests

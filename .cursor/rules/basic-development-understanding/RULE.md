@@ -9,4 +9,7 @@ alwaysApply: true
 - If you are writing any code, or running any scripts, read the document @docs/developing/development_setup.md.
 - When I say "all tests" I am including PHP Unit, PhpStan, code sniffer and others. There should be a script to run them all.
 - If you are doing any coding, read the document @docs/testing.md to learn how to run the tests.
+- **Avoid redundant type assertions in tests**: Do not use assertions like `assertIsString()`, `assertIsInt()`, `assertIsArray()`, `assertTrue(true)`, or `assertNull(null)` when PHPStan already knows the type. PHPStan will flag these as "will always evaluate to true" because the static analyzer already knows the type. Only use these assertions when they provide actual value (e.g., when the type is not already known from the method signature or PHPDoc). Instead, use meaningful assertions like `assertNotEmpty()`, `assertSame()`, `assertContainsOnlyInstancesOf()`, etc.
+- **Always add return types to test methods**: All test methods must have explicit return types. Use `: void` for test methods that don't return a value. This helps PHPStan and makes the code more explicit.
+- **Avoid unnecessary null checks**: Do not check for null when PHPStan already knows a value cannot be null (e.g., when a method returns a non-nullable type). Remove redundant `if ($value !== null)` checks when the type system guarantees the value is not null.
   

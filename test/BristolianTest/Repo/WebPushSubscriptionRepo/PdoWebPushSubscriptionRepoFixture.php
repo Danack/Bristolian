@@ -80,7 +80,7 @@ class PdoWebPushSubscriptionRepoFixture extends WebPushSubscriptionRepoFixture
         $webpush_repo->save('invalid_user_id', $webPushSubParams, $raw);
     }
 
-    public function testExceptionOnInvalidUser()
+    public function testExceptionOnInvalidUser(): void
     {
         $webpush_repo = $this->injector->make(PdoWebPushSubscriptionRepo::class);
 

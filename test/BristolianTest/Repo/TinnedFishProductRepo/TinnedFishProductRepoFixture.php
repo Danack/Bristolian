@@ -43,7 +43,6 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
         $repo = $this->getTestInstance();
 
         $products = $repo->getAll();
-        $this->assertIsArray($products);
         $this->assertEmpty($products);
     }
 

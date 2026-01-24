@@ -28,7 +28,6 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
         $room_id = 'room_123';
 
         $links = $repo->getLinksForRoom($room_id);
-        $this->assertIsArray($links);
         $this->assertEmpty($links);
     }
 
@@ -64,7 +63,6 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
         $repo->addLinkToRoomFromParam($user_id, $room_id, $linkParam);
 
         $links = $repo->getLinksForRoom($room_id);
-        $this->assertIsArray($links);
         $this->assertNotEmpty($links);
         $this->assertContainsOnlyInstancesOf(RoomLink::class, $links);
     }

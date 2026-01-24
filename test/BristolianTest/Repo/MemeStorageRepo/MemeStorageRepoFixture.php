@@ -250,8 +250,6 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
         // This test verifies the method exists and returns null or a Meme
         if ($meme !== null) {
             $this->assertInstanceOf(Meme::class, $meme);
-        } else {
-            $this->assertNull($meme);
         }
     }
 }

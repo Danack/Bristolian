@@ -26,7 +26,6 @@ abstract class UserRepoFixture extends BaseTestCase
 
         $users = $repo->getUsers();
 
-        $this->assertIsArray($users);
         // Note: PDO tests may have existing data, so we don't assert empty
         foreach ($users as $user) {
             $this->assertInstanceOf(User::class, $user);

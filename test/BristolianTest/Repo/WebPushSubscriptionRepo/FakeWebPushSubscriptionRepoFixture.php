@@ -56,7 +56,5 @@ class FakeWebPushSubscriptionRepoFixture extends WebPushSubscriptionRepoFixture
         // Should not throw - different users can have same endpoint
         $fakeRepo->save('user-123', $webPushSubscriptionParam, '{"raw": "data1"}');
         $fakeRepo->save('user-456', $webPushSubscriptionParam, '{"raw": "data2"}');
-
-        $this->assertTrue(true);
     }
 }

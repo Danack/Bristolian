@@ -67,7 +67,6 @@ abstract class RoomRepoFixture extends BaseTestCase
 
         $rooms = $repo->getAllRooms();
 
-        $this->assertIsArray($rooms);
         // Note: PDO tests may have existing data, so we don't assert empty
         foreach ($rooms as $room) {
             $this->assertInstanceOf(\Bristolian\Model\Generated\Room::class, $room);

@@ -64,7 +64,6 @@ abstract class RoomSourceLinkRepoFixture extends BaseTestCase
 
         $links = $repo->getSourceLinksForRoom('room-123');
 
-        $this->assertIsArray($links);
         $this->assertEmpty($links);
     }
 
@@ -118,7 +117,6 @@ abstract class RoomSourceLinkRepoFixture extends BaseTestCase
 
         $links = $repo->getSourceLinksForRoomAndFile('room-123', 'file-456');
 
-        $this->assertIsArray($links);
         $this->assertEmpty($links);
     }
 

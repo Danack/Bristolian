@@ -151,7 +151,6 @@ abstract class MemeTagRepoFixture extends BaseTestCase
 
         // Each item should have 'text' and 'count' keys
         foreach ($tags as $tag) {
-            $this->assertIsArray($tag);
             $this->assertArrayHasKey('text', $tag);
             $this->assertArrayHasKey('count', $tag);
         }
@@ -181,7 +180,6 @@ abstract class MemeTagRepoFixture extends BaseTestCase
 
         // Each item should have 'text' and 'count' keys
         foreach ($tags as $tag) {
-            $this->assertIsArray($tag);
             $this->assertArrayHasKey('text', $tag);
             $this->assertArrayHasKey('count', $tag);
         }

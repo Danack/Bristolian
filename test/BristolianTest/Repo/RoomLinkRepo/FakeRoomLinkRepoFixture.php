@@ -29,7 +29,7 @@ class FakeRoomLinkRepoFixture extends RoomLinkRepoFixture
     /**
      * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo
      */
-    public function testAddLinkToRoom()
+    public function testAddLinkToRoom(): void
     {
         $varMap = new ArrayVarMap([
             'url' => 'https://www.example.com/'
@@ -60,7 +60,7 @@ class FakeRoomLinkRepoFixture extends RoomLinkRepoFixture
     /**
      * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo
      */
-    public function testGetLinksForRoom()
+    public function testGetLinksForRoom(): void
     {
         $this->initInMemoryFakes();
         $roomLinkRepo = $this->injector->make(FakeRoomLinkRepo::class);

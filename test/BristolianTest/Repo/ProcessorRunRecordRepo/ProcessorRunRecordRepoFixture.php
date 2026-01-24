@@ -77,8 +77,6 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
 
         // Should not throw exception
         $repo->setRunFinished($id, 'Test debug info');
-
-        $this->assertTrue(true);
     }
 
     public function test_getRunRecords_returns_empty_array_initially(): void
@@ -87,7 +85,6 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
 
         $records = $repo->getRunRecords(null);
 
-        $this->assertIsArray($records);
         $this->assertEmpty($records);
     }
 

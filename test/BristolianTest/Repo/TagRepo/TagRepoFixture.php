@@ -28,7 +28,6 @@ abstract class TagRepoFixture extends BaseTestCase
 
         $tags = $repo->getAllTags();
 
-        $this->assertIsArray($tags);
         // Note: PDO tests may have existing data, so we don't assert empty
         foreach ($tags as $tag) {
             $this->assertInstanceOf(Tag::class, $tag);

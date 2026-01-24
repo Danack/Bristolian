@@ -67,7 +67,7 @@ trait TestPlaceholders
         $this->injector = createTestInjector();
     }
 
-    public function initInMemoryFakes()
+    public function initInMemoryFakes(): void
     {
         $testDoubles = [
             \Bristolian\Repo\LinkRepo\LinkRepo::class =>
@@ -84,7 +84,7 @@ trait TestPlaceholders
         }
     }
 
-    public function initPdoTestObjects()
+    public function initPdoTestObjects(): void
     {
         $testDoubles = [
             \Bristolian\Repo\LinkRepo\LinkRepo::class =>
@@ -225,7 +225,7 @@ trait TestPlaceholders
      * @return ContentPolicyViolationReport
      * @throws \Exception
      */
-    public function createContentPolicyViolationReport(array $particulars)
+    public function createContentPolicyViolationReport(array $particulars): ContentPolicyViolationReport
     {
         $report =  [
             'document-uri' => $particulars['document-uri'] ?? 'http://www.example.com',

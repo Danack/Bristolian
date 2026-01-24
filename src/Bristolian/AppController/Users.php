@@ -14,7 +14,7 @@ use SlimDispatcher\Response\JsonResponse;
 
 class Users
 {
-    public function index(UserRepo $userRepo): string
+    public function index(/*UserRepo $userRepo*/): string
     {
         $contents = "<h1>User list</h1>";
 

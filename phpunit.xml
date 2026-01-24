@@ -38,7 +38,7 @@
       <clover outputFile="clover.xml"/>
 <!--      <cobertura outputFile="cobertura.xml"/>-->
 <!--      <crap4j outputFile="crap4j.xml" threshold="50"/>-->
-<!--      <html outputDirectory="tmp/coverage" lowUpperBound="50" highLowerBound="90"/>-->
+      <html outputDirectory="tmp/coverage" lowUpperBound="50" highLowerBound="90"/>
 <!--      <php outputFile="coverage.php"/>-->
 <!--      <text outputFile="coverage.txt" showUncoveredFiles="false" showOnlySummary="false"/>-->
       <text outputFile="php://stdout" showUncoveredFiles="false" showOnlySummary="true"/>

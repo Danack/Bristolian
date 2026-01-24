@@ -102,7 +102,6 @@ class ReactWidgetsTest extends BaseTestCase
 
         $result = createReactWidget($type, $data);
 
-        $this->assertIsString($result);
         // Verify HTML special characters are escaped in the data attribute
         $this->assertStringNotContainsString('<script>', $result);
         $this->assertStringNotContainsString('alert("xss")', $result);
@@ -133,8 +132,6 @@ class ReactWidgetsTest extends BaseTestCase
         ];
 
         $result = createReactWidget($type, $data);
-
-        $this->assertIsString($result);
         
         // Extract and verify nested structure
         preg_match('/data-widgety_json="([^"]+)"/', $result, $matches);
@@ -158,8 +155,6 @@ class ReactWidgetsTest extends BaseTestCase
         ];
 
         $result = createReactWidget($type, $data);
-
-        $this->assertIsString($result);
         
         // Extract and verify DateTime is converted to string
         preg_match('/data-widgety_json="([^"]+)"/', $result, $matches);

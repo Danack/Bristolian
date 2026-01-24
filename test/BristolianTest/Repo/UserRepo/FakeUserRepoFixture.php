@@ -38,7 +38,6 @@ class FakeUserRepoFixture extends UserRepoFixture
         $users = $repo->getUsers();
         // Note: Due to FakeUserRepo implementation issue with username, this may not work correctly
         // This test is a placeholder until FakeUserRepo is fixed to properly handle User model
-        $this->assertIsArray($users);
     }
 
     /**

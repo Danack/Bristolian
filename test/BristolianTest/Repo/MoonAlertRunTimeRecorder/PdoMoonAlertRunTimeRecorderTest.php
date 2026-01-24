@@ -18,7 +18,7 @@ class PdoMoonAlertRunTimeRecorderTest extends BaseTestCase
      */
     public function testPHPUnitDoesntLikeEmptyTestClasses(): void
     {
-        $this->assertTrue(true);
+        // Placeholder test to prevent PHPUnit from complaining about empty test class
     }
 
 

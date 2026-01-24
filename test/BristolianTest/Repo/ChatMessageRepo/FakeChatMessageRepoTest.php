@@ -10,7 +10,7 @@ use Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo;
 /**
  * @group standard_repo
  */
-class FakeChatMessageRepoFixture extends ChatMessageRepoFixture
+class FakeChatMessageRepoTest extends ChatMessageRepoFixture
 {
     public function getTestInstance(): ChatMessageRepo
     {

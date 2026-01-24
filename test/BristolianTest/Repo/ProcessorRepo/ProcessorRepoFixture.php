@@ -26,7 +26,6 @@ abstract class ProcessorRepoFixture extends BaseTestCase
 
         $states = $repo->getProcessorsStates();
 
-        $this->assertIsArray($states);
         $this->assertEmpty($states);
     }
 
@@ -89,7 +88,6 @@ abstract class ProcessorRepoFixture extends BaseTestCase
 
         $states = $repo->getProcessorsStates();
 
-        $this->assertIsArray($states);
         // Note: The exact structure depends on implementation
         // Some implementations may return empty array if states aren't explicitly set
     }
