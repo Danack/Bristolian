@@ -22,6 +22,9 @@ abstract class TagRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): TagRepo;
 
+    /**
+     * @covers \Bristolian\Repo\TagRepo\TagRepo::getAllTags
+     */
     public function test_getAllTags_returns_array(): void
     {
         $repo = $this->getTestInstance();
@@ -34,6 +37,9 @@ abstract class TagRepoFixture extends BaseTestCase
         }
     }
 
+    /**
+     * @covers \Bristolian\Repo\TagRepo\TagRepo::createTag
+     */
     public function test_createTag_creates_and_stores_tag(): void
     {
         $repo = $this->getTestInstance();
@@ -50,6 +56,10 @@ abstract class TagRepoFixture extends BaseTestCase
         $this->assertSame('A test tag', $tag->getDescription());
     }
 
+    /**
+     * @covers \Bristolian\Repo\TagRepo\TagRepo::getAllTags
+     * @covers \Bristolian\Repo\TagRepo\TagRepo::createTag
+     */
     public function test_getAllTags_returns_all_created_tags(): void
     {
         $repo = $this->getTestInstance();

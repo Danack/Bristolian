@@ -58,15 +58,6 @@ abstract class RoomSourceLinkRepoFixture extends BaseTestCase
         $this->assertNotSame($id1, $id2);
     }
 
-    public function test_getSourceLinksForRoom_returns_empty_array_initially(): void
-    {
-        $repo = $this->getTestInstance();
-
-        $links = $repo->getSourceLinksForRoom('room-123');
-
-        $this->assertEmpty($links);
-    }
-
     public function test_getSourceLinksForRoom_returns_links_for_room(): void
     {
         $repo = $this->getTestInstance();
@@ -109,15 +100,6 @@ abstract class RoomSourceLinkRepoFixture extends BaseTestCase
 
         $this->assertCount(1, $links);
         $this->assertSame('Link 1 Title That Is Long Enough', $links[0]->title);
-    }
-
-    public function test_getSourceLinksForRoomAndFile_returns_empty_array_initially(): void
-    {
-        $repo = $this->getTestInstance();
-
-        $links = $repo->getSourceLinksForRoomAndFile('room-123', 'file-456');
-
-        $this->assertEmpty($links);
     }
 
     public function test_getSourceLinksForRoomAndFile_returns_links_matching_both_room_and_file(): void

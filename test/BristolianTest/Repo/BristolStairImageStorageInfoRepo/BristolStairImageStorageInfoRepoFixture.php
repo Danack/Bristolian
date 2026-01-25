@@ -22,6 +22,9 @@ abstract class BristolStairImageStorageInfoRepoFixture extends BaseTestCase
     abstract public function getTestInstance(): BristolStairImageStorageInfoRepo;
 
 
+    /**
+     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo::storeFileInfo
+     */
     public function test_storeFileInfo(): void
     {
         $repo = $this->getTestInstance();
@@ -51,6 +54,10 @@ abstract class BristolStairImageStorageInfoRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo::getById
+     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo::storeFileInfo
+     */
     public function test_getById_returns_file_after_storing(): void
     {
         $repo = $this->getTestInstance();
@@ -81,6 +88,10 @@ abstract class BristolStairImageStorageInfoRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo::getByNormalizedName
+     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo::storeFileInfo
+     */
     public function test_getByNormalizedName_returns_file_after_storing(): void
     {
         $repo = $this->getTestInstance();
@@ -103,6 +114,10 @@ abstract class BristolStairImageStorageInfoRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo::setUploaded
+     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo::storeFileInfo
+     */
     public function test_setUploaded(): void
     {
         $repo = $this->getTestInstance();

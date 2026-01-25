@@ -41,6 +41,9 @@ abstract class MemeTagRepoFixture extends BaseTestCase
         return 'meme_456';
     }
 
+    /**
+     * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::addTagForMeme
+     */
     public function test_addTagForMeme(): void
     {
         $repo = $this->getTestInstance();
@@ -61,18 +64,10 @@ abstract class MemeTagRepoFixture extends BaseTestCase
     }
 
 
-    public function test_getUserTagsForMeme_returns_empty_initially(): void
-    {
-        $repo = $this->getTestInstance();
-
-        $user_id = $this->getTestUserId();
-        $meme_id = $this->getTestMemeId();
-
-        $tags = $repo->getUserTagsForMeme($user_id, $meme_id);
-        $this->assertEmpty($tags);
-    }
-
-
+    /**
+     * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::getUserTagsForMeme
+     * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::addTagForMeme
+     */
     public function test_getUserTagsForMeme_returns_tags_after_adding(): void
     {
         $repo = $this->getTestInstance();
@@ -95,6 +90,9 @@ abstract class MemeTagRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::updateTagForUser
+     */
     public function test_updateTagForUser(): void
     {
         $repo = $this->getTestInstance();
@@ -128,6 +126,9 @@ abstract class MemeTagRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::deleteTagForUser
+     */
     public function test_deleteTagForUser(): void
     {
         $repo = $this->getTestInstance();
@@ -140,6 +141,9 @@ abstract class MemeTagRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::getMostCommonTags
+     */
     public function test_getMostCommonTags_returns_array(): void
     {
         $repo = $this->getTestInstance();
@@ -157,6 +161,9 @@ abstract class MemeTagRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::getMostCommonTags
+     */
     public function test_getMostCommonTags_respects_limit(): void
     {
         $repo = $this->getTestInstance();
@@ -168,6 +175,9 @@ abstract class MemeTagRepoFixture extends BaseTestCase
         $this->assertLessThanOrEqual($limit, count($tags));
     }
 
+    /**
+     * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::getMostCommonTagsForMemes
+     */
     public function test_getMostCommonTagsForMemes_returns_array(): void
     {
         $repo = $this->getTestInstance();
@@ -185,6 +195,9 @@ abstract class MemeTagRepoFixture extends BaseTestCase
         }
     }
 
+    /**
+     * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::getMostCommonTagsForMemes
+     */
     public function test_getMostCommonTagsForMemes_respects_limit(): void
     {
         $repo = $this->getTestInstance();

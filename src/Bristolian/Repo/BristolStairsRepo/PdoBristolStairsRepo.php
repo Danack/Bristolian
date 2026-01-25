@@ -153,8 +153,8 @@ SQL;
         }
 
         return [
-            $result["flights_of_stairs"],
-            $result["total_steps"]
+            (int) $result["flights_of_stairs"],
+            (int) $result["total_steps"]
         ];
     }
 }

@@ -50,6 +50,6 @@ class PdoFoiRequestRepo implements FoiRequestRepo
     {
         $sql = foi_requests::SELECT;
 
-        return $this->pdo_simple->fetchAllAsObject($sql, [], FoiRequest::class);
+        return $this->pdo_simple->fetchAllAsObjectConstructor($sql, [], FoiRequest::class);
     }
 }

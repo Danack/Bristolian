@@ -57,6 +57,31 @@ function createTestInjector()
 }
 
 
+/**
+ * Returns a unique per test run id. Though doesn't account for tests
+ * running in parallel.
+ * @return string
+ */
+function create_test_uniqid(): string
+{
+    static $counter = 0;
+    static $previous_time = null;
+
+    $new_time = time();
+
+    if ($previous_time === null || $new_time > $previous_time) {
+        // seconds have changed.
+        $counter = 1000;
+    }
+
+    $id = 'time_' . time() . '_counter_' . $counter . '_rand_' . random_int(1000, 9999);;
+
+    $counter += 1;
+
+    return $id;
+}
+
+
 $injector = createTestInjector();
 $pdoAdminRepo = $injector->make(\Bristolian\Repo\AdminRepo\PdoAdminRepo::class);
 $user = $pdoAdminRepo->getAdminUser("testing@example.com", 'testing');

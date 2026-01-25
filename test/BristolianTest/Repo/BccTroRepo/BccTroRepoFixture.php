@@ -21,6 +21,9 @@ abstract class BccTroRepoFixture extends BaseTestCase
     abstract public function getTestInstance(): BccTroRepo;
 
 
+    /**
+     * @covers \Bristolian\Repo\BccTroRepo\BccTroRepo::saveData
+     */
     public function test_saveData_stores_data(): void
     {
         $repo = $this->getTestInstance();
@@ -42,6 +45,9 @@ abstract class BccTroRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\BccTroRepo\BccTroRepo::saveData
+     */
     public function test_saveData_accepts_empty_array(): void
     {
         $repo = $this->getTestInstance();

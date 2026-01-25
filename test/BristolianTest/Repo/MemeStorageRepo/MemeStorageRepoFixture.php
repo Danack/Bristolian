@@ -40,6 +40,9 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::getMeme
+     */
     public function test_getMeme_returns_null_for_nonexistent_id(): void
     {
         $repo = $this->getTestInstance();
@@ -70,6 +73,9 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::getByNormalizedName
+     */
     public function test_getByNormalizedName_returns_null_for_nonexistent_name(): void
     {
         $repo = $this->getTestInstance();
@@ -100,17 +106,6 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
-    public function test_listMemesForUser_returns_empty_initially(): void
-    {
-        $repo = $this->getTestInstance();
-
-        $user_id = 'user_123';
-
-        $memes = $repo->listMemesForUser($user_id);
-        $this->assertEmpty($memes);
-    }
-
-
     public function test_listMemesForUser_returns_memes_for_user(): void
     {
         $repo = $this->getTestInstance();
@@ -127,6 +122,9 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::searchMemesForUser
+     */
     public function test_searchMemesForUser_returns_array(): void
     {
         $repo = $this->getTestInstance();
@@ -137,6 +135,9 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::searchMemesForUser
+     */
     public function test_searchMemesForUser_with_query(): void
     {
         $repo = $this->getTestInstance();
@@ -148,6 +149,9 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::searchMemesForUser
+     */
     public function test_searchMemesForUser_with_tag_type(): void
     {
         $repo = $this->getTestInstance();
@@ -197,6 +201,9 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::searchMemesByExactTags
+     */
     public function test_searchMemesByExactTags_returns_array(): void
     {
         $repo = $this->getTestInstance();
@@ -209,6 +216,9 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::searchMemesByExactTags
+     */
     public function test_searchMemesByExactTags_with_empty_array(): void
     {
         $repo = $this->getTestInstance();
@@ -219,6 +229,9 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::getMemeByOriginalFilename
+     */
     public function test_getMemeByOriginalFilename_returns_null_for_nonexistent_file(): void
     {
         $repo = $this->getTestInstance();

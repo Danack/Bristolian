@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo\EmailQueue;
 
 use Bristolian\CliController\Email as EmailController;
+use Bristolian\Config\EnvironmentName;
+use Bristolian\Config\HardCodedEnvironmentName;
 use Bristolian\Model\Types\Email;
 use Bristolian\Repo\EmailQueue\EmailQueue;
 use BristolianTest\BaseTestCase;
@@ -19,12 +21,16 @@ abstract class EmailQueueFixture extends BaseTestCase
      *
      * @return EmailQueue
      */
-    abstract public function getTestInstance(): EmailQueue;
+    abstract public function getTestInstance(EnvironmentName $environmentName): EmailQueue;
 
 
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
+     */
     public function test_queueEmailToUsers_creates_emails(): void
     {
-        $repo = $this->getTestInstance();
+        $env = new HardCodedEnvironmentName('testing');
+        $repo = $this->getTestInstance($env);
 
         $users = ['user1@example.com', 'user2@example.com'];
         $subject = 'Test Subject';
@@ -35,9 +41,13 @@ abstract class EmailQueueFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
+     */
     public function test_queueEmailToUsers_accepts_empty_user_array(): void
     {
-        $repo = $this->getTestInstance();
+        $env = new HardCodedEnvironmentName('testing');
+        $repo = $this->getTestInstance($env);
 
         $subject = 'Test Subject';
         $body = 'Test Body';
@@ -47,19 +57,13 @@ abstract class EmailQueueFixture extends BaseTestCase
     }
 
 
-    public function test_getEmailToSendAndUpdateState_returns_null_when_queue_is_empty(): void
-    {
-        $repo = $this->getTestInstance();
-
-        $result = $repo->getEmailToSendAndUpdateState();
-
-        $this->assertNull($result);
-    }
-
-
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
+     */
     public function test_getEmailToSendAndUpdateState_returns_email_with_initial_status(): void
     {
-        $repo = $this->getTestInstance();
+        $env = new HardCodedEnvironmentName('testing');
+        $repo = $this->getTestInstance($env);
 
         $repo->queueEmailToUsers(['user@example.com'], 'Test Subject', 'Test Body');
 
@@ -75,9 +79,13 @@ abstract class EmailQueueFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
+     */
     public function test_getEmailToSendAndUpdateState_returns_email_with_retry_status(): void
     {
-        $repo = $this->getTestInstance();
+        $env = new HardCodedEnvironmentName('testing');
+        $repo = $this->getTestInstance($env);
 
         $repo->queueEmailToUsers(['user@example.com'], 'Test Subject', 'Test Body');
         $email1 = $repo->getEmailToSendAndUpdateState();
@@ -92,9 +100,13 @@ abstract class EmailQueueFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailSent
+     */
     public function test_setEmailSent_updates_email_status(): void
     {
-        $repo = $this->getTestInstance();
+        $env = new HardCodedEnvironmentName('testing');
+        $repo = $this->getTestInstance($env);
 
         $repo->queueEmailToUsers(['user@example.com'], 'Test Subject', 'Test Body');
         $email = $repo->getEmailToSendAndUpdateState();
@@ -105,9 +117,13 @@ abstract class EmailQueueFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailFailed
+     */
     public function test_setEmailFailed_updates_email_status(): void
     {
-        $repo = $this->getTestInstance();
+        $env = new HardCodedEnvironmentName('testing');
+        $repo = $this->getTestInstance($env);
 
         $repo->queueEmailToUsers(['user@example.com'], 'Test Subject', 'Test Body');
         $email = $repo->getEmailToSendAndUpdateState();
@@ -118,9 +134,13 @@ abstract class EmailQueueFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailToRetry
+     */
     public function test_setEmailToRetry_increments_retry_count(): void
     {
-        $repo = $this->getTestInstance();
+        $env = new HardCodedEnvironmentName('testing');
+        $repo = $this->getTestInstance($env);
 
         $repo->queueEmailToUsers(['user@example.com'], 'Test Subject', 'Test Body');
         $email = $repo->getEmailToSendAndUpdateState();
@@ -132,9 +152,13 @@ abstract class EmailQueueFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::clearQueue
+     */
     public function test_clearQueue_returns_count_of_cleared_emails(): void
     {
-        $repo = $this->getTestInstance();
+        $env = new HardCodedEnvironmentName('testing');
+        $repo = $this->getTestInstance($env);
 
         $repo->queueEmailToUsers(['user1@example.com', 'user2@example.com'], 'Test Subject', 'Test Body');
 
@@ -144,19 +168,13 @@ abstract class EmailQueueFixture extends BaseTestCase
     }
 
 
-    public function test_clearQueue_returns_zero_when_queue_is_empty(): void
-    {
-        $repo = $this->getTestInstance();
-
-        $count = $repo->clearQueue();
-
-        $this->assertSame(0, $count);
-    }
-
-
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::clearQueue
+     */
     public function test_clearQueue_clears_initial_sending_and_retry_emails(): void
     {
-        $repo = $this->getTestInstance();
+        $env = new HardCodedEnvironmentName('testing');
+        $repo = $this->getTestInstance($env);
 
         $repo->queueEmailToUsers(['user1@example.com'], 'Test Subject', 'Test Body');
         $repo->queueEmailToUsers(['user2@example.com'], 'Test Subject 2', 'Test Body 2');
@@ -171,9 +189,15 @@ abstract class EmailQueueFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailSent
+     */
     public function test_full_email_lifecycle(): void
     {
-        $repo = $this->getTestInstance();
+        $env = new HardCodedEnvironmentName('testing');
+        $repo = $this->getTestInstance($env);
 
         // Queue email
         $repo->queueEmailToUsers(['user@example.com'], 'Test Subject', 'Test Body');
@@ -192,9 +216,15 @@ abstract class EmailQueueFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailToRetry
+     */
     public function test_retry_lifecycle(): void
     {
-        $repo = $this->getTestInstance();
+        $env = new HardCodedEnvironmentName('testing');
+        $repo = $this->getTestInstance($env);
 
         // Queue email
         $repo->queueEmailToUsers(['user@example.com'], 'Test Subject', 'Test Body');

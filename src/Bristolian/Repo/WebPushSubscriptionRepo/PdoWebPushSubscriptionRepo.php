@@ -80,7 +80,7 @@ SQL;
         $params = [
           'user_id' => $user_id,
           'endpoint' => $webPushSubscriptionParam->endpoint,
-          'expiration_time' => $webPushSubscriptionParam->expiration_time,
+          'expiration_time' => $webPushSubscriptionParam->expiration_time ?? '0',
           'raw' => $raw,
         ];
 

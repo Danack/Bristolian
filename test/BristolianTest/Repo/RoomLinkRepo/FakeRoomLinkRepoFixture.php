@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo\RoomLinkRepo;
 
 use Bristolian\Parameters\LinkParam;
+use Bristolian\Repo\LinkRepo\LinkRepo;
 use Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use BristolianTest\Repo\TestPlaceholders;
@@ -20,7 +21,7 @@ class FakeRoomLinkRepoFixture extends RoomLinkRepoFixture
     /**
      * @return RoomLinkRepo
      */
-    public function getTestInstance(): RoomLinkRepo
+    public function getTestInstance(LinkRepo $linkRepo): RoomLinkRepo
     {
         $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
         return new FakeRoomLinkRepo($linkRepo);

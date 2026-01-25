@@ -32,6 +32,9 @@ abstract class SourceLinkRepoFixture extends BaseTestCase
         return 'user-123';
     }
 
+    /**
+     * @covers \Bristolian\Repo\SourceLinkRepo\SourceLinkRepo::addSourceLink
+     */
     public function test_addSourceLink_returns_string_id(): void
     {
         $repo = $this->getTestInstance();
@@ -53,6 +56,9 @@ abstract class SourceLinkRepoFixture extends BaseTestCase
         $this->assertNotEmpty($sourceLinkId);
     }
 
+    /**
+     * @covers \Bristolian\Repo\SourceLinkRepo\SourceLinkRepo::addSourceLink
+     */
     public function test_addSourceLink_returns_different_ids_for_different_calls(): void
     {
         $repo = $this->getTestInstance();
@@ -75,6 +81,9 @@ abstract class SourceLinkRepoFixture extends BaseTestCase
         $this->assertNotSame($sourceLinkId1, $sourceLinkId2);
     }
 
+    /**
+     * @covers \Bristolian\Repo\SourceLinkRepo\SourceLinkRepo::addSourceLink
+     */
     public function test_addSourceLink_accepts_empty_highlights_array(): void
     {
         $repo = $this->getTestInstance();
@@ -88,6 +97,9 @@ abstract class SourceLinkRepoFixture extends BaseTestCase
         $this->assertNotEmpty($sourceLinkId);
     }
 
+    /**
+     * @covers \Bristolian\Repo\SourceLinkRepo\SourceLinkRepo::addSourceLink
+     */
     public function test_addSourceLink_accepts_multiple_highlights(): void
     {
         $repo = $this->getTestInstance();

@@ -8,6 +8,7 @@ use Bristolian\Model\Generated\RoomLink;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use BristolianTest\BaseTestCase;
+use Bristolian\Repo\LinkRepo\LinkRepo;
 
 /**
  * Abstract test class for RoomLinkRepo implementations.
@@ -19,18 +20,11 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
      *
      * @return RoomLinkRepo
      */
-    abstract public function getTestInstance(): RoomLinkRepo;
+    abstract public function getTestInstance(LinkRepo $linkRepo): RoomLinkRepo;
 
-    public function test_getLinksForRoom_returns_empty_initially(): void
-    {
-        $repo = $this->getTestInstance();
-
-        $room_id = 'room_123';
-
-        $links = $repo->getLinksForRoom($room_id);
-        $this->assertEmpty($links);
-    }
-
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::addLinkToRoomFromParam
+     */
     public function test_addLinkToRoomFromParam(): void
     {
         $repo = $this->getTestInstance();
@@ -48,6 +42,10 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
         $this->assertNotEmpty($roomLinkId);
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::getLinksForRoom
+     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::addLinkToRoomFromParam
+     */
     public function test_getLinksForRoom_returns_links_after_adding(): void
     {
         $repo = $this->getTestInstance();
@@ -67,6 +65,9 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
         $this->assertContainsOnlyInstancesOf(RoomLink::class, $links);
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::getRoomLink
+     */
     public function test_getRoomLink_returns_null_for_nonexistent_id(): void
     {
         $repo = $this->getTestInstance();
@@ -75,6 +76,10 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
         $this->assertNull($roomLink);
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::getRoomLink
+     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::addLinkToRoomFromParam
+     */
     public function test_getRoomLink_returns_link_after_adding(): void
     {
         $repo = $this->getTestInstance();

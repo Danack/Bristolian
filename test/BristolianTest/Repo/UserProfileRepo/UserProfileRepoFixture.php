@@ -34,6 +34,9 @@ abstract class UserProfileRepoFixture extends BaseTestCase
         return 'user-123';
     }
 
+    /**
+     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::getUserProfile
+     */
     public function test_getUserProfile_returns_profile_even_for_nonexistent_user(): void
     {
         $repo = $this->getTestInstance();
@@ -47,15 +50,6 @@ abstract class UserProfileRepoFixture extends BaseTestCase
         $this->assertNull($result->getAvatarImageId());
         $this->assertNull($result->getAboutMe());
         $this->assertSame('', $result->getDisplayName()); // No display name yet
-    }
-
-    public function test_getDisplayNameHistory_returns_empty_array_initially(): void
-    {
-        $repo = $this->getTestInstance();
-
-        $history = $repo->getDisplayNameHistory('user-123');
-
-        $this->assertEmpty($history);
     }
 
     public function test_updateProfile_creates_profile_and_display_name(): void
@@ -75,6 +69,9 @@ abstract class UserProfileRepoFixture extends BaseTestCase
         $this->assertSame('About me text', $result->getAboutMe());
     }
 
+    /**
+     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::updateProfile
+     */
     public function test_updateProfile_creates_new_display_name_version(): void
     {
         $repo = $this->getTestInstance();
@@ -96,6 +93,10 @@ abstract class UserProfileRepoFixture extends BaseTestCase
         $this->assertSame('Second about me', $result->getAboutMe());
     }
 
+    /**
+     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::getDisplayNameHistory
+     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::updateProfile
+     */
     public function test_getDisplayNameHistory_returns_all_versions_ordered_desc(): void
     {
         $repo = $this->getTestInstance();

@@ -35,6 +35,9 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
         return 'test_image_id';
     }
 
+    /**
+     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::store_stairs_info
+     */
     public function test_store_stairs_info(): void
     {
         $repo = $this->getTestInstance();
@@ -62,6 +65,9 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::get_total_number_of_steps
+     */
     public function test_get_total_number_of_steps(): void
     {
         $repo = $this->getTestInstance();
@@ -77,6 +83,9 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::getAllStairsInfo
+     */
     public function test_getAllStairsInfo(): void
     {
         $repo = $this->getTestInstance();
@@ -91,6 +100,9 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::getStairInfoById
+     */
     public function test_getStairInfoById_returns_null_or_throws_for_nonexistent_id(): void
     {
         $repo = $this->getTestInstance();
@@ -108,6 +120,10 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::getStairInfoById
+     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::store_stairs_info
+     */
     public function test_getStairInfoById_returns_stair_after_storing(): void
     {
         $repo = $this->getTestInstance();
@@ -127,6 +143,10 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::updateStairInfo
+     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::store_stairs_info
+     */
     public function test_updateStairInfo(): void
     {
         $repo = $this->getTestInstance();
@@ -150,6 +170,10 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::updateStairPosition
+     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::store_stairs_info
+     */
     public function test_updateStairPosition(): void
     {
         $repo = $this->getTestInstance();

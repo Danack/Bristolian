@@ -21,6 +21,9 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): TinnedFishProductRepo;
 
+    /**
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
+     */
     public function test_getByBarcode_returns_null_for_nonexistent_barcode(): void
     {
         $repo = $this->getTestInstance();
@@ -30,6 +33,9 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
+     */
     public function test_getByBarcode_returns_null_for_empty_barcode(): void
     {
         $repo = $this->getTestInstance();
@@ -38,14 +44,10 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
         $this->assertNull($result);
     }
 
-    public function test_getAll_returns_empty_array_initially(): void
-    {
-        $repo = $this->getTestInstance();
-
-        $products = $repo->getAll();
-        $this->assertEmpty($products);
-    }
-
+    /**
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::save
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
+     */
     public function test_save_and_getByBarcode(): void
     {
         $repo = $this->getTestInstance();
@@ -75,6 +77,10 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
         $this->assertSame('Sardines in Olive Oil', $found->name);
     }
 
+    /**
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::save
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
+     */
     public function test_save_updates_existing_product(): void
     {
         $repo = $this->getTestInstance();
@@ -121,6 +127,11 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
         $this->assertSame('New Brand', $found->brand);
     }
 
+    /**
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::updateValidationStatus
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::save
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
+     */
     public function test_updateValidationStatus(): void
     {
         $repo = $this->getTestInstance();
@@ -155,15 +166,27 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
+        $barcode1 = create_test_uniqid();
+        $name1 = 'Product ' . create_test_uniqid();
+        $brand1 = 'Brand ' . create_test_uniqid();
+        $species1 = 'Sardines';
+        $product_code1 = 'PROD-' . create_test_uniqid();
+
+        $barcode2 = create_test_uniqid();
+        $name2 = 'Product ' . create_test_uniqid();
+        $brand2 = 'Brand ' . create_test_uniqid();
+        $species2 = 'Tuna';
+        $product_code2 = 'PROD-' . create_test_uniqid();
+
         $now = new \DateTimeImmutable();
         $product1 = new Product(
-            barcode: '1234567890123',
-            name: 'Product 1',
-            brand: 'Brand 1',
-            species: 'Sardines',
+            barcode: $barcode1,
+            name: $name1,
+            brand: $brand1,
+            species: $species1,
             weight: 125.0,
             weight_drained: 90.0,
-            product_code: null,
+            product_code: $product_code1,
             image_url: null,
             validation_status: ValidationStatus::NOT_VALIDATED,
             raw_data: null,
@@ -172,13 +195,13 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
         );
 
         $product2 = new Product(
-            barcode: '9876543210987',
-            name: 'Product 2',
-            brand: 'Brand 2',
-            species: 'Tuna',
+            barcode: $barcode2,
+            name: $name2,
+            brand: $brand2,
+            species: $species2,
             weight: 200.0,
             weight_drained: 150.0,
-            product_code: null,
+            product_code: $product_code2,
             image_url: null,
             validation_status: ValidationStatus::NOT_VALIDATED,
             raw_data: null,
@@ -190,10 +213,35 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
         $repo->save($product2);
 
         $allProducts = $repo->getAll();
-        $this->assertCount(2, $allProducts);
 
-        $barcodes = array_map(fn(Product $p) => $p->barcode, $allProducts);
-        $this->assertContains('1234567890123', $barcodes);
-        $this->assertContains('9876543210987', $barcodes);
+        // Find the products by their unique barcodes
+        $found1 = null;
+        $found2 = null;
+        foreach ($allProducts as $product) {
+            if ($product->barcode === $barcode1) {
+                $found1 = $product;
+            }
+            if ($product->barcode === $barcode2) {
+                $found2 = $product;
+            }
+        }
+
+        $this->assertNotNull($found1, 'First product should be found by unique barcode');
+        $this->assertSame($barcode1, $found1->barcode);
+        $this->assertSame($name1, $found1->name);
+        $this->assertSame($brand1, $found1->brand);
+        $this->assertSame($species1, $found1->species);
+        $this->assertSame(125.0, $found1->weight);
+        $this->assertSame(90.0, $found1->weight_drained);
+        $this->assertSame($product_code1, $found1->product_code);
+
+        $this->assertNotNull($found2, 'Second product should be found by unique barcode');
+        $this->assertSame($barcode2, $found2->barcode);
+        $this->assertSame($name2, $found2->name);
+        $this->assertSame($brand2, $found2->brand);
+        $this->assertSame($species2, $found2->species);
+        $this->assertSame(200.0, $found2->weight);
+        $this->assertSame(150.0, $found2->weight_drained);
+        $this->assertSame($product_code2, $found2->product_code);
     }
 }

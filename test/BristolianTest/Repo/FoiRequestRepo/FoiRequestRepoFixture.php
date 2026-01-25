@@ -23,16 +23,9 @@ abstract class FoiRequestRepoFixture extends BaseTestCase
     abstract public function getTestInstance(): FoiRequestRepo;
 
 
-    public function test_getAllFoiRequests_returns_empty_initially(): void
-    {
-        $repo = $this->getTestInstance();
-
-        $requests = $repo->getAllFoiRequests();
-
-        $this->assertEmpty($requests);
-    }
-
-
+    /**
+     * @covers \Bristolian\Repo\FoiRequestRepo\FoiRequestRepo::createFoiRequest
+     */
     public function test_createFoiRequest_creates_and_stores_request(): void
     {
         $repo = $this->getTestInstance();
@@ -50,20 +43,30 @@ abstract class FoiRequestRepoFixture extends BaseTestCase
         $this->assertSame('https://example.com', $foiRequest->getUrl());
     }
 
-
+    /**
+     * @covers \Bristolian\Repo\FoiRequestRepo\FoiRequestRepo::getAllFoiRequests
+     */
     public function test_getAllFoiRequests_returns_all_created_requests(): void
     {
         $repo = $this->getTestInstance();
 
+        $text1 = 'Request text ' . create_test_uniqid();
+        $url1 = 'https://example.com/' . create_test_uniqid();
+        $description1 = 'First request ' . create_test_uniqid();
+
+        $text2 = 'Request text ' . create_test_uniqid();
+        $url2 = 'https://example.com/' . create_test_uniqid();
+        $description2 = 'Second request ' . create_test_uniqid();
+
         $param1 = FoiRequestParams::createFromVarMap(new ArrayVarMap([
-            'text' => 'Request 1',
-            'url' => 'https://example.com/1',
-            'description' => 'First request',
+            'text' => $text1,
+            'url' => $url1,
+            'description' => $description1,
         ]));
         $param2 = FoiRequestParams::createFromVarMap(new ArrayVarMap([
-            'text' => 'Request 2',
-            'url' => 'https://example.com/2',
-            'description' => 'Second request',
+            'text' => $text2,
+            'url' => $url2,
+            'description' => $description2,
         ]));
 
         $repo->createFoiRequest($param1);
@@ -71,7 +74,28 @@ abstract class FoiRequestRepoFixture extends BaseTestCase
 
         $requests = $repo->getAllFoiRequests();
 
-        $this->assertCount(2, $requests);
         $this->assertContainsOnlyInstancesOf(FoiRequest::class, $requests);
+
+        // Find the requests by their unique strings
+        $found1 = null;
+        $found2 = null;
+        foreach ($requests as $request) {
+            if ($request->getText() === $text1) {
+                $found1 = $request;
+            }
+            if ($request->getText() === $text2) {
+                $found2 = $request;
+            }
+        }
+
+        $this->assertNotNull($found1, 'First request should be found by unique text');
+        $this->assertSame($text1, $found1->getText());
+        $this->assertSame($url1, $found1->getUrl());
+        $this->assertSame($description1, $found1->getDescription());
+
+        $this->assertNotNull($found2, 'Second request should be found by unique text');
+        $this->assertSame($text2, $found2->getText());
+        $this->assertSame($url2, $found2->getUrl());
+        $this->assertSame($description2, $found2->getDescription());
     }
 }

@@ -4,13 +4,12 @@ namespace Bristolian\AppController;
 
 use Bristolian\Parameters\UserProfileUpdateParams;
 use Bristolian\Repo\UserProfileRepo\UserProfileRepo;
-use Bristolian\Repo\UserRepo\UserRepo;
 use Bristolian\Response\GetUserInfoResponse;
 use Bristolian\Response\UpdateUserProfileResponse;
 use Bristolian\Response\UploadAvatarResponse;
 use Bristolian\Session\UserSession;
-use deadish\UserDocumentRepo\UserDocumentRepo;
 use SlimDispatcher\Response\JsonResponse;
+use user_repo\UserRepo\UserRepo;
 
 class Users
 {

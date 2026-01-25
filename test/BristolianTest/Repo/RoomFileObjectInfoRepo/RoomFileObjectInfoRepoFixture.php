@@ -31,6 +31,9 @@ abstract class RoomFileObjectInfoRepoFixture extends BaseTestCase
         return 'user_123';
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo::createRoomFileObjectInfo
+     */
     public function test_createRoomFileObjectInfo(): void
     {
         $repo = $this->getTestInstance();
@@ -48,6 +51,10 @@ abstract class RoomFileObjectInfoRepoFixture extends BaseTestCase
         $this->assertNotEmpty($file_id);
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo::setRoomFileObjectUploaded
+     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo::createRoomFileObjectInfo
+     */
     public function test_setRoomFileObjectUploaded(): void
     {
         $repo = $this->getTestInstance();

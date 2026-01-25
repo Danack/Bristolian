@@ -162,6 +162,74 @@ public function testWithPdfFile(): void
 
 **Do not create temporary files with `sys_get_temp_dir()` or similar** - use the existing test fixtures instead.
 
+### Testing Insertion and Retrieval of Items
+
+When testing methods that insert items and then retrieve them (e.g., `createFoiRequest()` followed by `getAllFoiRequests()`), follow this pattern:
+
+1. **Use `create_test_uniqid()` for unique strings** - Generate unique identifiers for fields that can be used to identify specific items:
+   ```php
+   $text1 = 'Request text ' . create_test_uniqid();
+   $url1 = 'https://example.com/' . create_test_uniqid();
+   $description1 = 'First request ' . create_test_uniqid();
+   ```
+
+2. **Create items with unique values** - Use the unique strings when creating test data:
+   ```php
+   $param1 = FoiRequestParams::createFromVarMap(new ArrayVarMap([
+       'text' => $text1,
+       'url' => $url1,
+       'description' => $description1,
+   ]));
+   $repo->createFoiRequest($param1);
+   ```
+
+3. **Assert by finding items by their unique values** - Don't just check counts; find specific items by their unique identifiers and verify all fields:
+   ```php
+   $requests = $repo->getAllFoiRequests();
+   
+   // Find the request by its unique text
+   $found1 = null;
+   foreach ($requests as $request) {
+       if ($request->getText() === $text1) {
+           $found1 = $request;
+           break;
+       }
+   }
+   
+   $this->assertNotNull($found1, 'Request should be found by unique text');
+   $this->assertSame($text1, $found1->getText());
+   $this->assertSame($url1, $found1->getUrl());
+   $this->assertSame($description1, $found1->getDescription());
+   ```
+
+**Why this approach:**
+- Works even when the database is seeded with existing data
+- Verifies that the specific items you created are actually stored and retrievable
+- Tests all fields of the retrieved objects, not just presence
+- More robust than checking counts, which can be affected by other tests' data
+
+**Prefer `create_test_uniqid()` over patterns like `'prefix_' . time() . '_' . random_int(1000, 9999)`** - it's specifically designed for tests and provides better uniqueness guarantees.
+
+### Do Not Test for Initial Emptiness
+
+**Never write tests that check for empty initial state** (e.g., "returns empty array initially", "returns null when queue is empty", "returns zero when queue is empty").
+
+Databases can be seeded with data, so testing for initial emptiness is unreliable and not wanted. Tests should focus on:
+- Creating data and verifying it can be retrieved
+- Verifying behavior with data present
+- Testing filtering/querying logic with specific data
+
+**Examples of tests to avoid:**
+- `test_getAll_returns_empty_array_initially()`
+- `test_getMessagesForRoom_returns_empty_array_initially()`
+- `test_getEmailToSendAndUpdateState_returns_null_when_queue_is_empty()`
+- `test_clearQueue_returns_zero_when_queue_is_empty()`
+
+**Instead, write tests that:**
+- Create data and verify retrieval: `test_getAll_returns_saved_items()`
+- Test behavior with data: `test_getMessagesForRoom_returns_messages_after_adding()`
+- Test filtering logic: `test_getMessagesForRoom_returns_only_messages_for_specified_room()`
+
 ## Running PHP Tests
 
 ### Running All PHPUnit Tests

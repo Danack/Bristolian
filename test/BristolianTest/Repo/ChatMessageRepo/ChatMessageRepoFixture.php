@@ -41,25 +41,32 @@ abstract class ChatMessageRepoFixture extends BaseTestCase
         return 'room-456';
     }
 
+    /**
+     * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::storeChatMessageForUser
+     */
     public function test_storeChatMessageForUser_creates_and_returns_message(): void
     {
         $repo = $this->getTestInstance();
 
         $user_id = $this->getTestUserId();
+        $room_id = $this->getTestRoomId();
         $chatMessageParam = ChatMessageParam::createFromVarMap(new ArrayVarMap([
             'text' => 'Hello, world!',
-            'room_id' => $this->getTestRoomId(),
+            'room_id' => $room_id,
         ]));
 
         $message = $repo->storeChatMessageForUser($user_id, $chatMessageParam);
 
         $this->assertInstanceOf(UserChatMessage::class, $message);
         $this->assertSame($user_id, $message->user_id);
-        $this->assertSame($this->getTestRoomId(), $message->room_id);
+        $this->assertSame($room_id, $message->room_id);
         $this->assertSame('Hello, world!', $message->text);
         $this->assertNull($message->reply_message_id);
     }
 
+    /**
+     * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::storeChatMessageForUser
+     */
     public function test_storeChatMessageForUser_stores_message_with_reply_id(): void
     {
         $repo = $this->getTestInstance();
@@ -77,17 +84,10 @@ abstract class ChatMessageRepoFixture extends BaseTestCase
         $this->assertSame(789, $message->reply_message_id);
     }
 
-    public function test_getMessagesForRoom_returns_empty_array_initially(): void
-    {
-        $repo = $this->getTestInstance();
-
-        $messages = $repo->getMessagesForRoom($this->getTestRoomId());
-
-        /** @phpstan-ignore-next-line method.alreadyNarrowedType */
-        $this->assertIsArray($messages);
-        $this->assertEmpty($messages);
-    }
-
+    /**
+     * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::getMessagesForRoom
+     * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::storeChatMessageForUser
+     */
     public function test_getMessagesForRoom_returns_messages_for_specific_room(): void
     {
         $repo = $this->getTestInstance();
@@ -121,6 +121,10 @@ abstract class ChatMessageRepoFixture extends BaseTestCase
         }
     }
 
+    /**
+     * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::getMessagesForRoom
+     * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::storeChatMessageForUser
+     */
     public function test_getMessagesForRoom_returns_messages_sorted_by_id_descending(): void
     {
         $repo = $this->getTestInstance();

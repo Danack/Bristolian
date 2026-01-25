@@ -25,6 +25,9 @@ abstract class AdminRepoFixture extends BaseTestCase
     abstract public function getTestInstance(): AdminRepo;
 
 
+    /**
+     * @covers \Bristolian\Repo\AdminRepo\AdminRepo::addUser
+     */
     public function test_addUser(): void
     {
         $repo = $this->getTestInstance();
@@ -46,6 +49,10 @@ abstract class AdminRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\AdminRepo\AdminRepo::getAdminUser
+     * @covers \Bristolian\Repo\AdminRepo\AdminRepo::addUser
+     */
     public function test_getAdminUser_returns_user_with_correct_credentials(): void
     {
         $repo = $this->getTestInstance();
@@ -69,6 +76,9 @@ abstract class AdminRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\AdminRepo\AdminRepo::getAdminUser
+     */
     public function test_getAdminUser_returns_null_for_nonexistent_user(): void
     {
         $repo = $this->getTestInstance();
@@ -78,6 +88,9 @@ abstract class AdminRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\AdminRepo\AdminRepo::getAdminUser
+     */
     public function test_getAdminUser_returns_null_for_wrong_password(): void
     {
         $repo = $this->getTestInstance();
@@ -97,6 +110,9 @@ abstract class AdminRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\AdminRepo\AdminRepo::getAdminUserId
+     */
     public function test_getAdminUserId_returns_user_id_for_existing_user(): void
     {
         $repo = $this->getTestInstance();
@@ -121,6 +137,9 @@ abstract class AdminRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\AdminRepo\AdminRepo::getAdminUserId
+     */
     public function test_getAdminUserId_returns_null_for_nonexistent_user(): void
     {
         $repo = $this->getTestInstance();

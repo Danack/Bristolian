@@ -20,6 +20,9 @@ abstract class UserRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): UserRepo;
 
+    /**
+     * @covers \Bristolian\Repo\UserRepo\UserRepo::getUsers
+     */
     public function test_getUsers_returns_array(): void
     {
         $repo = $this->getTestInstance();
@@ -32,6 +35,9 @@ abstract class UserRepoFixture extends BaseTestCase
         }
     }
 
+    /**
+     * @covers \Bristolian\Repo\UserRepo\UserRepo::findUser
+     */
     public function test_findUser_returns_null_for_nonexistent_user(): void
     {
         $repo = $this->getTestInstance();

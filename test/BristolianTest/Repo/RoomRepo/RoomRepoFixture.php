@@ -36,6 +36,9 @@ abstract class RoomRepoFixture extends BaseTestCase
         $this->assertSame($purpose, $room->purpose);
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getRoomById
+     */
     public function test_getRoomById_returns_null_initially(): void
     {
         $repo = $this->getTestInstance();
@@ -61,6 +64,9 @@ abstract class RoomRepoFixture extends BaseTestCase
         $this->assertSame($name, $retrievedRoom->name);
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getAllRooms
+     */
     public function test_getAllRooms_returns_array(): void
     {
         $repo = $this->getTestInstance();

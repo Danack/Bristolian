@@ -22,6 +22,9 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
     abstract public function getTestInstance(): ApiTokenRepo;
 
 
+    /**
+     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::createToken
+     */
     public function test_createToken(): void
     {
         $repo = $this->getTestInstance();
@@ -38,6 +41,9 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::getByToken
+     */
     public function test_getByToken_returns_null_for_nonexistent_token(): void
     {
         $repo = $this->getTestInstance();
@@ -46,6 +52,10 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
         $this->assertNull($result);
     }
 
+    /**
+     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::getByToken
+     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::createToken
+     */
     public function test_getByToken_returns_token_after_creation(): void
     {
         $repo = $this->getTestInstance();
@@ -63,6 +73,11 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
         $this->assertSame($token, $foundToken->token);
     }
 
+    /**
+     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::getByToken
+     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::createToken
+     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::revokeToken
+     */
     public function test_getByToken_returns_null_for_revoked_token(): void
     {
         $repo = $this->getTestInstance();
@@ -78,6 +93,11 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::revokeToken
+     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::createToken
+     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::getByToken
+     */
     public function test_revokeToken(): void
     {
         $repo = $this->getTestInstance();

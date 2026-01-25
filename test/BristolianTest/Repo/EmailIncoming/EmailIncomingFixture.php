@@ -21,6 +21,9 @@ abstract class EmailIncomingFixture extends BaseTestCase
     abstract public function getTestInstance(): EmailIncoming;
 
 
+    /**
+     * @covers \Bristolian\Repo\EmailIncoming\EmailIncoming::saveEmail
+     */
     public function test_saveEmail_stores_email(): void
     {
         $repo = $this->getTestInstance();
@@ -43,6 +46,9 @@ abstract class EmailIncomingFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\EmailIncoming\EmailIncoming::saveEmail
+     */
     public function test_saveEmail_can_save_multiple_emails(): void
     {
         $repo = $this->getTestInstance();

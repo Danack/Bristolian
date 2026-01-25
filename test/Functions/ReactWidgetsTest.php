@@ -132,6 +132,8 @@ class ReactWidgetsTest extends BaseTestCase
         ];
 
         $result = createReactWidget($type, $data);
+
+        $this->assertIsString($result);
         
         // Extract and verify nested structure
         preg_match('/data-widgety_json="([^"]+)"/', $result, $matches);
@@ -155,6 +157,8 @@ class ReactWidgetsTest extends BaseTestCase
         ];
 
         $result = createReactWidget($type, $data);
+
+        $this->assertIsString($result);
         
         // Extract and verify DateTime is converted to string
         preg_match('/data-widgety_json="([^"]+)"/', $result, $matches);

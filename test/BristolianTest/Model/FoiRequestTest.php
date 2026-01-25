@@ -20,7 +20,7 @@ class FoiRequestTest extends BaseTestCase
         $url = 'https://example.com/request';
         $description = 'A test FOI request';
 
-        $foiRequest = FoiRequest::create($foiRequestId, $text, $url, $description);
+        $foiRequest = new FoiRequest($foiRequestId, $text, $url, $description);
 
         $this->assertSame($foiRequestId, $foiRequest->getFoiRequestId());
         $this->assertSame($text, $foiRequest->getText());

@@ -78,7 +78,7 @@ function injectionParams()
         \Bristolian\Repo\RoomFileRepo\RoomFileRepo::class =>
             \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class,
 
-        Bristolian\Repo\UserRepo\UserRepo::class =>
+        \user_repo\UserRepo\UserRepo::class =>
           deadish\HardcodedUserRepo::class,
 
         \deadish\UserDocumentRepo\UserDocumentRepo::class =>

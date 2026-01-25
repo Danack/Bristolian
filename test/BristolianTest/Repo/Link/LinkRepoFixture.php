@@ -20,6 +20,9 @@ abstract class LinkRepoFixture extends BaseTestCase
     abstract public function getTestInstance(): LinkRepo;
 
 
+    /**
+     * @covers \Bristolian\Repo\LinkRepo\LinkRepo::store_link
+     */
     public function test_store_link(): void
     {
         $linkRepo = $this->getTestInstance();
@@ -32,6 +35,9 @@ abstract class LinkRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\LinkRepo\LinkRepo::store_link
+     */
     public function test_store_link_returns_different_ids_for_different_calls(): void
     {
         $linkRepo = $this->getTestInstance();

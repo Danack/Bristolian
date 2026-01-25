@@ -20,15 +20,9 @@ abstract class ProcessorRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): ProcessorRepo;
 
-    public function test_getProcessorsStates_returns_empty_array_initially(): void
-    {
-        $repo = $this->getTestInstance();
-
-        $states = $repo->getProcessorsStates();
-
-        $this->assertEmpty($states);
-    }
-
+    /**
+     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::getProcessorEnabled
+     */
     public function test_getProcessorEnabled_returns_false_initially(): void
     {
         $repo = $this->getTestInstance();
@@ -38,6 +32,10 @@ abstract class ProcessorRepoFixture extends BaseTestCase
         $this->assertFalse($enabled);
     }
 
+    /**
+     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::setProcessorEnabled
+     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::getProcessorEnabled
+     */
     public function test_setProcessorEnabled_and_getProcessorEnabled_work_together(): void
     {
         $repo = $this->getTestInstance();
@@ -56,6 +54,10 @@ abstract class ProcessorRepoFixture extends BaseTestCase
         $this->assertFalse($repo->getProcessorEnabled($processor));
     }
 
+    /**
+     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::setProcessorEnabled
+     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::getProcessorEnabled
+     */
     public function test_setProcessorEnabled_works_for_different_processors_independently(): void
     {
         $repo = $this->getTestInstance();
@@ -78,6 +80,10 @@ abstract class ProcessorRepoFixture extends BaseTestCase
         $this->assertTrue($repo->getProcessorEnabled($processor2));
     }
 
+    /**
+     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::getProcessorsStates
+     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::setProcessorEnabled
+     */
     public function test_getProcessorsStates_returns_states_for_all_processors(): void
     {
         $repo = $this->getTestInstance();

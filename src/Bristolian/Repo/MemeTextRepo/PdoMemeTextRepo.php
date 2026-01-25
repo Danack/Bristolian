@@ -51,7 +51,8 @@ select
     sm.state,              
     sm.size,               
     sm.user_id,            
-    sm.created_at          
+    sm.created_at,         
+    sm.deleted             
 from                       
   stored_meme sm
 left join 
