@@ -1,5 +1,8 @@
 const bristol = [51.4545, -2.5879]; // Latitude, Longitude
 
+/** Zoom level for tile layer maxNativeZoom and for "centre on my location". */
+const MAX_NATIVE_ZOOM_LEVEL = 18;
+
 const stairsById = {};
 
 let crosshairDiv = null;
@@ -19,7 +22,7 @@ var map_options = {
 }
 
 var tile_options = {
-    maxNativeZoom: 18,  // highest zoom your tiles actually have
+    maxNativeZoom: MAX_NATIVE_ZOOM_LEVEL,
     maxZoom: 22         // allow Leaflet to zoom further
 }
 
@@ -178,6 +181,54 @@ function bristol_stair_selected_on_load(data) {
     }
 }
 
+function bristol_stair_deselected() {
+    if (lastClickedMarker) {
+        lastClickedMarker.setIcon(defaultIcon);
+        lastClickedMarker = null;
+    }
+
+    console.log("bristol_stair_deselected");
+
+    // Map container may have been hidden (narrow screen, stair detail view). Wait for React to remove the class and for layout, then recalc.
+    requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+            map.invalidateSize();
+        });
+    });
+}
+
+function centreMapOnMyLocation() {
+    console.log("Attempting to centre map on my location");
+    if (!navigator.geolocation) {
+        console.log("No geolocation available");
+        return;
+    }
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            map.setView([position.coords.latitude, position.coords.longitude], MAX_NATIVE_ZOOM_LEVEL);
+        },
+        function () { /* user denied or error */ 
+            console.log("User denied or error");
+        }
+    );
+}
+
+function addLocateControl() {
+    const LocateControl = L.Control.extend({
+        onAdd: function () {
+            const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control bristol-stairs-locate-control');
+            const link = L.DomUtil.create('a', '', container);
+            link.href = '#';
+            link.title = 'My location';
+            link.setAttribute('role', 'button');
+            link.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20"><path d="M445 4 29 195c-48 23-32 93 19 93h176v176c0 51 70 67 93 19L508 67c16-38-25-79-63-63z" fill="currentColor"/></svg>';
+            L.DomEvent.on(link, 'click', L.DomEvent.stop).on(link, 'click', centreMapOnMyLocation);
+            return container;
+        }
+    });
+    map.addControl(new LocateControl({ position: 'bottomright' }));
+}
+
 function bristol_stair_cancel_editing_position() {
     // Show all markers again
     if (!map.hasLayer(markers)) {
@@ -300,7 +351,9 @@ addEventListener("DOMContentLoaded", (event) => {
     registerMessageListener("STAIR_START_EDITING_POSITION", bristol_stair_start_editing_position)
     registerMessageListener("STAIR_CANCEL_EDITING_POSITION", bristol_stair_cancel_editing_position)
     registerMessageListener("STAIR_SELECTED_ON_LOAD", bristol_stair_selected_on_load)
+    registerMessageListener("STAIR_DESELECTED", bristol_stair_deselected)
 
+    addLocateControl();
     fetchData();
 })
 

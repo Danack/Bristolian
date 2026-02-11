@@ -23,6 +23,9 @@ interface BristolStairsPanelState {
 
     uploadProgress: number | null,
     selectedFile: File|null,
+
+    /** True when viewport is landscape (map and panel side by side). Used to know if map is visible on narrow screens when a stair is selected. */
+    is_landscape: boolean,
 }
 
 function getDefaultState(props: BristolStairsPanelProps): BristolStairsPanelState {
@@ -39,6 +42,8 @@ function getDefaultState(props: BristolStairsPanelProps): BristolStairsPanelStat
 
         uploadProgress: null,
         selectedFile: null,
+
+        is_landscape: typeof window !== "undefined" ? window.matchMedia("(orientation: landscape)").matches : true,
     };
 }
 
@@ -75,6 +80,22 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
             console.log("STAIR_SELECTED_ON_LOAD should have been sent");
             sendMessage("STAIR_SELECTED_ON_LOAD", {stair_info: this.state.selected_stair_info});
         }
+        this.syncContainerStairSelectedClass(this.state.selected_stair_info !== null);
+
+        const media = window.matchMedia("(orientation: landscape)");
+        const setLandscape = () => this.setState({ is_landscape: media.matches });
+        media.addEventListener("change", setLandscape);
+        this.landscape_media_cleanup = () => media.removeEventListener("change", setLandscape);
+    }
+
+    landscape_media_cleanup: (() => void) | null = null;
+
+    componentDidUpdate(prevProps: BristolStairsPanelProps, prevState: BristolStairsPanelState) {
+        const nowSelected = this.state.selected_stair_info !== null;
+        const wasSelected = prevState.selected_stair_info !== null;
+        if (nowSelected !== wasSelected) {
+            this.syncContainerStairSelectedClass(nowSelected);
+        }
     }
 
     handleMarkerClicked(selected_stair_info: BristolStairInfo) {
@@ -95,9 +116,35 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
         );
     }
 
+    handleCloseStairView = () => {
+        this.setState({
+            selected_stair_info: null,
+            original_stair_info: null,
+            changes_made: false,
+            editing_position: false,
+            uploading_image: false,
+        });
+        window.history.pushState({}, "", "/tools/bristol_stairs");
+        sendMessage("STAIR_DESELECTED", {});
+    };
+
+    syncContainerStairSelectedClass(selected: boolean) {
+        const el = this.base as Element | undefined;
+        const container = el?.closest?.(".bristol_stairs_container") ?? null;
+        if (!container) return;
+        if (selected) {
+            container.classList.add("stair-selected");
+        } else {
+            container.classList.remove("stair-selected");
+        }
+    }
+
     componentWillUnmount() {
         unregisterListener(this.message_listener_marker_clicked);
         this.message_listener_marker_clicked = null;
+        this.syncContainerStairSelectedClass(false);
+        this.landscape_media_cleanup?.();
+        this.landscape_media_cleanup = null;
     }
 
     processError (data:any) {
@@ -350,29 +397,47 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
 
 
     render(props: BristolStairsPanelProps, state: BristolStairsPanelState) {
-        let stair_info = <span>Click a marker on the map to view the stairs.</span>
-        let upload_button = <span></span>
-
         const logged_in = use_logged_in();
+        const map_visible = state.is_landscape || state.selected_stair_info === null;
 
-        if (logged_in === true) {
-            upload_button = <button onClick = {this.startUploadingImage}>Upload image </button>
+        let upload_button: h.JSX.Element = <span></span>;
+        if (logged_in === true && map_visible) {
+            upload_button = <button onClick={this.startUploadingImage}>Upload image</button>;
         }
 
+        let mainContent: h.JSX.Element;
         if (this.state.uploading_image === true) {
-            upload_button = this.renderUploadPanel();
-        }
-        else if (this.state.selected_stair_info !== null) {
-            if (logged_in === true) {
-                stair_info = this.renderLoggedInStairInfo();
-            } else {
-                stair_info = this.renderViewOnlyStairInfo()
-            }
+            mainContent = this.renderUploadPanel();
+        } else if (this.state.selected_stair_info !== null) {
+            const stair_info = logged_in === true
+                ? this.renderLoggedInStairInfo()
+                : this.renderViewOnlyStairInfo();
+            mainContent = (
+                <div class="bristol_stairs_stair_detail">
+                    {stair_info}
+                    {map_visible && logged_in ? upload_button : null}
+                </div>
+            );
+        } else {
+            mainContent = (
+                <div class="bristol_stairs_map_prompt">
+                    <span>Click a marker on the map to view the stairs.</span>
+                    {upload_button}
+                </div>
+            );
         }
 
-        return <div class='bristol_stairs_panel_react'>
-            {stair_info}
-            {upload_button}
-        </div>;
+        const closeButton = this.state.selected_stair_info !== null ? (
+            <button type="button" class="bristol_stairs_close" onClick={this.handleCloseStairView}>
+                Back to map
+            </button>
+        ) : null;
+
+        return (
+            <div class="bristol_stairs_panel_react">
+                {closeButton}
+                {mainContent}
+            </div>
+        );
     }
 }
