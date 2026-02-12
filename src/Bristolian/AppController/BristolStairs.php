@@ -122,7 +122,7 @@ class BristolStairs
 <h2>Qualification rules</h2>
 
 <ol>
-<li>Stairs need to be on a place where members of the public will walk through, to another location or to a public amenity. i.e. steps leading up to a house don't qualify, steps leading up to a park bench do.</li>
+<li>Stairs need to be in a place where members of the public will walk through, to another location or to a public amenity. i.e. steps leading up to a house don't qualify, steps leading up to a park bench do.</li>
 <li>There need to be at least two steps between the top and bottom.</li>
 <li>The steps need to be within about one meter of each other. Some paths (e.g. in Brandon Hill Park) have steps in them, to make the gradient of the path be not too steep, but they are too far apart to qualify as a flight of stairs.</li>
 <li>Stairs cannot be inside a building.</li>
