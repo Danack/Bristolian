@@ -32,7 +32,7 @@ RUN pip install --no-cache-dir easyocr
 #  pre-download models at build time
 #  (avoids first-run network access)
 COPY easyocr_install.sh /tmp/easyocr_install.sh
-RUN sh /tmp/easyocr_install.sh
+# RUN sh /tmp/easyocr_install.sh
 
 WORKDIR /var/app
 
