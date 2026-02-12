@@ -206,6 +206,8 @@ function generate_table_helper_class(string $tableName, array $columns_info): vo
     $contents = "<?php\n\n";
     $contents .= "// Auto-generated file do not edit\n\n";
     $contents .= "// generated with 'php cli.php generate:php_table_helper_classes'\n\n";
+    $contents .= "// Generator: src/Bristolian/CliController/GenerateFiles.php :: generate_table_helper_class()";
+    $contents .= "// invoked from GenerateFiles::generateTableHelperClasses)\n\n";
     $contents .= "namespace Bristolian\\Database;\n\n";
 
     $columns_separated_by_comma_new_line = "";
@@ -280,7 +282,7 @@ function generate_table_helper_class(string $tableName, array $columns_info): vo
     $contents .= "where\n";
     $contents .= "  id = :id\n";
     $contents .= "  limit 1\n"; // useless?
-    $contents .= "SQL;\n\n";
+    $contents .= "SQL;\n";
     $contents .= "}\n";
 
 
@@ -886,28 +888,33 @@ SQL;
         $content = "<?php\n\n";
         $content .= "// Auto-generated file do not edit\n\n";
         $content .= "// generated with 'php cli.php generate:php_response_types'\n";
-        $content .= "// \n";
+        $content .= "//\n";
+
+        $content .= "//\n";
+        $content .= "// Generator: src/Bristolian/CliController/GenerateFiles.php :: generateResponseClassContent()\n";
+        $content .= "// invoked from GenerateFiles::generatePhpResponseTypes)\n";
+
         $content .= "// The information used to generate this file comes from:\n";
         $content .= "// api/src/api_routes.php - specifically from routes that have type information\n";
-        $content .= "// \n";
+        $content .= "//\n";
         $content .= "// In api_routes.php, each route is an array with the format:\n";
         $content .= "// [path, method, controller, type_info, setup_callable]\n";
-        $content .= "// \n";
+        $content .= "//\n";
         $content .= "// The type_info (at index 3) is an array of field definitions:\n";
         $content .= "// [\n";
         $content .= "//     ['field_name', ClassName::class, is_array],\n";
         $content .= "//     ...\n";
         $content .= "// ]\n";
-        $content .= "// \n";
+        $content .= "//\n";
         $content .= "// Each field definition is: [field_name, fully_qualified_class_name, is_array]\n";
         $content .= "// - field_name: the name of the field in the JSON response\n";
         $content .= "// - fully_qualified_class_name: the model class (usually from Bristolian\\Model\\Generated)\n";
         $content .= "// - is_array: true for arrays of objects, false for single objects\n";
-        $content .= "// \n";
+        $content .= "//\n";
         $content .= "// This response class is used by the route:\n";
         $content .= "//   Path: $path\n";
         $content .= "//   Method: $method\n";
-        $content .= "// \n";
+        $content .= "//\n";
         $content .= "// The actual field definitions for this route are:\n";
         
         // Build the actual field definitions comment
@@ -925,10 +932,6 @@ SQL;
                 $content .= "//   ['$field_name', \\$field_type::class, $is_array_str]\n";
             }
         }
-        
-        $content .= "// \n";
-        $content .= "// The code for the generation is in:\n";
-        $content .= "// \\Bristolian\\CliController\\GenerateFiles::generateResponseClassContent\n";
 
         $content .= "namespace $namespace;\n\n";
         

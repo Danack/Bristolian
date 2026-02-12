@@ -39,6 +39,7 @@
 
     <rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
         <exclude-pattern>*test/BristolianTest/Parameters/PropertyType/*</exclude-pattern>
+        <exclude-pattern>*test/*.php</exclude-pattern>
     </rule>
 
 

@@ -7,6 +7,8 @@ use BristolianTest\BaseTestCase;
 
 /**
  * Test class that uses the FromArray trait
+ *
+ * @coversNothing
  */
 class TestFromArrayClass
 {

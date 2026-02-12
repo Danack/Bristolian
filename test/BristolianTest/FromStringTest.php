@@ -7,6 +7,8 @@ use BristolianTest\BaseTestCase;
 
 /**
  * Test class that uses the FromString trait with constructor
+ *
+ * @coversNothing
  */
 class TestFromStringClass
 {
@@ -23,6 +25,8 @@ class TestFromStringClass
 
 /**
  * Test class that uses the FromString trait without constructor
+ *
+ * @coversNothing
  */
 class TestFromStringNoConstructorClass
 {
