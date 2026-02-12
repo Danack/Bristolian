@@ -412,10 +412,16 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
             const stair_info = logged_in === true
                 ? this.renderLoggedInStairInfo()
                 : this.renderViewOnlyStairInfo();
+            const closeButton = (
+                <button type="button" class="bristol_stairs_close" onClick={this.handleCloseStairView}>
+                    Back to map
+                </button>
+            );
             mainContent = (
                 <div class="bristol_stairs_stair_detail">
                     {stair_info}
                     {map_visible && logged_in ? upload_button : null}
+                    {closeButton}
                 </div>
             );
         } else {
@@ -427,15 +433,8 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
             );
         }
 
-        const closeButton = this.state.selected_stair_info !== null ? (
-            <button type="button" class="bristol_stairs_close" onClick={this.handleCloseStairView}>
-                Back to map
-            </button>
-        ) : null;
-
         return (
             <div class="bristol_stairs_panel_react">
-                {closeButton}
                 {mainContent}
             </div>
         );
