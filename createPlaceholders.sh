@@ -4,7 +4,7 @@
 php cli.php admin:create_user testing@example.com testing
 php cli.php admin:create_user danack@example.com testing
 php cli.php room:create  "Housing" "A place to discuss the problem that is BCC housing"
-php cli.php room:create  "Misc" "A place to discuss everything else"
+php cli.php room:create  "Off-topic" "A place to discuss everything else"
 
 php cli.php debug:add_meme test/fixtures/memes/came-to-laugh-not-feel.jpg "sad,wojak,feel"  "I came here to laugh not to feel"
 php cli.php debug:add_meme test/fixtures/memes/one_yikes.jpeg "yikes,reaction" "You have been awarded on yike from the national committee of yikes"
