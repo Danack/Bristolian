@@ -8,6 +8,7 @@ use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Parameters\BristolStairsGpsParams;
 use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
+use Bristolian\Parameters\OpenmapNearbyParams;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
@@ -173,6 +174,67 @@ HTML;
         $markers = $stairs_repo->getAllStairsInfo();
 
         return new GetBristolStairsResponse($markers);
+    }
+
+    /**
+     * Returns the 20 closest OSM stair locations (from openmap_stair_info.json) to the given coordinates.
+     * Only node elements are used (they have lat/lon); way elements are skipped.
+     * Requires the user to be logged in.
+     */
+    public function getOpenmapNearby(
+        UserSession $userSession,
+        OpenmapNearbyParams $params
+    ): JsonNoCacheResponse {
+        if ($userSession->isLoggedIn() !== true) {
+            return new JsonNoCacheResponse(['error' => 'Not logged in'], [], 401);
+        }
+
+        $path = __DIR__ . '/../../../app/public/openmap_stair_info.json';
+        if (!is_readable($path)) {
+            return new JsonNoCacheResponse(['error' => 'OpenMap data not available'], [], 500);
+        }
+
+        $json = file_get_contents($path);
+        $data = json_decode($json, true);
+        if (!isset($data['elements']) || !is_array($data['elements'])) {
+            return new JsonNoCacheResponse(['error' => 'Invalid OpenMap data'], [], 500);
+        }
+
+        $latitude = $params->latitude;
+        $longitude = $params->longitude;
+
+        $locations = [];
+        foreach ($data['elements'] as $element) {
+            if (($element['type'] ?? '') !== 'node') {
+                continue;
+            }
+            $element_latitude = $element['lat'] ?? null;
+            $element_longitude = $element['lon'] ?? null;
+            if ($element_latitude === null || $element_longitude === null) {
+                continue;
+            }
+            $distance_squared = ($element_latitude - $latitude) ** 2 + ($element_longitude - $longitude) ** 2;
+            $name = $element['tags']['name'] ?? null;
+            $locations[] = [
+                'latitude' => (float) $element_latitude,
+                'longitude' => (float) $element_longitude,
+                'id' => $element['id'],
+                'type' => 'node',
+                'name' => $name,
+                '_distance_squared' => $distance_squared,
+            ];
+        }
+
+        usort($locations, static fn ($a, $b) => $a['_distance_squared'] <=> $b['_distance_squared']);
+        $nearest = array_slice($locations, 0, 20);
+        foreach ($nearest as &$location) {
+            unset($location['_distance_squared']);
+        }
+
+        return new JsonNoCacheResponse([
+            'result' => 'success',
+            'data' => ['locations' => $nearest],
+        ]);
     }
 
 
