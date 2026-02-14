@@ -11,6 +11,25 @@ export interface BristolStairsPanelProps {
     selected_stair_info: BristolStairInfo|null;
 }
 
+// https://overpass-turbo.eu/?Q=%5Bout%3Ajson%5D%5Btimeout%3A25%5D%3Barea%5Bname%3D%22Bristol%22%5D-%3E.searchArea%3B%0A%28way%5B%22highway%22%3D%22steps%22%5D%28area.searchArea%29%3Bnode%28way%29%3B%29%3Bout%20geom
+// [out:json][timeout:25];
+// area[name="Bristol"]->.searchArea;
+// (
+//   way["highway"="steps"](area.searchArea);
+//   node(w);
+// );
+// out geom;
+
+
+/** One location from the openmap nearby API (OSM stair node). */
+export interface OpenmapNearbyLocation {
+    latitude: number;
+    longitude: number;
+    id: number;
+    type: string;
+    name?: string | null;
+}
+
 interface BristolStairsPanelState {
     error: string|null,
     selected_stair_info: BristolStairInfo|null,
@@ -26,6 +45,11 @@ interface BristolStairsPanelState {
 
     /** True when viewport is landscape (map and panel side by side). Used to know if map is visible on narrow screens when a stair is selected. */
     is_landscape: boolean,
+
+    /** Whether the 10 nearest OSM stairs are currently shown as circles on the map. */
+    openmap_nearby_visible: boolean,
+    openmap_nearby_loading: boolean,
+    openmap_nearby_error: string|null,
 }
 
 function getDefaultState(props: BristolStairsPanelProps): BristolStairsPanelState {
@@ -44,6 +68,10 @@ function getDefaultState(props: BristolStairsPanelProps): BristolStairsPanelStat
         selectedFile: null,
 
         is_landscape: typeof window !== "undefined" ? window.matchMedia("(orientation: landscape)").matches : true,
+
+        openmap_nearby_visible: false,
+        openmap_nearby_loading: false,
+        openmap_nearby_error: null,
     };
 }
 
@@ -126,6 +154,42 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
         });
         window.history.pushState({}, "", "/tools/bristol_stairs");
         sendMessage("STAIR_DESELECTED", {});
+    };
+
+    handleShowOpenmapNearby = () => {
+        const latitude = this.state.position_latitude;
+        const longitude = this.state.position_longitude;
+        if (latitude === null || longitude === null) return;
+        this.setState({ openmap_nearby_loading: true, openmap_nearby_error: null });
+        const url = `/api/bristol_stairs_openmap_nearby?latitude=${encodeURIComponent(latitude)}&longitude=${encodeURIComponent(longitude)}`;
+        fetch(url)
+            .then((res) => {
+                if (!res.ok) {
+                    if (res.status === 401) throw new Error("Not logged in");
+                    throw new Error(`Server returned ${res.status}`);
+                }
+                return res.json();
+            })
+            .then((data: { data?: { locations?: OpenmapNearbyLocation[] } }) => {
+                const locations = data?.data?.locations ?? [];
+                sendMessage("SHOW_OPENMAP_NEARBY", { locations });
+                this.setState({
+                    openmap_nearby_visible: true,
+                    openmap_nearby_loading: false,
+                    openmap_nearby_error: null,
+                });
+            })
+            .catch((err: Error) => {
+                this.setState({
+                    openmap_nearby_loading: false,
+                    openmap_nearby_error: err.message ?? "Failed to load nearby stairs",
+                });
+            });
+    };
+
+    handleHideOpenmapNearby = () => {
+        sendMessage("HIDE_OPENMAP_NEARBY", {});
+        this.setState({ openmap_nearby_visible: false, openmap_nearby_error: null });
     };
 
     syncContainerStairSelectedClass(selected: boolean) {
@@ -405,6 +469,28 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
             upload_button = <button onClick={this.startUploadingImage}>Upload image</button>;
         }
 
+        const positionReady = state.position_latitude !== null && state.position_longitude !== null;
+        let openmap_nearby_buttons: h.JSX.Element = <span></span>;
+        if (logged_in === true && map_visible) {
+            if (state.openmap_nearby_visible) {
+                openmap_nearby_buttons = (
+                    <button type="button" onClick={this.handleHideOpenmapNearby}>
+                        Hide OSM stairs
+                    </button>
+                );
+            } else {
+                openmap_nearby_buttons = (
+                    <button
+                        type="button"
+                        onClick={this.handleShowOpenmapNearby}
+                        disabled={state.openmap_nearby_loading || !positionReady}
+                    >
+                        {state.openmap_nearby_loading ? "Loading…" : "Show nearby OSM stairs"}
+                    </button>
+                );
+            }
+        }
+
         let mainContent: h.JSX.Element;
         if (this.state.uploading_image === true) {
             mainContent = this.renderUploadPanel();
@@ -420,7 +506,13 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
             mainContent = (
                 <div class="bristol_stairs_stair_detail">
                     {stair_info}
-                    {map_visible && logged_in ? upload_button : null}
+                    {map_visible && logged_in ? (
+                        <span>
+                            {upload_button}
+                            {openmap_nearby_buttons}
+                        </span>
+                    ) : null}
+                    {state.openmap_nearby_error ? <span class="bristol_stairs_openmap_error">{state.openmap_nearby_error}</span> : null}
                     {closeButton}
                 </div>
             );
@@ -429,6 +521,8 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
                 <div class="bristol_stairs_map_prompt">
                     <span>Click a marker on the map to view the stairs.</span>
                     {upload_button}
+                    {openmap_nearby_buttons}
+                    {state.openmap_nearby_error ? <span class="bristol_stairs_openmap_error">{state.openmap_nearby_error}</span> : null}
                 </div>
             );
         }

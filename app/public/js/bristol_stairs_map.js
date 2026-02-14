@@ -11,6 +11,9 @@ let lastClickedMarker = null;
 let pending_stair_info_to_focus = null;
 let markers_loaded = false;
 
+/** Layer group for the "10 nearest OSM stairs" circles. */
+let openmapNearbyLayer = null;
+
 var southWest = L.latLng(51.3325441, -2.8657612),
     northEast = L.latLng(51.6014432, -2.2960328),
     bounds = L.latLngBounds(southWest, northEast);
@@ -343,7 +346,34 @@ map.on('move', () => {
     sendMessage("STAIRS_MAP_POSITION_CHANGED", positionData);
 });
 
+function showOpenmapNearby(data) {
+    const locations = data.locations || [];
+    if (openmapNearbyLayer && map.hasLayer(openmapNearbyLayer)) {
+        map.removeLayer(openmapNearbyLayer);
+    }
+    openmapNearbyLayer = L.layerGroup();
+    const radiusMetres = 75;
+    const circleOptions = {
+        color: '#2196F3',
+        fillColor: '#2196F3',
+        fillOpacity: 0.25,
+        weight: 2
+    };
+    locations.forEach(function (location) {
+        const circle = L.circle([location.latitude, location.longitude], { radius: radiusMetres, ...circleOptions });
+        if (location.name) {
+            circle.bindTooltip(location.name, { permanent: false });
+        }
+        openmapNearbyLayer.addLayer(circle);
+    });
+    map.addLayer(openmapNearbyLayer);
+}
 
+function hideOpenmapNearby() {
+    if (openmapNearbyLayer && map.hasLayer(openmapNearbyLayer)) {
+        map.removeLayer(openmapNearbyLayer);
+    }
+}
 
 addEventListener("DOMContentLoaded", (event) => {
     registerMessageListener("STAIR_INFO_UPDATED", bristol_stair_info_updated)
@@ -352,6 +382,8 @@ addEventListener("DOMContentLoaded", (event) => {
     registerMessageListener("STAIR_CANCEL_EDITING_POSITION", bristol_stair_cancel_editing_position)
     registerMessageListener("STAIR_SELECTED_ON_LOAD", bristol_stair_selected_on_load)
     registerMessageListener("STAIR_DESELECTED", bristol_stair_deselected)
+    registerMessageListener("SHOW_OPENMAP_NEARBY", showOpenmapNearby)
+    registerMessageListener("HIDE_OPENMAP_NEARBY", hideOpenmapNearby)
 
     addLocateControl();
     fetchData();

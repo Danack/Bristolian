@@ -84,6 +84,13 @@ function getAllApiRoutes()
         ],
 
         [
+            '/api/bristol_stairs_openmap_nearby',
+            'GET',
+            'Bristolian\AppController\BristolStairs::getOpenmapNearby',
+            null
+        ],
+
+        [
             '/api/bristol_stairs_image',
             'POST',
             'Bristolian\AppController\BristolStairs::handleFileUpload',
