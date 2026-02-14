@@ -9,6 +9,7 @@ use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
 
 /**
  * @group standard_repo
+ * @coversNothing
  */
 class FakeProcessorRepoFixture extends ProcessorRepoFixture
 {

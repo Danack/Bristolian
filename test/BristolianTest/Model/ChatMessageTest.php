@@ -7,7 +7,6 @@ use Bristolian\Model\Chat\UserChatMessage;
 
 /**
  * @coversNothing
- * @group wip_borken
  */
 class ChatMessageTest extends BaseTestCase
 {

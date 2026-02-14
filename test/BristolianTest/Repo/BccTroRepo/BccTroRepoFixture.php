@@ -10,6 +10,7 @@ use BristolianTest\BaseTestCase;
 
 /**
  * @internal
+ * @coversNothing
  */
 abstract class BccTroRepoFixture extends BaseTestCase
 {

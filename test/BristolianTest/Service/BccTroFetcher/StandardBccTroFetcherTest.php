@@ -10,7 +10,6 @@ use BristolianTest\BaseTestCase;
 
 /**
  * @covers \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher
- * @group wiptro
  */
 class StandardBccTroFetcherTest extends BaseTestCase
 {

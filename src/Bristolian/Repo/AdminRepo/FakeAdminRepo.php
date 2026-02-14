@@ -50,7 +50,6 @@ class FakeAdminRepo implements AdminRepo
     public function getAdminUserId(string $username): ?string
     {
         foreach ($this->adminUsers as $adminUser) {
-
             if ($adminUser->getEmailAddress() === $username) {
                 return $adminUser->getUserId();
             }

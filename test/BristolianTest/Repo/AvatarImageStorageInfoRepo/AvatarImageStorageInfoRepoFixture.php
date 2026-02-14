@@ -12,7 +12,9 @@ use BristolianTest\Repo\TestPlaceholders;
 
 /**
  * Abstract test class for AvatarImageStorageInfoRepo implementations.
+ *
  * @internal
+ * @coversNothing
  */
 abstract class AvatarImageStorageInfoRepoFixture extends BaseTestCase
 {

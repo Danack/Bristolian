@@ -21,6 +21,8 @@ use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
 use Bristolian\Response\Typed\GetMemesResponse;
 use Bristolian\Response\Typed\GetMemesTagsResponse;
+use Bristolian\Response\Typed\PostMemetagaddResponse;
+use Bristolian\Response\Typed\PostMemetagdeleteResponse;
 use Bristolian\Response\GetMemeTagSuggestionsResponse;
 use Bristolian\Response\GetMemeTextResponse;
 use SlimDispatcher\Response\TextResponse;
@@ -170,22 +172,9 @@ class User
 //            return new JsonResponse([]);
 //        }
 
-        $data = $memeTagRepo->getUserTagsForMeme(
+        $memeTags = $memeTagRepo->getUserTagsForMeme(
             $userSession->getUserId(),
             $meme_id
-        );
-
-        /** @var array<int, array<string, mixed>> $data */
-        $memeTags = array_map(
-            fn(array $row) => new MemeTag(
-                $row['id'],
-                $row['user_id'],
-                $row['meme_id'],
-                $row['type'],
-                $row['text'],
-                new \DateTimeImmutable($row['created_at'])
-            ),
-            $data
         );
 
         return new GetMemesTagsResponse($memeTags);
@@ -267,12 +256,12 @@ class User
             $memeTagParam
         );
 
-        $data = $memeTagRepo->getUserTagsForMeme(
+        $memeTags = $memeTagRepo->getUserTagsForMeme(
             $appSession->getUserId(),
             $memeTagParam->meme_id
         );
 
-        return new JsonResponse($data);
+        return new PostMemetagaddResponse($memeTags);
     }
 
     public function handleMemeTagAdd_get(): EndpointAccessedViaGetResponse
@@ -328,12 +317,12 @@ class User
         );
 
         // Why are we doing this? Seems like early optimisation.
-        $data = $memeTagRepo->getUserTagsForMeme(
+        $memeTags = $memeTagRepo->getUserTagsForMeme(
             $appSession->getUserId(),
             $memeTagDeleteParam->meme_id
         );
 
-        return new JsonResponse($data);
+        return new PostMemetagdeleteResponse($memeTags);
     }
 
     public function handleMemeTagDelete_get(): EndpointAccessedViaGetResponse

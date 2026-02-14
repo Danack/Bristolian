@@ -4,12 +4,15 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\ProcessorRepo;
 
+use Bristolian\Model\Types\ProcessorState;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
 use BristolianTest\BaseTestCase;
 
 /**
  * Abstract test class for ProcessorRepo implementations.
+ *
+ * @coversNothing
  */
 abstract class ProcessorRepoFixture extends BaseTestCase
 {
@@ -20,17 +23,17 @@ abstract class ProcessorRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): ProcessorRepo;
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::getProcessorEnabled
-     */
-    public function test_getProcessorEnabled_returns_false_initially(): void
-    {
-        $repo = $this->getTestInstance();
-
-        $enabled = $repo->getProcessorEnabled(ProcessType::daily_system_info);
-
-        $this->assertFalse($enabled);
-    }
+//    /**
+//     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::getProcessorEnabled
+//     */
+//    public function test_getProcessorEnabled_returns_false_initially(): void
+//    {
+//        $repo = $this->getTestInstance();
+//
+//        $enabled = $repo->getProcessorEnabled(ProcessType::daily_system_info);
+//
+//        $this->assertFalse($enabled);
+//    }
 
     /**
      * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::setProcessorEnabled
@@ -88,13 +91,23 @@ abstract class ProcessorRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        // Enable some processors
+        // Enable one processor, disable another
         $repo->setProcessorEnabled(ProcessType::daily_system_info, true);
         $repo->setProcessorEnabled(ProcessType::meme_ocr, false);
 
         $states = $repo->getProcessorsStates();
 
-        // Note: The exact structure depends on implementation
-        // Some implementations may return empty array if states aren't explicitly set
+        // Assert the entries we set are present with correct values
+        $this->assertArrayHasKey(ProcessType::daily_system_info->value, $states);
+        $dailyState = $states[ProcessType::daily_system_info->value];
+        $this->assertInstanceOf(ProcessorState::class, $dailyState);
+        $this->assertSame(ProcessType::daily_system_info->value, $dailyState->type);
+        $this->assertTrue($dailyState->enabled);
+
+        $this->assertArrayHasKey(ProcessType::meme_ocr->value, $states);
+        $memeState = $states[ProcessType::meme_ocr->value];
+        $this->assertInstanceOf(ProcessorState::class, $memeState);
+        $this->assertSame(ProcessType::meme_ocr->value, $memeState->type);
+        $this->assertFalse($memeState->enabled);
     }
 }

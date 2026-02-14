@@ -3,6 +3,7 @@
 namespace Bristolian\Repo\MemeTagRepo;
 
 use Bristolian\Database\meme_tag;
+use Bristolian\Model\Generated\MemeTag;
 use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\MemeTagUpdateParams;
 use Bristolian\PdoSimple\PdoSimple;
@@ -39,8 +40,7 @@ class PdoMemeTagRepo implements MemeTagRepo
     /**
      * @param string $user_id
      * @param string $meme_id
-     * @return array<int, string>
-     * @throws \Exception
+     * @return MemeTag[]
      */
     public function getUserTagsForMeme(
         string $user_id,
@@ -51,10 +51,10 @@ class PdoMemeTagRepo implements MemeTagRepo
         $sql = <<< SQL
 select
     mt.id,
-    mt.meme_id,
     mt.user_id,
-    mt.text,
+    mt.meme_id,
     mt.type,
+    mt.text,
     mt.created_at
 from
   meme_tag mt
@@ -69,8 +69,7 @@ SQL;
             ':meme_id' => $meme_id
         ];
 
-        // @phpstan-ignore-next-line
-        return $this->pdoSimple->fetchAllAsData($sql, $params);
+        return $this->pdoSimple->fetchAllAsObjectConstructor($sql, $params, MemeTag::class);
     }
 
     public function updateTagForUser(

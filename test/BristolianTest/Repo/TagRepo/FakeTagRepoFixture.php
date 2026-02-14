@@ -11,6 +11,7 @@ use Bristolian\Repo\TagRepo\TagRepo;
 
 /**
  * @group standard_repo
+ * @coversNothing
  */
 class FakeTagRepoFixture extends TagRepoFixture
 {
@@ -21,7 +22,7 @@ class FakeTagRepoFixture extends TagRepoFixture
 
     /**
      * Test FakeTagRepo-specific constructor behavior
-     * 
+     *
      * @covers \Bristolian\Repo\TagRepo\FakeTagRepo::__construct
      */
     public function test_constructor_accepts_initial_tags(): void

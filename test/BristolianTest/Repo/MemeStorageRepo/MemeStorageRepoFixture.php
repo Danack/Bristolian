@@ -11,6 +11,11 @@ use BristolianTest\BaseTestCase;
 
 /**
  * Abstract test class for MemeStorageRepo implementations.
+ *
+ * Scenario data (user id) is provided by concrete tests via getValidUserId().
+ * See docs/refactoring/default_test_scenarios_and_worlds.md § Abstract repo fixtures.
+ *
+ * @coversNothing
  */
 abstract class MemeStorageRepoFixture extends BaseTestCase
 {
@@ -21,12 +26,16 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): MemeStorageRepo;
 
+    /**
+     * A user id that exists in this implementation's world (for FK-safe tests).
+     */
+    abstract protected function getValidUserId(): string;
 
     public function test_storeMeme(): void
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
         $normalized_filename = 'test_meme_' . time() . '.jpg';
         $uploadedFile = UploadedFile::fromFile(__FILE__);
 
@@ -56,7 +65,7 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
         $normalized_filename = 'test_meme_' . time() . '.jpg';
         $uploadedFile = UploadedFile::fromFile(__FILE__);
 
@@ -89,7 +98,7 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
         $normalized_filename = 'test-meme_' . time() . '.jpg';
         $uploadedFile = UploadedFile::fromFile(__FILE__);
 
@@ -110,7 +119,7 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
         $normalized_filename = 'test_meme_' . time() . '.jpg';
         $uploadedFile = UploadedFile::fromFile(__FILE__);
 
@@ -129,7 +138,7 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
 
         $memes = $repo->searchMemesForUser($user_id, null, null);
     }
@@ -142,7 +151,7 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
 
         $memes = $repo->searchMemesForUser($user_id, 'test', null);
         $this->assertContainsOnlyInstancesOf(Meme::class, $memes);
@@ -156,7 +165,7 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
 
         $memes = $repo->searchMemesForUser($user_id, null, 'character');
         $this->assertContainsOnlyInstancesOf(Meme::class, $memes);
@@ -167,7 +176,7 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
         $normalized_filename = 'test_meme_' . time() . '.jpg';
         $uploadedFile = UploadedFile::fromFile(__FILE__);
 
@@ -186,7 +195,7 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
         $normalized_filename = 'test_meme_' . time() . '.jpg';
         $uploadedFile = UploadedFile::fromFile(__FILE__);
 
@@ -208,7 +217,7 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
         $tagTexts = ['tag1', 'tag2'];
 
         $memes = $repo->searchMemesByExactTags($user_id, $tagTexts);
@@ -223,7 +232,7 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
 
         $memes = $repo->searchMemesByExactTags($user_id, []);
     }
@@ -236,7 +245,7 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
         $original_filename = 'nonexistent.jpg';
 
         $meme = $repo->getMemeByOriginalFilename($user_id, $original_filename);
@@ -248,7 +257,7 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
         $normalized_filename = 'test_meme_' . time() . '.jpg';
         $uploadedFile = UploadedFile::fromFile(__FILE__);
 

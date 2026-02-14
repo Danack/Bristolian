@@ -7,7 +7,6 @@ use Bristolian\CliController\Debug;
 
 /**
  * @coversNothing
- * @group wip
  */
 class DebugTest extends BaseTestCase
 {

@@ -9,6 +9,7 @@ use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 
 /**
  * @group standard_repo
+ * @coversNothing
  */
 class FakeMemeStorageRepoFixture extends MemeStorageRepoFixture
 {
@@ -18,5 +19,10 @@ class FakeMemeStorageRepoFixture extends MemeStorageRepoFixture
     public function getTestInstance(): MemeStorageRepo
     {
         return new FakeMemeStorageRepo();
+    }
+
+    protected function getValidUserId(): string
+    {
+        return 'user_123';
     }
 }

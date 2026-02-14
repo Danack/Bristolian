@@ -17,6 +17,8 @@ use BristolianTest\Repo\TestPlaceholders;
 
 /**
  * Abstract test class for MemeTextRepo implementations.
+ *
+ * @coversNothing
  */
 abstract class MemeTextRepoFixture extends BaseTestCase
 {

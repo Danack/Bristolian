@@ -13,6 +13,8 @@ use BristolianTest\BaseTestCase;
 
 /**
  * Abstract test class for EmailQueue implementations.
+ *
+ * @coversNothing
  */
 abstract class EmailQueueFixture extends BaseTestCase
 {

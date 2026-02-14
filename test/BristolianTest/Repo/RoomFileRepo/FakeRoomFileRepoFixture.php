@@ -23,6 +23,16 @@ class FakeRoomFileRepoFixture extends RoomFileRepoFixture
     {
         return new FakeRoomFileRepo();
     }
+
+    protected function getValidRoomId(): string
+    {
+        return 'room_456';
+    }
+
+    protected function getValidFileId(): string
+    {
+        return 'file_123';
+    }
     /**
      * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
      */

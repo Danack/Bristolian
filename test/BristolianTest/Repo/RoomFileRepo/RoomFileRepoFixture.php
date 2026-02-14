@@ -10,6 +10,12 @@ use BristolianTest\BaseTestCase;
 
 /**
  * Abstract test class for RoomFileRepo implementations.
+ *
+ * Scenario data (room id, file id) is provided by concrete tests via getValidRoomId()
+ * and getValidFileId() so the fixture stays schema-agnostic. See
+ * docs/refactoring/default_test_scenarios_and_worlds.md § Abstract repo fixtures.
+ *
+ * @coversNothing
  */
 abstract class RoomFileRepoFixture extends BaseTestCase
 {
@@ -21,14 +27,24 @@ abstract class RoomFileRepoFixture extends BaseTestCase
     abstract public function getTestInstance(): RoomFileRepo;
 
     /**
+     * A room id that exists in this implementation's world (for FK-safe tests).
+     */
+    abstract protected function getValidRoomId(): string;
+
+    /**
+     * A file id that exists in this implementation's world and can be added to a room.
+     */
+    abstract protected function getValidFileId(): string;
+
+    /**
      * @covers \Bristolian\Repo\RoomFileRepo\RoomFileRepo::addFileToRoom
      */
     public function test_addFileToRoom(): void
     {
         $repo = $this->getTestInstance();
 
-        $fileStorageId = 'file_123';
-        $room_id = 'room_456';
+        $fileStorageId = $this->getValidFileId();
+        $room_id = $this->getValidRoomId();
 
         // Should not throw an exception
         $repo->addFileToRoom($fileStorageId, $room_id);
@@ -42,8 +58,8 @@ abstract class RoomFileRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $fileStorageId = 'file_123';
-        $room_id = 'room_456';
+        $fileStorageId = $this->getValidFileId();
+        $room_id = $this->getValidRoomId();
 
         $repo->addFileToRoom($fileStorageId, $room_id);
 
@@ -59,7 +75,7 @@ abstract class RoomFileRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $room_id = 'room_456';
+        $room_id = $this->getValidRoomId();
         $file_id = 'nonexistent_file';
 
         $fileDetails = $repo->getFileDetails($room_id, $file_id);
@@ -69,13 +85,14 @@ abstract class RoomFileRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\RoomFileRepo\RoomFileRepo::getFileDetails
      * @covers \Bristolian\Repo\RoomFileRepo\RoomFileRepo::addFileToRoom
+     * @group wip
      */
     public function test_getFileDetails_returns_file_after_adding(): void
     {
         $repo = $this->getTestInstance();
 
-        $fileStorageId = 'file_123';
-        $room_id = 'room_456';
+        $fileStorageId = $this->getValidFileId();
+        $room_id = $this->getValidRoomId();
 
         $repo->addFileToRoom($fileStorageId, $room_id);
 

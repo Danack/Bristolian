@@ -33,6 +33,12 @@ class FakeProcessorRepo implements ProcessorRepo
     public function setProcessorEnabled(ProcessType $processor, bool $enabled): void
     {
         $this->processorEnabled[$processor->value] = $enabled;
+        $this->processorStates[$processor->value] = new ProcessorState(
+            id: 'fake-' . $processor->value,
+            enabled: $enabled,
+            type: $processor->value,
+            updated_at: new \DateTimeImmutable()
+        );
     }
 
     public function getProcessorEnabled(ProcessType $processor): bool

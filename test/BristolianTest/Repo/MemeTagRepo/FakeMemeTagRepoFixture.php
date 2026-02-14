@@ -9,6 +9,7 @@ use Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo;
 
 /**
  * @group standard_repo
+ * @coversNothing
  */
 class FakeMemeTagRepoFixture extends MemeTagRepoFixture
 {

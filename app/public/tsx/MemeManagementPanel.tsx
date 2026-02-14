@@ -1,5 +1,5 @@
 import {h, Component} from "preact";
-import {api, GetMemesResponse} from "./generated/api_routes";
+import {api, GetMemesResponse, PostMemetagaddResponse, PostMemetagdeleteResponse} from "./generated/api_routes";
 import {StoredMeme, createStoredMeme} from "./generated/types";
 import {MemeTagType} from "./MemeTagType";
 import {MEME_FILE_UPLOAD_FORM_NAME, DUPLICATE_FILENAME} from "./generated/constants";
@@ -470,8 +470,8 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
 
         fetch('/api/meme-tag-add/', params).
           then((response:Response) => response.json()).
-          then((data:any) => {
-              this.processTagAddData(data);
+          then((data: PostMemetagaddResponse) => {
+              this.processTagAddData(data.data.meme_tags);
               // Clear the text input and error after successful add
               this.setState({ 
                   meme_edit_text: '',
@@ -591,8 +591,8 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
               }
               return response.json();
           }).
-          then((memeTags: Array<MemeTag>) => {
-              this.processMemeTagData(memeTags);
+          then((data: PostMemetagdeleteResponse) => {
+              this.processMemeTagData(data.data.meme_tags);
               this.setState({ confirmMemeTagDelete: null });
           })
           .catch((err: any) => {

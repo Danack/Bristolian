@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\Repo\MemeTagRepo;
 
+use Bristolian\Model\Generated\MemeTag;
 use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\MemeTagUpdateParams;
 use Bristolian\Repo\MemeStorageRepo\MemeFileState;
@@ -51,7 +52,7 @@ class FakeMemeTagRepo implements MemeTagRepo
     /**
      * @param string $user_id
      * @param string $meme_id
-     * @return array<int, string>
+     * @return MemeTag[]
      */
     public function getUserTagsForMeme(
         string $user_id,
@@ -68,8 +69,14 @@ class FakeMemeTagRepo implements MemeTagRepo
         $result = [];
         foreach ($this->tags as $tag) {
             if ($tag['meme_id'] === $meme_id) {
-                // Return just the text strings as the interface specifies
-                $result[] = $tag['text'];
+                $result[] = new MemeTag(
+                    $tag['id'],
+                    $tag['user_id'],
+                    $tag['meme_id'],
+                    $tag['type'],
+                    $tag['text'],
+                    $tag['created_at']
+                );
             }
         }
 

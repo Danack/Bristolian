@@ -11,7 +11,9 @@ use BristolianTest\Repo\TestPlaceholders;
 
 /**
  * Abstract test class for AdminRepo implementations.
+ *
  * @internal
+ * @coversNothing
  */
 abstract class AdminRepoFixture extends BaseTestCase
 {

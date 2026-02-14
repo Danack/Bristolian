@@ -12,6 +12,7 @@ use VarMap\ArrayVarMap;
 
 /**
  * @group standard_repo
+ * @coversNothing
  */
 class FakeWebPushSubscriptionRepoFixture extends WebPushSubscriptionRepoFixture
 {

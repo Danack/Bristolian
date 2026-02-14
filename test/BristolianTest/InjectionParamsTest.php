@@ -144,7 +144,9 @@ class InjectionParamsTest extends BaseTestCase
     public function testWorks_delegate()
     {
         $params = new InjectionParams();
-        $callable = function() { return new \stdClass(); };
+        $callable = function () {
+            return new \stdClass();
+        };
         $params->delegate('ClassName', $callable);
 
         $this->assertArrayHasKey('ClassName', $params->delegates);
@@ -170,7 +172,9 @@ class InjectionParamsTest extends BaseTestCase
     public function testWorks_prepare()
     {
         $params = new InjectionParams();
-        $callable = function($instance) { return $instance; };
+        $callable = function ($instance) {
+            return $instance;
+        };
         $params->prepare('ClassName', $callable);
 
         $this->assertArrayHasKey('ClassName', $params->prepares);
@@ -189,8 +193,12 @@ class InjectionParamsTest extends BaseTestCase
         $params->alias('TestInterface', \stdClass::class);
         $params->share($object);
         $params->defineNamedParam('testParam', 'testValue');
-        $params->delegate('TestClass', function() { return new \stdClass(); });
-        $params->prepare('TestClass', function($instance) { return $instance; });
+        $params->delegate('TestClass', function () {
+            return new \stdClass();
+        });
+        $params->prepare('TestClass', function ($instance) {
+            return $instance;
+        });
         $params->defineClassParam('TestClass', ['param' => 'value']);
 
         // This should not throw an exception

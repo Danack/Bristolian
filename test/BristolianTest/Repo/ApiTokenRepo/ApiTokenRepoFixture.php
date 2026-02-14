@@ -10,7 +10,9 @@ use BristolianTest\BaseTestCase;
 
 /**
  * Abstract test class for ApiTokenRepo implementations.
+ *
  * @internal
+ * @coversNothing
  */
 abstract class ApiTokenRepoFixture extends BaseTestCase
 {

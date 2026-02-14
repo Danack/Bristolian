@@ -9,6 +9,7 @@ use Bristolian\Repo\BccTroRepo\FakeBccTroRepo;
 
 /**
  * @group standard_repo
+ * @coversNothing
  */
 class FakeBccTroRepoFixture extends BccTroRepoFixture
 {

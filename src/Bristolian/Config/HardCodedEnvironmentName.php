@@ -2,8 +2,6 @@
 
 namespace Bristolian\Config;
 
-
-
 class HardCodedEnvironmentName implements EnvironmentName
 {
     public function __construct(public readonly string $env_name)

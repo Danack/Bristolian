@@ -10,6 +10,10 @@ use BristolianTest\BaseTestCase;
 
 /**
  * Abstract test class for RoomRepo implementations.
+ *
+ * Scenario data (user id) is provided by concrete tests via getValidUserId().
+ *
+ * @coversNothing
  */
 abstract class RoomRepoFixture extends BaseTestCase
 {
@@ -20,11 +24,16 @@ abstract class RoomRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): RoomRepo;
 
+    /**
+     * A user id that exists in this implementation's world (for FK-safe tests).
+     */
+    abstract protected function getValidUserId(): string;
+
     public function test_createRoom_creates_room(): void
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
         $name = 'Test Room';
         $purpose = 'Testing';
 
@@ -52,7 +61,7 @@ abstract class RoomRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $user_id = 'user_123';
+        $user_id = $this->getValidUserId();
         $name = 'Test Room';
         $purpose = 'Testing';
 
@@ -83,12 +92,16 @@ abstract class RoomRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $room1 = $repo->createRoom('user_1', 'Room 1', 'Purpose 1');
-        $room2 = $repo->createRoom('user_2', 'Room 2', 'Purpose 2');
+        $userId = $this->getValidUserId();
+        $room1 = $repo->createRoom($userId, 'Room 1', 'Purpose 1');
+        $room2 = $repo->createRoom($userId, 'Room 2', 'Purpose 2');
 
         $rooms = $repo->getAllRooms();
 
-        $this->assertCount(2, $rooms);
+        $this->assertGreaterThanOrEqual(2, count($rooms));
         $this->assertContainsOnlyInstancesOf(Room::class, $rooms);
+        $roomIds = array_map(fn(Room $r) => $r->id, $rooms);
+        $this->assertContains($room1->id, $roomIds);
+        $this->assertContains($room2->id, $roomIds);
     }
 }

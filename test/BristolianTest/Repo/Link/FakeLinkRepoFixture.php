@@ -9,6 +9,7 @@ use Bristolian\Repo\LinkRepo\LinkRepo;
 
 /**
  * @group standard_repo
+ * @coversNothing
  */
 class FakeLinkRepoFixture extends LinkRepoFixture
 {
@@ -22,7 +23,7 @@ class FakeLinkRepoFixture extends LinkRepoFixture
 
     /**
      * Test FakeLinkRepo-specific method getStoredLinks
-     * 
+     *
      * @covers \Bristolian\Repo\LinkRepo\FakeLinkRepo::getStoredLinks
      */
     public function test_getStoredLinks(): void

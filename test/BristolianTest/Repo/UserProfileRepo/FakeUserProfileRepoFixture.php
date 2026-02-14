@@ -9,6 +9,7 @@ use Bristolian\Repo\UserProfileRepo\UserProfileRepo;
 
 /**
  * @group standard_repo
+ * @coversNothing
  */
 class FakeUserProfileRepoFixture extends UserProfileRepoFixture
 {

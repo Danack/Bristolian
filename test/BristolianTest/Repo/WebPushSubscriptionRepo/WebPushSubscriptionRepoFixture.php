@@ -13,6 +13,8 @@ use VarMap\ArrayVarMap;
 
 /**
  * Abstract test class for WebPushSubscriptionRepo implementations.
+ *
+ * @coversNothing
  */
 abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
 {

@@ -17,6 +17,7 @@ use VarMap\ArrayVarMap;
  *
  * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo
  * @group standard_repo
+ * @coversNothing
  */
 class FakeBristolStairsRepoFixture extends BristolStairsRepoFixture
 {

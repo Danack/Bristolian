@@ -10,6 +10,8 @@ use BristolianTest\BaseTestCase;
 
 /**
  * Abstract test class for EmailIncoming implementations.
+ *
+ * @coversNothing
  */
 abstract class EmailIncomingFixture extends BaseTestCase
 {

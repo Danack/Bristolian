@@ -13,6 +13,8 @@ use VarMap\ArrayVarMap;
 
 /**
  * Abstract test class for MemeTagRepo implementations.
+ *
+ * @coversNothing
  */
 abstract class MemeTagRepoFixture extends BaseTestCase
 {
@@ -67,6 +69,7 @@ abstract class MemeTagRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::getUserTagsForMeme
      * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::addTagForMeme
+     * @group wip
      */
     public function test_getUserTagsForMeme_returns_tags_after_adding(): void
     {
@@ -86,7 +89,11 @@ abstract class MemeTagRepoFixture extends BaseTestCase
         $repo->addTagForMeme($user_id, $memeTagParam);
 
         $tags = $repo->getUserTagsForMeme($user_id, $meme_id);
-        $this->assertContains($text, $tags);
+        $tagTexts = [];
+        foreach ($tags as $tag) {
+            $tagTexts[] = $tag->text;
+        }
+        $this->assertContains($text, $tagTexts);
     }
 
 

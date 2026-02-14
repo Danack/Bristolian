@@ -11,6 +11,7 @@ use Bristolian\UploadedFiles\UploadedFile;
 
 /**
  * @group standard_repo
+ * @coversNothing
  */
 class FakeAvatarImageStorageInfoRepoFixture extends AvatarImageStorageInfoRepoFixture
 {
@@ -21,7 +22,7 @@ class FakeAvatarImageStorageInfoRepoFixture extends AvatarImageStorageInfoRepoFi
 
     /**
      * Test FakeAvatarImageStorageInfoRepo-specific behavior: setUploaded updates state
-     * 
+     *
      * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::setUploaded
      */
     public function test_setUploaded_updates_file_state(): void
@@ -42,7 +43,7 @@ class FakeAvatarImageStorageInfoRepoFixture extends AvatarImageStorageInfoRepoFi
 
     /**
      * Test FakeAvatarImageStorageInfoRepo-specific behavior: setUploaded throws for nonexistent file
-     * 
+     *
      * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::setUploaded
      */
     public function test_setUploaded_throws_for_nonexistent_file(): void

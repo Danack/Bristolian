@@ -13,6 +13,8 @@ use VarMap\ArrayVarMap;
 
 /**
  * Abstract test class for ChatMessageRepo implementations.
+ *
+ * @coversNothing
  */
 abstract class ChatMessageRepoFixture extends BaseTestCase
 {
@@ -39,6 +41,15 @@ abstract class ChatMessageRepoFixture extends BaseTestCase
     protected function getTestRoomId(): string
     {
         return 'room-456';
+    }
+
+    /**
+     * Get another room ID (for tests that need a distinct "other" room).
+     * Override in PDO tests to return a real second room (e.g. Off-topic).
+     */
+    protected function getOtherRoomId(): string
+    {
+        return 'different-room';
     }
 
     /**
@@ -105,7 +116,7 @@ abstract class ChatMessageRepoFixture extends BaseTestCase
         ]));
         $chatMessageParam3 = ChatMessageParam::createFromVarMap(new ArrayVarMap([
             'text' => 'Message 3',
-            'room_id' => 'different-room',
+            'room_id' => $this->getOtherRoomId(),
         ]));
 
         $repo->storeChatMessageForUser($user_id, $chatMessageParam1);

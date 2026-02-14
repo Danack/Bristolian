@@ -2,11 +2,13 @@
 
 namespace BristolianTest;
 
-
 use PHPUnit\Runner\TestHook;
 use PHPUnit\Runner\AfterTestHook;
 
-/** @phpstan-ignore-next-line */
+/**
+ * @phpstan-ignore-next-line
+ * @coversNothing
+ */
 class TestDurationListener implements AfterTestHook
 {
     public function executeAfterTest(string $test, float $time): void
@@ -16,5 +18,3 @@ class TestDurationListener implements AfterTestHook
         }
     }
 }
-
-

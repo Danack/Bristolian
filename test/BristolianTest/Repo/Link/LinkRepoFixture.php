@@ -9,6 +9,8 @@ use BristolianTest\BaseTestCase;
 
 /**
  * Abstract test class for LinkRepo implementations.
+ *
+ * @coversNothing
  */
 abstract class LinkRepoFixture extends BaseTestCase
 {

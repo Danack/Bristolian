@@ -12,6 +12,8 @@ use VarMap\ArrayVarMap;
 
 /**
  * Abstract test class for FoiRequestRepo implementations.
+ *
+ * @coversNothing
  */
 abstract class FoiRequestRepoFixture extends BaseTestCase
 {

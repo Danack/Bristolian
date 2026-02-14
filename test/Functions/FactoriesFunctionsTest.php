@@ -11,6 +11,8 @@ use BristolianTest\BaseTestCase;
 
 /**
  * Test Config class that allows testing production environment paths
+ *
+ * @coversNothing
  */
 class TestProductionConfig extends Config
 {

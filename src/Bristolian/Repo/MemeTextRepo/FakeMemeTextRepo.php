@@ -155,7 +155,8 @@ class FakeMemeTextRepo implements MemeTextRepo
             );
             $this->memeTexts[$meme_id] = $memeText;
             $this->allTexts[] = $memeText;
-        } else {
+        }
+        else {
             // Insert new
             $memeText = new MemeText(
                 id: $this->nextTextId++,

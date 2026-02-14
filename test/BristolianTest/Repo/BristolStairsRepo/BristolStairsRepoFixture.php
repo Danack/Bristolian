@@ -15,6 +15,8 @@ use VarMap\ArrayVarMap;
 
 /**
  * Abstract test class for BristolStairsRepo implementations.
+ *
+ * @coversNothing
  */
 abstract class BristolStairsRepoFixture extends BaseTestCase
 {

@@ -11,6 +11,8 @@ use BristolianTest\BaseTestCase;
 
 /**
  * Abstract test class for BristolStairImageStorageInfoRepo implementations.
+ *
+ * @coversNothing
  */
 abstract class BristolStairImageStorageInfoRepoFixture extends BaseTestCase
 {

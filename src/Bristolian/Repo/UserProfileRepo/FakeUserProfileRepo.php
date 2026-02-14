@@ -116,7 +116,8 @@ class FakeUserProfileRepo implements UserProfileRepo
                 created_at: $existingProfile->created_at,
                 updated_at: $now,
             );
-        } else {
+        }
+        else {
             $this->profiles[$user_id] = new UserProfile(
                 user_id: $user_id,
                 avatar_image_id: null,
@@ -146,7 +147,8 @@ class FakeUserProfileRepo implements UserProfileRepo
                 created_at: $existingProfile->created_at,
                 updated_at: $now,
             );
-        } else {
+        }
+        else {
             $this->profiles[$user_id] = new UserProfile(
                 user_id: $user_id,
                 avatar_image_id: $avatar_image_id,

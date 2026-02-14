@@ -62,6 +62,7 @@ update
   processor_run_record
 set 
   end_time = NOW(),
+  debug_info = :debug_info,
   status = :status
 where
   id = :id
@@ -69,6 +70,7 @@ limit 1
 SQL;
 
         $params = [
+            ':debug_info' => $debug_info,
             ':status' => self::STATE_FINISHED,
             ':id' => $id
         ];

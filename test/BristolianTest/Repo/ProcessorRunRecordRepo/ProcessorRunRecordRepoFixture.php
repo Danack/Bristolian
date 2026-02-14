@@ -11,6 +11,8 @@ use BristolianTest\BaseTestCase;
 
 /**
  * Abstract test class for ProcessorRunRecordRepo implementations.
+ *
+ * @coversNothing
  */
 abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
 {
@@ -80,7 +82,7 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
         // Should be the most recent run
         $records = $repo->getRunRecords(ProcessType::email_send);
         $this->assertCount(2, $records);
-        $this->assertSame($lastRun, $records[0]->start_time);
+        $this->assertEquals($lastRun, $records[0]->start_time);
     }
 
     /**

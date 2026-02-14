@@ -7,7 +7,6 @@ use BristolianTest\BaseTestCase;
 
 /**
  * @coversNothing
- * @group wip
  */
 class UploadedFileTest extends BaseTestCase
 {

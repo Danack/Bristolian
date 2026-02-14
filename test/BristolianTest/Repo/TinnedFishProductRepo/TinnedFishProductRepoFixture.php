@@ -11,6 +11,8 @@ use BristolianTest\BaseTestCase;
 
 /**
  * Abstract test class for TinnedFishProductRepo implementations.
+ *
+ * @coversNothing
  */
 abstract class TinnedFishProductRepoFixture extends BaseTestCase
 {
@@ -166,13 +168,14 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $barcode1 = create_test_uniqid();
+        // barcode column is varchar(20) - use short unique values
+        $barcode1 = '1' . str_pad((string) random_int(100000000, 999999999), 9, '0');
         $name1 = 'Product ' . create_test_uniqid();
         $brand1 = 'Brand ' . create_test_uniqid();
         $species1 = 'Sardines';
         $product_code1 = 'PROD-' . create_test_uniqid();
 
-        $barcode2 = create_test_uniqid();
+        $barcode2 = '2' . str_pad((string) random_int(100000000, 999999999), 9, '0');
         $name2 = 'Product ' . create_test_uniqid();
         $brand2 = 'Brand ' . create_test_uniqid();
         $species2 = 'Tuna';

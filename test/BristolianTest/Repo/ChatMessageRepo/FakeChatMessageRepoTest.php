@@ -9,6 +9,7 @@ use Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo;
 
 /**
  * @group standard_repo
+ * @coversNothing
  */
 class FakeChatMessageRepoTest extends ChatMessageRepoFixture
 {

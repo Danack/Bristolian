@@ -2,6 +2,7 @@
 
 namespace Bristolian\Repo\TagRepo;
 
+use Bristolian\Database\tag as TagTable;
 use Bristolian\Model\Types\Tag;
 use Bristolian\Parameters\TagParams;
 use Bristolian\PdoSimple\PdoSimple;
@@ -16,47 +17,23 @@ class PdoTagRepo implements TagRepo
     public function createTag(TagParams $tagParam): Tag
     {
         $uuid = Uuid::uuid7();
-        $userSQL = <<< SQL
-insert into tags (
-  tag_id,
-  text,
-  description
-)
-values (
-  :tag_id,
-  :text,
-  :description
-)
-SQL;
-
         $params = [
             ':tag_id' => $uuid->toString(),
+            ':description' => $tagParam->description,
             ':text' => $tagParam->text,
-            ':description' => $tagParam->description
         ];
 
-        $this->pdo_simple->insert($userSQL, $params);
+        $this->pdo_simple->insert(TagTable::INSERT, $params);
 
         return Tag::fromParam($uuid->toString(), $tagParam);
     }
-
-
-
 
     /**
      * @return \Bristolian\Model\Types\Tag[]
      */
     public function getAllTags(): array
     {
-        $sql = <<< SQL
-select 
-  tag_id,
-  text,
-  description
-from
-  tags
-SQL;
-
-        return $this->pdo_simple->fetchAllAsObject($sql, [], Tag::class);
+        $rows = $this->pdo_simple->fetchAllAsData(TagTable::SELECT, []);
+        return array_map(fn(array $row): Tag => Tag::fromRow($row), $rows);
     }
 }

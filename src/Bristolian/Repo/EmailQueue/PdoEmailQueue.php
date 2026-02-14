@@ -41,8 +41,6 @@ values (
 )
 SQL;
 
-        $subject_with_prefix = $this->environmentName->getEnvironmentNameForEmailSubject() . " " . $subject;
-
         $this->pdo->beginTransaction();
 
         foreach ($users as $user) {
@@ -51,7 +49,7 @@ SQL;
                 ':recipient' => $user,
                 ':retries' => 0,
                 ':status' => EmailController::STATE_INITIAL,
-                ':subject' => $subject_with_prefix,
+                ':subject' => $subject,
             ];
             $this->pdo->insert($sql, $params);
         }
@@ -156,6 +154,7 @@ SQL;
             ':status' => EmailController::STATE_RETRY,
             ':id' => $email->id
         ];
+        $this->pdo->execute($sql, $params);
     }
 
 

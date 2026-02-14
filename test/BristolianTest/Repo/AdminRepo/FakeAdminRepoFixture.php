@@ -9,6 +9,7 @@ use Bristolian\Repo\AdminRepo\FakeAdminRepo;
 
 /**
  * @group standard_repo
+ * @coversNothing
  */
 class FakeAdminRepoFixture extends AdminRepoFixture
 {

@@ -9,6 +9,7 @@ use Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo;
 
 /**
  * @group standard_repo
+ * @coversNothing
  */
 class FakeApiTokenRepoFixture extends ApiTokenRepoFixture
 {

@@ -22,6 +22,18 @@ class Tag
         return $instance;
     }
 
+    /**
+     * @param array{tag_id: string, text: string, description: string} $row
+     */
+    public static function fromRow(array $row): self
+    {
+        $instance = new self();
+        $instance->tag_id = $row['tag_id'];
+        $instance->text = $row['text'];
+        $instance->description = $row['description'];
+        return $instance;
+    }
+
     public function getTagId(): string
     {
         return $this->tag_id;

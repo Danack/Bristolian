@@ -12,6 +12,8 @@ use VarMap\ArrayVarMap;
 
 /**
  * Abstract test class for TagRepo implementations.
+ *
+ * @coversNothing
  */
 abstract class TagRepoFixture extends BaseTestCase
 {

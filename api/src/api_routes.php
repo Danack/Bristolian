@@ -131,9 +131,10 @@ function getAllApiRoutes()
             '/api/meme-tag-add/',
             'POST',
             'Bristolian\AppController\User::handleMemeTagAdd',
-            null
-        ], // Probably change to just SuccessResponse, and remove early optimisation of
-        // returning current tags.
+            [
+                ['meme_tags', \Bristolian\Model\Generated\MemeTag::class, true]
+            ]
+        ],
 
         [
             '/api/meme-tag-add/',
@@ -160,9 +161,10 @@ function getAllApiRoutes()
             '/api/meme-tag-delete/',
             'POST',
             'Bristolian\AppController\User::handleMemeTagDelete',
-            null
-        ], // Change to Success Response, and remove early optimisation of
-           // returning current tags.
+            [
+                ['meme_tags', \Bristolian\Model\Generated\MemeTag::class, true]
+            ]
+        ],
 
         [
             '/api/meme-tag-delete/',

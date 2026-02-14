@@ -11,6 +11,8 @@ use BristolianTest\Repo\TestPlaceholders;
 
 /**
  * Abstract test class for RoomFileObjectInfoRepo implementations.
+ *
+ * @coversNothing
  */
 abstract class RoomFileObjectInfoRepoFixture extends BaseTestCase
 {

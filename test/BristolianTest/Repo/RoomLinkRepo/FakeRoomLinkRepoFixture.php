@@ -13,6 +13,7 @@ use VarMap\ArrayVarMap;
 
 /**
  * @group standard_repo
+ * @coversNothing
  */
 class FakeRoomLinkRepoFixture extends RoomLinkRepoFixture
 {
@@ -23,8 +24,22 @@ class FakeRoomLinkRepoFixture extends RoomLinkRepoFixture
      */
     public function getTestInstance(LinkRepo $linkRepo): RoomLinkRepo
     {
-        $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
         return new FakeRoomLinkRepo($linkRepo);
+    }
+
+    protected function getLinkRepo(): LinkRepo
+    {
+        return new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
+    }
+
+    protected function getValidUserId(): string
+    {
+        return 'user_123';
+    }
+
+    protected function getValidRoomId(): string
+    {
+        return 'room_456';
     }
 
     /**

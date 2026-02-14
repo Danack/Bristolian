@@ -14,6 +14,8 @@ use VarMap\ArrayVarMap;
 
 /**
  * Abstract test class for UserProfileRepo implementations.
+ *
+ * @coversNothing
  */
 abstract class UserProfileRepoFixture extends BaseTestCase
 {
@@ -144,15 +146,16 @@ abstract class UserProfileRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
+        $user_id = $this->getTestUserId();
         $params = UserProfileUpdateParams::createFromVarMap(new ArrayVarMap([
             'display_name' => 'Test User',
             'about_me' => 'About me',
         ]));
 
-        $repo->updateProfile('user-123', $params);
-        $repo->updateAvatarImage('user-123', 'new-avatar-id');
+        $repo->updateProfile($user_id, $params);
+        $repo->updateAvatarImage($user_id, 'new-avatar-id');
 
-        $profile = $repo->getUserProfile($this->getTestUserId());
+        $profile = $repo->getUserProfile($user_id);
         $this->assertSame('new-avatar-id', $profile->getAvatarImageId());
         $this->assertSame('About me', $profile->getAboutMe()); // Should preserve about_me
     }
@@ -161,6 +164,7 @@ abstract class UserProfileRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
+        $user_id = $this->getTestUserId();
         $params1 = UserProfileUpdateParams::createFromVarMap(new ArrayVarMap([
             'display_name' => 'Old Name',
             'about_me' => 'About',
@@ -170,10 +174,10 @@ abstract class UserProfileRepoFixture extends BaseTestCase
             'about_me' => 'About',
         ]));
 
-        $repo->updateProfile('user-123', $params1);
-        $repo->updateProfile('user-123', $params2);
+        $repo->updateProfile($user_id, $params1);
+        $repo->updateProfile($user_id, $params2);
 
-        $profile = $repo->getUserProfile($this->getTestUserId());
+        $profile = $repo->getUserProfile($user_id);
         $this->assertSame('New Name', $profile->getDisplayName());
     }
 }

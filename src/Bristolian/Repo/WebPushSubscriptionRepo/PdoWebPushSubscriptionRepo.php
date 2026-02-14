@@ -29,9 +29,6 @@ where
   user_id = :user_id
 SQL;
 
-//        \Bristolian\PdoSimple::fetchAllAsData
-//        fetchAllAsObject
-
         $userWebPushSubscriptionsData = $this->pdo_simple->fetchAllAsData(
             $sql,
             ['user_id' => $user_id],

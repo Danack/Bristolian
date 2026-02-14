@@ -9,6 +9,7 @@ use Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo;
 
 /**
  * @group standard_repo
+ * @coversNothing
  */
 class FakeRoomFileObjectInfoRepoFixture extends RoomFileObjectInfoRepoFixture
 {
