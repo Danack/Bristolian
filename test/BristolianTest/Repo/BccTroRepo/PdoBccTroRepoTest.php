@@ -5,16 +5,16 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo\BccTroRepo;
 
 use Bristolian\Repo\BccTroRepo\BccTroRepo;
-use Bristolian\Repo\BccTroRepo\FakeBccTroRepo;
+use Bristolian\Repo\BccTroRepo\PdoBccTroRepo;
 
 /**
- * @group standard_repo
+ * @group db
  * @coversNothing
  */
-class FakeBccTroRepoFixture extends BccTroRepoFixture
+class PdoBccTroRepoTest extends BccTroRepoFixture
 {
     public function getTestInstance(): BccTroRepo
     {
-        return new FakeBccTroRepo();
+        return $this->injector->make(PdoBccTroRepo::class);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo\EmailQueue;
 
 use Bristolian\CliController\Email as EmailController;
+use Bristolian\Config\EnvironmentName;
 use Bristolian\Model\Types\Email;
 use Bristolian\Repo\EmailQueue\EmailQueue;
 use Bristolian\Repo\EmailQueue\FakeEmailQueue;
@@ -13,9 +14,9 @@ use Bristolian\Repo\EmailQueue\FakeEmailQueue;
  * @coversNothing
  * @group standard_repo
  */
-class FakeEmailQueueFixture extends EmailQueueFixture
+class FakeEmailQueueTest extends EmailQueueFixture
 {
-    public function getTestInstance(): EmailQueue
+    public function getTestInstance(EnvironmentName $environmentName): EmailQueue
     {
         return new FakeEmailQueue();
     }

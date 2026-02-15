@@ -12,7 +12,7 @@ use Bristolian\Repo\EmailIncoming\FakeEmailIncoming;
  * @coversNothing
  * @group standard_repo
  */
-class FakeEmailIncomingFixture extends EmailIncomingFixture
+class FakeEmailIncomingTest extends EmailIncomingFixture
 {
     public function getTestInstance(): EmailIncoming
     {

@@ -14,7 +14,7 @@ use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
  * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
  * @group standard_repo
  */
-class FakeRoomFileRepoFixture extends RoomFileRepoFixture
+class FakeRoomFileRepoTest extends RoomFileRepoFixture
 {
     /**
      * @return RoomFileRepo

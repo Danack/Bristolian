@@ -11,7 +11,7 @@ use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
  * @group standard_repo
  * @coversNothing
  */
-class FakeMemeStorageRepoFixture extends MemeStorageRepoFixture
+class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
 {
     /**
      * @return MemeStorageRepo

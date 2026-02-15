@@ -11,7 +11,7 @@ use Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo;
  * @group standard_repo
  * @coversNothing
  */
-class FakeProcessorRunRecordRepoFixture extends ProcessorRunRecordRepoFixture
+class FakeProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
 {
     public function getTestInstance(): ProcessorRunRecordRepo
     {

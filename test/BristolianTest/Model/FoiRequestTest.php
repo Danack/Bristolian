@@ -12,6 +12,7 @@ class FoiRequestTest extends BaseTestCase
 {
     /**
      * @covers \Bristolian\Model\Types\FoiRequest
+     * @group wip
      */
     public function testCreate()
     {

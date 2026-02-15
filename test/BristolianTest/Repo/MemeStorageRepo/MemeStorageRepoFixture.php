@@ -123,7 +123,8 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
         $normalized_filename = 'test_meme_' . time() . '.jpg';
         $uploadedFile = UploadedFile::fromFile(__FILE__);
 
-        $repo->storeMeme($user_id, $normalized_filename, $uploadedFile);
+        $meme_id = $repo->storeMeme($user_id, $normalized_filename, $uploadedFile);
+        $repo->setUploaded($meme_id);
 
         $memes = $repo->listMemesForUser($user_id);
         $this->assertNotEmpty($memes);

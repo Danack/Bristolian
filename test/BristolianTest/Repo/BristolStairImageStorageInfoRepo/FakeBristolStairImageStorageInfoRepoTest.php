@@ -16,7 +16,7 @@ use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
  * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
  * @group standard_repo
  */
-class FakeBristolStairImageStorageInfoRepoFixture extends BristolStairImageStorageInfoRepoFixture
+class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageInfoRepoFixture
 {
     /**
      * @return BristolStairImageStorageInfoRepo

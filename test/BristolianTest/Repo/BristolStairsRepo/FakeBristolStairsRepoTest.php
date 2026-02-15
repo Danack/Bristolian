@@ -19,7 +19,7 @@ use VarMap\ArrayVarMap;
  * @group standard_repo
  * @coversNothing
  */
-class FakeBristolStairsRepoFixture extends BristolStairsRepoFixture
+class FakeBristolStairsRepoTest extends BristolStairsRepoFixture
 {
     /**
      * @return BristolStairsRepo

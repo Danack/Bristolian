@@ -15,7 +15,7 @@ use VarMap\ArrayVarMap;
  * @group standard_repo
  * @coversNothing
  */
-class FakeRoomLinkRepoFixture extends RoomLinkRepoFixture
+class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
 {
     use TestPlaceholders;
 

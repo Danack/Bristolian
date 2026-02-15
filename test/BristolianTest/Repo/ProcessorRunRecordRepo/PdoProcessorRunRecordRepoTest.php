@@ -15,25 +15,25 @@ use BristolianTest\Repo\DbTransactionIsolation;
  */
 class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
 {
-    use DbTransactionIsolation;
+//    use DbTransactionIsolation;
+//
+//    public function setUp(): void
+//    {
+//        parent::setUp();
+//        $this->dbTransactionSetUp();
+//    }
+//
+//    public function tearDown(): void
+//    {
+//        $this->dbTransactionTearDown();
+//        parent::tearDown();
+//    }
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->dbTransactionSetUp();
-    }
-
-    public function tearDown(): void
-    {
-        $this->dbTransactionTearDown();
-        parent::tearDown();
-    }
-
-    protected function dbTransactionClearTables(): void
-    {
-        $pdoSimple = $this->injector->make(PdoSimple::class);
-        $pdoSimple->execute('DELETE FROM processor_run_record', []);
-    }
+//    protected function dbTransactionClearTables(): void
+//    {
+//        $pdoSimple = $this->injector->make(PdoSimple::class);
+////        $pdoSimple->execute('DELETE FROM processor_run_record', []);
+//    }
 
     public function getTestInstance(): ProcessorRunRecordRepo
     {

@@ -13,7 +13,7 @@ use Bristolian\Repo\TagRepo\TagRepo;
  * @group standard_repo
  * @coversNothing
  */
-class FakeTagRepoFixture extends TagRepoFixture
+class FakeTagRepoTest extends TagRepoFixture
 {
     public function getTestInstance(): TagRepo
     {

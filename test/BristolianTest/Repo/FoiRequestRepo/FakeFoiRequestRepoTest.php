@@ -11,7 +11,7 @@ use Bristolian\Repo\FoiRequestRepo\FoiRequestRepo;
  * @group standard_repo
  * @coversNothing
  */
-class FakeFoiRequestRepoFixture extends FoiRequestRepoFixture
+class FakeFoiRequestRepoTest extends FoiRequestRepoFixture
 {
     public function getTestInstance(): FoiRequestRepo
     {

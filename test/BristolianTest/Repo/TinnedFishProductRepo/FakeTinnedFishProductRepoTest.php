@@ -11,7 +11,7 @@ use Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo;
  * @group standard_repo
  * @coversNothing
  */
-class FakeTinnedFishProductRepoFixture extends TinnedFishProductRepoFixture
+class FakeTinnedFishProductRepoTest extends TinnedFishProductRepoFixture
 {
     /**
      * @return TinnedFishProductRepo

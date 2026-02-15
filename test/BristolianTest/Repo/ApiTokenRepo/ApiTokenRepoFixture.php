@@ -84,7 +84,7 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $name = 'test-token-' . time();
+        $name = 'test-token-' . time() . '_' .uniqid();
         $token = 'token-value-' . random_int(1000, 9999);
 
         $createdToken = $repo->createToken($name, $token);
@@ -104,7 +104,7 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $name = 'test-token-' . time();
+        $name = 'test-token-' . time() . '_' .uniqid();
         $token = 'token-value-' . random_int(1000, 9999);
 
         $createdToken = $repo->createToken($name, $token);

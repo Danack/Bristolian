@@ -11,7 +11,7 @@ use Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo;
  * @group standard_repo
  * @coversNothing
  */
-class FakeRoomSourceLinkRepoFixture extends RoomSourceLinkRepoFixture
+class FakeRoomSourceLinkRepoTest extends RoomSourceLinkRepoFixture
 {
     public function getTestInstance(): RoomSourceLinkRepo
     {

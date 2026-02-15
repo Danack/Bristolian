@@ -11,7 +11,7 @@ use Bristolian\Repo\RoomRepo\RoomRepo;
  * @group standard_repo
  * @coversNothing
  */
-class FakeRoomRepoFixture extends RoomRepoFixture
+class FakeRoomRepoTest extends RoomRepoFixture
 {
     public function getTestInstance(): RoomRepo
     {

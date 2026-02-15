@@ -13,7 +13,7 @@ use Bristolian\UploadedFiles\UploadedFile;
  * @group standard_repo
  * @coversNothing
  */
-class FakeAvatarImageStorageInfoRepoFixture extends AvatarImageStorageInfoRepoFixture
+class FakeAvatarImageStorageInfoRepoTest extends AvatarImageStorageInfoRepoFixture
 {
     public function getTestInstance(): AvatarImageStorageInfoRepo
     {

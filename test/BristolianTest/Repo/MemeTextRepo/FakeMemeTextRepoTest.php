@@ -12,7 +12,7 @@ use Bristolian\Repo\MemeTextRepo\MemeTextRepo;
  * @group standard_repo
  * @coversNothing
  */
-class FakeMemeTextRepoFixture extends MemeTextRepoFixture
+class FakeMemeTextRepoTest extends MemeTextRepoFixture
 {
     private ?FakeMemeStorageRepo $memeStorageRepo = null;
 

@@ -16,25 +16,25 @@ use BristolianTest\Support\HasTestWorld;
  */
 class PdoChatMessageRepoTest extends ChatMessageRepoFixture
 {
-    use DbTransactionIsolation;
+//    use DbTransactionIsolation;
     use HasTestWorld;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->dbTransactionSetUp();
-    }
-
-    public function tearDown(): void
-    {
-        $this->dbTransactionTearDown();
-        parent::tearDown();
-    }
+//    public function setUp(): void
+//    {
+//        parent::setUp();
+//        $this->dbTransactionSetUp();
+//    }
+//
+//    public function tearDown(): void
+//    {
+//        $this->dbTransactionTearDown();
+//        parent::tearDown();
+//    }
 
     protected function dbTransactionClearTables(): void
     {
         $pdoSimple = $this->injector->make(PdoSimple::class);
-        $pdoSimple->execute('DELETE FROM chat_message', []);
+//        $pdoSimple->execute('DELETE FROM chat_message', []);
     }
 
     public function getTestInstance(): ChatMessageRepo

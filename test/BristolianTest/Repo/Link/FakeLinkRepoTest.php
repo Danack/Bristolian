@@ -11,7 +11,7 @@ use Bristolian\Repo\LinkRepo\LinkRepo;
  * @group standard_repo
  * @coversNothing
  */
-class FakeLinkRepoFixture extends LinkRepoFixture
+class FakeLinkRepoTest extends LinkRepoFixture
 {
     /**
      * @return LinkRepo
