@@ -4,83 +4,39 @@ namespace BristolianTest\Parameters\TinnedFish;
 
 use Bristolian\Parameters\TinnedFish\BarcodeLookupParams;
 use BristolianTest\BaseTestCase;
-use DataType\DataType;
-use Bristolian\StaticFactory;
 use VarMap\ArrayVarMap;
 
 /**
  * Tests for BarcodeLookupParams
  *
- * @covers \Bristolian\Parameters\TinnedFish\BarcodeLookupParams
+ * @coversNothing
  */
 class BarcodeLookupParamsTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Parameters\TinnedFish\BarcodeLookupParams
+     * @return \Generator<string, array{array<string, mixed>, bool}>
      */
-    public function test_implements_required_interfaces(): void
+    public static function provides_fetch_external_input_and_expected_output(): \Generator
     {
-        $params = BarcodeLookupParams::createFromVarMap(new ArrayVarMap([]));
-
-        $this->assertInstanceOf(DataType::class, $params);
-        $this->assertInstanceOf(StaticFactory::class, $params);
+        yield 'missing key defaults to true' => [[], true];
+        yield 'true string' => [['fetch_external' => 'true'], true];
+        yield 'false string' => [['fetch_external' => 'false'], false];
+        yield '1 string' => [['fetch_external' => '1'], true];
+        yield '0 string' => [['fetch_external' => '0'], false];
     }
 
     /**
      * @covers \Bristolian\Parameters\TinnedFish\BarcodeLookupParams
+     * @covers \Bristolian\Parameters\PropertyType\OptionalBoolDefaultTrue
+     * @dataProvider provides_fetch_external_input_and_expected_output
+     * @param array<string, mixed> $input
      */
-    public function test_defaults_fetch_external_to_true(): void
-    {
-        $params = BarcodeLookupParams::createFromVarMap(new ArrayVarMap([]));
+    public function test_fetch_external_parses_input_to_expected_output(
+        array $input,
+        bool $expectedFetchExternal
+    ): void {
+        $params = BarcodeLookupParams::createFromVarMap(new ArrayVarMap($input));
 
-        $this->assertTrue($params->fetch_external);
-    }
-
-    /**
-     * @covers \Bristolian\Parameters\TinnedFish\BarcodeLookupParams
-     */
-    public function test_fetch_external_true_string(): void
-    {
-        $params = BarcodeLookupParams::createFromVarMap(new ArrayVarMap([
-            'fetch_external' => 'true'
-        ]));
-
-        $this->assertTrue($params->fetch_external);
-    }
-
-    /**
-     * @covers \Bristolian\Parameters\TinnedFish\BarcodeLookupParams
-     */
-    public function test_fetch_external_false_string(): void
-    {
-        $params = BarcodeLookupParams::createFromVarMap(new ArrayVarMap([
-            'fetch_external' => 'false'
-        ]));
-
-        $this->assertFalse($params->fetch_external);
-    }
-
-    /**
-     * @covers \Bristolian\Parameters\TinnedFish\BarcodeLookupParams
-     */
-    public function test_fetch_external_1_string(): void
-    {
-        $params = BarcodeLookupParams::createFromVarMap(new ArrayVarMap([
-            'fetch_external' => '1'
-        ]));
-
-        $this->assertTrue($params->fetch_external);
-    }
-
-    /**
-     * @covers \Bristolian\Parameters\TinnedFish\BarcodeLookupParams
-     */
-    public function test_fetch_external_0_string(): void
-    {
-        $params = BarcodeLookupParams::createFromVarMap(new ArrayVarMap([
-            'fetch_external' => '0'
-        ]));
-
-        $this->assertFalse($params->fetch_external);
+        $this->assertSame($expectedFetchExternal, $params->fetch_external);
     }
 }
