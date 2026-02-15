@@ -37,6 +37,9 @@ abstract class AvatarImageStorageInfoRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::storeFileInfo
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::storeFileInfo
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::__construct
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::storeFileInfo
      */
     public function test_storeFileInfo(): void
     {
@@ -65,6 +68,8 @@ abstract class AvatarImageStorageInfoRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::getById
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::getById
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::getById
      */
     public function test_getById_returns_null_for_nonexistent_id(): void
     {
@@ -78,6 +83,10 @@ abstract class AvatarImageStorageInfoRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::getById
      * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::storeFileInfo
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::getById
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::storeFileInfo
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::getById
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::storeFileInfo
      */
     public function test_getById_returns_file_after_storing(): void
     {
@@ -107,6 +116,8 @@ abstract class AvatarImageStorageInfoRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::getByNormalizedName
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::getByNormalizedName
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::getByNormalizedName
      */
     public function test_getByNormalizedName_returns_null_for_nonexistent_name(): void
     {
@@ -120,6 +131,10 @@ abstract class AvatarImageStorageInfoRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::getByNormalizedName
      * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::storeFileInfo
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::getByNormalizedName
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::storeFileInfo
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::getByNormalizedName
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::storeFileInfo
      */
     public function test_getByNormalizedName_returns_file_after_storing(): void
     {
@@ -151,6 +166,10 @@ abstract class AvatarImageStorageInfoRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::setUploaded
      * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::storeFileInfo
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::setUploaded
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::storeFileInfo
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::setUploaded
+     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::storeFileInfo
      */
     public function test_setUploaded(): void
     {

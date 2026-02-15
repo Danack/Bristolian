@@ -26,6 +26,9 @@ abstract class BristolStairImageStorageInfoRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo::storeFileInfo
+     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo::storeFileInfo
+     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo::__construct
+     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo::storeFileInfo
      */
     public function test_storeFileInfo(): void
     {

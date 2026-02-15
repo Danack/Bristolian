@@ -128,14 +128,14 @@ function createApiDomain(Config $config)
 
 $number_of_pdo_connections = 0;
 
-function seriously_wtf()
-{
-    global $number_of_pdo_connections;
-
-    echo "number_of_pdo_connections = $number_of_pdo_connections\n";
-}
-
-register_shutdown_function(seriously_wtf(...));
+//function seriously_wtf()
+//{
+//    global $number_of_pdo_connections;
+//
+//    echo "number_of_pdo_connections = $number_of_pdo_connections\n";
+//}
+//
+//register_shutdown_function(seriously_wtf(...));
 
 
 /**

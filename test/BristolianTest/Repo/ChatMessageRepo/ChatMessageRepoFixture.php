@@ -54,6 +54,9 @@ abstract class ChatMessageRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::storeChatMessageForUser
+     * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::storeChatMessageForUser
+     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::__construct
+     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::storeChatMessageForUser
      */
     public function test_storeChatMessageForUser_creates_and_returns_message(): void
     {
@@ -77,6 +80,8 @@ abstract class ChatMessageRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::storeChatMessageForUser
+     * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::storeChatMessageForUser
+     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::storeChatMessageForUser
      */
     public function test_storeChatMessageForUser_stores_message_with_reply_id(): void
     {
@@ -98,6 +103,10 @@ abstract class ChatMessageRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::getMessagesForRoom
      * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::storeChatMessageForUser
+     * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::getMessagesForRoom
+     * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::storeChatMessageForUser
+     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::getMessagesForRoom
+     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::storeChatMessageForUser
      */
     public function test_getMessagesForRoom_returns_messages_for_specific_room(): void
     {
@@ -137,6 +146,10 @@ abstract class ChatMessageRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::getMessagesForRoom
      * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::storeChatMessageForUser
+     * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::getMessagesForRoom
+     * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::storeChatMessageForUser
+     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::getMessagesForRoom
+     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::storeChatMessageForUser
      */
     public function test_getMessagesForRoom_returns_messages_sorted_by_id_descending(): void
     {

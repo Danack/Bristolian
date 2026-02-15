@@ -31,6 +31,12 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
      */
     abstract protected function getValidUserId(): string;
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::__construct
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::storeMeme
+     */
     public function test_storeMeme(): void
     {
         $repo = $this->getTestInstance();
@@ -51,6 +57,8 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::getMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::getMeme
      */
     public function test_getMeme_returns_null_for_nonexistent_id(): void
     {
@@ -61,6 +69,14 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::getMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::getMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::storeMeme
+     */
     public function test_getMeme_returns_meme_after_storing(): void
     {
         $repo = $this->getTestInstance();
@@ -84,6 +100,8 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::getByNormalizedName
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getByNormalizedName
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::getByNormalizedName
      */
     public function test_getByNormalizedName_returns_null_for_nonexistent_name(): void
     {
@@ -94,6 +112,14 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::getByNormalizedName
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getByNormalizedName
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::getByNormalizedName
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::storeMeme
+     */
     public function test_getByNormalizedName_returns_meme_after_storing(): void
     {
         $repo = $this->getTestInstance();
@@ -115,6 +141,17 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::listMemesForUser
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::setUploaded
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::listMemesForUser
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::setUploaded
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::listMemesForUser
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::setUploaded
+     */
     public function test_listMemesForUser_returns_memes_for_user(): void
     {
         $repo = $this->getTestInstance();
@@ -134,6 +171,8 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::searchMemesForUser
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::searchMemesForUser
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::searchMemesForUser
      */
     public function test_searchMemesForUser_returns_array(): void
     {
@@ -147,6 +186,8 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::searchMemesForUser
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::searchMemesForUser
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::searchMemesForUser
      */
     public function test_searchMemesForUser_with_query(): void
     {
@@ -161,6 +202,8 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::searchMemesForUser
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::searchMemesForUser
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::searchMemesForUser
      */
     public function test_searchMemesForUser_with_tag_type(): void
     {
@@ -173,6 +216,14 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::setUploaded
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::setUploaded
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::setUploaded
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::storeMeme
+     */
     public function test_setUploaded(): void
     {
         $repo = $this->getTestInstance();
@@ -192,6 +243,14 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::markAsDeleted
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::markAsDeleted
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::markAsDeleted
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::storeMeme
+     */
     public function test_markAsDeleted(): void
     {
         $repo = $this->getTestInstance();
@@ -213,6 +272,8 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::searchMemesByExactTags
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::searchMemesByExactTags
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::searchMemesByExactTags
      */
     public function test_searchMemesByExactTags_returns_array(): void
     {
@@ -228,6 +289,8 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::searchMemesByExactTags
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::searchMemesByExactTags
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::searchMemesByExactTags
      */
     public function test_searchMemesByExactTags_with_empty_array(): void
     {
@@ -241,6 +304,8 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::getMemeByOriginalFilename
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getMemeByOriginalFilename
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::getMemeByOriginalFilename
      */
     public function test_getMemeByOriginalFilename_returns_null_for_nonexistent_file(): void
     {
@@ -254,6 +319,14 @@ abstract class MemeStorageRepoFixture extends BaseTestCase
     }
 
 
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::getMemeByOriginalFilename
+     * @covers \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getMemeByOriginalFilename
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::storeMeme
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::getMemeByOriginalFilename
+     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::storeMeme
+     */
     public function test_getMemeByOriginalFilename_returns_meme_after_storing(): void
     {
         $repo = $this->getTestInstance();

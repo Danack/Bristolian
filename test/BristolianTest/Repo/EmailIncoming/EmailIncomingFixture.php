@@ -25,6 +25,9 @@ abstract class EmailIncomingFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\EmailIncoming\EmailIncoming::saveEmail
+     * @covers \Bristolian\Repo\EmailIncoming\FakeEmailIncoming::saveEmail
+     * @covers \Bristolian\Repo\EmailIncoming\PdoEmailIncoming::__construct
+     * @covers \Bristolian\Repo\EmailIncoming\PdoEmailIncoming::saveEmail
      */
     public function test_saveEmail_stores_email(): void
     {
@@ -50,6 +53,8 @@ abstract class EmailIncomingFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\EmailIncoming\EmailIncoming::saveEmail
+     * @covers \Bristolian\Repo\EmailIncoming\FakeEmailIncoming::saveEmail
+     * @covers \Bristolian\Repo\EmailIncoming\PdoEmailIncoming::saveEmail
      */
     public function test_saveEmail_can_save_multiple_emails(): void
     {

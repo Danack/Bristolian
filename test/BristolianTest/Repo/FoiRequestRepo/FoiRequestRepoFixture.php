@@ -27,6 +27,9 @@ abstract class FoiRequestRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\FoiRequestRepo\FoiRequestRepo::createFoiRequest
+     * @covers \Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::createFoiRequest
+     * @covers \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::__construct
+     * @covers \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::createFoiRequest
      */
     public function test_createFoiRequest_creates_and_stores_request(): void
     {
@@ -47,6 +50,10 @@ abstract class FoiRequestRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\FoiRequestRepo\FoiRequestRepo::getAllFoiRequests
+     * @covers \Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::getAllFoiRequests
+     * @covers \Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::createFoiRequest
+     * @covers \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::getAllFoiRequests
+     * @covers \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::createFoiRequest
      */
     public function test_getAllFoiRequests_returns_all_created_requests(): void
     {

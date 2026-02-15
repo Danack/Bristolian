@@ -28,6 +28,9 @@ abstract class EmailQueueFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::__construct
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
      */
     public function test_queueEmailToUsers_creates_emails(): void
     {
@@ -45,6 +48,8 @@ abstract class EmailQueueFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
      */
     public function test_queueEmailToUsers_accepts_empty_user_array(): void
     {
@@ -61,6 +66,11 @@ abstract class EmailQueueFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
      */
     public function test_getEmailToSendAndUpdateState_returns_email_with_initial_status(): void
     {
@@ -83,6 +93,14 @@ abstract class EmailQueueFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailToRetry
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailToRetry
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::setEmailToRetry
      */
     public function test_getEmailToSendAndUpdateState_returns_email_with_retry_status(): void
     {
@@ -104,6 +122,14 @@ abstract class EmailQueueFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailSent
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailSent
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::setEmailSent
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
      */
     public function test_setEmailSent_updates_email_status(): void
     {
@@ -121,6 +147,14 @@ abstract class EmailQueueFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailFailed
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailFailed
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::setEmailFailed
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
      */
     public function test_setEmailFailed_updates_email_status(): void
     {
@@ -138,6 +172,14 @@ abstract class EmailQueueFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailToRetry
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailToRetry
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::setEmailToRetry
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
      */
     public function test_setEmailToRetry_increments_retry_count(): void
     {
@@ -156,6 +198,11 @@ abstract class EmailQueueFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::clearQueue
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::clearQueue
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::clearQueue
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
      */
     public function test_clearQueue_returns_count_of_cleared_emails(): void
     {
@@ -172,6 +219,14 @@ abstract class EmailQueueFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::clearQueue
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::clearQueue
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::clearQueue
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
      */
     public function test_clearQueue_clears_initial_sending_and_retry_emails(): void
     {
@@ -195,6 +250,12 @@ abstract class EmailQueueFixture extends BaseTestCase
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailSent
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailSent
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::setEmailSent
      */
     public function test_full_email_lifecycle(): void
     {
@@ -222,6 +283,12 @@ abstract class EmailQueueFixture extends BaseTestCase
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
      * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailToRetry
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailToRetry
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
+     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::setEmailToRetry
      */
     public function test_retry_lifecycle(): void
     {

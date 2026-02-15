@@ -45,6 +45,9 @@ abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::save
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::save
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::__construct
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::save
      */
     public function test_save_stores_subscription(): void
     {
@@ -63,6 +66,10 @@ abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::getUserSubscriptions
      * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::save
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::getUserSubscriptions
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::save
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::getUserSubscriptions
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::save
      */
     public function test_getUserSubscriptions_returns_saved_subscriptions(): void
     {
@@ -85,6 +92,11 @@ abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::getUserSubscriptions
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::save
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::getUserSubscriptions
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::save
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::getUserSubscriptions
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::save
      */
     public function test_getUserSubscriptions_returns_only_subscriptions_for_specified_user(): void
     {
@@ -112,6 +124,11 @@ abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::getUserSubscriptions
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::save
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::getUserSubscriptions
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::save
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::getUserSubscriptions
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::save
      */
     public function test_getUserSubscriptions_returns_multiple_subscriptions_for_user(): void
     {
@@ -138,6 +155,8 @@ abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::save
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::save
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::save
      */
     public function test_save_with_expiration_time(): void
     {

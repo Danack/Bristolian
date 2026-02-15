@@ -45,6 +45,9 @@ abstract class MemeTagRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::addTagForMeme
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::addTagForMeme
+     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::__construct
+     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::addTagForMeme
      */
     public function test_addTagForMeme(): void
     {
@@ -69,6 +72,10 @@ abstract class MemeTagRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::getUserTagsForMeme
      * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::addTagForMeme
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getUserTagsForMeme
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::addTagForMeme
+     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::getUserTagsForMeme
+     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::addTagForMeme
      * @group wip
      */
     public function test_getUserTagsForMeme_returns_tags_after_adding(): void
@@ -99,6 +106,10 @@ abstract class MemeTagRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::updateTagForUser
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::updateTagForUser
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::addTagForMeme
+     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::updateTagForUser
+     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::addTagForMeme
      */
     public function test_updateTagForUser(): void
     {
@@ -135,6 +146,8 @@ abstract class MemeTagRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::deleteTagForUser
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::deleteTagForUser
+     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::deleteTagForUser
      */
     public function test_deleteTagForUser(): void
     {
@@ -150,6 +163,8 @@ abstract class MemeTagRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::getMostCommonTags
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTags
+     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::getMostCommonTags
      */
     public function test_getMostCommonTags_returns_array(): void
     {
@@ -170,6 +185,8 @@ abstract class MemeTagRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::getMostCommonTags
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTags
+     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::getMostCommonTags
      */
     public function test_getMostCommonTags_respects_limit(): void
     {
@@ -184,6 +201,8 @@ abstract class MemeTagRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::getMostCommonTagsForMemes
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTagsForMemes
+     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::getMostCommonTagsForMemes
      */
     public function test_getMostCommonTagsForMemes_returns_array(): void
     {
@@ -204,6 +223,8 @@ abstract class MemeTagRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\MemeTagRepo\MemeTagRepo::getMostCommonTagsForMemes
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTagsForMemes
+     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::getMostCommonTagsForMemes
      */
     public function test_getMostCommonTagsForMemes_respects_limit(): void
     {

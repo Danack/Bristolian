@@ -24,6 +24,9 @@ abstract class BccTroRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\BccTroRepo\BccTroRepo::saveData
+     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveData
+     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::__construct
+     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveData
      */
     public function test_saveData_stores_data(): void
     {
@@ -48,6 +51,8 @@ abstract class BccTroRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\BccTroRepo\BccTroRepo::saveData
+     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveData
+     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveData
      */
     public function test_saveData_accepts_empty_array(): void
     {

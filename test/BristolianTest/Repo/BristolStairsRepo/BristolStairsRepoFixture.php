@@ -39,6 +39,9 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::store_stairs_info
+     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::store_stairs_info
+     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::__construct
+     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::store_stairs_info
      */
     public function test_store_stairs_info(): void
     {
@@ -69,6 +72,8 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::get_total_number_of_steps
+     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::get_total_number_of_steps
+     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::get_total_number_of_steps
      */
     public function test_get_total_number_of_steps(): void
     {
@@ -87,6 +92,8 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::getAllStairsInfo
+     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::getAllStairsInfo
+     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::getAllStairsInfo
      */
     public function test_getAllStairsInfo(): void
     {
@@ -104,6 +111,8 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::getStairInfoById
+     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::getStairInfoById
+     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::getStairInfoById
      */
     public function test_getStairInfoById_returns_null_or_throws_for_nonexistent_id(): void
     {
@@ -125,6 +134,10 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::getStairInfoById
      * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::store_stairs_info
+     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::getStairInfoById
+     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::store_stairs_info
+     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::getStairInfoById
+     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::store_stairs_info
      */
     public function test_getStairInfoById_returns_stair_after_storing(): void
     {
@@ -148,6 +161,10 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::updateStairInfo
      * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::store_stairs_info
+     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::updateStairInfo
+     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::store_stairs_info
+     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::updateStairInfo
+     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::store_stairs_info
      */
     public function test_updateStairInfo(): void
     {
@@ -175,6 +192,10 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::updateStairPosition
      * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::store_stairs_info
+     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::updateStairPosition
+     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::store_stairs_info
+     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::updateStairPosition
+     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::store_stairs_info
      */
     public function test_updateStairPosition(): void
     {

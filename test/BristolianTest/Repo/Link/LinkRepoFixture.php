@@ -24,6 +24,9 @@ abstract class LinkRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\LinkRepo\LinkRepo::store_link
+     * @covers \Bristolian\Repo\LinkRepo\FakeLinkRepo::store_link
+     * @covers \Bristolian\Repo\LinkRepo\PdoLinkRepo::__construct
+     * @covers \Bristolian\Repo\LinkRepo\PdoLinkRepo::store_link
      */
     public function test_store_link(): void
     {
@@ -39,6 +42,8 @@ abstract class LinkRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\LinkRepo\LinkRepo::store_link
+     * @covers \Bristolian\Repo\LinkRepo\FakeLinkRepo::store_link
+     * @covers \Bristolian\Repo\LinkRepo\PdoLinkRepo::store_link
      */
     public function test_store_link_returns_different_ids_for_different_calls(): void
     {

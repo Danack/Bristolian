@@ -25,6 +25,9 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::getByBarcode
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::__construct
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::getByBarcode
      */
     public function test_getByBarcode_returns_null_for_nonexistent_barcode(): void
     {
@@ -37,6 +40,8 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::getByBarcode
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::getByBarcode
      */
     public function test_getByBarcode_returns_null_for_empty_barcode(): void
     {
@@ -49,6 +54,10 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::save
      * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::save
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::getByBarcode
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::save
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::getByBarcode
      */
     public function test_save_and_getByBarcode(): void
     {
@@ -82,6 +91,10 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::save
      * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::save
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::getByBarcode
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::save
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::getByBarcode
      */
     public function test_save_updates_existing_product(): void
     {
@@ -133,6 +146,12 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
      * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::updateValidationStatus
      * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::save
      * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::updateValidationStatus
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::save
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::getByBarcode
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::updateValidationStatus
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::save
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::getByBarcode
      */
     public function test_updateValidationStatus(): void
     {
@@ -164,6 +183,14 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
         $this->assertSame(ValidationStatus::VALIDATED_IS_FISH, $updated->validation_status);
     }
 
+    /**
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getAll
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::save
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::getAll
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::save
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::getAll
+     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::save
+     */
     public function test_getAll_returns_saved_products(): void
     {
         $repo = $this->getTestInstance();

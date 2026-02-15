@@ -38,6 +38,9 @@ abstract class RoomFileRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\RoomFileRepo\RoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
      */
     public function test_addFileToRoom(): void
     {

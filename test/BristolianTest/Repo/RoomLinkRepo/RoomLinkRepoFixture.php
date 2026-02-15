@@ -45,6 +45,8 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::addLinkToRoomFromParam
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::addLinkToRoomFromParam
+     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::addLinkToRoomFromParam
      */
     public function test_addLinkToRoomFromParam(): void
     {

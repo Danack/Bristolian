@@ -25,6 +25,9 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::getLastRunDateTime
+     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::getLastRunDateTime
+     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::__construct
+     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::getLastRunDateTime
      */
     public function test_getLastRunDateTime_returns_null_when_no_runs(): void
     {
@@ -37,6 +40,8 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::startRun
+     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::startRun
+     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::startRun
      */
     public function test_startRun_creates_record_and_returns_id(): void
     {
@@ -49,6 +54,8 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::startRun
+     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::startRun
+     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::startRun
      */
     public function test_startRun_creates_multiple_records_with_different_ids(): void
     {
@@ -88,6 +95,10 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::setRunFinished
      * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::startRun
+     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::setRunFinished
+     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::startRun
+     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::setRunFinished
+     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::startRun
      */
     public function test_setRunFinished_updates_record_status(): void
     {

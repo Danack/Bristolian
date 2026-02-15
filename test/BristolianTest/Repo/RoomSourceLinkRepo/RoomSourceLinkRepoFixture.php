@@ -52,6 +52,12 @@ abstract class RoomSourceLinkRepoFixture extends BaseTestCase
      */
     abstract protected function getValidFileId2(): string;
 
+    /**
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::__construct
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::addSourceLink
+     */
     public function test_addSourceLink_returns_room_sourcelink_id(): void
     {
         $repo = $this->getTestInstance();
@@ -72,6 +78,11 @@ abstract class RoomSourceLinkRepoFixture extends BaseTestCase
         $this->assertNotEmpty($room_sourcelink_id);
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::addSourceLink
+     */
     public function test_addSourceLink_creates_unique_ids(): void
     {
         $repo = $this->getTestInstance();
@@ -88,6 +99,14 @@ abstract class RoomSourceLinkRepoFixture extends BaseTestCase
         $this->assertNotSame($id1, $id2);
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::getSourceLinksForRoom
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::getSourceLinksForRoom
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::getSourceLinksForRoom
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::addSourceLink
+     */
     public function test_getSourceLinksForRoom_returns_links_for_room(): void
     {
         $repo = $this->getTestInstance();
@@ -109,6 +128,14 @@ abstract class RoomSourceLinkRepoFixture extends BaseTestCase
         $this->assertSame('Test text content', $links[0]->text);
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::getSourceLinksForRoom
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::getSourceLinksForRoom
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::getSourceLinksForRoom
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::addSourceLink
+     */
     public function test_getSourceLinksForRoom_returns_only_links_for_specified_room(): void
     {
         $repo = $this->getTestInstance();
@@ -135,6 +162,14 @@ abstract class RoomSourceLinkRepoFixture extends BaseTestCase
         $this->assertSame('Link 1 Title That Is Long Enough', $links[0]->title);
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::getSourceLinksForRoomAndFile
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::getSourceLinksForRoomAndFile
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::getSourceLinksForRoomAndFile
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::addSourceLink
+     */
     public function test_getSourceLinksForRoomAndFile_returns_links_matching_both_room_and_file(): void
     {
         $repo = $this->getTestInstance();
@@ -156,6 +191,14 @@ abstract class RoomSourceLinkRepoFixture extends BaseTestCase
         $this->assertSame($fileId, $links[0]->file_id);
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::getSourceLinksForRoomAndFile
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::getSourceLinksForRoomAndFile
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::getSourceLinksForRoomAndFile
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::addSourceLink
+     */
     public function test_getSourceLinksForRoomAndFile_filters_by_both_room_and_file(): void
     {
         $repo = $this->getTestInstance();
@@ -184,6 +227,14 @@ abstract class RoomSourceLinkRepoFixture extends BaseTestCase
         $this->assertSame($fileId1, $links[0]->file_id);
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::getSourceLinksForRoomAndFile
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::getSourceLinksForRoomAndFile
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::getSourceLinksForRoomAndFile
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::addSourceLink
+     */
     public function test_getSourceLinksForRoomAndFile_returns_empty_when_room_mismatches(): void
     {
         $repo = $this->getTestInstance();
@@ -203,6 +254,14 @@ abstract class RoomSourceLinkRepoFixture extends BaseTestCase
         $this->assertEmpty($links);
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::getSourceLinksForRoomAndFile
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::getSourceLinksForRoomAndFile
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::addSourceLink
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::getSourceLinksForRoomAndFile
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::addSourceLink
+     */
     public function test_getSourceLinksForRoomAndFile_returns_empty_when_file_mismatches(): void
     {
         $repo = $this->getTestInstance();

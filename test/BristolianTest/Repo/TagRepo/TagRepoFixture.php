@@ -26,6 +26,9 @@ abstract class TagRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\TagRepo\TagRepo::getAllTags
+     * @covers \Bristolian\Repo\TagRepo\FakeTagRepo::getAllTags
+     * @covers \Bristolian\Repo\TagRepo\PdoTagRepo::__construct
+     * @covers \Bristolian\Repo\TagRepo\PdoTagRepo::getAllTags
      */
     public function test_getAllTags_returns_array(): void
     {
@@ -41,6 +44,8 @@ abstract class TagRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\TagRepo\TagRepo::createTag
+     * @covers \Bristolian\Repo\TagRepo\FakeTagRepo::createTag
+     * @covers \Bristolian\Repo\TagRepo\PdoTagRepo::createTag
      */
     public function test_createTag_creates_and_stores_tag(): void
     {
@@ -61,6 +66,10 @@ abstract class TagRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\TagRepo\TagRepo::getAllTags
      * @covers \Bristolian\Repo\TagRepo\TagRepo::createTag
+     * @covers \Bristolian\Repo\TagRepo\FakeTagRepo::getAllTags
+     * @covers \Bristolian\Repo\TagRepo\FakeTagRepo::createTag
+     * @covers \Bristolian\Repo\TagRepo\PdoTagRepo::getAllTags
+     * @covers \Bristolian\Repo\TagRepo\PdoTagRepo::createTag
      */
     public function test_getAllTags_returns_all_created_tags(): void
     {

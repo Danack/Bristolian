@@ -38,6 +38,11 @@ abstract class ProcessorRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::setProcessorEnabled
      * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::getProcessorEnabled
+     * @covers \Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::setProcessorEnabled
+     * @covers \Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::getProcessorEnabled
+     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::__construct
+     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::setProcessorEnabled
+     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::getProcessorEnabled
      */
     public function test_setProcessorEnabled_and_getProcessorEnabled_work_together(): void
     {
@@ -60,6 +65,10 @@ abstract class ProcessorRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::setProcessorEnabled
      * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::getProcessorEnabled
+     * @covers \Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::setProcessorEnabled
+     * @covers \Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::getProcessorEnabled
+     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::setProcessorEnabled
+     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::getProcessorEnabled
      */
     public function test_setProcessorEnabled_works_for_different_processors_independently(): void
     {
@@ -86,6 +95,10 @@ abstract class ProcessorRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::getProcessorsStates
      * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::setProcessorEnabled
+     * @covers \Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::getProcessorsStates
+     * @covers \Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::setProcessorEnabled
+     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::getProcessorsStates
+     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::setProcessorEnabled
      */
     public function test_getProcessorsStates_returns_states_for_all_processors(): void
     {

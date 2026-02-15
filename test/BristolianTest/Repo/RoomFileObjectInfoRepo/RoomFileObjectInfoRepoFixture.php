@@ -35,6 +35,9 @@ abstract class RoomFileObjectInfoRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo::createRoomFileObjectInfo
+     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\FakeRoomFileObjectInfoRepo::createRoomFileObjectInfo
+     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::__construct
+     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::createRoomFileObjectInfo
      */
     public function test_createRoomFileObjectInfo(): void
     {
@@ -56,6 +59,10 @@ abstract class RoomFileObjectInfoRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo::setRoomFileObjectUploaded
      * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo::createRoomFileObjectInfo
+     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\FakeRoomFileObjectInfoRepo::setRoomFileObjectUploaded
+     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\FakeRoomFileObjectInfoRepo::createRoomFileObjectInfo
+     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::setRoomFileObjectUploaded
+     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::createRoomFileObjectInfo
      */
     public function test_setRoomFileObjectUploaded(): void
     {

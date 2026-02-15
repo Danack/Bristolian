@@ -29,6 +29,12 @@ abstract class RoomRepoFixture extends BaseTestCase
      */
     abstract protected function getValidUserId(): string;
 
+    /**
+     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::createRoom
+     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::createRoom
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::__construct
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::createRoom
+     */
     public function test_createRoom_creates_room(): void
     {
         $repo = $this->getTestInstance();
@@ -47,6 +53,8 @@ abstract class RoomRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getRoomById
+     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getRoomById
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getRoomById
      */
     public function test_getRoomById_returns_null_initially(): void
     {
@@ -57,6 +65,14 @@ abstract class RoomRepoFixture extends BaseTestCase
         $this->assertNull($room);
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getRoomById
+     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::createRoom
+     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getRoomById
+     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::createRoom
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getRoomById
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::createRoom
+     */
     public function test_getRoomById_returns_created_room(): void
     {
         $repo = $this->getTestInstance();
@@ -75,6 +91,8 @@ abstract class RoomRepoFixture extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getAllRooms
+     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getAllRooms
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getAllRooms
      */
     public function test_getAllRooms_returns_array(): void
     {
@@ -88,6 +106,14 @@ abstract class RoomRepoFixture extends BaseTestCase
         }
     }
 
+    /**
+     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getAllRooms
+     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::createRoom
+     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getAllRooms
+     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::createRoom
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getAllRooms
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::createRoom
+     */
     public function test_getAllRooms_returns_all_created_rooms(): void
     {
         $repo = $this->getTestInstance();

@@ -36,6 +36,7 @@
     <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
         <exclude-pattern>*test_stub_functions.php</exclude-pattern>
         <exclude-pattern>functions.php</exclude-pattern>
+        <exclude-pattern>factories.php</exclude-pattern>
     </rule>
 
     <rule ref="Generic.WhiteSpace.ScopeIndent">
