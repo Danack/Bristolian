@@ -133,8 +133,6 @@ class ReactWidgetsTest extends BaseTestCase
 
         $result = createReactWidget($type, $data);
 
-        $this->assertIsString($result);
-        
         // Extract and verify nested structure
         preg_match('/data-widgety_json="([^"]+)"/', $result, $matches);
         $jsonData = html_entity_decode($matches[1], ENT_QUOTES | ENT_HTML5);
@@ -158,8 +156,6 @@ class ReactWidgetsTest extends BaseTestCase
 
         $result = createReactWidget($type, $data);
 
-        $this->assertIsString($result);
-        
         // Extract and verify DateTime is converted to string
         preg_match('/data-widgety_json="([^"]+)"/', $result, $matches);
         $jsonData = html_entity_decode($matches[1], ENT_QUOTES | ENT_HTML5);

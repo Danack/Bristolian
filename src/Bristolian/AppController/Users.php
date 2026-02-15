@@ -199,38 +199,38 @@ HTML;
     }
 
 
-    public function showUser(
-        UserRepo $userRepo,
-        //        UserDocumentRepo $userDocumentRepo,
-        string $username
-    ): string {
-        $user = $userRepo->findUser($username);
-
-        if ($user === null) {
-            return "User not found.";
-        }
-
-        $contents = "<h1>User has these documents</h1>";
-
-//        $documents = $userDocumentRepo->getUserDocuments($user);
-//        $contents = "<h1>User has these documents</h1>";
-//        $template = "<a href='/users/:uri_username/docs/:uri_link'>:html_title</a>";
+//    public function showUser(
+//        UserRepo $userRepo,
+//        //        UserDocumentRepo $userDocumentRepo,
+//        string $username
+//    ): string {
+//        $user = $userRepo->findUser($username);
 //
-//        foreach ($documents as $document) {
-//            $params = [
-//                ':uri_username' => $user->username,
-//                ':uri_link' => slugify($document->title),
-//                ':html_title' => $document->title
-//            ];
-//
-//            $contents .= esprintf($template, $params);
-//            $contents .= "<br/>";
+//        if ($user === null) {
+//            return "User not found.";
 //        }
-
-        $contents .= "<br/><br/>This is a little broken<br/><br/><br/>";
-
-        return $contents;
-    }
+//
+//        $contents = "<h1>User has these documents</h1>";
+//
+////        $documents = $userDocumentRepo->getUserDocuments($user);
+////        $contents = "<h1>User has these documents</h1>";
+////        $template = "<a href='/users/:uri_username/docs/:uri_link'>:html_title</a>";
+////
+////        foreach ($documents as $document) {
+////            $params = [
+////                ':uri_username' => $user->username,
+////                ':uri_link' => slugify($document->title),
+////                ':html_title' => $document->title
+////            ];
+////
+////            $contents .= esprintf($template, $params);
+////            $contents .= "<br/>";
+////        }
+//
+//        $contents .= "<br/><br/>This is a little broken<br/><br/><br/>";
+//
+//        return $contents;
+//    }
 
 //    public function showUserDocument(
 //        UserRepo $userRepo,

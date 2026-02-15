@@ -39,13 +39,13 @@ class PdoUserProfileRepo implements UserProfileRepo
 
         // If no profile data exists, create default
         if ($user_profile === null) {
-            $user_profile =  new UserProfile(
-                user_id: $user_id,
-                avatar_image_id: null,
-                about_me: null,
-                created_at: new \DateTimeImmutable(),
-                updated_at: new \DateTimeImmutable()
-            );
+            $user_profile =  UserProfile::createBlankForUserId($user_id);
+//                user_id: $user_id,
+//                avatar_image_id: null,
+//                about_me: null,
+//                created_at: new \DateTimeImmutable(),
+//                updated_at: new \DateTimeImmutable()
+//            );
         }
 
         return new UserProfileWithDisplayName(

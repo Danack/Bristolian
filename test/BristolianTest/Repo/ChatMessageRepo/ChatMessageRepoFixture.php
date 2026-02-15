@@ -112,35 +112,35 @@ abstract class ChatMessageRepoFixture extends BaseTestCase
     {
         $this->markTestSkipped("This needs to be re-written to either create a new room, or otherwise only get the two created messages.");
 
-        $repo = $this->getTestInstance();
-
-        $user_id = $this->getTestUserId();
-        $room_id = $this->getTestRoomId();
-        
-        $chatMessageParam1 = ChatMessageParam::createFromVarMap(new ArrayVarMap([
-            'text' => 'Message 1',
-            'room_id' => $room_id,
-        ]));
-        $chatMessageParam2 = ChatMessageParam::createFromVarMap(new ArrayVarMap([
-            'text' => 'Message 2',
-            'room_id' => $room_id,
-        ]));
-        $chatMessageParam3 = ChatMessageParam::createFromVarMap(new ArrayVarMap([
-            'text' => 'Message 3',
-            'room_id' => $this->getOtherRoomId(),
-        ]));
-
-        $repo->storeChatMessageForUser($user_id, $chatMessageParam1);
-        $repo->storeChatMessageForUser($user_id, $chatMessageParam2);
-        $repo->storeChatMessageForUser($user_id, $chatMessageParam3);
-
-        $messages = $repo->getMessagesForRoom($room_id);
-
-        $this->assertCount(2, $messages);
-        $this->assertContainsOnlyInstancesOf(UserChatMessage::class, $messages);
-        foreach ($messages as $message) {
-            $this->assertSame($room_id, $message->room_id);
-        }
+//        $repo = $this->getTestInstance();
+//
+//        $user_id = $this->getTestUserId();
+//        $room_id = $this->getTestRoomId();
+//
+//        $chatMessageParam1 = ChatMessageParam::createFromVarMap(new ArrayVarMap([
+//            'text' => 'Message 1',
+//            'room_id' => $room_id,
+//        ]));
+//        $chatMessageParam2 = ChatMessageParam::createFromVarMap(new ArrayVarMap([
+//            'text' => 'Message 2',
+//            'room_id' => $room_id,
+//        ]));
+//        $chatMessageParam3 = ChatMessageParam::createFromVarMap(new ArrayVarMap([
+//            'text' => 'Message 3',
+//            'room_id' => $this->getOtherRoomId(),
+//        ]));
+//
+//        $repo->storeChatMessageForUser($user_id, $chatMessageParam1);
+//        $repo->storeChatMessageForUser($user_id, $chatMessageParam2);
+//        $repo->storeChatMessageForUser($user_id, $chatMessageParam3);
+//
+//        $messages = $repo->getMessagesForRoom($room_id);
+//
+//        $this->assertCount(2, $messages);
+//        $this->assertContainsOnlyInstancesOf(UserChatMessage::class, $messages);
+//        foreach ($messages as $message) {
+//            $this->assertSame($room_id, $message->room_id);
+//        }
     }
 
     /**
@@ -154,34 +154,34 @@ abstract class ChatMessageRepoFixture extends BaseTestCase
     public function test_getMessagesForRoom_returns_messages_sorted_by_id_descending(): void
     {
         $this->markTestSkipped("Kind of a duplicate. ");
-
-        $repo = $this->getTestInstance();
-
-        $user_id = $this->getTestUserId();
-        $room_id = $this->getTestRoomId();
-        
-        $chatMessageParam1 = ChatMessageParam::createFromVarMap(new ArrayVarMap([
-            'text' => 'First message',
-            'room_id' => $room_id,
-        ]));
-        $chatMessageParam2 = ChatMessageParam::createFromVarMap(new ArrayVarMap([
-            'text' => 'Second message',
-            'room_id' => $room_id,
-        ]));
-        $chatMessageParam3 = ChatMessageParam::createFromVarMap(new ArrayVarMap([
-            'text' => 'Third message',
-            'room_id' => $room_id,
-        ]));
-
-        $message1 = $repo->storeChatMessageForUser($user_id, $chatMessageParam1);
-        $message2 = $repo->storeChatMessageForUser($user_id, $chatMessageParam2);
-        $message3 = $repo->storeChatMessageForUser($user_id, $chatMessageParam3);
-
-        $messages = $repo->getMessagesForRoom($room_id);
-
-        $this->assertCount(3, $messages);
-        // Messages should be sorted by id descending (newest first)
-        $this->assertGreaterThanOrEqual($messages[1]->id, $messages[0]->id);
-        $this->assertGreaterThanOrEqual($messages[2]->id, $messages[1]->id);
+//
+//        $repo = $this->getTestInstance();
+//
+//        $user_id = $this->getTestUserId();
+//        $room_id = $this->getTestRoomId();
+//
+//        $chatMessageParam1 = ChatMessageParam::createFromVarMap(new ArrayVarMap([
+//            'text' => 'First message',
+//            'room_id' => $room_id,
+//        ]));
+//        $chatMessageParam2 = ChatMessageParam::createFromVarMap(new ArrayVarMap([
+//            'text' => 'Second message',
+//            'room_id' => $room_id,
+//        ]));
+//        $chatMessageParam3 = ChatMessageParam::createFromVarMap(new ArrayVarMap([
+//            'text' => 'Third message',
+//            'room_id' => $room_id,
+//        ]));
+//
+//        $message1 = $repo->storeChatMessageForUser($user_id, $chatMessageParam1);
+//        $message2 = $repo->storeChatMessageForUser($user_id, $chatMessageParam2);
+//        $message3 = $repo->storeChatMessageForUser($user_id, $chatMessageParam3);
+//
+//        $messages = $repo->getMessagesForRoom($room_id);
+//
+//        $this->assertCount(3, $messages);
+//        // Messages should be sorted by id descending (newest first)
+//        $this->assertGreaterThanOrEqual($messages[1]->id, $messages[0]->id);
+//        $this->assertGreaterThanOrEqual($messages[2]->id, $messages[1]->id);
     }
 }

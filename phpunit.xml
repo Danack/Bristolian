@@ -63,9 +63,6 @@
     </exclude>
   </groups>
 
-  <!--  <extensions>-->
-<!--    <extension class="BristolianTest\TestDurationListener"/>-->
-<!--  </extensions>-->
 
   <logging>
     <!-- <log type="coverage-php" target="../tmp/coverage/unittest.cov"/> -->
