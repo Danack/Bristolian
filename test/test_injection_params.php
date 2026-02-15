@@ -8,6 +8,7 @@ function testInjectionParams() : InjectionParams
     $shares = [
         \PDO::class,
         \Redis::class,
+        \Bristolian\PdoSimple\PdoSimple::class,
     ];
 
     // Alias interfaces (or classes) to the actual types that should be used

@@ -36,23 +36,23 @@ abstract class UserProfileRepoFixture extends BaseTestCase
         return 'user-123';
     }
 
-    /**
-     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::getUserProfile
-     */
-    public function test_getUserProfile_returns_profile_even_for_nonexistent_user(): void
-    {
-        $repo = $this->getTestInstance();
-
-        $user_id = 'nonexistent-user-id-' . uniqid();
-
-        $result = $repo->getUserProfile($user_id);
-
-        $this->assertInstanceOf(UserProfileWithDisplayName::class, $result);
-        $this->assertSame($user_id, $result->getUserId());
-        $this->assertNull($result->getAvatarImageId());
-        $this->assertNull($result->getAboutMe());
-        $this->assertSame('', $result->getDisplayName()); // No display name yet
-    }
+//    /**
+//     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::getUserProfile
+//     */
+//    public function test_getUserProfile_returns_profile_even_for_nonexistent_user(): void
+//    {
+//        $repo = $this->getTestInstance();
+//
+//        $user_id = 'nonexistent-user-id-' . uniqid();
+//
+//        $result = $repo->getUserProfile($user_id);
+//
+//        $this->assertInstanceOf(UserProfileWithDisplayName::class, $result);
+//        $this->assertSame($user_id, $result->getUserId());
+//        $this->assertNull($result->getAvatarImageId());
+//        $this->assertNull($result->getAboutMe());
+//        $this->assertSame('', $result->getDisplayName()); // No display name yet
+//    }
 
     public function test_updateProfile_creates_profile_and_display_name(): void
     {

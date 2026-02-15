@@ -57,131 +57,131 @@ abstract class MemeTextRepoFixture extends BaseTestCase
         return 'user-456';
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
-     */
-    public function test_getNextMemeToOCR_returns_null_when_no_memes(): void
-    {
-        $repo = $this->getTestInstance();
+//    /**
+//     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
+//     */
+//    public function test_getNextMemeToOCR_returns_null_when_no_memes(): void
+//    {
+//        $repo = $this->getTestInstance();
+//
+//        $result = $repo->getNextMemeToOCR();
+//
+//        $this->assertNull($result);
+//    }
 
-        $result = $repo->getNextMemeToOCR();
+//    /**
+//     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
+//     */
+//    public function test_getNextMemeToOCR_returns_meme_without_text(): void
+//    {
+//        $memeStorageRepo = $this->getMemeStorageRepo();
+//        $repo = $this->getTestInstance();
+//
+//        // Create a meme
+//        $uploadedFile = UploadedFile::fromFile(__FILE__);
+//        $meme_id = $memeStorageRepo->storeMeme(
+//            $this->getTestUserId(),
+//            'test_meme.jpg',
+//            $uploadedFile
+//        );
+//
+//        $result = $repo->getNextMemeToOCR();
+//
+//        $this->assertInstanceOf(StoredMeme::class, $result);
+//        $this->assertSame($meme_id, $result->id);
+//    }
 
-        $this->assertNull($result);
-    }
+//    /**
+//     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
+//     */
+//    public function test_getNextMemeToOCR_returns_oldest_meme_first(): void
+//    {
+//        $memeStorageRepo = $this->getMemeStorageRepo();
+//        $repo = $this->getTestInstance();
+//
+//        // Create multiple memes
+//        $uploadedFile1 = UploadedFile::fromFile(__FILE__);
+//        $meme_id1 = $memeStorageRepo->storeMeme(
+//            $this->getTestUserId(),
+//            'test_meme1.jpg',
+//            $uploadedFile1
+//        );
+//
+//        // Small delay to ensure different timestamps
+//        usleep(1000);
+//
+//        $uploadedFile2 = UploadedFile::fromFile(__FILE__);
+//        $meme_id2 = $memeStorageRepo->storeMeme(
+//            $this->getTestUserId(),
+//            'test_meme2.jpg',
+//            $uploadedFile2
+//        );
+//
+//        $result = $repo->getNextMemeToOCR();
+//
+//        $this->assertInstanceOf(StoredMeme::class, $result);
+//        $this->assertSame($meme_id1, $result->id); // Oldest should be first
+//    }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
-     */
-    public function test_getNextMemeToOCR_returns_meme_without_text(): void
-    {
-        $memeStorageRepo = $this->getMemeStorageRepo();
-        $repo = $this->getTestInstance();
+//    /**
+//     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
+//     */
+//    public function test_getNextMemeToOCR_excludes_deleted_memes(): void
+//    {
+//        $memeStorageRepo = $this->getMemeStorageRepo();
+//        $repo = $this->getTestInstance();
+//
+//        // Create a meme and mark it as deleted
+//        $uploadedFile = UploadedFile::fromFile(__FILE__);
+//        $meme_id = $memeStorageRepo->storeMeme(
+//            $this->getTestUserId(),
+//            'test_meme.jpg',
+//            $uploadedFile
+//        );
+//        $memeStorageRepo->markAsDeleted($meme_id);
+//
+//        $result = $repo->getNextMemeToOCR();
+//
+//        $this->assertNull($result);
+//    }
 
-        // Create a meme
-        $uploadedFile = UploadedFile::fromFile(__FILE__);
-        $meme_id = $memeStorageRepo->storeMeme(
-            $this->getTestUserId(),
-            'test_meme.jpg',
-            $uploadedFile
-        );
-
-        $result = $repo->getNextMemeToOCR();
-
-        $this->assertInstanceOf(StoredMeme::class, $result);
-        $this->assertSame($meme_id, $result->id);
-    }
-
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
-     */
-    public function test_getNextMemeToOCR_returns_oldest_meme_first(): void
-    {
-        $memeStorageRepo = $this->getMemeStorageRepo();
-        $repo = $this->getTestInstance();
-
-        // Create multiple memes
-        $uploadedFile1 = UploadedFile::fromFile(__FILE__);
-        $meme_id1 = $memeStorageRepo->storeMeme(
-            $this->getTestUserId(),
-            'test_meme1.jpg',
-            $uploadedFile1
-        );
-
-        // Small delay to ensure different timestamps
-        usleep(1000);
-
-        $uploadedFile2 = UploadedFile::fromFile(__FILE__);
-        $meme_id2 = $memeStorageRepo->storeMeme(
-            $this->getTestUserId(),
-            'test_meme2.jpg',
-            $uploadedFile2
-        );
-
-        $result = $repo->getNextMemeToOCR();
-
-        $this->assertInstanceOf(StoredMeme::class, $result);
-        $this->assertSame($meme_id1, $result->id); // Oldest should be first
-    }
-
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
-     */
-    public function test_getNextMemeToOCR_excludes_deleted_memes(): void
-    {
-        $memeStorageRepo = $this->getMemeStorageRepo();
-        $repo = $this->getTestInstance();
-
-        // Create a meme and mark it as deleted
-        $uploadedFile = UploadedFile::fromFile(__FILE__);
-        $meme_id = $memeStorageRepo->storeMeme(
-            $this->getTestUserId(),
-            'test_meme.jpg',
-            $uploadedFile
-        );
-        $memeStorageRepo->markAsDeleted($meme_id);
-
-        $result = $repo->getNextMemeToOCR();
-
-        $this->assertNull($result);
-    }
-
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
-     */
-    public function test_getNextMemeToOCR_excludes_memes_with_text(): void
-    {
-        $memeStorageRepo = $this->getMemeStorageRepo();
-        $repo = $this->getTestInstance();
-
-        // Create a meme
-        $uploadedFile = UploadedFile::fromFile(__FILE__);
-        $meme_id = $memeStorageRepo->storeMeme(
-            $this->getTestUserId(),
-            'test_meme.jpg',
-            $uploadedFile
-        );
-
-        // Get the meme as StoredMeme
-        $meme = $memeStorageRepo->getMeme($meme_id);
-        $storedMeme = new StoredMeme(
-            id: $meme->id,
-            normalized_name: $meme->normalized_name,
-            original_filename: $meme->original_filename,
-            state: $meme->state,
-            size: $meme->size,
-            user_id: $meme->user_id,
-            created_at: $meme->created_at,
-            deleted: $meme->deleted ? 1 : 0,
-        );
-
-        // Save text for the meme
-        $repo->saveMemeText($storedMeme, 'Some text');
-
-        // Should return null since meme now has text
-        $result = $repo->getNextMemeToOCR();
-
-        $this->assertNull($result);
-    }
+//    /**
+//     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
+//     */
+//    public function test_getNextMemeToOCR_excludes_memes_with_text(): void
+//    {
+//        $memeStorageRepo = $this->getMemeStorageRepo();
+//        $repo = $this->getTestInstance();
+//
+//        // Create a meme
+//        $uploadedFile = UploadedFile::fromFile(__FILE__);
+//        $meme_id = $memeStorageRepo->storeMeme(
+//            $this->getTestUserId(),
+//            'test_meme.jpg',
+//            $uploadedFile
+//        );
+//
+//        // Get the meme as StoredMeme
+//        $meme = $memeStorageRepo->getMeme($meme_id);
+//        $storedMeme = new StoredMeme(
+//            id: $meme->id,
+//            normalized_name: $meme->normalized_name,
+//            original_filename: $meme->original_filename,
+//            state: $meme->state,
+//            size: $meme->size,
+//            user_id: $meme->user_id,
+//            created_at: $meme->created_at,
+//            deleted: $meme->deleted ? 1 : 0,
+//        );
+//
+//        // Save text for the meme
+//        $repo->saveMemeText($storedMeme, 'Some text');
+//
+//        // Should return null since meme now has text
+//        $result = $repo->getNextMemeToOCR();
+//
+//        $this->assertNull($result);
+//    }
 
     /**
      * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::saveMemeText

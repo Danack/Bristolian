@@ -126,6 +126,17 @@ function createApiDomain(Config $config)
     return new \Bristolian\Data\ApiDomain("http://local.api.bristolian.org");
 }
 
+$number_of_pdo_connections = 0;
+
+function seriously_wtf()
+{
+    global $number_of_pdo_connections;
+
+    echo "number_of_pdo_connections = $number_of_pdo_connections\n";
+}
+
+register_shutdown_function(seriously_wtf(...));
+
 
 /**
  * @return PDO
@@ -133,6 +144,11 @@ function createApiDomain(Config $config)
  */
 function createPDOForUser(Config $config)
 {
+    global $number_of_pdo_connections;
+
+
+    $number_of_pdo_connections += 1;
+
     $db_config = $config->getDatabaseUserConfig();
 
     $dsn_string = sprintf(
@@ -154,22 +170,44 @@ function createPDOForUser(Config $config)
     // 'bristolian_readonly_user'
     // 's^Z8p!R3tM#9wXj@Qk2'
 
+    $attempt_retry = true;
 
-    try {
-        $pdo = new \PDO(
-            $dsn_string,
-            $db_config->username,
-            $db_config->password,
-            $pdo_options
-        );
-    }
-    catch (\Exception $e) {
-        throw new \Exception(
-            "Error creating PDO:" . $e->getMessage(),
-            $e->getCode(),
-            $e
-        );
-    }
+
+
+    $pdo = new \PDO(
+        $dsn_string,
+        $db_config->username,
+        $db_config->password,
+        $pdo_options
+    );
+
+
+
+//    while ($attempt_retry === true) {
+//        try {
+//            $pdo = new \PDO(
+//                $dsn_string,
+//                $db_config->username,
+//                $db_config->password,
+//                $pdo_options
+//            );
+//            $attempt_retry = false;
+//        } catch (\Exception $e) {
+//
+//
+//            $failures += 1;
+//            sleep(1);
+//            if ($failures > 3) {
+//                $attempt_retry = false;
+//
+//                throw new \Exception(
+//                    "Error creating PDO:" . $e->getMessage(),
+//                    $e->getCode(),
+//                    $e
+//                );
+//            }
+//        }
+//    }
 
     return $pdo;
 }

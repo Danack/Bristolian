@@ -3,7 +3,7 @@ from pathlib import Path
 import re
 import sys
 
-XML_FILE = Path("/absolute/path/to/file.xml")
+XML_FILE = Path("/var/app/phpunit.xml")
 
 text = XML_FILE.read_text()
 
@@ -19,14 +19,14 @@ if commented_pattern.search(text):
     # Uncomment
     text = commented_pattern.sub(r"\1", text, count=1)
     XML_FILE.write_text(text)
-    print("ON")
+    print("enabled")
     sys.exit(0)
 
 if enabled_pattern.search(text):
     # Comment
     text = enabled_pattern.sub(r"<!-- \1 -->", text, count=1)
     XML_FILE.write_text(text)
-    print("OFF")
+    print("disabled")
     sys.exit(0)
 
 # Fallback: element not found
