@@ -8,17 +8,27 @@ use DataType\Create\CreateFromVarMap;
 use DataType\GetInputTypesFromAttributes;
 use VarMap\ArrayVarMap;
 
+/**
+ * @coversNothing
+ */
 class BasicFloatTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Parameters\PropertyType\BasicFloat
+     * @return \Generator<string, array{array<string, mixed>, float}>
      */
-    public function testWorks()
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $value = 1.234;
-        $data = ['float_input' => $value];
+        yield 'valid' => [['float_input' => 1.234], 1.234];
+    }
 
-        $floatParamTest = BasicFloatFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame($value, $floatParamTest->value);
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\BasicFloat
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(array $input, float $expectedValue): void
+    {
+        $paramTest = BasicFloatFixture::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedValue, $paramTest->value);
     }
 }

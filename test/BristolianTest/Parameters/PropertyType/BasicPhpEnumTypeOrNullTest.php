@@ -11,72 +11,65 @@ use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\PropertyType\BasicPhpEnumTypeOrNull
+ * @coversNothing
  */
 class BasicPhpEnumTypeOrNullTest extends BaseTestCase
 {
-    public function testWorksWithValidEnumValue()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, TestEnum|null}>
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $value = 'VALUE1';
-        $data = ['enum_input' => $value];
-
-        $enumParamTest = BasicPhpEnumTypeOrNullFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame(TestEnum::VALUE1, $enumParamTest->value);
+        yield 'valid enum' => [['enum_input' => 'VALUE1'], TestEnum::VALUE1];
+        yield 'missing value' => [[], null];
     }
 
-    public function testFailsWithNull()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\BasicPhpEnumTypeOrNull
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(array $input, ?TestEnum $expectedValue): void
+    {
+        $paramTest = BasicPhpEnumTypeOrNullFixture::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedValue, $paramTest->value);
+    }
+
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_invalid_input_and_expected_error(): \Generator
+    {
+        yield 'null value' => [['enum_input' => null], Messages::STRING_EXPECTED];
+        yield 'invalid enum' => [['enum_input' => 'INVALID_VALUE'], Messages::ENUM_MAP_UNRECOGNISED_VALUE_SINGLE];
+    }
+
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\BasicPhpEnumTypeOrNull
+     * @dataProvider provides_invalid_input_and_expected_error
+     * @param array<string, mixed> $input
+     */
+    public function test_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {
-            $data = ['enum_input' => null];
-
-            BasicPhpEnumTypeOrNullFixture::createFromVarMap(new ArrayVarMap($data));
+            BasicPhpEnumTypeOrNullFixture::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/enum_input' => Messages::STRING_EXPECTED]
+                ['/enum_input' => $expectedErrorMessage]
             );
         }
     }
 
-    public function testWorksWithMissingValue()
-    {
-        $data = [];
-
-        $enumParamTest = BasicPhpEnumTypeOrNullFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertNull($enumParamTest->value);
-    }
-
-    public function testFailsWithInvalidEnumValue()
-    {
-        try {
-            $data = ['enum_input' => 'INVALID_VALUE'];
-
-            BasicPhpEnumTypeOrNullFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/enum_input' => Messages::ENUM_MAP_UNRECOGNISED_VALUE_SINGLE]
-            );
-        }
-    }
-
-    public function testImplementsHasInputType()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\BasicPhpEnumTypeOrNull
+     */
+    public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new BasicPhpEnumTypeOrNull('test_name', TestEnum::class);
-        $this->assertInstanceOf(\DataType\HasInputType::class, $propertyType);
-    }
-
-    public function testGetInputTypeReturnsCorrectType()
-    {
-        $propertyType = new BasicPhpEnumTypeOrNull('test_name', TestEnum::class);
-        $inputType = $propertyType->getInputType();
-        
-        $this->assertInstanceOf(\DataType\InputType::class, $inputType);
-        $this->assertSame('test_name', $inputType->getName());
+        $this->assertSame('test_name', $propertyType->getInputType()->getName());
     }
 }
 

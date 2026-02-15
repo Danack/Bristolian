@@ -11,112 +11,67 @@ use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\PropertyType\Url
+ * @coversNothing
  */
 class UrlTest extends BaseTestCase
 {
-    public function testWorks()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $value = 'https://example.com';
-        $data = ['url_input' => $value];
-
-        $urlParamTest = UrlFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame($value, $urlParamTest->value);
+        yield 'valid' => [['url_input' => 'https://example.com'], 'https://example.com'];
     }
 
-    public function testFailsWithMissingRequiredParameter()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\Url
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(array $input, string $expectedValue): void
+    {
+        $paramTest = UrlFixture::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedValue, $paramTest->value);
+    }
+
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_invalid_input_and_expected_error(): \Generator
+    {
+        yield 'missing required' => [[], Messages::VALUE_NOT_SET];
+        yield 'invalid url' => [['url_input' => 'not-a-url'], Messages::ERROR_INVALID_URL];
+        yield 'too short' => [['url_input' => ''], Messages::STRING_TOO_SHORT];
+        yield 'too long' => [['url_input' => 'https://example.com/' . str_repeat('a', 3000)], Messages::STRING_TOO_LONG];
+        yield 'null value' => [['url_input' => null], Messages::STRING_EXPECTED];
+    }
+
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\Url
+     * @dataProvider provides_invalid_input_and_expected_error
+     * @param array<string, mixed> $input
+     */
+    public function test_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {
-            $data = [];
-
-            UrlFixture::createFromVarMap(new ArrayVarMap($data));
+            UrlFixture::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/url_input' => Messages::VALUE_NOT_SET]
+                ['/url_input' => $expectedErrorMessage]
             );
         }
     }
 
-    public function testFailsWithInvalidUrl()
-    {
-        try {
-            $data = ['url_input' => 'not-a-url'];
-
-            UrlFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/url_input' => Messages::ERROR_INVALID_URL]
-            );
-        }
-    }
-
-    public function testFailsWithTooShort()
-    {
-        try {
-            $data = ['url_input' => ''];
-
-            UrlFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/url_input' => Messages::STRING_TOO_SHORT]
-            );
-        }
-    }
-
-    public function testFailsWithTooLong()
-    {
-        try {
-            $data = ['url_input' => 'https://example.com/' . str_repeat('a', 3000)];
-
-            UrlFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/url_input' => Messages::STRING_TOO_LONG]
-            );
-        }
-    }
-
-    public function testFailsWithNullValue()
-    {
-        try {
-            $data = ['url_input' => null];
-
-            UrlFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/url_input' => Messages::STRING_EXPECTED]
-            );
-        }
-    }
-
-    public function testImplementsHasInputType()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\Url
+     */
+    public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new Url('test_name');
-        $this->assertInstanceOf(\DataType\HasInputType::class, $propertyType);
-    }
-
-    public function testGetInputTypeReturnsCorrectType()
-    {
-        $propertyType = new Url('test_name');
-        $inputType = $propertyType->getInputType();
-        
-        $this->assertInstanceOf(\DataType\InputType::class, $inputType);
-        $this->assertSame('test_name', $inputType->getName());
+        $this->assertSame('test_name', $propertyType->getInputType()->getName());
     }
 }
 

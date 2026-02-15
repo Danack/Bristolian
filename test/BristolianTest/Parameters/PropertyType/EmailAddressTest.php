@@ -11,112 +11,67 @@ use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\PropertyType\EmailAddress
+ * @coversNothing
  */
 class EmailAddressTest extends BaseTestCase
 {
-    public function testWorks()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $value = 'test@example.com';
-        $data = ['email_input' => $value];
-
-        $emailParamTest = EmailAddressFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame($value, $emailParamTest->value);
+        yield 'valid' => [['email_input' => 'test@example.com'], 'test@example.com'];
     }
 
-    public function testFailsWithMissingRequiredParameter()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\EmailAddress
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(array $input, string $expectedValue): void
+    {
+        $paramTest = EmailAddressFixture::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedValue, $paramTest->value);
+    }
+
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_invalid_input_and_expected_error(): \Generator
+    {
+        yield 'missing required' => [[], Messages::VALUE_NOT_SET];
+        yield 'invalid email' => [['email_input' => 'not-an-email'], Messages::ERROR_EMAIL_NO_AT_CHARACTER];
+        yield 'too short' => [['email_input' => ''], Messages::STRING_TOO_SHORT];
+        yield 'too long' => [['email_input' => str_repeat('a', 300) . '@example.com'], Messages::STRING_TOO_LONG];
+        yield 'null value' => [['email_input' => null], Messages::STRING_EXPECTED];
+    }
+
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\EmailAddress
+     * @dataProvider provides_invalid_input_and_expected_error
+     * @param array<string, mixed> $input
+     */
+    public function test_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {
-            $data = [];
-
-            EmailAddressFixture::createFromVarMap(new ArrayVarMap($data));
+            EmailAddressFixture::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/email_input' => Messages::VALUE_NOT_SET]
+                ['/email_input' => $expectedErrorMessage]
             );
         }
     }
 
-    public function testFailsWithInvalidEmail()
-    {
-        try {
-            $data = ['email_input' => 'not-an-email'];
-
-            EmailAddressFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/email_input' => Messages::ERROR_EMAIL_NO_AT_CHARACTER]
-            );
-        }
-    }
-
-    public function testFailsWithTooShort()
-    {
-        try {
-            $data = ['email_input' => ''];
-
-            EmailAddressFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/email_input' => Messages::STRING_TOO_SHORT]
-            );
-        }
-    }
-
-    public function testFailsWithTooLong()
-    {
-        try {
-            $data = ['email_input' => str_repeat('a', 300) . '@example.com'];
-
-            EmailAddressFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/email_input' => Messages::STRING_TOO_LONG]
-            );
-        }
-    }
-
-    public function testFailsWithNullValue()
-    {
-        try {
-            $data = ['email_input' => null];
-
-            EmailAddressFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/email_input' => Messages::STRING_EXPECTED]
-            );
-        }
-    }
-
-    public function testImplementsHasInputType()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\EmailAddress
+     */
+    public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new EmailAddress('test_name');
-        $this->assertInstanceOf(\DataType\HasInputType::class, $propertyType);
-    }
-
-    public function testGetInputTypeReturnsCorrectType()
-    {
-        $propertyType = new EmailAddress('test_name');
-        $inputType = $propertyType->getInputType();
-        
-        $this->assertInstanceOf(\DataType\InputType::class, $inputType);
-        $this->assertSame('test_name', $inputType->getName());
+        $this->assertSame('test_name', $propertyType->getInputType()->getName());
     }
 }
 

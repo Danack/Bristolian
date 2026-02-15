@@ -11,89 +11,72 @@ use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\PropertyType\PasswordOrRandom
+ * @coversNothing
  */
 class PasswordOrRandomTest extends BaseTestCase
 {
-    public function testWorksWithProvidedPassword()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string|null}>
+     * null means "expect generated value with length >= 16"
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $value = 'user-provided-password';
-        $data = ['password_input' => $value];
-
-        $passwordParamTest = PasswordOrRandomFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame($value, $passwordParamTest->value);
+        yield 'with value' => [['password_input' => 'user-provided-password'], 'user-provided-password'];
+        yield 'empty string generates random' => [['password_input' => ''], null];
     }
 
-    public function testWorksWithEmptyString()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\PasswordOrRandom
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(array $input, ?string $expectedValue): void
     {
-        $data = ['password_input' => ''];
-
-        $passwordParamTest = PasswordOrRandomFixture::createFromVarMap(new ArrayVarMap($data));
-        // Should generate a random password of 16 characters
-        $this->assertGreaterThanOrEqual(16, strlen($passwordParamTest->value));
+        $paramTest = PasswordOrRandomFixture::createFromVarMap(new ArrayVarMap($input));
+        if ($expectedValue !== null) {
+            $this->assertSame($expectedValue, $paramTest->value);
+        }
+        else {
+            $this->assertGreaterThanOrEqual(16, strlen($paramTest->value));
+        }
     }
 
-    public function testFailsWithNull()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_invalid_input_and_expected_error(): \Generator
+    {
+        yield 'null value' => [['password_input' => null], Messages::STRING_EXPECTED];
+        yield 'missing required' => [[], Messages::VALUE_NOT_SET];
+        yield 'too long' => [['password_input' => str_repeat('a', 300)], Messages::STRING_TOO_LONG];
+    }
+
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\PasswordOrRandom
+     * @dataProvider provides_invalid_input_and_expected_error
+     * @param array<string, mixed> $input
+     */
+    public function test_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {
-            $data = ['password_input' => null];
-
-            PasswordOrRandomFixture::createFromVarMap(new ArrayVarMap($data));
+            PasswordOrRandomFixture::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/password_input' => Messages::STRING_EXPECTED]
+                ['/password_input' => $expectedErrorMessage]
             );
         }
     }
 
-    public function testFailsWithMissingValue()
-    {
-        try {
-            $data = [];
-
-            PasswordOrRandomFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/password_input' => Messages::VALUE_NOT_SET]
-            );
-        }
-    }
-
-    public function testFailsWithTooLong()
-    {
-        try {
-            $data = ['password_input' => str_repeat('a', 300)];
-
-            PasswordOrRandomFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/password_input' => Messages::STRING_TOO_LONG]
-            );
-        }
-    }
-
-    public function testImplementsHasInputType()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\PasswordOrRandom
+     */
+    public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new PasswordOrRandom('test_name');
-        $this->assertInstanceOf(\DataType\HasInputType::class, $propertyType);
-    }
-
-    public function testGetInputTypeReturnsCorrectType()
-    {
-        $propertyType = new PasswordOrRandom('test_name');
-        $inputType = $propertyType->getInputType();
-        
-        $this->assertInstanceOf(\DataType\InputType::class, $inputType);
-        $this->assertSame('test_name', $inputType->getName());
+        $this->assertSame('test_name', $propertyType->getInputType()->getName());
     }
 }
 

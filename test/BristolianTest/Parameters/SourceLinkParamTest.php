@@ -10,114 +10,91 @@ use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\SourceLinkParam
+ * @coversNothing
  */
 class SourceLinkParamTest extends BaseTestCase
 {
-    public function testWorks()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string, string, string}>
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $title = 'This is a longer source title that meets the minimum length requirement';
-        $highlights_json = '{"highlights": []}';
-        $text = 'Source text content';
-
-        $params = [
-            'title' => $title,
-            'highlights_json' => $highlights_json,
-            'text' => $text,
-        ];
-
-        $sourceLinkParam = SourceLinkParam::createFromVarMap(new ArrayVarMap($params));
-
-        $this->assertSame($title, $sourceLinkParam->title);
-        $this->assertSame($highlights_json, $sourceLinkParam->highlights_json);
-        $this->assertSame($text, $sourceLinkParam->text);
-    }
-
-    public function testFailsWithMissingTitle()
-    {
-        try {
-            $params = [
-                'highlights_json' => '{"highlights": []}',
-                'text' => 'Source text content',
-            ];
-
-            SourceLinkParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/title' => Messages::VALUE_NOT_SET]
-            );
-        }
-    }
-
-    public function testFailsWithMissingHighlightsJson()
-    {
-        try {
-            $params = [
-                'title' => 'This is a longer source title that meets the minimum length requirement',
-                'text' => 'Source text content',
-            ];
-
-            SourceLinkParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/highlights_json' => Messages::VALUE_NOT_SET]
-            );
-        }
-    }
-
-    public function testFailsWithMissingText()
-    {
-        try {
-            $params = [
+        yield 'valid' => [
+            [
                 'title' => 'This is a longer source title that meets the minimum length requirement',
                 'highlights_json' => '{"highlights": []}',
-            ];
-
-            SourceLinkParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/text' => Messages::VALUE_NOT_SET]
-            );
-        }
+                'text' => 'Source text content',
+            ],
+            'This is a longer source title that meets the minimum length requirement',
+            '{"highlights": []}',
+            'Source text content',
+        ];
     }
 
-    public function testFailsWithInvalidDataTypes()
+    /**
+     * @covers \Bristolian\Parameters\SourceLinkParam
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(
+        array $input,
+        string $expectedTitle,
+        string $expectedHighlightsJson,
+        string $expectedText
+    ): void {
+        $params = SourceLinkParam::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedTitle, $params->title);
+        $this->assertSame($expectedHighlightsJson, $params->highlights_json);
+        $this->assertSame($expectedText, $params->text);
+    }
+
+    /**
+     * @return \Generator<string, array{array<string, mixed>, array<string, string>}>
+     */
+    public static function provides_invalid_input_and_expected_errors(): \Generator
+    {
+        yield 'missing title' => [
+            ['highlights_json' => '{"highlights": []}', 'text' => 'Source text content'],
+            ['/title' => Messages::VALUE_NOT_SET],
+        ];
+        yield 'missing highlights_json' => [
+            [
+                'title' => 'This is a longer source title that meets the minimum length requirement',
+                'text' => 'Source text content',
+            ],
+            ['/highlights_json' => Messages::VALUE_NOT_SET],
+        ];
+        yield 'missing text' => [
+            [
+                'title' => 'This is a longer source title that meets the minimum length requirement',
+                'highlights_json' => '{"highlights": []}',
+            ],
+            ['/text' => Messages::VALUE_NOT_SET],
+        ];
+        yield 'invalid types' => [
+            ['title' => 123, 'highlights_json' => 456, 'text' => 789],
+            [
+                '/title' => Messages::STRING_EXPECTED,
+                '/highlights_json' => Messages::STRING_EXPECTED,
+                '/text' => Messages::STRING_EXPECTED,
+            ],
+        ];
+    }
+
+    /**
+     * @covers \Bristolian\Parameters\SourceLinkParam
+     * @dataProvider provides_invalid_input_and_expected_errors
+     * @param array<string, mixed> $input
+     * @param array<string, string> $expectedProblems
+     */
+    public function test_rejects_invalid_input_with_expected_errors(array $input, array $expectedProblems): void
     {
         try {
-            $params = [
-                'title' => 123,
-                'highlights_json' => 456,
-                'text' => 789,
-            ];
-
-            SourceLinkParam::createFromVarMap(new ArrayVarMap($params));
+            SourceLinkParam::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
-            $validationProblems = $ve->getValidationProblems();
-            $this->assertGreaterThan(0, count($validationProblems));
+            $this->assertValidationProblems($ve->getValidationProblems(), $expectedProblems);
         }
-    }
-
-    public function testImplementsDataTypeInterface()
-    {
-        $params = [
-            'title' => 'This is a longer source title that meets the minimum length requirement',
-            'highlights_json' => '{"highlights": []}',
-            'text' => 'Source text content',
-        ];
-
-        $sourceLinkParam = SourceLinkParam::createFromVarMap(new ArrayVarMap($params));
-
-        $this->assertInstanceOf(\DataType\DataType::class, $sourceLinkParam);
     }
 }

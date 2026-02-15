@@ -8,155 +8,89 @@ use BristolianTest\BaseTestCase;
 use Bristolian\Parameters\DebugParams;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
-use DataType\Exception\ValidationException;
 
 /**
- * @covers \Bristolian\Parameters\DebugParams
+ * @coversNothing
  */
 class DebugParamsTest extends BaseTestCase
 {
-    public function testWorks()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string, string}>
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $message = 'Hello there.';
-        $detail = 'this is some detail';
-
-        $params = [
-            'message' => $message,
-            'detail' => $detail,
+        yield 'valid' => [
+            ['message' => 'Hello there.', 'detail' => 'this is some detail'],
+            'Hello there.',
+            'this is some detail',
         ];
-
-        $debugParam = DebugParams::createFromVarMap(new ArrayVarMap($params));
-
-        $this->assertSame($message, $debugParam->message);
-        $this->assertSame($detail, $debugParam->detail);
     }
 
-    public function testFailsWithMissingMessage()
-    {
-        try {
-            $params = [
-                'detail' => 'some detail',
-            ];
-
-            DebugParams::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/message' => \DataType\Messages::VALUE_NOT_SET]
-            );
-        }
+    /**
+     * @covers \Bristolian\Parameters\DebugParams
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(
+        array $input,
+        string $expectedMessage,
+        string $expectedDetail
+    ): void {
+        $params = DebugParams::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedMessage, $params->message);
+        $this->assertSame($expectedDetail, $params->detail);
     }
 
-    public function testFailsWithMissingDetail()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, array<string, string>}>
+     */
+    public static function provides_invalid_input_and_expected_errors(): \Generator
     {
-        try {
-            $params = [
-                'message' => 'some message',
-            ];
-
-            DebugParams::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/detail' => \DataType\Messages::VALUE_NOT_SET]
-            );
-        }
-    }
-
-    public function testFailsWithBothMissing()
-    {
-        try {
-            $params = [];
-
-            DebugParams::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                [
-                    '/message' => \DataType\Messages::VALUE_NOT_SET,
-                    '/detail' => \DataType\Messages::VALUE_NOT_SET
-                ]
-            );
-        }
-    }
-
-    public function testFailsWithInvalidDataTypes()
-    {
-        try {
-            $params = [
-                'message' => 123,
-                'detail' => 456,
-            ];
-
-            DebugParams::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                [
-                    '/message' => \DataType\Messages::STRING_EXPECTED,
-                    '/detail' => \DataType\Messages::STRING_EXPECTED
-                ]
-            );
-        }
-    }
-
-    public function testFailsWithNullValues()
-    {
-        try {
-            $params = [
-                'message' => null,
-                'detail' => null,
-            ];
-
-            DebugParams::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                [
-                    '/message' => \DataType\Messages::STRING_EXPECTED,
-                    '/detail' => \DataType\Messages::STRING_EXPECTED
-                ]
-            );
-        }
-    }
-
-    public function testImplementsDataTypeInterface()
-    {
-        $message = 'test message';
-        $detail = 'test detail';
-
-        $params = [
-            'message' => $message,
-            'detail' => $detail,
+        yield 'missing message' => [
+            ['detail' => 'some detail'],
+            ['/message' => Messages::VALUE_NOT_SET],
         ];
-
-        $debugParam = DebugParams::createFromVarMap(new ArrayVarMap($params));
-
-        $this->assertInstanceOf(\DataType\DataType::class, $debugParam);
+        yield 'missing detail' => [
+            ['message' => 'some message'],
+            ['/detail' => Messages::VALUE_NOT_SET],
+        ];
+        yield 'both missing' => [
+            [],
+            [
+                '/message' => Messages::VALUE_NOT_SET,
+                '/detail' => Messages::VALUE_NOT_SET,
+            ],
+        ];
+        yield 'invalid types' => [
+            ['message' => 123, 'detail' => 456],
+            [
+                '/message' => Messages::STRING_EXPECTED,
+                '/detail' => Messages::STRING_EXPECTED,
+            ],
+        ];
+        yield 'null values' => [
+            ['message' => null, 'detail' => null],
+            [
+                '/message' => Messages::STRING_EXPECTED,
+                '/detail' => Messages::STRING_EXPECTED,
+            ],
+        ];
     }
 
-    public function testImplementsStaticFactoryInterface()
+    /**
+     * @covers \Bristolian\Parameters\DebugParams
+     * @dataProvider provides_invalid_input_and_expected_errors
+     * @param array<string, mixed> $input
+     * @param array<string, string> $expectedProblems
+     */
+    public function test_rejects_invalid_input_with_expected_errors(array $input, array $expectedProblems): void
     {
-        $message = 'test message';
-        $detail = 'test detail';
-
-        $params = [
-            'message' => $message,
-            'detail' => $detail,
-        ];
-
-        $debugParam = DebugParams::createFromVarMap(new ArrayVarMap($params));
-
-        $this->assertInstanceOf(\Bristolian\StaticFactory::class, $debugParam);
+        try {
+            DebugParams::createFromVarMap(new ArrayVarMap($input));
+            $this->fail("Expected ValidationException was not thrown.");
+        }
+        catch (\DataType\Exception\ValidationException $ve) {
+            $this->assertValidationProblems($ve->getValidationProblems(), $expectedProblems);
+        }
     }
 }

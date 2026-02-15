@@ -11,65 +11,65 @@ use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\PropertyType\GpsFloat
+ * @coversNothing
  */
 class GpsFloatTest extends BaseTestCase
 {
-    public function testWorksWithValue()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, float|null}>
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $value = 51.4545;
-        $data = ['gps_input' => $value];
-
-        $gpsParamTest = GpsFloatFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame($value, $gpsParamTest->value);
+        yield 'float' => [['gps_input' => 51.4545], 51.4545];
+        yield 'missing' => [[], null];
+        yield 'string float' => [['gps_input' => '51.4545'], 51.4545];
     }
 
-    public function testFailsWithNull()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\GpsFloat
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(array $input, ?float $expectedValue): void
+    {
+        $paramTest = GpsFloatFixture::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedValue, $paramTest->value);
+    }
+
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_invalid_input_and_expected_error(): \Generator
+    {
+        yield 'null value' => [['gps_input' => null], Messages::FLOAT_REQUIRED_WRONG_TYPE];
+    }
+
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\GpsFloat
+     * @dataProvider provides_invalid_input_and_expected_error
+     * @param array<string, mixed> $input
+     */
+    public function test_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {
-            $data = ['gps_input' => null];
-
-            GpsFloatFixture::createFromVarMap(new ArrayVarMap($data));
+            GpsFloatFixture::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/gps_input' => Messages::FLOAT_REQUIRED_WRONG_TYPE]
+                ['/gps_input' => $expectedErrorMessage]
             );
         }
     }
 
-    public function testWorksWithMissingValue()
-    {
-        $data = [];
-
-        $gpsParamTest = GpsFloatFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertNull($gpsParamTest->value);
-    }
-
-    public function testWorksWithStringFloat()
-    {
-        $value = '51.4545';
-        $data = ['gps_input' => $value];
-
-        $gpsParamTest = GpsFloatFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame(51.4545, $gpsParamTest->value);
-    }
-
-    public function testImplementsHasInputType()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\GpsFloat
+     */
+    public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new GpsFloat('test_name');
-        $this->assertInstanceOf(\DataType\HasInputType::class, $propertyType);
-    }
-
-    public function testGetInputTypeReturnsCorrectType()
-    {
-        $propertyType = new GpsFloat('test_name');
-        $inputType = $propertyType->getInputType();
-        
-        $this->assertInstanceOf(\DataType\InputType::class, $inputType);
-        $this->assertSame('test_name', $inputType->getName());
+        $this->assertSame('test_name', $propertyType->getInputType()->getName());
     }
 }
 

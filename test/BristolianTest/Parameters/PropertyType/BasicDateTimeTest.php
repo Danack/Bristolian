@@ -11,81 +11,67 @@ use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\PropertyType\BasicDateTime
+ * @coversNothing
  */
 class BasicDateTimeTest extends BaseTestCase
 {
-    public function testWorks()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     * Expected value is the formatted date string (Y-m-d H:i:s)
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $value = '2023-12-25 14:30:00';
-        $data = ['datetime_input' => $value];
-
-        $datetimeParamTest = BasicDateTimeFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertInstanceOf(\DateTimeInterface::class, $datetimeParamTest->value);
-        $this->assertSame('2023-12-25 14:30:00', $datetimeParamTest->value->format('Y-m-d H:i:s'));
+        yield 'valid' => [['datetime_input' => '2023-12-25 14:30:00'], '2023-12-25 14:30:00'];
     }
 
-    public function testFailsWithMissingRequiredParameter()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\BasicDateTime
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(array $input, string $expectedFormat): void
+    {
+        $paramTest = BasicDateTimeFixture::createFromVarMap(new ArrayVarMap($input));
+        $this->assertInstanceOf(\DateTimeInterface::class, $paramTest->value);
+        $this->assertSame($expectedFormat, $paramTest->value->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_invalid_input_and_expected_error(): \Generator
+    {
+        yield 'missing required' => [[], Messages::VALUE_NOT_SET];
+        yield 'invalid format' => [['datetime_input' => 'invalid date format'], Messages::ERROR_INVALID_DATETIME];
+        yield 'null value' => [['datetime_input' => null], Messages::ERROR_DATETIME_MUST_START_AS_STRING];
+    }
+
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\BasicDateTime
+     * @dataProvider provides_invalid_input_and_expected_error
+     * @param array<string, mixed> $input
+     */
+    public function test_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {
-            $data = [];
-
-            BasicDateTimeFixture::createFromVarMap(new ArrayVarMap($data));
+            BasicDateTimeFixture::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/datetime_input' => Messages::VALUE_NOT_SET]
+                ['/datetime_input' => $expectedErrorMessage]
             );
         }
     }
 
-    public function testFailsWithInvalidDateFormat()
-    {
-        try {
-            $data = ['datetime_input' => 'invalid date format'];
-
-            BasicDateTimeFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/datetime_input' => Messages::ERROR_INVALID_DATETIME]
-            );
-        }
-    }
-
-    public function testFailsWithNullValue()
-    {
-        try {
-            $data = ['datetime_input' => null];
-
-            BasicDateTimeFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/datetime_input' => Messages::ERROR_DATETIME_MUST_START_AS_STRING]
-            );
-        }
-    }
-
-    public function testImplementsHasInputType()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\BasicDateTime
+     */
+    public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new BasicDateTime('test_name');
-        $this->assertInstanceOf(\DataType\HasInputType::class, $propertyType);
-    }
-
-    public function testGetInputTypeReturnsCorrectType()
-    {
-        $propertyType = new BasicDateTime('test_name');
-        $inputType = $propertyType->getInputType();
-        
-        $this->assertInstanceOf(\DataType\InputType::class, $inputType);
-        $this->assertSame('test_name', $inputType->getName());
+        $this->assertSame('test_name', $propertyType->getInputType()->getName());
     }
 }
 

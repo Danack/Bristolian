@@ -11,128 +11,71 @@ use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\PropertyType\WebPushEndPoint
+ * @coversNothing
  */
 class WebPushEndPointTest extends BaseTestCase
 {
-    public function testWorks()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $value = 'https://fcm.googleapis.com/fcm/send/example-token';
-        $data = ['endpoint_input' => $value];
-
-        $endpointParamTest = WebPushEndPointFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame($value, $endpointParamTest->value);
+        yield 'valid' => [
+            ['endpoint_input' => 'https://fcm.googleapis.com/fcm/send/example-token'],
+            'https://fcm.googleapis.com/fcm/send/example-token',
+        ];
     }
 
-    public function testFailsWithMissingRequiredParameter()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\WebPushEndPoint
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(array $input, string $expectedValue): void
+    {
+        $paramTest = WebPushEndPointFixture::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedValue, $paramTest->value);
+    }
+
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_invalid_input_and_expected_error(): \Generator
+    {
+        yield 'missing required' => [[], Messages::VALUE_NOT_SET];
+        yield 'empty string' => [['endpoint_input' => ''], Messages::STRING_TOO_SHORT];
+        yield 'too long' => [['endpoint_input' => 'https://example.com/' . str_repeat('a', 600)], Messages::STRING_TOO_LONG];
+        yield 'non-https url' => [['endpoint_input' => 'http://example.com/endpoint'], Messages::STRING_REQUIRES_PREFIX];
+        yield 'invalid type' => [['endpoint_input' => 123], Messages::STRING_EXPECTED];
+        yield 'null value' => [['endpoint_input' => null], Messages::STRING_EXPECTED];
+    }
+
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\WebPushEndPoint
+     * @dataProvider provides_invalid_input_and_expected_error
+     * @param array<string, mixed> $input
+     */
+    public function test_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {
-            $data = [];
-
-            WebPushEndPointFixture::createFromVarMap(new ArrayVarMap($data));
+            WebPushEndPointFixture::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/endpoint_input' => Messages::VALUE_NOT_SET]
+                ['/endpoint_input' => $expectedErrorMessage]
             );
         }
     }
 
-    public function testFailsWithEmptyString()
-    {
-        try {
-            $data = ['endpoint_input' => ''];
-
-            WebPushEndPointFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/endpoint_input' => Messages::STRING_TOO_SHORT]
-            );
-        }
-    }
-
-    public function testFailsWithTooLong()
-    {
-        try {
-            $data = ['endpoint_input' => 'https://example.com/' . str_repeat('a', 600)];
-
-            WebPushEndPointFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/endpoint_input' => Messages::STRING_TOO_LONG]
-            );
-        }
-    }
-
-    public function testFailsWithNonHttpsUrl()
-    {
-        try {
-            $data = ['endpoint_input' => 'http://example.com/endpoint'];
-
-            WebPushEndPointFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/endpoint_input' => Messages::STRING_REQUIRES_PREFIX]
-            );
-        }
-    }
-
-    public function testFailsWithInvalidDataType()
-    {
-        try {
-            $data = ['endpoint_input' => 123];
-
-            WebPushEndPointFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/endpoint_input' => Messages::STRING_EXPECTED]
-            );
-        }
-    }
-
-    public function testFailsWithNullValue()
-    {
-        try {
-            $data = ['endpoint_input' => null];
-
-            WebPushEndPointFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/endpoint_input' => Messages::STRING_EXPECTED]
-            );
-        }
-    }
-
-    public function testImplementsHasInputType()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\WebPushEndPoint
+     */
+    public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new WebPushEndPoint('test_name');
-        $this->assertInstanceOf(\DataType\HasInputType::class, $propertyType);
-    }
-
-    public function testGetInputTypeReturnsCorrectType()
-    {
-        $propertyType = new WebPushEndPoint('test_name');
-        $inputType = $propertyType->getInputType();
-        
-        $this->assertInstanceOf(\DataType\InputType::class, $inputType);
-        $this->assertSame('test_name', $inputType->getName());
+        $this->assertSame('test_name', $propertyType->getInputType()->getName());
     }
 }
 

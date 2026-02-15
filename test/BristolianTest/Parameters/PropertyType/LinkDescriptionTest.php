@@ -11,104 +11,71 @@ use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\PropertyType\LinkDescription
+ * @coversNothing
  */
 class LinkDescriptionTest extends BaseTestCase
 {
-    public function testWorksWithValidDescription()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string|null}>
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $value = 'This is a valid description that meets the minimum length requirement';
-        $data = ['description_input' => $value];
-
-        $descriptionParamTest = LinkDescriptionFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame($value, $descriptionParamTest->value);
+        yield 'valid' => [
+            ['description_input' => 'This is a valid description that meets the minimum length requirement'],
+            'This is a valid description that meets the minimum length requirement',
+        ];
+        yield 'missing' => [[], null];
+        yield 'empty string' => [['description_input' => ''], null];
+        yield 'whitespace only' => [['description_input' => '   '], null];
     }
 
-    public function testFailsWithNull()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\LinkDescription
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(array $input, ?string $expectedValue): void
+    {
+        $paramTest = LinkDescriptionFixture::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedValue, $paramTest->value);
+    }
+
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_invalid_input_and_expected_error(): \Generator
+    {
+        yield 'null value' => [['description_input' => null], Messages::STRING_EXPECTED];
+        yield 'too short' => [['description_input' => 'short'], Messages::STRING_TOO_SHORT];
+        yield 'too long' => [['description_input' => str_repeat('a', 3000)], Messages::STRING_TOO_LONG];
+    }
+
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\LinkDescription
+     * @dataProvider provides_invalid_input_and_expected_error
+     * @param array<string, mixed> $input
+     */
+    public function test_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {
-            $data = ['description_input' => null];
-
-            LinkDescriptionFixture::createFromVarMap(new ArrayVarMap($data));
+            LinkDescriptionFixture::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/description_input' => Messages::STRING_EXPECTED]
+                ['/description_input' => $expectedErrorMessage]
             );
         }
     }
 
-    public function testWorksWithMissingValue()
-    {
-        $data = [];
-
-        $descriptionParamTest = LinkDescriptionFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertNull($descriptionParamTest->value);
-    }
-
-    public function testWorksWithEmptyString()
-    {
-        $data = ['description_input' => ''];
-
-        $descriptionParamTest = LinkDescriptionFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertNull($descriptionParamTest->value);
-    }
-
-    public function testWorksWithWhitespaceOnly()
-    {
-        $data = ['description_input' => '   '];
-
-        $descriptionParamTest = LinkDescriptionFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertNull($descriptionParamTest->value);
-    }
-
-    public function testFailsWithTooShort()
-    {
-        try {
-            $data = ['description_input' => 'short'];
-
-            LinkDescriptionFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/description_input' => Messages::STRING_TOO_SHORT]
-            );
-        }
-    }
-
-    public function testFailsWithTooLong()
-    {
-        try {
-            $data = ['description_input' => str_repeat('a', 3000)];
-
-            LinkDescriptionFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/description_input' => Messages::STRING_TOO_LONG]
-            );
-        }
-    }
-
-    public function testImplementsHasInputType()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\LinkDescription
+     */
+    public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new LinkDescription('test_name');
-        $this->assertInstanceOf(\DataType\HasInputType::class, $propertyType);
-    }
-
-    public function testGetInputTypeReturnsCorrectType()
-    {
-        $propertyType = new LinkDescription('test_name');
-        $inputType = $propertyType->getInputType();
-        
-        $this->assertInstanceOf(\DataType\InputType::class, $inputType);
-        $this->assertSame('test_name', $inputType->getName());
+        $this->assertSame('test_name', $propertyType->getInputType()->getName());
     }
 }
 

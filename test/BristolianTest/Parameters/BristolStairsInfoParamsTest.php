@@ -10,114 +10,84 @@ use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\BristolStairsInfoParams
+ * @coversNothing
  */
 class BristolStairsInfoParamsTest extends BaseTestCase
 {
-    public function testWorks()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string, string, string}>
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $bristol_stair_info_id = 'stairs_123';
-        $description = 'A nice set of stairs';
-        $steps = '25';
-
-        $params = [
-            'bristol_stair_info_id' => $bristol_stair_info_id,
-            'description' => $description,
-            'steps' => $steps,
-        ];
-
-        $bristolStairsInfoParams = BristolStairsInfoParams::createFromVarMap(new ArrayVarMap($params));
-
-        $this->assertSame($bristol_stair_info_id, $bristolStairsInfoParams->bristol_stair_info_id);
-        $this->assertSame($description, $bristolStairsInfoParams->description);
-        $this->assertSame($steps, $bristolStairsInfoParams->steps);
-    }
-
-    public function testFailsWithMissingBristolStairInfoId()
-    {
-        try {
-            $params = [
-                'description' => 'A nice set of stairs',
-                'steps' => '25',
-            ];
-
-            BristolStairsInfoParams::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/bristol_stair_info_id' => Messages::VALUE_NOT_SET]
-            );
-        }
-    }
-
-    public function testFailsWithMissingDescription()
-    {
-        try {
-            $params = [
-                'bristol_stair_info_id' => 'stairs_123',
-                'steps' => '25',
-            ];
-
-            BristolStairsInfoParams::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/description' => Messages::VALUE_NOT_SET]
-            );
-        }
-    }
-
-    public function testFailsWithMissingSteps()
-    {
-        try {
-            $params = [
+        yield 'valid' => [
+            [
                 'bristol_stair_info_id' => 'stairs_123',
                 'description' => 'A nice set of stairs',
-            ];
-
-            BristolStairsInfoParams::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/steps' => Messages::VALUE_NOT_SET]
-            );
-        }
+                'steps' => '25',
+            ],
+            'stairs_123',
+            'A nice set of stairs',
+            '25',
+        ];
     }
 
-    public function testFailsWithInvalidDataTypes()
+    /**
+     * @covers \Bristolian\Parameters\BristolStairsInfoParams
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(
+        array $input,
+        string $expectedId,
+        string $expectedDescription,
+        string $expectedSteps
+    ): void {
+        $params = BristolStairsInfoParams::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedId, $params->bristol_stair_info_id);
+        $this->assertSame($expectedDescription, $params->description);
+        $this->assertSame($expectedSteps, $params->steps);
+    }
+
+    /**
+     * @return \Generator<string, array{array<string, mixed>, array<string, string>}>
+     */
+    public static function provides_invalid_input_and_expected_errors(): \Generator
+    {
+        yield 'missing bristol_stair_info_id' => [
+            ['description' => 'A nice set of stairs', 'steps' => '25'],
+            ['/bristol_stair_info_id' => Messages::VALUE_NOT_SET],
+        ];
+        yield 'missing description' => [
+            ['bristol_stair_info_id' => 'stairs_123', 'steps' => '25'],
+            ['/description' => Messages::VALUE_NOT_SET],
+        ];
+        yield 'missing steps' => [
+            ['bristol_stair_info_id' => 'stairs_123', 'description' => 'A nice set of stairs'],
+            ['/steps' => Messages::VALUE_NOT_SET],
+        ];
+        yield 'invalid types' => [
+            ['bristol_stair_info_id' => 123, 'description' => 456, 'steps' => 789],
+            [
+                '/bristol_stair_info_id' => Messages::STRING_EXPECTED,
+                '/description' => Messages::STRING_EXPECTED,
+            ],
+        ];
+    }
+
+    /**
+     * @covers \Bristolian\Parameters\BristolStairsInfoParams
+     * @dataProvider provides_invalid_input_and_expected_errors
+     * @param array<string, mixed> $input
+     * @param array<string, string> $expectedProblems
+     */
+    public function test_rejects_invalid_input_with_expected_errors(array $input, array $expectedProblems): void
     {
         try {
-            $params = [
-                'bristol_stair_info_id' => 123,
-                'description' => 456,
-                'steps' => 789,
-            ];
-
-            BristolStairsInfoParams::createFromVarMap(new ArrayVarMap($params));
+            BristolStairsInfoParams::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
-            $validationProblems = $ve->getValidationProblems();
-            $this->assertGreaterThan(0, count($validationProblems));
+            $this->assertValidationProblems($ve->getValidationProblems(), $expectedProblems);
         }
-    }
-
-    public function testImplementsDataTypeInterface()
-    {
-        $params = [
-            'bristol_stair_info_id' => 'stairs_123',
-            'description' => 'A nice set of stairs',
-            'steps' => '25',
-        ];
-
-        $bristolStairsInfoParams = BristolStairsInfoParams::createFromVarMap(new ArrayVarMap($params));
-
-        $this->assertInstanceOf(\DataType\DataType::class, $bristolStairsInfoParams);
     }
 }

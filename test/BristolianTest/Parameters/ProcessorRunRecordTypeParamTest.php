@@ -6,84 +6,60 @@ namespace BristolianTest\Parameters;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Parameters\ProcessorRunRecordTypeParam;
+use Bristolian\Repo\ProcessorRepo\ProcessType;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\ProcessorRunRecordTypeParam
+ * @coversNothing
  */
 class ProcessorRunRecordTypeParamTest extends BaseTestCase
 {
-    public function testWorks()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, ProcessType|null}>
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $task_type_value = 'email_send';
-
-        $params = [
-            'task_type' => $task_type_value,
-        ];
-
-        $processorRunRecordTypeParam = ProcessorRunRecordTypeParam::createFromVarMap(new ArrayVarMap($params));
-
-        $this->assertSame(
-            \Bristolian\Repo\ProcessorRepo\ProcessType::email_send,
-            $processorRunRecordTypeParam->task_type
-        );
+        yield 'with value' => [['task_type' => 'email_send'], ProcessType::email_send];
+        yield 'no optional' => [[], null];
     }
 
-    public function testWorksWithNoOptionalParameters()
+    /**
+     * @covers \Bristolian\Parameters\ProcessorRunRecordTypeParam
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(array $input, ?ProcessType $expectedTaskType): void
     {
-        $params = [];
-
-        $processorRunRecordTypeParam = ProcessorRunRecordTypeParam::createFromVarMap(new ArrayVarMap($params));
-
-        $this->assertNull($processorRunRecordTypeParam->task_type);
+        $params = ProcessorRunRecordTypeParam::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedTaskType, $params->task_type);
     }
 
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_invalid_input_and_expected_error(): \Generator
+    {
+        yield 'invalid enum' => [['task_type' => "This isn't valid"], Messages::ENUM_MAP_UNRECOGNISED_VALUE_SINGLE];
+        yield 'null value' => [['task_type' => null], Messages::STRING_EXPECTED];
+    }
 
-    public function testFailsWithInvalidEnumValue()
+    /**
+     * @covers \Bristolian\Parameters\ProcessorRunRecordTypeParam
+     * @dataProvider provides_invalid_input_and_expected_error
+     * @param array<string, mixed> $input
+     */
+    public function test_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {
-            $value = "This isn't valid";
-
-            $params = [
-                'task_type' => $value,
-            ];
-
-            ProcessorRunRecordTypeParam::createFromVarMap(new ArrayVarMap($params));
+            ProcessorRunRecordTypeParam::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/task_type' => Messages::ENUM_MAP_UNRECOGNISED_VALUE_SINGLE]
+                ['/task_type' => $expectedErrorMessage]
             );
         }
-    }
-
-    public function testFailsWithNullValue()
-    {
-        try {
-            $params = [
-                'task_type' => null,
-            ];
-
-            ProcessorRunRecordTypeParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/task_type' => Messages::STRING_EXPECTED]
-            );
-        }
-    }
-
-    public function testImplementsDataTypeInterface()
-    {
-        $params = [];
-
-        $processorRunRecordTypeParam = ProcessorRunRecordTypeParam::createFromVarMap(new ArrayVarMap($params));
-
-        $this->assertInstanceOf(\DataType\DataType::class, $processorRunRecordTypeParam);
     }
 }

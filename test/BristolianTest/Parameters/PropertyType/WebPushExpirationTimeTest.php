@@ -11,64 +11,65 @@ use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\PropertyType\WebPushExpirationTime
+ * @coversNothing
  */
 class WebPushExpirationTimeTest extends BaseTestCase
 {
-    public function testWorksWithValue()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string|null}>
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $value = '2023-12-25T14:30:00Z';
-        $data = ['expiration_input' => $value];
-
-        $expirationParamTest = WebPushExpirationTimeFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame($value, $expirationParamTest->value);
+        yield 'with value' => [['expiration_input' => '2023-12-25T14:30:00Z'], '2023-12-25T14:30:00Z'];
+        yield 'null' => [['expiration_input' => null], null];
+        yield 'empty string' => [['expiration_input' => ''], ''];
     }
 
-    public function testWorksWithNull()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\WebPushExpirationTime
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(array $input, ?string $expectedValue): void
     {
-        $data = ['expiration_input' => null];
-
-        $expirationParamTest = WebPushExpirationTimeFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertNull($expirationParamTest->value);
+        $paramTest = WebPushExpirationTimeFixture::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedValue, $paramTest->value);
     }
 
-    public function testFailsWithMissingValue()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_invalid_input_and_expected_error(): \Generator
+    {
+        yield 'missing required' => [[], Messages::VALUE_NOT_SET];
+    }
+
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\WebPushExpirationTime
+     * @dataProvider provides_invalid_input_and_expected_error
+     * @param array<string, mixed> $input
+     */
+    public function test_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {
-            $data = [];
-
-            WebPushExpirationTimeFixture::createFromVarMap(new ArrayVarMap($data));
+            WebPushExpirationTimeFixture::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/expiration_input' => Messages::VALUE_NOT_SET]
+                ['/expiration_input' => $expectedErrorMessage]
             );
         }
     }
 
-    public function testWorksWithEmptyString()
-    {
-        $data = ['expiration_input' => ''];
-
-        $expirationParamTest = WebPushExpirationTimeFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame('', $expirationParamTest->value);
-    }
-
-    public function testImplementsHasInputType()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\WebPushExpirationTime
+     */
+    public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new WebPushExpirationTime('test_name');
-        $this->assertInstanceOf(\DataType\HasInputType::class, $propertyType);
-    }
-
-    public function testGetInputTypeReturnsCorrectType()
-    {
-        $propertyType = new WebPushExpirationTime('test_name');
-        $inputType = $propertyType->getInputType();
-        
-        $this->assertInstanceOf(\DataType\InputType::class, $inputType);
-        $this->assertSame('test_name', $inputType->getName());
+        $this->assertSame('test_name', $propertyType->getInputType()->getName());
     }
 }
 

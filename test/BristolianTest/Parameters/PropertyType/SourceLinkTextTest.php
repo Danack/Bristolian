@@ -11,114 +11,68 @@ use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\PropertyType\SourceLinkText
+ * @coversNothing
  */
 class SourceLinkTextTest extends BaseTestCase
 {
-    public function testWorks()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $value = 'This is some source link text content';
-        $data = ['text_input' => $value];
-
-        $textParamTest = SourceLinkTextFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame($value, $textParamTest->value);
+        yield 'valid' => [['text_input' => 'This is some source link text content'], 'This is some source link text content'];
+        yield 'empty string' => [['text_input' => ''], ''];
+        yield 'max length' => [['text_input' => str_repeat('a', 16384)], str_repeat('a', 16384)];
     }
 
-    public function testWorksWithEmptyString()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\SourceLinkText
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(array $input, string $expectedValue): void
     {
-        $value = '';
-        $data = ['text_input' => $value];
-
-        $textParamTest = SourceLinkTextFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame($value, $textParamTest->value);
+        $paramTest = SourceLinkTextFixture::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedValue, $paramTest->value);
     }
 
-    public function testWorksWithMaximumLength()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string}>
+     */
+    public static function provides_invalid_input_and_expected_error(): \Generator
     {
-        $value = str_repeat('a', 16384); // Exactly at the limit
-        $data = ['text_input' => $value];
-
-        $textParamTest = SourceLinkTextFixture::createFromVarMap(new ArrayVarMap($data));
-        $this->assertSame($value, $textParamTest->value);
+        yield 'missing required' => [[], Messages::VALUE_NOT_SET];
+        yield 'too long' => [['text_input' => str_repeat('a', 17000)], Messages::STRING_TOO_LONG];
+        yield 'invalid type' => [['text_input' => 123], Messages::STRING_EXPECTED];
+        yield 'null value' => [['text_input' => null], Messages::STRING_EXPECTED];
     }
 
-    public function testFailsWithMissingRequiredParameter()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\SourceLinkText
+     * @dataProvider provides_invalid_input_and_expected_error
+     * @param array<string, mixed> $input
+     */
+    public function test_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {
-            $data = [];
-
-            SourceLinkTextFixture::createFromVarMap(new ArrayVarMap($data));
+            SourceLinkTextFixture::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
-                ['/text_input' => Messages::VALUE_NOT_SET]
+                ['/text_input' => $expectedErrorMessage]
             );
         }
     }
 
-    public function testFailsWithTooLong()
-    {
-        try {
-            $data = ['text_input' => str_repeat('a', 17000)]; // Exceeds 16KB limit
-
-            SourceLinkTextFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/text_input' => Messages::STRING_TOO_LONG]
-            );
-        }
-    }
-
-    public function testFailsWithInvalidDataType()
-    {
-        try {
-            $data = ['text_input' => 123];
-
-            SourceLinkTextFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/text_input' => Messages::STRING_EXPECTED]
-            );
-        }
-    }
-
-    public function testFailsWithNullValue()
-    {
-        try {
-            $data = ['text_input' => null];
-
-            SourceLinkTextFixture::createFromVarMap(new ArrayVarMap($data));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/text_input' => Messages::STRING_EXPECTED]
-            );
-        }
-    }
-
-    public function testImplementsHasInputType()
+    /**
+     * @covers \Bristolian\Parameters\PropertyType\SourceLinkText
+     */
+    public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new SourceLinkText('test_name');
-        $this->assertInstanceOf(\DataType\HasInputType::class, $propertyType);
-    }
-
-    public function testGetInputTypeReturnsCorrectType()
-    {
-        $propertyType = new SourceLinkText('test_name');
-        $inputType = $propertyType->getInputType();
-        
-        $this->assertInstanceOf(\DataType\InputType::class, $inputType);
-        $this->assertSame('test_name', $inputType->getName());
+        $this->assertSame('test_name', $propertyType->getInputType()->getName());
     }
 }
 

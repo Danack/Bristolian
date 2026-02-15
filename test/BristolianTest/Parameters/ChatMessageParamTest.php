@@ -10,117 +10,87 @@ use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\ChatMessageParam
+ * @coversNothing
  */
 class ChatMessageParamTest extends BaseTestCase
 {
-    public function testWorks()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, string, string, int|null}>
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $text = 'Hello there.';
-        $room_id = 'room123';
-        $message_reply_id = 456;
-
-        $params = [
-            'text' => $text,
-            'room_id' => $room_id,
-            'message_reply_id' => $message_reply_id,
-        ];
-
-        $chatMessageParam = ChatMessageParam::createFromVarMap(new ArrayVarMap($params));
-
-        $this->assertSame($text, $chatMessageParam->text);
-        $this->assertSame($room_id, $chatMessageParam->room_id);
-        $this->assertSame($message_reply_id, $chatMessageParam->message_reply_id);
-    }
-
-    public function testWorksWithNoOptionalParameters()
-    {
-        $text = 'Hello there.';
-        $room_id = 'room123';
-
-        $params = [
-            'text' => $text,
-            'room_id' => $room_id,
-        ];
-
-        $chatMessageParam = ChatMessageParam::createFromVarMap(new ArrayVarMap($params));
-
-        $this->assertSame($text, $chatMessageParam->text);
-        $this->assertSame($room_id, $chatMessageParam->room_id);
-        $this->assertNull($chatMessageParam->message_reply_id);
-    }
-
-    public function testFailsWithMissingText()
-    {
-        try {
-            $params = [
+        yield 'all params' => [
+            [
+                'text' => 'Hello there.',
                 'room_id' => 'room123',
                 'message_reply_id' => 456,
-            ];
-
-            ChatMessageParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/text' => Messages::VALUE_NOT_SET]
-            );
-        }
-    }
-
-    public function testFailsWithMissingRoomId()
-    {
-        try {
-            $params = [
-                'text' => 'Hello there.',
-                'message_reply_id' => 456,
-            ];
-
-            ChatMessageParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/room_id' => Messages::VALUE_NOT_SET]
-            );
-        }
-    }
-
-    public function testFailsWithInvalidDataTypes()
-    {
-        try {
-            $params = [
-                'text' => 123,
-                'room_id' => 456,
-                'message_reply_id' => 'invalid',
-            ];
-
-            ChatMessageParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                [
-                    '/text' => Messages::STRING_EXPECTED,
-                    '/room_id' => Messages::STRING_EXPECTED,
-                    '/message_reply_id' => Messages::INT_REQUIRED_FOUND_NON_DIGITS2
-                ]
-            );
-        }
-    }
-
-    public function testImplementsDataTypeInterface()
-    {
-        $params = [
-            'text' => 'test message',
-            'room_id' => 'room123',
+            ],
+            'Hello there.',
+            'room123',
+            456,
         ];
+        yield 'no optional' => [
+            ['text' => 'Hello there.', 'room_id' => 'room123'],
+            'Hello there.',
+            'room123',
+            null,
+        ];
+    }
 
-        $chatMessageParam = ChatMessageParam::createFromVarMap(new ArrayVarMap($params));
+    /**
+     * @covers \Bristolian\Parameters\ChatMessageParam
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(
+        array $input,
+        string $expectedText,
+        string $expectedRoomId,
+        ?int $expectedMessageReplyId
+    ): void {
+        $params = ChatMessageParam::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedText, $params->text);
+        $this->assertSame($expectedRoomId, $params->room_id);
+        $this->assertSame($expectedMessageReplyId, $params->message_reply_id);
+    }
 
-        $this->assertInstanceOf(\DataType\DataType::class, $chatMessageParam);
+    /**
+     * @return \Generator<string, array{array<string, mixed>, array<string, string>}>
+     */
+    public static function provides_invalid_input_and_expected_errors(): \Generator
+    {
+        yield 'missing text' => [
+            ['room_id' => 'room123', 'message_reply_id' => 456],
+            ['/text' => Messages::VALUE_NOT_SET],
+        ];
+        yield 'missing room_id' => [
+            ['text' => 'Hello there.', 'message_reply_id' => 456],
+            ['/room_id' => Messages::VALUE_NOT_SET],
+        ];
+        yield 'invalid types' => [
+            ['text' => 123, 'room_id' => 456, 'message_reply_id' => 'invalid'],
+            [
+                '/text' => Messages::STRING_EXPECTED,
+                '/room_id' => Messages::STRING_EXPECTED,
+                '/message_reply_id' => Messages::INT_REQUIRED_FOUND_NON_DIGITS2,
+            ],
+        ];
+    }
+
+    /**
+     * @covers \Bristolian\Parameters\ChatMessageParam
+     * @dataProvider provides_invalid_input_and_expected_errors
+     * @param array<string, mixed> $input
+     * @param array<string, string> $expectedProblems
+     */
+    public function test_rejects_invalid_input_with_expected_errors(array $input, array $expectedProblems): void
+    {
+        try {
+            ChatMessageParam::createFromVarMap(new ArrayVarMap($input));
+            $this->fail("Expected ValidationException was not thrown.");
+        }
+        catch (\DataType\Exception\ValidationException $ve) {
+            $this->assertValidationProblems($ve->getValidationProblems(), $expectedProblems);
+        }
     }
 }

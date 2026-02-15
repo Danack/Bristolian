@@ -10,222 +10,123 @@ use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
- * @covers \Bristolian\Parameters\SourceLinkHighlightParam
+ * @coversNothing
  */
 class SourceLinkHighlightParamTest extends BaseTestCase
 {
-    public function testWorks()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, int, int, int, int, int}>
+     */
+    public static function provides_valid_input_and_expected_output(): \Generator
     {
-        $page = 1;
-        $left = 100;
-        $top = 200;
-        $right = 300;
-        $bottom = 400;
-
-        $params = [
-            'page' => $page,
-            'left' => $left,
-            'top' => $top,
-            'right' => $right,
-            'bottom' => $bottom,
+        yield 'valid' => [
+            [
+                'page' => 1,
+                'left' => 100,
+                'top' => 200,
+                'right' => 300,
+                'bottom' => 400,
+            ],
+            1,
+            100,
+            200,
+            300,
+            400,
         ];
-
-        $sourceLinkHighlightParam = SourceLinkHighlightParam::createFromVarMap(new ArrayVarMap($params));
-
-        $this->assertSame($page, $sourceLinkHighlightParam->page);
-        $this->assertSame($left, $sourceLinkHighlightParam->left);
-        $this->assertSame($top, $sourceLinkHighlightParam->top);
-        $this->assertSame($right, $sourceLinkHighlightParam->right);
-        $this->assertSame($bottom, $sourceLinkHighlightParam->bottom);
     }
 
-    public function testFailsWithMissingPage()
-    {
-        try {
-            $params = [
-                'left' => 100,
-                'top' => 200,
-                'right' => 300,
-                'bottom' => 400,
-            ];
-
-            SourceLinkHighlightParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/page' => Messages::VALUE_NOT_SET]
-            );
-        }
+    /**
+     * @covers \Bristolian\Parameters\SourceLinkHighlightParam
+     * @dataProvider provides_valid_input_and_expected_output
+     * @param array<string, mixed> $input
+     */
+    public function test_parses_valid_input_to_expected_output(
+        array $input,
+        int $expectedPage,
+        int $expectedLeft,
+        int $expectedTop,
+        int $expectedRight,
+        int $expectedBottom
+    ): void {
+        $params = SourceLinkHighlightParam::createFromVarMap(new ArrayVarMap($input));
+        $this->assertSame($expectedPage, $params->page);
+        $this->assertSame($expectedLeft, $params->left);
+        $this->assertSame($expectedTop, $params->top);
+        $this->assertSame($expectedRight, $params->right);
+        $this->assertSame($expectedBottom, $params->bottom);
     }
 
-    public function testFailsWithMissingLeft()
+    /**
+     * @return \Generator<string, array{array<string, mixed>, array<string, string>}>
+     */
+    public static function provides_invalid_input_and_expected_errors(): \Generator
     {
-        try {
-            $params = [
-                'page' => 1,
-                'top' => 200,
-                'right' => 300,
-                'bottom' => 400,
-            ];
-
-            SourceLinkHighlightParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/left' => Messages::VALUE_NOT_SET]
-            );
-        }
-    }
-
-    public function testFailsWithMissingTop()
-    {
-        try {
-            $params = [
-                'page' => 1,
-                'left' => 100,
-                'right' => 300,
-                'bottom' => 400,
-            ];
-
-            SourceLinkHighlightParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/top' => Messages::VALUE_NOT_SET]
-            );
-        }
-    }
-
-    public function testFailsWithMissingRight()
-    {
-        try {
-            $params = [
-                'page' => 1,
-                'left' => 100,
-                'top' => 200,
-                'bottom' => 400,
-            ];
-
-            SourceLinkHighlightParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/right' => Messages::VALUE_NOT_SET]
-            );
-        }
-    }
-
-    public function testFailsWithMissingBottom()
-    {
-        try {
-            $params = [
-                'page' => 1,
-                'left' => 100,
-                'top' => 200,
-                'right' => 300,
-            ];
-
-            SourceLinkHighlightParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                ['/bottom' => Messages::VALUE_NOT_SET]
-            );
-        }
-    }
-
-    public function testFailsWithAllMissing()
-    {
-        try {
-            $params = [];
-
-            SourceLinkHighlightParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                [
-                    '/page' => Messages::VALUE_NOT_SET,
-                    '/left' => Messages::VALUE_NOT_SET,
-                    '/top' => Messages::VALUE_NOT_SET,
-                    '/right' => Messages::VALUE_NOT_SET,
-                    '/bottom' => Messages::VALUE_NOT_SET
-                ]
-            );
-        }
-    }
-
-    public function testFailsWithInvalidDataTypes()
-    {
-        try {
-            $params = [
-                'page' => 'invalid',
-                'left' => 'invalid',
-                'top' => 'invalid',
-                'right' => 'invalid',
-                'bottom' => 'invalid',
-            ];
-
-            SourceLinkHighlightParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $this->assertValidationProblems(
-                $ve->getValidationProblems(),
-                [
-                    '/page' => Messages::INT_REQUIRED_FOUND_NON_DIGITS2,
-                    '/left' => Messages::INT_REQUIRED_FOUND_NON_DIGITS2,
-                    '/top' => Messages::INT_REQUIRED_FOUND_NON_DIGITS2,
-                    '/right' => Messages::INT_REQUIRED_FOUND_NON_DIGITS2,
-                    '/bottom' => Messages::INT_REQUIRED_FOUND_NON_DIGITS2
-                ]
-            );
-        }
-    }
-
-    public function testFailsWithNullValues()
-    {
-        try {
-            $params = [
-                'page' => null,
-                'left' => null,
-                'top' => null,
-                'right' => null,
-                'bottom' => null,
-            ];
-
-            SourceLinkHighlightParam::createFromVarMap(new ArrayVarMap($params));
-            $this->fail("Expected ValidationException was not thrown.");
-        }
-        catch (\DataType\Exception\ValidationException $ve) {
-            $validationProblems = $ve->getValidationProblems();
-            $this->assertGreaterThan(0, count($validationProblems));
-        }
-    }
-
-    public function testImplementsDataTypeInterface()
-    {
-        $params = [
-            'page' => 1,
-            'left' => 100,
-            'top' => 200,
-            'right' => 300,
-            'bottom' => 400,
+        yield 'missing page' => [
+            ['left' => 100, 'top' => 200, 'right' => 300, 'bottom' => 400],
+            ['/page' => Messages::VALUE_NOT_SET],
         ];
+        yield 'missing left' => [
+            ['page' => 1, 'top' => 200, 'right' => 300, 'bottom' => 400],
+            ['/left' => Messages::VALUE_NOT_SET],
+        ];
+        yield 'missing top' => [
+            ['page' => 1, 'left' => 100, 'right' => 300, 'bottom' => 400],
+            ['/top' => Messages::VALUE_NOT_SET],
+        ];
+        yield 'missing right' => [
+            ['page' => 1, 'left' => 100, 'top' => 200, 'bottom' => 400],
+            ['/right' => Messages::VALUE_NOT_SET],
+        ];
+        yield 'missing bottom' => [
+            ['page' => 1, 'left' => 100, 'top' => 200, 'right' => 300],
+            ['/bottom' => Messages::VALUE_NOT_SET],
+        ];
+        yield 'all missing' => [
+            [],
+            [
+                '/page' => Messages::VALUE_NOT_SET,
+                '/left' => Messages::VALUE_NOT_SET,
+                '/top' => Messages::VALUE_NOT_SET,
+                '/right' => Messages::VALUE_NOT_SET,
+                '/bottom' => Messages::VALUE_NOT_SET,
+            ],
+        ];
+        yield 'invalid types' => [
+            ['page' => 'invalid', 'left' => 'invalid', 'top' => 'invalid', 'right' => 'invalid', 'bottom' => 'invalid'],
+            [
+                '/page' => Messages::INT_REQUIRED_FOUND_NON_DIGITS2,
+                '/left' => Messages::INT_REQUIRED_FOUND_NON_DIGITS2,
+                '/top' => Messages::INT_REQUIRED_FOUND_NON_DIGITS2,
+                '/right' => Messages::INT_REQUIRED_FOUND_NON_DIGITS2,
+                '/bottom' => Messages::INT_REQUIRED_FOUND_NON_DIGITS2,
+            ],
+        ];
+        yield 'null values' => [
+            ['page' => null, 'left' => null, 'top' => null, 'right' => null, 'bottom' => null],
+            [
+                '/page' => Messages::INT_REQUIRED_UNSUPPORTED_TYPE,
+                '/left' => Messages::INT_REQUIRED_UNSUPPORTED_TYPE,
+                '/top' => Messages::INT_REQUIRED_UNSUPPORTED_TYPE,
+                '/right' => Messages::INT_REQUIRED_UNSUPPORTED_TYPE,
+                '/bottom' => Messages::INT_REQUIRED_UNSUPPORTED_TYPE,
+            ],
+        ];
+    }
 
-        $sourceLinkHighlightParam = SourceLinkHighlightParam::createFromVarMap(new ArrayVarMap($params));
-
-        $this->assertInstanceOf(\DataType\DataType::class, $sourceLinkHighlightParam);
+    /**
+     * @covers \Bristolian\Parameters\SourceLinkHighlightParam
+     * @dataProvider provides_invalid_input_and_expected_errors
+     * @param array<string, mixed> $input
+     * @param array<string, string> $expectedProblems
+     */
+    public function test_rejects_invalid_input_with_expected_errors(array $input, array $expectedProblems): void
+    {
+        try {
+            SourceLinkHighlightParam::createFromVarMap(new ArrayVarMap($input));
+            $this->fail("Expected ValidationException was not thrown.");
+        }
+        catch (\DataType\Exception\ValidationException $ve) {
+            $this->assertValidationProblems($ve->getValidationProblems(), $expectedProblems);
+        }
     }
 }
