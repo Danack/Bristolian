@@ -2,8 +2,9 @@
 
 namespace BristolianTest\Model;
 
-use BristolianTest\BaseTestCase;
+use Bristolian\Model\Chat\SystemChatMessage;
 use Bristolian\Model\Chat\UserChatMessage;
+use BristolianTest\BaseTestCase;
 
 /**
  * @coversNothing
@@ -11,9 +12,29 @@ use Bristolian\Model\Chat\UserChatMessage;
 class ChatMessageTest extends BaseTestCase
 {
     /**
+     * @covers \Bristolian\Model\Chat\SystemChatMessage
+     */
+    public function testSystemChatMessage_construct(): void
+    {
+        $id = 99;
+        $roomId = 'room-sys';
+        $text = 'System message';
+        $replyMessageId = 50;
+        $createdAt = new \DateTimeImmutable('2024-02-15 10:00:00');
+
+        $message = new SystemChatMessage($id, $roomId, $text, $replyMessageId, $createdAt);
+
+        $this->assertSame($id, $message->id);
+        $this->assertSame($roomId, $message->room_id);
+        $this->assertSame($text, $message->text);
+        $this->assertSame($replyMessageId, $message->reply_message_id);
+        $this->assertSame($createdAt, $message->created_at);
+    }
+
+    /**
      * @covers \Bristolian\Model\Chat\UserChatMessage
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $id = 123;
         $userId = 'user-456';
@@ -42,7 +63,7 @@ class ChatMessageTest extends BaseTestCase
     /**
      * @covers \Bristolian\Model\Chat\UserChatMessage
      */
-    public function testConstructWithNullReplyId()
+    public function testConstructWithNullReplyId(): void
     {
         $chatMessage = new UserChatMessage(
             1,
@@ -59,7 +80,7 @@ class ChatMessageTest extends BaseTestCase
     /**
      * @covers \Bristolian\Model\Chat\UserChatMessage
      */
-    public function testToArray()
+    public function testToArray(): void
     {
         $chatMessage = new UserChatMessage(
             1,
@@ -75,7 +96,7 @@ class ChatMessageTest extends BaseTestCase
         $this->assertArrayHasKey('text', $array);
     }
 
-    public function testToStringAndBackAgain()
+    public function testToStringAndBackAgain(): void
     {
         $chatMessage = new UserChatMessage(
             1,

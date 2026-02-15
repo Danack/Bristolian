@@ -13,7 +13,7 @@ class WebPushNotificationTest extends BaseTestCase
     /**
      * @covers \Bristolian\Model\Types\WebPushNotification
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         $title = 'Test Notification';
         $body = 'This is a test notification body';
@@ -27,12 +27,14 @@ class WebPushNotificationTest extends BaseTestCase
     /**
      * @covers \Bristolian\Model\Types\WebPushNotification
      */
-    public function testGetters()
+    public function testGetters(): void
     {
         $notification = WebPushNotification::create('Title', 'Body');
 
         $this->assertSame('Title', $notification->getTitle());
         $this->assertSame('Body', $notification->getBody());
         $this->assertSame('/sounds/meow.mp3', $notification->getSound());
+        $this->assertNull($notification->getVibrate());
+        $this->assertNull($notification->getData());
     }
 }

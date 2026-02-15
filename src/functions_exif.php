@@ -10,6 +10,10 @@ function get_image_gps(string $filename): null|array
 {
     $exif_data = exif_read_data($filename);
 
+    if ($exif_data === false) {
+        return null;
+    }
+
     $required_fields = [
         "GPSLongitude",
         'GPSLongitudeRef',

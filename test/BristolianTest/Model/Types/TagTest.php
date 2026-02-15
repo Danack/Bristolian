@@ -14,7 +14,7 @@ class TagTest extends BaseTestCase
     /**
      * @covers \Bristolian\Model\Types\Tag
      */
-    public function testFromParam()
+    public function testFromParam(): void
     {
         $uuid = 'tag-uuid-123';
         $text = 'test-tag';
@@ -31,7 +31,25 @@ class TagTest extends BaseTestCase
     /**
      * @covers \Bristolian\Model\Types\Tag
      */
-    public function testGetters()
+    public function testFromRow(): void
+    {
+        $row = [
+            'tag_id' => 'tag-from-row-123',
+            'text' => 'row-tag-text',
+            'description' => 'Row tag description',
+        ];
+
+        $tag = Tag::fromRow($row);
+
+        $this->assertSame('tag-from-row-123', $tag->getTagId());
+        $this->assertSame('row-tag-text', $tag->getText());
+        $this->assertSame('Row tag description', $tag->getDescription());
+    }
+
+    /**
+     * @covers \Bristolian\Model\Types\Tag
+     */
+    public function testGetters(): void
     {
         $tagParams = new TagParams('my-tag', 'My tag description');
         $tag = Tag::fromParam('tag-id', $tagParams);
