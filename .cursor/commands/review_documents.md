@@ -20,8 +20,8 @@ When this command is called, read all documents in the `.cursor` directory and i
    Look for:
    - **Inconsistencies**: Different instructions for the same task (e.g. how to run tests, PHPStan, or Behat) across `.cursor` vs `docs/` vs `docs/developing/`.
    - **Contradictions**: One doc saying X, another saying Y for the same topic.
-   - **Overlap**: Duplicate or near-duplicate content (e.g. multiple “how to run tests” or “development setup” sections) that could drift out of sync.
-   - **Gaps**: Missing docs for important workflows, or docs that reference other docs that don’t exist.
+   - **Overlap**: Duplicate or near-duplicate content (e.g. multiple "how to run tests" or "development setup" sections) that could drift out of sync.
+   - **Gaps**: Missing docs for important workflows, or docs that reference other docs that don't exist.
 
 4. **Report**  
    Produce a concise report that:
@@ -29,7 +29,7 @@ When this command is called, read all documents in the `.cursor` directory and i
    - Notes any **errors** (wrong commands, invalid paths, broken links, incorrect tool names).
    - Notes any **inconsistencies** (conflicting or differing instructions across documents).
    - Notes **duplication** that might cause future inconsistencies.
-   - Suggests **fixes** where obvious (e.g. “Use the PHPStan command from `finalise_work` everywhere” or “Merge the two development setup docs”).
+   - Suggests **fixes** where obvious (e.g. "Use the PHPStan command from `finalise_work` everywhere" or "Merge the two development setup docs").
    - Distinguishes clear bugs from style or organisation suggestions.
 
 ## Scope
@@ -39,4 +39,25 @@ When this command is called, read all documents in the `.cursor` directory and i
 
 ## Output
 
-Write the report in plain language. Use bullet points or short sections so the user can quickly see what’s wrong, what’s inconsistent, and what to change.
+Write the report in plain language. Use bullet points or short sections so the user can quickly see what's wrong, what's inconsistent, and what to change.
+
+### Presenting fixable issues: numbered list with options
+
+For every issue that can be acted on (errors, inconsistencies, duplication, gaps, or suggested fixes), present it as a **numbered item** with **lettered options** so the user can choose what to do. Format each like this:
+
+- **Number** – Short title of the issue.
+- **Where** – File(s) or doc(s) affected (one line).
+- **Problem** – What's wrong or ambiguous (one or two sentences).
+- **Options** – Lettered choices (A, B, C, …), e.g.:
+  - **A)** Concrete fix (e.g. "Update X to Y in file Z").
+  - **B)** Alternative (e.g. "Remove the file" or "Leave as-is").
+  - **C)** Other (e.g. "Add a note that…").
+  - **D)** Optional: "Something else (describe)."
+
+After all numbered issues, add a short line such as: "Reply with the option you want for each number (e.g. 1B, 2A, 3A, …). I'll then apply those choices."
+
+- Group **errors** and **clear bugs** first (wrong commands, broken links, missing files).
+- Then **inconsistencies** and **duplication** (conflicting or repeated content).
+- Then **gaps** and **style/organisation** suggestions.
+- You may combine very small, related items into one number with options if that keeps the list manageable.
+- If there are no fixable issues, say so explicitly instead of outputting an empty list.

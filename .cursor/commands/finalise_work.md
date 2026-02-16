@@ -4,17 +4,21 @@ We are finishing a piece of work. All the code quality tools should be run. Any 
 
 `phpunit.xml` sometimes has the `db` group excluded (and HTML coverage commented out) so day-to-day test runs stay fast. For **finalise_work** you want full coverage.
 
-**Before running PHPUnit / runAllTests.sh:** ensure slow tests and HTML coverage are **enabled** by running the restore script from the project root:
+**Before running PHPUnit / runAllTests.sh:** ensure slow tests and HTML coverage are **enabled** by running the restore script inside the `php_fpm` container (from the project root in the container):
 
 ```bash
-php scripts/streamdeck/toggle_restore_content.php phpunit.xml
+docker exec bristolian-php_fpm-1 bash -c "php scripts/streamdeck/toggle_restore_content.php phpunit.xml"
 ```
 
 That restores:
 - running the `@group db` tests (database-dependent tests)
 - HTML coverage report in `tmp/coverage`
 
-To disable them again (fast runs): `php scripts/streamdeck/toggle_remove_content.php phpunit.xml`
+To disable them again (fast runs):
+
+```bash
+docker exec bristolian-php_fpm-1 bash -c "php scripts/streamdeck/toggle_remove_content.php phpunit.xml"
+```
 
 ## Code Quality Tools
 

@@ -109,17 +109,20 @@ The auto-generation is integrated into the Docker build process:
 4. **CLI Commands**: Generate database helpers and JavaScript constants
 
 ### Development Workflow
+
+PHP/Composer commands run in the `php_fpm` container; npm/node commands run in the `js_builder` container (see project root `.cursorrules`).
+
 ```bash
 # Full development setup (includes generation)
 ./runLocal.sh
 
-# Manual generation commands
-php cli.php generate:javascript_constants
-php cli.php generate:php_table_helper_classes
+# Manual generation commands (run inside php_fpm container)
+docker exec bristolian-php_fpm-1 bash -c "php cli.php generate:javascript_constants"
+docker exec bristolian-php_fpm-1 bash -c "php cli.php generate:php_table_helper_classes"
 
-# Frontend builds
-npm run js:build:dev:watch    # Watch mode
-npm run sass:build:watch      # Watch mode
+# Frontend builds (run inside js_builder container)
+docker exec bristolian-js_builder-1 bash -c "npm run js:build:dev:watch"
+docker exec bristolian-js_builder-1 bash -c "npm run sass:build:watch"
 ```
 
 ## Files to Never Edit Manually
@@ -154,35 +157,38 @@ npm run sass:build:watch      # Watch mode
 - **Database migrations**: Database helper classes should be regenerated
 
 ### Manual Regeneration
+
+Run PHP/Composer commands in the `php_fpm` container and npm commands in the `js_builder` container.
+
 ```bash
-# Regenerate all JavaScript constants and types
-php cli.php generate:javascript_constants
+# Regenerate all JavaScript constants and types (php_fpm container)
+docker exec bristolian-php_fpm-1 bash -c "php cli.php generate:javascript_constants"
 
-# Regenerate database helper classes
-php cli.php generate:php_table_helper_classes
+# Regenerate database helper classes (php_fpm container)
+docker exec bristolian-php_fpm-1 bash -c "php cli.php generate:php_table_helper_classes"
 
-# Regenerate configuration
-vendor/bin/classconfig -p config.source.php Bristolian\Config\Config config.generated.php default,local
+# Regenerate configuration (php_fpm container, from project root)
+docker exec bristolian-php_fpm-1 bash -c "vendor/bin/classconfig -p config.source.php Bristolian\Config\Config config.generated.php default,local"
 
-# Rebuild frontend assets
-npm run js:build:dev
-npm run sass:build:dev
+# Rebuild frontend assets (js_builder container)
+docker exec bristolian-js_builder-1 bash -c "npm run js:build:dev"
+docker exec bristolian-js_builder-1 bash -c "npm run sass:build:dev"
 ```
 
 ## Troubleshooting
 
 ### Common Issues
-1. **Outdated generated files**: Run the appropriate generation command
+1. **Outdated generated files**: Run the appropriate generation command (in the correct container; see Manual Regeneration above).
 2. **Build failures**: Check that source files are valid
-3. **Missing dependencies**: Run `composer install` or `npm install`
+3. **Missing dependencies**: Run `composer install` in the php_fpm container or `npm install` in the js_builder container
 
 ### Verification
 ```bash
-# Check if generated files are up to date
-php cli.php generate:javascript_constants --dry-run
+# Check if generated files are up to date (php_fpm container)
+docker exec bristolian-php_fpm-1 bash -c "php cli.php generate:javascript_constants --dry-run"
 
-# Verify database helpers match current schema
-php cli.php generate:php_table_helper_classes --check
+# Verify database helpers match current schema (php_fpm container)
+docker exec bristolian-php_fpm-1 bash -c "php cli.php generate:php_table_helper_classes --check"
 ```
 
 ## Git Integration

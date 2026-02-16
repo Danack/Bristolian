@@ -583,7 +583,7 @@ export class MyPanel extends Component<MyPanelProps, MyPanelState> {
 **How it works:**
 - The `use_logged_in()` hook returns the current login status
 - It automatically updates when the login status changes
-- Login status is fetched via the `/api/user/login_status` endpoint
+- Login status is fetched via the `/api/login-status` endpoint
 - The `LoginStatusPanel` component manages fetching and updating this state
 
 ### React Pattern: Default Sections with Conditional Updates
@@ -679,7 +679,7 @@ render(props: MyPanelProps, state: MyPanelState) {
 
 **Get login status:**
 ```
-GET /api/user/login_status
+GET /api/login-status
 Returns: { "logged_in": true|false }
 ```
 

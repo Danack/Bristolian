@@ -93,32 +93,35 @@ Access the debug backend at: http://local.bristolian.org:8001
 
 ## Running Tests
 
+All test commands must be run inside the appropriate Docker container. Use `docker exec ... bash -c "..."` (without `-it`) for non-interactive runs to avoid TTY errors.
+
 ### PHP Unit Tests
 ```bash
 # Run all PHP tests (recommended for regular testing)
-docker exec -it bristolian-php_fpm-1 bash
-sh runUnitTests.sh
+docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh"
 
 # Run tests with debug backend (for debugging)
-docker exec -it bristolian-php_fpm_debug-1 bash
-sh runUnitTests.sh
+docker exec bristolian-php_fpm_debug-1 bash -c "sh runUnitTests.sh"
 
 # Run specific test group
-sh runUnitTests.sh --group wip
-```
-
-**Note**: Always use `docker exec` without the `-it` flags to avoid TTY errors:
-```bash
-# Correct way to run tests (without -it flags)
-docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh"
-docker exec bristolian-php_fpm_debug-1 bash -c "sh runUnitTests.sh"
+docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh --group wip"
 ```
 
 ### JavaScript Tests
 ```bash
 # Run Jest tests
+docker exec bristolian-js_builder-1 bash -c "npm run test"
+```
+
+### Interactive shell (when you need to run multiple commands)
+```bash
+# PHP container
+docker exec -it bristolian-php_fpm-1 bash
+# Then run: sh runUnitTests.sh, sh runBehat.sh, etc.
+
+# JavaScript container
 docker exec -it bristolian-js_builder-1 bash
-npm run test
+# Then run: npm run test, npm run js:build:dev, etc.
 ```
 
 ## Code Quality Tools
@@ -184,18 +187,21 @@ The HTML reports allow you to:
 ## Frontend Development
 
 ### Building Assets
+
+All npm/node commands must be run inside the `js_builder` container. From the host:
+
 ```bash
 # Development build
-npm run js:build:dev
-npm run sass:build:dev
+docker exec bristolian-js_builder-1 bash -c "npm run js:build:dev"
+docker exec bristolian-js_builder-1 bash -c "npm run sass:build:dev"
 
 # Production build
-npm run js:build:prod
-npm run sass:build:prod
+docker exec bristolian-js_builder-1 bash -c "npm run js:build:prod"
+docker exec bristolian-js_builder-1 bash -c "npm run sass:build:prod"
 
-# Watch mode
-npm run js:build:dev:watch
-npm run sass:build:watch
+# Watch mode (run in interactive shell for long-running watch)
+docker exec -it bristolian-js_builder-1 bash -c "npm run js:build:dev:watch"
+docker exec -it bristolian-js_builder-1 bash -c "npm run sass:build:watch"
 ```
 
 ### Frontend Structure
