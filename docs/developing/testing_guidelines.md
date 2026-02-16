@@ -73,6 +73,7 @@ class ExampleParamTest extends BaseTestCase
 
 - **Test class:** Use `@coversNothing` on the class docblock. This prevents coverage from being attributed to the class as a whole.
 - **Each test method:** Add specific `@covers` annotations listing the classes/methods that test exercises. This ensures coverage is attributed correctly when tests run.
+- **Constructor coverage:** Always include coverage for the class constructor in the first test of the class. Add `@covers \Full\Class\Name::__construct` to that test’s docblock so the constructor is included in coverage. Example: `test/BristolianTest/Service/BccTroFetcher/StandardBccTroFetcherTest.php` (first test covers `StandardBccTroFetcher::__construct`).
 - **Example:**
   ```php
   /**
@@ -133,7 +134,7 @@ public function test_fetch_external_parses_input_to_expected_output(
 - Easier to add/remove cases
 - Better memory efficiency for large datasets
 
-**PHP does not support complex/generic types as native parameter types.** For array parameters (e.g. VarMap input), use `array` as the native type and document the shape in PHPDoc: `@param array<string, mixed> $input`. Using `array<string, mixed>` as a native type causes a syntax error. The same applies to `@return` on data providers—use `array{array<string, mixed>, ...}` in the docblock.
+**PHP does not support complex/generic types as native parameter types.** For array parameters, use `array` as the native type and document the shape in PHPDoc: `@param array<string, mixed> $input`. Using `array<string, mixed>` as a native type causes a syntax error. The same applies to `@return` on data providers—use `array{array<string, mixed>, ...}` in the docblock.
 
 ### Use Real Objects, Not Mocks
 

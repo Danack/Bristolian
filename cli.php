@@ -11,6 +11,7 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/src/factories.php';
 require __DIR__ . '/src/error_functions.php';
+require __DIR__ . '/src/functions_bcc.php';
 require __DIR__ . '/cli/exception_mappers_cli.php';
 require __DIR__ . "/cli/cli_commands.php";
 require __DIR__ . '/config.generated.php';

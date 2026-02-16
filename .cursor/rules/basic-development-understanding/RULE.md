@@ -13,3 +13,4 @@ alwaysApply: true
 - **Always add return types to test methods**: All test methods must have explicit return types. Use `: void` for test methods that don't return a value. This helps PHPStan and makes the code more explicit.
 - **Avoid unnecessary null checks**: Do not check for null when PHPStan already knows a value cannot be null (e.g., when a method returns a non-nullable type). Remove redundant `if ($value !== null)` checks when the type system guarantees the value is not null.
 - **Put `else` on a new line**: When using `if`/`else`, put the `else` keyword on its own line after the closing `}` of the `if` block, not on the same line as the brace (e.g. use `}\n        else {`, not `} else {`).
+- **Use union syntax for nullable types**: Prefer `string|null` (and similar union types) over `?string` for parameters, return types, and properties. Use the explicit union form consistently.

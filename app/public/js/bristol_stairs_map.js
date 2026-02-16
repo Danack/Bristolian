@@ -352,7 +352,8 @@ function showOpenmapNearby(data) {
         map.removeLayer(openmapNearbyLayer);
     }
     openmapNearbyLayer = L.layerGroup();
-    const radiusMetres = 75;
+    /** Radius in pixels so circles stay the same visible size at all zoom levels. */
+    const radiusPx = 10;
     const circleOptions = {
         color: '#2196F3',
         fillColor: '#2196F3',
@@ -360,7 +361,7 @@ function showOpenmapNearby(data) {
         weight: 2
     };
     locations.forEach(function (location) {
-        const circle = L.circle([location.latitude, location.longitude], { radius: radiusMetres, ...circleOptions });
+        const circle = L.circleMarker([location.latitude, location.longitude], { radius: radiusPx, ...circleOptions });
         if (location.name) {
             circle.bindTooltip(location.name, { permanent: false });
         }

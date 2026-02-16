@@ -62,6 +62,9 @@ function injectionParams() : InjectionParams
 
         \Bristolian\Config\EnvironmentName::class => \Bristolian\Config\Config::class,
 
+        \Bristolian\Service\HttpFetcher\HttpFetcher::class =>
+          \Bristolian\Service\HttpFetcher\FetchUriHttpFetcher::class,
+
         \Bristolian\Service\BccTroFetcher\BccTroFetcher::class =>
           \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::class,
 

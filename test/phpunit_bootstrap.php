@@ -9,6 +9,7 @@ require_once __DIR__ . "/../credentials.php";
 require_once __DIR__ . "/test_injection_params.php";
 require_once __DIR__ . "/../src/error_functions.php";
 require_once __DIR__ . "/../src/functions_tinned_fish.php";
+require_once __DIR__ . "/../src/functions_bcc.php";
 require_once __DIR__ . "/../api/src/api_convert_exception_to_json_functions.php";
 require_once __DIR__ . "/../api/src/api_factories.php";
 require_once __DIR__ . "/../api/src/api_functions.php";
