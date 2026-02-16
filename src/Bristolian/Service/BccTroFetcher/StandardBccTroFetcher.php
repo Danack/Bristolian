@@ -4,11 +4,17 @@ namespace Bristolian\Service\BccTroFetcher;
 
 use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;
+use Bristolian\Service\HttpFetcher\HttpFetcher;
 
 class StandardBccTroFetcher implements BccTroFetcher
 {
 
     private const SOURCE_URL = 'https://www.bristol.gov.uk/residents/streets-travel/make-a-comment-on-traffic-regulation-orders-tros';
+
+    public function __construct(
+        private readonly HttpFetcher $httpFetcher
+    ) {
+    }
 
     /**
      * @return BccTro[]
@@ -31,7 +37,7 @@ class StandardBccTroFetcher implements BccTroFetcher
             'Upgrade-Insecure-Requests: 1',
         ];
 
-        [$statusCode, $htmlContent, $responseHeaders] = fetchUri(
+        [$statusCode, $htmlContent, $responseHeaders] = $this->httpFetcher->fetch(
             self::SOURCE_URL,
             'GET',
             [],
@@ -88,7 +94,7 @@ class StandardBccTroFetcher implements BccTroFetcher
                 $nextUlNode = $xpath->query('following::ul[.//a][1]', $nextH4)->item(0);
                 $nextUl = ($nextUlNode instanceof \DOMElement) ? $nextUlNode : null;
 
-                $documents = $this->extractDocumentLinks($xpath, $nextUl);
+                $documents = extractDocumentLinksFromUl($xpath, $nextUl);
 
                 $tros[] = new BccTro(
                     $title,
@@ -102,55 +108,51 @@ class StandardBccTroFetcher implements BccTroFetcher
 
         return $tros;
     }
+}
 
-    /**
-     * @return array<string, BccTroDocument>
-     */
-    private function extractDocumentLinks(\DOMXPath $xpath, ?\DOMElement $ulElement): array
-    {
-        $documents = [];
+/**
+ * @return array<string, BccTroDocument>
+ */
+function extractDocumentLinksFromUl(\DOMXPath $xpath, ?\DOMElement $ulElement): array
+{
+    $documents = [];
 
-        if ($ulElement === null) {
-            return $documents;
-        }
-
-        // Find all links in the ul element
-        $linkElements = $xpath->query('.//a', $ulElement);
-
-        foreach ($linkElements as $linkNode) {
-            if (!($linkNode instanceof \DOMElement)) {
-                continue;
-            }
-            $link = $linkNode;
-            $href = $link->getAttribute('href');
-            $linkText = trim($link->textContent);
-            
-            // Try to extract ID from data-id attribute, or from href
-            $id = $link->getAttribute('data-id');
-            if (empty($id) && preg_match('/\/(\d+)-/', $href, $matches)) {
-                $id = $matches[1];
-            }
-            
-            // Try to get title from data-title attribute, otherwise use link text
-            $title = $link->getAttribute('data-title');
-            if (empty($title)) {
-                $title = $linkText;
-            }
-
-            // Determine document type based on the text content
-            $linkTextLower = strtolower($linkText);
-            
-            if (strpos($linkTextLower, 'statement of reasons') !== false) {
-                $documents['statement_of_reasons'] = new BccTroDocument($title, $href, $id);
-            }
-            if (strpos($linkTextLower, 'notice') !== false) {
-                $documents['notice_of_proposal'] = new BccTroDocument($title, $href, $id);
-            }
-            if (strpos($linkTextLower, 'plan') !== false) {
-                $documents['proposed_plan'] = new BccTroDocument($title, $href, $id);
-            }
-        }
-
+    if ($ulElement === null) {
         return $documents;
     }
+
+    $linkElements = $xpath->query('.//a', $ulElement);
+
+    foreach ($linkElements as $linkNode) {
+        if (!($linkNode instanceof \DOMElement)) {
+            continue;
+        }
+        $link = $linkNode;
+        $href = $link->getAttribute('href');
+        $linkText = trim($link->textContent);
+
+        $id = $link->getAttribute('data-id');
+        if (empty($id) && preg_match('/\/(\d+)-/', $href, $matches)) {
+            $id = $matches[1];
+        }
+
+        $title = $link->getAttribute('data-title');
+        if (empty($title)) {
+            $title = $linkText;
+        }
+
+        $linkTextLower = strtolower($linkText);
+
+        if (strpos($linkTextLower, 'statement of reasons') !== false) {
+            $documents['statement_of_reasons'] = new BccTroDocument($title, $href, $id);
+        }
+        if (strpos($linkTextLower, 'notice') !== false) {
+            $documents['notice_of_proposal'] = new BccTroDocument($title, $href, $id);
+        }
+        if (strpos($linkTextLower, 'plan') !== false) {
+            $documents['proposed_plan'] = new BccTroDocument($title, $href, $id);
+        }
+    }
+
+    return $documents;
 }

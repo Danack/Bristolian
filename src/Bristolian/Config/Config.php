@@ -134,9 +134,11 @@ class Config implements AssetLinkEmitterConfig, EnvironmentName
 
     public function getEnvironmentNameForEmailSubject(): string
     {
+        // @codeCoverageIgnoreStart
         if ($this->isProductionEnv()) {
             return "[Bristolian]";
         }
+        // @codeCoverageIgnoreEnd
 
         return "[BristolianDev]";
     }

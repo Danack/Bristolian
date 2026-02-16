@@ -5,6 +5,15 @@ declare(strict_types = 1);
 use Bristolian\Model\TinnedFish\Product;
 
 /**
+ * Validate barcode format.
+ * Must be 8-13 digits (EAN/UPC/GTIN format).
+ */
+function isValidBarcode(string $barcode): bool
+{
+    return preg_match('/^\d{8,13}$/', $barcode) === 1;
+}
+
+/**
  * Normalize OpenFoodFacts API response into a Product object.
  *
  * @param string $barcode The barcode used for lookup

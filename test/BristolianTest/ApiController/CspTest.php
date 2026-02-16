@@ -16,13 +16,9 @@ class CspTest extends BaseTestCase
 {
     use TestPlaceholders;
 
-    public function testWorks()
+    public function testWorks(): void
     {
         $csp = new Csp();
-
-        // TODO - re-enable
-        $this->markTestSkipped("disabled for now");
-
         $varMap = new ArrayVarMap([]);
         $cspStorage = new FakeCSPViolationStorage();
 
@@ -33,12 +29,14 @@ class CspTest extends BaseTestCase
 
         $result = $csp->get_reports_for_page($varMap, $cspStorage);
 
-
         $this->assertSame([0], $cspStorage->getPagesRequested());
 
         $data = json_decode_safe($result->getBody());
-        $this->assertArrayHasKey("reports", $data);
-        $reports = $data["reports"];
+        $this->assertArrayHasKey('data', $data);
+        $this->assertArrayHasKey('reports', $data['data']);
+        $this->assertArrayHasKey('count', $data['data']);
+        $this->assertSame(100, $data['data']['count']);
+        $reports = $data['data']['reports'];
         $this->assertCount(CSPViolationStorage::REPORTS_PER_PAGE, $reports);
 
         $countdown = 199;
@@ -51,14 +49,14 @@ class CspTest extends BaseTestCase
         }
 
         $page_number = 2;
-        $varMap2 = new ArrayVarMap(['page' => $page_number]);
+        $varMap2 = new ArrayVarMap(['page' => (string)$page_number]);
         $result2 = $csp->get_reports_for_page($varMap2, $cspStorage);
-        $this->assertSame([0,2], $cspStorage->getPagesRequested());
-
+        $this->assertSame([0, 2], $cspStorage->getPagesRequested());
 
         $data = json_decode_safe($result2->getBody());
-        $this->assertArrayHasKey("reports", $data);
-        $reports = $data["reports"];
+        $this->assertArrayHasKey('data', $data);
+        $this->assertArrayHasKey('reports', $data['data']);
+        $reports = $data['data']['reports'];
 
         $countdown = 199 - ($page_number * CSPViolationStorage::REPORTS_PER_PAGE);
         foreach ($reports as $report) {

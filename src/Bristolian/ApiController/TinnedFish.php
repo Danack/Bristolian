@@ -21,6 +21,7 @@ use Bristolian\Service\TinnedFish\OpenFoodFactsFetcher;
 use Bristolian\Session\UserSession;
 use SlimDispatcher\Response\StubResponse;
 
+use function isValidBarcode;
 use function normalizeOpenFoodFactsData;
 
 /**
@@ -47,7 +48,7 @@ class TinnedFish
         OpenFoodFactsFetcher $fetcher
     ): StubResponse {
         // Validate barcode format (8-13 digits)
-        if (!$this->isValidBarcode($barcode)) {
+        if (!isValidBarcode($barcode)) {
             return new InvalidBarcodeResponse($barcode);
         }
 
@@ -141,14 +142,5 @@ class TinnedFish
             qr_code_url: $qrCodeUrl,
             created_at: $apiToken->created_at
         );
-    }
-
-    /**
-     * Validate barcode format.
-     * Must be 8-13 digits (EAN/UPC/GTIN format).
-     */
-    private function isValidBarcode(string $barcode): bool
-    {
-        return preg_match('/^\d{8,13}$/', $barcode) === 1;
     }
 }

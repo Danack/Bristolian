@@ -54,7 +54,7 @@ class BccTroFetcherCliController
     ): void {
         echo "Fetching TRO data from Bristol City Council...\n";
 
-        var_dump($output);
+//        var_dump($output);
 
         try {
             $tros = $bccTroFetcher->fetchTros();

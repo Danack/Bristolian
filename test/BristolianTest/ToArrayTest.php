@@ -8,12 +8,16 @@ namespace BristolianTest;
  *
  */
 
-use BristolianTest\TestFixtures\ToArrayClass;
 use BristolianTest\TestFixtures\NestedToArrayClass;
+use BristolianTest\TestFixtures\ToArrayClass;
 use BristolianTest\TestFixtures\ToArrayClassWithDatetime;
+use BristolianTest\TestFixtures\ToArrayClassWithSkippedProperty;
+use BristolianTest\TestFixtures\ToArrayClassWithUnsupportedProperty;
+use Bristolian\Exception\BristolianException;
 
 /**
  * @coversNothing
+ * @group wip
  */
 class ToArrayTest extends BaseTestCase
 {
@@ -67,5 +71,30 @@ class ToArrayTest extends BaseTestCase
         ];
 
         $this->assertSame($expected, $result);
+    }
+
+    /**
+     * @covers \Bristolian\ToArray
+     */
+    public function test_properties_starting_with_double_underscore_are_skipped(): void
+    {
+        $object = new ToArrayClassWithSkippedProperty('visible', 'ignored');
+        $result = $object->toArray();
+
+        $this->assertSame(['foo' => 'visible'], $result);
+        $this->assertArrayNotHasKey('__internal', $result);
+    }
+
+    /**
+     * @covers \Bristolian\ToArray
+     */
+    public function test_throws_BristolianException_when_property_cannot_be_converted(): void
+    {
+        $object = new ToArrayClassWithUnsupportedProperty('foo', new \stdClass());
+
+        $this->expectException(BristolianException::class);
+        $this->expectExceptionMessage('Failed to convert object to array on item [unsupported]');
+
+        $object->toArray();
     }
 }

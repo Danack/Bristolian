@@ -34,4 +34,15 @@ class ConfigTest extends BaseTestCase
         $redisConfig = $config->getRedisInfo();
         $this->assertInstanceOf(RedisConfig::class, $redisConfig);
     }
+
+    /**
+     * @covers \Bristolian\Config\Config::getEnvironmentNameForEmailSubject
+     */
+    public function test_getEnvironmentNameForEmailSubject(): void
+    {
+        $config = new Config();
+        $name = $config->getEnvironmentNameForEmailSubject();
+
+        $this->assertSame('[BristolianDev]', $name, 'With local environment config returns dev prefix');
+    }
 }

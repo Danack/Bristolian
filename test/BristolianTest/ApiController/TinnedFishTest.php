@@ -8,21 +8,25 @@ use Bristolian\ApiController\TinnedFish;
 use Bristolian\Model\TinnedFish\Product;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use Bristolian\Parameters\TinnedFish\BarcodeLookupParams;
+use Bristolian\Parameters\TinnedFish\GenerateApiTokenParams;
+use Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo;
 use Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo;
 use Bristolian\Response\TinnedFish\ExternalApiErrorResponse;
+use Bristolian\Response\TinnedFish\GenerateApiTokenResponse;
 use Bristolian\Response\TinnedFish\GetAllProductsResponse;
 use Bristolian\Response\TinnedFish\InvalidBarcodeResponse;
 use Bristolian\Response\TinnedFish\ProductLookupResponse;
 use Bristolian\Response\TinnedFish\ProductNotFoundResponse;
+use Bristolian\Service\ApiToken\ApiTokenGenerator;
 use Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher;
 use Bristolian\Service\TinnedFish\OpenFoodFactsApiException;
+use Bristolian\Session\FakeUserSession;
 use BristolianTest\BaseTestCase;
-
-use function normalizeOpenFoodFactsData;
 
 /**
  * @covers \Bristolian\ApiController\TinnedFish::getAllProducts
  * @covers \Bristolian\ApiController\TinnedFish::getProductByBarcode
+ * @covers \Bristolian\ApiController\TinnedFish::generateApiToken
  */
 class TinnedFishTest extends BaseTestCase
 {
@@ -304,5 +308,52 @@ class TinnedFishTest extends BaseTestCase
         $cachedProduct = $repo->getByBarcode('3107761210000');
         $this->assertNotNull($cachedProduct);
         $this->assertSame('3107761210000', $cachedProduct->barcode);
+    }
+
+    public function test_getProductByBarcode_returns_404_when_not_in_canonical_and_fetch_external_false(): void
+    {
+        $repo = new FakeTinnedFishProductRepo();
+        $fetcher = new FakeOpenFoodFactsFetcher();
+
+        $controller = new TinnedFish();
+        $params = new BarcodeLookupParams(fetch_external: false);
+
+        $response = $controller->getProductByBarcode($params, '3107761210000', $repo, $fetcher);
+
+        $this->assertInstanceOf(ProductNotFoundResponse::class, $response);
+        $this->assertSame(404, $response->getStatus());
+
+        $data = json_decode_safe($response->getBody());
+        $this->assertArrayHasKey('success', $data);
+        $this->assertFalse($data['success']);
+        $this->assertArrayHasKey('error', $data);
+    }
+
+    public function test_generateApiToken_creates_token_and_returns_response(): void
+    {
+        $tokenRepo = new FakeApiTokenRepo([]);
+        $tokenGenerator = new ApiTokenGenerator();
+        $userSession = new FakeUserSession(true, 'admin-user-id', 'admin@example.com');
+
+        $controller = new TinnedFish();
+        $params = new GenerateApiTokenParams(name: 'Test Token Name');
+
+        $response = $controller->generateApiToken($params, $userSession, $tokenRepo, $tokenGenerator);
+
+        $this->assertInstanceOf(GenerateApiTokenResponse::class, $response);
+        $this->assertSame(200, $response->getStatus());
+
+        $data = json_decode_safe($response->getBody());
+        $this->assertArrayHasKey('success', $data);
+        $this->assertTrue($data['success']);
+        $this->assertArrayHasKey('token', $data);
+        $this->assertArrayHasKey('name', $data);
+        $this->assertArrayHasKey('qr_code_url', $data);
+        $this->assertArrayHasKey('created_at', $data);
+
+        $this->assertSame('Test Token Name', $data['name']);
+        $this->assertNotEmpty($data['token']);
+        $this->assertStringContainsString('token=', $data['qr_code_url']);
+        $this->assertStringContainsString(urlencode($data['token']), $data['qr_code_url']);
     }
 }

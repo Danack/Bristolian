@@ -5,17 +5,38 @@ namespace BristolianTest\Service\TinnedFish;
 use Bristolian\Model\TinnedFish\Product;
 use BristolianTest\BaseTestCase;
 
+use function isValidBarcode;
 use function normalizeOpenFoodFactsData;
 
 /**
  * Tests for tinned fish normalization functions
  *
+ * @covers \isValidBarcode
  * @covers \normalizeOpenFoodFactsData
  * @covers \parseTinnedFishWeight
  * @covers \extractTinnedFishSpecies
  */
 class ProductNormalizerTest extends BaseTestCase
 {
+    /**
+     * @covers \isValidBarcode
+     * @dataProvider provides_isValidBarcode
+     */
+    public function test_isValidBarcode(string $barcode, bool $expected): void
+    {
+        $this->assertSame($expected, isValidBarcode($barcode));
+    }
+
+    public static function provides_isValidBarcode(): \Generator
+    {
+        yield 'valid 8 digits' => ['12345678', true];
+        yield 'valid 13 digits' => ['1234567890123', true];
+        yield 'valid 9 digits' => ['123456789', true];
+        yield 'too short 7 digits' => ['1234567', false];
+        yield 'too long 14 digits' => ['12345678901234', false];
+        yield 'contains letters' => ['ABC123456789', false];
+        yield 'empty string' => ['', false];
+    }
     public static function provides_normalizes_basic_product_data(): \Generator
     {
         yield 'complete product data' => [

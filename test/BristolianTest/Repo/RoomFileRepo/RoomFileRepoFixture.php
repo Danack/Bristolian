@@ -88,7 +88,6 @@ abstract class RoomFileRepoFixture extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\RoomFileRepo\RoomFileRepo::getFileDetails
      * @covers \Bristolian\Repo\RoomFileRepo\RoomFileRepo::addFileToRoom
-     * @group wip
      */
     public function test_getFileDetails_returns_file_after_adding(): void
     {

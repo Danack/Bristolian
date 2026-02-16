@@ -76,7 +76,6 @@ abstract class MemeTagRepoFixture extends BaseTestCase
      * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::addTagForMeme
      * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::getUserTagsForMeme
      * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::addTagForMeme
-     * @group wip
      */
     public function test_getUserTagsForMeme_returns_tags_after_adding(): void
     {

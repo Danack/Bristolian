@@ -10,7 +10,6 @@ use BristolianTest\BaseTestCase;
 
 /**
  * @coversNothing
- * @group wip
  */
 class LinkParamTest extends BaseTestCase
 {
