@@ -262,6 +262,19 @@ Databases can be seeded with data, so testing for initial emptiness is unreliabl
 
 ## Running PHP Tests
 
+### phpunit.xml: fast vs full runs (db group and HTML coverage)
+
+`phpunit.xml` can have the `@group db` tests excluded and HTML coverage disabled so normal test runs stay fast. Tests marked `@group db` depend on PDO/database.
+
+**Toggle scripts** (run from project root, pass path to `phpunit.xml` when not using default):
+
+- **Enable slow tests and HTML coverage** (for finalise_work / full coverage):  
+  `php scripts/streamdeck/toggle_restore_content.php phpunit.xml`
+- **Disable them again** (fast runs):  
+  `php scripts/streamdeck/toggle_remove_content.php phpunit.xml`
+
+When finalising work, run the restore script first so PHPUnit runs the db tests and produces the HTML coverage report.
+
 ### Running All PHPUnit Tests
 
 ```bash

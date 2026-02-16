@@ -8,6 +8,7 @@ use BristolianTest\Repo\TestPlaceholders;
 
 /**
  * @coversNothing
+ * @group db
  */
 class PdoMoonAlertRunTimeRecorderTest extends BaseTestCase
 {

@@ -111,7 +111,7 @@ console.log(product);
 ### Services
 - `src/Bristolian/Service/TinnedFish/OpenFoodFactsFetcher.php` - External API fetcher
 - `src/Bristolian/Service/TinnedFish/OpenFoodFactsApiException.php` - API exception
-- `src/Bristolian/Service/ApiToken/ApiTokenGenerator.php` - Secure token generation service
+- `src/functions_common.php` - `generateSecureToken()` for API token generation
 - `src/functions_tinned_fish.php` - Data normalization functions
 
 ### Parameters

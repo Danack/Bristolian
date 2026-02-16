@@ -12,6 +12,7 @@ use Bristolian\Repo\UserSearch\UserSearch;
 
 /**
  * @coversNothing
+ * @group db
  */
 class PdoUserSearchTest extends BaseTestCase
 {

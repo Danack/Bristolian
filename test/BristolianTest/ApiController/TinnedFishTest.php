@@ -17,7 +17,6 @@ use Bristolian\Response\TinnedFish\GetAllProductsResponse;
 use Bristolian\Response\TinnedFish\InvalidBarcodeResponse;
 use Bristolian\Response\TinnedFish\ProductLookupResponse;
 use Bristolian\Response\TinnedFish\ProductNotFoundResponse;
-use Bristolian\Service\ApiToken\ApiTokenGenerator;
 use Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher;
 use Bristolian\Service\TinnedFish\OpenFoodFactsApiException;
 use Bristolian\Session\FakeUserSession;
@@ -332,13 +331,12 @@ class TinnedFishTest extends BaseTestCase
     public function test_generateApiToken_creates_token_and_returns_response(): void
     {
         $tokenRepo = new FakeApiTokenRepo([]);
-        $tokenGenerator = new ApiTokenGenerator();
         $userSession = new FakeUserSession(true, 'admin-user-id', 'admin@example.com');
 
         $controller = new TinnedFish();
         $params = new GenerateApiTokenParams(name: 'Test Token Name');
 
-        $response = $controller->generateApiToken($params, $userSession, $tokenRepo, $tokenGenerator);
+        $response = $controller->generateApiToken($params, $userSession, $tokenRepo);
 
         $this->assertInstanceOf(GenerateApiTokenResponse::class, $response);
         $this->assertSame(200, $response->getStatus());

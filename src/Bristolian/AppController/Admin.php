@@ -168,26 +168,6 @@ HTML;
         return new RedirectResponse($message);
     }
 
-
-    public function ping_user(
-        AppSession $appSession,
-        VarMap $varMap,
-        UserNotifier $user_notifier
-    ): JsonResponse {
-        if ($appSession->isLoggedIn()) {
-            return new JsonResponse([]);
-        }
-
-        $user = $varMap->getWithDefault("user", null);
-        if ($user === null) {
-            return new JsonResponse([]);
-        }
-
-        $result = $user_notifier->notify($user);
-        return new JsonResponse($result);
-    }
-
-
     public function search_users(
         UserSearch $userSearch,
         VarMap $varMap

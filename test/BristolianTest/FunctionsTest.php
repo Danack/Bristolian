@@ -23,6 +23,17 @@ class FunctionsTest extends BaseTestCase
         $this->assertSame(64, strlen($id));
     }
 
+    /**
+     * @covers ::generateSecureToken
+     */
+    public function test_generateSecureToken_returns_url_safe_token_of_expected_length(): void
+    {
+        $token = generateSecureToken();
+        $this->assertSame(43, strlen($token), 'base64url of 32 bytes is 43 chars (no padding)');
+        $this->assertMatchesRegularExpression('/^[A-Za-z0-9_-]+$/', $token, 'token must be URL-safe base64chars only');
+        $token2 = generateSecureToken();
+        $this->assertNotSame($token, $token2, 'tokens must be unique');
+    }
 
     /**
      * @covers ::formatLinesWithCount

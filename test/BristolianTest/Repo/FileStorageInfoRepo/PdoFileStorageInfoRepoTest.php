@@ -10,6 +10,7 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * @coversNothing
+ * @group db
  */
 class PdoFileStorageInfoRepoTest extends BaseTestCase
 {

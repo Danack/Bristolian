@@ -45,13 +45,13 @@ function getAllApiRoutes()
         ], // TODO - needs converting to reasonable response.
            // details are buried in code.
 
-        [
-            '/api/ping_user',
-            'GET',
-            'Bristolian\AppController\Admin::ping_user',
-            null
-        ], // TODO - needs converting to reasonable response.
-        // details are buried in code.
+//        [
+//            '/api/ping_user',
+//            'GET',
+//            'Bristolian\AppController\Admin::ping_user',
+//            null
+//        ], // TODO - needs converting to reasonable response.
+//        // details are buried in code.
 
         [
             '/api/bristol_stairs_update/{bristol_stair_info_id:.*}',

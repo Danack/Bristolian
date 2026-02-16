@@ -95,3 +95,21 @@ function convertToValue(mixed $value)
         null
     ];
 }
+
+/**
+ * Generate a cryptographically secure random token.
+ *
+ * Generates 32 random bytes and base64 encodes them, resulting in
+ * approximately 44 characters (base64 encoding adds ~33% overhead).
+ * Output is URL-safe (base64url: - and _ instead of + and /).
+ *
+ * @return string The generated token
+ */
+function generateSecureToken(): string
+{
+    $randomBytes = random_bytes(32);
+    $token = rtrim(base64_encode($randomBytes), '=');
+    $token = strtr($token, '+/', '-_');
+
+    return $token;
+}

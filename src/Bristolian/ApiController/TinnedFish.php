@@ -15,12 +15,12 @@ use Bristolian\Response\TinnedFish\GetAllProductsResponse;
 use Bristolian\Response\TinnedFish\InvalidBarcodeResponse;
 use Bristolian\Response\TinnedFish\ProductLookupResponse;
 use Bristolian\Response\TinnedFish\ProductNotFoundResponse;
-use Bristolian\Service\ApiToken\ApiTokenGenerator;
 use Bristolian\Service\TinnedFish\OpenFoodFactsApiException;
 use Bristolian\Service\TinnedFish\OpenFoodFactsFetcher;
 use Bristolian\Session\UserSession;
 use SlimDispatcher\Response\StubResponse;
 
+use function generateSecureToken;
 use function isValidBarcode;
 use function normalizeOpenFoodFactsData;
 
@@ -118,17 +118,15 @@ class TinnedFish
      * @param GenerateApiTokenParams $params Parameters containing token name
      * @param UserSession $userSession Admin user session (required for authentication)
      * @param ApiTokenRepo $tokenRepo Repository for token storage
-     * @param ApiTokenGenerator $tokenGenerator Service for generating secure tokens
      * @return StubResponse
      */
     public function generateApiToken(
         GenerateApiTokenParams $params,
         UserSession $userSession,
-        ApiTokenRepo $tokenRepo,
-        ApiTokenGenerator $tokenGenerator
+        ApiTokenRepo $tokenRepo
     ): StubResponse {
         // Generate a secure token
-        $token = $tokenGenerator->generateSecureToken();
+        $token = generateSecureToken();
         
         // Store the token in the database
         $apiToken = $tokenRepo->createToken($params->name, $token);

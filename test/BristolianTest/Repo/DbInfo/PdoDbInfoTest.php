@@ -9,6 +9,7 @@ use BristolianTest\Repo\TestPlaceholders;
 
 /**
  * @coversNothing
+ * @group db
  */
 class PdoDbInfoTest extends BaseTestCase
 {
