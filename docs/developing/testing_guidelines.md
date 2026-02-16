@@ -325,7 +325,7 @@ docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xm
 
 The output shows the file path and line numbers that are not covered by tests. Use this to identify which methods and code paths need additional test coverage.
 
-**Note:** Some uncovered lines may be error-handling paths that are difficult to trigger in normal operation. These are acceptable to leave uncovered if they represent defensive edge cases.
+**Note:** Some uncovered lines may be error-handling paths that are difficult to trigger in normal operation. Tell the user that these lines are difficult to test, and ask for guidance on how to handle them.
 
 ## JavaScript/TypeScript Testing
 

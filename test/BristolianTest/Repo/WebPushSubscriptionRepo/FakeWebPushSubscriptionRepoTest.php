@@ -58,4 +58,31 @@ class FakeWebPushSubscriptionRepoTest extends WebPushSubscriptionRepoFixture
         $fakeRepo->save('user-123', $webPushSubscriptionParam, '{"raw": "data1"}');
         $fakeRepo->save('user-456', $webPushSubscriptionParam, '{"raw": "data2"}');
     }
+
+    /**
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::getUserSubscriptions
+     */
+    public function test_getUserSubscriptions_returns_empty_for_unknown_user(): void
+    {
+        $fakeRepo = new FakeWebPushSubscriptionRepo();
+        $this->assertSame([], $fakeRepo->getUserSubscriptions('unknown-user'));
+    }
+
+    /**
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::getUserSubscriptions
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::save
+     */
+    public function test_getUserSubscriptions_returns_saved_subscriptions(): void
+    {
+        $fakeRepo = new FakeWebPushSubscriptionRepo();
+        $params = WebPushSubscriptionParams::createFromVarMap(new ArrayVarMap([
+            'endpoint' => 'https://example.com/push/1',
+            'expirationTime' => null,
+            'raw' => '{"raw": "data"}',
+        ]));
+        $fakeRepo->save('user-1', $params, '{"raw": "data"}');
+        $subs = $fakeRepo->getUserSubscriptions('user-1');
+        $this->assertCount(1, $subs);
+        $this->assertSame('https://example.com/push/1', $subs[0]->getEndpoint());
+    }
 }

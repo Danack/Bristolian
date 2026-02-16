@@ -153,6 +153,16 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFileDetails
+     */
+    public function test_getFileDetails_returns_null_when_file_not_in_room(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $roomFileRepo->addFileToRoom('file_1', 'room_1');
+        $this->assertNull($roomFileRepo->getFileDetails('room_1', 'other_file'));
+    }
+
+    /**
      * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
      */
     public function test_getFileDetails_returns_null_for_nonexistent_room(): void

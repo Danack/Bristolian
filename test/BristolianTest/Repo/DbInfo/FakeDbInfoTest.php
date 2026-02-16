@@ -19,15 +19,18 @@ class FakeDbInfoTest extends BaseTestCase
      * @return void
      * @throws \DI\InjectionException
      */
+    /**
+     * @covers \Bristolian\Repo\DbInfo\FakeDbInfo::getTableInfo
+     * @covers \Bristolian\Repo\DbInfo\FakeDbInfo::getMigrations
+     */
     public function testWorks()
     {
         $pdoDbInfo = new FakeDbInfo();
         $migrations = $pdoDbInfo->getMigrations();
-//        $this->assertIsArray($migrations);
-//        $this->assertIsArray($pdoDbInfo->getTableInfo());
         foreach ($migrations as $migration) {
             $this->assertInstanceOf(MigrationThatHasBeenRun::class, $migration);
         }
-        // TODO - any useful assertions?
+        $tables = $pdoDbInfo->getTableInfo();
+        $this->assertCount(2, $tables);
     }
 }

@@ -188,4 +188,73 @@ class FakeEmailQueueTest extends EmailQueueFixture
         }
         $this->assertNotNull($sentEmail);
     }
+
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailSent
+     */
+    public function test_setEmailSent_with_unknown_email_does_nothing(): void
+    {
+        $fakeQueue = new FakeEmailQueue();
+        $unknownEmail = new Email(
+            id: 99999,
+            body: 'Body',
+            recipient: 'test@example.com',
+            retries: 0,
+            status: EmailController::STATE_INITIAL,
+            subject: 'Subject',
+            created_at: new \DateTimeImmutable(),
+            updated_at: new \DateTimeImmutable(),
+        );
+        $fakeQueue->setEmailSent($unknownEmail);
+        $this->assertNull($fakeQueue->getEmailById(99999));
+    }
+
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailFailed
+     */
+    public function test_setEmailFailed_with_unknown_email_does_nothing(): void
+    {
+        $fakeQueue = new FakeEmailQueue();
+        $unknownEmail = new Email(
+            id: 99999,
+            body: 'Body',
+            recipient: 'test@example.com',
+            retries: 0,
+            status: EmailController::STATE_INITIAL,
+            subject: 'Subject',
+            created_at: new \DateTimeImmutable(),
+            updated_at: new \DateTimeImmutable(),
+        );
+        $fakeQueue->setEmailFailed($unknownEmail);
+        $this->assertNull($fakeQueue->getEmailById(99999));
+    }
+
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailToRetry
+     */
+    public function test_setEmailToRetry_with_unknown_email_does_nothing(): void
+    {
+        $fakeQueue = new FakeEmailQueue();
+        $unknownEmail = new Email(
+            id: 99999,
+            body: 'Body',
+            recipient: 'test@example.com',
+            retries: 0,
+            status: EmailController::STATE_INITIAL,
+            subject: 'Subject',
+            created_at: new \DateTimeImmutable(),
+            updated_at: new \DateTimeImmutable(),
+        );
+        $fakeQueue->setEmailToRetry($unknownEmail);
+        $this->assertNull($fakeQueue->getEmailById(99999));
+    }
+
+    /**
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailById
+     */
+    public function test_getEmailById_returns_null_for_unknown_id(): void
+    {
+        $fakeQueue = new FakeEmailQueue();
+        $this->assertNull($fakeQueue->getEmailById(99999));
+    }
 }

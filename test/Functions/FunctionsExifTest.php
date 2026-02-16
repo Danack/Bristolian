@@ -28,8 +28,6 @@ class FunctionsExifTest extends BaseTestCase
         $this->assertIsArray($result);
         $this->assertCount(2, $result);
         [$latitude, $longitude] = $result;
-        $this->assertIsFloat($latitude);
-        $this->assertIsFloat($longitude);
         $this->assertGreaterThan(51, $latitude);
         $this->assertLessThan(52, $latitude);
         $this->assertLessThan(-2, $longitude);

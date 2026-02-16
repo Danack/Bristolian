@@ -35,7 +35,7 @@ class PdoTinnedFishProductRepo implements TinnedFishProductRepo
             return null;
         }
 
-        return $this->rowToProduct($row);
+        return Product::fromRow($row);
     }
 
     /**
@@ -50,7 +50,7 @@ class PdoTinnedFishProductRepo implements TinnedFishProductRepo
 
         $products = [];
         foreach ($rows as $row) {
-            $products[] = $this->rowToProduct($row);
+            $products[] = Product::fromRow($row);
         }
 
         return $products;
@@ -110,29 +110,4 @@ class PdoTinnedFishProductRepo implements TinnedFishProductRepo
         ]);
     }
 
-    /**
-     * @param array<string, mixed> $row
-     */
-    private function rowToProduct(array $row): Product
-    {
-        $validationStatus = ValidationStatus::NOT_VALIDATED;
-        if (isset($row['validation_status'])) {
-            $validationStatus = ValidationStatus::from($row['validation_status']);
-        }
-
-        return new Product(
-            barcode: $row['barcode'],
-            name: $row['name'],
-            brand: $row['brand'],
-            species: $row['species'],
-            weight: $row['weight'] !== null ? (float)$row['weight'] : null,
-            weight_drained: $row['weight_drained'] !== null ? (float)$row['weight_drained'] : null,
-            product_code: $row['product_code'],
-            image_url: $row['image_url'],
-            validation_status: $validationStatus,
-            raw_data: null,
-            created_at: new \DateTimeImmutable($row['created_at']),
-            updated_at: new \DateTimeImmutable($row['updated_at'])
-        );
-    }
 }

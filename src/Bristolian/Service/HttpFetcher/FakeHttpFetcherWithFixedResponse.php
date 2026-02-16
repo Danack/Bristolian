@@ -15,6 +15,9 @@ class FakeHttpFetcherWithFixedResponse implements HttpFetcher
     /** @var mixed[] */
     private $headers;
 
+    /**
+     * @param array<string, mixed>|array<int, string> $headers
+     */
     public function __construct(int $statusCode, string $body, array $headers = [])
     {
         $this->statusCode = $statusCode;

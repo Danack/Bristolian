@@ -72,4 +72,68 @@ class ProductTest extends BaseTestCase
         $this->assertNull($product->created_at);
         $this->assertNull($product->updated_at);
     }
+
+    /**
+     * @covers \Bristolian\Model\TinnedFish\Product::fromRow
+     */
+    public function test_fromRow(): void
+    {
+        $row = [
+            'barcode' => '5012345678901',
+            'name' => 'Anchovy Fillets',
+            'brand' => 'Ocean Brand',
+            'species' => 'Anchovy',
+            'weight' => 100.5,
+            'weight_drained' => 65.0,
+            'product_code' => 'XYZ789',
+            'image_url' => 'https://example.com/anchovy.jpg',
+            'validation_status' => 'validated_is_fish',
+            'created_at' => '2024-02-01 09:00:00',
+            'updated_at' => '2024-02-02 10:30:00',
+        ];
+
+        $product = Product::fromRow($row);
+
+        $this->assertSame('5012345678901', $product->barcode);
+        $this->assertSame('Anchovy Fillets', $product->name);
+        $this->assertSame('Ocean Brand', $product->brand);
+        $this->assertSame('Anchovy', $product->species);
+        $this->assertSame(100.5, $product->weight);
+        $this->assertSame(65.0, $product->weight_drained);
+        $this->assertSame('XYZ789', $product->product_code);
+        $this->assertSame('https://example.com/anchovy.jpg', $product->image_url);
+        $this->assertSame(ValidationStatus::VALIDATED_IS_FISH, $product->validation_status);
+        $this->assertNull($product->raw_data);
+        $this->assertEquals(new \DateTimeImmutable('2024-02-01 09:00:00'), $product->created_at);
+        $this->assertEquals(new \DateTimeImmutable('2024-02-02 10:30:00'), $product->updated_at);
+    }
+
+    /**
+     * @covers \Bristolian\Model\TinnedFish\Product::fromRow
+     */
+    public function test_fromRow_with_null_weight_and_no_validation_status(): void
+    {
+        $row = [
+            'barcode' => '9999999999999',
+            'name' => 'Mystery Tin',
+            'brand' => 'Unknown',
+            'species' => null,
+            'weight' => null,
+            'weight_drained' => null,
+            'product_code' => null,
+            'image_url' => null,
+            'created_at' => '2024-01-01 00:00:00',
+            'updated_at' => '2024-01-01 00:00:00',
+        ];
+
+        $product = Product::fromRow($row);
+
+        $this->assertSame('9999999999999', $product->barcode);
+        $this->assertNull($product->species);
+        $this->assertNull($product->weight);
+        $this->assertNull($product->weight_drained);
+        $this->assertNull($product->product_code);
+        $this->assertNull($product->image_url);
+        $this->assertSame(ValidationStatus::NOT_VALIDATED, $product->validation_status);
+    }
 }

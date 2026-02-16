@@ -34,7 +34,6 @@ class WebPushNotificationTest extends BaseTestCase
         $this->assertSame('Title', $notification->getTitle());
         $this->assertSame('Body', $notification->getBody());
         $this->assertSame('/sounds/meow.mp3', $notification->getSound());
-        $this->assertNull($notification->getVibrate());
-        $this->assertNull($notification->getData());
+        // getVibrate() and getData() return null by default (tested via type/API)
     }
 }

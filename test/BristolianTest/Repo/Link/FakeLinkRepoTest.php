@@ -52,4 +52,26 @@ class FakeLinkRepoTest extends LinkRepoFixture
         $this->assertSame($user_id, $links[$link_id_2]->user_id);
         $this->assertSame($url_2, $links[$link_id_2]->url);
     }
+
+    /**
+     * @covers \Bristolian\Repo\LinkRepo\FakeLinkRepo::getLastAddedLink
+     */
+    public function test_getLastAddedLink_returns_null_when_empty(): void
+    {
+        $linkRepo = new FakeLinkRepo();
+        $this->assertNull($linkRepo->getLastAddedLink());
+    }
+
+    /**
+     * @covers \Bristolian\Repo\LinkRepo\FakeLinkRepo::getLastAddedLink
+     */
+    public function test_getLastAddedLink_returns_last_added_link(): void
+    {
+        $linkRepo = new FakeLinkRepo();
+        $linkRepo->store_link('user1', 'https://example.com/first');
+        $linkRepo->store_link('user1', 'https://example.com/second');
+        $last = $linkRepo->getLastAddedLink();
+        $this->assertNotNull($last);
+        $this->assertSame('https://example.com/second', $last->url);
+    }
 }

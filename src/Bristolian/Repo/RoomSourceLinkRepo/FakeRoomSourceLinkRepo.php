@@ -25,6 +25,18 @@ class FakeRoomSourceLinkRepo implements RoomSourceLinkRepo
      */
     private array $roomSourceLinks = [];
 
+    /**
+     * @param array<string, array{id: string, room_id: string, sourcelink_id: string, title: string}> $initialRoomSourceLinks
+     * @param array<string, array{id: string, user_id: string, file_id: string, highlights_json: string, text: string}> $initialSourceLinks
+     */
+    public function __construct(
+        array $initialRoomSourceLinks = [],
+        array $initialSourceLinks = []
+    ) {
+        $this->roomSourceLinks = $initialRoomSourceLinks;
+        $this->sourceLinks = $initialSourceLinks;
+    }
+
     public function addSourceLink(
         string $user_id,
         string $room_id,

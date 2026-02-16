@@ -84,4 +84,37 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
 
         $this->assertEmpty($roomLinks);
     }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::addLinkToRoomFromParam
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLastAddedLink
+     */
+    public function test_getLinksForRoom_and_getLastAddedLink_after_add(): void
+    {
+        $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
+        $repo = new FakeRoomLinkRepo($linkRepo);
+        $room_id = 'room-1';
+        $params = LinkParam::createFromVarMap(new ArrayVarMap([
+            'url' => 'https://example.com',
+            'title' => 'Example Title Here',
+            'description' => 'Description text here',
+        ]));
+        $repo->addLinkToRoomFromParam('user-1', $room_id, $params);
+        $links = $repo->getLinksForRoom($room_id);
+        $this->assertCount(1, $links);
+        $last = $repo->getLastAddedLink();
+        $this->assertNotNull($last);
+        $this->assertSame($room_id, $last->room_id);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLastAddedLink
+     */
+    public function test_getLastAddedLink_returns_null_when_empty(): void
+    {
+        $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
+        $repo = new FakeRoomLinkRepo($linkRepo);
+        $this->assertNull($repo->getLastAddedLink());
+    }
 }

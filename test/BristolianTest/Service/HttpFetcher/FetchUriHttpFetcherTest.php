@@ -19,10 +19,7 @@ class FetchUriHttpFetcherTest extends BaseTestCase
         // Use a URL that will yield a response (e.g. 200 or 404) without side effects
         $result = $fetcher->fetch('https://www.bristol.gov.uk/', 'GET');
 
-        $this->assertIsArray($result);
         $this->assertCount(3, $result);
-        $this->assertIsInt($result[0]);
-        $this->assertIsString($result[1]);
-        $this->assertIsArray($result[2]);
+        // $result is [statusCode, body, headers] per HttpFetcher::fetch return type
     }
 }

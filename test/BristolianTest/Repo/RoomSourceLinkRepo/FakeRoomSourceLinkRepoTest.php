@@ -42,4 +42,26 @@ class FakeRoomSourceLinkRepoTest extends RoomSourceLinkRepoFixture
     {
         return 'file-999';
     }
+
+    /**
+     * When a room source link references a missing source link, getSourceLinksForRoom skips it (defensive path).
+     *
+     * @covers \Bristolian\Repo\RoomSourceLinkRepo\FakeRoomSourceLinkRepo::getSourceLinksForRoom
+     */
+    public function test_getSourceLinksForRoom_skips_room_source_link_when_source_link_missing(): void
+    {
+        $room_id = 'room-1';
+        $orphanRoomSourceLink = [
+            'id' => 'rsl-1',
+            'room_id' => $room_id,
+            'sourcelink_id' => 'nonexistent-sourcelink-id',
+            'title' => 'Orphan title',
+        ];
+        $repo = new FakeRoomSourceLinkRepo(
+            ['rsl-1' => $orphanRoomSourceLink],
+            []
+        );
+        $results = $repo->getSourceLinksForRoom($room_id);
+        $this->assertSame([], $results);
+    }
 }
