@@ -10,17 +10,21 @@ You can either:
 
 ## How It Works
 
-### Step 1: Generate Coverage Report
+### Step 1: Read Testing Guidelines
 
-First, I run the unit tests to generate a coverage report:
+Read `docs/developing/testing_guidelines.md` before doing any of the steps below. It defines PHPUnit coverage annotations, data providers, the no-mocks rule, use of test fixtures, and other patterns you must follow when writing tests.
+
+### Step 2: Generate Coverage Report
+
+Run the unit tests to generate a coverage report:
 
 ```bash
 docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh --no-progress"
 ```
 
-### Step 2: Find Uncovered Lines
+### Step 3: Find Uncovered Lines
 
-Then I identify uncovered lines for the specified directory/namespace:
+Identify uncovered lines for the specified directory/namespace:
 
 ```bash
 # For a namespace (e.g., Bristolian/Response)
@@ -30,25 +34,25 @@ docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xm
 docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml | grep src/Bristolian/Response"
 ```
 
-### Step 3: Analyze Existing Tests
+### Step 4: Analyze Existing Tests
 
-I review existing test files in the `test/` directory to understand:
+Review existing test files in the `test/` directory to understand:
 - Test structure and patterns
 - How similar classes are tested
 - What's already covered
 
-### Step 4: Create Missing Tests
+### Step 5: Create Missing Tests
 
-I create test files following the project's testing guidelines:
+Create test files following the project's testing guidelines:
 - Use `BaseTestCase` as the base class
 - Follow existing test patterns and structure
 - Use real objects, not mocks (per project guidelines)
 - Test all uncovered methods and code paths
 - Include `@covers` annotations
 
-### Step 5: Verify Coverage Improvement
+### Step 6: Verify Coverage Improvement
 
-After creating tests, I run the tests again to verify:
+After creating tests, run the tests again to verify:
 - All new tests pass
 - Coverage has improved
 - No regressions were introduced
@@ -64,33 +68,36 @@ After creating tests, I run the tests again to verify:
 **User:** `@improve_test_coverage Bristolian/Response`
 
 **What I do:**
-1. Run tests to generate coverage
-2. Find all uncovered lines in `Bristolian/Response` namespace
-3. Review existing Response test files
-4. Create tests for uncovered Response classes
-5. Run tests to verify improvement
+1. Read testing guidelines
+2. Run tests to generate coverage
+3. Find all uncovered lines in `Bristolian/Response` namespace
+4. Review existing Response test files
+5. Create tests for uncovered Response classes
+6. Run tests to verify improvement
 
 ### Example 2: Suggest a Namespace
 
 **User:** `@improve_test_coverage suggest`
 
 **What I do:**
-1. Run tests to generate coverage
-2. Analyze coverage across different namespaces
-3. Identify which namespace has the most uncovered lines
-4. Suggest that namespace for improvement
-5. Optionally start improving it if you approve
+1. Read testing guidelines
+2. Run tests to generate coverage
+3. Analyze coverage across different namespaces
+4. Identify which namespace has the most uncovered lines
+5. Suggest that namespace for improvement
+6. Optionally start improving it if you approve
 
 ### Example 3: Improve Coverage for a Directory
 
 **User:** `@improve_test_coverage src/Bristolian/Model`
 
 **What I do:**
-1. Run tests to generate coverage
-2. Find all uncovered lines in that directory
-3. Review existing Model test files
-4. Create tests for uncovered Model classes
-5. Run tests to verify improvement
+1. Read testing guidelines
+2. Run tests to generate coverage
+3. Find all uncovered lines in that directory
+4. Review existing Model test files
+5. Create tests for uncovered Model classes
+6. Run tests to verify improvement
 
 ## Notes
 
