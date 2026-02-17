@@ -13,12 +13,14 @@ class CLIFunction
     public static function setupErrorHandlers(): void
     {
         $initialOBLevel = ob_get_level();
+        // @codeCoverageIgnoreStart
         $shutdownFunction = function () use ($initialOBLevel) {
             while (ob_get_level() > $initialOBLevel) {
                 ob_end_clean();
             }
             self::fatalErrorShutdownHandler();
         };
+        // @codeCoverageIgnoreEnd
 
         register_shutdown_function($shutdownFunction);
 
@@ -39,6 +41,7 @@ class CLIFunction
         $lastError = error_get_last();
 
         if ($lastError !== null && in_array($lastError['type'], $fatals) === true) {
+            // @codeCoverageIgnoreStart
             $message = 'unknown';
             $file = 'unknown';
             $line = 'unknown';
@@ -66,6 +69,7 @@ class CLIFunction
             echo $msg;
 
             exit(-1);
+            // @codeCoverageIgnoreEnd
         }
     }
 

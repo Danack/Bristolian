@@ -109,5 +109,4 @@ class PdoTinnedFishProductRepo implements TinnedFishProductRepo
             ':validation_status' => $validationStatus->value,
         ]);
     }
-
 }

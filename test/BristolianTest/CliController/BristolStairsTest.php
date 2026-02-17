@@ -1,19 +1,96 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BristolianTest\CliController;
 
-use BristolianTest\BaseTestCase;
 use Bristolian\CliController\BristolStairs;
-use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
-use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Filesystem\BristolStairsFilesystem;
-use Bristolian\Repo\AdminRepo\AdminRepo;
+use Bristolian\Model\Generated\StairImageObjectInfo;
+use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
+use Bristolian\Repo\BristolStairImageStorageInfoRepo\FileState;
+use Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo;
+use Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo;
+use Bristolian\Repo\AdminRepo\FakeAdminRepo;
 use Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage;
 use Bristolian\Service\BristolStairImageStorage\UploadError;
-use Bristolian\Service\BristolStairImageStorage\ObjectStoredFileInfo;
-use Bristolian\UploadedFiles\UploadedFile;
-use PHPUnit\Framework\MockObject\MockObject;
-use Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo;
+use Bristolian\Service\CliOutput\CapturingCliOutput;
+use Bristolian\Service\CliOutput\CliExitRequestedException;
+use BristolianTest\BaseTestCase;
+use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\UnableToListContents;
+
+/**
+ * Adapter that throws UnableToListContents when the listing is iterated (so BristolStairs' try/foreach catches it).
+ */
+final class ThrowingListContentsAdapter extends LocalFilesystemAdapter
+{
+    public function listContents(string $path, bool $deep): iterable
+    {
+        return (function () use ($path, $deep): \Generator {
+            throw UnableToListContents::atLocation($path, $deep, new \Exception('test list failure'));
+            yield;
+        })();
+    }
+}
+
+/**
+ * Storage info repo that returns one known file for a given path so we can hit the "known files" branch.
+ */
+final class BristolStairImageStorageInfoRepoWithOneKnown implements BristolStairImageStorageInfoRepo
+{
+    private string $knownNormalizedName;
+
+    public function __construct(string $knownNormalizedName)
+    {
+        $this->knownNormalizedName = $knownNormalizedName;
+    }
+
+    public function storeFileInfo(string $user_id, string $normalized_filename, \Bristolian\UploadedFiles\UploadedFile $uploadedFile): string
+    {
+        throw new \BadMethodCallException('not used in this test');
+    }
+
+    public function getById(string $bristol_stairs_image_id): StairImageObjectInfo|null
+    {
+        return null;
+    }
+
+    public function getByNormalizedName(string $normalized_name): StairImageObjectInfo|null
+    {
+        if ($normalized_name === $this->knownNormalizedName) {
+            return new StairImageObjectInfo(
+                id: 'id-1',
+                normalized_name: $this->knownNormalizedName,
+                original_filename: 'original',
+                state: FileState::INITIAL->value,
+                size: 0,
+                user_id: 'user-1',
+                created_at: new \DateTimeImmutable(),
+            );
+        }
+        return null;
+    }
+
+    public function setUploaded(string $file_storage_id): void
+    {
+    }
+}
+
+/**
+ * BristolStairImageStorage that always returns UploadError for create() failure path.
+ */
+final class BristolStairImageStorageReturningUploadError implements BristolStairImageStorage
+{
+    public function storeFileForUser(
+        string $user_id,
+        \Bristolian\UploadedFiles\UploadedFile $uploadedFile,
+        array $allowedExtensions,
+        \Bristolian\Parameters\BristolStairsGpsParams $gpsParams
+    ): \Bristolian\Model\Generated\BristolStairInfo|UploadError {
+        return UploadError::unsupportedFileType();
+    }
+}
 
 /**
  * @coversNothing
@@ -21,210 +98,175 @@ use Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo;
 class BristolStairsTest extends BaseTestCase
 {
     /**
-     * Test the total method with valid data
+     * @covers \Bristolian\CliController\BristolStairs::__construct
      * @covers \Bristolian\CliController\BristolStairs::total
+     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::write
+     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::getCapturedOutput
      */
-    public function test_total_with_valid_data(): void
+    public function test_total_outputs_steps_and_flights(): void
     {
-        $this->injector->alias(
-            BristolStairsRepo::class,
-            FakeBristolStairsRepo::class
+        $output = new CapturingCliOutput();
+        $this->injector->share($output);
+        $this->injector->alias(\Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::class, FakeBristolStairsRepo::class);
+        $repo = new FakeBristolStairsRepo();
+        $this->injector->share($repo);
+
+        $controller = $this->injector->make(BristolStairs::class);
+        $controller->total($repo);
+
+        $this->assertStringContainsString('105 steps', $output->getCapturedOutput());
+        $this->assertStringContainsString('3 flights_of_stairs', $output->getCapturedOutput());
+    }
+
+    /**
+     * @covers \Bristolian\CliController\BristolStairs::check_contents
+     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::getCapturedLines
+     */
+    public function test_check_contents_reports_unknown_files(): void
+    {
+        $output = new CapturingCliOutput();
+        $this->injector->share($output);
+        $storageInfoRepo = new FakeBristolStairImageStorageInfoRepo();
+        $adapter = new LocalFilesystemAdapter(__DIR__);
+        $filesystem = new BristolStairsFilesystem($adapter, []);
+
+        $controller = $this->injector->make(BristolStairs::class);
+        $controller->check_contents($storageInfoRepo, $filesystem);
+
+        $lines = $output->getCapturedLines();
+        $this->assertNotEmpty($lines);
+        $this->assertSame('Unknown files:', trim($lines[0]));
+        $full = $output->getCapturedOutput();
+        $this->assertStringContainsString('Unknown files:', $full);
+    }
+
+    /**
+     * @covers \Bristolian\CliController\BristolStairs::create
+     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::exit
+     * @covers \Bristolian\Service\CliOutput\CliExitRequestedException::__construct
+     * @covers \Bristolian\Service\CliOutput\CliExitRequestedException::getExitCode
+     */
+    public function test_create_when_admin_not_found_writes_message_and_exits(): void
+    {
+        $output = new CapturingCliOutput();
+        $this->injector->share($output);
+        $adminRepo = new FakeAdminRepo([]);
+        $this->injector->share($adminRepo);
+        $this->injector->alias(\Bristolian\Repo\AdminRepo\AdminRepo::class, FakeAdminRepo::class);
+        $storage = new \Bristolian\Service\BristolStairImageStorage\FakeWorksBristolStairImageStorage();
+        $this->injector->share($storage);
+        $this->injector->alias(\Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage::class, \Bristolian\Service\BristolStairImageStorage\FakeWorksBristolStairImageStorage::class);
+
+        $controller = $this->injector->make(BristolStairs::class);
+
+        try {
+            $controller->create($adminRepo, $storage, __DIR__ . '/../../sample.pdf');
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $e) {
+            $this->assertSame(-1, $e->getExitCode());
+            $this->assertStringContainsString('Failed to find admin user', $output->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\BristolStairs::create
+     */
+    public function test_create_success_does_not_exit(): void
+    {
+        $output = new CapturingCliOutput();
+        $this->injector->share($output);
+        $adminUser = \Bristolian\Model\Types\AdminUser::new(
+            'user-1',
+            'testing@example.com',
+            generate_password_hash('testing')
         );
+        $adminRepo = new FakeAdminRepo([$adminUser]);
+        $this->injector->share($adminRepo);
+        $this->injector->alias(\Bristolian\Repo\AdminRepo\AdminRepo::class, FakeAdminRepo::class);
+        $storage = new \Bristolian\Service\BristolStairImageStorage\FakeWorksBristolStairImageStorage();
+        $this->injector->share($storage);
+        $this->injector->alias(\Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage::class, \Bristolian\Service\BristolStairImageStorage\FakeWorksBristolStairImageStorage::class);
 
-        $stairs_repo = new FakeBristolStairsRepo();
-        $this->injector->share($stairs_repo);
+        $controller = $this->injector->make(BristolStairs::class);
+        $controller->create($adminRepo, $storage, __DIR__ . '/../../sample.pdf');
 
-        ob_start();
-        $this->injector->execute([BristolStairs::class, 'total']);
-        $output = ob_get_clean();
-        // TODO - any possible asserts?
+        $this->assertSame('', $output->getCapturedOutput());
     }
 
     /**
-     * Test the total method with zero steps
+     * @covers \Bristolian\CliController\BristolStairs::check_contents
      */
-    public function test_total_with_zero_steps(): void
+    public function test_check_contents_when_listContents_throws_writes_message_and_exits(): void
     {
-        // TODO: Implement test
-        // - Mock BristolStairsRepo to return 0 flights and 0 steps
-        // - Call total method
-        // - Assert correct output is echoed
-        $this->markTestIncomplete('Test not implemented yet');
+        $output = new CapturingCliOutput();
+        $this->injector->share($output);
+        $adapter = new ThrowingListContentsAdapter(sys_get_temp_dir());
+        $filesystem = new BristolStairsFilesystem($adapter, []);
+        $storageInfoRepo = new FakeBristolStairImageStorageInfoRepo();
+
+        $controller = $this->injector->make(BristolStairs::class);
+
+        try {
+            $controller->check_contents($storageInfoRepo, $filesystem);
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $e) {
+            $this->assertSame(-1, $e->getExitCode());
+        }
+        $this->assertStringContainsString('Failed to list files in storage', $output->getCapturedOutput());
+        $this->assertStringContainsString('test list failure', $output->getCapturedOutput());
     }
 
     /**
-     * Test the total method with large numbers
+     * @covers \Bristolian\CliController\BristolStairs::create
      */
-    public function test_total_with_large_numbers(): void
+    public function test_create_when_storage_returns_UploadError_writes_message_and_exits(): void
     {
-        // TODO: Implement test
-        // - Mock BristolStairsRepo to return large numbers
-        // - Call total method
-        // - Assert correct output is echoed
-        $this->markTestIncomplete('Test not implemented yet');
+        $output = new CapturingCliOutput();
+        $this->injector->share($output);
+        $adminUser = \Bristolian\Model\Types\AdminUser::new(
+            'user-1',
+            'testing@example.com',
+            generate_password_hash('testing')
+        );
+        $adminRepo = new FakeAdminRepo([$adminUser]);
+        $this->injector->share($adminRepo);
+        $this->injector->alias(\Bristolian\Repo\AdminRepo\AdminRepo::class, FakeAdminRepo::class);
+        $storage = new BristolStairImageStorageReturningUploadError();
+        $this->injector->share($storage);
+        $this->injector->alias(\Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage::class, BristolStairImageStorageReturningUploadError::class);
+
+        $controller = $this->injector->make(BristolStairs::class);
+
+        try {
+            $controller->create($adminRepo, $storage, __DIR__ . '/../../sample.pdf');
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $e) {
+            $this->assertSame(-1, $e->getExitCode());
+        }
+        $this->assertStringContainsString('Failed to upload file', $output->getCapturedOutput());
     }
 
     /**
-     * Test check_contents with no files in storage
+     * @covers \Bristolian\CliController\BristolStairs::check_contents
      */
-    public function test_check_contents_with_no_files(): void
+    public function test_check_contents_with_mix_of_known_and_unknown_files(): void
     {
-        // TODO: Implement test
-        // - Mock BristolStairsFilesystem to return empty list
-        // - Call check_contents method
-        // - Assert correct output (no unknown files)
-        $this->markTestIncomplete('Test not implemented yet');
-    }
+        $output = new CapturingCliOutput();
+        $this->injector->share($output);
+        $adapter = new LocalFilesystemAdapter(__DIR__);
+        $filesystem = new BristolStairsFilesystem($adapter, []);
+        $firstPath = null;
+        foreach ($filesystem->listContents('') as $file) {
+            $firstPath = $file->path();
+            break;
+        }
+        $this->assertNotNull($firstPath, 'test dir must have at least one file');
+        $storageInfoRepo = new BristolStairImageStorageInfoRepoWithOneKnown($firstPath);
 
-    /**
-     * Test check_contents with known files only
-     */
-    public function test_check_contents_with_known_files_only(): void
-    {
-        // TODO: Implement test
-        // - Mock BristolStairsFilesystem to return list of files
-        // - Mock BristolStairImageStorageInfoRepo to return non-null for all files
-        // - Call check_contents method
-        // - Assert no unknown files are reported
-        $this->markTestIncomplete('Test not implemented yet');
-    }
+        $controller = $this->injector->make(BristolStairs::class);
+        $controller->check_contents($storageInfoRepo, $filesystem);
 
-    /**
-     * Test check_contents with unknown files
-     */
-    public function test_check_contents_with_unknown_files(): void
-    {
-        // TODO: Implement test
-        // - Mock BristolStairsFilesystem to return list of files
-        // - Mock BristolStairImageStorageInfoRepo to return null for some files
-        // - Call check_contents method
-        // - Assert unknown files are reported correctly
-        $this->markTestIncomplete('Test not implemented yet');
-    }
-
-    /**
-     * Test check_contents with mixed known and unknown files
-     */
-    public function test_check_contents_with_mixed_files(): void
-    {
-        // TODO: Implement test
-        // - Mock BristolStairsFilesystem to return list of files
-        // - Mock BristolStairImageStorageInfoRepo to return mixed results
-        // - Call check_contents method
-        // - Assert both known and unknown files are handled correctly
-        $this->markTestIncomplete('Test not implemented yet');
-    }
-
-    /**
-     * Test check_contents when filesystem throws UnableToListContents exception
-     */
-    public function test_check_contents_filesystem_exception(): void
-    {
-        // TODO: Implement test
-        // - Mock BristolStairsFilesystem to throw UnableToListContents exception
-        // - Call check_contents method
-        // - Assert correct error message is output and exit(-1) is called
-        $this->markTestIncomplete('Test not implemented yet');
-    }
-
-    /**
-     * @group wip2
-     * Test create method with valid admin user and successful upload
-     */
-    public function test_create_successful_upload(): void
-    {
-        $this->markTestSkipped('Test not implemented yet');
-
-        $this->setupStandardWorkingFakes();
-        ob_start();
-        $result = $this->injector->execute([BristolStairs::class, 'create']);
-        $output = ob_get_clean();
-
-        var_dump($output);
-    }
-
-    /**
-     * Test create method when admin user is not found
-     */
-    public function test_create_admin_user_not_found(): void
-    {
-        // TODO: Implement test
-
-        $this->markTestIncomplete('Test not implemented yet');
-    }
-
-    /**
-     * Test create method when file upload fails
-     */
-    public function test_create_upload_failure(): void
-    {
-        // TODO: Implement test
-
-        $this->markTestIncomplete('Test not implemented yet');
-    }
-
-    /**
-     * Test create method with non-existent image file
-     */
-    public function test_create_with_nonexistent_file(): void
-    {
-        // TODO: Implement test
-        // - Call create method with non-existent file path
-        // - Assert appropriate error handling
-        $this->markTestIncomplete('Test not implemented yet');
-    }
-
-    /**
-     * Test create method with invalid image file format
-     */
-    public function test_create_with_invalid_file_format(): void
-    {
-        // TODO: Implement test
-        // - Create temporary file with invalid format
-        // - Mock AdminRepo to return valid user ID
-        // - Mock BristolStairImageStorage to return UploadError for invalid format
-        // - Call create method
-        // - Assert upload failure is handled correctly
-        $this->markTestIncomplete('Test not implemented yet');
-    }
-
-    /**
-     * Test create method with valid image file but storage service error
-     */
-    public function test_create_storage_service_error(): void
-    {
-        // TODO: Implement test
-        // - Mock AdminRepo to return valid user ID
-        // - Mock BristolStairImageStorage to throw exception
-        // - Create temporary test image file
-        // - Call create method
-        // - Assert error is handled appropriately
-        $this->markTestIncomplete('Test not implemented yet');
-    }
-
-    /**
-     * Test create method with different image file extensions
-     */
-    public function test_create_with_different_image_extensions(): void
-    {
-        // TODO: Implement test
-        // - Test with .jpg, .jpeg, .png, .gif files
-        // - Mock AdminRepo and BristolStairImageStorage appropriately
-        // - Assert all supported formats work correctly
-        $this->markTestIncomplete('Test not implemented yet');
-    }
-
-    /**
-     * Test create method with GPS parameters
-     */
-    public function test_create_with_gps_parameters(): void
-    {
-        // TODO: Implement test
-        // - Mock AdminRepo to return valid user ID
-        // - Mock BristolStairImageStorage to verify GPS parameters are passed correctly
-        // - Create temporary test image file
-        // - Call create method
-        // - Assert GPS parameters are handled correctly
-        $this->markTestIncomplete('Test not implemented yet');
+        $full = $output->getCapturedOutput();
+        $this->assertStringContainsString('Unknown files:', $full);
     }
 }

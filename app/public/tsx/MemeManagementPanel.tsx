@@ -2,7 +2,7 @@ import {h, Component} from "preact";
 import {api, GetMemesResponse, PostMemetagaddResponse, PostMemetagdeleteResponse} from "./generated/api_routes";
 import {StoredMeme, createStoredMeme} from "./generated/types";
 import {MemeTagType} from "./MemeTagType";
-import {MEME_FILE_UPLOAD_FORM_NAME, DUPLICATE_FILENAME} from "./generated/constants";
+import {MEME_FILE_UPLOAD_FORM_NAME, DUPLICATE_FILENAME, MEMES_DISPLAY_LIMIT} from "./generated/constants";
 
 export interface MemeManagementPanelProps {
     // no properties currently
@@ -44,10 +44,13 @@ interface FileUploadItem {
     id: string;
     status: UploadStatus;
     message: string|null;
+    /** Object URL for image preview; must be revoked when item is removed or panel closed */
+    previewUrl: string;
 }
 
 interface MemeManagementPanelState {
     memes: Array<StoredMeme>;
+    memesTruncated: boolean; // true when API limited results to 50
     memeBeingEdited: StoredMeme|null;
     memeInfo: Array<MemeInfo>;
     memeBeingEdited_memetags: Array<MemeTag>|null;
@@ -81,6 +84,7 @@ const MINIMUM_TAG_LENGTH = 4;
 function getDefaultState(/*initialControlParams: object*/): MemeManagementPanelState {
     return {
         memes: [],
+        memesTruncated: false,
         memeBeingEdited: null,
         memeInfo: null,
         memeBeingEdited_memetags: null,
@@ -146,12 +150,14 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             console.error("Server response did not contain 'memes'.");
             return;
         }
-        // GetMemesResponse structure: { result: 'success', data: { memes: DateToString<StoredMeme>[] } }
-        // Convert date strings to Date objects using the generated helper
+        // GetMemesResponse structure: { result: 'success', data: { memes, truncated? } }
         const memes: StoredMeme[] = data.data.memes.map((meme) => 
             createStoredMeme(meme)
         );
-        this.setState({memes: memes})
+        this.setState({
+            memes,
+            memesTruncated: data.data.truncated === true
+        });
     }
 
     refreshMemes() {
@@ -211,13 +217,12 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         fetch(url)
             .then((response: Response) => response.json())
             .then((data: GetMemesResponse) => {
-                // GetMemesResponse structure: { result: 'success', data: { memes: DateToString<StoredMeme>[] } }
-                // Convert date strings to Date objects using the generated helper
                 const memes: StoredMeme[] = data.data.memes.map((meme) => 
                     createStoredMeme(meme)
                 );
                 this.setState({ 
-                    memes: memes,
+                    memes,
+                    memesTruncated: data.data.truncated === true,
                     isSearching: false 
                 });
                 // Update suggested tags based on search results
@@ -371,8 +376,13 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             return <span>You don't have any memes uploaded. If you did, you could manage them here.</span>
         }
 
-        return <div className="meme_grid">
-            {Object.values(this.state.memes).map((meme: StoredMeme) => this.renderMeme(meme))}
+        return <div>
+            {this.state.memesTruncated && (
+                <p class="memes_truncated_message">Too many memes, displayed {MEMES_DISPLAY_LIMIT}</p>
+            )}
+            <div className="meme_grid">
+                {Object.values(this.state.memes).map((meme: StoredMeme) => this.renderMeme(meme))}
+            </div>
         </div>
     }
 
@@ -623,6 +633,11 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
     }
 
     handleHideUpload() {
+        this.state.fileUploads.forEach(item => {
+            if (item.previewUrl) {
+                URL.revokeObjectURL(item.previewUrl);
+            }
+        });
         this.setState({ 
             showUploadPanel: false,
             fileUploads: [],
@@ -759,7 +774,8 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             file: file,
             id: `${file.name}-${Date.now()}-${Math.random()}`,
             status: UploadStatus.Idle,
-            message: null as string|null
+            message: null as string|null,
+            previewUrl: URL.createObjectURL(file)
         }));
 
         this.setState(prevState => ({
@@ -892,9 +908,15 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
     };
 
     removeUploadItem(uploadId: string) {
-        this.setState(prevState => ({
-            fileUploads: prevState.fileUploads.filter(item => item.id !== uploadId)
-        }));
+        this.setState(prevState => {
+            const item = prevState.fileUploads.find(i => i.id === uploadId);
+            if (item?.previewUrl) {
+                URL.revokeObjectURL(item.previewUrl);
+            }
+            return {
+                fileUploads: prevState.fileUploads.filter(item => item.id !== uploadId)
+            };
+        });
     }
 
     renderMemeTagDeleteModal() {
@@ -1263,6 +1285,17 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                         </div>
                     </div>
                     
+                    {hasIdleFiles && (
+                        <div class="upload_actions">
+                            <button 
+                                onClick={this.onFileUpload} 
+                                disabled={isUploading}
+                                class="upload_button">
+                                {isUploading ? 'Uploading...' : `Upload ${this.state.fileUploads.filter(item => item.status === UploadStatus.Idle).length} file(s)`}
+                            </button>
+                        </div>
+                    )}
+
                     {hasFilesToUpload && (
                         <div class="file_upload_list">
                             {this.state.fileUploads.map((uploadItem) => {
@@ -1276,6 +1309,11 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                                 }
 
                                 return <div key={uploadItem.id} class={`file_upload_item ${statusClass}`}>
+                                    <img
+                                        src={uploadItem.previewUrl}
+                                        alt=""
+                                        class="file_upload_preview"
+                                    />
                                     <div class="file_upload_info">
                                         <span class="file_name">{uploadItem.file.name}</span>
                                         <span class="file_size">({Math.round(uploadItem.file.size / 1024)} KB)</span>
@@ -1295,17 +1333,6 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                                     )}
                                 </div>;
                             })}
-                        </div>
-                    )}
-
-                    {hasIdleFiles && (
-                        <div class="upload_actions">
-                            <button 
-                                onClick={this.onFileUpload} 
-                                disabled={isUploading}
-                                class="upload_button">
-                                {isUploading ? 'Uploading...' : `Upload ${this.state.fileUploads.filter(item => item.status === UploadStatus.Idle).length} file(s)`}
-                            </button>
                         </div>
                     )}
                 </div>

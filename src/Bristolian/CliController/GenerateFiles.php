@@ -669,6 +669,8 @@ class GenerateFiles
             'MAXIMUM_ABOUT_ME_LENGTH' => \Bristolian\Parameters\PropertyType\AboutMeText::MAXIMUM_ABOUT_ME_LENGTH,
 
             'DUPLICATE_FILENAME' => \Bristolian\Service\MemeStorageProcessor\UploadError::DUPLICATE_FILENAME,
+
+            'MEMES_DISPLAY_LIMIT' => \Bristolian\AppController\User::MEMES_DISPLAY_LIMIT,
         ];
 
         $string_template = <<< TEMPLATE
@@ -952,6 +954,28 @@ SQL;
             $field_name = $field_info[0];
             $field_type = $field_info[1];
             $is_array = isset($field_info[2]) && $field_info[2] === true;
+            $scalar_type = isset($field_info[3]) ? $field_info[3] : null;
+            $is_scalar = false;
+            if ($field_type === null && $scalar_type === 'bool') {
+                $is_scalar = true;
+            }
+            
+            if ($is_scalar) {
+                $constructorParams[] = [
+                    'name' => $field_name,
+                    'type' => 'bool',
+                    'doc_type' => 'bool',
+                    'short_name' => 'bool',
+                    'is_array' => false,
+                    'scalar' => true,
+                ];
+                $dataFields[] = [
+                    'name' => $field_name,
+                    'value' => '$' . $field_name,
+                    'scalar' => true,
+                ];
+                continue;
+            }
             
             // Add import for the type
             if (is_string($field_type)) {
@@ -1017,6 +1041,9 @@ SQL;
             if ($param['is_array']) {
                 $param_list[] = "array \${$param['name']}";
             }
+            elseif (!empty($param['scalar'])) {
+                $param_list[] = "bool \${$param['name']} = false";
+            }
             else {
                 $param_list[] = "{$param['short_name']} \${$param['name']}";
             }
@@ -1032,11 +1059,16 @@ SQL;
         // Convert each field to value
         $content .= "        \$converted_data = [];\n";
         foreach ($dataFields as $field) {
-            $content .= "        [\$error, \$converted_{$field['name']}] = \\convertToValue({$field['value']});\n";
-            $content .= "        if (\$error !== null) {\n";
-            $content .= "            throw new DataEncodingException(\"Could not convert {$field['name']} to a value. \", \$error);\n";
-            $content .= "        }\n";
-            $content .= "        \$converted_data['{$field['name']}'] = \$converted_{$field['name']};\n";
+            if (!empty($field['scalar'])) {
+                $content .= "        \$converted_data['{$field['name']}'] = {$field['value']};\n";
+            }
+            else {
+                $content .= "        [\$error, \$converted_{$field['name']}] = \\convertToValue({$field['value']});\n";
+                $content .= "        if (\$error !== null) {\n";
+                $content .= "            throw new DataEncodingException(\"Could not convert {$field['name']} to a value. \", \$error);\n";
+                $content .= "        }\n";
+                $content .= "        \$converted_data['{$field['name']}'] = \$converted_{$field['name']};\n";
+            }
         }
         
         $content .= "\n";
@@ -1324,6 +1356,13 @@ SQL;
             $field_name = $field_info[0];
             $field_type = $field_info[1];
             $is_array = isset($field_info[2]) && $field_info[2] === true;
+            $scalar_type = isset($field_info[3]) ? $field_info[3] : null;
+            $is_scalar = $field_type === null && $scalar_type === 'bool';
+            
+            if ($is_scalar) {
+                $content .= "        {$field_name}?: boolean;\n";
+                continue;
+            }
             
             if (is_string($field_type) && class_exists($field_type)) {
                 $rc = new \ReflectionClass($field_type);

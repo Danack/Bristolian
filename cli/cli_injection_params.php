@@ -89,6 +89,9 @@ function injectionParams() : InjectionParams
         \Bristolian\Repo\MemeTextRepo\MemeTextRepo::class =>
             \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class,
 
+        \Bristolian\Service\CliOutput\CliOutput::class =>
+            \Bristolian\Service\CliOutput\EchoCliOutput::class,
+
     ];
 
     // Delegate the creation of types to callables.

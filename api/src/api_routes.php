@@ -185,7 +185,8 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\User::listMemes',
             [
-                ['memes', \Bristolian\Model\Generated\StoredMeme::class, true]
+                ['memes', \Bristolian\Model\Generated\StoredMeme::class, true],
+                ['truncated', null, false, 'bool']
             ],
         ],
 
@@ -194,7 +195,8 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\User::searchMemes',
             [
-                ['memes', \Bristolian\Model\Generated\StoredMeme::class, true]
+                ['memes', \Bristolian\Model\Generated\StoredMeme::class, true],
+                ['truncated', null, false, 'bool']
             ],
         ], // Search memes by tag text and/or tag type
 

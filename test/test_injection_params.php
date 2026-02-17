@@ -29,6 +29,9 @@ function testInjectionParams() : InjectionParams
         // Tinned Fish Diary
         \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::class =>
             \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::class,
+
+        \Bristolian\Service\CliOutput\CliOutput::class =>
+            \Bristolian\Service\CliOutput\CapturingCliOutput::class,
     ];
 
     // Delegate the creation of types to callables.

@@ -9,15 +9,21 @@ use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInf
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage;
 use Bristolian\Service\BristolStairImageStorage\UploadError;
+use Bristolian\Service\CliOutput\CliOutput;
 use Bristolian\UploadedFiles\UploadedFile;
 
 class BristolStairs
 {
+    public function __construct(
+        private CliOutput $cliOutput
+    ) {
+    }
+
     public function total(BristolStairsRepo $bristolStairsRepo): void
     {
         [$flights_of_stairs, $total_steps] = $bristolStairsRepo->get_total_number_of_steps();
 
-        echo "There are $total_steps steps in $flights_of_stairs flights_of_stairs.\n";
+        $this->cliOutput->write("There are $total_steps steps in $flights_of_stairs flights_of_stairs.\n");
     }
 
     public function check_contents(
@@ -32,12 +38,11 @@ class BristolStairs
             foreach ($result as $file) {
                 $files_in_storage[] = $file->path();
             }
-        }
-        catch (\League\Flysystem\UnableToListContents $exception) {
-            echo "Failed to list files in storage in " . __FILE__ . ":" . __LINE__ .".\n";
-            echo $exception->getMessage();
-            echo "\n";
-            exit(-1);
+        } catch (\League\Flysystem\UnableToListContents $exception) {
+            $this->cliOutput->write("Failed to list files in storage in " . __FILE__ . ":" . __LINE__ . ".\n");
+            $this->cliOutput->write($exception->getMessage());
+            $this->cliOutput->write("\n");
+            $this->cliOutput->exit(-1);
         }
 
         $known_files = [];
@@ -48,14 +53,13 @@ class BristolStairs
 
             if ($result === null) {
                 $unknown_files[] = $file_in_storage;
-            }
-            else {
+            } else {
                 $known_files[] = $file_in_storage;
             }
         }
 
-        echo "Unknown files:\n";
-        var_dump($unknown_files);
+        $this->cliOutput->write("Unknown files:\n");
+        $this->cliOutput->write(var_export($unknown_files, true));
 
         // This code doesn't have permissions. Think I'm going to leave
         // it here like this for now, as I don't want to setup permissions
@@ -66,15 +70,14 @@ class BristolStairs
     }
 
     public function create(
-        AdminRepo                       $adminRepo,
-        BristolStairImageStorage        $bristolStairImageStorage,
-        string                          $image_filename
+        AdminRepo $adminRepo,
+        BristolStairImageStorage $bristolStairImageStorage,
+        string $image_filename
     ): void {
-
         $user_id = $adminRepo->getAdminUserId(getAdminEmailAddress());
         if ($user_id === null) {
-            echo "Failed to find admin user";
-            exit(-1);
+            $this->cliOutput->write("Failed to find admin user");
+            $this->cliOutput->exit(-1);
         }
 
         $uploadedFile = UploadedFile::fromFile($image_filename);
@@ -88,8 +91,8 @@ class BristolStairs
         );
 
         if ($stairInfoOrError instanceof UploadError) {
-            echo "Failed to upload file";
-            exit(-1);
+            $this->cliOutput->write("Failed to upload file");
+            $this->cliOutput->exit(-1);
         }
     }
 }

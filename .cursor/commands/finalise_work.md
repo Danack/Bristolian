@@ -57,7 +57,7 @@ docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh --filter TestClassN
 docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh --stop-on-failure"
 ```
 
-**What it does:** Runs all PHPUnit tests defined in `test/` directory using the configuration in `test/phpunit.xml`.
+**What it does:** Runs all PHPUnit tests defined in `test/` directory using the configuration in `phpunit.xml`.
 
 ### 3. CodeSniffer - Code Style Checking
 

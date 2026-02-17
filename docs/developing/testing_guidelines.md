@@ -287,19 +287,19 @@ Use the `--filter` option to run specific tests by name:
 
 ```bash
 # Run a specific test method
-docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c test/phpunit.xml --filter testRooms_addLink_working"
+docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c phpunit.xml --filter testRooms_addLink_working"
 
 # Run all tests in a specific test class
-docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c test/phpunit.xml --filter RoomsTest"
+docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c phpunit.xml --filter RoomsTest"
 
 # Run tests matching a pattern
-docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c test/phpunit.xml --filter 'testRooms_'"
+docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c phpunit.xml --filter 'testRooms_'"
 ```
 
 ### Running a Specific Test File
 
 ```bash
-docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c test/phpunit.xml test/BristolianTest/AppController/RoomsTest.php"
+docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c phpunit.xml test/BristolianTest/AppController/RoomsTest.php"
 ```
 
 ### Finding Uncovered Lines of Code

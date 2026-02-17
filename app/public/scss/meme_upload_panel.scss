@@ -352,6 +352,15 @@
         border-color: #ef5350;
       }
 
+      .file_upload_preview {
+        width: 48px;
+        height: 48px;
+        object-fit: cover;
+        border-radius: 4px;
+        flex-shrink: 0;
+        background-color: #e0e0e0;
+      }
+
       .file_upload_info {
         flex: 1;
         display: flex;
@@ -534,6 +543,12 @@
     border: 1px solid #ddd;
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .memes_truncated_message {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.95rem;
+    color: #666;
   }
 
   .meme_grid {

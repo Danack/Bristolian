@@ -26,6 +26,7 @@ class StandardPayloadValidatorTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\Mailgun\StandardPayloadValidator::validate
      * @dataProvider provides_validate_returns_false_when_required_key_missing
+     * @param array<string, string> $payloadData
      */
     public function test_validate_returns_false_when_required_key_missing(array $payloadData): void
     {

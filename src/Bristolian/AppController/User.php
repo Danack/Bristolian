@@ -29,6 +29,8 @@ use SlimDispatcher\Response\StubResponse;
 
 class User
 {
+    public const MEMES_DISPLAY_LIMIT = 50;
+
     public function listMemes(
         MemeStorageRepo $memeStorageRepo,
         UserSession $appSession,
@@ -49,7 +51,12 @@ class User
             $memes
         );
 
-        return new GetMemesResponse($storedMemes);
+        $truncated = count($storedMemes) > self::MEMES_DISPLAY_LIMIT;
+        if ($truncated) {
+            $storedMemes = array_slice($storedMemes, 0, self::MEMES_DISPLAY_LIMIT);
+        }
+
+        return new GetMemesResponse($storedMemes, $truncated);
     }
 
     public function searchMemes(
@@ -146,7 +153,12 @@ class User
             $memes
         );
 
-        return new GetMemesResponse($storedMemes);
+        $truncated = count($storedMemes) > self::MEMES_DISPLAY_LIMIT;
+        if ($truncated) {
+            $storedMemes = array_slice($storedMemes, 0, self::MEMES_DISPLAY_LIMIT);
+        }
+
+        return new GetMemesResponse($storedMemes, $truncated);
     }
 
     public function manageMemes(): string

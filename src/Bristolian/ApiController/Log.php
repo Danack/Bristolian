@@ -11,7 +11,6 @@ use Bristolian\Response\Typed\GetLogProcessorRunRecordsResponse;
 use SlimDispatcher\Response\JsonResponse;
 use VarMap\VarMap;
 
-
 class Log
 {
     public function get_processor_run_records(
