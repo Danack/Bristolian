@@ -47,3 +47,12 @@ src/Bristolian/Response/Typed
 api_routes.tsx
 /clover.xml
 .phpunit.cache
+/app/public/js/stats.json
+/app/public/js/report.html
+/app/public/js/app.bundle.js.map.gz
+/docs/api-specification-for-tinfish.md
+/docs/refactoring/refactoring_controllers_removing_union_returns_without_ceremony.md
+/easyocr_has_run.txt
+/chat_layout_big_scrreen.png
+/chat_ooh_replying_that's_new.png
+/chat_previous_days_buttons.png

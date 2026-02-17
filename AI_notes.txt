@@ -1,0 +1,15 @@
+# GPT-5.1 Codex Max
+
+Just ignored command to update .cursorrules
+
+Doesn't fill me with warm and fuzzy.
+
+Kind of bizarre behaviour, wanting to document small changes.
+
+"
+Tests: none run (checked docker logs bristolian-js_builder-1 --tail 100; webpack shows latest build completed successfully). Which feature should I tag these login-status changes under?
+"Which feature should I tag these login-status changes under?" - what do you mean?
+
+I meant: which feature file in docs/features/ should record these login-status changes. That directory only has pdf annotations.md right now, so if you want this work tracked, let me know the feature name (or create a new feature file) and I’ll log the touched files under it. Also, I see the repo was reverted and the LoginStatus files were deleted—do you want me to reapply the changes before tagging?
+
+"
