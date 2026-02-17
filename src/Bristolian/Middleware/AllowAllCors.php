@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace Bristolian\Middleware;
 
+use Laminas\Diactoros\Response as ConcreteResponse;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Laminas\Diactoros\Response as ConcreteResponse;
 
 /**
  * Class AllowAllCors

@@ -2,10 +2,10 @@
 
 namespace Bristolian\Repo\RoomLinkRepo;
 
+use Bristolian\Model\Generated\RoomLink;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Repo\LinkRepo\LinkRepo;
 use Ramsey\Uuid\Uuid;
-use Bristolian\Model\Generated\RoomLink;
 
 class FakeRoomLinkRepo implements RoomLinkRepo
 {

@@ -7,7 +7,6 @@ namespace Bristolian\Parameters\PropertyType;
 use DataType\ExtractRule\GetOptionalString;
 use DataType\HasInputType;
 use DataType\InputType;
-use DataType\ProcessRule\SkipIfNull;
 
 /**
  * Property type for an optional boolean that defaults to true.

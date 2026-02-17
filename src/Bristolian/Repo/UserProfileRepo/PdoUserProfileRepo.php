@@ -4,10 +4,10 @@ namespace Bristolian\Repo\UserProfileRepo;
 
 use Bristolian\Database\user_display_name;
 use Bristolian\Database\user_profile;
-use Bristolian\Model\Types\UserProfileWithDisplayName;
-use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Model\Generated\UserDisplayName;
 use Bristolian\Model\Generated\UserProfile;
+use Bristolian\Model\Types\UserProfileWithDisplayName;
+use Bristolian\PdoSimple\PdoSimple;
 
 class PdoUserProfileRepo implements UserProfileRepo
 {

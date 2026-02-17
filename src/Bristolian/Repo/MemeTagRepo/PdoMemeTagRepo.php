@@ -7,7 +7,6 @@ use Bristolian\Model\Generated\MemeTag;
 use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\MemeTagUpdateParams;
 use Bristolian\PdoSimple\PdoSimple;
-use Bristolian\Repo\MemeTagRepo\MemeTagType;
 use Ramsey\Uuid\Uuid;
 
 class PdoMemeTagRepo implements MemeTagRepo

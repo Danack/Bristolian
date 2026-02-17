@@ -2,16 +2,14 @@
 
 namespace Bristolian\CliController;
 
+use Bristolian\Filesystem\BristolStairsFilesystem;
+use Bristolian\Parameters\BristolStairsGpsParams;
 use Bristolian\Repo\AdminRepo\AdminRepo;
-use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
-use Bristolian\Service\BristolStairImageStorage\ObjectStoredFileInfo;
-use Bristolian\Service\BristolStairImageStorage\UploadError;
-use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage;
-use Bristolian\Parameters\BristolStairsGpsParams;
-use Bristolian\Filesystem\BristolStairsFilesystem;
+use Bristolian\Service\BristolStairImageStorage\UploadError;
+use Bristolian\UploadedFiles\UploadedFile;
 
 class BristolStairs
 {

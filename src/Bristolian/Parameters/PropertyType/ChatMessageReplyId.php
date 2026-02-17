@@ -2,7 +2,6 @@
 
 namespace Bristolian\Parameters\PropertyType;
 
-use DataType\ExtractRule\GetIntOrNull;
 use DataType\ExtractRule\GetOptionalInt;
 use DataType\HasInputType;
 use DataType\InputType;

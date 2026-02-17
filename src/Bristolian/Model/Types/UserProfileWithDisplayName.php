@@ -2,9 +2,9 @@
 
 namespace Bristolian\Model\Types;
 
-use Bristolian\ToArray;
 use Bristolian\Model\Generated\UserDisplayName;
 use Bristolian\Model\Generated\UserProfile;
+use Bristolian\ToArray;
 
 /**
  * Combines UserProfile (non-versioned data) with the latest UserDisplayName (versioned)

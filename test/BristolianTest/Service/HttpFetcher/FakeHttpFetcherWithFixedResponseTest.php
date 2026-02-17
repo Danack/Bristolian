@@ -11,6 +11,7 @@ use BristolianTest\BaseTestCase;
 class FakeHttpFetcherWithFixedResponseTest extends BaseTestCase
 {
     /**
+     * @covers \Bristolian\Service\HttpFetcher\FakeHttpFetcherWithFixedResponse::__construct
      * @covers \Bristolian\Service\HttpFetcher\FakeHttpFetcherWithFixedResponse::fetch
      */
     public function testFetchReturnsFixedResponseRegardlessOfRequest(): void

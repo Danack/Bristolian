@@ -2,12 +2,12 @@
 
 namespace Bristolian\Service\BristolStairImageStorage;
 
+use Bristolian\Model\Generated\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsGpsParams;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Service\ObjectStore\BristolianStairImageObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
-use Bristolian\Model\Generated\BristolStairInfo;
 use Ramsey\Uuid\Uuid;
 
 class StandardBristolStairImageStorage implements BristolStairImageStorage

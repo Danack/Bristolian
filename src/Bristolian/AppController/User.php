@@ -4,31 +4,28 @@ declare(strict_types = 1);
 
 namespace Bristolian\AppController;
 
+use Bristolian\Model\Generated\StoredMeme;
 use Bristolian\Parameters\MemeSearchParams;
 use Bristolian\Parameters\MemeTagDeleteParams;
 use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\MemeTagUpdateParams;
-use Bristolian\Response\SuccessResponse;
 use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Repo\MemeTagRepo\MemeTagRepo;
 use Bristolian\Repo\MemeTagRepo\MemeTagType;
 use Bristolian\Repo\MemeTextRepo\MemeTextRepo;
-use Bristolian\Session\AppSessionManager;
-use Bristolian\Session\UserSession;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use SlimDispatcher\Response\JsonNoCacheResponse;
-use SlimDispatcher\Response\JsonResponse;
-use SlimDispatcher\Response\StubResponse;
+use Bristolian\Response\EndpointAccessedViaGetResponse;
+use Bristolian\Response\GetMemeTagSuggestionsResponse;
+use Bristolian\Response\GetMemeTextResponse;
+use Bristolian\Response\SuccessResponse;
 use Bristolian\Response\Typed\GetMemesResponse;
 use Bristolian\Response\Typed\GetMemesTagsResponse;
 use Bristolian\Response\Typed\PostMemetagaddResponse;
 use Bristolian\Response\Typed\PostMemetagdeleteResponse;
-use Bristolian\Response\GetMemeTagSuggestionsResponse;
-use Bristolian\Response\GetMemeTextResponse;
-use SlimDispatcher\Response\TextResponse;
-use Bristolian\Response\EndpointAccessedViaGetResponse;
-use Bristolian\Model\Generated\StoredMeme;
-use Bristolian\Model\Generated\MemeTag;
+use Bristolian\Session\AppSessionManager;
+use Bristolian\Session\UserSession;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use SlimDispatcher\Response\JsonNoCacheResponse;
+use SlimDispatcher\Response\StubResponse;
 
 class User
 {

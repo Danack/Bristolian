@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Bristolian\Middleware;
 
-use Bristolian\Session\AppSessionManager;
 use Bristolian\Session\AppSessionManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;

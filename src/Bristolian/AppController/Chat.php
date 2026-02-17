@@ -2,15 +2,15 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\Repo\ChatMessageRepo\ChatMessageRepo;
-use Bristolian\Session\AppSession;
-use Bristolian\Parameters\ChatMessageParam;
-use Bristolian\Service\RoomMessageService\RoomMessageService;
 use Bristolian\App;
-use VarMap\VarMap;
+use Bristolian\Parameters\ChatMessageParam;
+use Bristolian\Repo\ChatMessageRepo\ChatMessageRepo;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
 use Bristolian\Response\GetChatRoomMessagesResponse;
 use Bristolian\Response\SendChatMessageResponse;
+use Bristolian\Service\RoomMessageService\RoomMessageService;
+use Bristolian\Session\AppSession;
+use VarMap\VarMap;
 
 class Chat
 {

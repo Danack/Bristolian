@@ -2,9 +2,9 @@
 
 namespace Bristolian\CliController;
 
+use Bristolian\Exception\BristolianException;
 use OpenApi\OpenApiGenerator;
 use Seld\JsonLint\JsonParser;
-use Bristolian\Exception\BristolianException;
 use VarMap\VarMap;
 
 /**

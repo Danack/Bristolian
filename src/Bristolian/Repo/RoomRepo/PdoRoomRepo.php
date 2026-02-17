@@ -3,9 +3,9 @@
 namespace Bristolian\Repo\RoomRepo;
 
 use Bristolian\Exception\BristolianException;
+use Bristolian\Model\Generated\Room;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
-use Bristolian\Model\Generated\Room;
 
 class PdoRoomRepo implements RoomRepo
 {

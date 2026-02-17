@@ -8,8 +8,8 @@ use DataType\DataStorage\DataStorage;
 use DataType\Messages;
 use DataType\OpenApi\ParamDescription;
 use DataType\ProcessedValues;
-use DataType\ValidationResult;
 use DataType\ProcessRule\ProcessRule;
+use DataType\ValidationResult;
 
 /**
  * Checks that the value is one of a known set of values

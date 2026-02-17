@@ -3,9 +3,9 @@
 namespace Bristolian\Repo\BristolStairsRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
+use Bristolian\Model\Generated\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
-use Bristolian\Model\Generated\BristolStairInfo;
 
 class FakeBristolStairsRepo implements BristolStairsRepo
 {

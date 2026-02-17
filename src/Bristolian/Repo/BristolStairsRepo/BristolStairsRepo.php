@@ -2,9 +2,9 @@
 
 namespace Bristolian\Repo\BristolStairsRepo;
 
+use Bristolian\Model\Generated\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
-use Bristolian\Model\Generated\BristolStairInfo;
 
 interface BristolStairsRepo
 {

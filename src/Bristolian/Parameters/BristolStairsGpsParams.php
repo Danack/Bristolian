@@ -2,15 +2,12 @@
 
 namespace Bristolian\Parameters;
 
-use Bristolian\Parameters\PropertyType\BasicInteger;
-use Bristolian\Parameters\PropertyType\BasicFloat;
-use Bristolian\Parameters\PropertyType\BasicString;
+use Bristolian\Parameters\PropertyType\GpsFloat;
+use Bristolian\StaticFactory;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
-use Bristolian\Parameters\PropertyType\GpsFloat;
-use Bristolian\StaticFactory;
 
 /**
  * This is used for setting a new flight of stairs position.

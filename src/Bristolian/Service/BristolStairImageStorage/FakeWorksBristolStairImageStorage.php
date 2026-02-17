@@ -2,9 +2,9 @@
 
 namespace Bristolian\Service\BristolStairImageStorage;
 
+use Bristolian\Model\Generated\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsGpsParams;
 use Bristolian\UploadedFiles\UploadedFile;
-use Bristolian\Model\Generated\BristolStairInfo;
 use Ramsey\Uuid\Uuid;
 
 class FakeWorksBristolStairImageStorage implements BristolStairImageStorage

@@ -2,7 +2,6 @@
 
 namespace Bristolian\Parameters;
 
-use Bristolian\Parameters\PropertyType\BasicInteger;
 use Bristolian\Parameters\PropertyType\BasicFloat;
 use Bristolian\Parameters\PropertyType\BasicString;
 use Bristolian\StaticFactory;

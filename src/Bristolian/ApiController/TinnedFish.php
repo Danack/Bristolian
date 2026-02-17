@@ -19,7 +19,6 @@ use Bristolian\Service\TinnedFish\OpenFoodFactsApiException;
 use Bristolian\Service\TinnedFish\OpenFoodFactsFetcher;
 use Bristolian\Session\UserSession;
 use SlimDispatcher\Response\StubResponse;
-
 use function generateSecureToken;
 use function isValidBarcode;
 use function normalizeOpenFoodFactsData;

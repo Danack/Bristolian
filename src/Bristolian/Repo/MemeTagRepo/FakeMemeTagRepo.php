@@ -8,7 +8,6 @@ use Bristolian\Model\Generated\MemeTag;
 use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\MemeTagUpdateParams;
 use Bristolian\Repo\MemeStorageRepo\MemeFileState;
-use Bristolian\Repo\MemeTagRepo\MemeTagType;
 use Ramsey\Uuid\Uuid;
 
 /**

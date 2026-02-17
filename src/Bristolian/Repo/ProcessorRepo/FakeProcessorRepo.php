@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Bristolian\Repo\ProcessorRepo;
 
 use Bristolian\Model\Types\ProcessorState;
-use Bristolian\Repo\ProcessorRepo\ProcessType;
 
 /**
  * Fake implementation of ProcessorRepo for testing.

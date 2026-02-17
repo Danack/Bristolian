@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Bristolian\Service\TinnedFish;
 
-use Bristolian\Exception\BristolianException;
-
 /**
  * Fetches product data from the OpenFoodFacts API.
  * @see https://world.openfoodfacts.org/

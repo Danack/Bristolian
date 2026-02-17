@@ -2,8 +2,8 @@
 
 namespace Bristolian\Repo\RoomFileObjectInfoRepo;
 
-use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\Model\Generated\RoomFileObjectInfo;
+use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
 
 class FakeRoomFileObjectInfoRepo implements RoomFileObjectInfoRepo

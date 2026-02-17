@@ -5,7 +5,6 @@ namespace Bristolian\Session;
 use Asm\Session;
 use Bristolian\Exception\BristolianException;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Bristolian\Session\UserSession;
 
 /**
  *

@@ -3,9 +3,9 @@
 namespace Bristolian\Repo\ProcessorRunRecordRepo;
 
 use Bristolian\Database\processor_run_record;
+use Bristolian\Model\Generated\ProcessorRunRecord;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
-use Bristolian\Model\Generated\ProcessorRunRecord;
 
 class PdoProcessorRunRecordRepo implements ProcessorRunRecordRepo
 {

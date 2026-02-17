@@ -6,7 +6,6 @@ namespace Bristolian\Repo\ProcessorRunRecordRepo;
 
 //use Bristolian\Database\processor_run_records;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
-use Bristolian\Model\Generated\ProcessorRunRecord;
 
 interface ProcessorRunRecordRepo
 {

@@ -2,8 +2,8 @@
 
 namespace Bristolian\Repo\RoomFileRepo;
 
-use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Model\Generated\RoomFileObjectInfo;
+use Bristolian\PdoSimple\PdoSimple;
 
 class PdoRoomFileRepo implements RoomFileRepo
 {

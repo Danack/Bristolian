@@ -2,10 +2,10 @@
 
 namespace Bristolian\Repo\MemeTextRepo;
 
-use Bristolian\Model\Generated\StoredMeme;
-use Bristolian\Model\Generated\MemeText;
-use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Database\meme_text;
+use Bristolian\Model\Generated\MemeText;
+use Bristolian\Model\Generated\StoredMeme;
+use Bristolian\PdoSimple\PdoSimple;
 
 class PdoMemeTextRepo implements MemeTextRepo
 {

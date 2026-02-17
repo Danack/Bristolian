@@ -4,15 +4,13 @@ declare(strict_types = 1);
 
 namespace Bristolian\ApiController;
 
-use Bristolian\PdoSimple\PdoSimple;
-
-
-use Bristolian\Repo\ProcessorRepo\ProcessType;
-use SlimDispatcher\Response\JsonResponse;
-use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use Bristolian\Parameters\ProcessorRunRecordTypeParam;
-use VarMap\VarMap;
+use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use Bristolian\Response\Typed\GetLogProcessorRunRecordsResponse;
+use SlimDispatcher\Response\JsonResponse;
+use VarMap\VarMap;
+
 
 class Log
 {

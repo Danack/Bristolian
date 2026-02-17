@@ -7,7 +7,6 @@ use Bristolian\Parameters\QRTokenParams;
 use Bristolian\Response\SVGResponse;
 use chillerlan\QRCode\QRCode as QRCodeGenerator;
 use chillerlan\QRCode\QROptions;
-use VarMap\VarMap;
 
 class QRCode
 {

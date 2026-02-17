@@ -12,7 +12,7 @@ use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 
 /**
- * @covers \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage
+ * @coversNothing
  */
 class StandardAvatarImageStorageTest extends BaseTestCase
 {
@@ -94,5 +94,51 @@ class StandardAvatarImageStorageTest extends BaseTestCase
         $contents = $objectStore->getFileContents($fileInfo->normalized_name);
         $this->assertNotEmpty($contents);
         $this->assertStringStartsWith("\xff\xd8\xff", $contents, 'Resized output should be JPEG');
+    }
+
+    /**
+     * @covers \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::storeAvatarForUser
+     */
+    public function test_storeAvatarForUser_returns_uploadedFileUnreadable_when_file_cannot_be_read(): void
+    {
+        $infoRepo = new FakeAvatarImageStorageInfoRepo();
+        $objectStore = new FakeAvatarImageObjectStore();
+        $storage = new StandardAvatarImageStorage($infoRepo, $objectStore);
+
+        $uploadedFile = new UploadedFile('/nonexistent/path', 0, 'image.jpg', 0);
+        $result = $storage->storeAvatarForUser(
+            'user_1',
+            $uploadedFile,
+            ['jpg']
+        );
+
+        $this->assertInstanceOf(UploadError::class, $result);
+        $this->assertSame('Uploaded file is not readable', $result->error_message);
+        $this->assertEmpty($objectStore->getStoredFiles());
+    }
+
+    /**
+     * @covers \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::storeAvatarForUser
+     */
+    public function test_storeAvatarForUser_returns_uploadedFileUnreadable_when_imagick_fails(): void
+    {
+        $invalidImagePath = __DIR__ . '/../../../fixtures/images/invalid_avatar.jpg';
+        if (!is_readable($invalidImagePath)) {
+            $this->markTestSkipped('Fixture not found: ' . $invalidImagePath);
+        }
+        $infoRepo = new FakeAvatarImageStorageInfoRepo();
+        $objectStore = new FakeAvatarImageObjectStore();
+        $storage = new StandardAvatarImageStorage($infoRepo, $objectStore);
+
+        $uploadedFile = UploadedFile::fromFile($invalidImagePath);
+        $result = $storage->storeAvatarForUser(
+            'user_1',
+            $uploadedFile,
+            ['jpg', 'jpeg']
+        );
+
+        $this->assertInstanceOf(UploadError::class, $result);
+        $this->assertSame('Uploaded file is not readable', $result->error_message);
+        $this->assertEmpty($objectStore->getStoredFiles());
     }
 }

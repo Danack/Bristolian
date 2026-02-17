@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace Bristolian\AppController;
 
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Filesystem\MemeFilesystem;
+use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Response\StoredFileErrorResponse;
 use SlimDispatcher\Response\ImageResponse;
 use SlimDispatcher\Response\StubResponse;
-use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
-use Bristolian\Exception\ContentNotFoundException;
 
 class Images
 {

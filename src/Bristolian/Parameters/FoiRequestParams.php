@@ -5,10 +5,10 @@ namespace Bristolian\Parameters;
 use Bristolian\Parameters\PropertyType\BasicString;
 use Bristolian\Parameters\PropertyType\Url;
 use Bristolian\StaticFactory;
+use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
-use DataType\Create\CreateFromRequest;
 
 class FoiRequestParams implements DataType, StaticFactory
 {

@@ -3,13 +3,7 @@
 namespace Bristolian\Model\Chat;
 
 use Bristolian\FromString;
-use Bristolian\Parameters\PropertyType\BasicString;
-use Bristolian\Parameters\PropertyType\ChatMessageReplyId;
 use Bristolian\ToString;
-use DataType\Create\CreateFromArray;
-use DataType\Create\CreateFromVarMap;
-use DataType\DataType;
-use DataType\GetInputTypesFromAttributes;
 
 /**
  * A user chat message as pulled from the database.

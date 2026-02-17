@@ -8,8 +8,8 @@ use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Filesystem\MemeFilesystem;
 use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Repo\MemeTextRepo\MemeTextRepo;
-use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
+use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 
 class MemeOcr

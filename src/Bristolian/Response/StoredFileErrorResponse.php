@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Bristolian\Response;
 
-use Bristolian\Exception\BristolianResponseException;
-use SlimDispatcher\Response\ResponseException;
 use SlimDispatcher\Response\StubResponse;
 
 class StoredFileErrorResponse implements StubResponse

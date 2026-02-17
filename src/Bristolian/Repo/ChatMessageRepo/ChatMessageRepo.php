@@ -2,8 +2,8 @@
 
 namespace Bristolian\Repo\ChatMessageRepo;
 
-use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\Model\Chat\UserChatMessage;
+use Bristolian\Parameters\ChatMessageParam;
 
 interface ChatMessageRepo
 {

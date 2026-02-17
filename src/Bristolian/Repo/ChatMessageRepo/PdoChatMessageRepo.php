@@ -2,10 +2,10 @@
 
 namespace Bristolian\Repo\ChatMessageRepo;
 
+use Bristolian\Database\chat_message;
+use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\PdoSimple\PdoSimple;
-use Bristolian\Model\Chat\UserChatMessage;
-use Bristolian\Database\chat_message;
 
 class PdoChatMessageRepo implements ChatMessageRepo
 {

@@ -2,11 +2,8 @@
 
 namespace Bristolian\Service\RoomMessageService;
 
-use Bristolian\Keys\RoomMessageKey;
 use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\Parameters\ChatMessageParam;
-use Bristolian\ToString;
-use Redis;
 
 class FakeRoomMessageService implements RoomMessageService
 {

@@ -5,7 +5,6 @@ namespace Bristolian\AppController;
 use Bristolian\Parameters\TagParams;
 use Bristolian\Repo\TagRepo\TagRepo;
 use SlimDispatcher\Response\RedirectResponse;
-use VarMap\VarMap;
 use function esprintf;
 
 class Tags

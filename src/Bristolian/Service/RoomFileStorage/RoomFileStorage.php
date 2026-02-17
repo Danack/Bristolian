@@ -2,8 +2,6 @@
 
 namespace Bristolian\Service\RoomFileStorage;
 
-use Bristolian\Service\FileStorageProcessor\ObjectStoredFileInfo;
-use Bristolian\Service\RoomFileStorage\UploadError;
 use Bristolian\UploadedFiles\UploadedFile;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\LinkRepo;
 
-use \Bristolian\Model\Generated\Link;
+use Bristolian\Model\Generated\Link;
 use Ramsey\Uuid\Uuid;
 
 class FakeLinkRepo implements LinkRepo

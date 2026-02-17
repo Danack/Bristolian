@@ -2,9 +2,9 @@
 
 namespace Bristolian\CliController;
 
+use Bristolian\Repo\EmailQueue\EmailQueue;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
-use Bristolian\Repo\EmailQueue\EmailQueue;
 
 function isOverXHoursAgo(int $hours, \DateTimeInterface $datetime): bool
 {

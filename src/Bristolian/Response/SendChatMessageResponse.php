@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Bristolian\Response;
 
-use Bristolian\Exception\DataEncodingException;
 use Bristolian\Model\Chat\UserChatMessage;
 use SlimDispatcher\Response\StubResponse;
 

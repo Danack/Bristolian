@@ -2,14 +2,13 @@
 
 namespace Bristolian\Parameters;
 
-use Bristolian\Parameters\PropertyType\BasicString;
+use Bristolian\Parameters\PropertyType\AboutMeText;
+use Bristolian\Parameters\PropertyType\DisplayName;
 use Bristolian\StaticFactory;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
-use Bristolian\Parameters\PropertyType\DisplayName;
-use Bristolian\Parameters\PropertyType\AboutMeText;
 
 class UserProfileUpdateParams implements DataType, StaticFactory
 {

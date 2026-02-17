@@ -4,11 +4,11 @@ namespace Bristolian\Repo\RoomLinkRepo;
 
 use Bristolian\Database\room_link;
 use Bristolian\Exception\BristolianException;
+use Bristolian\Model\Generated\RoomLink;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\LinkRepo\LinkRepo;
 use Ramsey\Uuid\Uuid;
-use Bristolian\Model\Generated\RoomLink;
 
 class PdoRoomLinkRepo implements RoomLinkRepo
 {

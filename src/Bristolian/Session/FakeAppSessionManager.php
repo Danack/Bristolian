@@ -3,13 +3,8 @@
 namespace Bristolian\Session;
 
 use Asm\Session;
-use \Bristolian\Session\AppSession;
 use Bristolian\Exception\BristolianException;
-use Bristolian\Session\AppSessionManagerInterface;
-use Bristolian\Session\UserSession;
 use Psr\Http\Message\ServerRequestInterface as Request;
-
-use Bristolian\Session\FakeUserSession;
 
 class FakeAppSessionManager implements AppSessionManagerInterface
 {

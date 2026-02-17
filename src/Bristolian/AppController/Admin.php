@@ -4,18 +4,16 @@ declare(strict_types = 1);
 
 namespace Bristolian\AppController;
 
-use Bristolian\Repo\UserSearch\UserSearch;
-use Bristolian\Session\AppSession;
 use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
+use Bristolian\Repo\ProcessorRepo\ProcessType;
+use Bristolian\Repo\UserSearch\UserSearch;
 use Bristolian\Session\UserSession;
 use Bristolian\UserNotifier\UserNotifier;
 use SlimDispatcher\Response\HtmlNoCacheResponse;
-use SlimDispatcher\Response\HtmlResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\RedirectResponse;
 use SlimDispatcher\Response\StubResponse;
 use VarMap\VarMap;
-use Bristolian\Repo\ProcessorRepo\ProcessType;
 
 class Admin
 {

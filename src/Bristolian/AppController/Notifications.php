@@ -2,14 +2,14 @@
 
 namespace Bristolian\AppController;
 
-use Bristolian\Parameters\WebPushSubscriptionParams;
 use Bristolian\JsonInput\JsonInput;
+use Bristolian\Parameters\WebPushSubscriptionParams;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
 use Bristolian\Response\SuccessResponse;
+use Bristolian\Response\ValidationErrorResponse;
 use Bristolian\Session\UserSession;
 use Minishlink\WebPush\VAPID;
-use Bristolian\Response\ValidationErrorResponse;
 
 class Notifications
 {

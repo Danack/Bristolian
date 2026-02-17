@@ -7,8 +7,8 @@ namespace Bristolian\Parameters\PropertyType;
 use DataType\ExtractRule\GetString;
 use DataType\HasInputType;
 use DataType\InputType;
-use DataType\ProcessRule\MinLength;
 use DataType\ProcessRule\CheckOnlyAllowedCharacters;
+use DataType\ProcessRule\MinLength;
 
 #[\Attribute]
 class TagString implements HasInputType

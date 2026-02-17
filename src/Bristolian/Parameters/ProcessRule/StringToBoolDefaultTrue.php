@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Bristolian\Parameters\ProcessRule;
 
 use DataType\DataStorage\DataStorage;
-use DataType\Messages;
 use DataType\OpenApi\ParamDescription;
 use DataType\ProcessedValues;
 use DataType\ProcessRule\ProcessRule;

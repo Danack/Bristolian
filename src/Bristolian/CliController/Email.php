@@ -4,9 +4,9 @@ namespace Bristolian\CliController;
 
 use Bristolian\Repo\EmailQueue\EmailQueue;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
+use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use Bristolian\Service\EmailSender\EmailClient;
 use Mailgun\Mailgun;
-use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 
 /**
  * Placeholder code for sending emails.

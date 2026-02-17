@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Bristolian\SiteHtml;
 
-use Bristolian\SiteHtml\ExtraAssets;
 use SlimDispatcher\Response\HtmlResponse;
 use SlimDispatcher\Response\StubResponse;
 
