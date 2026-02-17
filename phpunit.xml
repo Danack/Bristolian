@@ -44,9 +44,9 @@
       <text outputFile="php://stdout" showUncoveredFiles="false" showOnlySummary="true"/>
 
 
-      <!-- toggle begin <html outputDirectory="tmp/coverage" lowUpperBound="50" highLowerBound="90"/> -->
-<html outputDirectory="tmp/coverage" lowUpperBound="50" highLowerBound="90"/>
-<!-- toggle end-->
+      <!-- toggle_slow begin <html outputDirectory="tmp/coverage" lowUpperBound="50" highLowerBound="90"/> -->
+
+<!-- toggle_slow end-->
 
     </report>
   </coverage>
@@ -60,9 +60,9 @@
       <group>deadish</group>
       <!-- <group>slow</group> -->
 
-      <!-- toggle begin <group>db</group>-->
+      <!-- toggle_fast begin <group>db</group>-->
 <group>db</group>
-<!-- toggle end-->
+<!-- toggle_fast end-->
     </exclude>
   </groups>
 
