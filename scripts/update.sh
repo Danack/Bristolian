@@ -46,7 +46,7 @@ elif [ "$LOCAL" = "$BASE" ]; then
       echo "Aborting deploy."
     fi
 
-    chown -R deployer:deployer *
+    # chown -R deployer:deployer *
     sh runProd.sh
     MESSAGE=$(git show -s --format=%s $REMOTE)
     echo "Should have deployed ${REMOTE} ${MESSAGE} at $(date)"
