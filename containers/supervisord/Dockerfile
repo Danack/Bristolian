@@ -36,6 +36,9 @@ COPY easyocr_install.sh /tmp/easyocr_install.sh
 
 WORKDIR /var/app
 
+# Attempt to align user id's across containers
+RUN usermod -u 1000 www-data
+
 RUN mkdir -p /var/log/supervisor
 
 #COPY supervisord.conf /etc/supervisor/supervisord.conf
