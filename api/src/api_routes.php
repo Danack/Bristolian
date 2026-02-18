@@ -201,6 +201,16 @@ function getAllApiRoutes()
         ], // Search memes by tag text and/or tag type
 
         [
+            '/api/memes/untagged',
+            'GET',
+            'Bristolian\AppController\User::listUntaggedMemes',
+            [
+                ['memes', \Bristolian\Model\Generated\StoredMeme::class, true],
+                ['truncated', null, false, 'bool']
+            ],
+        ], // Memes with no user tags (so user can add some)
+
+        [
             '/api/memes/{meme_id:.+}/tags',
             'GET',
             'Bristolian\AppController\User::getTagsForMeme',

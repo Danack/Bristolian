@@ -295,8 +295,12 @@ function addBristolStairsCommands(Application $console)
 
 function addMemeCommands(Application $console)
 {
-    $command = new Command('meme:check', 'Bristolian\CliController\Meme::check_contents');
+    $command = new Command('meme:check_storage', 'Bristolian\CliController\Meme::check_contents_of_storage');
     $command->setDescription("Check for files in meme image storage that don't have corresponding database entries (orphaned files).");
+    $console->add($command);
+
+    $command = new Command('meme:check_database', 'Bristolian\CliController\Meme::check_contents_of_database');
+    $command->setDescription("Check for database meme records that don't have a corresponding file in storage (missing files).");
     $console->add($command);
 }
 

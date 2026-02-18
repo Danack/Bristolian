@@ -72,6 +72,29 @@ class FakeMemeStorageRepo implements MemeStorageRepo
     /**
      * @return Meme[]
      */
+    public function listAllMemes(): array
+    {
+        $all = [];
+        foreach ($this->storedMemes as $meme) {
+            if (!$meme->deleted) {
+                $all[] = $meme;
+            }
+        }
+        return $all;
+    }
+
+    /**
+     * @return Meme[]
+     */
+    public function listMemesForUserWithNoTags(string $user_id): array
+    {
+        // Fake has no tag data; return all memes for user so tests can exercise untagged flow
+        return $this->listMemesForUser($user_id);
+    }
+
+    /**
+     * @return Meme[]
+     */
     public function searchMemesForUser(
         string $user_id,
         ?string $query,

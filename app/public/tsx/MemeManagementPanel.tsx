@@ -1,5 +1,5 @@
 import {h, Component} from "preact";
-import {api, GetMemesResponse, PostMemetagaddResponse, PostMemetagdeleteResponse} from "./generated/api_routes";
+import {api, GetMemesResponse, GetMemesUntaggedResponse, PostMemetagaddResponse, PostMemetagdeleteResponse} from "./generated/api_routes";
 import {StoredMeme, createStoredMeme} from "./generated/types";
 import {MemeTagType} from "./MemeTagType";
 import {MEME_FILE_UPLOAD_FORM_NAME, DUPLICATE_FILENAME, MEMES_DISPLAY_LIMIT} from "./generated/constants";
@@ -198,7 +198,37 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         });
     }
 
-    performSearch() {
+    /**
+     * Fetches a memes API response (memes + truncated), maps to StoredMeme[], updates state and suggested tags.
+     */
+    fetchMemesAndApply(url: string, errorContext: string) {
+        fetch(url)
+            .then((response: Response) => response.json())
+            .then((data: GetMemesResponse | GetMemesUntaggedResponse) => {
+                const memes: StoredMeme[] = data.data.memes.map((meme) =>
+                    createStoredMeme(meme)
+                );
+                this.setState({
+                    memes,
+                    memesTruncated: data.data.truncated === true,
+                    isSearching: false
+                });
+                this.loadSuggestedTagsForMemes(memes);
+            })
+            .catch((err: unknown) => {
+                console.error(errorContext, err);
+                this.setState({ isSearching: false });
+            });
+    }
+
+    performSearch(showUntagged: boolean = false) {
+        this.setState({ isSearching: true });
+
+        if (showUntagged) {
+            this.fetchMemesAndApply('/api/memes/untagged', 'Failed to fetch untagged memes:');
+            return;
+        }
+
         const params = new URLSearchParams();
         if (this.state.searchQuery) {
             params.append('query', this.state.searchQuery);
@@ -211,27 +241,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         }
 
         const url = '/api/memes/search' + (params.toString() ? '?' + params.toString() : '');
-        
-        this.setState({ isSearching: true });
-
-        fetch(url)
-            .then((response: Response) => response.json())
-            .then((data: GetMemesResponse) => {
-                const memes: StoredMeme[] = data.data.memes.map((meme) => 
-                    createStoredMeme(meme)
-                );
-                this.setState({ 
-                    memes,
-                    memesTruncated: data.data.truncated === true,
-                    isSearching: false 
-                });
-                // Update suggested tags based on search results
-                this.loadSuggestedTagsForMemes(memes);
-            })
-            .catch((err: any) => {
-                console.error("Failed to search memes:", err);
-                this.setState({ isSearching: false });
-            });
+        this.fetchMemesAndApply(url, 'Failed to search memes:');
     }
 
     searchMemes() {
@@ -1370,6 +1380,12 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                     class="button" 
                     onClick={() => this.clearSearch()}>
                     Clear
+                </span>
+                <span 
+                    class="button untagged_button"
+                    onClick={() => this.performSearch(true)}
+                    title="Show only memes with no tags (so you can add some)">
+                    Show untagged
                 </span>
             </div>
         </div>;

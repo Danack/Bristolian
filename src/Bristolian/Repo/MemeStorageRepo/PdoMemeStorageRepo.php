@@ -72,6 +72,43 @@ SQL;
     /**
      * @return Meme[]
      */
+    public function listAllMemes(): array
+    {
+        $sql = stored_meme::SELECT . <<< SQL
+where
+  state = :state and
+  deleted = 0
+SQL;
+        $params = [':state' => FileState::UPLOADED->value];
+        return $this->pdo_simple->fetchAllAsObjectConstructor($sql, $params, Meme::class);
+    }
+
+    /**
+     * @return Meme[]
+     */
+    public function listMemesForUserWithNoTags(string $user_id): array
+    {
+        $sql = stored_meme::SELECT . <<< SQL
+ where
+  user_id = :user_id and
+  state = :state and
+  deleted = 0 and
+  not exists (
+    select 1 from meme_tag mt
+    where mt.meme_id = stored_meme.id and mt.type = :user_tag_type
+  )
+SQL;
+        $params = [
+            ':user_id' => $user_id,
+            ':state' => FileState::UPLOADED->value,
+            ':user_tag_type' => MemeTagType::USER_TAG->value,
+        ];
+        return $this->pdo_simple->fetchAllAsObjectConstructor($sql, $params, Meme::class);
+    }
+
+    /**
+     * @return Meme[]
+     */
     public function searchMemesForUser(
         string $user_id,
         ?string $query,

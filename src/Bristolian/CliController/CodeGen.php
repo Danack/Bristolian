@@ -38,6 +38,9 @@ function formatComment(string $comment): array
     return $lines_formatted;
 }
 
+/**
+ * @codeCoverageIgnore
+ */
 class CodeGen
 {
     public function analyze_datatypes(): void

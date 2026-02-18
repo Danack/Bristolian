@@ -6,6 +6,8 @@ namespace Bristolian\Repo\ApiTokenRepo;
 
 use Bristolian\Model\Types\ApiToken;
 
+use function generateSecureToken;
+
 /**
  * Fake implementation of ApiTokenRepo for testing.
  */
@@ -24,23 +26,42 @@ class FakeApiTokenRepo implements ApiTokenRepo
         $this->tokens = $initialTokens;
     }
 
-    public function createToken(string $name, string $token): ApiToken
-    {
-        $id = uniqid('token_', true);
-        $now = new \DateTimeImmutable();
-        
-        $apiToken = new ApiToken(
-            id: $id,
-            token: $token,
-            name: $name,
-            created_at: $now,
-            is_revoked: false,
-            revoked_at: null
-        );
+    private const MAX_CREATE_RETRIES = 5;
 
-        $this->tokens[] = $apiToken;
-        
-        return $apiToken;
+    public function createToken(string $name): ApiToken
+    {
+        for ($attempt = 0; $attempt < self::MAX_CREATE_RETRIES; $attempt++) {
+            $token = generateSecureToken();
+
+            $alreadyExists = false;
+            foreach ($this->tokens as $existing) {
+                if ($existing->token === $token) {
+                    $alreadyExists = true;
+                    break;
+                }
+            }
+            if ($alreadyExists) {
+                continue;
+            }
+
+            $id = uniqid('token_', true);
+            $now = new \DateTimeImmutable();
+
+            $apiToken = new ApiToken(
+                id: $id,
+                token: $token,
+                name: $name,
+                created_at: $now,
+                is_revoked: false,
+                revoked_at: null
+            );
+
+            $this->tokens[] = $apiToken;
+
+            return $apiToken;
+        }
+
+        throw ApiTokenCreateFailedException::afterMaxRetries(self::MAX_CREATE_RETRIES);
     }
 
     public function getByToken(string $token): ?ApiToken

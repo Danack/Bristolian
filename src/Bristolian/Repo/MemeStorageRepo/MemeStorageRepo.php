@@ -35,6 +35,20 @@ interface MemeStorageRepo
     public function listMemesForUser(string $user_id): array;
 
     /**
+     * List all non-deleted memes in uploaded state (for admin checks e.g. storage consistency).
+     *
+     * @return Meme[]
+     */
+    public function listAllMemes(): array;
+
+    /**
+     * List memes for a user that have no user_tag tags (so the user can add some).
+     *
+     * @return Meme[]
+     */
+    public function listMemesForUserWithNoTags(string $user_id): array;
+
+    /**
      * Search memes for a user by tag text content and/or tag type.
      *
      * @param string $user_id

@@ -130,6 +130,11 @@
     .search_buttons {
       display: flex;
       gap: 0.5rem;
+      flex-wrap: wrap;
+
+      .untagged_button {
+        margin-left: auto;
+      }
     }
   }
 

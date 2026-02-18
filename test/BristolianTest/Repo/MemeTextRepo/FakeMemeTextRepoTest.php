@@ -181,6 +181,16 @@ class MemeStorageRepoStubWithoutGetStoredMeme implements MemeStorageRepo
         return [];
     }
 
+    public function listMemesForUserWithNoTags(string $user_id): array
+    {
+        return [];
+    }
+
+    public function listAllMemes(): array
+    {
+        return [];
+    }
+
     public function searchMemesForUser(string $user_id, ?string $query, ?string $tag_type): array
     {
         return [];

@@ -59,6 +59,31 @@ class User
         return new GetMemesResponse($storedMemes, $truncated);
     }
 
+    public function listUntaggedMemes(
+        MemeStorageRepo $memeStorageRepo,
+        UserSession $appSession,
+    ): GetMemesResponse {
+        $memes = $memeStorageRepo->listMemesForUserWithNoTags($appSession->getUserId());
+        $storedMemes = array_map(
+            fn($meme) => new StoredMeme(
+                $meme->id,
+                $meme->normalized_name,
+                $meme->original_filename,
+                $meme->state,
+                $meme->size,
+                $meme->user_id,
+                $meme->created_at,
+                $meme->deleted ? 1 : 0
+            ),
+            $memes
+        );
+        $truncated = count($storedMemes) > self::MEMES_DISPLAY_LIMIT;
+        if ($truncated) {
+            $storedMemes = array_slice($storedMemes, 0, self::MEMES_DISPLAY_LIMIT);
+        }
+        return new GetMemesResponse($storedMemes, $truncated);
+    }
+
     public function searchMemes(
         MemeStorageRepo $memeStorageRepo,
         MemeTextRepo $memeTextRepo,

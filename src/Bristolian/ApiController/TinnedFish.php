@@ -19,7 +19,6 @@ use Bristolian\Service\TinnedFish\OpenFoodFactsApiException;
 use Bristolian\Service\TinnedFish\OpenFoodFactsFetcher;
 use Bristolian\Session\UserSession;
 use SlimDispatcher\Response\StubResponse;
-use function generateSecureToken;
 use function isValidBarcode;
 use function normalizeOpenFoodFactsData;
 
@@ -124,17 +123,12 @@ class TinnedFish
         UserSession $userSession,
         ApiTokenRepo $tokenRepo
     ): StubResponse {
-        // Generate a secure token
-        $token = generateSecureToken();
-        
-        // Store the token in the database
-        $apiToken = $tokenRepo->createToken($params->name, $token);
-        
-        // Generate QR code URL - the QR code will contain the token string itself
-        $qrCodeUrl = '/qr/code/token?token=' . urlencode($token);
-        
+        $apiToken = $tokenRepo->createToken($params->name);
+
+        $qrCodeUrl = '/qr/code/token?token=' . urlencode($apiToken->token);
+
         return new GenerateApiTokenResponse(
-            token: $token,
+            token: $apiToken->token,
             name: $apiToken->name,
             qr_code_url: $qrCodeUrl,
             created_at: $apiToken->created_at

@@ -6,50 +6,75 @@ namespace Bristolian\Repo\ApiTokenRepo;
 
 use Bristolian\Model\Types\ApiToken;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Ramsey\Uuid\Uuid;
+
+use function generateSecureToken;
 
 /**
  * PDO-based implementation of ApiTokenRepo.
  */
 class PdoApiTokenRepo implements ApiTokenRepo
 {
+    private const MAX_CREATE_RETRIES = 5;
+
     public function __construct(
         private PdoSimple $pdo_simple
     ) {
     }
 
-    public function createToken(string $name, string $token): ApiToken
+    public function createToken(string $name): ApiToken
     {
-        $uuid = Uuid::uuid7();
-        $id = $uuid->toString();
+        $lastException = null;
 
         $sql = <<< SQL
-INSERT INTO api_token (
-    id,
-    token,
-    name,
-    created_at,
-    is_revoked,
-    revoked_at
-) VALUES (
-    :id,
-    :token,
-    :name,
-    NOW(),
-    false,
-    NULL
-)
-SQL;
+        INSERT INTO api_token (
+            id,
+            token,
+            name,
+            created_at,
+            is_revoked,
+            revoked_at
+        ) VALUES (
+            :id,
+            :token,
+            :name,
+            NOW(),
+            false,
+            NULL
+        )
+        SQL;
 
-        $params = [
-            ':id' => $id,
-            ':token' => $token,
-            ':name' => $name,
-        ];
+        for ($attempt = 0; $attempt < self::MAX_CREATE_RETRIES; $attempt++) {
+            $token = generateSecureToken();
+            $uuid = Uuid::uuid7();
+            $id = $uuid->toString();
 
-        $this->pdo_simple->execute($sql, $params);
+            $params = [
+                ':id' => $id,
+                ':token' => $token,
+                ':name' => $name,
+            ];
 
-        return $this->getByToken($token);
+            try {
+                $this->pdo_simple->execute($sql, $params);
+
+                return $this->getByToken($token);
+            } catch (PdoSimpleWithPreviousException $e) {
+                $lastException = $e;
+                $pdo = $e->getPreviousPdoException();
+                $code = $pdo->getCode();
+                $errorInfo = $pdo->errorInfo ?? [];
+                $driverCode = $errorInfo[1] ?? null;
+                // MySQL duplicate key: SQLSTATE 23000 or driver code 1062
+                $isDuplicate = $code === '23000' || $driverCode === 1062;
+                if (!$isDuplicate) {
+                    throw $e;
+                }
+            }
+        }
+
+        throw ApiTokenCreateFailedException::afterMaxRetries(self::MAX_CREATE_RETRIES, $lastException);
     }
 
     public function getByToken(string $token): ?ApiToken

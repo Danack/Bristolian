@@ -34,14 +34,13 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $name = 'test-token-' . time() . '_' .uniqid();
-        $token = 'token-value-' . random_int(1000, 9999);
+        $name = 'test-token-' . time() . '_' . uniqid();
 
-        $apiToken = $repo->createToken($name, $token);
+        $apiToken = $repo->createToken($name);
 
         $this->assertInstanceOf(ApiToken::class, $apiToken);
         $this->assertSame($name, $apiToken->name);
-        $this->assertSame($token, $apiToken->token);
+        $this->assertNotEmpty($apiToken->token);
         $this->assertFalse($apiToken->is_revoked);
     }
 
@@ -71,17 +70,16 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $name = 'test-token-' . time() . '_' .uniqid();
-        $token = 'token-value-' . random_int(1000, 9999);
+        $name = 'test-token-' . time() . '_' . uniqid();
 
-        $createdToken = $repo->createToken($name, $token);
+        $createdToken = $repo->createToken($name);
 
-        $foundToken = $repo->getByToken($token);
+        $foundToken = $repo->getByToken($createdToken->token);
         $this->assertNotNull($foundToken);
         $this->assertInstanceOf(ApiToken::class, $foundToken);
         $this->assertSame($createdToken->id, $foundToken->id);
         $this->assertSame($name, $foundToken->name);
-        $this->assertSame($token, $foundToken->token);
+        $this->assertSame($createdToken->token, $foundToken->token);
     }
 
     /**
@@ -99,13 +97,12 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $name = 'test-token-' . time() . '_' .uniqid();
-        $token = 'token-value-' . random_int(1000, 9999);
+        $name = 'test-token-' . time() . '_' . uniqid();
 
-        $createdToken = $repo->createToken($name, $token);
+        $createdToken = $repo->createToken($name);
         $repo->revokeToken($createdToken->id);
 
-        $foundToken = $repo->getByToken($token);
+        $foundToken = $repo->getByToken($createdToken->token);
         $this->assertNull($foundToken);
     }
 
@@ -125,20 +122,19 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $name = 'test-token-' . time() . '_' .uniqid();
-        $token = 'token-value-' . random_int(1000, 9999);
+        $name = 'test-token-' . time() . '_' . uniqid();
 
-        $createdToken = $repo->createToken($name, $token);
+        $createdToken = $repo->createToken($name);
 
         // Verify token exists before revocation
-        $foundBefore = $repo->getByToken($token);
+        $foundBefore = $repo->getByToken($createdToken->token);
         $this->assertNotNull($foundBefore);
 
         // Revoke the token
         $repo->revokeToken($createdToken->id);
 
         // Verify token is not found after revocation
-        $foundAfter = $repo->getByToken($token);
+        $foundAfter = $repo->getByToken($createdToken->token);
         $this->assertNull($foundAfter);
     }
 }

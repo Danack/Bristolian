@@ -144,6 +144,8 @@ public function test_fetch_external_parses_input_to_expected_output(
 - ✅ **Use real objects** - Create actual instances of classes with test data
 - ❌ **Do not use mocks** - Do not use `$this->createMock()`, `$this->getMock()`, or similar PHPUnit mocking features
 
+**Prefer existing Fake repos over new test doubles.** The project has a Fake implementation for every repo (e.g. `FakeMemeStorageRepo`, `FakeAdminRepo`, `FakeBristolStairsRepo`). When writing tests that need a repo, use the existing Fake for that repo—seed it via its public API (e.g. `storeMeme`, `setUploaded`) and assert on observable behaviour—rather than introducing a new test double class that implements the same interface.
+
 #### Finding or Requesting Fake Objects
 
 When writing tests, if you cannot find an appropriate Fake implementation for a dependency:
