@@ -15,7 +15,7 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up  --build --fo
 
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up  --build --force-recreate -d redis
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up  --build --force-recreate -d php_fpm
-# docker-compose -f docker-compose.yml -f docker-compose.prod.yml up  --build --force-recreate -d supervisord
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up  --build --force-recreate -d supervisord
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up  --build --force-recreate -d caddy
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up  --build --force-recreate -d varnish
 
