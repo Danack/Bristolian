@@ -15,4 +15,8 @@ set -x
 #    containers/varnish/config/default.vcl \
 #    $ENV_TO_USE
 
+echo "About to call start_varnish.sh"
+
 exec sh /var/app/containers/varnish/start_varnish.sh
+
+echo "Varnish should be started"

@@ -19,24 +19,21 @@ shutdown() {
 echo "Trap TERM and INT signals"
 trap shutdown TERM INT
 
-if false      ; then
-  varnishd -j unix,user=vcache \
-    -f /var/app/containers/varnish/config/default.vcl \
-    -s malloc,${CACHE_SIZE} -a0.0.0.0:80 \
-  && varnishncsa -a -c -w /var/log/varnish/access.log -D -P /run/varnishncsa.pid \
-  && tail -f /var/log/varnish/access.log
-else
-  varnishd -j unix,user=vcache \
-    -f /var/app/containers/varnish/config/default.vcl \
-    -s malloc,${CACHE_SIZE} -a0.0.0.0:80
 
-  varnishncsa -a -c -w /dev/null -P /run/varnishncsa.pid
 
-  echo "Keeping the script running and waiting for signals"
-  while true; do
-    sleep 1
-  done
-fi
+varnishd -F \
+  -j unix,user=vcache \
+  -f /var/app/containers/varnish/config/default.vcl \
+  -s malloc,${CACHE_SIZE} -a0.0.0.0:80
+
+varnishncsa -a -c -w /dev/null -P /run/varnishncsa.pid
+
+echo "Keeping the script running and waiting for signals"
+wait
+#  while true; do
+#    sleep 1
+#  done
+
 
 
 
