@@ -54,8 +54,11 @@ class PdoProcessorRunRecordRepo implements ProcessorRunRecordRepo
         return (string)$result;
     }
 
+    private const DEBUG_INFO_MAX_BYTES = 1024;
+
     public function setRunFinished(string $id, string $debug_info): void
     {
+        $truncated = mb_strcut($debug_info, 0, self::DEBUG_INFO_MAX_BYTES, 'UTF-8');
 
         $sql = <<< SQL
 update
@@ -70,7 +73,7 @@ limit 1
 SQL;
 
         $params = [
-            ':debug_info' => $debug_info,
+            ':debug_info' => $truncated,
             ':status' => self::STATE_FINISHED,
             ':id' => $id
         ];
