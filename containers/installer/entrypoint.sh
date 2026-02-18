@@ -55,8 +55,8 @@ php cli.php db:wait_for_db
 php cli.php db:migrate_to_latest
 
 php cli.php generate:php_table_helper_classes
-php cli.php generate:php_response_types
 php cli.php generate:model_classes
+php cli.php generate:php_response_types
 php cli.php generate:typescript_api_routes
 php cli.php generate:javascript_constants
 
