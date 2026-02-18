@@ -929,6 +929,36 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         });
     }
 
+    clearSuccessfulUploads = () => {
+        this.setState(prevState => {
+            const toRemove = prevState.fileUploads.filter(item => item.status === UploadStatus.Success);
+            toRemove.forEach(item => {
+                if (item.previewUrl) {
+                    URL.revokeObjectURL(item.previewUrl);
+                }
+            });
+            const removeIds = new Set(toRemove.map(i => i.id));
+            return {
+                fileUploads: prevState.fileUploads.filter(item => !removeIds.has(item.id))
+            };
+        });
+    };
+
+    clearErrorUploads = () => {
+        this.setState(prevState => {
+            const toRemove = prevState.fileUploads.filter(item => item.status === UploadStatus.Error);
+            toRemove.forEach(item => {
+                if (item.previewUrl) {
+                    URL.revokeObjectURL(item.previewUrl);
+                }
+            });
+            const removeIds = new Set(toRemove.map(i => i.id));
+            return {
+                fileUploads: prevState.fileUploads.filter(item => !removeIds.has(item.id))
+            };
+        });
+    };
+
     renderMemeTagDeleteModal() {
         if (!this.state.confirmMemeTagDelete) return null;
 
@@ -1165,6 +1195,8 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             const hasFilesToUpload = this.state.fileUploads.length > 0;
             const isUploading = this.state.fileUploads.some(item => item.status === UploadStatus.Uploading);
             const hasIdleFiles = this.state.fileUploads.some(item => item.status === UploadStatus.Idle);
+            const hasSuccessfulUploads = this.state.fileUploads.some(item => item.status === UploadStatus.Success);
+            const hasErrorUploads = this.state.fileUploads.some(item => item.status === UploadStatus.Error);
 
             // Upload tag selection panel
             const uploadSelectedTagsBox = this.state.uploadSelectedTags.length > 0 ? (
@@ -1303,6 +1335,27 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                                 class="upload_button">
                                 {isUploading ? 'Uploading...' : `Upload ${this.state.fileUploads.filter(item => item.status === UploadStatus.Idle).length} file(s)`}
                             </button>
+                        </div>
+                    )}
+
+                    {(hasSuccessfulUploads || hasErrorUploads) && (
+                        <div class="upload_actions">
+                            {hasSuccessfulUploads && (
+                                <button
+                                    type="button"
+                                    class="button"
+                                    onClick={this.clearSuccessfulUploads}>
+                                    Clear uploads
+                                </button>
+                            )}
+                            {hasErrorUploads && (
+                                <button
+                                    type="button"
+                                    class="button"
+                                    onClick={this.clearErrorUploads}>
+                                    Clear errors
+                                </button>
+                            )}
                         </div>
                     )}
 
