@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "68c6af6e7b54009b6f549898956934e2",
+    "content-hash": "6e92a3f6f708c226ea575d41c8c3eb59",
     "packages": [
         {
             "name": "auroras-live/suncalc-php",
@@ -100,16 +100,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.369.34",
+            "version": "3.369.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "5db21cd0e5c8a5b5344596649033acf861a5e117"
+                "reference": "2a69e7df5e03be9e08f9f73fb6a8cc9dd63b59c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5db21cd0e5c8a5b5344596649033acf861a5e117",
-                "reference": "5db21cd0e5c8a5b5344596649033acf861a5e117",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2a69e7df5e03be9e08f9f73fb6a8cc9dd63b59c0",
+                "reference": "2a69e7df5e03be9e08f9f73fb6a8cc9dd63b59c0",
                 "shasum": ""
             },
             "require": {
@@ -191,9 +191,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.34"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.36"
             },
-            "time": "2026-02-13T19:09:12+00:00"
+            "time": "2026-02-17T19:45:01+00:00"
         },
         {
             "name": "behat/behat",
@@ -984,16 +984,16 @@
         },
         {
             "name": "danack/datatype",
-            "version": "0.7.0",
+            "version": "0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Danack/DataType.git",
-                "reference": "ac1488abcb88e15aeadab3d0dae4b309354dc796"
+                "reference": "923dc40990bad4ee5aab1881665c8cbd92987412"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Danack/DataType/zipball/ac1488abcb88e15aeadab3d0dae4b309354dc796",
-                "reference": "ac1488abcb88e15aeadab3d0dae4b309354dc796",
+                "url": "https://api.github.com/repos/Danack/DataType/zipball/923dc40990bad4ee5aab1881665c8cbd92987412",
+                "reference": "923dc40990bad4ee5aab1881665c8cbd92987412",
                 "shasum": ""
             },
             "require": {
@@ -1031,9 +1031,9 @@
             "description": "A library that makes using data types easier",
             "support": {
                 "issues": "https://github.com/Danack/DataType/issues",
-                "source": "https://github.com/Danack/DataType/tree/0.7.0"
+                "source": "https://github.com/Danack/DataType/tree/0.7.1"
             },
-            "time": "2026-01-13T23:31:23+00:00"
+            "time": "2026-02-17T23:36:33+00:00"
         },
         {
             "name": "danack/esprintf",
