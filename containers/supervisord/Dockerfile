@@ -25,9 +25,13 @@ RUN apt install -y \
   libxrender1 \
   python3-pip
 
+# Attempt to align user id's across containers
+RUN usermod -u 1000 www-data
+USER www-data
+
+
 # 2. Install EasyOCR (this will pull torch + models)
 RUN pip install --no-cache-dir easyocr
-
 
 #  pre-download models at build time
 #  (avoids first-run network access)
@@ -36,8 +40,7 @@ COPY easyocr_install.sh /tmp/easyocr_install.sh
 
 WORKDIR /var/app
 
-# Attempt to align user id's across containers
-RUN usermod -u 1000 www-data
+
 
 RUN mkdir -p /var/log/supervisor
 
