@@ -9,6 +9,18 @@ use Bristolian\Model\Generated\UserProfile;
 use Bristolian\Model\Types\UserProfileWithDisplayName;
 use Bristolian\Parameters\UserProfileUpdateParams;
 
+function createBlankUserProfileForUserId(string $user_id): UserProfile
+{
+    $now = new \DateTimeImmutable();
+    return new UserProfile(
+        user_id: $user_id,
+        avatar_image_id: null,
+        about_me: null,
+        created_at: $now,
+        updated_at: null,
+    );
+}
+
 /**
  * Fake implementation of UserProfileRepo for testing.
  */
@@ -31,7 +43,7 @@ class FakeUserProfileRepo implements UserProfileRepo
     public function getUserProfile(string $user_id): UserProfileWithDisplayName
     {
         // Get profile (create default if doesn't exist, matching PDO behavior)
-        $profile = $this->profiles[$user_id] ??  UserProfile::createBlankForUserId($user_id);
+        $profile = $this->profiles[$user_id] ?? createBlankUserProfileForUserId($user_id);
 
         // Get latest display name (highest version)
         $displayName = null;

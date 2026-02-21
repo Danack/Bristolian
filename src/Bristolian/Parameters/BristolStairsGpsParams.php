@@ -4,6 +4,8 @@ namespace Bristolian\Parameters;
 
 use Bristolian\Parameters\PropertyType\GpsFloat;
 use Bristolian\StaticFactory;
+use DataType\Basic\OptionalLatitudeFloat;
+use DataType\Basic\OptionalLongitudeFloat;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
@@ -12,7 +14,7 @@ use DataType\GetInputTypesFromAttributes;
 /**
  * This is used for setting a new flight of stairs position.
  *
- * Safari and other browser strip out GPS info
+ * Safari and other browser strip out GPS info from images. Fun.
  */
 class BristolStairsGpsParams implements DataType, StaticFactory
 {
@@ -21,9 +23,9 @@ class BristolStairsGpsParams implements DataType, StaticFactory
     use GetInputTypesFromAttributes;
 
     public function __construct(
-        #[GpsFloat('gps_latitude')]
+        #[OptionalLatitudeFloat('gps_latitude')]
         public readonly float|null $latitude,
-        #[GpsFloat('gps_longitude')]
+        #[OptionalLongitudeFloat('gps_longitude', 'gps_latitude')]
         public readonly float|null $longitude,
     ) {
     }

@@ -30,7 +30,6 @@ class ProdMemoryWarningCheckTest extends BaseTestCase
 
         $percent = $check->checkMemoryUsage($request);
 
-        $this->assertIsInt($percent);
         $this->assertGreaterThanOrEqual(0, $percent);
         $this->assertLessThanOrEqual(100, $percent);
     }

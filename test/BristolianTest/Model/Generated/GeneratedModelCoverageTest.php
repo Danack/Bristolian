@@ -27,6 +27,7 @@ use Bristolian\Model\Generated\UserAuthEmailPassword;
 use Bristolian\Model\Generated\UserDisplayName;
 use Bristolian\Model\Generated\UserProfile;
 use Bristolian\Model\Generated\UserWebpushSubscription;
+use function Bristolian\Repo\UserProfileRepo\createBlankUserProfileForUserId;
 use BristolianTest\BaseTestCase;
 
 /**
@@ -199,10 +200,10 @@ class GeneratedModelCoverageTest extends BaseTestCase
         $this->assertSame('uid', $o->user_id);
     }
 
-    /** @covers \Bristolian\Model\Generated\UserProfile::createBlankForUserId */
-    public function test_UserProfile_createBlankForUserId(): void
+    /** @covers \Bristolian\Repo\UserProfileRepo\createBlankUserProfileForUserId */
+    public function test_createBlankUserProfileForUserId(): void
     {
-        $o = UserProfile::createBlankForUserId('uid');
+        $o = createBlankUserProfileForUserId('uid');
         $this->assertSame('uid', $o->user_id);
     }
 

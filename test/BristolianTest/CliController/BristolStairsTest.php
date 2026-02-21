@@ -87,7 +87,7 @@ final class BristolStairImageStorageReturningUploadError implements BristolStair
         \Bristolian\UploadedFiles\UploadedFile $uploadedFile,
         array $allowedExtensions,
         \Bristolian\Parameters\BristolStairsGpsParams $gpsParams
-    ): \Bristolian\Model\Generated\BristolStairInfo|UploadError {
+    ): UploadError {
         return UploadError::unsupportedFileType();
     }
 }

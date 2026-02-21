@@ -21,7 +21,6 @@ class StandardMoonAlertRepoTest extends BaseTestCase
 
         $users = $repo->getUsersForMoonAlert();
 
-        $this->assertIsArray($users);
         $this->assertNotEmpty($users);
         $this->assertContains('danack@basereality.com', $users);
         $this->assertContainsOnly('string', $users);
