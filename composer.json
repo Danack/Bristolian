@@ -17,7 +17,7 @@
         "danack/php-unit-helper": "^0.5.0",
         "danack/json-safe": "^0.1.1",
         "danack/slim-dispatcher": "dev-dev",
-        "danack/datatype": "0.7.1",
+        "danack/datatype": "0.8.1",
         "dmore/behat-chrome-extension": "1.4.1",
         "dmore/chrome-mink-driver": "2.10.0",
         "hashids/hashids": "5.0.2",
