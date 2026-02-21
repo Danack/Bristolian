@@ -77,6 +77,13 @@ interface MemeManagementPanelState {
     uploadNewTagText: string; // Text for creating a new tag
     uploadAddTagError: string|null; // Error message for adding new tag
     uploadTagSearchTimeoutId?: number; // Timeout for tag search
+    // Multi-select and bulk tag add
+    selectedMemeIds: Array<string>;
+    bulkSelectedTags: Array<string>;
+    bulkTagSearchQuery: string;
+    bulkNewTagText: string;
+    bulkAddError: string|null;
+    bulkAddInProgress: boolean;
 }
 
 const MINIMUM_TAG_LENGTH = 4;
@@ -109,7 +116,13 @@ function getDefaultState(/*initialControlParams: object*/): MemeManagementPanelS
         uploadTagSearchQuery: '',
         uploadNewTagText: '',
         uploadAddTagError: null,
-        uploadTagSearchTimeoutId: undefined
+        uploadTagSearchTimeoutId: undefined,
+        selectedMemeIds: [],
+        bulkSelectedTags: [],
+        bulkTagSearchQuery: '',
+        bulkNewTagText: '',
+        bulkAddError: null,
+        bulkAddInProgress: false
     };
 }
 
@@ -366,14 +379,44 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         this.setState({memeBeingEdited: null})
     }
 
+    toggleMemeSelection(memeId: string) {
+        this.setState(prev => {
+            const idx = prev.selectedMemeIds.indexOf(memeId);
+            const selectedMemeIds = idx === -1
+                ? [...prev.selectedMemeIds, memeId]
+                : prev.selectedMemeIds.filter(id => id !== memeId);
+            return { selectedMemeIds };
+        });
+    }
+
+    clearMemeSelection() {
+        this.setState({
+            selectedMemeIds: [],
+            bulkSelectedTags: [],
+            bulkAddError: null
+        });
+    }
+
+    handleMemeCardClick(e: MouseEvent, meme: StoredMeme) {
+        if ((e as MouseEvent).shiftKey) {
+            e.preventDefault();
+            this.toggleMemeSelection(meme.id);
+        } else {
+            this.clearMemeSelection();
+            this.startEditing(meme);
+        }
+    }
+
     renderMeme(meme: StoredMeme) {
         const meme_url = `/images/memes/${meme.id}.jpg`;
         
+        const isSelected = this.state.selectedMemeIds.indexOf(meme.id) !== -1;
         return <div 
             key={meme.id} 
-            className="meme_card"
-            onClick={() => this.startEditing(meme)}
+            className={`meme_card${isSelected ? ' meme_card_selected' : ''}`}
+            onClick={(e: MouseEvent) => this.handleMemeCardClick(e, meme)}
             style={{cursor: 'pointer'}}
+            title={isSelected ? 'Shift+click to deselect' : 'Click to edit, Shift+click to select for bulk tagging'}
         >
             <div className="meme_card_image_container">
                 <img src={meme_url} alt={meme.normalized_name} className="meme_thumbnail" />
@@ -394,6 +437,112 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                 {Object.values(this.state.memes).map((meme: StoredMeme) => this.renderMeme(meme))}
             </div>
         </div>
+    }
+
+    renderBulkAddTagsPanel() {
+        const n = this.state.selectedMemeIds.length;
+        const bulkSelectedTagsBox = this.state.bulkSelectedTags.length > 0 ? (
+            <div class="selected_tags_box">
+                <h5>Tags to add to all {n} memes:</h5>
+                <div class="tag_list">
+                    {this.state.bulkSelectedTags.map((tagText: string) => (
+                        <span
+                            key={tagText}
+                            class="tag selected_tag"
+                            onClick={() => this.handleRemoveBulkTag(tagText)}
+                            title="Click to remove"
+                        >
+                            {tagText} ×
+                        </span>
+                    ))}
+                </div>
+            </div>
+        ) : null;
+
+        const filteredBulkSuggested = this.state.bulkTagSearchQuery.trim() === ''
+            ? this.state.suggestedTags
+            : this.state.suggestedTags.filter((tag: TagSuggestion) =>
+                tag.text.toLowerCase().includes(this.state.bulkTagSearchQuery.toLowerCase())
+            );
+        const bulkSuggestedTagsBox = filteredBulkSuggested.length > 0 ? (
+            <div class="suggested_tags_box">
+                <h5>Suggested tags:</h5>
+                <div class="tag_list">
+                    {filteredBulkSuggested.map((tag: TagSuggestion) => {
+                        const isSelected = this.state.bulkSelectedTags.indexOf(tag.text) !== -1;
+                        return (
+                            <span
+                                key={tag.text}
+                                class={`tag suggested_tag ${isSelected ? 'tag_selected' : ''}`}
+                                onClick={() => this.handleBulkTagClick(tag.text)}
+                                title={`${tag.count} memes (Click to ${isSelected ? 'remove' : 'add'})`}
+                            >
+                                {tag.text} ({tag.count})
+                            </span>
+                        );
+                    })}
+                </div>
+            </div>
+        ) : this.state.bulkTagSearchQuery.trim() !== '' ? (
+            <div class="suggested_tags_box">
+                <p style="font-size: 0.9rem; color: #666; margin: 0;">No matching tags. Create a new tag below.</p>
+            </div>
+        ) : null;
+
+        const canAdd = this.state.bulkSelectedTags.length > 0 && !this.state.bulkAddInProgress;
+
+        return (
+            <div class="bulk_add_tags_panel">
+                <div class="bulk_add_tags_header">
+                    <span class="bulk_add_tags_title">{n} meme{n !== 1 ? 's' : ''} selected — add tags to all</span>
+                    <span class="button" onClick={() => this.clearMemeSelection()}>Clear selection</span>
+                </div>
+                <div class="bulk_add_tags_content">
+                    {bulkSelectedTagsBox}
+                    <div class="tag_search_section">
+                        <label>Search tags:</label>
+                        <input
+                            type="text"
+                            value={this.state.bulkTagSearchQuery}
+                            onInput={(e) => this.handleBulkTagSearchChange(e)}
+                            placeholder="Type to search tags..."
+                        />
+                    </div>
+                    {bulkSuggestedTagsBox}
+                    <div class="add_tag_section">
+                        <label>Create new tag:</label>
+                        <div class="add_tag_input_group">
+                            <input
+                                type="text"
+                                value={this.state.bulkNewTagText}
+                                onChange={(e) => this.handleBulkNewTagTextChange(e)}
+                                placeholder="Enter new tag text..."
+                                onKeyDown={(e: KeyboardEvent) => {
+                                    if (e.key === 'Enter') {
+                                        this.handleAddBulkTag();
+                                    }
+                                }}
+                            />
+                            <span class="button" onClick={() => this.handleAddBulkTag()}>Add tag</span>
+                        </div>
+                        {this.state.bulkAddError !== null && (
+                            <span class="error" style="font-size: 0.85rem; margin-top: 0.5rem; display: block;">
+                                {this.state.bulkAddError}
+                            </span>
+                        )}
+                    </div>
+                    <div class="bulk_add_actions">
+                        <span
+                            class="button"
+                            onClick={() => canAdd && this.handleAddTagsToSelectedMemes()}
+                            style={{ opacity: canAdd ? 1 : 0.6, cursor: canAdd ? 'pointer' : 'not-allowed' }}
+                        >
+                            {this.state.bulkAddInProgress ? 'Adding…' : `Add tags to ${n} meme${n !== 1 ? 's' : ''}`}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     handleTextChange(something: Event) {
@@ -737,6 +886,84 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
     handleRemoveUploadTag(tagText: string) {
         const uploadSelectedTags = this.state.uploadSelectedTags.filter(t => t !== tagText);
         this.setState({ uploadSelectedTags });
+    }
+
+    handleBulkTagClick(tagText: string) {
+        const bulkSelectedTags = [...this.state.bulkSelectedTags];
+        const index = bulkSelectedTags.indexOf(tagText);
+        if (index === -1) {
+            bulkSelectedTags.push(tagText);
+        } else {
+            bulkSelectedTags.splice(index, 1);
+        }
+        this.setState({ bulkSelectedTags, bulkAddError: null });
+    }
+
+    handleRemoveBulkTag(tagText: string) {
+        this.setState({
+            bulkSelectedTags: this.state.bulkSelectedTags.filter(t => t !== tagText),
+            bulkAddError: null
+        });
+    }
+
+    handleBulkTagSearchChange(event: Event) {
+        const target = event.currentTarget as HTMLInputElement;
+        this.setState({ bulkTagSearchQuery: target.value });
+    }
+
+    handleBulkNewTagTextChange(event: Event) {
+        const target = event.currentTarget as HTMLInputElement;
+        this.setState({ bulkNewTagText: target.value, bulkAddError: null });
+    }
+
+    handleAddBulkTag() {
+        const tagText = this.state.bulkNewTagText.trim();
+        if (tagText.length < MINIMUM_TAG_LENGTH) {
+            this.setState({
+                bulkAddError: `Tag text must be at least ${MINIMUM_TAG_LENGTH} characters long.`
+            });
+            return;
+        }
+        if (this.state.bulkSelectedTags.indexOf(tagText) !== -1) {
+            return;
+        }
+        this.setState({
+            bulkSelectedTags: [...this.state.bulkSelectedTags, tagText],
+            bulkNewTagText: '',
+            bulkAddError: null
+        });
+    }
+
+    handleAddTagsToSelectedMemes() {
+        const { selectedMemeIds, bulkSelectedTags, bulkAddInProgress } = this.state;
+        if (bulkAddInProgress || selectedMemeIds.length === 0 || bulkSelectedTags.length === 0) {
+            return;
+        }
+        this.setState({ bulkAddInProgress: true, bulkAddError: null });
+        const addOne = (memeId: string, index: number): Promise<void> => {
+            return this.addTagsToMeme(memeId, bulkSelectedTags).then(() => {
+                if (index < selectedMemeIds.length - 1) {
+                    return new Promise<void>(r => setTimeout(r, 80)).then(() => addOne(selectedMemeIds[index + 1], index + 1));
+                }
+            });
+        };
+        addOne(selectedMemeIds[0], 0)
+            .then(() => {
+                this.setState({
+                    bulkAddInProgress: false,
+                    bulkSelectedTags: [],
+                    bulkNewTagText: '',
+                    bulkAddError: null
+                });
+                this.refreshMemes();
+            })
+            .catch((err: unknown) => {
+                console.error("Bulk add tags failed:", err);
+                this.setState({
+                    bulkAddInProgress: false,
+                    bulkAddError: "Failed to add tags to some memes. Please try again."
+                });
+            });
     }
 
     addTagsToMeme(memeId: string, tagTexts: Array<string>): Promise<void> {
@@ -1147,6 +1374,8 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
 
         let meme_block = this.renderMemeBlock();
 
+        const bulkAddPanel = this.state.selectedMemeIds.length > 0 ? this.renderBulkAddTagsPanel() : null;
+
         const selectedTagsBox = this.state.selectedTags.length > 0 ? (
             <div class="selected_tags_box">
                 <h5>Selected Tags:</h5>
@@ -1462,6 +1691,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             <div class="meme_list_controls">
                 <span class="button" onClick={() => this.refreshMemes()}>Refresh All</span>
             </div>
+            {bulkAddPanel}
             {meme_block}
         </div>;
     }

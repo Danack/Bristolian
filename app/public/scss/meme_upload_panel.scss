@@ -556,6 +556,68 @@
     color: #666;
   }
 
+  .bulk_add_tags_panel {
+    background-color: #f0f4f8;
+    border: 1px solid #c5d4e6;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    .bulk_add_tags_header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+
+      .bulk_add_tags_title {
+        font-weight: 600;
+        font-size: 1rem;
+        color: #333;
+      }
+    }
+
+    .bulk_add_tags_content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      .tag_search_section {
+        label {
+          display: block;
+          font-size: 0.9rem;
+          margin-bottom: 0.25rem;
+        }
+        input {
+          width: 100%;
+          max-width: 280px;
+          padding: 0.35rem 0.5rem;
+        }
+      }
+
+      .add_tag_section {
+        label {
+          display: block;
+          font-size: 0.9rem;
+          margin-bottom: 0.25rem;
+        }
+        .add_tag_input_group {
+          display: flex;
+          gap: 0.5rem;
+          align-items: center;
+          input {
+            flex: 1;
+            max-width: 200px;
+            padding: 0.35rem 0.5rem;
+          }
+        }
+      }
+
+      .bulk_add_actions {
+        margin-top: 0.25rem;
+      }
+    }
+  }
+
   .meme_grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -576,6 +638,11 @@
     &:hover {
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
       transform: translateY(-2px);
+    }
+
+    &.meme_card_selected {
+      border: 2px solid #4a90d9;
+      box-shadow: 0 0 0 2px rgba(74, 144, 217, 0.3);
     }
 
     .meme_card_image_container {
