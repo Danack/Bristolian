@@ -162,7 +162,8 @@ function createPDOForUser(Config $config)
         PDO::ATTR_EMULATE_PREPARES => false,
         PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
         PDO::ATTR_TIMEOUT => 3,
-        PDO::MYSQL_ATTR_FOUND_ROWS => true
+        PDO::MYSQL_ATTR_FOUND_ROWS => true,
+//        PDO::ATTR_PERSISTENT => true
     ];
 
     // TODO - return a readonly connection.

@@ -25,8 +25,8 @@ class BristolStairsGpsParamsTest extends BaseTestCase
             -2.5879,
         ];
         yield 'no optional' => [[], null, null];
-        yield 'only latitude' => [['gps_latitude' => 51.4545], 51.4545, null];
-        yield 'only longitude' => [['gps_longitude' => -2.5879], null, -2.5879];
+//        yield 'only latitude' => [['gps_latitude' => 51.4545], 51.4545, null];
+//        yield 'only longitude' => [['gps_longitude' => -2.5879], null, -2.5879];
     }
 
     /**

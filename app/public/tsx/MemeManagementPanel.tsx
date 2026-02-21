@@ -144,6 +144,18 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         document.addEventListener('keydown', this.keydownHandler);
     }
 
+    componentDidUpdate(prevProps: MemeManagementPanelProps, prevState: MemeManagementPanelState) {
+        // When user selects memes for bulk tagging but we have no suggestions (e.g. after "Show untagged"),
+        // load global tag suggestions so the bulk panel can show tags to add.
+        if (
+            prevState.selectedMemeIds.length === 0 &&
+            this.state.selectedMemeIds.length > 0 &&
+            this.state.suggestedTags.length === 0
+        ) {
+            this.loadSuggestedTags();
+        }
+    }
+
     componentWillUnmount() {
         if (this.keydownHandler) {
             document.removeEventListener('keydown', this.keydownHandler);
@@ -299,9 +311,11 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         fetch(`/api/memes/tag-suggestions?meme_ids=${memeIds}&limit=10`)
             .then((response: Response) => response.json())
             .then((data: any) => {
-                this.setState({ 
-                    suggestedTags: data.data.tags || []
-                });
+                const tags = data.data.tags || [];
+                this.setState({ suggestedTags: tags });
+                if (tags.length === 0) {
+                    this.loadSuggestedTags();
+                }
             })
             .catch((err: any) => {
                 console.error("Failed to load suggested tags for memes:", err);

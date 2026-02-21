@@ -13,6 +13,7 @@ use BristolianTest\BaseTestCase;
 class UploadErrorTest extends BaseTestCase
 {
     /**
+     * @covers \Bristolian\Service\MemeStorageProcessor\UploadError::__construct
      * @covers \Bristolian\Service\MemeStorageProcessor\UploadError::uploadedFileUnreadable
      */
     public function test_uploadedFileUnreadable_returns_error_with_constant_message(): void

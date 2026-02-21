@@ -2,6 +2,7 @@
 
 namespace Bristolian\CliController;
 
+// @codeCoverageIgnoreStart
 // Output the extracted information
 /**
  * @param $comment string
@@ -37,6 +38,7 @@ function formatComment(string $comment): array
     }
     return $lines_formatted;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * @codeCoverageIgnore
