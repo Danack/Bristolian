@@ -258,9 +258,9 @@ export class MemeUploadPanel extends Component<MemeUploadPanelProps, MemeUploadP
                 />
                 {selectedFileInfo}
                 <button 
+                    className="button_standard upload_button"
                     onClick={this.onFileUpload} 
-                    disabled={isUploading || !state.selectedFile}
-                    class="upload_button">
+                    disabled={isUploading || !state.selectedFile}>
                     {isUploading ? 'Uploading...' : 'Upload!'}
                 </button>
             </div>

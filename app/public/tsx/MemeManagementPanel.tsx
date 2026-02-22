@@ -67,6 +67,7 @@ interface MemeManagementPanelState {
     selectedTags: Array<string>; // Array of tag texts that are selected for search
     suggestedTags: Array<TagSuggestion>; // Suggested tags to show
     isSearching: boolean;
+    viewingUntagged: boolean; // true when current list is from "Show untagged"
     timeoutId?: number;
     // Upload state
     showUploadPanel: boolean;
@@ -108,6 +109,7 @@ function getDefaultState(/*initialControlParams: object*/): MemeManagementPanelS
         selectedTags: [],
         suggestedTags: [],
         isSearching: false,
+        viewingUntagged: false,
         timeoutId: undefined,
         showUploadPanel: false,
         fileUploads: [],
@@ -186,6 +188,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
     }
 
     refreshMemes() {
+        this.setState({ viewingUntagged: false });
         api.memes().
         then((data:GetMemesResponse) => {
             this.processData(data);
@@ -247,7 +250,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
     }
 
     performSearch(showUntagged: boolean = false) {
-        this.setState({ isSearching: true });
+        this.setState({ isSearching: true, viewingUntagged: showUntagged });
 
         if (showUntagged) {
             this.fetchMemesAndApply('/api/memes/untagged', 'Failed to fetch untagged memes:');
@@ -282,7 +285,8 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         this.setState({
             searchQuery: '',
             searchTextQuery: '',
-            selectedTags: []
+            selectedTags: [],
+            viewingUntagged: false
         });
         this.refreshMemes();
         this.loadSuggestedTags();
@@ -440,7 +444,10 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
 
     renderMemeBlock() {
         if (this.state.memes && this.state.memes.length === 0) {
-            return <span>You don't have any memes uploaded. If you did, you could manage them here.</span>
+            if (this.state.viewingUntagged) {
+                return <span>No untagged memes found.</span>;
+            }
+            return <span>You don't have any memes uploaded. If you did, you could manage them here.</span>;
         }
 
         return <div>
@@ -509,7 +516,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             <div class="bulk_add_tags_panel">
                 <div class="bulk_add_tags_header">
                     <span class="bulk_add_tags_title">{n} meme{n !== 1 ? 's' : ''} selected — add tags to all</span>
-                    <span class="button" onClick={() => this.clearMemeSelection()}>Clear selection</span>
+                    <span class="button_standard" onClick={() => this.clearMemeSelection()}>Clear selection</span>
                 </div>
                 <div class="bulk_add_tags_content">
                     {bulkSelectedTagsBox}
@@ -537,7 +544,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                                     }
                                 }}
                             />
-                            <span class="button" onClick={() => this.handleAddBulkTag()}>Add tag</span>
+                            <span class="button_standard" onClick={() => this.handleAddBulkTag()}>Add tag</span>
                         </div>
                         {this.state.bulkAddError !== null && (
                             <span class="error" style="font-size: 0.85rem; margin-top: 0.5rem; display: block;">
@@ -547,7 +554,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                     </div>
                     <div class="bulk_add_actions">
                         <span
-                            class="button"
+                            class="button_standard"
                             onClick={() => canAdd && this.handleAddTagsToSelectedMemes()}
                             style={{ opacity: canAdd ? 1 : 0.6, cursor: canAdd ? 'pointer' : 'not-allowed' }}
                         >
@@ -1210,11 +1217,11 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
 
                 <div class="modal-buttons">
                     <span
-                      className="button"
+                      className="button_standard"
                       onClick={() => this.handleCancelDeleteMemeTag()}>Cancel</span>
 
                     <span
-                      className="button"
+                      className="button_standard"
                       onClick={() => this.handleConfirmDeleteMemeTag()}>Delete</span>
                 </div>
             </div>
@@ -1244,10 +1251,10 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                     </div>
                     <div class="modal-buttons">
                         <span
-                            className="button"
+                            className="button_standard"
                             onClick={() => this.handleSaveEditTag()}>Save</span>
                         <span
-                            className="button"
+                            className="button_standard"
                             onClick={() => this.handleCancelEditTag()}>Cancel</span>
                     </div>
                 </div>
@@ -1262,12 +1269,12 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             </td>
             <td>
                 <span
-                  className="button"
+                  className="button_standard"
                   onClick={() => this.handleEditMemeTag(memeTag)}>Edit</span>
             </td>
             <td>
                 <span
-                  className="button"
+                  className="button_standard"
                   onClick={() => this.handleDeleteMemeTag(memeTag)}>Delete</span>
             </td>
         </tr>
@@ -1305,7 +1312,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
         return <div className="meme_edit_container">
             <div className="meme_edit_header">
                 <h3>Editing meme</h3>
-                <span className="button" onClick={() => this.cancelMemeEditing()}>Done</span>
+                <span className="button_standard" onClick={() => this.cancelMemeEditing()}>Done</span>
             </div>
 
             <div className="meme_edit_content">
@@ -1348,8 +1355,13 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                                       type="text"
                                       value={this.state.meme_edit_text}
                                       onChange={(event) => this.handleTextChange(event)}
+                                      onKeyDown={(e: KeyboardEvent) => {
+                                          if (e.key === 'Enter' && this.state.meme_edit_text.trim().length >= MINIMUM_TAG_LENGTH) {
+                                              this.handleAddTag();
+                                          }
+                                      }}
                                       placeholder="Enter tag text..."/>
-                                    <span className="button" onClick={() => this.handleAddTag()}>Add tag</span>
+                                    <span className="button_standard" onClick={() => this.handleAddTag()}>Add tag</span>
                                 </div>
                                 {this.state.addTagError !== null && (
                                   <span class="error">{this.state.addTagError}</span>
@@ -1361,7 +1373,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             </div>
 
             <div className="meme_done_container">
-                <span className="button" onClick={() => this.cancelMemeEditing()}>Done</span>
+                <span className="button_standard" onClick={() => this.cancelMemeEditing()}>Done</span>
             </div>
         </div>
     }
@@ -1498,7 +1510,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                 <div class="meme_upload_fullwidth">
                     <div class="meme_upload_header">
                         <h3>Upload Memes</h3>
-                        <span class="button" onClick={() => this.handleHideUpload()}>Close</span>
+                        <span class="button_standard" onClick={() => this.handleHideUpload()}>Close</span>
                     </div>
                     <div class="meme_upload_content">
                         <div class="meme_upload_left">
@@ -1555,7 +1567,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                                             }}
                                         />
                                         <span 
-                                            class="button" 
+                                            class="button_standard" 
                                             onClick={() => this.handleAddUploadTag()}>
                                             Add Tag
                                         </span>
@@ -1573,9 +1585,9 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                     {hasIdleFiles && (
                         <div class="upload_actions">
                             <button 
+                                className="button_standard upload_button"
                                 onClick={this.onFileUpload} 
-                                disabled={isUploading}
-                                class="upload_button">
+                                disabled={isUploading}>
                                 {isUploading ? 'Uploading...' : `Upload ${this.state.fileUploads.filter(item => item.status === UploadStatus.Idle).length} file(s)`}
                             </button>
                         </div>
@@ -1586,7 +1598,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                             {hasSuccessfulUploads && (
                                 <button
                                     type="button"
-                                    class="button"
+                                    className="button_standard"
                                     onClick={this.clearSuccessfulUploads}>
                                     Clear uploads
                                 </button>
@@ -1594,7 +1606,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                             {hasErrorUploads && (
                                 <button
                                     type="button"
-                                    class="button"
+                                    className="button_standard"
                                     onClick={this.clearErrorUploads}>
                                     Clear errors
                                 </button>
@@ -1632,7 +1644,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                                     </div>
                                     {(uploadItem.status === UploadStatus.Idle || uploadItem.status === UploadStatus.Error) && (
                                         <button 
-                                            class="button remove_file_button"
+                                            className="button_standard remove_file_button"
                                             onClick={() => this.removeUploadItem(uploadItem.id)}>
                                             Remove
                                         </button>
@@ -1668,12 +1680,12 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
             />
             <div class="search_buttons">
                 <span 
-                    class="button" 
+                    class="button_standard" 
                     onClick={() => this.searchMemes()}>
                     {this.state.isSearching ? 'Searching...' : 'Search'}
                 </span>
                 <span 
-                    class="button" 
+                    class="button_standard" 
                     onClick={() => this.clearSearch()}>
                     Clear
                 </span>
@@ -1703,7 +1715,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                 {uploadButtonSection}
             </div>
             <div class="meme_list_controls">
-                <span class="button" onClick={() => this.refreshMemes()}>Refresh All</span>
+                <span class="button_standard" onClick={() => this.refreshMemes()}>Refresh All</span>
             </div>
             {bulkAddPanel}
             {meme_block}

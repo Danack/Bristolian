@@ -1,6 +1,36 @@
-button,
-.button {
+// Default button style (e.g. bare <button> without a class)
+button {
+  /* clicking buttons leads to accidental text selection far too often */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 
+  border: 1px solid #000;
+  cursor: pointer;
+  border-radius: 3px;
+  background-color: #ff00ff;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  margin: 3px;
+
+  &:hover {
+    background: #ff99ff;
+    color: black;
+  }
+
+  &:disabled {
+    background: #aaa;
+    color: #eee;
+    cursor: not-allowed;
+
+    &:hover {
+      background: #aaa; // prevent hover effect when disabled
+    }
+  }
+}
+
+.button_standard {
   /* clicking buttons leads to accidental text selection far too often */
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
@@ -29,7 +59,12 @@ button,
       background: #aaa; // prevent hover effect when disabled
     }
   }
+}
 
+.button_chat {
+  padding: 0.2rem 0.4rem;
+  font-size: 0.8rem;
+  margin: 2px;
 }
 
 .unstyled {

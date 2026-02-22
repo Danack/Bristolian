@@ -1,10 +1,11 @@
 import {h, Component} from "preact";
 import {humanFileSize, isUrl} from "./functions";
 import {RoomLinkAddPanel} from "./RoomLinkAddPanel";
-import {registerMessageListener} from "./message/message";
+import {registerMessageListener, sendMessage} from "./message/message";
 import {PdfSelectionType} from "./constants";
 import {api, GetRoomsLinksResponse} from "./generated/api_routes";
 import {RoomLink, createRoomLink} from "./generated/types";
+import {get_logged_in, subscribe_logged_in} from "./store";
 
 export interface RoomLinksPanelProps {
     room_id: string
@@ -14,6 +15,7 @@ interface RoomLinksPanelState {
     roomLinks: RoomLink[],
     linkBeingEdited: RoomLink|null,
     error: string|null,
+    logged_in: boolean,
 }
 
 function getDefaultState(): RoomLinksPanelState {
@@ -21,12 +23,14 @@ function getDefaultState(): RoomLinksPanelState {
         roomLinks: [],
         linkBeingEdited: null,
         error: null,
+        logged_in: get_logged_in(),
     };
 }
 
 export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPanelState> {
 
     message_listener: number|null;
+    unsubscribe_logged_in: (() => void)|null = null;
 
     constructor(props: RoomLinksPanelProps) {
         super(props);
@@ -39,9 +43,16 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
           PdfSelectionType.ROOM_LINKS_CHANGED,
           () => this.refreshLinks()
         );
+        this.unsubscribe_logged_in = subscribe_logged_in((logged_in: boolean) => {
+            this.setState({logged_in: logged_in});
+        });
     }
 
     componentWillUnmount() {
+        if (this.unsubscribe_logged_in) {
+            this.unsubscribe_logged_in();
+            this.unsubscribe_logged_in = null;
+        }
     }
 
     refreshLinks() {
@@ -80,7 +91,12 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         this.setState({linkBeingEdited: null})
     }
 
-    renderRoomLink(link: RoomLink) {
+    shareLink(link: RoomLink) {
+        const resolved_title = link.title || link.link_id;
+        sendMessage(PdfSelectionType.APPEND_TO_MESSAGE_INPUT, {text: resolved_title});
+    }
+
+    renderRoomLink(link: RoomLink, logged_in: boolean) {
         let resolved_title = link.title || link.link_id;
 
         // if (this.state.linkBeingEdited !== null &&
@@ -109,8 +125,15 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
               </span>
             </td>
             <td>
-              <button onClick={() => this.startEditingRoomLink(link)}>Edit</button>
+              <button className="button_standard button_chat" onClick={() => this.startEditingRoomLink(link)}>Edit</button>
             </td>
+            {logged_in && (
+                <td>
+                    <button className="button_standard button_chat" onClick={() => this.shareLink(link)} title="Share link to chat">
+                        Post&nbsp;to&nbsp;chat
+                    </button>
+                </td>
+            )}
         </tr>
     }
 
@@ -119,6 +142,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
             return <span>No links.</span>
         }
 
+        const logged_in = this.state.logged_in;
         return <table>
                 {/*<thead>*/}
                 {/*<tr>*/}
@@ -127,7 +151,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
                 {/*</thead>*/}
                 <tbody>
                 {Object.values(this.state.roomLinks).
-                map((roomLink: RoomLink) => this.renderRoomLink(roomLink))}
+                map((roomLink: RoomLink) => this.renderRoomLink(roomLink, logged_in))}
                 </tbody>
             </table>
 
@@ -155,7 +179,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
 
         // Note: RoomLink doesn't have a url property, only link_id
         // The URL editing functionality is not currently implemented
-        let add_button = <span><button disabled={true}>Save</button>Editing not fully implemented.</span>
+        let add_button = <span><button className="button_standard" disabled={true}>Save</button>Editing not fully implemented.</span>
 
         // @ts-ignore
         return <div class='room_links_add_panel_react'>
@@ -212,7 +236,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
                     <td></td>
                     <td>
                         {add_button}
-                        <button type="submit" onClick={() => this.cancelEditingRoomLink()}>Cancel</button>
+                        <button type="submit" className="button_standard" onClick={() => this.cancelEditingRoomLink()}>Cancel</button>
                     </td>
                 </tr>
                 <tr>
@@ -241,7 +265,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         return <div>
             {error_block}
             {links_block}
-            <button onClick={() => this.refreshLinks()}>Refresh</button>
+            <button className="button_standard" onClick={() => this.refreshLinks()}>Refresh</button>
             <RoomLinkAddPanel room_id={this.props.room_id}/>
         </div>
     }

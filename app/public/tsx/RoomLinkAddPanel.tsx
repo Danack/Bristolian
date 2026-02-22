@@ -104,10 +104,10 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
 
     let isValidUrl = isUrl(this.state.url);
 
-    let add_button = <span><button disabled={true}>Add link</button>Url is not valid.</span>
+    let add_button = <span><button className="button_standard" disabled={true}>Add link</button>Url is not valid.</span>
 
     if (isValidUrl) {
-      add_button = <button type="submit" onClick={() => this.addLink()}>Add link</button>
+      add_button = <button type="submit" className="button_standard" onClick={() => this.addLink()}>Add link</button>
     }
 
     let result = <span></span>;

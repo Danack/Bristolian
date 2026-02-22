@@ -337,7 +337,7 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
     let add_button = <span></span>
     if (validToSubmit === true) {
       add_button = <div>
-        <button type="submit" onClick={() => this.addSourceLink()}>Add source link</button>
+        <button type="submit" className="button_standard" onClick={() => this.addSourceLink()}>Add source link</button>
       </div>
     }
 

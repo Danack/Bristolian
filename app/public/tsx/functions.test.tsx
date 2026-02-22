@@ -1,4 +1,4 @@
-import { humanFileSize, formatDateTime, formatDateTimeForDB, countWords, isUrl, seconds_since, now, call_api, open_lightbox_if_not_mobile, localTimeSimple } from './functions';
+import { humanFileSize, formatDateTimeForContent, formatDateTimeForDB, countWords, isUrl, seconds_since, now, call_api, open_lightbox_if_not_mobile, formatDateTimeForChat } from './functions';
 import { afterEach, beforeEach, describe, expect, test, it, jest } from '@jest/globals';
 
 // Mock the current time for consistent testing
@@ -24,7 +24,7 @@ describe('humanFileSize', () => {
   });
 });
 
-describe('formatDateTime', () => {
+describe('formatDateTimeForContent', () => {
   beforeEach(() => {
     jest.useFakeTimers();
     jest.setSystemTime(mockNow);
@@ -36,18 +36,18 @@ describe('formatDateTime', () => {
 
   it('should show "x minutes ago" for times within the last hour', () => {
     const date = new Date(mockNowTimestamp - 30 * 60 * 1000); // 30 minutes ago
-    expect(formatDateTime(date)).toBe('30 minutes ago');
+    expect(formatDateTimeForContent(date)).toBe('30 minutes ago');
   });
 
-  it('should show time for same day but more than an hour ago', () => {
+  it('should show "Today" and time for same day but more than an hour ago', () => {
     const date = new Date(mockNowTimestamp - 2 * 60 * 60 * 1000); // 2 hours ago
-    const result = formatDateTime(date);
-    expect(result).toMatch(/^\d{1,2}:\d{2}\s*(AM|PM)?$/i);
+    const result = formatDateTimeForContent(date);
+    expect(result).toMatch(/^Today \d{1,2}:\d{2}\s*(AM|PM)?$/i);
   });
 
-  it('should show full date and time for previous days', () => {
+  it('should show date only for previous days', () => {
     const date = new Date(mockNowTimestamp - 25 * 60 * 60 * 1000); // yesterday
-    const result = formatDateTime(date);
+    const result = formatDateTimeForContent(date);
     expect(result).toContain('Oct');
   });
 });
@@ -288,7 +288,7 @@ describe('open_lightbox_if_not_mobile', () => {
   });
 });
 
-describe('localTimeSimple', () => {
+describe('formatDateTimeForChat', () => {
   beforeEach(() => {
     jest.useFakeTimers();
     // Set current time to Oct 7, 2025, 12:00 PM
@@ -301,21 +301,21 @@ describe('localTimeSimple', () => {
 
   it('should show time only for today', () => {
     const todayDate = new Date(mockNowTimestamp - 2 * 60 * 60 * 1000); // 2 hours ago today
-    const result = localTimeSimple(todayDate);
+    const result = formatDateTimeForChat(todayDate);
     
     expect(result).toMatch(/^\d{1,2}:\d{2}$/);
   });
 
   it('should show "yst" prefix for yesterday', () => {
     const yesterdayDate = new Date(mockNowTimestamp - 24 * 60 * 60 * 1000); // 24 hours ago
-    const result = localTimeSimple(yesterdayDate);
+    const result = formatDateTimeForChat(yesterdayDate);
     
     expect(result).toMatch(/^yst \d{1,2}:\d{2}$/);
   });
 
   it('should show weekday name for dates within 6 days', () => {
     const threeDaysAgo = new Date(mockNowTimestamp - 3 * 24 * 60 * 60 * 1000); // 3 days ago
-    const result = localTimeSimple(threeDaysAgo);
+    const result = formatDateTimeForChat(threeDaysAgo);
     
     // Should have format like "Sat 12:00" (weekday name + time)
     expect(result).toMatch(/^(Sun|Mon|Tue|Wed|Thu|Fri|Sat) \d{1,2}:\d{2}$/);
@@ -323,7 +323,7 @@ describe('localTimeSimple', () => {
 
   it('should show month and date for dates older than 6 days', () => {
     const tenDaysAgo = new Date(mockNowTimestamp - 10 * 24 * 60 * 60 * 1000); // 10 days ago
-    const result = localTimeSimple(tenDaysAgo);
+    const result = formatDateTimeForChat(tenDaysAgo);
     
     // Should have format like "Sep 27, 12:00"
     expect(result).toMatch(/^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{1,2}, \d{1,2}:\d{2}$/);
@@ -333,7 +333,7 @@ describe('localTimeSimple', () => {
     const dateWithSingleDigitMinute = new Date(mockNowTimestamp);
     dateWithSingleDigitMinute.setMinutes(5);
     
-    const result = localTimeSimple(dateWithSingleDigitMinute);
+    const result = formatDateTimeForChat(dateWithSingleDigitMinute);
     
     expect(result).toContain(':05');
   });
@@ -342,7 +342,7 @@ describe('localTimeSimple', () => {
     const dateWithDoubleDigitMinute = new Date(mockNowTimestamp);
     dateWithDoubleDigitMinute.setMinutes(45);
     
-    const result = localTimeSimple(dateWithDoubleDigitMinute);
+    const result = formatDateTimeForChat(dateWithDoubleDigitMinute);
     
     expect(result).toContain(':45');
   });

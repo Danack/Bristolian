@@ -114,6 +114,8 @@ export function ChatBottomPanel(props: ChatBottomPanelProps) {
   let replying_section = <div className="reply-indicator-top"></div>;
 
   if (logged_in === true) {
+    console.log(messageToSend);
+        console.log(!messageToSend.trim());
     interactive_section = <div>
       <div className="input-row">
         <textarea
@@ -127,7 +129,8 @@ export function ChatBottomPanel(props: ChatBottomPanelProps) {
           onSelect={updateCursorPosition}
           value={messageToSend}>
         </textarea>
-        <button className="send-btn" onClick={handleMessageSend}>Send</button>
+        
+        <button className="send-btn" onClick={handleMessageSend} disabled={!messageToSend.trim()}>Send</button>
         <button className="upload-btn">Upload</button>
       </div>
     </div>;

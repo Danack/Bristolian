@@ -7,7 +7,7 @@ import type { WidgetClassBinding } from "./widgety/widgety";
 
 import { BristolStairsPanel } from "./BristolStairsPanel";
 import { CSPViolationReportsPanel } from "./CSPViolationReportsPanel";
-// import { ChatPanel } from "./ChatPanel";
+import { ChatPanel } from "./ChatPanel";
 import { UserProfilePanel } from "./UserProfilePanel";
 import { EmailLinkGeneratorPanel } from "./EmailLinkGenerator";
 import { FloatingPointPanel } from "./FloatingPointPanel";
@@ -37,10 +37,10 @@ let panels: WidgetClassBinding[] = [
         class: 'bristol_stairs_panel',
         component: BristolStairsPanel
     },
-    // {
-    //     class: 'chat_panel',
-    //     component: ChatPanel
-    // },
+    {
+        class: 'chat_panel',
+        component: ChatPanel
+    },
     {
         class: 'email_link_generator_panel',
         component: EmailLinkGeneratorPanel

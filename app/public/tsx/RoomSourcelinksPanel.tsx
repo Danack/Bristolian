@@ -1,7 +1,9 @@
 import {h, Component} from "preact";
 import {RoomSourceLinkView} from "./generated/types";
 import {api, GetRoomsSourcelinksResponse} from "./generated/api_routes";
-
+import {sendMessage} from "./message/message";
+import {PdfSelectionType} from "./constants";
+import {get_logged_in, subscribe_logged_in} from "./store";
 
 export interface RoomSourcelinkPanelProps {
     room_id: string
@@ -10,18 +12,22 @@ export interface RoomSourcelinkPanelProps {
 interface RoomSourcelinkPanelState {
     sourcelinks: RoomSourceLinkView[],
     error: string|null,
+    logged_in: boolean,
 }
 
 function getDefaultState(): RoomSourcelinkPanelState {
     return {
         sourcelinks: [],
         error: null,
+        logged_in: get_logged_in(),
     };
 }
 
 
 
 export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, RoomSourcelinkPanelState> {
+
+    unsubscribe_logged_in: (() => void)|null = null;
 
     constructor(props: RoomSourcelinkPanelProps) {
         super(props);
@@ -30,9 +36,16 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
 
     componentDidMount() {
         this.refreshRoomSourcelinks();
+        this.unsubscribe_logged_in = subscribe_logged_in((logged_in: boolean) => {
+            this.setState({logged_in: logged_in});
+        });
     }
 
     componentWillUnmount() {
+        if (this.unsubscribe_logged_in) {
+            this.unsubscribe_logged_in();
+            this.unsubscribe_logged_in = null;
+        }
     }
 
     refreshRoomSourcelinks() {
@@ -55,10 +68,17 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
         console.log(data)
     }
 
+    shareSourcelink(sourceLink: RoomSourceLinkView, sourcelinkUrl: string) {
+        const full_url = window.location.origin + sourcelinkUrl;
+        const title = sourceLink.title || "Unnamed Link";
+        const markdown_link = `[${title}](${full_url})`;
+        sendMessage(PdfSelectionType.APPEND_TO_MESSAGE_INPUT, {text: markdown_link});
+    }
+
     restoreState(state_to_restore: object) {
     }
 
-    renderRoomSourcelink(sourceLink: RoomSourceLinkView) {
+    renderRoomSourcelink(sourceLink: RoomSourceLinkView, logged_in: boolean) {
         const sourcelinkUrl = `/rooms/${this.props.room_id}/file/${sourceLink.file_id}/sourcelinks/${sourceLink.room_sourcelink_id}/view`;
 
         return (
@@ -71,6 +91,13 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
               <td>
                   <a href={sourcelinkUrl}>View</a>
               </td>
+              {logged_in && (
+                  <td>
+                      <button className="button_standard button_chat" onClick={() => this.shareSourcelink(sourceLink, sourcelinkUrl)} title="Share sourcelink to chat">
+                          Post&nbsp;to&nbsp;chat
+                      </button>
+                  </td>
+              )}
           </tr>
         );
     }
@@ -83,6 +110,7 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
             </div>
         }
 
+        const logged_in = this.state.logged_in;
         return <div>
             <h2>Sourcelinks</h2>
             <table>
@@ -90,9 +118,9 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
                 <tr>
                     <td>Name</td>
                     <td>Size</td>
-                    <td></td>
+                    {logged_in && <td></td>}
                 </tr>
-                {Object.values(this.state.sourcelinks).map((sourceLink: RoomSourceLinkView) => this.renderRoomSourcelink(sourceLink))}
+                {Object.values(this.state.sourcelinks).map((sourceLink: RoomSourceLinkView) => this.renderRoomSourcelink(sourceLink, logged_in))}
               </tbody>
             </table>
         </div>
@@ -111,7 +139,7 @@ export class RoomSourcelinksPanel extends Component<RoomSourcelinkPanelProps, Ro
         return  <div class='room_sourcelinks_panel_react'>
             {error_block}
             {files_block}
-            <button onClick={() => this.refreshRoomSourcelinks()}>Refresh</button>
+            <button className="button_standard" onClick={() => this.refreshRoomSourcelinks()}>Refresh</button>
         </div>;
     }
 }

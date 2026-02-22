@@ -208,10 +208,10 @@ export class TeleprompterPanel extends Component<TeleprompterPanelProps, Telepro
       </div>
       <div>
         Mirroring {this.state.mirror ? "on" : "off"}&nbsp;&nbsp;
-        <button onClick={() => this.handleMirrorClick()}>Toggle</button>
+        <button className="button_standard" onClick={() => this.handleMirrorClick()}>Toggle</button>
       </div>
       <div>
-        <button onClick={(e) => this.toggleShowing(e)}>Start</button>
+        <button className="button_standard" onClick={(e) => this.toggleShowing(e)}>Start</button>
       </div>
     </span>
   }

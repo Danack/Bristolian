@@ -1,5 +1,5 @@
 import {h, Component} from "preact";
-import {humanFileSize, formatDateTime} from "./functions";
+import {humanFileSize, formatDateTimeForContent, spacesToNbsp} from "./functions";
 import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";
 import {PdfSelectionType} from "./constants";
 import {api, GetRoomsFilesResponse} from "./generated/api_routes";
@@ -107,10 +107,10 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                 </a>
             </td>
             <td>
-                {humanFileSize(file.size)}
+                {spacesToNbsp(humanFileSize(file.size, true))}
             </td>
             <td>
-                {formatDateTime(file.created_at)}
+                {spacesToNbsp(formatDateTimeForContent(file.created_at))}
             </td>
 
             <td>
@@ -118,8 +118,8 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             </td>
             {logged_in && (
                 <td>
-                    <button onClick={() => this.shareFile(file, file_url)} title="Share file link to chat">
-                        Share
+                    <button className="button_standard button_chat" onClick={() => this.shareFile(file, file_url)} title="Share file link to chat">
+                        Post&nbsp;to&nbsp;chat
                     </button>
                 </td>
             )}
@@ -165,7 +165,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             {error_block}
             {files_block}
             {number_block}
-            <button onClick={() => this.refreshFiles()}>Refresh</button>
+            <button className="button_standard" onClick={() => this.refreshFiles()}>Refresh</button>
         </div>;
     }
 }

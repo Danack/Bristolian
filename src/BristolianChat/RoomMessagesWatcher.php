@@ -89,7 +89,7 @@ class RoomMessagesWatcher
                 $this->logger->error("Redis loop error: " . $e->getMessage());
             }
 
-            $this->logger->info("RoomMessagesWatcher is looping.");
+            $this->logger->info("RoomMessagesWatcher has looped.");
             // TODO - think about rate limiting.
             \Amp\delay(2);
         }

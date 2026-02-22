@@ -3,7 +3,7 @@ import { registerMessageListener, sendMessage, unregisterListener } from "./mess
 import { EventType } from "./events";
 import {ChatBottomPanel} from "./chat/ChatBottomPanel";
 import {ChatMessage, ChatType, createChatMessage} from "./generated/types";
-import {localTimeSimple} from "./functions";
+import {formatDateTimeForChat} from "./functions";
 
 
 export interface ConnectionPanelProps {
@@ -307,7 +307,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
             )}
             <div className="message_content">
                 <div className="messages">{message.text}</div>
-                <span className="timestamp">{localTimeSimple(message.created_at)}</span>
+                <span className="timestamp">{formatDateTimeForChat(message.created_at)}</span>
             </div>
             <div className="message_reply_area">
                 <button

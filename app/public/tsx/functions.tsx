@@ -35,43 +35,71 @@ export function humanFileSize(bytes:number, si=false, dp=1) {
 
 
 
+export function formatDateTimeForChat(date: Date) {
+  var min = date.getMinutes();
+  var today = (new Date()).setHours(0, 0, 0, 0);
+  var dateTimestamp = date.getTime();
+  var result = date.getHours() + ":" + (min < 10 ? "0" : "") + min;
+  if ((today - dateTimestamp) > 0) {
+    if ((today - dateTimestamp) < 86400000) { // 1 day in milliseconds
+      result = "yst " + result;
+    }
+    else if ((today - dateTimestamp) < 518400000) { // 6 days in milliseconds
+      result = weekday_name[date.getDay()] + " " + result;
+    }
+    else {
+      result = month_name[date.getMonth()] + " " + date.getDate() + ", " + result;
+    }
+  }
+  return result;
+}
 
-
-export function formatDateTime(date: Date): string {
+/**
+ * Formats a date for display in content (e.g. file lists).
+ * - Within the last hour: "x minutes ago"
+ * - Same calendar day: "Today 2:30 PM"
+ * - Otherwise: date only (e.g. "Oct 6, 2025")
+ */
+export function formatDateTimeForContent(date: Date): string {
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffMinutes = Math.floor(diffMs / 1000 / 60);
 
   if (diffMinutes < 60) {
-    // If within the last hour, show "x minutes ago"
     return `${diffMinutes} minutes ago`;
   }
 
-  // Check if the date is today
   const isToday =
     date.getDate() === now.getDate() &&
     date.getMonth() === now.getMonth() &&
     date.getFullYear() === now.getFullYear();
 
   if (isToday) {
-    // If same day, show just the time
-    return date.toLocaleTimeString(undefined, {
+    const time = date.toLocaleTimeString(undefined, {
       hour: "numeric",
       minute: "2-digit",
     });
+    return `Today ${time}`;
   }
 
-  // Otherwise, show full date and time
-  return date.toLocaleString(undefined, {
-    hour: "numeric",
-    minute: "2-digit",
+  return date.toLocaleDateString(undefined, {
     month: "short",
     day: "numeric",
     year: "numeric",
   });
 }
 
+/**
+ * Replaces spaces with non-breaking spaces (U+00A0) so the string stays on one line when rendered.
+ */
+export function spacesToNbsp(s: string): string {
+  return s.replace(/ /g, "\u00A0");
+}
 
+/**
+ * Formats a date as a MySQL-style datetime string for storage or display in DB context.
+ * Always returns "YYYY-MM-DD HH:MM:SS" (e.g. "2025-10-07 12:00:00").
+ */
 export function formatDateTimeForDB(date: Date): string {
   const pad = (n: number) => n.toString().padStart(2, '0');
 
@@ -207,24 +235,6 @@ export function seconds_since(date: Date) {
   return now() - (date.getTime() / 1000);
 }
 
-export function localTimeSimple(date: Date) {
-  var min = date.getMinutes();
-  var today = (new Date()).setHours(0, 0, 0, 0);
-  var dateTimestamp = date.getTime();
-  var result = date.getHours() + ":" + (min < 10 ? "0" : "") + min;
-  if ((today - dateTimestamp) > 0) {
-    if ((today - dateTimestamp) < 86400000) { // 1 day in milliseconds
-      result = "yst " + result;
-    }
-    else if ((today - dateTimestamp) < 518400000) { // 6 days in milliseconds
-      result = weekday_name[date.getDay()] + " " + result;
-    }
-    else {
-      result = month_name[date.getMonth()] + " " + date.getDate() + ", " + result;
-    }
-  }
-  return result;
-}
 
 /**
  * Type that converts all Date fields in T to string fields

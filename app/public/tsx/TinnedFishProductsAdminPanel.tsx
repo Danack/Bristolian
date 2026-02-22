@@ -351,9 +351,10 @@ export class TinnedFishProductsAdminPanel extends Component<
                         />
                     </div>
                     <button
+                        className="button_standard"
                         onClick={() => this.handleGenerateTokenButtonClick()}
                         disabled={this.state.generatingToken || !this.state.tokenName.trim()}
-                        style="margin-bottom: 1em; background-color: #2782ff; color: white; border: 1px solid #000; border-radius: 3px; padding: 0.4rem 0.8rem; cursor: pointer;"
+                        style="margin-bottom: 1em;"
                     >
                         {this.state.generatingToken ? 'Generating...' : 'Generate API Token'}
                     </button>
@@ -389,6 +390,7 @@ export class TinnedFishProductsAdminPanel extends Component<
                 </div>
                 <div style="margin-bottom: 1em;">
                     <button 
+                        className="button_standard"
                         onClick={() => this.handleRefreshButtonClick()}
                         disabled={this.state.refreshing}
                     >

@@ -208,7 +208,7 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
             onChange={this.handleFileChange}
             style={{ display: "block", marginTop: "10px" }}
           />
-          <button onClick={this.handleUpload}>Upload</button>
+          <button className="button_standard" onClick={this.handleUpload}>Upload</button>
 
           {/*<div>*/}
           {/*  gps_latitude {this.state.gps_latitude}<br/>*/}

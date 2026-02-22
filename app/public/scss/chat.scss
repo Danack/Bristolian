@@ -21,7 +21,7 @@ $z_index_chat_panel: 2;
   .message_row {
     display: flex;
     flex-direction: row;
-    margin-bottom: 2px;
+    // margin-bottom: 2px;
 
     &:last-child {
       margin-bottom: 0;
@@ -75,7 +75,7 @@ $z_index_chat_panel: 2;
     
     .messages {
       border: none;
-      padding: 5px 5px 5px 5px;
+      padding: 1px 1px 1px 1px;
       word-wrap: break-word;
       color: #222222;
       background-color: transparent;
@@ -241,6 +241,16 @@ $z_index_chat_panel: 2;
 
         &:hover {
           background: #0056b3;
+        }
+
+        &:disabled {
+          background: #aaa;
+          color: #eee;
+          cursor: not-allowed;
+
+          &:hover {
+            background: #aaa;
+          }
         }
       }
     }

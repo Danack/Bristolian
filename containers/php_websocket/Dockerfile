@@ -26,16 +26,10 @@ RUN  apt-get update -qq && \
 # Make the default directory you
 WORKDIR /var/app
 
-#RUN groupadd -g 999 appuser && \
-#    useradd -r -u 999 -g appuser appuser
-#USER appuser
-
-#CMD tail -f README.md
-
 RUN usermod -u 1000 www-data
 
 RUN echo 'alias cli="php cli.php"' >> ~/.bashrc
 
 # CMD ["sh", "/var/app/containers/php_websocket/entrypoint.sh"]
 
-CMD tail -f /var/app/containers/php_websocket/readme.MD
+CMD ["sh", "/var/app/containers/php_websocket/entrypoint_dev_watch.sh"]

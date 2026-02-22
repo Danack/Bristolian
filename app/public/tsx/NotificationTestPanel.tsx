@@ -98,7 +98,7 @@ export class NotificationTestPanel extends Component<NotificationTestPanelProps,
     return <tr key={index}>
       <td>{user}</td>
       <td>
-        <span className="button"
+        <span className="button_standard"
           onClick={() => this.pingUser(user)}>
           Ping 'em.</span>
       </td>

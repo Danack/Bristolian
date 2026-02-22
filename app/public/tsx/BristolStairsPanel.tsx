@@ -316,10 +316,10 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
               style={{marginBottom: "1rem"}}
             />
 
-            <button onClick={() => this.processUpdatePosition()} >
+            <button className="button_standard" onClick={() => this.processUpdatePosition()} >
                 Update Position
               </button>
-            <button onClick={() => {
+            <button className="button_standard" onClick={() => {
                   this.setState({editing_position: false});
                   sendMessage("STAIR_CANCEL_EDITING_POSITION", {});
               }} >
@@ -373,11 +373,11 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
               />
             </span>
 
-              <button onClick={() => this.handleSave()} disabled={!changes_made}>
+              <button className="button_standard" onClick={() => this.handleSave()} disabled={!changes_made}>
                 Save Changes
               </button>
 
-              <button
+              <button className="button_standard"
                 onClick={() => this.handleCancel()}
                 disabled={!changes_made}
               >
@@ -385,7 +385,7 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
               </button>
 
               <br/>
-              <button onClick={this.startEditingPosition}>
+              <button className="button_standard" onClick={this.startEditingPosition}>
                 Edit Position
               </button>
           </span>
@@ -466,7 +466,7 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
 
         let upload_button: h.JSX.Element = <span></span>;
         if (logged_in === true && map_visible) {
-            upload_button = <button onClick={this.startUploadingImage}>Upload image</button>;
+            upload_button = <button className="button_standard" onClick={this.startUploadingImage}>Upload image</button>;
         }
 
         const positionReady = state.position_latitude !== null && state.position_longitude !== null;
@@ -474,7 +474,7 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
         if (logged_in === true && map_visible) {
             if (state.openmap_nearby_visible) {
                 openmap_nearby_buttons = (
-                    <button type="button" onClick={this.handleHideOpenmapNearby}>
+                    <button type="button" className="button_standard" onClick={this.handleHideOpenmapNearby}>
                         Hide OSM stairs
                     </button>
                 );
@@ -482,6 +482,7 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
                 openmap_nearby_buttons = (
                     <button
                         type="button"
+                        className="button_standard"
                         onClick={this.handleShowOpenmapNearby}
                         disabled={state.openmap_nearby_loading || !positionReady}
                     >
@@ -499,7 +500,7 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
                 ? this.renderLoggedInStairInfo()
                 : this.renderViewOnlyStairInfo();
             const closeButton = (
-                <button type="button" class="bristol_stairs_close" onClick={this.handleCloseStairView}>
+                <button type="button" className="button_standard bristol_stairs_close" onClick={this.handleCloseStairView}>
                     Back to map
                 </button>
             );
