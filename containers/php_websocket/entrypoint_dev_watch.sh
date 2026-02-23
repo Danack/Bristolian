@@ -1,6 +1,22 @@
 #!/bin/sh
 set -e
 
+
+
+# Determine composer command from ENV_DESCRIPTION: outputs "update" if it contains
+# "local", else "prod" (so we run update for local dev, install for prod).
+COMPOSER_TYPE=$(php /var/app/src/check_composer_command.php)
+echo "composer type is ${COMPOSER_TYPE}";
+
+cd /var/app/chat
+
+if [ "${COMPOSER_TYPE}" = "update" ]; then
+    php composer.phar update
+else
+    php composer.phar install
+fi
+
+
 # Watch BristolianChat, chat (excluding vendor), and the three functions_*.php files.
 # Poll file mtimes every POLL_INTERVAL seconds; restart the server when any watched file changes.
 # (Polling is used because inotify often doesn't work over Docker volume mounts on Mac.)

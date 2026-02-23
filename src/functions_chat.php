@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-use Bristolian\ChatMessage\ChatType;
+use Bristolian\ChatMessage\ChatMessagePayload;
 use Bristolian\Model\Chat\UserChatMessage;
 use BristolianChat\ClientHandler;
 use Bristolian\Model\Chat\SystemChatMessage;
@@ -13,13 +13,9 @@ function send_user_message_to_clients(
     Logger          $logger,
     ClientHandler   $clientHandler
 ): void {
+    $data = ChatMessagePayload::create_from_user_message($chat_message);
 
-    $data = [
-        'type' => ChatType::USER_MESSAGE->value,
-        'chat_message' => $chat_message
-    ];
-
-    sent_data_to_clients(
+    send_data_to_clients(
         $data,
         $logger,
         $clientHandler
@@ -32,13 +28,9 @@ function send_system_message_to_clients(
     Logger            $logger,
     ClientHandler     $clientHandler
 ): void {
+    $data = ChatMessagePayload::create_from_system_message($system_chat_message);
 
-    $data = [
-        'type' => ChatType::SYSTEM_MESSAGE->value,
-        'system_message' => $system_chat_message
-    ];
-
-    sent_data_to_clients(
+    send_data_to_clients(
         $data,
         $logger,
         $clientHandler
@@ -47,12 +39,12 @@ function send_system_message_to_clients(
 
 
 
-function sent_data_to_clients(
-    mixed $data,
+function send_data_to_clients(
+    ChatMessagePayload $data,
     Logger $logger,
     ClientHandler $clientHandler
 ): void {
-    [$error, $values] = convertToValue($data);
+    [$error, $values] = convertToValue($data->toArray());
 
     if ($error !== null) {
         $logger->info("error encoding data - $values");

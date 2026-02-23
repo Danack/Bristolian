@@ -26,13 +26,7 @@ use function Amp\ByteStream\getStdout;
 use function Amp\Redis\createRedisClient;
 use function \Amp\Mysql\connect as mysql_connect;
 
-
-require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . "/../../config.generated.php";
-require __DIR__ . "/../../src/functions.php";
-require __DIR__ . "/../../src/functions_chat.php";
-require __DIR__ . "/../../src/functions_common.php";
-
+require __DIR__ . '/chat_includes.php';
 
 // Logger
 $logHandler = new StreamHandler(getStdout());

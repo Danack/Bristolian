@@ -16,6 +16,8 @@ if test -f "./composer_oauth_token.txt"; then
     set -x
 fi
 
+# Determine composer command from ENV_DESCRIPTION: outputs "update" if it contains
+# "local", else "prod" (so we run update for local dev, install for prod).
 COMPOSER_TYPE=$(php src/check_composer_command.php)
 echo "composer type is ${COMPOSER_TYPE}";
 if [ "${COMPOSER_TYPE}" = "update" ]; then
