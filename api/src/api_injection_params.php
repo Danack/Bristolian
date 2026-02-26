@@ -70,8 +70,8 @@ function apiInjectionParams() : InjectionParams
         \Bristolian\Session\OptionalUserSession::class =>
             \Bristolian\Session\StandardOptionalUserSession::class,
 
-        \Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo::class =>
-            \Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo::class,
+        \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::class =>
+            \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::class,
 
         \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::class =>
             \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class,

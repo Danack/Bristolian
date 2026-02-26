@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
+# set -x
 
-
+echo "starting entrypoint_dev_watch.sh"
 
 # Determine composer command from ENV_DESCRIPTION: outputs "update" if it contains
 # "local", else "prod" (so we run update for local dev, install for prod).
@@ -11,9 +12,9 @@ echo "composer type is ${COMPOSER_TYPE}";
 cd /var/app/chat
 
 if [ "${COMPOSER_TYPE}" = "update" ]; then
-    php composer.phar update
+    php /var/app/composer.phar update
 else
-    php composer.phar install
+    php /var/app/composer.phar install
 fi
 
 
@@ -21,7 +22,7 @@ fi
 # Poll file mtimes every POLL_INTERVAL seconds; restart the server when any watched file changes.
 # (Polling is used because inotify often doesn't work over Docker volume mounts on Mac.)
 WATCH_DIRS="/var/app/src/BristolianChat /var/app/chat/src"
-WATCH_FILES="/var/app/chat/composer.json /var/app/src/functions.php /var/app/src/functions_chat.php /var/app/src/functions_common.php"
+WATCH_FILES="/var/app/src/functions.php /var/app/src/functions_chat.php /var/app/src/functions_common.php"
 POLL_INTERVAL=10
 
 echo "[chat-watch] Polling every ${POLL_INTERVAL}s (no inotify):"

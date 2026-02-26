@@ -12,6 +12,10 @@ services:
     entrypoint: ["bash", "/var/app/containers/js_builder/build_prod_assets.sh"]
     volumes:
       - .:/var/app
+
+#  php_websocket:
+#    environment:
+#      - ENV_DESCRIPTION=default,prod
   php_fpm:
     environment:
       - ENV_DESCRIPTION=default,prod

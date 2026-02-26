@@ -5,14 +5,14 @@ declare(strict_types = 1);
 namespace BristolianTest\Parameters;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Parameters\SourceLinkParam;
+use Bristolian\Parameters\AnnotationParam;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
  * @coversNothing
  */
-class SourceLinkParamTest extends BaseTestCase
+class AnnotationParamTest extends BaseTestCase
 {
     /**
      * @return \Generator<string, array{array<string, mixed>, string, string, string}>
@@ -32,7 +32,7 @@ class SourceLinkParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\SourceLinkParam
+     * @covers \Bristolian\Parameters\AnnotationParam
      * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
@@ -42,7 +42,7 @@ class SourceLinkParamTest extends BaseTestCase
         string $expectedHighlightsJson,
         string $expectedText
     ): void {
-        $params = SourceLinkParam::createFromVarMap(new ArrayVarMap($input));
+        $params = AnnotationParam::createFromVarMap(new ArrayVarMap($input));
         $this->assertSame($expectedTitle, $params->title);
         $this->assertSame($expectedHighlightsJson, $params->highlights_json);
         $this->assertSame($expectedText, $params->text);
@@ -82,7 +82,7 @@ class SourceLinkParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\SourceLinkParam
+     * @covers \Bristolian\Parameters\AnnotationParam
      * @dataProvider provides_invalid_input_and_expected_errors
      * @param array<string, mixed> $input
      * @param array<string, string> $expectedProblems
@@ -90,7 +90,7 @@ class SourceLinkParamTest extends BaseTestCase
     public function test_rejects_invalid_input_with_expected_errors(array $input, array $expectedProblems): void
     {
         try {
-            SourceLinkParam::createFromVarMap(new ArrayVarMap($input));
+            AnnotationParam::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {

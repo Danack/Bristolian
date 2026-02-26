@@ -22,7 +22,7 @@
 //  }
 //}
 
-.source_link_panel {
+.annotation_panel {
   font-family: Arial, sans-serif;
   max-width: 600px;
   margin: 5px auto;
@@ -39,7 +39,7 @@
     color: #333;
   }
 
-  .source_link_panel_react {
+  .annotation_panel_react {
     > div {
       &:first-of-type {
         padding-bottom: 20px;
@@ -94,11 +94,11 @@
     margin-bottom: 10px;
   }
 
-  .sourcelinks {
+  .annotations {
     list-style: none;
     padding-left: 0;
 
-    .sourcelink {
+    .annotation {
       background-color: #e9ecef;
       padding: 8px 12px;
       margin-bottom: 5px;

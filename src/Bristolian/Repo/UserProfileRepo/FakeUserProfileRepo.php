@@ -9,17 +9,7 @@ use Bristolian\Model\Generated\UserProfile;
 use Bristolian\Model\Types\UserProfileWithDisplayName;
 use Bristolian\Parameters\UserProfileUpdateParams;
 
-function createBlankUserProfileForUserId(string $user_id): UserProfile
-{
-    $now = new \DateTimeImmutable();
-    return new UserProfile(
-        user_id: $user_id,
-        avatar_image_id: null,
-        about_me: null,
-        created_at: $now,
-        updated_at: null,
-    );
-}
+
 
 /**
  * Fake implementation of UserProfileRepo for testing.

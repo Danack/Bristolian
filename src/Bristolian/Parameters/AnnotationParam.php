@@ -2,9 +2,9 @@
 
 namespace Bristolian\Parameters;
 
-use Bristolian\Parameters\PropertyType\SourceLinkHighlightsJson;
-use Bristolian\Parameters\PropertyType\SourceLinkText;
-use Bristolian\Parameters\PropertyType\SourceLinkTitle;
+use Bristolian\Parameters\PropertyType\AnnotationHighlightsJson;
+use Bristolian\Parameters\PropertyType\AnnotationText;
+use Bristolian\Parameters\PropertyType\AnnotationTitle;
 use Bristolian\StaticFactory;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromRequest;
@@ -12,7 +12,7 @@ use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 
-class SourceLinkParam implements DataType, StaticFactory
+class AnnotationParam implements DataType, StaticFactory
 {
     use CreateFromArray;
     use CreateFromRequest;
@@ -25,11 +25,11 @@ class SourceLinkParam implements DataType, StaticFactory
      * @param string $text
      */
     public function __construct(
-        #[SourceLinkTitle('title')]
+        #[AnnotationTitle('title')]
         public readonly string $title,
-        #[SourceLinkHighlightsJson('highlights_json')]
+        #[AnnotationHighlightsJson('highlights_json')]
         public readonly string $highlights_json,
-        #[SourceLinkText('text')]
+        #[AnnotationText('text')]
         public readonly string $text,
     ) {
     }

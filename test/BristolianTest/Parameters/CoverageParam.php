@@ -6,7 +6,7 @@ use DataType\DataType;
 use DataType\Create\CreateFromVarMap;
 use DataType\GetInputTypesFromAttributes;
 
-use Bristolian\Parameters\PropertyType\SourceLinkPositionValue;
+use Bristolian\Parameters\PropertyType\AnnotationPositionValue;
 use Bristolian\Parameters\PropertyType\BasicString;
 use Bristolian\Parameters\PropertyType\Url;
 use Bristolian\Parameters\PropertyType\Username;
@@ -32,7 +32,7 @@ class CoverageParam implements DataType
     public function __construct(
         #[BasicString('string')]
         public string $string,
-        #[SourceLinkPositionValue('integer')]
+        #[AnnotationPositionValue('integer')]
         public int $integer,
         #[Url('url')]
         public string $url,

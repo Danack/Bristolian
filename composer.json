@@ -54,7 +54,8 @@
         "ext-mbstring": "*",
         "ext-exif": "*",
         "ext-libxml": "*",
-        "ext-dom": "*"
+        "ext-dom": "*",
+        "ext-pcntl": "*"
     },
     "require-dev": {
         "behat/behat": "^3.0",

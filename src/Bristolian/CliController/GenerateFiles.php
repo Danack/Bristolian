@@ -590,9 +590,9 @@ class GenerateFiles
             \Bristolian\Model\Generated\MemeTag::class,
             \Bristolian\Model\Generated\ProcessorRunRecord::class,
             \Bristolian\Model\Generated\RoomLink::class,
-            \Bristolian\Model\Generated\RoomSourcelink::class,
+            \Bristolian\Model\Generated\RoomAnnotation::class,
             \Bristolian\Model\Generated\RoomFileObjectInfo::class,
-            \Bristolian\Model\Types\RoomSourceLinkView::class,
+            \Bristolian\Model\Types\RoomAnnotationView::class,
             \Bristolian\Model\Types\UserProfile::class,
             \Bristolian\Model\Types\UserDisplayName::class,
             \Bristolian\Model\Types\UserProfileWithDisplayName::class,
@@ -652,15 +652,15 @@ class GenerateFiles
 
             'BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME' => \Bristolian\AppController\BristolStairs::BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME,
 
-            'SOURCELINK_JSON_MINIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\SourceLinkHighlightsJson::MINIMUM_LENGTH,
-            'SOURCELINK_JSON_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\SourceLinkHighlightsJson::MAXIMUM_LENGTH,
+            'ANNOTATION_JSON_MINIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\AnnotationHighlightsJson::MINIMUM_LENGTH,
+            'ANNOTATION_JSON_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\AnnotationHighlightsJson::MAXIMUM_LENGTH,
 
-            'SOURCELINK_TITLE_MINIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\SourceLinkTitle::MINIMUM_LENGTH,
-            'SOURCELINK_TITLE_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\SourceLinkTitle::MAXIMUM_LENGTH,
+            'ANNOTATION_TITLE_MINIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\AnnotationTitle::MINIMUM_LENGTH,
+            'ANNOTATION_TITLE_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\AnnotationTitle::MAXIMUM_LENGTH,
 
-            'SOURCELINK_TEXT_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\SourceLinkText::MAXIMUM_LENGTH,
+            'ANNOTATION_TEXT_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\AnnotationText::MAXIMUM_LENGTH,
 
-            'SOURCE_LINK_MAX_PAGES' => \Bristolian\Parameters\PropertyType\SourceLinkPage::MAX_PAGES,
+            'ANNOTATION_MAX_PAGES' => \Bristolian\Parameters\PropertyType\AnnotationPage::MAX_PAGES,
 
             'MINIMUM_DISPLAY_NAME_LENGTH' => \Bristolian\Parameters\PropertyType\DisplayName::MINIMUM_DISPLAY_NAME_LENGTH,
             'MAXIMUM_DISPLAY_NAME_LENGTH' => \Bristolian\Parameters\PropertyType\DisplayName::MAXIMUM_DISPLAY_NAME_LENGTH,

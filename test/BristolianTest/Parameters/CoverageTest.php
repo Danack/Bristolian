@@ -20,7 +20,7 @@ use Bristolian\Parameters\Table;
 class CoverageTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Parameters\PropertyType\SourceLinkPositionValue
+     * @covers \Bristolian\Parameters\PropertyType\AnnotationPositionValue
      * @covers \Bristolian\Parameters\PropertyType\BasicString
      * @covers \Bristolian\Parameters\PropertyType\BasicDateTime
      * @covers \Bristolian\Parameters\PropertyType\EmailAddress

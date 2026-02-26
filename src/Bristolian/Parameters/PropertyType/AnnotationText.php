@@ -8,7 +8,7 @@ use DataType\InputType;
 use DataType\ProcessRule\RangeStringLength;
 
 #[\Attribute]
-class SourceLinkText implements HasInputType
+class AnnotationText implements HasInputType
 {
     public const MAXIMUM_LENGTH = 16 * 1024;
 

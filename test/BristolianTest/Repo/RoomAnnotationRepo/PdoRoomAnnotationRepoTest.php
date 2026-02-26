@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace BristolianTest\Repo\RoomSourceLinkRepo;
+namespace BristolianTest\Repo\RoomAnnotationRepo;
 
-use Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo;
-use Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo;
+use Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo;
+use Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\Support\HasTestWorld;
 
@@ -13,7 +13,7 @@ use BristolianTest\Support\HasTestWorld;
  * @group db
  * @coversNothing
  */
-class PdoRoomSourceLinkRepoTest extends RoomSourceLinkRepoFixture
+class PdoRoomAnnotationRepoTest extends RoomAnnotationRepoFixture
 {
     use HasTestWorld;
 
@@ -27,9 +27,9 @@ class PdoRoomSourceLinkRepoTest extends RoomSourceLinkRepoFixture
         $this->fixtureRoomId2 = null;
     }
 
-    public function getTestInstance(): RoomSourceLinkRepo
+    public function getTestInstance(): RoomAnnotationRepo
     {
-        return $this->injector->make(PdoRoomSourceLinkRepo::class);
+        return $this->injector->make(PdoRoomAnnotationRepo::class);
     }
 
     protected function getValidUserId(): string
@@ -46,8 +46,8 @@ class PdoRoomSourceLinkRepoTest extends RoomSourceLinkRepoFixture
         $this->ensureStandardSetup();
         $userId = $this->standardTestData()->getTestingUserId();
         $room = $this->standardTestData()->ensureRoom(
-            'RoomSourceLinkFixture1_' . uniqid(),
-            'Fixture room for RoomSourceLinkRepo tests (no existing links)',
+            'RoomAnnotationFixture1_' . uniqid(),
+            'Fixture room for RoomAnnotationRepo tests (no existing links)',
             $userId
         );
         $this->fixtureRoomId1 = $room->id;
@@ -62,8 +62,8 @@ class PdoRoomSourceLinkRepoTest extends RoomSourceLinkRepoFixture
         $this->ensureStandardSetup();
         $userId = $this->standardTestData()->getTestingUserId();
         $room = $this->standardTestData()->ensureRoom(
-            'RoomSourceLinkFixture2_' . uniqid(),
-            'Second fixture room for RoomSourceLinkRepo tests',
+            'RoomAnnotationFixture2_' . uniqid(),
+            'Second fixture room for RoomAnnotationRepo tests',
             $userId
         );
         $this->fixtureRoomId2 = $room->id;
@@ -85,7 +85,7 @@ class PdoRoomSourceLinkRepoTest extends RoomSourceLinkRepoFixture
         $this->ensureStandardSetup();
         $userId = $this->standardTestData()->getTestingUserId();
         $uploadedFile = UploadedFile::fromFile(__FILE__);
-        $name = 'sourcelink_fixture_' . uniqid() . '.txt';
+        $name = 'annotation_fixture_' . uniqid() . '.txt';
         $fileId = $this->world()->roomFileObjectInfoRepo()->createRoomFileObjectInfo(
             $userId,
             $name,

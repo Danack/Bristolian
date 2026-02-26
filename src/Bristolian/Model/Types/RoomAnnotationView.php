@@ -5,10 +5,10 @@ namespace Bristolian\Model\Types;
 use Bristolian\ToArray;
 
 /**
- * A denormalized view combining sourcelink and room_sourcelink tables.
- * Represents a source link annotation in a PDF with its room-specific metadata.
+ * A denormalized view combining annotation and room_annotation tables.
+ * Represents an annotation in a PDF with its room-specific metadata.
  */
-class RoomSourceLinkView
+class RoomAnnotationView
 {
     use ToArray;
 
@@ -19,7 +19,7 @@ class RoomSourceLinkView
         public readonly string $highlights_json,
         public readonly string $text,
         public readonly ?string $title,
-        public readonly string $room_sourcelink_id
+        public readonly string $room_annotation_id
     ) {
     }
 }

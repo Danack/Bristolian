@@ -107,9 +107,9 @@ function getAllAppRoutes()
         ],
 
         [
-            '/rooms/{room_id:.*}/file/{file_id:.*}/sourcelinks/{sourcelink_id}/view',
+            '/rooms/{room_id:.*}/file/{file_id:.*}/annotations/{annotation_id}/view',
             'GET',
-            '\Bristolian\AppController\Rooms::viewSourcelink'
+            '\Bristolian\AppController\Rooms::viewAnnotation'
         ],
 
         [

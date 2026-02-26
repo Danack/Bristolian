@@ -344,27 +344,27 @@ function getAllApiRoutes()
         ],
 
         [
-            '/api/rooms/{room_id:.*}/source_link/{file_id:.*}',
+            '/api/rooms/{room_id:.*}/annotation/{file_id:.*}',
             'POST',
-            '\Bristolian\AppController\Rooms::handleAddSourceLink',
+            '\Bristolian\AppController\Rooms::handleAddAnnotation',
             null,
         ], // Change to a SuccessResponse.
 
         [
-            '/api/rooms/{room_id}/file/{file_id}/sourcelinks',
+            '/api/rooms/{room_id}/file/{file_id}/annotations',
             'GET',
-            '\Bristolian\AppController\Rooms::getSourcelinksForFile',
+            '\Bristolian\AppController\Rooms::getAnnotationsForFile',
             [
-                ['sourcelinks', \Bristolian\Model\Types\RoomSourceLinkView::class, true]
+                ['annotations', \Bristolian\Model\Types\RoomAnnotationView::class, true]
             ],
         ],
 
         [
-            '/api/rooms/{room_id:.*}/sourcelinks',
+            '/api/rooms/{room_id:.*}/annotations',
             'GET',
-            '\Bristolian\AppController\Rooms::getSourcelinks',
+            '\Bristolian\AppController\Rooms::getAnnotations',
             [
-                ['sourcelinks', \Bristolian\Model\Types\RoomSourceLinkView::class, true]
+                ['annotations', \Bristolian\Model\Types\RoomAnnotationView::class, true]
             ],
         ],
 

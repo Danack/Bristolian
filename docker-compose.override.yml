@@ -36,6 +36,8 @@ services:
 #      - env_local_dev.env
 
   php_websocket:
+    environment:
+      - ENV_DESCRIPTION=default,local
     ports:
       - "8015:5000"
   redis:

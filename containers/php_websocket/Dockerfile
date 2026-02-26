@@ -33,3 +33,5 @@ RUN echo 'alias cli="php cli.php"' >> ~/.bashrc
 # CMD ["sh", "/var/app/containers/php_websocket/entrypoint.sh"]
 
 CMD ["sh", "/var/app/containers/php_websocket/entrypoint_dev_watch.sh"]
+
+# CMD tail -f /var/app/containers/php_websocket/readme.MD

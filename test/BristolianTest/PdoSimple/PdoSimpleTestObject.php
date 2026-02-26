@@ -3,7 +3,7 @@
 namespace BristolianTest\PdoSimple;
 
 use Bristolian\Parameters\PropertyType\BasicString;
-use Bristolian\Parameters\PropertyType\SourceLinkPositionValue;
+use Bristolian\Parameters\PropertyType\AnnotationPositionValue;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromRequest;
 use DataType\DataType;
@@ -18,7 +18,7 @@ class PdoSimpleTestObject implements DataType
     public function __construct(
         #[BasicString('test_string')]
         public readonly string $test_string,
-        #[SourceLinkPositionValue('test_int')]
+        #[AnnotationPositionValue('test_int')]
         public readonly int $test_int,
     ) {
     }

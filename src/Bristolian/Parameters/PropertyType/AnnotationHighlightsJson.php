@@ -8,7 +8,7 @@ use DataType\InputType;
 use DataType\ProcessRule\RangeStringLength;
 
 #[\Attribute]
-class SourceLinkHighlightsJson implements HasInputType
+class AnnotationHighlightsJson implements HasInputType
 {
     const MINIMUM_LENGTH = 16;
     const MAXIMUM_LENGTH = 16 * 1024;

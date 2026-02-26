@@ -1,10 +1,10 @@
 
 import {h, Component} from "preact";
 import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";
-import {RoomSourceLinkView} from "./generated/types";
+import {RoomAnnotationView} from "./generated/types";
 import {countWords} from "./functions";
-import {SOURCELINK_TITLE_MINIMUM_LENGTH} from "./generated/constants";
-import {api, GetRoomsFileSourcelinksResponse} from "./generated/api_routes";
+import {ANNOTATION_TITLE_MINIMUM_LENGTH} from "./generated/constants";
+import {api, GetRoomsFileAnnotationsResponse} from "./generated/api_routes";
 import {PdfSelectionType} from "./constants";
 
 export interface SelectionPosition {
@@ -59,29 +59,29 @@ export function receiveSelectionMessage(event: MessageEvent) {
   }
 }
 
-export interface SourceLinkPanelProps {
+export interface AnnotationPanelProps {
   room_id: string,
   file_id: string,
-  selected_sourcelink_id: null|string,
+  selected_annotation_id: null|string,
 }
 
-interface SourceLinkPanelState {
+interface AnnotationPanelState {
   selection_data: SelectionData|null,
   title: string,
   text: string,
-  sourcelinks: RoomSourceLinkView[],
-  selected_sourcelink_id: string|null,
+  annotations: RoomAnnotationView[],
+  selected_annotation_id: string|null,
   create_status: string|null,
   error: string|null,
 }
 
-function getDefaultState(props: SourceLinkPanelProps): SourceLinkPanelState {
+function getDefaultState(props: AnnotationPanelProps): AnnotationPanelState {
   return {
     selection_data: null,
     title: "",
     text: "",
-    sourcelinks: [],
-    selected_sourcelink_id: props.selected_sourcelink_id || null,
+    annotations: [],
+    selected_annotation_id: props.selected_annotation_id || null,
     create_status: null,
     error: null,
   };
@@ -107,20 +107,20 @@ function sendDataToPDFJS(data: object) {
 }
 
 
-export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkPanelState> {
+export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationPanelState> {
 
   message_listener:null|number = null;
 
   message_listener_deselect:null|number = null;
 
-  // If the panel is loaded with a selected sourcelink_id, then we need
-  // to remember to render it when we get the data back about sourcelinks.
-  pending_sourcelink_id: null|string = null;
+  // If the panel is loaded with a selected annotation_id, then we need
+  // to remember to render it when we get the data back about annotations.
+  pending_annotation_id: null|string = null;
 
-  constructor(props: SourceLinkPanelProps) {
+  constructor(props: AnnotationPanelProps) {
     super(props);
     this.state = getDefaultState(props);
-    this.pending_sourcelink_id = props.selected_sourcelink_id;
+    this.pending_annotation_id = props.selected_annotation_id;
   }
 
   componentDidMount() {
@@ -134,7 +134,7 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
       () => this.receiveTextDeselected()
     );
 
-    this.refreshRoomFileSourcelinks();
+    this.refreshRoomFileAnnotations();
   }
 
   componentWillUnmount() {
@@ -159,19 +159,19 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
   restoreState(state_to_restore: object) {
   }
 
-  refreshRoomFileSourcelinks() {
-    api.rooms.file.sourcelinks(this.props.room_id, this.props.file_id).
-    then((data:GetRoomsFileSourcelinksResponse) => this.processData(data)).
+  refreshRoomFileAnnotations() {
+    api.rooms.file.annotations(this.props.room_id, this.props.file_id).
+    then((data:GetRoomsFileAnnotationsResponse) => this.processData(data)).
     catch((data:any) => this.processError(data));
   }
 
-  processData(data:GetRoomsFileSourcelinksResponse) {
-    if (data.data.sourcelinks === undefined) {
-      this.setState({error: "Server response did not contains 'sourcelinks'."})
+  processData(data:GetRoomsFileAnnotationsResponse) {
+    if (data.data.annotations === undefined) {
+      this.setState({error: "Server response did not contains 'annotations'."})
       return;
     }
 
-    this.setState({sourcelinks: data.data.sourcelinks})
+    this.setState({annotations: data.data.annotations})
   }
 
 
@@ -196,32 +196,32 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
     }
   }
 
-  componentDidUpdate(prevProps: SourceLinkPanelProps, prevState: SourceLinkPanelState) {
+  componentDidUpdate(prevProps: AnnotationPanelProps, prevState: AnnotationPanelState) {
     // The whole lifecycle and interaction between this panel and
     // the iframe containing the PDF could do with some re-thinking.
-    if (this.pending_sourcelink_id && this.state.sourcelinks) {
-      console.log("we had pending_sourcelink_id and data is now loaded, so sending highlights");
+    if (this.pending_annotation_id && this.state.annotations) {
+      console.log("we had pending_annotation_id and data is now loaded, so sending highlights");
       this.sendHighlightsToDraw();
-      this.pending_sourcelink_id = null;
+      this.pending_annotation_id = null;
     }
-    else if (this.state.selected_sourcelink_id !== prevState.selected_sourcelink_id) {
+    else if (this.state.selected_annotation_id !== prevState.selected_annotation_id) {
       this.sendHighlightsToDraw();
     }
   }
 
   sendHighlightsToDraw() {
-    const selectedSourcelink = this.state.sourcelinks.find(
-      (sourcelink) => sourcelink.id === this.state.selected_sourcelink_id
+    const selectedAnnotation = this.state.annotations.find(
+      (annotation) => annotation.id === this.state.selected_annotation_id
     );
 
-    if (!selectedSourcelink) {
+    if (!selectedAnnotation) {
       return;
     }
 
-    // RoomSourceLinkView has highlights_json directly from the joined query
-    const selectionDataJson = selectedSourcelink?.highlights_json || null;
+    // RoomAnnotationView has highlights_json directly from the joined query
+    const selectionDataJson = selectedAnnotation?.highlights_json || null;
     if (!selectionDataJson) {
-      console.warn("highlights_json not available for selected sourcelink");
+      console.warn("highlights_json not available for selected annotation");
       return;
     }
     let highlights = JSON.parse(selectionDataJson)
@@ -235,7 +235,7 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
   }
 
 
-  addSourceLink() {
+  addAnnotation() {
 
     let highlights_json = JSON.stringify(this.state.selection_data.highlights);
 
@@ -245,7 +245,7 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
     formData.append("highlights_json", highlights_json);
     formData.append("text", this.state.text);
 
-    let url = `/api/rooms/${this.props.room_id}/source_link/${this.props.file_id}`
+    let url = `/api/rooms/${this.props.room_id}/annotation/${this.props.file_id}`
 
     let params = {
       method: 'POST',
@@ -253,16 +253,16 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
     }
     fetch(url, params).
     then((response:Response) => response.json()).
-    then((data:any) => this.processAddSourceLinkResponse(data));
+    then((data:any) => this.processAddAnnotationResponse(data));
   }
 
-  processAddSourceLinkResponse(data: any) {
-      console.log("Source link Response");
+  processAddAnnotationResponse(data: any) {
+      console.log("Annotation Response");
       console.log(data);
       // New expected shape: SuccessResponse => { result: "success" }
       if (data.result === 'success') {
-        this.setState({create_status: "Source Link created. Make a new selection to create another.", error: null})
-        this.refreshRoomFileSourcelinks();
+        this.setState({create_status: "Annotation created. Make a new selection to create another.", error: null})
+        this.refreshRoomFileAnnotations();
         return;
       }
 
@@ -273,35 +273,35 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
       }
 
       // Unknown response shape
-      this.setState({error: "Failed to create source link"});
+      this.setState({error: "Failed to create annotation"});
   }
-  clearSelectedSourceLink() {
-    this.setState({ selected_sourcelink_id: null })
+  clearSelectedAnnotation() {
+    this.setState({ selected_annotation_id: null })
     sendDataToPDFJS({
       type: 'clear_highlights'
     });
   }
 
-  renderSourcelinks() {
-    if (this.state.sourcelinks.length === 0) {
-      return <span>No sourcelinks</span>;
+  renderAnnotations() {
+    if (this.state.annotations.length === 0) {
+      return <span>No annotations</span>;
     }
 
     let clear_selection = <span></span>;
 
-    if(this.state.selected_sourcelink_id !== null) {
-      clear_selection = <li onClick={() => this.clearSelectedSourceLink()}>Clear selection</li>
+    if(this.state.selected_annotation_id !== null) {
+      clear_selection = <li onClick={() => this.clearSelectedAnnotation()}>Clear selection</li>
     }
 
     return (
-      <ul className="sourcelinks">
-        {this.state.sourcelinks.map((sourcelink, index) => (
+      <ul className="annotations">
+        {this.state.annotations.map((annotation, index) => (
           <li
             key={index}
-            className={`sourcelink ${this.state.selected_sourcelink_id === sourcelink.id ? 'selected' : ''}`}
-            onClick={() => this.setState({ selected_sourcelink_id: sourcelink.id })}
+            className={`annotation ${this.state.selected_annotation_id === annotation.id ? 'selected' : ''}`}
+            onClick={() => this.setState({ selected_annotation_id: annotation.id })}
           >
-            {sourcelink.title}
+            {annotation.title}
           </li>
         ))}
 
@@ -311,7 +311,7 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
     );
   }
 
-  render(props: SourceLinkPanelProps, state: SourceLinkPanelState) {
+  render(props: AnnotationPanelProps, state: AnnotationPanelState) {
 
     let validToSubmit = true;
 
@@ -322,13 +322,11 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
 
     let title_length_error = <span></span>
 
-    if (this.state.title.length < SOURCELINK_TITLE_MINIMUM_LENGTH) {
+    if (this.state.title.length < ANNOTATION_TITLE_MINIMUM_LENGTH) {
       validToSubmit = false;
 
       if (this.state.title.length !== 0) {
-        // title_length_error = <span>Minimum title length is {SOURCELINK_TITLE_MINIMUM_LENGTH} characters.</span>
-
-        title_length_error = <span>Title needs {SOURCELINK_TITLE_MINIMUM_LENGTH - this.state.title.length} more characters.</span>
+        title_length_error = <span>Title needs {ANNOTATION_TITLE_MINIMUM_LENGTH - this.state.title.length} more characters.</span>
       }
     }
 
@@ -337,11 +335,11 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
     let add_button = <span></span>
     if (validToSubmit === true) {
       add_button = <div>
-        <button type="submit" className="button_standard" onClick={() => this.addSourceLink()}>Add source link</button>
+        <button type="submit" className="button_standard" onClick={() => this.addAnnotation()}>Add annotation</button>
       </div>
     }
 
-    let sourcelinks_block = this.renderSourcelinks();
+    let annotations_block = this.renderAnnotations();
 
     let text_selected_box = <div>
       <span>First, select some text in the PDF.</span>
@@ -389,13 +387,13 @@ export class SourceLinkPanel extends Component<SourceLinkPanelProps, SourceLinkP
     }
 
 
-    return <div class='source_link_panel_react'>
-      <h3>Create Source Link</h3>
+    return <div class='annotation_panel_react'>
+      <h3>Create Annotation</h3>
 
       {text_selected_box}
 
-      <h4>Current sourcelinks</h4>
-      {sourcelinks_block}
+      <h4>Current annotations</h4>
+      {annotations_block}
     </div>;
   }
 }

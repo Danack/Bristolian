@@ -2,8 +2,8 @@
 
 namespace Bristolian\Parameters;
 
-use Bristolian\Parameters\PropertyType\SourceLinkPage;
-use Bristolian\Parameters\PropertyType\SourceLinkPositionValue;
+use Bristolian\Parameters\PropertyType\AnnotationPage;
+use Bristolian\Parameters\PropertyType\AnnotationPositionValue;
 use Bristolian\StaticFactory;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromRequest;
@@ -11,7 +11,7 @@ use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 
-class SourceLinkHighlightParam implements DataType, StaticFactory
+class AnnotationHighlightParam implements DataType, StaticFactory
 {
     use CreateFromArray;
     use CreateFromRequest;
@@ -19,15 +19,15 @@ class SourceLinkHighlightParam implements DataType, StaticFactory
     use GetInputTypesFromAttributes;
 
     public function __construct(
-        #[SourceLinkPage('page')]
+        #[AnnotationPage('page')]
         public readonly int $page,
-        #[SourceLinkPositionValue('left')]
+        #[AnnotationPositionValue('left')]
         public readonly int $left,
-        #[SourceLinkPositionValue('top')]
+        #[AnnotationPositionValue('top')]
         public readonly int $top,
-        #[SourceLinkPositionValue('right')]
+        #[AnnotationPositionValue('right')]
         public readonly int $right,
-        #[SourceLinkPositionValue('bottom')]
+        #[AnnotationPositionValue('bottom')]
         public readonly int $bottom,
     ) {
     }

@@ -2,15 +2,16 @@
 
 namespace Bristolian\Parameters\PropertyType;
 
-use DataType\ExtractRule\GetInt;
+use DataType\ExtractRule\GetString;
 use DataType\HasInputType;
 use DataType\InputType;
-use DataType\ProcessRule\RangeIntValue;
+use DataType\ProcessRule\RangeStringLength;
 
 #[\Attribute]
-class SourceLinkPage implements HasInputType
+class AnnotationTitle implements HasInputType
 {
-    const MAX_PAGES = 1000;
+    const MINIMUM_LENGTH = 12;
+    const MAXIMUM_LENGTH = 1024;
 
     public function __construct(
         private string $name
@@ -21,8 +22,8 @@ class SourceLinkPage implements HasInputType
     {
         return new InputType(
             $this->name,
-            new GetInt(),
-            new RangeIntValue(0, self::MAX_PAGES)
+            new GetString(),
+            new RangeStringLength(self::MINIMUM_LENGTH, self::MAXIMUM_LENGTH)
         );
     }
 }

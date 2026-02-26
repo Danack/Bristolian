@@ -2,7 +2,7 @@
 
 namespace BristolianTest\Parameters\PropertyType;
 
-use Bristolian\Parameters\PropertyType\SourceLinkTitle;
+use Bristolian\Parameters\PropertyType\AnnotationTitle;
 use BristolianTest\BaseTestCase;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
@@ -13,7 +13,7 @@ use VarMap\ArrayVarMap;
 /**
  * @coversNothing
  */
-class SourceLinkTitleTest extends BaseTestCase
+class AnnotationTitleTest extends BaseTestCase
 {
     /**
      * @return \Generator<string, array{array<string, mixed>, string}>
@@ -27,13 +27,13 @@ class SourceLinkTitleTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\SourceLinkTitle
+     * @covers \Bristolian\Parameters\PropertyType\AnnotationTitle
      * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
     public function test_parses_valid_input_to_expected_output(array $input, string $expectedValue): void
     {
-        $paramTest = SourceLinkTitleFixture::createFromVarMap(new ArrayVarMap($input));
+        $paramTest = AnnotationTitleFixture::createFromVarMap(new ArrayVarMap($input));
         $this->assertSame($expectedValue, $paramTest->value);
     }
 
@@ -50,14 +50,14 @@ class SourceLinkTitleTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\SourceLinkTitle
+     * @covers \Bristolian\Parameters\PropertyType\AnnotationTitle
      * @dataProvider provides_invalid_input_and_expected_error
      * @param array<string, mixed> $input
      */
     public function test_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {
-            SourceLinkTitleFixture::createFromVarMap(new ArrayVarMap($input));
+            AnnotationTitleFixture::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
@@ -69,22 +69,22 @@ class SourceLinkTitleTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\SourceLinkTitle
+     * @covers \Bristolian\Parameters\PropertyType\AnnotationTitle
      */
     public function test_getInputType_returns_correct_name(): void
     {
-        $propertyType = new SourceLinkTitle('test_name');
+        $propertyType = new AnnotationTitle('test_name');
         $this->assertSame('test_name', $propertyType->getInputType()->getName());
     }
 }
 
-class SourceLinkTitleFixture implements DataType
+class AnnotationTitleFixture implements DataType
 {
     use CreateFromVarMap;
     use GetInputTypesFromAttributes;
 
     public function __construct(
-        #[SourceLinkTitle('title_input')]
+        #[AnnotationTitle('title_input')]
         public readonly string $value,
     ) {
     }

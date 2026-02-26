@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Parameters\PropertyType;
 
-use Bristolian\Parameters\PropertyType\SourceLinkHighlightsJson;
+use Bristolian\Parameters\PropertyType\AnnotationHighlightsJson;
 use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
@@ -12,7 +12,7 @@ use VarMap\ArrayVarMap;
 /**
  * @coversNothing
  */
-class SourceLinkHighlightsJsonTest extends BaseTestCase
+class AnnotationHighlightsJsonTest extends BaseTestCase
 {
     /**
      * @return \Generator<string, array{array<string, mixed>, string}>
@@ -41,15 +41,15 @@ class SourceLinkHighlightsJsonTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\SourceLinkHighlightsJson
+     * @covers \Bristolian\Parameters\PropertyType\AnnotationHighlightsJson
      * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $params
      */
     public function test_parses_valid_input_to_expected_output(array $params, string $expectedValue): void
     {
-        $fullParams = $this->fullSourceLinkParams($params);
-        $sourceLinkParam = \Bristolian\Parameters\SourceLinkParam::createFromVarMap(new ArrayVarMap($fullParams));
-        $this->assertSame($expectedValue, $sourceLinkParam->highlights_json);
+        $fullParams = $this->fullAnnotationParams($params);
+        $annotationParam = \Bristolian\Parameters\AnnotationParam::createFromVarMap(new ArrayVarMap($fullParams));
+        $this->assertSame($expectedValue, $annotationParam->highlights_json);
     }
 
     /**
@@ -65,15 +65,15 @@ class SourceLinkHighlightsJsonTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\SourceLinkHighlightsJson
+     * @covers \Bristolian\Parameters\PropertyType\AnnotationHighlightsJson
      * @dataProvider provides_invalid_input_and_expected_error
      * @param array<string, mixed> $params
      */
     public function test_rejects_invalid_input_with_expected_error(array $params, string $expectedErrorMessage): void
     {
-        $fullParams = $this->fullSourceLinkParams($params);
+        $fullParams = $this->fullAnnotationParams($params);
         try {
-            \Bristolian\Parameters\SourceLinkParam::createFromVarMap(new ArrayVarMap($fullParams));
+            \Bristolian\Parameters\AnnotationParam::createFromVarMap(new ArrayVarMap($fullParams));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {
@@ -85,11 +85,11 @@ class SourceLinkHighlightsJsonTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\SourceLinkHighlightsJson
+     * @covers \Bristolian\Parameters\PropertyType\AnnotationHighlightsJson
      */
     public function test_getInputType_returns_correct_name(): void
     {
-        $propertyType = new SourceLinkHighlightsJson('test_name');
+        $propertyType = new AnnotationHighlightsJson('test_name');
         $this->assertSame('test_name', $propertyType->getInputType()->getName());
     }
 
@@ -97,7 +97,7 @@ class SourceLinkHighlightsJsonTest extends BaseTestCase
      * @param array<string, mixed> $params
      * @return array<string, mixed>
      */
-    private function fullSourceLinkParams(array $params): array
+    private function fullAnnotationParams(array $params): array
     {
         return array_merge([
             'title' => 'This is a longer source title that meets the minimum length requirement',

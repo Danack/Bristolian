@@ -1214,3 +1214,16 @@ function isTimeToRunDailySystemInfo(): bool
     // echo "The time is NOT between noon and 3 PM.";
     return false;
 }
+
+
+function createBlankUserProfileForUserId(string $user_id): \Bristolian\Model\Generated\UserProfile
+{
+    $now = new \DateTimeImmutable();
+    return new \Bristolian\Model\Generated\UserProfile(
+        user_id: $user_id,
+        avatar_image_id: null,
+        about_me: null,
+        created_at: $now,
+        updated_at: null,
+    );
+}

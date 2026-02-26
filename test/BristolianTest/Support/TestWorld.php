@@ -8,7 +8,7 @@ use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo;
 use Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo;
 use Bristolian\Repo\RoomRepo\PdoRoomRepo;
-use Bristolian\Repo\RoomSourceLinkRepo\PdoRoomSourceLinkRepo;
+use Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo;
 use DI\Injector;
 
 /**
@@ -28,7 +28,7 @@ final class TestWorld
     private PdoRoomRepo $roomRepo;
     private PdoRoomFileObjectInfoRepo $roomFileObjectInfoRepo;
     private PdoRoomFileRepo $roomFileRepo;
-    private PdoRoomSourceLinkRepo $roomSourceLinkRepo;
+    private PdoRoomAnnotationRepo $roomAnnotationRepo;
 
     public function __construct(
         private Injector $injector
@@ -37,7 +37,7 @@ final class TestWorld
         $this->roomRepo = $this->injector->make(PdoRoomRepo::class);
         $this->roomFileObjectInfoRepo = $this->injector->make(PdoRoomFileObjectInfoRepo::class);
         $this->roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
-        $this->roomSourceLinkRepo = $this->injector->make(PdoRoomSourceLinkRepo::class);
+        $this->roomAnnotationRepo = $this->injector->make(PdoRoomAnnotationRepo::class);
     }
 
     public function adminRepo(): PdoAdminRepo
@@ -60,9 +60,9 @@ final class TestWorld
         return $this->roomFileRepo;
     }
 
-    public function roomSourceLinkRepo(): PdoRoomSourceLinkRepo
+    public function roomAnnotationRepo(): PdoRoomAnnotationRepo
     {
-        return $this->roomSourceLinkRepo;
+        return $this->roomAnnotationRepo;
     }
 
     /**

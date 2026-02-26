@@ -17,9 +17,9 @@ use Bristolian\Model\Generated\Migrations;
 use Bristolian\Model\Generated\PdoSimpleTest;
 use Bristolian\Model\Generated\Processor;
 use Bristolian\Model\Generated\RoomFile;
-use Bristolian\Model\Generated\RoomSourcelink;
+use Bristolian\Model\Generated\RoomAnnotation;
 use Bristolian\Model\Generated\RunTimeRecorder;
-use Bristolian\Model\Generated\Sourcelink;
+use Bristolian\Model\Generated\Annotation;
 use Bristolian\Model\Generated\StoredMeme;
 use Bristolian\Model\Generated\Tag;
 use Bristolian\Model\Generated\TinnedFishProduct;
@@ -136,10 +136,10 @@ class GeneratedModelCoverageTest extends BaseTestCase
         $this->assertSame('rid', $o->room_id);
     }
 
-    /** @covers \Bristolian\Model\Generated\RoomSourcelink */
-    public function test_RoomSourcelink(): void
+    /** @covers \Bristolian\Model\Generated\RoomAnnotation */
+    public function test_RoomAnnotation(): void
     {
-        $o = new RoomSourcelink('id', 'rid', 'sid', null, self::now());
+        $o = new RoomAnnotation('id', 'rid', 'aid', null, self::now());
         $this->assertSame('id', $o->id);
     }
 
@@ -150,10 +150,10 @@ class GeneratedModelCoverageTest extends BaseTestCase
         $this->assertSame(1, $o->id);
     }
 
-    /** @covers \Bristolian\Model\Generated\Sourcelink */
-    public function test_Sourcelink(): void
+    /** @covers \Bristolian\Model\Generated\Annotation */
+    public function test_Annotation(): void
     {
-        $o = new Sourcelink('id', 'uid', 'fid', '{}', 'text', self::now());
+        $o = new Annotation('id', 'uid', 'fid', '{}', 'text', self::now());
         $this->assertSame('id', $o->id);
     }
 

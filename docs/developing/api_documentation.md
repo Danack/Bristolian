@@ -330,29 +330,29 @@ See existing examples in:
 - **Path Parameters**: `room_id` - Room identifier
 - **Response**: Array of room links
 
-#### Source Links
-- **POST** `/api/rooms/{room_id}/source_link/{file_id}`
-- **Description**: Add source link to a file
+#### Annotations
+- **POST** `/api/rooms/{room_id}/annotation/{file_id}`
+- **Description**: Add annotation to a file
 - **Authentication**: Session required
 - **Path Parameters**: 
   - `room_id` - Room identifier
   - `file_id` - File identifier
-- **Request Body**: Source link data
+- **Request Body**: Annotation data
 - **Response**: Success status
 
-- **GET** `/api/rooms/{room_id}/file/{file_id}/sourcelinks`
-- **Description**: Get source links for a specific file
+- **GET** `/api/rooms/{room_id}/file/{file_id}/annotations`
+- **Description**: Get annotations for a specific file
 - **Authentication**: Session required
 - **Path Parameters**: 
   - `room_id` - Room identifier
   - `file_id` - File identifier
-- **Response**: Array of source links
+- **Response**: Array of annotations
 
-- **GET** `/api/rooms/{room_id}/sourcelinks`
-- **Description**: Get all source links for a room
+- **GET** `/api/rooms/{room_id}/annotations`
+- **Description**: Get all annotations for a room
 - **Authentication**: Session required
 - **Path Parameters**: `room_id` - Room identifier
-- **Response**: Array of all room source links
+- **Response**: Array of all room annotations
 
 ### System & Debug
 

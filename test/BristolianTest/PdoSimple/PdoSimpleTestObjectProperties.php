@@ -3,7 +3,7 @@
 namespace BristolianTest\PdoSimple;
 
 use Bristolian\Parameters\PropertyType\BasicString;
-use Bristolian\Parameters\PropertyType\SourceLinkPositionValue;
+use Bristolian\Parameters\PropertyType\AnnotationPositionValue;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromRequest;
 use DataType\DataType;

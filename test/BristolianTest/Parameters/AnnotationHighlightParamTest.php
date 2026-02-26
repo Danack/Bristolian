@@ -5,14 +5,14 @@ declare(strict_types = 1);
 namespace BristolianTest\Parameters;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Parameters\SourceLinkHighlightParam;
+use Bristolian\Parameters\AnnotationHighlightParam;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 
 /**
  * @coversNothing
  */
-class SourceLinkHighlightParamTest extends BaseTestCase
+class AnnotationHighlightParamTest extends BaseTestCase
 {
     /**
      * @return \Generator<string, array{array<string, mixed>, int, int, int, int, int}>
@@ -36,7 +36,7 @@ class SourceLinkHighlightParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\SourceLinkHighlightParam
+     * @covers \Bristolian\Parameters\AnnotationHighlightParam
      * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
@@ -48,7 +48,7 @@ class SourceLinkHighlightParamTest extends BaseTestCase
         int $expectedRight,
         int $expectedBottom
     ): void {
-        $params = SourceLinkHighlightParam::createFromVarMap(new ArrayVarMap($input));
+        $params = AnnotationHighlightParam::createFromVarMap(new ArrayVarMap($input));
         $this->assertSame($expectedPage, $params->page);
         $this->assertSame($expectedLeft, $params->left);
         $this->assertSame($expectedTop, $params->top);
@@ -114,7 +114,7 @@ class SourceLinkHighlightParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\SourceLinkHighlightParam
+     * @covers \Bristolian\Parameters\AnnotationHighlightParam
      * @dataProvider provides_invalid_input_and_expected_errors
      * @param array<string, mixed> $input
      * @param array<string, string> $expectedProblems
@@ -122,7 +122,7 @@ class SourceLinkHighlightParamTest extends BaseTestCase
     public function test_rejects_invalid_input_with_expected_errors(array $input, array $expectedProblems): void
     {
         try {
-            SourceLinkHighlightParam::createFromVarMap(new ArrayVarMap($input));
+            AnnotationHighlightParam::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
         catch (\DataType\Exception\ValidationException $ve) {

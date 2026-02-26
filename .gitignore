@@ -46,6 +46,7 @@ src/Bristolian/Model/Generated
 src/Bristolian/Response/Typed
 api_routes.tsx
 /clover.xml
+/clover_chat.xml
 .phpunit.cache
 /app/public/js/stats.json
 /app/public/js/report.html

@@ -6,7 +6,7 @@ namespace BristolianTest\Support;
 
 use Bristolian\Model\Generated\Room;
 use Bristolian\Parameters\CreateUserParams;
-use Bristolian\Parameters\SourceLinkParam;
+use Bristolian\Parameters\AnnotationParam;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
 
@@ -16,7 +16,7 @@ use Ramsey\Uuid\Uuid;
  * Default room world (see docs/refactoring/default_test_scenarios_and_worlds.md):
  * - Standard users (testing@example.com, danack@example.com)
  * - Two rooms: "Housing" and "Off-topic"
- * - Documents in each room; some documents have highlights (source links with highlights_json)
+ * - Documents in each room; some documents have highlights (annotations with highlights_json)
  *
  * Following the pattern from docs/refactoring/testing_scenarios.md:
  * - Methods describe facts about the world, not how the world got there
@@ -129,7 +129,7 @@ final class StandardTestData
 
     private function countDocumentsWithHighlightsInRoom(string $roomId): int
     {
-        $links = $this->world->roomSourceLinkRepo()->getSourceLinksForRoom($roomId);
+        $links = $this->world->roomAnnotationRepo()->getAnnotationsForRoom($roomId);
         $withHighlights = 0;
         foreach ($links as $link) {
             if ($link->highlights_json !== '{"highlights": []}' && trim($link->highlights_json) !== '') {
@@ -151,12 +151,12 @@ final class StandardTestData
         $this->world->roomFileRepo()->addFileToRoom($fileId, $roomId);
 
         if ($withHighlights) {
-            $param = SourceLinkParam::createFromArray([
+            $param = AnnotationParam::createFromArray([
                 'title' => 'Standard test doc with highlights placeholder title',
                 'highlights_json' => '{"highlights": [{"page": 1, "left": 0, "top": 0, "right": 100, "bottom": 50}]}',
                 'text' => 'Highlighted excerpt for standard test data.',
             ]);
-            $this->world->roomSourceLinkRepo()->addSourceLink($userId, $roomId, $fileId, $param);
+            $this->world->roomAnnotationRepo()->addAnnotation($userId, $roomId, $fileId, $param);
         }
     }
 

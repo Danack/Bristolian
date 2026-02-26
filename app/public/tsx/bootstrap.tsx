@@ -22,13 +22,13 @@ import { QrCodeGeneratorPanel } from "./QrCodeGenerator";
 import { RoomFilesPanel } from "./RoomFilesPanel";
 import { RoomFileUploadPanel } from "./RoomFileUploadPanel";
 import { RoomLinksPanel } from "./RoomLinksPanel";
-import { RoomSourcelinksPanel } from "./RoomSourcelinksPanel";
-import { SourceLinkPanel } from "./SourceLinkPanel";
+import { RoomAnnotationsPanel } from "./RoomAnnotationsPanel";
+import { AnnotationPanel } from "./AnnotationPanel";
 import { TeleprompterPanel } from "./TeleprompterPanel";
 import { TimeLinePanel } from "./TimeLinePanel";
 import { TinnedFishProductsAdminPanel } from "./TinnedFishProductsAdminPanel";
 import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
-import { receiveSelectionMessage } from "./SourceLinkPanel";
+import { receiveSelectionMessage } from "./AnnotationPanel";
 
 
 
@@ -99,16 +99,16 @@ let panels: WidgetClassBinding[] = [
         component: RoomLinksPanel
     },
     {
-        class: 'room_sourcelinks_panel',
-        component: RoomSourcelinksPanel
+        class: 'room_annotations_panel',
+        component: RoomAnnotationsPanel
     },
     {
         class: 'teleprompter_panel',
         component: TeleprompterPanel
     },
     {
-        class: 'source_link_panel',
-        component: SourceLinkPanel
+        class: 'annotation_panel',
+        component: AnnotationPanel
     },
     {
         class: 'time_line_panel',

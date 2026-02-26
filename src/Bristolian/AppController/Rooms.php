@@ -8,21 +8,21 @@ use Bristolian\Exception\BristolianException;
 use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Filesystem\RoomFileFilesystem;
 use Bristolian\Parameters\LinkParam;
-use Bristolian\Parameters\SourceLinkHighlightParam;
-use Bristolian\Parameters\SourceLinkParam;
+use Bristolian\Parameters\AnnotationHighlightParam;
+use Bristolian\Parameters\AnnotationParam;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
-use Bristolian\Repo\RoomSourceLinkRepo\RoomSourceLinkRepo;
+use Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
 use Bristolian\Response\IframeHtmlResponse;
 use Bristolian\Response\StoredFileErrorResponse;
 use Bristolian\Response\StreamingResponse;
 use Bristolian\Response\SuccessResponse;
-use Bristolian\Response\Typed\GetRoomsFileSourcelinksResponse;
+use Bristolian\Response\Typed\GetRoomsFileAnnotationsResponse;
 use Bristolian\Response\Typed\GetRoomsFilesResponse;
 use Bristolian\Response\Typed\GetRoomsLinksResponse;
-use Bristolian\Response\Typed\GetRoomsSourcelinksResponse;
+use Bristolian\Response\Typed\GetRoomsAnnotationsResponse;
 use Bristolian\Service\RequestNonce;
 use Bristolian\Service\RoomFileStorage\RoomFileStorage;
 use Bristolian\Service\RoomFileStorage\UploadError;
@@ -167,27 +167,27 @@ class Rooms
 
 
 
-    public function getSourcelinksForFile(
-        RoomSourceLinkRepo $roomLinkRepo,
+    public function getAnnotationsForFile(
+        RoomAnnotationRepo $roomAnnotationRepo,
         string $room_id,
         string $file_id,
-    ): GetRoomsFileSourcelinksResponse {
-        $sourcelinks = $roomLinkRepo->getSourceLinksForRoomAndFile(
+    ): GetRoomsFileAnnotationsResponse {
+        $annotations = $roomAnnotationRepo->getAnnotationsForRoomAndFile(
             $room_id,
             $file_id
         );
 
-        return new GetRoomsFileSourcelinksResponse($sourcelinks);
+        return new GetRoomsFileAnnotationsResponse($annotations);
     }
 
 
-    public function getSourcelinks(
-        RoomSourceLinkRepo $roomLinkRepo,
+    public function getAnnotations(
+        RoomAnnotationRepo $roomAnnotationRepo,
         string $room_id
-    ): GetRoomsSourcelinksResponse {
-        $sourcelinks = $roomLinkRepo->getSourceLinksForRoom($room_id);
+    ): GetRoomsAnnotationsResponse {
+        $annotations = $roomAnnotationRepo->getAnnotationsForRoom($room_id);
 
-        return new GetRoomsSourcelinksResponse($sourcelinks);
+        return new GetRoomsAnnotationsResponse($annotations);
     }
 
 
@@ -304,7 +304,7 @@ class Rooms
     <div class='room_files_panel' data-widgety_json='$widget_data'></div>
     <div class='room_file_upload_panel' data-widgety_json='$widget_data'></div>
     <div class='room_links_panel' data-widgety_json='$widget_data'></div>
-    <div class='room_sourcelinks_panel' data-widgety_json='$widget_data'></div>
+    <div class='room_annotations_panel' data-widgety_json='$widget_data'></div>
   </div>
 </div>
 HTML;
@@ -322,7 +322,7 @@ HTML;
         RoomRepo $roomRepo,
         string $room_id,
         string $file_id,
-        string|null $sourcelink_id
+        string|null $annotation_id
     ): string {
         $room = $roomRepo->getRoomById($room_id);
         // TODO - check for null room
@@ -332,8 +332,8 @@ HTML;
             'file_id' => $file_id,
         ];
 
-        if ($sourcelink_id !== null) {
-            $params['selected_sourcelink_id'] = $sourcelink_id;
+        if ($annotation_id !== null) {
+            $params['selected_annotation_id'] = $annotation_id;
         }
 
         $widget_data = encodeWidgetyData($params);
@@ -347,7 +347,7 @@ HTML;
       title='A file to note text in'></iframe>
   </span>
   <span>
-    <div class='source_link_panel' data-widgety_json='$widget_data'></div>
+    <div class='annotation_panel' data-widgety_json='$widget_data'></div>
   </span>
 </div>
 <script src="/js/text_note_iframe_resize.js"></script>
@@ -444,28 +444,28 @@ HTML;
     }
 
 
-    public function handleAddSourceLink(
+    public function handleAddAnnotation(
         RoomRepo $roomRepo,
         RoomFileRepo $roomFileRepo,
-        RoomSourceLinkRepo $roomSourceLinkRepo,
+        RoomAnnotationRepo $roomAnnotationRepo,
         UserSession $appSession,
-        SourceLinkParam $highLightParam,
+        AnnotationParam $highLightParam,
         //        VarMap $varMap,
         string $room_id,
         string $file_id
     ): StubResponse {
-//        $highLightParam = SourceLinkParam::createFromVarMap($varMap);
+//        $highLightParam = AnnotationParam::createFromVarMap($varMap);
 
         $data = json_decode_safe($highLightParam->highlights_json);
 
         // We are just creating these objects to validate the data looks correct.
-        [$highlights, $validation_errors] = createArrayOfTypeOrError(SourceLinkHighlightParam::class, $data);
+        [$highlights, $validation_errors] = createArrayOfTypeOrError(AnnotationHighlightParam::class, $data);
 
         if ($validation_errors !== null) {
             return createErrorJsonResponse($validation_errors);
         }
 
-        $room_sourcelink_id = $roomSourceLinkRepo->addSourceLink(
+        $room_annotation_id = $roomAnnotationRepo->addAnnotation(
             $appSession->getUserId(),
             $room_id,
             $file_id,
@@ -473,23 +473,23 @@ HTML;
         );
 
         $data = [
-            'room_sourcelink_id' => $room_sourcelink_id
+            'room_annotation_id' => $room_annotation_id
         ];
 
         return createJsonResponse($data);
     }
 
-    public function viewSourcelink(
+    public function viewAnnotation(
         RoomRepo $roomRepo,
         string $room_id,
         string $file_id,
-        string $sourcelink_id
+        string $annotation_id
     ): string {
         return $this->render_annotate_file(
             $roomRepo,
             $room_id,
             $file_id,
-            $sourcelink_id
+            $annotation_id
         );
     }
 }
