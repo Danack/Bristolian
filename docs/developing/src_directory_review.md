@@ -392,13 +392,7 @@ The primary application namespace containing most of the application logic:
 ##### BristolianChat/
 **Purpose:** WebSocket/chat system components.
 
-**Files:**
-- `ChatSpammer.php` - Chat spam prevention
-- `ClientHandler.php` - WebSocket client handler
-- `FallbackHandler.php` - Fallback handler for chat
-- `RedisWatcherRoomMessages.php` - Redis watcher for room messages
-- `RoomFilesWatcher.php` - Room file watcher
-- `RoomMessagesWatcher.php` - Room message watcher
+
 
 ##### Root-level Files
 
@@ -620,13 +614,6 @@ Typed response classes for specific API endpoints:
 ##### BristolianChat/
 **Purpose:** WebSocket/chat system components.
 
-**Files:**
-- `ChatSpammer.php` - Chat spam prevention
-- `ClientHandler.php` - WebSocket client handler
-- `FallbackHandler.php` - Fallback handler for chat
-- `RedisWatcherRoomMessages.php` - Redis watcher for room messages
-- `RoomFilesWatcher.php` - Room file watcher
-- `RoomMessagesWatcher.php` - Room message watcher
 
 **Pattern:** Chat/WebSocket handling classes, uses Redis for pub/sub.
 

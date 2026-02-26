@@ -14,19 +14,22 @@ use Amp\Socket;
 use Amp\Websocket\Compression\Rfc7692CompressionFactory;
 use Amp\Websocket\Server\Rfc6455Acceptor;
 use Amp\Websocket\Server\Websocket;
-use BristolianChat\RoomFilesWatcher;
-use BristolianChat\RoomMessagesWatcher;
+
+use BristolianChat\RoomMessageFetcher;
 use Bristolian\Config\Config;
 use BristolianChat\ChatSpammer;
 use Monolog\Logger;
-use BristolianChat\ClientHandler;
+use BristolianChat\ClientHandler\StandardClientHandler;
 use BristolianChat\FallbackHandler;
+use BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher;
 
 use function Amp\ByteStream\getStdout;
 use function Amp\Redis\createRedisClient;
 use function \Amp\Mysql\connect as mysql_connect;
 
 require __DIR__ . '/chat_includes.php';
+
+// @codeCoverageIgnoreStart
 
 // Logger
 $logHandler = new StreamHandler(getStdout());
@@ -45,7 +48,6 @@ $uri = sprintf(
 $redis_config = RedisConfig::fromUri($uri);
 $redis = createRedisClient($redis_config);
 
-
 // MySql
 $mysql_config = new MysqlConfig(
     $config[Config::BRISTOLIAN_SQL_HOST],
@@ -57,30 +59,18 @@ $mysql_config = new MysqlConfig(
 $mysql_client = mysql_connect($mysql_config);
 
 
-$clientHandler = new ClientHandler($logger);
-
-//$redisWatcher = new RedisWatcherRoomMessages(
-//    $redis,
-//    $clientHandler,
-//    $logger
-//);
+$clientHandler = new StandardClientHandler($logger);
 
 $chat_spammer = new ChatSpammer($clientHandler, $logger);
 
-
-
-////RoomFileWatcher - just spins watching inserted files.
-//$roomFileWatcher = new RoomFilesWatcher(
-//    $mysql_client,
-//    $clientHandler,
-//    $logger
-//);
-
-//LinkWatcher - just spins watching links.
-
-//MessageWatcher - just spins watching messages
-$roomMessagesWatcher = new RoomMessagesWatcher(
+// MessageWatcher - just spins watching messages
+$roomMessageFetcher = new SqlRoomMessagesWatcher(
     $mysql_client,
+    $logger
+);
+
+$roomMessageWatcher = new RoomMessageFetcher(
+    $roomMessageFetcher,
     $clientHandler,
     $logger
 );
@@ -107,12 +97,11 @@ $router->setFallback(new FallbackHandler());
 
 // Do the remembering which rooms people are in next.
 
-// Start all the things.
+// Start all the tools.
 //Amp\async($chat_spammer->run(...));
+Amp\async($roomMessageWatcher->run(...));
 
-Amp\async($roomMessagesWatcher->run(...));
-
-
+// Start the server
 $server->start($router, $errorHandler);
 
 
@@ -125,3 +114,4 @@ $signal = Amp\trapSignal([\SIGINT, \SIGTERM]);
 $logger->info(sprintf("Received signal %d, stopping HTTP server", $signal));
 $server->stop();
 $logger->info("fin");
+// @codeCoverageIgnoreEnd

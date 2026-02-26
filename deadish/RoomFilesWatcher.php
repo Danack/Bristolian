@@ -1,10 +1,7 @@
 <?php
 
-namespace BristolianChat;
+namespace deadish;
 
-use Bristolian\Keys\RoomMessageKey;
-use Bristolian\Model\Chat\UserChatMessage;
-use Amp\Mysql\MysqlConnection;
 use Monolog\Logger;
 
 class RoomFilesWatcher
@@ -13,7 +10,7 @@ class RoomFilesWatcher
     public function __construct(
         //        private readonly MysqlConnection $mysql_connection,
         /* @phpstan-ignore property.onlyWritten */
-        private readonly ClientHandler $clientHandler,
+        private readonly \BristolianChat\ClientHandler\ClientHandler $clientHandler,
         /* @phpstan-ignore property.onlyWritten */
         private readonly Logger $logger
     ) {

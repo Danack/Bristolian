@@ -20,7 +20,8 @@
     "autoload": {
         "psr-0": {
             "Bristolian\\": "../src/",
-            "BristolianChat\\": "../src/"
+            "BristolianChat\\": "../src/",
+            "BristolianChatTest\\": "../test/"
         },
         "psr-4": {
             "Bristolian\\Database\\": "../src/Bristolian/Database"

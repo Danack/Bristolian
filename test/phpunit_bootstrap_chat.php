@@ -1,8 +1,25 @@
 <?php
 
+use Bristolian\Config\Config;
+
+use Amp\Http\Server\DefaultErrorHandler;
+use Amp\Http\Server\Router;
+use Amp\Http\Server\SocketHttpServer;
+use Amp\Log\ConsoleFormatter;
+use Amp\Log\StreamHandler;
+use Amp\Mysql\MysqlConfig;
+use Amp\Redis\RedisConfig;
+use Amp\Socket;
+use Amp\Websocket\Compression\Rfc7692CompressionFactory;
+use Amp\Websocket\Server\Rfc6455Acceptor;
+use Amp\Websocket\Server\Websocket;
+use function Amp\ByteStream\getStdout;
+use function Amp\Redis\createRedisClient;
+use function Amp\Mysql\connect as mysql_connect;
+
+
+
 require_once __DIR__ . "/../chat/src/chat_includes.php";
-
-
 
 
 
@@ -47,4 +64,22 @@ function createTestInjector()
 
     $injector->share($injector); //Yolo ServiceLocator
     return $injector;
+}
+
+function createMysqlClient(): \Amp\Mysql\MysqlConnection
+{
+
+    $config = getGeneratedConfig();
+
+// MySql
+    $mysql_config = new MysqlConfig(
+        $config[Config::BRISTOLIAN_SQL_HOST],
+        MysqlConfig::DEFAULT_PORT,
+        $config[Config::BRISTOLIAN_SQL_USERNAME],
+        $config[Config::BRISTOLIAN_SQL_PASSWORD],
+        $config[Config::BRISTOLIAN_SQL_DATABASE],
+    );
+    $mysql_client = mysql_connect($mysql_config);
+
+    return $mysql_client;
 }

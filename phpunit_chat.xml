@@ -38,12 +38,12 @@
             ignoreDeprecatedCodeUnits="true"
             disableCodeCoverageIgnore="false">
     <report>
-      <clover outputFile="clover.xml"/>
+      <clover outputFile="clover_chat.xml"/>
       <text outputFile="php://stdout" showUncoveredFiles="false" showOnlySummary="true"/>
 
 
       <!-- toggle_slow begin <html outputDirectory="tmp/coverage" lowUpperBound="50" highLowerBound="90"/> -->
-      <html outputDirectory="tmp/coverage" lowUpperBound="50" highLowerBound="90"/>
+      <html outputDirectory="tmp/coverage_chat" lowUpperBound="50" highLowerBound="90"/>
       <!-- toggle_slow end-->
 
     </report>

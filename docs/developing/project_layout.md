@@ -80,7 +80,11 @@ This document outlines the main directories where code lives in the Bristolian p
 
 ## Supporting Directories (Not Core Code)
 
-- **`/vendor`** - Composer dependencies
+- **`/vendor`** - Composer dependencies (main web/CLI app)
+- **`/chat/vendor`** - Composer dependencies for the chat/websocket app (includes amphp packages)
+
+When you need to inspect how a PHP dependency works (e.g. Amp interfaces, method signatures), **check the local vendor code** in `vendor/` or `chat/vendor/` rather than relying on online search. The installed package source is the authority for the version you are using.
+
 - **`/node_modules`** - NPM dependencies  
 - **`/data`** - Runtime data and cache
 - **`/var`** - Variable data and logs

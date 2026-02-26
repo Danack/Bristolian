@@ -1,6 +1,6 @@
 <?php
 
-namespace BristolianChat;
+namespace BristolianChat\ClientHandler;
 
 use Amp\Http\Server\Request;
 use Amp\Http\Server\Response;
@@ -10,7 +10,7 @@ use Amp\Websocket\Server\WebsocketGateway;
 use Amp\Websocket\WebsocketClient;
 use Monolog\Logger;
 
-class ClientHandler implements WebsocketClientHandler
+class StandardClientHandler implements ClientHandler, WebsocketClientHandler
 {
     public function __construct(
         private Logger $logger,
@@ -18,9 +18,9 @@ class ClientHandler implements WebsocketClientHandler
     ) {
     }
 
-    public function getGateway(): WebsocketGateway
+    public function broadcastText(string $data, array $excludedClientIds = []): void
     {
-        return $this->gateway;
+        $this->gateway->broadcastText($data, $excludedClientIds);
     }
 
     public function handleClient(WebsocketClient $client, Request $request, Response $response): void

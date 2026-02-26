@@ -1,12 +1,13 @@
 <?php
 
-namespace BristolianChat;
+namespace deadish;
 
 use Amp\Redis\RedisClient;
-use Bristolian\ChatMessage\ChatType;
 use Bristolian\Keys\RoomMessageKey;
-use Monolog\Logger;
 use Bristolian\Model\Chat\UserChatMessage;
+use BristolianChat\ClientHandler;
+use Monolog\Logger;
+
 
 /**
  * This sits watching for messages for rooms, and then dispatches them to clients.
@@ -24,6 +25,7 @@ class RedisWatcherRoomMessages
     {
         while (true) {
             try {
+                // This code needs to go away. We should just watch the database for new messages.
                 $list = $this->redis->getList(RoomMessageKey::getAbsoluteKeyName());
                 $item = $list->popHeadBlocking();
 

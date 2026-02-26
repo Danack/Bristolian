@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 use Bristolian\ChatMessage\ChatMessagePayload;
 use Bristolian\Model\Chat\UserChatMessage;
-use BristolianChat\ClientHandler;
+use BristolianChat\ClientHandler\ClientHandler;
 use Bristolian\Model\Chat\SystemChatMessage;
 use Monolog\Logger;
 
 function send_user_message_to_clients(
     UserChatMessage $chat_message,
     Logger          $logger,
-    ClientHandler   $clientHandler
+    ClientHandler $clientHandler
 ): void {
     $data = ChatMessagePayload::create_from_user_message($chat_message);
 
@@ -26,7 +26,7 @@ function send_user_message_to_clients(
 function send_system_message_to_clients(
     SystemChatMessage $system_chat_message,
     Logger            $logger,
-    ClientHandler     $clientHandler
+    ClientHandler $clientHandler
 ): void {
     $data = ChatMessagePayload::create_from_system_message($system_chat_message);
 
@@ -47,20 +47,26 @@ function send_data_to_clients(
     [$error, $values] = convertToValue($data->toArray());
 
     if ($error !== null) {
+        // @codeCoverageIgnoreStart
+        // convertToValue only errors on unsupported types
+        // ChatMessagePayload->toArray() cannot produce these
         $logger->info("error encoding data - $values");
         return;
+        // @codeCoverageIgnoreEnd
     }
 
     $json = json_encode($values);
 
-    if ($json === false || $json === 'null') {
-        echo "json is null";
-        exit(-1);
+    if ($json === null) {
+        // @codeCoverageIgnoreStart
+        $logger->error("Failed to encode data to JSON for type" . $data->type->value);
+        return;
+        // @codeCoverageIgnoreEnd
     }
 
     $logger->info("sending message to clients - $json");
 
-    $clientHandler->getGateway()->broadcastText($json)->ignore();
+    $clientHandler->broadcastText($json);
 }
 
 
@@ -69,15 +75,17 @@ function send_data_to_clients(
 /**
  * Generate a fake ChatMessage for testing purposes.
  * IDs start at 1000 and increment with each call.
- * 1 in 5 messages will have a message_reply_id set to one of the previous 10 messages.
+ * Every 5th message has message_reply_id set to one of the previous 10 messages.
  *
  * @return \Bristolian\Model\Chat\UserChatMessage
  */
 function generateFakeChatMessage(): \Bristolian\Model\Chat\UserChatMessage
 {
     static $currentId = 1000;
+    static $callCount = 0;
     static $recentMessageIds = [];
 
+    $callCount++;
     $id = $currentId++;
 
     // Predefined list of user IDs
@@ -118,10 +126,9 @@ function generateFakeChatMessage(): \Bristolian\Model\Chat\UserChatMessage
     ];
     $text = $textOptions[array_rand($textOptions)];
 
-    // 1 in 5 chance to set message_reply_id
+    // Every 5th message is a reply to a previous message
     $message_reply_id = null;
-    if (mt_rand(1, 5) === 1 && count($recentMessageIds) > 0) {
-        // Pick a random message from the last 10 messages
+    if ($callCount % 5 === 0 && count($recentMessageIds) > 0) {
         $message_reply_id = $recentMessageIds[array_rand($recentMessageIds)];
     }
 

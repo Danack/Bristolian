@@ -2,8 +2,7 @@
 
 namespace BristolianChat;
 
-use Bristolian\Model\Chat\UserChatMessage;
-use Bristolian\ChatMessage\ChatType;
+use BristolianChat\ClientHandler\ClientHandler;
 use Monolog\Logger;
 
 /**
@@ -11,12 +10,18 @@ use Monolog\Logger;
  */
 class ChatSpammer
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(
         private readonly ClientHandler $clientHandler,
         private readonly Logger $logger
     ) {
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function run(): void
     {
         // @phpstan-ignore while.alwaysTrue

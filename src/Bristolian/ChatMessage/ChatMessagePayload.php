@@ -13,7 +13,7 @@ use Bristolian\Model\Chat\UserChatMessage;
 readonly class ChatMessagePayload
 {
     private function __construct(
-        private ChatType $type,
+        public readonly ChatType $type,
         private UserChatMessage|null $chat_message,
         private SystemChatMessage|null $system_message,
     ) {

@@ -283,6 +283,23 @@ When finalising work, run the restore script first so PHPUnit runs the db tests 
 docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh"
 ```
 
+### Running Chat (WebSocket) PHPUnit Tests
+
+The project has two PHP codebases that share code but use different `composer.json` files:
+
+- **Web + CLI** – HTTP-based web app and CLI tools; uses root `composer.json`
+- **WebSocket server** – `BristolianChat` and `src/functions_chat.php`; uses `chat/composer.json`
+
+Shared code (e.g. `ChatMessagePayload`, `functions_chat.php`) can be used by both. The difference is which libraries are available via each `composer.json`.
+
+Chat tests run in the same container as the main tests:
+
+```bash
+docker exec bristolian-php_fpm-1 bash -c "sh runChatUnitTests.sh"
+```
+
+This uses `phpunit_chat.xml` and tests under `test/BristolianChatTest`, with coverage for `src/BristolianChat` and `src/functions_chat.php`. To run specific chat tests, pass `-c phpunit_chat.xml` instead of `-c phpunit.xml` to PHPUnit.
+
 ### Running Specific Tests
 
 Use the `--filter` option to run specific tests by name:
