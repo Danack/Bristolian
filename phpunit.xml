@@ -21,6 +21,7 @@
   <testsuites>
     <testsuite name="default">
       <directory>test</directory>
+      <exclude>test/BristolianChatTest</exclude>
     </testsuite>
   </testsuites>
 
@@ -45,7 +46,6 @@
 
 
       <!-- toggle_slow begin <html outputDirectory="tmp/coverage" lowUpperBound="50" highLowerBound="90"/> -->
-
 <!-- toggle_slow end-->
 
     </report>
@@ -53,7 +53,7 @@
 
   <groups>
     <exclude>
-
+      <group>chat_only</group>
       <group>needs_fixing</group>
       <group>external</group>
       <group>xdebug</group>
