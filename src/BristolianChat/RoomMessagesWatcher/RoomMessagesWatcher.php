@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace BristolianChat\RoomMessagesWatcher;
 
+use Bristolian\Model\Generated\ChatMessage;
+
 /**
- * Fetches chat message rows for RoomMessageFetcher.
- * Abstraction over MySQL so the watcher can be tested with a Fake.
+ * Fetches chat messages for RoomMessageFetcher. In production the messages come from the
+ * MySQL database, but fakes exist for testing purposes.
  */
 interface RoomMessagesWatcher
 {
@@ -16,10 +18,7 @@ interface RoomMessagesWatcher
     public function getInitialPreviousId(): int;
 
     /**
-     * Get the next chat message row after the given id.
-     * Row must contain keys required by UserChatMessage::fromArray (id, reply_message_id, room_id, user_id, text, created_at).
-     *
-     * @return array<string, mixed>|null
+     * Get the next chat message after the given id.
      */
-    public function getNextChatMessageRowAfter(int $previousId): array|null;
+    public function getNextChatMessageAfter(int $previousId): ChatMessage|null;
 }

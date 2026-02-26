@@ -18,7 +18,7 @@ class SqlRoomMessagesWatcherTest extends BaseTestCase
     /**
      * @covers \BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher::__construct
      * @covers \BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher::getInitialPreviousId
-     * @covers \BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher::getNextChatMessageRowAfter
+     * @covers \BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher::getNextChatMessageAfter
      */
     public function test_getInitialPreviousId_returns_non_negative_int(): void
     {
@@ -53,15 +53,15 @@ class SqlRoomMessagesWatcherTest extends BaseTestCase
     }
 
     /**
-     * @covers \BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher::getNextChatMessageRowAfter
+     * @covers \BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher::getNextChatMessageAfter
      */
-    public function test_getNextChatMessageRowAfter_returns_null_when_no_later_row(): void
+    public function test_getNextChatMessageAfter_returns_null_when_no_later_row(): void
     {
         $logger = new Logger('test');
         $connection = createMysqlClient();
         $watcher = new SqlRoomMessagesWatcher($connection, $logger);
 
-        $row = $watcher->getNextChatMessageRowAfter(PHP_INT_MAX);
-        $this->assertNull($row);
+        $message = $watcher->getNextChatMessageAfter(PHP_INT_MAX);
+        $this->assertNull($message);
     }
 }

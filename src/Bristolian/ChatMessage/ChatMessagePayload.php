@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Bristolian\ChatMessage;
 
 use Bristolian\Model\Chat\SystemChatMessage;
-use Bristolian\Model\Chat\UserChatMessage;
+use Bristolian\Model\Generated\ChatMessage;
 
 /**
  * Typed payload for data sent to chat clients (replaces unstructured array).
@@ -14,12 +14,12 @@ readonly class ChatMessagePayload
 {
     private function __construct(
         public readonly ChatType $type,
-        private UserChatMessage|null $chat_message,
+        private ChatMessage|null $chat_message,
         private SystemChatMessage|null $system_message,
     ) {
     }
 
-    public static function create_from_user_message(UserChatMessage $chat_message): self
+    public static function create_from_user_message(ChatMessage $chat_message): self
     {
         return new self(
             ChatType::USER_MESSAGE,
@@ -38,7 +38,7 @@ readonly class ChatMessagePayload
     }
 
     /**
-     * @return array{type: string, chat_message?: UserChatMessage, system_message?: SystemChatMessage}
+     * @return array{type: string, chat_message?: ChatMessage, system_message?: SystemChatMessage}
      */
     public function toArray(): array
     {

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace BristolianChat\RoomMessagesWatcher;
 
+use Bristolian\Model\Generated\ChatMessage;
+
 /**
  * Fake implementation for tests. Configure initial max id and a queue of rows
- * to return from getNextChatMessageRowAfter (each call returns the next row, then null).
+ * to return from getNextChatMessageAfter (each call returns the next message, then null).
  */
 class FakeRoomMessagesWatcher implements RoomMessagesWatcher
 {
@@ -28,9 +30,15 @@ class FakeRoomMessagesWatcher implements RoomMessagesWatcher
         return $this->maxId ?? 0;
     }
 
-    public function getNextChatMessageRowAfter(int $previousId): array|null
+    public function getNextChatMessageAfter(int $previousId): ChatMessage|null
     {
         $row = array_shift($this->nextRowsQueue);
-        return $row;
+        if ($row === null) {
+            return null;
+        }
+        if (is_string($row['created_at'] ?? null)) {
+            $row['created_at'] = new \DateTimeImmutable($row['created_at']);
+        }
+        return ChatMessage::fromArray($row);
     }
 }

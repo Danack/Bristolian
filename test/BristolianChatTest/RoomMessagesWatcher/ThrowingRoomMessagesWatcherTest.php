@@ -34,9 +34,9 @@ class ThrowingRoomMessagesWatcherTest extends BaseTestCase
     }
 
     /**
-     * @covers \BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher::getNextChatMessageRowAfter
+     * @covers \BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher::getNextChatMessageAfter
      */
-    public function test_getNextChatMessageRowAfter_throws_configured_exception(): void
+    public function test_getNextChatMessageAfter_throws_configured_exception(): void
     {
         $exception = new \RuntimeException('Database connection lost');
         $fetcher = new ThrowingRoomMessagesWatcher(exception: $exception);
@@ -44,13 +44,13 @@ class ThrowingRoomMessagesWatcherTest extends BaseTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Database connection lost');
 
-        $fetcher->getNextChatMessageRowAfter(1);
+        $fetcher->getNextChatMessageAfter(1);
     }
 
     /**
-     * @covers \BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher::getNextChatMessageRowAfter
+     * @covers \BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher::getNextChatMessageAfter
      */
-    public function test_getNextChatMessageRowAfter_throws_custom_exception(): void
+    public function test_getNextChatMessageAfter_throws_custom_exception(): void
     {
         $exception = new \InvalidArgumentException('Invalid previous_id');
         $fetcher = new ThrowingRoomMessagesWatcher(exception: $exception);
@@ -58,6 +58,6 @@ class ThrowingRoomMessagesWatcherTest extends BaseTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid previous_id');
 
-        $fetcher->getNextChatMessageRowAfter(0);
+        $fetcher->getNextChatMessageAfter(0);
     }
 }

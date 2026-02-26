@@ -2,9 +2,9 @@
 
 namespace BristolianChat;
 
-use Bristolian\Model\Chat\UserChatMessage;
+use Bristolian\Model\Generated\ChatMessage;
 use BristolianChat\ClientHandler\ClientHandler;
-use BristolianChat\RoomMessagesWatcher\RoomMessagesWatcher as RoomMessageFetcherInterface;
+use BristolianChat\RoomMessagesWatcher\RoomMessagesWatcher;
 use Monolog\Logger;
 
 class RoomMessageFetcher
@@ -12,31 +12,24 @@ class RoomMessageFetcher
     private int|null $previous_id = null;
 
     public function __construct(
-        private readonly RoomMessageFetcherInterface $roomMessageFetcher,
-        private readonly ClientHandler $clientHandler,
-        private readonly Logger $logger
+        private readonly RoomMessagesWatcher $roomMessagesWatcher,
+        private readonly ClientHandler       $clientHandler,
+        private readonly Logger              $logger
     ) {
     }
 
 
     private function initialize_previous_id(): void
     {
-        $this->previous_id = $this->roomMessageFetcher->getInitialPreviousId();
+        $this->previous_id = $this->roomMessagesWatcher->getInitialPreviousId();
     }
 
 
 
-    private function getMessage(): UserChatMessage|null
+    private function getMessage(): ChatMessage|null
     {
-        $row = $this->roomMessageFetcher->getNextChatMessageRowAfter($this->previous_id);
-
-        if ($row === null) {
-            return null;
-        }
-
-        return UserChatMessage::fromArray($row);
+        return $this->roomMessagesWatcher->getNextChatMessageAfter($this->previous_id);
     }
-
 
     /**
      * Run one poll iteration: fetch next message (if any) and send to clients.

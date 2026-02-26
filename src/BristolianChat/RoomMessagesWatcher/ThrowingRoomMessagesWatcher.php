@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace BristolianChat\RoomMessagesWatcher;
 
+use Bristolian\Model\Generated\ChatMessage;
+
 /**
- * RoomMessageFetcher that throws when getNextChatMessageRowAfter is called.
+ * RoomMessagesWatcher that throws when getNextChatMessageAfter is called.
  * Used to test the exception-handling path in RoomMessageFetcher.
  */
 class ThrowingRoomMessagesWatcher implements RoomMessagesWatcher
@@ -21,7 +23,7 @@ class ThrowingRoomMessagesWatcher implements RoomMessagesWatcher
         return $this->initialPreviousId;
     }
 
-    public function getNextChatMessageRowAfter(int $previousId): array|null
+    public function getNextChatMessageAfter(int $previousId): ChatMessage|null
     {
         throw $this->exception;
     }

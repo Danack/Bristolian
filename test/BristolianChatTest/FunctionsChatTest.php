@@ -6,7 +6,7 @@ namespace BristolianChatTest;
 
 
 use Bristolian\Model\Chat\SystemChatMessage;
-use Bristolian\Model\Chat\UserChatMessage;
+use Bristolian\Model\Generated\ChatMessage;
 use BristolianChat\ClientHandler\FakeClientHandler;
 use BristolianTest\BaseTestCase;
 use Monolog\Handler\TestHandler;
@@ -46,16 +46,16 @@ class FunctionsChatTest extends BaseTestCase
     }
 
     /**
-     * @return \Generator<string, array{UserChatMessage, int, string, int|null}>
+     * @return \Generator<string, array{ChatMessage, int, string, int|null}>
      */
     public static function provides_send_user_message_to_clients(): \Generator
     {
         yield 'message without reply' => [
-            new UserChatMessage(
+            new ChatMessage(
                 42,
+                'Hello world',
                 'user_123',
                 'room_456',
-                'Hello world',
                 null,
                 new \DateTimeImmutable('2025-01-15 12:00:00')
             ),
@@ -64,11 +64,11 @@ class FunctionsChatTest extends BaseTestCase
             null,
         ];
         yield 'message with reply_message_id' => [
-            new UserChatMessage(
+            new ChatMessage(
                 99,
+                'Reply text',
                 'user_abc',
                 'room_xyz',
-                'Reply text',
                 10,
                 new \DateTimeImmutable('2025-02-01 08:30:00')
             ),
@@ -84,7 +84,7 @@ class FunctionsChatTest extends BaseTestCase
      * @dataProvider provides_send_user_message_to_clients
      */
     public function test_send_user_message_to_clients_broadcasts_to_handler_and_logs(
-        UserChatMessage $chatMessage,
+        ChatMessage $chatMessage,
         int $expectedId,
         string $expectedText,
         int|null $expectedReplyMessageId

@@ -4,6 +4,7 @@ namespace BristolianChat\RoomMessagesWatcher;
 
 use Amp\Mysql\MysqlConnection;
 use Bristolian\Database\chat_message;
+use Bristolian\Model\Generated\ChatMessage;
 use Monolog\Logger;
 
 class SqlRoomMessagesWatcher implements RoomMessagesWatcher
@@ -30,13 +31,21 @@ class SqlRoomMessagesWatcher implements RoomMessagesWatcher
         return $row['id'];
     }
 
-    public function getNextChatMessageRowAfter(int $previousId): array|null
+    public function getNextChatMessageAfter(int $previousId): ChatMessage|null
     {
         $sql = chat_message::SELECT . " where id > :previous_id order by id asc limit 1";
         $params = ['previous_id' => $previousId];
         $result = $this->mysql_connection->execute($sql, $params);
         $row = $result->fetchRow();
 
-        return $row;
+        if ($row === null) {
+            return null;
+        }
+
+        if (is_string($row['created_at'] ?? null)) {
+            $row['created_at'] = new \DateTimeImmutable($row['created_at']);
+        }
+
+        return ChatMessage::fromArray($row);
     }
 }
