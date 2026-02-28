@@ -14,6 +14,8 @@ use function Bristolian\CliController\isTimeToProcessMoonInfo;
 
 /**
  * MoonAlertNotifier that records the last moon info string passed for assertions.
+ *
+ * @coversNothing
  */
 final class MoonInfoTestNotifier implements MoonAlertNotifier
 {
@@ -42,7 +44,6 @@ class MoonInfoTest extends BaseTestCase
     public function test_getMoonInfo_returns_string_with_expected_sections(): void
     {
         $result = getMoonInfo();
-        $this->assertIsString($result);
         $this->assertStringContainsString('visible fraction', $result);
         $this->assertStringContainsString('moon rise', $result);
         $this->assertStringContainsString('sunset', $result);
@@ -53,7 +54,8 @@ class MoonInfoTest extends BaseTestCase
      */
     public function test_isTimeToProcessMoonInfo_returns_boolean(): void
     {
-        $this->assertIsBool(isTimeToProcessMoonInfo());
+        $result = isTimeToProcessMoonInfo();
+        $this->assertContains($result, [true, false]);
     }
 
     /**

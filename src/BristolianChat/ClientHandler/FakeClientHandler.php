@@ -10,9 +10,12 @@ namespace BristolianChat\ClientHandler;
  */
 class FakeClientHandler implements ClientHandler
 {
-    /** @var array<int, array{data: string, excludedClientIds: array}> */
+    /** @var array<int, array{data: string, excludedClientIds: array<int|string>}> */
     private array $recordedCalls = [];
 
+    /**
+     * @param array<int|string> $excludedClientIds
+     */
     public function broadcastText(string $data, array $excludedClientIds = []): void
     {
         $this->recordedCalls[] = [
@@ -22,7 +25,7 @@ class FakeClientHandler implements ClientHandler
     }
 
     /**
-     * @return array<int, array{data: string, excludedClientIds: array}>
+     * @return array<int, array{data: string, excludedClientIds: array<int|string>}>
      */
     public function getRecordedCalls(): array
     {

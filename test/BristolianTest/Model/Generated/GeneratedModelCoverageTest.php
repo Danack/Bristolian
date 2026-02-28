@@ -21,14 +21,14 @@ use Bristolian\Model\Generated\RoomAnnotation;
 use Bristolian\Model\Generated\RunTimeRecorder;
 use Bristolian\Model\Generated\Annotation;
 use Bristolian\Model\Generated\StoredMeme;
-use Bristolian\Model\Generated\Tag;
+use Bristolian\Model\Generated\RoomTag;
 use Bristolian\Model\Generated\TinnedFishProduct;
 use Bristolian\Model\Generated\UserAuthEmailPassword;
 use Bristolian\Model\Generated\UserDisplayName;
 use Bristolian\Model\Generated\UserProfile;
 use Bristolian\Model\Generated\UserWebpushSubscription;
 use Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo;
-use function Bristolian\Repo\UserProfileRepo\createBlankUserProfileForUserId;
+use function createBlankUserProfileForUserId;
 use BristolianTest\BaseTestCase;
 
 /**
@@ -164,11 +164,12 @@ class GeneratedModelCoverageTest extends BaseTestCase
         $this->assertSame('id', $o->id);
     }
 
-    /** @covers \Bristolian\Model\Generated\Tag */
-    public function test_Tag(): void
+    /** @covers \Bristolian\Model\Generated\RoomTag */
+    public function test_RoomTag(): void
     {
-        $o = new Tag('tid', 'text', 'desc', self::now());
-        $this->assertSame('tid', $o->tag_id);
+        $roomTag = new RoomTag('tag_identifier_value', 'room_identifier_value', 'tag text content', 'tag description text', self::now());
+        $this->assertSame('tag_identifier_value', $roomTag->tag_id);
+        $this->assertSame('room_identifier_value', $roomTag->room_id);
     }
 
     /** @covers \Bristolian\Model\Generated\TinnedFishProduct */

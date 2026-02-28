@@ -16,6 +16,8 @@ use Amp\Websocket\WebsocketTimestamp;
 /**
  * Fake WebsocketClient for testing StandardClientHandler::handleClient.
  * Configure with id, remote address string, and messages to return from receive().
+ * @coversNothing
+ * @implements \IteratorAggregate<int, never>
  */
 final class FakeWebsocketClient implements WebsocketClient, \IteratorAggregate
 {
@@ -27,6 +29,9 @@ final class FakeWebsocketClient implements WebsocketClient, \IteratorAggregate
 
     private bool $closed = false;
 
+    /**
+     * @param array<int, string|WebsocketMessage> $messagesToReceive
+     */
     public function __construct(
         private readonly int $id,
         private readonly string $remoteAddressString = '127.0.0.1:12345',
@@ -115,6 +120,9 @@ final class FakeWebsocketClient implements WebsocketClient, \IteratorAggregate
     public function close(int $code = WebsocketCloseCode::NORMAL_CLOSE, string $reason = ''): void
     {
         $this->closed = true;
+        if ($this->onCloseCallback !== null) {
+            ($this->onCloseCallback)($code, new WebsocketCloseInfo($code, $reason, 0.0, false));
+        }
     }
 
     public function onClose(\Closure $onClose): void
@@ -127,4 +135,3 @@ final class FakeWebsocketClient implements WebsocketClient, \IteratorAggregate
         return new \EmptyIterator();
     }
 }
-

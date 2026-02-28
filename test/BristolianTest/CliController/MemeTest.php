@@ -16,6 +16,8 @@ use League\Flysystem\UnableToListContents;
 
 /**
  * Adapter that throws UnableToListContents when listContents is iterated.
+ *
+ * @coversNothing
  */
 final class MemeTestThrowingListAdapter extends LocalFilesystemAdapter
 {

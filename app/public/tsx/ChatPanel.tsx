@@ -142,8 +142,11 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         let data = JSON.parse(messageEvent.data);
 
         if (data.type === ChatType.USER_MESSAGE) {
-            let current_messages = [...this.state.messages]; // Create a copy to avoid mutating state
-            let message = createChatMessage(data.chat_message);
+            const message = createChatMessage(data.chat_message);
+            if (message.room_id !== this.props.room_id) {
+                return; // Ignore messages for other rooms
+            }
+            let current_messages = [...this.state.messages];
             current_messages.push(message);
 
             // Sort messages by ID (ascending order - oldest first)
@@ -153,7 +156,6 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
                 messages: current_messages
             });
 
-            // Fetch user profile for this message
             this.fetchUserProfile(message.user_id);
         }
         else if (data.type === ChatType.SYSTEM_MESSAGE) {
@@ -345,12 +347,6 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
               <div>
                   {comments_block}
               </div>
-
-              <ChatBottomPanel
-                room_id={this.props.room_id}
-                replyingToMessage={null}
-                onCancelReply={this.cancelReply}
-              />
           </div>
         );
     }

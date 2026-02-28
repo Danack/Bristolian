@@ -38,6 +38,3 @@ parameters:
         -
           message: '#Argument of an invalid type .* supplied for foreach, only iterables are supported.#'
           path: *src/Bristolian/ToArray.php
-        -
-          message: '#While loop condition is always true.#'
-          path: *src/BristolianChat/RedisWatcherRoomMessages.php

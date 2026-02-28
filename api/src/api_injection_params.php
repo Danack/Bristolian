@@ -131,7 +131,8 @@ function apiInjectionParams() : InjectionParams
         \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::class =>
             \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::class,
 
-
+        \Bristolian\Repo\RoomTagRepo\RoomTagRepo::class =>
+            \Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::class,
 
     ];
 

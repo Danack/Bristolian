@@ -29,7 +29,6 @@ class SqlRoomMessagesWatcherTest extends BaseTestCase
         $watcher = new SqlRoomMessagesWatcher($connection, $logger);
 
         $id = $watcher->getInitialPreviousId();
-        $this->assertIsInt($id);
         $this->assertGreaterThanOrEqual(0, $id);
     }
 

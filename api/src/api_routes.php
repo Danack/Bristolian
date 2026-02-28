@@ -369,6 +369,22 @@ function getAllApiRoutes()
         ],
 
         [
+            '/api/rooms/{room_id:.*}/tags',
+            'GET',
+            '\Bristolian\AppController\Rooms::getTags',
+            [
+                ['tags', \Bristolian\Model\Generated\RoomTag::class, true]
+            ],
+        ],
+
+        [
+            '/api/rooms/{room_id:.*}/tags',
+            'POST',
+            '\Bristolian\AppController\Rooms::addTag',
+            null,
+        ], // SuccessResponse
+
+        [
             '/api/system/csp/reports_for_page',
             'GET',
             'Bristolian\ApiController\Csp::get_reports_for_page',

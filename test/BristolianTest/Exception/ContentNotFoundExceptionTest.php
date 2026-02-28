@@ -37,4 +37,20 @@ class ContentNotFoundExceptionTest extends BaseTestCase
         $this->assertStringContainsString($meme_id, $exception->getMessage());
         $this->assertStringContainsString("meme with id", $exception->getMessage());
     }
+
+    /**
+     * @covers \Bristolian\Exception\ContentNotFoundException
+     */
+    public function testWorks_file_not_found()
+    {
+        $room_id = "room_abc";
+        $file_id = "file_789";
+
+        $exception = ContentNotFoundException::file_not_found($room_id, $file_id);
+
+        $this->assertInstanceOf(ContentNotFoundException::class, $exception);
+        $this->assertStringContainsString($room_id, $exception->getMessage());
+        $this->assertStringContainsString($file_id, $exception->getMessage());
+        $this->assertStringContainsString("file with id", $exception->getMessage());
+    }
 }

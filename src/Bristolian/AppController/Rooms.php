@@ -4,16 +4,19 @@ declare(strict_types = 1);
 
 namespace Bristolian\AppController;
 
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Exception\BristolianException;
 use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Filesystem\RoomFileFilesystem;
 use Bristolian\Parameters\LinkParam;
+use Bristolian\Parameters\TagParams;
 use Bristolian\Parameters\AnnotationHighlightParam;
 use Bristolian\Parameters\AnnotationParam;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo;
+use Bristolian\Repo\RoomTagRepo\RoomTagRepo;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
 use Bristolian\Response\IframeHtmlResponse;
 use Bristolian\Response\StoredFileErrorResponse;
@@ -23,6 +26,7 @@ use Bristolian\Response\Typed\GetRoomsFileAnnotationsResponse;
 use Bristolian\Response\Typed\GetRoomsFilesResponse;
 use Bristolian\Response\Typed\GetRoomsLinksResponse;
 use Bristolian\Response\Typed\GetRoomsAnnotationsResponse;
+use Bristolian\Response\Typed\GetRoomsTagsResponse;
 use Bristolian\Service\RequestNonce;
 use Bristolian\Service\RoomFileStorage\RoomFileStorage;
 use Bristolian\Service\RoomFileStorage\UploadError;
@@ -146,8 +150,6 @@ class Rooms
         $files = $roomfileRepo->getFilesForRoom($room_id);
 
         return new GetRoomsFilesResponse($files);
-
-//        return createJsonResponse(['files' => $files]);
     }
 
     /**
@@ -190,8 +192,22 @@ class Rooms
         return new GetRoomsAnnotationsResponse($annotations);
     }
 
+    public function getTags(
+        RoomTagRepo $roomTagRepo,
+        string $room_id
+    ): GetRoomsTagsResponse {
+        $tags = $roomTagRepo->getTagsForRoom($room_id);
+        return new GetRoomsTagsResponse($tags);
+    }
 
-
+    public function addTag(
+        RoomTagRepo $roomTagRepo,
+        TagParams $tagParam,
+        string $room_id
+    ): SuccessResponse {
+        $roomTagRepo->createTag($room_id, $tagParam);
+        return new SuccessResponse();
+    }
 
     /**
      */
@@ -294,17 +310,51 @@ class Rooms
 
         $template = <<< HTML
 <div class="roompage">
-  <div class="roompage__left">
-    <div class="chat_panel" data-widgety_json="$widget_data">
+  <h1>:html_room_name</h1>
+  <p>:html_room_description</p>
+
+  <div class="roompage_tabs">
+    <input type="radio" id="room_tab_chat" name="room_tab" class="room_tab_radio" checked>
+    <input type="radio" id="room_tab_links" name="room_tab" class="room_tab_radio">
+    <input type="radio" id="room_tab_files" name="room_tab" class="room_tab_radio">
+    <input type="radio" id="room_tab_annotations" name="room_tab" class="room_tab_radio">
+    <input type="radio" id="room_tab_management" name="room_tab" class="room_tab_radio">
+
+    <div class="room_tab_strip">
+      <label for="room_tab_chat" class="room_tab_label">Chat</label>
+      <label for="room_tab_links" class="room_tab_label">Links</label>
+      <label for="room_tab_files" class="room_tab_label">Files</label>
+      <label for="room_tab_annotations" class="room_tab_label">Annotations</label>
+      <label for="room_tab_management" class="room_tab_label">Room Management</label>
+    </div>
+
+    <!-- Tab panels -->
+    <div class="room_tabs_panels">
+      <div class="room_tab_panel room_tab_panel_chat">
+        <div class="chat_panel" data-widgety_json="$widget_data"></div>
+      </div>
+
+      <div class="room_tab_panel room_tab_panel_links">
+        <div class='room_links_panel' data-widgety_json='$widget_data'></div>
+      </div>
+
+      <div class="room_tab_panel room_tab_panel_files">
+        <div class='room_files_panel' data-widgety_json='$widget_data'></div>
+        <div class='room_file_upload_panel' data-widgety_json='$widget_data'></div>
+      </div>
+
+      <div class="room_tab_panel room_tab_panel_annotations">
+        <div class='room_annotations_panel' data-widgety_json='$widget_data'></div>
+      </div>
+
+      <div class="room_tab_panel room_tab_panel_management">
+        <div class='room_management_panel' data-widgety_json='$widget_data'></div>
+      </div>
     </div>
   </div>
-  <div class="roompage__right"> 
-    <h1>:html_room_name</h1>
-    <p>:html_room_description</p>
-    <div class='room_files_panel' data-widgety_json='$widget_data'></div>
-    <div class='room_file_upload_panel' data-widgety_json='$widget_data'></div>
-    <div class='room_links_panel' data-widgety_json='$widget_data'></div>
-    <div class='room_annotations_panel' data-widgety_json='$widget_data'></div>
+
+  <div class="roompage_bottom">
+    <div class="chat_bottom_panel" data-widgety_json="$widget_data"></div>
   </div>
 </div>
 HTML;
@@ -320,12 +370,19 @@ HTML;
 
     private function render_annotate_file(
         RoomRepo $roomRepo,
+        RoomFileRepo $roomFileRepo,
         string $room_id,
         string $file_id,
         string|null $annotation_id
     ): string {
         $room = $roomRepo->getRoomById($room_id);
         // TODO - check for null room
+
+        $storedFile = $roomFileRepo->getFileDetails($room_id, $file_id);
+        if ($storedFile === null) {
+            throw ContentNotFoundException::file_not_found($room_id, $file_id);
+        }
+        $file_name = $storedFile->original_filename;
 
         $params = [
             'room_id' => $room_id,
@@ -340,6 +397,7 @@ HTML;
 
         $template = <<< HTML
 <h1>:html_room_name</h1>
+<p><a href="/rooms/:attr_room_id">Back to room</a> · :html_file_name</p>
 <div class="text_note_layout">
   <span class="text_note_iframe_container">
     <iframe class='text_note_iframe' id="pdf_iframe"
@@ -355,6 +413,7 @@ HTML;
 
         $params = [
             ':html_room_name' => $room->name,
+            ':html_file_name' => $file_name,
             ':attr_file_id' => $file_id,
             ':attr_room_id' => $room_id
         ];
@@ -364,13 +423,20 @@ HTML;
         return $content;
     }
 
+    /**
+     * Open the file annotation page with no annotation selected.
+     * Route: /rooms/{room_id}/file_annotate/{file_id}
+     * Use for "annotate this file" – user sees the file and annotation list; they can select one or create new.
+     */
     public function annotate_file(
         RoomRepo $roomRepo,
+        RoomFileRepo $roomFileRepo,
         string $room_id,
         string $file_id,
     ): string {
         return $this->render_annotate_file(
             $roomRepo,
+            $roomFileRepo,
             $room_id,
             $file_id,
             null
@@ -479,14 +545,21 @@ HTML;
         return createJsonResponse($data);
     }
 
+    /**
+     * Open the file annotation page with a specific annotation pre-selected.
+     * Route: /rooms/{room_id}/file/{file_id}/annotations/{annotation_id}/view
+     * Use for deep links – that annotation is selected and its highlights are drawn on the PDF.
+     */
     public function viewAnnotation(
         RoomRepo $roomRepo,
+        RoomFileRepo $roomFileRepo,
         string $room_id,
         string $file_id,
         string $annotation_id
     ): string {
         return $this->render_annotate_file(
             $roomRepo,
+            $roomFileRepo,
             $room_id,
             $file_id,
             $annotation_id

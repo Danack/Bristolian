@@ -74,6 +74,18 @@ function convertInvalidPermissionsExceptionToResponse(
     return $response;
 }
 
+function convertTooManyRoomTagsExceptionToResponse(
+    \Bristolian\Exception\TooManyRoomTagsException $e,
+    RequestInterface $request,
+    ResponseInterface $response
+): ResponseInterface {
+    $data = [];
+    $data['result'] = 'error';
+    $data['status'] = 'fail';
+    $data['message'] = $e->getMessage();
+
+    return fillJsonResponseData($response, $data, 400);
+}
 
 function convertStringToResponse(
     string $string,

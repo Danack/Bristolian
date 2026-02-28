@@ -53,7 +53,8 @@ class BristolStairs
 
             if ($result === null) {
                 $unknown_files[] = $file_in_storage;
-            } else {
+            }
+            else {
                 $known_files[] = $file_in_storage;
             }
         }

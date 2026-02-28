@@ -29,13 +29,16 @@
     </rule>
 
     <rule ref="vendor/danack/coding-standard/lib/Danack/Sniffs/PHPUnit/MissingCoversSniff.php">
+        <!-- Exclude all files that do NOT end with "Test.php". -->
+        <!-- This uses a negative lookahead so the sniff only runs on PHPUnit test files. -->
+        <exclude-pattern>^(?!.*Test\.php$).*</exclude-pattern>
     </rule>
 
     <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
         <exclude-pattern>*test_stub_functions.php</exclude-pattern>
         <exclude-pattern>functions.php</exclude-pattern>
+        <exclude-pattern>*phpunit_bootstrap_chat.php</exclude-pattern>
     </rule>
-asdasd
 
     <rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
         <exclude-pattern>*test/BristolianTest/Parameters/PropertyType/*</exclude-pattern>

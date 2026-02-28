@@ -18,6 +18,9 @@ class StandardClientHandler implements ClientHandler, WebsocketClientHandler
     ) {
     }
 
+    /**
+     * @param array<int|string> $excludedClientIds
+     */
     public function broadcastText(string $data, array $excludedClientIds = []): void
     {
         $this->gateway->broadcastText($data, $excludedClientIds);

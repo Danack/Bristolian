@@ -69,20 +69,14 @@ function injectionParams()
         Bristolian\Repo\AdminRepo\AdminRepo::class =>
             Bristolian\Repo\AdminRepo\PdoAdminRepo::class,
 
-        \Bristolian\Repo\TagRepo\TagRepo::class =>
-          \Bristolian\Repo\TagRepo\PdoTagRepo::class,
+        \Bristolian\Repo\RoomTagRepo\RoomTagRepo::class =>
+            \Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::class,
 
         \Bristolian\Repo\FoiRequestRepo\FoiRequestRepo::class =>
           \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::class,
 
         \Bristolian\Repo\RoomFileRepo\RoomFileRepo::class =>
             \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class,
-
-        \user_repo\UserRepo\UserRepo::class =>
-          deadish\HardcodedUserRepo::class,
-
-        \deadish\UserDocumentRepo\UserDocumentRepo::class =>
-          \deadish\UserDocumentRepo\HardcodedUserDocumentRepo::class,
 
         \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::class =>
           \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::class,
@@ -101,9 +95,6 @@ function injectionParams()
 
         \Bristolian\Repo\UserSearch\UserSearch::class =>
             \Bristolian\Repo\UserSearch\PdoUserSearch::class,
-
-        \Bristolian\UserNotifier\UserNotifier::class =>
-          \Bristolian\UserNotifier\StandardUserNotifier::class,
 
         \Bristolian\Repo\RoomRepo\RoomRepo::class =>
             \Bristolian\Repo\RoomRepo\PdoRoomRepo::class,

@@ -42,8 +42,8 @@
 
 .bristolian_content {
   grid-area: mc;
-  padding-left: var(--page_padding_left);
-  padding-right: var(--page_padding_right);
+  // padding-left: var(--page_padding_left);
+  // padding-right: var(--page_padding_right);
   overflow-x: auto;
 }
 
@@ -118,16 +118,84 @@
 
 
 .roompage {
-  display: flex;
   width: 100%;
-  height: 100%;
   font-size: 14px;
 }
 
-.roompage__left {
-  flex: 0 0 30%;
+.roompage_tabs {
+  margin-top: 1rem;
 }
 
-.roompage__right {
-  flex: 1; // takes the remaining ~40%
+.room_tab_radio {
+  display: none;
+}
+
+.room_tab_strip {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  border-top: 1px solid #ccc;
+  background: #f0f0f0;
+}
+
+.room_tab_label {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  border: 1px solid transparent;
+  margin: -1px 0 0 -1px;
+  background: #e8e8e8;
+  color: #555;
+}
+
+.room_tab_label:hover {
+  background: #e0e0e0;
+}
+
+/* Selected tab: input is a preceding sibling of .room_tab_strip, so use ~ to get strip then the label */
+#room_tab_chat:checked ~ .room_tab_strip .room_tab_label[for="room_tab_chat"],
+#room_tab_links:checked ~ .room_tab_strip .room_tab_label[for="room_tab_links"],
+#room_tab_files:checked ~ .room_tab_strip .room_tab_label[for="room_tab_files"],
+#room_tab_annotations:checked ~ .room_tab_strip .room_tab_label[for="room_tab_annotations"],
+#room_tab_management:checked ~ .room_tab_strip .room_tab_label[for="room_tab_management"] {
+  background: #fff;
+  color: #000;
+  border: 1px solid #333;
+  border-bottom: 1px solid #fff;
+  margin-bottom: -1px;
+}
+
+.room_tabs_panels {
+  margin-top: 0;
+  border-top: 1px solid #333;
+  padding: 1rem;
+}
+
+.room_tab_panel {
+  display: none;
+}
+
+#room_tab_chat:checked ~ .room_tabs_panels .room_tab_panel_chat {
+  display: block;
+}
+
+#room_tab_links:checked ~ .room_tabs_panels .room_tab_panel_links {
+  display: block;
+}
+
+#room_tab_files:checked ~ .room_tabs_panels .room_tab_panel_files {
+  display: block;
+}
+
+#room_tab_annotations:checked ~ .room_tabs_panels .room_tab_panel_annotations {
+  display: block;
+}
+
+#room_tab_management:checked ~ .room_tabs_panels .room_tab_panel_management {
+  display: block;
+}
+
+.roompage_bottom {
+  margin-top: 1rem;
 }

@@ -9,6 +9,8 @@ use Psr\Http\Message\UriInterface;
 /**
  * Minimal PSR-7 Uri for building Amp Request in tests.
  * Supports a simple absolute URI (e.g. http://localhost/).
+ *
+ * @coversNothing
  */
 final class Psr7UriForTests implements UriInterface
 {

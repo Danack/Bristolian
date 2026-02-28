@@ -22,6 +22,7 @@ function createExceptionMiddlewareForApi(\Di\Injector $injector): ExceptionToJso
     $exceptionHandlers = [
         \DataType\Exception\ValidationException::class => 'convertValidationExceptionMapperApi',
         \Bristolian\Exception\InvalidPermissionsException::class => 'convertInvalidPermissionsExceptionToResponse',
+        \Bristolian\Exception\TooManyRoomTagsException::class => 'convertTooManyRoomTagsExceptionToResponse',
         \PDOException::class => 'pdoExceptionMapper',
         Slim\Exception\HttpNotFoundException::class => 'convertHttpNotFoundExceptionToResponse',
         \Bristolian\Exception\UnauthorisedException::class => 'convertUnauthorisedExceptionToResponse',

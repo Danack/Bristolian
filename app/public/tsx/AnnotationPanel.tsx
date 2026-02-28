@@ -35,14 +35,14 @@ export interface SelectionMessage {
 // This function transfers global messages to the bespoke widgety
 // message handler.
 export function receiveSelectionMessage(event: MessageEvent) {
-  if (event.data && event.data.type === PdfSelectionType.TEXT_SELECTED){ // "selectionData") {
+  if (event.data && event.data.type === PdfSelectionType.TEXT_SELECTED){
     const message: SelectionMessage = event.data;
     // console.log("Received selection data:", message.selection_data);
     sendMessage("text_selected", message.selection_data);
     return;
   }
 
-  if (event.data && event.data.type === PdfSelectionType.TEXT_DESELECTED){ // "selectionData") {
+  if (event.data && event.data.type === PdfSelectionType.TEXT_DESELECTED){
     const message: SelectionMessage = event.data;
 
     sendMessage("text_deselected", message.selection_data);
@@ -241,7 +241,7 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
 
     const formData = new FormData();
 
-    formData.append("title", this.state.title);
+    formData.append("title", this.state.title.trim());
     formData.append("highlights_json", highlights_json);
     formData.append("text", this.state.text);
 
@@ -321,12 +321,13 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
     }
 
     let title_length_error = <span></span>
+    const titleTrimmed = this.state.title.trim();
 
-    if (this.state.title.length < ANNOTATION_TITLE_MINIMUM_LENGTH) {
+    if (titleTrimmed.length < ANNOTATION_TITLE_MINIMUM_LENGTH) {
       validToSubmit = false;
 
-      if (this.state.title.length !== 0) {
-        title_length_error = <span>Title needs {ANNOTATION_TITLE_MINIMUM_LENGTH - this.state.title.length} more characters.</span>
+      if (titleTrimmed.length !== 0) {
+        title_length_error = <span>Title needs {ANNOTATION_TITLE_MINIMUM_LENGTH - titleTrimmed.length} more characters.</span>
       }
     }
 

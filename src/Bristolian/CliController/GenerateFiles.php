@@ -260,10 +260,10 @@ function generate_table_helper_class(string $tableName, array $columns_info): vo
     $contents .= ")\n";
     $contents .= "SQL;\n\n";
 
-    // Select
-    $sorted_column_names_select = customSort($column_names_select);
+    // Select: use natural column order (ORDINAL_POSITION) so SELECT matches generated model constructor order for fetchAllAsObjectConstructor
+//    $sorted_column_names_select = $column_names_select;
     [$columns_separated_by_comma_new_line, $values_names_separated_by_comma_new_line]
-        = generate_table_strings($sorted_column_names_select);
+        = generate_table_strings($column_names_select);
 
     $contents .= "    const SELECT = <<< SQL\n";
     $contents .= "select\n";
@@ -591,6 +591,7 @@ class GenerateFiles
             \Bristolian\Model\Generated\ProcessorRunRecord::class,
             \Bristolian\Model\Generated\RoomLink::class,
             \Bristolian\Model\Generated\RoomAnnotation::class,
+            \Bristolian\Model\Generated\RoomTag::class,
             \Bristolian\Model\Generated\RoomFileObjectInfo::class,
             \Bristolian\Model\Types\RoomAnnotationView::class,
             \Bristolian\Model\Types\UserProfile::class,
@@ -671,6 +672,8 @@ class GenerateFiles
             'DUPLICATE_FILENAME' => \Bristolian\Service\MemeStorageProcessor\UploadError::DUPLICATE_FILENAME,
 
             'MEMES_DISPLAY_LIMIT' => \Bristolian\AppController\User::MEMES_DISPLAY_LIMIT,
+
+            'MAX_TAGS_PER_ROOM' => \Bristolian\Repo\RoomTagRepo\RoomTagRepo::MAX_TAGS_PER_ROOM,
         ];
 
         $string_template = <<< TEMPLATE
@@ -787,12 +790,6 @@ SQL;
             $namespace = "Bristolian\\Response\\Typed";
             
             // Generate the PHP class content
-
-            echo "$className\n";
-
-            if ($className === "GetRoomsLinksResponse") {
-                echo "here";
-            }
 
             $content = $this->generateResponseClassContent($className, $namespace, $type_info, $path, $method);
 

@@ -22,6 +22,8 @@ use League\Flysystem\UnableToListContents;
 
 /**
  * Adapter that throws UnableToListContents when the listing is iterated (so BristolStairs' try/foreach catches it).
+ *
+ * @coversNothing
  */
 final class ThrowingListContentsAdapter extends LocalFilesystemAdapter
 {
@@ -36,6 +38,8 @@ final class ThrowingListContentsAdapter extends LocalFilesystemAdapter
 
 /**
  * Storage info repo that returns one known file for a given path so we can hit the "known files" branch.
+ *
+ * @coversNothing
  */
 final class BristolStairImageStorageInfoRepoWithOneKnown implements BristolStairImageStorageInfoRepo
 {
@@ -79,6 +83,8 @@ final class BristolStairImageStorageInfoRepoWithOneKnown implements BristolStair
 
 /**
  * BristolStairImageStorage that always returns UploadError for create() failure path.
+ *
+ * @coversNothing
  */
 final class BristolStairImageStorageReturningUploadError implements BristolStairImageStorage
 {

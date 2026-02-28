@@ -9,8 +9,6 @@ use Bristolian\Model\Generated\UserProfile;
 use Bristolian\Model\Types\UserProfileWithDisplayName;
 use Bristolian\Parameters\UserProfileUpdateParams;
 
-
-
 /**
  * Fake implementation of UserProfileRepo for testing.
  */

@@ -4,14 +4,12 @@ declare(strict_types = 1);
 
 namespace BristolianChatTest;
 
-
 use Bristolian\Model\Chat\SystemChatMessage;
 use Bristolian\Model\Generated\ChatMessage;
 use BristolianChat\ClientHandler\FakeClientHandler;
 use BristolianTest\BaseTestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
-
 
 /**
  * @coversNothing

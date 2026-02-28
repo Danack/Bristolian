@@ -11,6 +11,8 @@ use Amp\Socket\TlsInfo;
 
 /**
  * Fake Driver\Client for building Amp\Http\Server\Request in tests.
+ *
+ * @coversNothing
  */
 final class FakeHttpClient implements Client
 {

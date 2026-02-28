@@ -14,6 +14,8 @@ use function Bristolian\CliController\output_tro_list_to_output;
 
 /**
  * BccTroRepo that records the last array passed to saveData for assertions.
+ *
+ * @coversNothing
  */
 final class BccTroFetcherTestBccTroRepo implements BccTroRepo
 {
@@ -28,6 +30,8 @@ final class BccTroFetcherTestBccTroRepo implements BccTroRepo
 
 /**
  * BccTroFetcher that returns a fixed list of TROs for testing.
+ *
+ * @coversNothing
  */
 final class BccTroFetcherReturningFixedTros implements BccTroFetcher
 {

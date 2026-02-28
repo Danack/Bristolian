@@ -112,14 +112,10 @@ export class LoginStatusPanel extends Component<LoginStatusPanelProps, LoginStat
     }
 
     return <div class='login_status_panel_react'>
-      <a href="/logout">Logout</a>
-      <br/>
-      <a href="/user/memes">Memes</a>
-      <br/>
-      <a href="/user/profile">Profile</a>
-      <br/>
-      <a href="/system">System</a>
-      <br/>
+      <a href="/logout">Logout</a>&nbsp;|&nbsp;
+      <a href="/user/memes">Memes</a>&nbsp;|&nbsp;
+      <a href="/user/profile">Profile</a>&nbsp;|&nbsp;
+      <a href="/system">System</a>&nbsp;|&nbsp;
       <a href="/admin">Admin</a>
     </div>;
   }

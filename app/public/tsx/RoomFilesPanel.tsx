@@ -133,8 +133,8 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
 
         const logged_in = this.state.logged_in;
 
-        return <div>
-            <h2>Files</h2>
+        return <span>
+            <span className="section-heading">Files</span>
             <table>
               <tbody>
                 <tr>
@@ -148,7 +148,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                 map((roomFile: RoomFileObjectInfo) => this.renderRoomFile(roomFile, logged_in))}
               </tbody>
             </table>
-        </div>
+        </span>
     }
 
     render(props: RoomFilesPanelProps, state: RoomFilesPanelState) {

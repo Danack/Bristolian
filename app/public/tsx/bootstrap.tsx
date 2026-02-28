@@ -8,6 +8,7 @@ import type { WidgetClassBinding } from "./widgety/widgety";
 import { BristolStairsPanel } from "./BristolStairsPanel";
 import { CSPViolationReportsPanel } from "./CSPViolationReportsPanel";
 import { ChatPanel } from "./ChatPanel";
+import { ChatBottomPanel } from "./chat/ChatBottomPanel";
 import { UserProfilePanel } from "./UserProfilePanel";
 import { EmailLinkGeneratorPanel } from "./EmailLinkGenerator";
 import { FloatingPointPanel } from "./FloatingPointPanel";
@@ -23,6 +24,7 @@ import { RoomFilesPanel } from "./RoomFilesPanel";
 import { RoomFileUploadPanel } from "./RoomFileUploadPanel";
 import { RoomLinksPanel } from "./RoomLinksPanel";
 import { RoomAnnotationsPanel } from "./RoomAnnotationsPanel";
+import { RoomManagementPanel } from "./RoomManagementPanel";
 import { AnnotationPanel } from "./AnnotationPanel";
 import { TeleprompterPanel } from "./TeleprompterPanel";
 import { TimeLinePanel } from "./TimeLinePanel";
@@ -101,6 +103,14 @@ let panels: WidgetClassBinding[] = [
     {
         class: 'room_annotations_panel',
         component: RoomAnnotationsPanel
+    },
+    {
+        class: 'room_management_panel',
+        component: RoomManagementPanel
+    },
+    {
+        class: 'chat_bottom_panel',
+        component: ChatBottomPanel
     },
     {
         class: 'teleprompter_panel',

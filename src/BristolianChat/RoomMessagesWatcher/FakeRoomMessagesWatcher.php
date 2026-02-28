@@ -17,6 +17,9 @@ class FakeRoomMessagesWatcher implements RoomMessagesWatcher
 
     private int|null $maxId = null;
 
+    /**
+     * @param array<int, array{id: int|string, text: string, user_id: string, room_id: string, reply_message_id: int|string|null, created_at: string|\DateTimeInterface}> $nextRows
+     */
     public function __construct(
         int|null $maxChatMessageId = null,
         array $nextRows = [],
@@ -44,7 +47,7 @@ class FakeRoomMessagesWatcher implements RoomMessagesWatcher
      */
     private static function rowToChatMessage(array $row): ChatMessage
     {
-        $created_at = $row['created_at'] ?? null;
+        $created_at = $row['created_at'];
         if (is_string($created_at)) {
             $created_at = new \DateTimeImmutable($created_at);
         }
@@ -53,7 +56,7 @@ class FakeRoomMessagesWatcher implements RoomMessagesWatcher
             (string) $row['text'],
             (string) $row['user_id'],
             (string) $row['room_id'],
-            isset($row['reply_message_id']) && $row['reply_message_id'] !== null ? (int) $row['reply_message_id'] : null,
+            isset($row['reply_message_id']) ? (int) $row['reply_message_id'] : null,
             $created_at,
         );
     }

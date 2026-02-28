@@ -17,8 +17,6 @@ use function Amp\ByteStream\getStdout;
 use function Amp\Redis\createRedisClient;
 use function Amp\Mysql\connect as mysql_connect;
 
-
-
 require_once __DIR__ . "/../chat/src/chat_includes.php";
 
 
@@ -40,7 +38,8 @@ function create_test_uniqid(): string
         $counter = 0;
     }
 
-    $id = 'time_' . time() . '_counter_' . $counter . '_rand_' . random_int(1000, 9999);;
+    $id = 'time_' . time() . '_counter_' . $counter . '_rand_' . random_int(1000, 9999);
+    ;
 
     $counter += 1;
 

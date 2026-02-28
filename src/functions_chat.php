@@ -57,7 +57,7 @@ function send_data_to_clients(
 
     $json = json_encode($values);
 
-    if ($json === null) {
+    if ($json === false) {
         // @codeCoverageIgnoreStart
         $logger->error("Failed to encode data to JSON for type" . $data->type->value);
         return;
