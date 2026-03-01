@@ -277,7 +277,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\Rooms::getFiles',
             [
-                ['files', \Bristolian\Model\Generated\RoomFileObjectInfo::class, true]
+                ['files', \Bristolian\Model\Types\RoomFileWithTags::class, true]
             ],
         ],
 
@@ -339,7 +339,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\Rooms::getLinks',
             [
-                ['links', \Bristolian\Model\Generated\RoomLink::class, true]
+                ['links', \Bristolian\Model\Types\RoomLinkWithTags::class, true]
             ],
         ],
 
@@ -355,7 +355,7 @@ function getAllApiRoutes()
             'GET',
             '\Bristolian\AppController\Rooms::getAnnotationsForFile',
             [
-                ['annotations', \Bristolian\Model\Types\RoomAnnotationView::class, true]
+                ['annotations', \Bristolian\Model\Types\RoomAnnotationWithTags::class, true]
             ],
         ],
 
@@ -364,8 +364,29 @@ function getAllApiRoutes()
             'GET',
             '\Bristolian\AppController\Rooms::getAnnotations',
             [
-                ['annotations', \Bristolian\Model\Types\RoomAnnotationView::class, true]
+                ['annotations', \Bristolian\Model\Types\RoomAnnotationWithTags::class, true]
             ],
+        ],
+
+        [
+            '/api/rooms/{room_id:.*}/files/{file_id:.*}/tags',
+            'PUT',
+            'Bristolian\AppController\Rooms::setFileTags',
+            null,
+        ],
+
+        [
+            '/api/rooms/{room_id:.*}/links/{room_link_id:.*}/tags',
+            'PUT',
+            'Bristolian\AppController\Rooms::setLinkTags',
+            null,
+        ],
+
+        [
+            '/api/rooms/{room_id:.*}/annotations/{room_annotation_id:.*}/tags',
+            'PUT',
+            'Bristolian\AppController\Rooms::setAnnotationTags',
+            null,
         ],
 
         [

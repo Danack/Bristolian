@@ -1,0 +1,66 @@
+// Tags on room files, links, annotations + Edit tags modal
+
+.room_entity_tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25em;
+  align-items: center;
+
+  &.empty {
+    color: #888;
+  }
+}
+
+.room_entity_tag_chip {
+  display: inline-block;
+  padding: 0.15em 0.5em;
+  font-size: 0.85em;
+  background: #e8e8e8;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.room_edit_tags_modal_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.room_edit_tags_modal {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  min-width: 280px;
+  max-width: 90vw;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+}
+
+.room_edit_tags_checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  max-height: 50vh;
+  overflow-y: auto;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+}
+
+.room_edit_tags_actions {
+  display: flex;
+  gap: 0.5rem;
+}

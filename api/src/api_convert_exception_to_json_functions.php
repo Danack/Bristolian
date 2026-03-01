@@ -87,6 +87,19 @@ function convertTooManyRoomTagsExceptionToResponse(
     return fillJsonResponseData($response, $data, 400);
 }
 
+function convertContentNotFoundExceptionToResponse(
+    \Bristolian\Exception\ContentNotFoundException $e,
+    RequestInterface $request,
+    ResponseInterface $response
+): ResponseInterface {
+    $data = [];
+    $data['result'] = 'error';
+    $data['status'] = 'fail';
+    $data['message'] = $e->getMessage();
+
+    return fillJsonResponseData($response, $data, 404);
+}
+
 function convertStringToResponse(
     string $string,
     RequestInterface $request,

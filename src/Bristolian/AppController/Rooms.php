@@ -8,14 +8,23 @@ use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Exception\BristolianException;
 use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Filesystem\RoomFileFilesystem;
+use Bristolian\JsonInput\JsonInput;
+use Bristolian\Model\Generated\RoomTag;
+use Bristolian\Model\Types\RoomAnnotationWithTags;
+use Bristolian\Model\Types\RoomFileWithTags;
+use Bristolian\Model\Types\RoomLinkWithTags;
 use Bristolian\Parameters\LinkParam;
+use Bristolian\Parameters\SetEntityTagsParam;
 use Bristolian\Parameters\TagParams;
 use Bristolian\Parameters\AnnotationHighlightParam;
 use Bristolian\Parameters\AnnotationParam;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
+use Bristolian\Repo\RoomFileTagRepo\RoomFileTagRepo;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
+use Bristolian\Repo\RoomLinkTagRepo\RoomLinkTagRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo;
+use Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo;
 use Bristolian\Repo\RoomTagRepo\RoomTagRepo;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
 use Bristolian\Response\IframeHtmlResponse;
@@ -139,38 +148,82 @@ class Rooms
 
     /**
      * @param RoomFileRepo $roomfileRepo
+     * @param RoomFileTagRepo $roomFileTagRepo
+     * @param RoomTagRepo $roomTagRepo
      * @param string $room_id
      * @return GetRoomsFilesResponse
      * @throws \SlimDispatcher\Response\InvalidDataException
      */
     public function getFiles(
         RoomFileRepo $roomfileRepo,
+        RoomFileTagRepo $roomFileTagRepo,
+        RoomTagRepo $roomTagRepo,
         string $room_id
     ): GetRoomsFilesResponse {
         $files = $roomfileRepo->getFilesForRoom($room_id);
-
-        return new GetRoomsFilesResponse($files);
+        $roomTags = $roomTagRepo->getTagsForRoom($room_id);
+        $roomTagsById = [];
+        foreach ($roomTags as $tag) {
+            $roomTagsById[$tag->tag_id] = $tag;
+        }
+        $withTags = [];
+        foreach ($files as $file) {
+            $tagIds = $roomFileTagRepo->getTagIdsForRoomFile($room_id, $file->id);
+            $tags = self::resolveTagIdsToTags($tagIds, $roomTagsById);
+            $withTags[] = new RoomFileWithTags(
+                $file->id,
+                $file->normalized_name,
+                $file->original_filename,
+                $file->state,
+                $file->size,
+                $file->user_id,
+                $file->created_at,
+                $tags
+            );
+        }
+        return new GetRoomsFilesResponse($withTags);
     }
 
     /**
      * @param RoomLinkRepo $roomLinkRepo
+     * @param RoomLinkTagRepo $roomLinkTagRepo
+     * @param RoomTagRepo $roomTagRepo
      * @param string $room_id
      * @return GetRoomsLinksResponse
      */
     public function getLinks(
         RoomLinkRepo $roomLinkRepo,
+        RoomLinkTagRepo $roomLinkTagRepo,
+        RoomTagRepo $roomTagRepo,
         string $room_id
-    ) {
+    ): GetRoomsLinksResponse {
         $links = $roomLinkRepo->getLinksForRoom($room_id);
-
-        return new GetRoomsLinksResponse($links);
+        $roomTags = $roomTagRepo->getTagsForRoom($room_id);
+        $roomTagsById = [];
+        foreach ($roomTags as $tag) {
+            $roomTagsById[$tag->tag_id] = $tag;
+        }
+        $withTags = [];
+        foreach ($links as $link) {
+            $tagIds = $roomLinkTagRepo->getTagIdsForRoomLink($link->id);
+            $tags = self::resolveTagIdsToTags($tagIds, $roomTagsById);
+            $withTags[] = new RoomLinkWithTags(
+                $link->id,
+                $link->room_id,
+                $link->link_id,
+                $link->title,
+                $link->description,
+                $link->created_at,
+                $tags
+            );
+        }
+        return new GetRoomsLinksResponse($withTags);
     }
-
-
-
 
     public function getAnnotationsForFile(
         RoomAnnotationRepo $roomAnnotationRepo,
+        RoomAnnotationTagRepo $roomAnnotationTagRepo,
+        RoomTagRepo $roomTagRepo,
         string $room_id,
         string $file_id,
     ): GetRoomsFileAnnotationsResponse {
@@ -178,18 +231,73 @@ class Rooms
             $room_id,
             $file_id
         );
-
-        return new GetRoomsFileAnnotationsResponse($annotations);
+        $roomTags = $roomTagRepo->getTagsForRoom($room_id);
+        $roomTagsById = [];
+        foreach ($roomTags as $tag) {
+            $roomTagsById[$tag->tag_id] = $tag;
+        }
+        $withTags = [];
+        foreach ($annotations as $ann) {
+            $tagIds = $roomAnnotationTagRepo->getTagIdsForRoomAnnotation($ann->room_annotation_id);
+            $tags = self::resolveTagIdsToTags($tagIds, $roomTagsById);
+            $withTags[] = new RoomAnnotationWithTags(
+                $ann->id,
+                $ann->user_id,
+                $ann->file_id,
+                $ann->highlights_json,
+                $ann->text,
+                $ann->title,
+                $ann->room_annotation_id,
+                $tags
+            );
+        }
+        return new GetRoomsFileAnnotationsResponse($withTags);
     }
-
 
     public function getAnnotations(
         RoomAnnotationRepo $roomAnnotationRepo,
+        RoomAnnotationTagRepo $roomAnnotationTagRepo,
+        RoomTagRepo $roomTagRepo,
         string $room_id
     ): GetRoomsAnnotationsResponse {
         $annotations = $roomAnnotationRepo->getAnnotationsForRoom($room_id);
+        $roomTags = $roomTagRepo->getTagsForRoom($room_id);
+        $roomTagsById = [];
+        foreach ($roomTags as $tag) {
+            $roomTagsById[$tag->tag_id] = $tag;
+        }
+        $withTags = [];
+        foreach ($annotations as $ann) {
+            $tagIds = $roomAnnotationTagRepo->getTagIdsForRoomAnnotation($ann->room_annotation_id);
+            $tags = self::resolveTagIdsToTags($tagIds, $roomTagsById);
+            $withTags[] = new RoomAnnotationWithTags(
+                $ann->id,
+                $ann->user_id,
+                $ann->file_id,
+                $ann->highlights_json,
+                $ann->text,
+                $ann->title,
+                $ann->room_annotation_id,
+                $tags
+            );
+        }
+        return new GetRoomsAnnotationsResponse($withTags);
+    }
 
-        return new GetRoomsAnnotationsResponse($annotations);
+    /**
+     * @param string[] $tagIds
+     * @param array<string, RoomTag> $roomTagsById
+     * @return RoomTag[]
+     */
+    private static function resolveTagIdsToTags(array $tagIds, array $roomTagsById): array
+    {
+        $tags = [];
+        foreach ($tagIds as $id) {
+            if (isset($roomTagsById[$id])) {
+                $tags[] = $roomTagsById[$id];
+            }
+        }
+        return $tags;
     }
 
     public function getTags(
@@ -206,6 +314,82 @@ class Rooms
         string $room_id
     ): SuccessResponse {
         $roomTagRepo->createTag($room_id, $tagParam);
+        return new SuccessResponse();
+    }
+
+    public function setFileTags(
+        RoomFileRepo $roomFileRepo,
+        RoomFileTagRepo $roomFileTagRepo,
+        RoomTagRepo $roomTagRepo,
+        JsonInput $jsonInput,
+        string $room_id,
+        string $file_id
+    ): SuccessResponse {
+        $fileDetails = $roomFileRepo->getFileDetails($room_id, $file_id);
+        if ($fileDetails === null) {
+            throw new ContentNotFoundException('File not found in room');
+        }
+        $param = SetEntityTagsParam::fromArray($jsonInput->getData());
+        $roomTags = $roomTagRepo->getTagsForRoom($room_id);
+        $validIds = [];
+        foreach ($roomTags as $t) {
+            $validIds[$t->tag_id] = true;
+        }
+        $filtered = array_filter($param->tag_ids, fn (string $id) => isset($validIds[$id]));
+        $roomFileTagRepo->setTagsForRoomFile($room_id, $file_id, array_values($filtered));
+        return new SuccessResponse();
+    }
+
+    public function setLinkTags(
+        RoomLinkRepo $roomLinkRepo,
+        RoomLinkTagRepo $roomLinkTagRepo,
+        RoomTagRepo $roomTagRepo,
+        JsonInput $jsonInput,
+        string $room_id,
+        string $room_link_id
+    ): SuccessResponse {
+        $roomLink = $roomLinkRepo->getRoomLink($room_link_id);
+        if ($roomLink === null || $roomLink->room_id !== $room_id) {
+            throw new ContentNotFoundException('Link not found in room');
+        }
+        $param = SetEntityTagsParam::fromArray($jsonInput->getData());
+        $roomTags = $roomTagRepo->getTagsForRoom($room_id);
+        $validIds = [];
+        foreach ($roomTags as $t) {
+            $validIds[$t->tag_id] = true;
+        }
+        $filtered = array_filter($param->tag_ids, fn (string $id) => isset($validIds[$id]));
+        $roomLinkTagRepo->setTagsForRoomLink($room_link_id, array_values($filtered));
+        return new SuccessResponse();
+    }
+
+    public function setAnnotationTags(
+        RoomAnnotationRepo $roomAnnotationRepo,
+        RoomAnnotationTagRepo $roomAnnotationTagRepo,
+        RoomTagRepo $roomTagRepo,
+        JsonInput $jsonInput,
+        string $room_id,
+        string $room_annotation_id
+    ): SuccessResponse {
+        $annotations = $roomAnnotationRepo->getAnnotationsForRoom($room_id);
+        $found = false;
+        foreach ($annotations as $ann) {
+            if ($ann->room_annotation_id === $room_annotation_id) {
+                $found = true;
+                break;
+            }
+        }
+        if (!$found) {
+            throw new ContentNotFoundException('Annotation not found in room');
+        }
+        $param = SetEntityTagsParam::fromArray($jsonInput->getData());
+        $roomTags = $roomTagRepo->getTagsForRoom($room_id);
+        $validIds = [];
+        foreach ($roomTags as $t) {
+            $validIds[$t->tag_id] = true;
+        }
+        $filtered = array_filter($param->tag_ids, fn (string $id) => isset($validIds[$id]));
+        $roomAnnotationTagRepo->setTagsForRoomAnnotation($room_annotation_id, array_values($filtered));
         return new SuccessResponse();
     }
 

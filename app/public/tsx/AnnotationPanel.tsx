@@ -1,11 +1,13 @@
 
-import {h, Component} from "preact";
-import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";
-import {RoomAnnotationView} from "./generated/types";
-import {countWords} from "./functions";
-import {ANNOTATION_TITLE_MINIMUM_LENGTH} from "./generated/constants";
-import {api, GetRoomsFileAnnotationsResponse} from "./generated/api_routes";
-import {PdfSelectionType} from "./constants";
+import { h, Component } from "preact";
+import { registerMessageListener, sendMessage, unregisterListener } from "./message/message";
+import { RoomAnnotationWithTags, createRoomTag, RoomTag } from "./generated/types";
+import { countWords } from "./functions";
+import { ANNOTATION_TITLE_MINIMUM_LENGTH } from "./generated/constants";
+import { api, GetRoomsFileAnnotationsResponse } from "./generated/api_routes";
+import { PdfSelectionType } from "./constants";
+import { setAnnotationTags } from "./api_room_entity_tags";
+import { get_logged_in, subscribe_logged_in } from "./store";
 
 export interface SelectionPosition {
   top: number;
@@ -66,13 +68,18 @@ export interface AnnotationPanelProps {
 }
 
 interface AnnotationPanelState {
-  selection_data: SelectionData|null,
-  title: string,
-  text: string,
-  annotations: RoomAnnotationView[],
-  selected_annotation_id: string|null,
-  create_status: string|null,
-  error: string|null,
+  selection_data: SelectionData | null;
+  title: string;
+  text: string;
+  annotations: RoomAnnotationWithTags[];
+  selected_annotation_id: string | null;
+  create_status: string | null;
+  error: string | null;
+  editingAnnotationId: string | null;
+  roomTags: RoomTag[];
+  selectedTagIds: Set<string>;
+  tagsSaveInProgress: boolean;
+  logged_in: boolean;
 }
 
 function getDefaultState(props: AnnotationPanelProps): AnnotationPanelState {
@@ -84,6 +91,11 @@ function getDefaultState(props: AnnotationPanelProps): AnnotationPanelState {
     selected_annotation_id: props.selected_annotation_id || null,
     create_status: null,
     error: null,
+    editingAnnotationId: null,
+    roomTags: [],
+    selectedTagIds: new Set(),
+    tagsSaveInProgress: false,
+    logged_in: get_logged_in(),
   };
 }
 
@@ -113,6 +125,8 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
 
   message_listener_deselect:null|number = null;
 
+  unsubscribe_logged_in: (() => void) | null = null;
+
   // If the panel is loaded with a selected annotation_id, then we need
   // to remember to render it when we get the data back about annotations.
   pending_annotation_id: null|string = null;
@@ -134,12 +148,20 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
       () => this.receiveTextDeselected()
     );
 
+    this.unsubscribe_logged_in = subscribe_logged_in((logged_in: boolean) => {
+      this.setState({ logged_in });
+    });
+
     this.refreshRoomFileAnnotations();
   }
 
   componentWillUnmount() {
     unregisterListener(this.message_listener);
     unregisterListener(this.message_listener_deselect);
+    if (this.unsubscribe_logged_in) {
+      this.unsubscribe_logged_in();
+      this.unsubscribe_logged_in = null;
+    }
   }
 
   receiveTextSelected(selection_data: SelectionData) {
@@ -165,13 +187,12 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
     catch((data:any) => this.processError(data));
   }
 
-  processData(data:GetRoomsFileAnnotationsResponse) {
+  processData(data: GetRoomsFileAnnotationsResponse) {
     if (data.data.annotations === undefined) {
-      this.setState({error: "Server response did not contains 'annotations'."})
+      this.setState({ error: "Server response did not contains 'annotations'." });
       return;
     }
-
-    this.setState({annotations: data.data.annotations})
+    this.setState({ annotations: data.data.annotations });
   }
 
 
@@ -211,7 +232,7 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
 
   sendHighlightsToDraw() {
     const selectedAnnotation = this.state.annotations.find(
-      (annotation) => annotation.id === this.state.selected_annotation_id
+      (annotation: RoomAnnotationWithTags) => annotation.id === this.state.selected_annotation_id
     );
 
     if (!selectedAnnotation) {
@@ -282,28 +303,104 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
     });
   }
 
+  openEditTags(annotation: RoomAnnotationWithTags) {
+    const selectedTagIds = new Set((annotation.tags || []).map((t: RoomTag) => t.tag_id));
+    this.setState({ editingAnnotationId: annotation.room_annotation_id, selectedTagIds });
+    api.rooms.tags(this.props.room_id)
+      .then((data) => {
+        const roomTags = data.data.tags.map((t) => createRoomTag(t));
+        this.setState({ roomTags });
+      })
+      .catch(() => this.setState({ roomTags: [] }));
+  }
+
+  closeEditTags() {
+    this.setState({ editingAnnotationId: null, roomTags: [], selectedTagIds: new Set() });
+  }
+
+  toggleTagForEdit(tag_id: string) {
+    const next = new Set(this.state.selectedTagIds);
+    if (next.has(tag_id)) next.delete(tag_id);
+    else next.add(tag_id);
+    this.setState({ selectedTagIds: next });
+  }
+
+  saveAnnotationTags() {
+    const { editingAnnotationId, selectedTagIds, tagsSaveInProgress } = this.state;
+    if (!editingAnnotationId || tagsSaveInProgress) return;
+    this.setState({ tagsSaveInProgress: true });
+    setAnnotationTags(this.props.room_id, editingAnnotationId, { tag_ids: Array.from(selectedTagIds) })
+      .then(() => {
+        this.closeEditTags();
+        this.setState({ tagsSaveInProgress: false });
+        this.refreshRoomFileAnnotations();
+      })
+      .catch(() => this.setState({ tagsSaveInProgress: false }));
+  }
+
+  renderEditTagsModal() {
+    const { editingAnnotationId, roomTags, selectedTagIds, tagsSaveInProgress } = this.state;
+    if (!editingAnnotationId) return null;
+    return (
+      <div className="room_edit_tags_modal_overlay" onClick={() => !tagsSaveInProgress && this.closeEditTags()}>
+        <div className="room_edit_tags_modal" onClick={(e) => e.stopPropagation()}>
+          <h3>Edit tags</h3>
+          {roomTags.length === 0 ? (
+            <p>Loading room tags…</p>
+          ) : (
+            <div className="room_edit_tags_checkboxes">
+              {roomTags.map((tag) => (
+                <label key={tag.tag_id}>
+                  <input
+                    type="checkbox"
+                    checked={selectedTagIds.has(tag.tag_id)}
+                    onChange={() => this.toggleTagForEdit(tag.tag_id)}
+                  />
+                  {tag.text}
+                </label>
+              ))}
+            </div>
+          )}
+          <div className="room_edit_tags_actions">
+            <button className="button_standard" onClick={() => this.saveAnnotationTags()} disabled={tagsSaveInProgress}>Save</button>
+            <button className="button_standard" onClick={() => this.closeEditTags()} disabled={tagsSaveInProgress}>Cancel</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderAnnotations() {
     if (this.state.annotations.length === 0) {
       return <span>No annotations</span>;
     }
 
-    let clear_selection = <span></span>;
-
-    if(this.state.selected_annotation_id !== null) {
-      clear_selection = <li onClick={() => this.clearSelectedAnnotation()}>Clear selection</li>
+    let clear_selection: preact.VNode = <span></span>;
+    if (this.state.selected_annotation_id !== null) {
+      clear_selection = <li onClick={() => this.clearSelectedAnnotation()}>Clear selection</li>;
     }
 
     return (
       <ul className="annotations">
-        {this.state.annotations.map((annotation, index) => (
-          <li
-            key={index}
-            className={`annotation ${this.state.selected_annotation_id === annotation.id ? 'selected' : ''}`}
-            onClick={() => this.setState({ selected_annotation_id: annotation.id })}
-          >
-            {annotation.title}
-          </li>
-        ))}
+        {this.state.annotations.map((annotation, index) => {
+          const tags = annotation.tags || [];
+          const tagsBlock = tags.length > 0
+            ? <span className="room_entity_tags">{tags.map((t: RoomTag) => <span key={t.tag_id} className="room_entity_tag_chip">{t.text}</span>)}</span>
+            : null;
+          return (
+            <li
+              key={index}
+              className={`annotation ${this.state.selected_annotation_id === annotation.id ? 'selected' : ''}`}
+              onClick={() => this.setState({ selected_annotation_id: annotation.id })}
+            >
+              <span>{annotation.title}</span>
+              {tagsBlock}
+              {this.state.logged_in && (
+                <button type="button" className="button_standard button_chat" onClick={(e) => { e.stopPropagation(); this.openEditTags(annotation); }}>Edit tags</button>
+              )}
+            </li>
+          );
+        })}
 
         {clear_selection}
 
@@ -388,13 +485,14 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
     }
 
 
-    return <div class='annotation_panel_react'>
-      <h3>Create Annotation</h3>
-
-      {text_selected_box}
-
-      <h4>Current annotations</h4>
-      {annotations_block}
-    </div>;
+    return (
+      <div className="annotation_panel_react">
+        <h3>Create Annotation</h3>
+        {text_selected_box}
+        <h4>Current annotations</h4>
+        {annotations_block}
+        {this.renderEditTagsModal()}
+      </div>
+    );
   }
 }

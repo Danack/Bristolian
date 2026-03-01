@@ -423,8 +423,14 @@ function generateInterfaceForClass(string $type): array
             $typescript_type_string = "string";
         }
         elseif (strcasecmp($php_type_str, 'array') === 0) {
-//            $php_type_str = "array";
-            $typescript_type_string = "Object";
+            // For *WithTags view types, tags property is RoomTag[]
+            $propName = $property->getName();
+            if ($propName === 'tags' && str_ends_with($type, 'WithTags')) {
+                $typescript_type_string = "RoomTag[]";
+            }
+            else {
+                $typescript_type_string = "Object";
+            }
         }
         elseif (class_exists($php_type_str) || interface_exists($php_type_str)) {
             // Check if it's a class type (but not DateTime types which we already handled)
@@ -594,6 +600,9 @@ class GenerateFiles
             \Bristolian\Model\Generated\RoomTag::class,
             \Bristolian\Model\Generated\RoomFileObjectInfo::class,
             \Bristolian\Model\Types\RoomAnnotationView::class,
+            \Bristolian\Model\Types\RoomFileWithTags::class,
+            \Bristolian\Model\Types\RoomLinkWithTags::class,
+            \Bristolian\Model\Types\RoomAnnotationWithTags::class,
             \Bristolian\Model\Types\UserProfile::class,
             \Bristolian\Model\Types\UserDisplayName::class,
             \Bristolian\Model\Types\UserProfileWithDisplayName::class,

@@ -57,3 +57,8 @@ api_routes.tsx
 /chat_layout_big_scrreen.png
 /chat_ooh_replying_that's_new.png
 /chat_previous_days_buttons.png
+
+# Notice review tool (standalone in purchases/)
+purchases/notice_progress.json
+purchases/exported/
+/purchases/

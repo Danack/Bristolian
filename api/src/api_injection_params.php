@@ -134,6 +134,15 @@ function apiInjectionParams() : InjectionParams
         \Bristolian\Repo\RoomTagRepo\RoomTagRepo::class =>
             \Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::class,
 
+        \Bristolian\Repo\RoomFileTagRepo\RoomFileTagRepo::class =>
+            \Bristolian\Repo\RoomFileTagRepo\PdoRoomFileTagRepo::class,
+
+        \Bristolian\Repo\RoomLinkTagRepo\RoomLinkTagRepo::class =>
+            \Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo::class,
+
+        \Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo::class =>
+            \Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::class,
+
     ];
 
     // Delegate the creation of types to callables.

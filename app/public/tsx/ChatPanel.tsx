@@ -181,7 +181,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
 
     onError(err: any) {
         console.log("Socket encountered error: ", err, "Closing socket");
-        this.setState({ connection_state: "Errored" });
+        this.setState({ connection_state: "Failed to connect to chat server" });
         this.ws?.close();
     }
 
@@ -193,11 +193,16 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
     }
 
     connect = () => {
-        this.ws = new WebSocket("ws://local.chat.bristolian.org:8015/chat");
-        this.ws.onopen = () => this.onOpen();
-        this.ws.onmessage = (messageEvent: MessageEvent) => this.onMessage(messageEvent);
-        this.ws.onclose = e => this.onClose(e);
-        this.ws.onerror = err => this.onError(err);
+        try {
+            this.ws = new WebSocket("ws://local.chat.bristolian.org:8015/chat");
+            this.ws.onopen = () => this.onOpen();
+            this.ws.onmessage = (messageEvent: MessageEvent) => this.onMessage(messageEvent);
+            this.ws.onclose = e => this.onClose(e);
+            this.ws.onerror = err => this.onError(err);
+        } catch (err) {
+            console.error("Failed to connect to chat server:", err);
+            this.setState({ connection_state: "Failed to connect to chat server" });
+        }
     }
 
     check = () => {
@@ -342,8 +347,14 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
 
     render() {
         let comments_block = this.renderCommentsBlock();
+        const connectionFailed = this.state.connection_state === "Failed to connect to chat server";
         return (
           <div>
+              {connectionFailed && (
+                  <div className="chat-connection-error" role="alert">
+                      {this.state.connection_state}
+                  </div>
+              )}
               <div>
                   {comments_block}
               </div>

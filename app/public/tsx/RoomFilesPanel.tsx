@@ -1,19 +1,24 @@
-import {h, Component} from "preact";
-import {humanFileSize, formatDateTimeForContent, spacesToNbsp} from "./functions";
-import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";
-import {PdfSelectionType} from "./constants";
-import {api, GetRoomsFilesResponse} from "./generated/api_routes";
-import {RoomFileObjectInfo, createRoomFileObjectInfo} from "./generated/types";
-import {get_logged_in, subscribe_logged_in} from "./store";
+import { h, Component } from "preact";
+import { humanFileSize, formatDateTimeForContent, spacesToNbsp } from "./functions";
+import { registerMessageListener, sendMessage, unregisterListener } from "./message/message";
+import { PdfSelectionType } from "./constants";
+import { api, GetRoomsFilesResponse } from "./generated/api_routes";
+import { RoomFileWithTags, createRoomFileWithTags, createRoomTag, RoomTag } from "./generated/types";
+import { get_logged_in, subscribe_logged_in } from "./store";
+import { setFileTags } from "./api_room_entity_tags";
 
 export interface RoomFilesPanelProps {
-    room_id: string
+    room_id: string;
 }
 
 interface RoomFilesPanelState {
-    files: RoomFileObjectInfo[],
-    error: string|null,
-    logged_in: boolean,
+    files: RoomFileWithTags[];
+    error: string | null;
+    logged_in: boolean;
+    editingFileId: string | null;
+    roomTags: RoomTag[];
+    selectedTagIds: Set<string>;
+    tagsSaveInProgress: boolean;
 }
 
 function getDefaultState(): RoomFilesPanelState {
@@ -21,6 +26,10 @@ function getDefaultState(): RoomFilesPanelState {
         files: [],
         error: null,
         logged_in: get_logged_in(),
+        editingFileId: null,
+        roomTags: [],
+        selectedTagIds: new Set(),
+        tagsSaveInProgress: false,
     };
 }
 
@@ -60,19 +69,15 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         catch((data:any) => this.processError(data));
     }
 
-    processData(data:GetRoomsFilesResponse) {
+    processData(data: GetRoomsFilesResponse) {
         if (data.data.files === undefined) {
-            this.setState({error: "Server response did not contains 'files'."})
+            this.setState({ error: "Server response did not contains 'files'." });
             return;
         }
-
-        // GetRoomsFilesResponse structure: { result: 'success', data: { files: DateToString<RoomFileObjectInfo>[] } }
-        // API returns dates as strings, so we convert them to Date objects using the generated conversion function
-        const files:RoomFileObjectInfo[] = data.data.files.map((file) => 
-            createRoomFileObjectInfo(file)
+        const files: RoomFileWithTags[] = data.data.files.map((file) =>
+            createRoomFileWithTags(file)
         );
-
-        this.setState({files: files})
+        this.setState({ files });
     }
 
     processError (data:any) {
@@ -80,92 +85,148 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         console.log(data)
     }
 
-    shareFile(file: RoomFileObjectInfo, file_url: string) {
+    shareFile(file: RoomFileWithTags, file_url: string) {
         // Build the full URL including the origin
         const full_url = window.location.origin + file_url;
         const markdown_link = `[${file.original_filename}](${full_url})`;
         sendMessage(PdfSelectionType.APPEND_TO_MESSAGE_INPUT, {text: markdown_link});
     }
 
-    renderRoomFile(file: RoomFileObjectInfo, logged_in: boolean) {
-        let file_url = `/rooms/${this.props.room_id}/file/${file.id}/${file.original_filename}`
-        let annotate_url = `/rooms/${this.props.room_id}/file_annotate/${file.id}`
+    openEditTags(file: RoomFileWithTags) {
+        const selectedTagIds = new Set(file.tags.map((t) => t.tag_id));
+        this.setState({ editingFileId: file.id, selectedTagIds });
+        api.rooms.tags(this.props.room_id)
+            .then((data) => {
+                const roomTags = data.data.tags.map((t) => createRoomTag(t));
+                this.setState({ roomTags });
+            })
+            .catch(() => this.setState({ roomTags: [] }));
+    }
 
-        let annotate_block = <a href={annotate_url}>
-            Annotate
-        </a>
+    closeEditTags() {
+        this.setState({ editingFileId: null, roomTags: [], selectedTagIds: new Set() });
+    }
 
-        let file_url_lower_case = file_url.toLowerCase();
-        if (file_url_lower_case.endsWith(".pdf") !== true) {
-            annotate_block = <span></span>
+    toggleTagForEdit(tag_id: string) {
+        const next = new Set(this.state.selectedTagIds);
+        if (next.has(tag_id)) next.delete(tag_id);
+        else next.add(tag_id);
+        this.setState({ selectedTagIds: next });
+    }
+
+    saveFileTags() {
+        const { editingFileId, selectedTagIds, tagsSaveInProgress } = this.state;
+        if (!editingFileId || tagsSaveInProgress) return;
+        this.setState({ tagsSaveInProgress: true });
+        setFileTags(this.props.room_id, editingFileId, { tag_ids: Array.from(selectedTagIds) })
+            .then(() => {
+                this.closeEditTags();
+                this.setState({ tagsSaveInProgress: false });
+                this.refreshFiles();
+            })
+            .catch(() => this.setState({ tagsSaveInProgress: false }));
+    }
+
+    renderRoomFile(file: RoomFileWithTags, logged_in: boolean) {
+        const file_url = `/rooms/${this.props.room_id}/file/${file.id}/${file.original_filename}`;
+        const annotate_url = `/rooms/${this.props.room_id}/file_annotate/${file.id}`;
+        let annotate_block: preact.VNode = <a href={annotate_url}>Annotate</a>;
+        if (!file_url.toLowerCase().endsWith(".pdf")) {
+            annotate_block = <span></span>;
         }
+        const tagsBlock = file.tags.length > 0
+            ? <span className="room_entity_tags">{file.tags.map((t) => <span key={t.tag_id} className="room_entity_tag_chip">{t.text}</span>)}</span>
+            : <span className="room_entity_tags empty">—</span>;
 
-        return <tr key={file.id}>
-            <td>
-                <a href={file_url} target="_blank">
-                    {file.original_filename}
-                </a>
-            </td>
-            <td>
-                {spacesToNbsp(humanFileSize(file.size, true))}
-            </td>
-            <td>
-                {spacesToNbsp(formatDateTimeForContent(file.created_at))}
-            </td>
-
-            <td>
-                {annotate_block}
-            </td>
-            {logged_in && (
+        return (
+            <tr key={file.id}>
                 <td>
-                    <button className="button_standard button_chat" onClick={() => this.shareFile(file, file_url)} title="Share file link to chat">
-                        Post&nbsp;to&nbsp;chat
-                    </button>
+                    <a href={file_url} target="_blank">{file.original_filename}</a>
                 </td>
-            )}
-        </tr>
+                <td>{spacesToNbsp(humanFileSize(file.size, true))}</td>
+                <td>{spacesToNbsp(formatDateTimeForContent(file.created_at))}</td>
+                <td>{tagsBlock}</td>
+                <td>{annotate_block}</td>
+                {logged_in && (
+                    <td>
+                        <button className="button_standard button_chat" onClick={() => this.openEditTags(file)}>Edit tags</button>
+                        <button className="button_standard button_chat" onClick={() => this.shareFile(file, file_url)} title="Share file link to chat">Post&nbsp;to&nbsp;chat</button>
+                    </td>
+                )}
+            </tr>
+        );
     }
 
     renderFiles() {
         if (this.state.files.length === 0) {
-            return <span>No files.</span>
+            return <span>No files.</span>;
         }
-
         const logged_in = this.state.logged_in;
-
-        return <span>
-            <span className="section-heading">Files</span>
-            <table>
-              <tbody>
-                <tr>
-                    <td>Name</td>
-                    <td>Size</td>
-                    <td>Date</td>
-                    <td></td>
-                    {logged_in && <td></td>}
-                </tr>
-                {Object.values(this.state.files).
-                map((roomFile: RoomFileObjectInfo) => this.renderRoomFile(roomFile, logged_in))}
-              </tbody>
-            </table>
-        </span>
+        return (
+            <span>
+                <span className="section-heading">Files</span>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td>Size</td>
+                            <td>Date</td>
+                            <td>Tags</td>
+                            <td></td>
+                            {logged_in && <td></td>}
+                        </tr>
+                        {this.state.files.map((roomFile) => this.renderRoomFile(roomFile, logged_in))}
+                    </tbody>
+                </table>
+            </span>
+        );
     }
 
-    render(props: RoomFilesPanelProps, state: RoomFilesPanelState) {
-        let error_block = <span>&nbsp;</span>;
-        if (this.state.error != null) {
-            error_block = <div class="error">Last error: {this.state.error}</div>
-        }
+    renderEditTagsModal() {
+        const { editingFileId, roomTags, selectedTagIds, tagsSaveInProgress } = this.state;
+        if (!editingFileId) return null;
+        return (
+            <div className="room_edit_tags_modal_overlay" onClick={() => !tagsSaveInProgress && this.closeEditTags()}>
+                <div className="room_edit_tags_modal" onClick={(e) => e.stopPropagation()}>
+                    <h3>Edit tags</h3>
+                    {roomTags.length === 0 ? (
+                        <p>Loading room tags…</p>
+                    ) : (
+                        <div className="room_edit_tags_checkboxes">
+                            {roomTags.map((tag) => (
+                                <label key={tag.tag_id}>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedTagIds.has(tag.tag_id)}
+                                        onChange={() => this.toggleTagForEdit(tag.tag_id)}
+                                    />
+                                    {tag.text}
+                                </label>
+                            ))}
+                        </div>
+                    )}
+                    <div className="room_edit_tags_actions">
+                        <button className="button_standard" onClick={() => this.saveFileTags()} disabled={tagsSaveInProgress}>Save</button>
+                        <button className="button_standard" onClick={() => this.closeEditTags()} disabled={tagsSaveInProgress}>Cancel</button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
-        let length = this.state.files.length;
-        let number_block = <div>There are {length} files</div>;
-        let files_block = this.renderFiles();
-
-        return  <div class='room_files_panel_react'>
-            {error_block}
-            {files_block}
-            {number_block}
-            <button className="button_standard" onClick={() => this.refreshFiles()}>Refresh</button>
-        </div>;
+    render(_props: RoomFilesPanelProps, _state: RoomFilesPanelState) {
+        const error_block = this.state.error != null
+            ? <div className="error">Last error: {this.state.error}</div>
+            : <span>&nbsp;</span>;
+        const length = this.state.files.length;
+        return (
+            <div className="room_files_panel_react">
+                {error_block}
+                {this.renderFiles()}
+                <div>There are {length} files</div>
+                <button className="button_standard" onClick={() => this.refreshFiles()}>Refresh</button>
+                {this.renderEditTagsModal()}
+            </div>
+        );
     }
 }

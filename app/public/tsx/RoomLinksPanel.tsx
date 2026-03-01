@@ -1,21 +1,25 @@
-import {h, Component} from "preact";
-import {humanFileSize, isUrl} from "./functions";
-import {RoomLinkAddPanel} from "./RoomLinkAddPanel";
-import {registerMessageListener, sendMessage} from "./message/message";
-import {PdfSelectionType} from "./constants";
-import {api, GetRoomsLinksResponse} from "./generated/api_routes";
-import {RoomLink, createRoomLink} from "./generated/types";
-import {get_logged_in, subscribe_logged_in} from "./store";
+import { h, Component } from "preact";
+import { RoomLinkAddPanel } from "./RoomLinkAddPanel";
+import { registerMessageListener, sendMessage } from "./message/message";
+import { PdfSelectionType } from "./constants";
+import { api, GetRoomsLinksResponse } from "./generated/api_routes";
+import { RoomLinkWithTags, createRoomLinkWithTags, createRoomTag, RoomTag } from "./generated/types";
+import { get_logged_in, subscribe_logged_in } from "./store";
+import { setLinkTags } from "./api_room_entity_tags";
 
 export interface RoomLinksPanelProps {
-    room_id: string
+    room_id: string;
 }
 
 interface RoomLinksPanelState {
-    roomLinks: RoomLink[],
-    linkBeingEdited: RoomLink|null,
-    error: string|null,
-    logged_in: boolean,
+    roomLinks: RoomLinkWithTags[];
+    linkBeingEdited: RoomLinkWithTags | null;
+    error: string | null;
+    logged_in: boolean;
+    editingLinkId: string | null;
+    roomTags: RoomTag[];
+    selectedTagIds: Set<string>;
+    tagsSaveInProgress: boolean;
 }
 
 function getDefaultState(): RoomLinksPanelState {
@@ -24,6 +28,10 @@ function getDefaultState(): RoomLinksPanelState {
         linkBeingEdited: null,
         error: null,
         logged_in: get_logged_in(),
+        editingLinkId: null,
+        roomTags: [],
+        selectedTagIds: new Set(),
+        tagsSaveInProgress: false,
     };
 }
 
@@ -61,19 +69,15 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         catch((data:any) => this.processError(data));
     }
 
-    processData(data:GetRoomsLinksResponse) {
+    processData(data: GetRoomsLinksResponse) {
         if (data.data.links === undefined) {
-            this.setState({error: "Server response did not contains 'links'."})
+            this.setState({ error: "Server response did not contains 'links'." });
             return;
         }
-
-        // GetRoomsLinksResponse structure: { result: 'success', data: { links: DateToString<RoomLink>[] } }
-        // Convert date strings to Date objects using the generated helper
-        const roomLinks:RoomLink[] = data.data.links.map((link) => 
-            createRoomLink(link)
+        const roomLinks: RoomLinkWithTags[] = data.data.links.map((link) =>
+            createRoomLinkWithTags(link)
         );
-
-        this.setState({roomLinks: roomLinks})
+        this.setState({ roomLinks });
     }
     processError (data:any) {
         console.log("something went wrong.");
@@ -83,7 +87,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
     restoreState(state_to_restore: object) {
     }
 
-    startEditingRoomLink(roomLink: RoomLink) {
+    startEditingRoomLink(roomLink: RoomLinkWithTags) {
         this.setState({linkBeingEdited: roomLink})
     }
 
@@ -91,70 +95,112 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         this.setState({linkBeingEdited: null})
     }
 
-    shareLink(link: RoomLink) {
+    shareLink(link: RoomLinkWithTags) {
         const resolved_title = link.title || link.link_id;
-        sendMessage(PdfSelectionType.APPEND_TO_MESSAGE_INPUT, {text: resolved_title});
+        sendMessage(PdfSelectionType.APPEND_TO_MESSAGE_INPUT, { text: resolved_title });
     }
 
-    renderRoomLink(link: RoomLink, logged_in: boolean) {
-        let resolved_title = link.title || link.link_id;
+    openEditTags(link: RoomLinkWithTags) {
+        const selectedTagIds = new Set(link.tags.map((t) => t.tag_id));
+        this.setState({ editingLinkId: link.id, selectedTagIds });
+        api.rooms.tags(this.props.room_id)
+            .then((data) => {
+                const roomTags = data.data.tags.map((t) => createRoomTag(t));
+                this.setState({ roomTags });
+            })
+            .catch(() => this.setState({ roomTags: [] }));
+    }
 
-        // if (this.state.linkBeingEdited !== null &&
-        //     this.state.linkBeingEdited.id == link.id) {
-        //     return <tr key={link.id}>
-        //       <td>
-        //           URL: {link.url}<br/>
-        //           Title:
-        //       </td>
-        //       <td>edit me daddy.</td>
-        //
-        //
-        //       <td>
-        //         <button onClick={() => this.cancelEditingRoomLink()}>Cancel</button>
-        //         <button onClick={() => this.cancelEditingRoomLink()}>Save</button>
-        //       </td>
-        //     </tr>
-        // }
+    closeEditTags() {
+        this.setState({ editingLinkId: null, roomTags: [], selectedTagIds: new Set() });
+    }
 
+    toggleTagForEdit(tag_id: string) {
+        const next = new Set(this.state.selectedTagIds);
+        if (next.has(tag_id)) next.delete(tag_id);
+        else next.add(tag_id);
+        this.setState({ selectedTagIds: next });
+    }
 
+    saveLinkTags() {
+        const { editingLinkId, selectedTagIds, tagsSaveInProgress } = this.state;
+        if (!editingLinkId || tagsSaveInProgress) return;
+        this.setState({ tagsSaveInProgress: true });
+        setLinkTags(this.props.room_id, editingLinkId, { tag_ids: Array.from(selectedTagIds) })
+            .then(() => {
+                this.closeEditTags();
+                this.setState({ tagsSaveInProgress: false });
+                this.refreshLinks();
+            })
+            .catch(() => this.setState({ tagsSaveInProgress: false }));
+    }
 
-        return <tr key={link.id}>
-            <td>
-              <span>
-                {resolved_title}
-              </span>
-            </td>
-            <td>
-              <button className="button_standard button_chat" onClick={() => this.startEditingRoomLink(link)}>Edit</button>
-            </td>
-            {logged_in && (
-                <td>
-                    <button className="button_standard button_chat" onClick={() => this.shareLink(link)} title="Share link to chat">
-                        Post&nbsp;to&nbsp;chat
-                    </button>
-                </td>
-            )}
-        </tr>
+    renderRoomLink(link: RoomLinkWithTags, logged_in: boolean) {
+        const resolved_title = link.title || link.link_id;
+        const tagsBlock = link.tags.length > 0
+            ? <span className="room_entity_tags">{link.tags.map((t) => <span key={t.tag_id} className="room_entity_tag_chip">{t.text}</span>)}</span>
+            : <span className="room_entity_tags empty">—</span>;
+
+        return (
+            <tr key={link.id}>
+                <td><span>{resolved_title}</span></td>
+                <td>{tagsBlock}</td>
+                {logged_in && (
+                    <td>
+                        <button className="button_standard button_chat" onClick={() => this.startEditingRoomLink(link)}>Edit</button>
+                        <button className="button_standard button_chat" onClick={() => this.openEditTags(link)}>Edit tags</button>
+                        <button className="button_standard button_chat" onClick={() => this.shareLink(link)} title="Share link to chat">Post&nbsp;to&nbsp;chat</button>
+                    </td>
+                )}
+            </tr>
+        );
     }
 
     renderLinks() {
         if (this.state.roomLinks.length === 0) {
-            return <span>No links.</span>
+            return <span>No links.</span>;
         }
-
         const logged_in = this.state.logged_in;
-        return <table>
-                {/*<thead>*/}
-                {/*<tr>*/}
-                {/*    <td>Links</td>*/}
-                {/*</tr>*/}
-                {/*</thead>*/}
+        return (
+            <table>
                 <tbody>
-                {Object.values(this.state.roomLinks).
-                map((roomLink: RoomLink) => this.renderRoomLink(roomLink, logged_in))}
+                    <tr><td>Title</td><td>Tags</td>{logged_in && <td></td>}</tr>
+                    {this.state.roomLinks.map((roomLink) => this.renderRoomLink(roomLink, logged_in))}
                 </tbody>
             </table>
+        );
+    }
 
+    renderEditTagsModal() {
+        const { editingLinkId, roomTags, selectedTagIds, tagsSaveInProgress } = this.state;
+        if (!editingLinkId) return null;
+        return (
+            <div className="room_edit_tags_modal_overlay" onClick={() => !tagsSaveInProgress && this.closeEditTags()}>
+                <div className="room_edit_tags_modal" onClick={(e) => e.stopPropagation()}>
+                    <h3>Edit tags</h3>
+                    {roomTags.length === 0 ? (
+                        <p>Loading room tags…</p>
+                    ) : (
+                        <div className="room_edit_tags_checkboxes">
+                            {roomTags.map((tag) => (
+                                <label key={tag.tag_id}>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedTagIds.has(tag.tag_id)}
+                                        onChange={() => this.toggleTagForEdit(tag.tag_id)}
+                                    />
+                                    {tag.text}
+                                </label>
+                            ))}
+                        </div>
+                    )}
+                    <div className="room_edit_tags_actions">
+                        <button className="button_standard" onClick={() => this.saveLinkTags()} disabled={tagsSaveInProgress}>Save</button>
+                        <button className="button_standard" onClick={() => this.closeEditTags()} disabled={tagsSaveInProgress}>Cancel</button>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     renderLinkBeingEdited() {
@@ -278,11 +324,12 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
             content = this.renderLinkBeingEdited();
         }
 
-        return <div className='room_links_panel_react'>
-            <h2>Links</h2>
-            <div>
-                {content}
+        return (
+            <div className="room_links_panel_react">
+                <h2>Links</h2>
+                <div>{content}</div>
+                {this.renderEditTagsModal()}
             </div>
-        </div>;
+        );
     }
 }
