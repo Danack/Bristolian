@@ -11,5 +11,8 @@ interface RoomLinkTagRepo
      */
     public function getTagIdsForRoomLink(string $room_link_id): array;
 
+    /**
+     * @param array<string> $tag_ids
+     */
     public function setTagsForRoomLink(string $room_link_id, array $tag_ids): void;
 }

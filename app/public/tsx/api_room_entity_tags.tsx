@@ -31,3 +31,7 @@ export function setLinkTags(room_id: string, room_link_id: string, body: SetEnti
 export function setAnnotationTags(room_id: string, room_annotation_id: string, body: SetEntityTagsBody): Promise<void> {
     return putTags(`/api/rooms/${room_id}/annotations/${room_annotation_id}/tags`, body);
 }
+
+export function setVideoTags(room_id: string, room_video_id: string, body: SetEntityTagsBody): Promise<void> {
+    return putTags(`/api/rooms/${room_id}/videos/${room_video_id}/tags`, body);
+}

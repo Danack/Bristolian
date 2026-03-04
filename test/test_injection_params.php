@@ -27,6 +27,9 @@ function testInjectionParams() : InjectionParams
 //            \Bristolian\Service\RoomMessageService\FakeRoomMessageService::class
 
         // Tinned Fish Diary
+        \Bristolian\Service\SecureTokenGenerator\SecureTokenGenerator::class =>
+            \Bristolian\Service\SecureTokenGenerator\RandomBytesSecureTokenGenerator::class,
+
         \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::class =>
             \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::class,
 

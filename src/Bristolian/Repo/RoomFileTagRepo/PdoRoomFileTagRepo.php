@@ -25,6 +25,9 @@ class PdoRoomFileTagRepo implements RoomFileTagRepo
         return array_map(fn ($row) => $row['tag_id'], $rows);
     }
 
+    /**
+     * @param array<string> $tag_ids
+     */
     public function setTagsForRoomFile(string $room_id, string $stored_file_id, array $tag_ids): void
     {
         $this->pdoSimple->execute(

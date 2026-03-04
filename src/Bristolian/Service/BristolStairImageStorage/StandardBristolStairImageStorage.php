@@ -52,7 +52,7 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
             $temp_file = tempnam(sys_get_temp_dir(), 'stair_image');
 
             $image->setImageFormat('jpg');
-
+                                                                                                                                                                                                                                                                                                                                                                             
             $temp_file_with_extension = $temp_file . ".jpg";
             $image->writeImage($temp_file_with_extension);
 

@@ -13,8 +13,15 @@ use Bristolian\Repo\RoomTagRepo\RoomTagRepo;
  */
 class FakeRoomTagRepoTest extends RoomTagRepoFixture
 {
+    private const FAKE_ROOM_ID = 'test-room-id-123';
+
     public function getTestInstance(): RoomTagRepo
     {
         return new FakeRoomTagRepo();
+    }
+
+    protected function getTestRoomId(): string
+    {
+        return self::FAKE_ROOM_ID;
     }
 }

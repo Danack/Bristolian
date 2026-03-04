@@ -2,6 +2,11 @@
 
 declare(strict_types = 1);
 
+/**
+ * Shared helper functions for the application.
+ * Put new functions here unless they are chat-specific (use the appropriate chat functions file in that case).
+ */
+
 use Bristolian\Types\DocumentType;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 
@@ -1226,4 +1231,43 @@ function createBlankUserProfileForUserId(string $user_id): \Bristolian\Model\Gen
         created_at: $now,
         updated_at: null,
     );
+}
+
+/**
+ * Extract YouTube video ID from various URL formats.
+ * Supports: youtube.com/watch?v=ID, youtu.be/ID, youtube.com/embed/ID, youtube.com/v/ID
+ *
+ * @return string|null The 11-character video ID or null if not found/invalid
+ */
+function extract_youtube_video_id(string $url): ?string
+{
+    $url = trim($url);
+    if ($url === '') {
+        return null;
+    }
+
+    // youtu.be/VIDEO_ID or youtu.be/VIDEO_ID?t=123
+    if (preg_match('#^https?://(?:www\.)?youtu\.be/([a-zA-Z0-9_-]{11})(?:[?/].*)?$#', $url, $matches)) {
+        return $matches[1];
+    }
+
+    // youtube.com/watch?v=VIDEO_ID or youtube.com/watch?foo=bar&v=VIDEO_ID
+    if (preg_match('#^https?://(?:www\.)?youtube\.com/watch\?.*[?&]v=([a-zA-Z0-9_-]{11})(?:&|$)#', $url, $matches)) {
+        return $matches[1];
+    }
+    if (preg_match('#[?&]v=([a-zA-Z0-9_-]{11})(?:&|$)#', $url, $matches)) {
+        return $matches[1];
+    }
+
+    // youtube.com/embed/VIDEO_ID or youtube.com/v/VIDEO_ID
+    if (preg_match('#^https?://(?:www\.)?youtube\.com/(?:embed|v)/([a-zA-Z0-9_-]{11})#', $url, $matches)) {
+        return $matches[1];
+    }
+
+    // Raw 11-char id only (alphanumeric, underscore, hyphen)
+    if (preg_match('#^([a-zA-Z0-9_-]{11})$#', $url, $matches)) {
+        return $matches[1];
+    }
+
+    return null;
 }

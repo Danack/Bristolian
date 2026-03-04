@@ -7,9 +7,8 @@ namespace Bristolian\Repo\ApiTokenRepo;
 use Bristolian\Model\Types\ApiToken;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
+use Bristolian\Service\SecureTokenGenerator\SecureTokenGenerator;
 use Ramsey\Uuid\Uuid;
-
-use function generateSecureToken;
 
 /**
  * PDO-based implementation of ApiTokenRepo.
@@ -19,7 +18,8 @@ class PdoApiTokenRepo implements ApiTokenRepo
     private const MAX_CREATE_RETRIES = 5;
 
     public function __construct(
-        private PdoSimple $pdo_simple
+        private PdoSimple $pdo_simple,
+        private SecureTokenGenerator $secureTokenGenerator
     ) {
     }
 
@@ -46,7 +46,7 @@ class PdoApiTokenRepo implements ApiTokenRepo
         SQL;
 
         for ($attempt = 0; $attempt < self::MAX_CREATE_RETRIES; $attempt++) {
-            $token = generateSecureToken();
+            $token = $this->secureTokenGenerator->generate();
             $uuid = Uuid::uuid7();
             $id = $uuid->toString();
 

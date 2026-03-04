@@ -22,6 +22,9 @@ class PdoRoomAnnotationTagRepo implements RoomAnnotationTagRepo
         return array_map(fn ($row) => $row['tag_id'], $rows);
     }
 
+    /**
+     * @param array<string> $tag_ids
+     */
     public function setTagsForRoomAnnotation(string $room_annotation_id, array $tag_ids): void
     {
         $this->pdoSimple->execute(

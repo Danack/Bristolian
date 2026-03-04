@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Bristolian\Service\TinnedFish;
 
+use Bristolian\Service\HttpFetcher\HttpFetcher;
+use Bristolian\Service\HttpFetcher\FetchUriHttpFetcher;
+
 /**
  * Fetches product data from the OpenFoodFacts API.
  * @see https://world.openfoodfacts.org/
@@ -11,6 +14,11 @@ namespace Bristolian\Service\TinnedFish;
 class OpenFoodFactsFetcher
 {
     private const BASE_URL = 'https://world.openfoodfacts.org/api/v0/product/';
+
+    public function __construct(
+        private readonly HttpFetcher $httpFetcher = new FetchUriHttpFetcher()
+    ) {
+    }
 
     /**
      * Fetch product data by barcode from OpenFoodFacts API.
@@ -23,7 +31,7 @@ class OpenFoodFactsFetcher
     {
         $url = self::BASE_URL . urlencode($barcode) . '.json';
 
-        [$statusCode, $body, $headers] = fetchUri($url, 'GET');
+        [$statusCode, $body, $headers] = $this->httpFetcher->fetch($url, 'GET');
 
         if ($statusCode === 404) {
             return null;

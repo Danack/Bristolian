@@ -11,5 +11,8 @@ interface RoomFileTagRepo
      */
     public function getTagIdsForRoomFile(string $room_id, string $stored_file_id): array;
 
+    /**
+     * @param array<string> $tag_ids
+     */
     public function setTagsForRoomFile(string $room_id, string $stored_file_id, array $tag_ids): void;
 }

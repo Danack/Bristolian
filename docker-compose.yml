@@ -65,6 +65,7 @@ services:
       app_network:
     restart: always
     volumes:
+      - ./containers/mysql/my.cnf:/etc/mysql/my.cnf
       - ./data/mysql:/var/lib/mysql
       - ./data/mysql_import:/docker-entrypoint-initdb.d
   installer:

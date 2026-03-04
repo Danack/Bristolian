@@ -236,9 +236,32 @@ TEXT;
         $this->assertSame($expected, $result);
     }
 
+    public static function provides_extract_youtube_video_id(): \Generator
+    {
+        $videoId = 'dQw4w9WgXcQ';
+        yield 'youtu.be short' => ['https://youtu.be/' . $videoId, $videoId];
+        yield 'youtu.be with t param' => ['https://youtu.be/' . $videoId . '?t=123', $videoId];
+        yield 'youtube.com watch' => ['https://www.youtube.com/watch?v=' . $videoId, $videoId];
+        yield 'youtube.com watch with other params' => ['https://youtube.com/watch?foo=bar&v=' . $videoId . '&list=abc', $videoId];
+        yield 'youtube.com embed' => ['https://www.youtube.com/embed/' . $videoId, $videoId];
+        yield 'youtube.com v path' => ['https://youtube.com/v/' . $videoId, $videoId];
+        yield 'raw 11-char id' => [$videoId, $videoId];
+        yield 'id with underscore and hyphen' => ['https://youtu.be/ABcd_12-EFg', 'ABcd_12-EFg'];
+        yield 'empty string' => ['', null];
+        yield 'whitespace only' => ['   ', null];
+        yield 'not a youtube url' => ['https://example.com/foo', null];
+        yield 'youtube url with short id' => ['https://youtu.be/abc', null];
+        yield 'invalid url no id' => ['https://www.youtube.com/watch', null];
+    }
 
-
-
+    /**
+     * @dataProvider provides_extract_youtube_video_id
+     * @covers ::extract_youtube_video_id
+     */
+    public function test_extract_youtube_video_id(string $url, ?string $expected): void
+    {
+        $this->assertSame($expected, extract_youtube_video_id($url));
+    }
 
     public static function provides_sanitise_filename()
     {

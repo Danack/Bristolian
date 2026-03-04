@@ -282,7 +282,7 @@ When creating new migration files:
 3. Implement `getAllQueries_{number}()` function that returns an array of SQL statements
 4. Implement `getDescription_{number}()` function that returns a description string
 
-**Note to AI Assistants**: If you create a migration file, inform the developer that they need to run it manually. Do not attempt to execute migrations programmatically.
+**Note to AI Assistants**: If you create a migration file, inform the developer that they need to run it manually. Do not attempt to execute migrations programmatically. Do not manually create `src/Bristolian/Database/*.php` or `src/Bristolian/Model/Generated/*.php` for new tables. After the developer has run the migration, they (or you, at their request) should run `php cli.php generate:php_table_helper_classes` and `php cli.php generate:model_classes` inside the php_fpm container to generate those files.
 
 ## Redis Access
 

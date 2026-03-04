@@ -22,6 +22,9 @@ class FakeRoomLinkTagRepo implements RoomLinkTagRepo
         return $this->storage[$room_link_id] ?? [];
     }
 
+    /**
+     * @param array<string> $tag_ids
+     */
     public function setTagsForRoomLink(string $room_link_id, array $tag_ids): void
     {
         $this->storage[$room_link_id] = array_values($tag_ids);

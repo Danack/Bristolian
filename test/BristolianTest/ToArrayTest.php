@@ -17,7 +17,6 @@ use Bristolian\Exception\BristolianException;
 
 /**
  * @coversNothing
- * @group wip
  */
 class ToArrayTest extends BaseTestCase
 {

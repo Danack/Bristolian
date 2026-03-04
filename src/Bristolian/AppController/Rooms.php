@@ -10,9 +10,14 @@ use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Filesystem\RoomFileFilesystem;
 use Bristolian\JsonInput\JsonInput;
 use Bristolian\Model\Generated\RoomTag;
+use Bristolian\Model\Generated\RoomVideo;
+use Bristolian\Model\Generated\Video;
 use Bristolian\Model\Types\RoomAnnotationWithTags;
 use Bristolian\Model\Types\RoomFileWithTags;
 use Bristolian\Model\Types\RoomLinkWithTags;
+use Bristolian\Model\Types\RoomVideoWithTags;
+use Bristolian\Parameters\AddVideoParam;
+use Bristolian\Parameters\CreateClipParam;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Parameters\SetEntityTagsParam;
 use Bristolian\Parameters\TagParams;
@@ -26,7 +31,16 @@ use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo;
 use Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo;
 use Bristolian\Repo\RoomTagRepo\RoomTagRepo;
+use Bristolian\Repo\RoomVideoRepo\RoomVideoRepo;
+use Bristolian\Repo\RoomVideoTagRepo\RoomVideoTagRepo;
+use Bristolian\Repo\RoomVideoTranscriptRepo\RoomVideoTranscriptRepo;
+use Bristolian\Repo\VideoRepo\VideoRepo;
+use Bristolian\Response\CreateClipResponse;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
+use Bristolian\Response\FetchTranscriptErrorResponse;
+use Bristolian\Response\FetchTranscriptSuccessResponse;
+use Bristolian\Response\GetTranscriptResponse;
+use Bristolian\Response\GetTranscriptsResponse;
 use Bristolian\Response\IframeHtmlResponse;
 use Bristolian\Response\StoredFileErrorResponse;
 use Bristolian\Response\StreamingResponse;
@@ -36,7 +50,9 @@ use Bristolian\Response\Typed\GetRoomsFilesResponse;
 use Bristolian\Response\Typed\GetRoomsLinksResponse;
 use Bristolian\Response\Typed\GetRoomsAnnotationsResponse;
 use Bristolian\Response\Typed\GetRoomsTagsResponse;
+use Bristolian\Response\Typed\GetRoomsVideosResponse;
 use Bristolian\Service\RequestNonce;
+use Bristolian\Service\YouTube\YouTubeTranscriptFetcher;
 use Bristolian\Service\RoomFileStorage\RoomFileStorage;
 use Bristolian\Service\RoomFileStorage\UploadError;
 use Bristolian\Session\UserSession;
@@ -218,6 +234,172 @@ class Rooms
             );
         }
         return new GetRoomsLinksResponse($withTags);
+    }
+
+    public function getVideos(
+        RoomVideoRepo $roomVideoRepo,
+        VideoRepo $videoRepo,
+        RoomVideoTagRepo $roomVideoTagRepo,
+        RoomTagRepo $roomTagRepo,
+        string $room_id
+    ): GetRoomsVideosResponse {
+        $videos = $roomVideoRepo->getVideosForRoom($room_id);
+        $roomTags = $roomTagRepo->getTagsForRoom($room_id);
+        $roomTagsById = [];
+        foreach ($roomTags as $tag) {
+            $roomTagsById[$tag->tag_id] = $tag;
+        }
+        $parentTitlesById = [];
+        foreach ($videos as $roomVideo) {
+            if ($roomVideo->parent_room_video_id !== null) {
+                $parent = $roomVideoRepo->getRoomVideo($roomVideo->parent_room_video_id);
+                $parentTitlesById[$roomVideo->parent_room_video_id] = $parent !== null
+                    ? ($parent->title ?? $parent->id)
+                    : null;
+            }
+        }
+        $withTags = [];
+        foreach ($videos as $roomVideo) {
+            $tagIds = $roomVideoTagRepo->getTagIdsForRoomVideo($roomVideo->id);
+            $tags = self::resolveTagIdsToTags($tagIds, $roomTagsById);
+            $video = $videoRepo->getById($roomVideo->video_id);
+            $youtube_video_id = $video->youtube_video_id;
+            $parent_title = $roomVideo->parent_room_video_id !== null
+                ? ($parentTitlesById[$roomVideo->parent_room_video_id] ?? null)
+                : null;
+            $withTags[] = new RoomVideoWithTags(
+                $roomVideo->id,
+                $roomVideo->room_id,
+                $roomVideo->video_id,
+                $youtube_video_id,
+                $roomVideo->title,
+                $roomVideo->description,
+                $roomVideo->parent_room_video_id,
+                $parent_title,
+                $roomVideo->start_seconds,
+                $roomVideo->end_seconds,
+                $roomVideo->created_at,
+                $tags
+            );
+        }
+        return new GetRoomsVideosResponse($withTags);
+    }
+
+    public function addVideo(
+        UserSession $appSession,
+        VideoRepo $videoRepo,
+        RoomVideoRepo $roomVideoRepo,
+        JsonInput $jsonInput,
+        string $room_id
+    ): StubResponse {
+        $param = AddVideoParam::createFromArray($jsonInput->getData());
+        $videoId = $videoRepo->create($appSession->getUserId(), $param->youtube_video_id);
+        $roomVideoRepo->addVideo($room_id, $videoId, $param->title, $param->description);
+        return new SuccessResponse();
+    }
+
+    public function createClip(
+        RoomVideoRepo $roomVideoRepo,
+        JsonInput $jsonInput,
+        string $room_id
+    ): StubResponse {
+        $param = CreateClipParam::createFromArray($jsonInput->getData());
+        $source = $roomVideoRepo->getRoomVideoForRoom($room_id, $param->room_video_id);
+        $roomVideo = $roomVideoRepo->addClip(
+            $room_id,
+            $source->video_id,
+            $source->id,
+            $param->title,
+            $param->description,
+            $param->start_seconds,
+            $param->end_seconds
+        );
+        return new CreateClipResponse($roomVideo->id);
+    }
+
+    public function getTranscripts(
+        RoomVideoRepo $roomVideoRepo,
+        RoomVideoTranscriptRepo $transcriptRepo,
+        string $room_id,
+        string $room_video_id
+    ): StubResponse {
+        $roomVideoRepo->getRoomVideoForRoom($room_id, $room_video_id);
+        $transcripts = $transcriptRepo->getTranscriptsForRoomVideo($room_video_id);
+        $list = array_map(fn ($t) => [
+            'id' => $t->id,
+            'transcript_number' => $t->transcript_number,
+            'language' => $t->language,
+            'created_at' => $t->created_at->format('c'),
+        ], $transcripts);
+        return new GetTranscriptsResponse($list);
+    }
+
+    public function getTranscript(
+        RoomVideoRepo $roomVideoRepo,
+        RoomVideoTranscriptRepo $transcriptRepo,
+        string $room_id,
+        string $room_video_id,
+        string $transcript_id
+    ): StubResponse {
+        $roomVideoRepo->getRoomVideoForRoom($room_id, $room_video_id);
+        $transcript = $transcriptRepo->getTranscriptById($transcript_id);
+        if ($transcript->room_video_id !== $room_video_id) {
+            throw new ContentNotFoundException('Transcript not found');
+        }
+        return new GetTranscriptResponse($transcript->vtt_content);
+    }
+
+    public function fetchTranscript(
+        RoomVideoRepo $roomVideoRepo,
+        VideoRepo $videoRepo,
+        RoomVideoTranscriptRepo $transcriptRepo,
+        YouTubeTranscriptFetcher $transcriptFetcher,
+        string $room_id,
+        string $room_video_id
+    ): StubResponse {
+        $roomVideo = $roomVideoRepo->getRoomVideoForRoom($room_id, $room_video_id);
+        $video = $videoRepo->getById($roomVideo->video_id);
+        try {
+            [$vttContent, $language] = $transcriptFetcher->fetchAsVtt($video->youtube_video_id);
+        } catch (\Throwable $e) {
+            return new FetchTranscriptErrorResponse($e->getMessage());
+        }
+        $transcriptId = $transcriptRepo->addTranscript($room_video_id, $language, $vttContent);
+        $transcript = $transcriptRepo->getTranscriptById($transcriptId);
+        return new FetchTranscriptSuccessResponse(
+            $transcriptId,
+            $transcript->transcript_number
+        );
+    }
+
+    public function setVideoTags(
+        RoomVideoRepo $roomVideoRepo,
+        RoomVideoTagRepo $roomVideoTagRepo,
+        RoomTagRepo $roomTagRepo,
+        JsonInput $jsonInput,
+        string $room_id,
+        string $room_video_id
+    ): SuccessResponse {
+        $videos = $roomVideoRepo->getVideosForRoom($room_id);
+        $found = false;
+        foreach ($videos as $v) {
+            if ($v->id === $room_video_id) {
+                $found = true;
+                break;
+            }
+        }
+        if (!$found) {
+            throw ContentNotFoundException::room_video_not_found($room_id, $room_video_id);
+        }
+        $param = SetEntityTagsParam::fromArray($jsonInput->getData());
+        $roomTags = $roomTagRepo->getTagsForRoom($room_id);
+        $validIds = [];
+        foreach ($roomTags as $t) {
+            $validIds[$t->tag_id] = true;
+        }
+        $filtered = array_filter($param->tag_ids, fn (string $id) => isset($validIds[$id]));
+        $roomVideoTagRepo->setTagsForRoomVideo($room_video_id, array_values($filtered));
+        return new SuccessResponse();
     }
 
     public function getAnnotationsForFile(
@@ -502,6 +684,7 @@ class Rooms
     <input type="radio" id="room_tab_links" name="room_tab" class="room_tab_radio">
     <input type="radio" id="room_tab_files" name="room_tab" class="room_tab_radio">
     <input type="radio" id="room_tab_annotations" name="room_tab" class="room_tab_radio">
+    <input type="radio" id="room_tab_video" name="room_tab" class="room_tab_radio">
     <input type="radio" id="room_tab_management" name="room_tab" class="room_tab_radio">
 
     <div class="room_tab_strip">
@@ -509,6 +692,7 @@ class Rooms
       <label for="room_tab_links" class="room_tab_label">Links</label>
       <label for="room_tab_files" class="room_tab_label">Files</label>
       <label for="room_tab_annotations" class="room_tab_label">Annotations</label>
+      <label for="room_tab_video" class="room_tab_label">Video</label>
       <label for="room_tab_management" class="room_tab_label">Room Management</label>
     </div>
 
@@ -529,6 +713,10 @@ class Rooms
 
       <div class="room_tab_panel room_tab_panel_annotations">
         <div class='room_annotations_panel' data-widgety_json='$widget_data'></div>
+      </div>
+
+      <div class="room_tab_panel room_tab_panel_video">
+        <div class='room_videos_panel' data-widgety_json='$widget_data'></div>
       </div>
 
       <div class="room_tab_panel room_tab_panel_management">

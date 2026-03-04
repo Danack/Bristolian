@@ -136,6 +136,9 @@ function injectionParams()
         Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::class =>
             \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::class,
 
+        Bristolian\Service\SecureTokenGenerator\SecureTokenGenerator::class =>
+            \Bristolian\Service\SecureTokenGenerator\RandomBytesSecureTokenGenerator::class,
+
         Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::class =>
             \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::class,
 
@@ -147,6 +150,18 @@ function injectionParams()
 
         \Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo::class =>
             \Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::class,
+
+        \Bristolian\Repo\VideoRepo\VideoRepo::class =>
+            \Bristolian\Repo\VideoRepo\PdoVideoRepo::class,
+
+        \Bristolian\Repo\RoomVideoRepo\RoomVideoRepo::class =>
+            \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class,
+
+        \Bristolian\Repo\RoomVideoTranscriptRepo\RoomVideoTranscriptRepo::class =>
+            \Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::class,
+
+        \Bristolian\Repo\RoomVideoTagRepo\RoomVideoTagRepo::class =>
+            \Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::class,
     ];
 
     // Delegate the creation of types to callables.

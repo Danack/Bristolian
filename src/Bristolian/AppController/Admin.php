@@ -8,7 +8,7 @@ use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\UserSearch\UserSearch;
 use Bristolian\Session\UserSession;
-use Bristolian\UserNotifier\UserNotifier;
+//use Bristolian\UserNotifier\UserNotifier;
 use SlimDispatcher\Response\HtmlNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\RedirectResponse;

@@ -53,4 +53,34 @@ class ContentNotFoundExceptionTest extends BaseTestCase
         $this->assertStringContainsString($file_id, $exception->getMessage());
         $this->assertStringContainsString("file with id", $exception->getMessage());
     }
+
+    /**
+     * @covers \Bristolian\Exception\ContentNotFoundException
+     */
+    public function testWorks_room_video_not_found()
+    {
+        $room_id = "room_xyz";
+        $room_video_id = "rv_123";
+
+        $exception = ContentNotFoundException::room_video_not_found($room_id, $room_video_id);
+
+        $this->assertInstanceOf(ContentNotFoundException::class, $exception);
+        $this->assertStringContainsString($room_id, $exception->getMessage());
+        $this->assertStringContainsString($room_video_id, $exception->getMessage());
+        $this->assertStringContainsString("room video with id", $exception->getMessage());
+    }
+
+    /**
+     * @covers \Bristolian\Exception\ContentNotFoundException
+     */
+    public function testWorks_video_not_found()
+    {
+        $video_id = "video_999";
+
+        $exception = ContentNotFoundException::video_not_found($video_id);
+
+        $this->assertInstanceOf(ContentNotFoundException::class, $exception);
+        $this->assertStringContainsString($video_id, $exception->getMessage());
+        $this->assertStringContainsString("video with id", $exception->getMessage());
+    }
 }

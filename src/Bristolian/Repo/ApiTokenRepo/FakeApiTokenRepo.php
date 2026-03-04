@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Bristolian\Repo\ApiTokenRepo;
 
 use Bristolian\Model\Types\ApiToken;
-
-use function generateSecureToken;
+use Bristolian\Service\SecureTokenGenerator\SecureTokenGenerator;
+use Bristolian\Service\SecureTokenGenerator\RandomBytesSecureTokenGenerator;
 
 /**
  * Fake implementation of ApiTokenRepo for testing.
@@ -18,12 +18,17 @@ class FakeApiTokenRepo implements ApiTokenRepo
      */
     private array $tokens = [];
 
+    private SecureTokenGenerator $secureTokenGenerator;
+
     /**
      * @param ApiToken[] $initialTokens
      */
-    public function __construct(array $initialTokens = [])
-    {
+    public function __construct(
+        array $initialTokens = [],
+        SecureTokenGenerator $secureTokenGenerator = new RandomBytesSecureTokenGenerator()
+    ) {
         $this->tokens = $initialTokens;
+        $this->secureTokenGenerator = $secureTokenGenerator;
     }
 
     private const MAX_CREATE_RETRIES = 5;
@@ -31,7 +36,7 @@ class FakeApiTokenRepo implements ApiTokenRepo
     public function createToken(string $name): ApiToken
     {
         for ($attempt = 0; $attempt < self::MAX_CREATE_RETRIES; $attempt++) {
-            $token = generateSecureToken();
+            $token = $this->secureTokenGenerator->generate();
 
             $alreadyExists = false;
             foreach ($this->tokens as $existing) {

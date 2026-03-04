@@ -343,6 +343,64 @@ function getAllApiRoutes()
             ],
         ],
 
+        // List YouTube videos and clips for the room.
+        [
+            '/api/rooms/{room_id:.*}/videos',
+            'GET',
+            'Bristolian\AppController\Rooms::getVideos',
+            [
+                ['videos', \Bristolian\Model\Types\RoomVideoWithTags::class, true]
+            ],
+        ],
+
+        // Add a new YouTube video to the room (body: url, title?, description?).
+        [
+            '/api/rooms/{room_id:.*}/videos',
+            'POST',
+            'Bristolian\AppController\Rooms::addVideo',
+            null,
+        ],
+
+        // Create a clip (time range) from an existing room video (body: room_video_id, start_seconds, end_seconds, title?, description?).
+        [
+            '/api/rooms/{room_id:.*}/videos/clips',
+            'POST',
+            'Bristolian\AppController\Rooms::createClip',
+            null,
+        ],
+
+        // List stored transcripts for a room video.
+        [
+            '/api/rooms/{room_id:.*}/videos/{room_video_id:.*}/transcripts',
+            'GET',
+            'Bristolian\AppController\Rooms::getTranscripts',
+            null,
+        ],
+
+        // Get a single transcript by id (returns VTT content etc.).
+        [
+            '/api/rooms/{room_id:.*}/videos/{room_video_id:.*}/transcripts/{transcript_id:.*}',
+            'GET',
+            'Bristolian\AppController\Rooms::getTranscript',
+            null,
+        ],
+
+        // Fetch transcript from YouTube and store it (unofficial API); unique per (room_video_id, language).
+        [
+            '/api/rooms/{room_id:.*}/videos/{room_video_id:.*}/transcripts/fetch',
+            'POST',
+            'Bristolian\AppController\Rooms::fetchTranscript',
+            null,
+        ],
+
+        // Set room tags on a video (body: tag_ids).
+        [
+            '/api/rooms/{room_id:.*}/videos/{room_video_id:.*}/tags',
+            'PUT',
+            'Bristolian\AppController\Rooms::setVideoTags',
+            null,
+        ],
+
         [
             '/api/rooms/{room_id:.*}/annotation/{file_id:.*}',
             'POST',

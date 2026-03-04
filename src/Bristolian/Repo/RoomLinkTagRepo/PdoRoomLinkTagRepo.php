@@ -22,6 +22,9 @@ class PdoRoomLinkTagRepo implements RoomLinkTagRepo
         return array_map(fn ($row) => $row['tag_id'], $rows);
     }
 
+    /**
+     * @param array<string> $tag_ids
+     */
     public function setTagsForRoomLink(string $room_link_id, array $tag_ids): void
     {
         $this->pdoSimple->execute(

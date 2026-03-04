@@ -603,6 +603,7 @@ class GenerateFiles
             \Bristolian\Model\Types\RoomFileWithTags::class,
             \Bristolian\Model\Types\RoomLinkWithTags::class,
             \Bristolian\Model\Types\RoomAnnotationWithTags::class,
+            \Bristolian\Model\Types\RoomVideoWithTags::class,
             \Bristolian\Model\Types\UserProfile::class,
             \Bristolian\Model\Types\UserDisplayName::class,
             \Bristolian\Model\Types\UserProfileWithDisplayName::class,

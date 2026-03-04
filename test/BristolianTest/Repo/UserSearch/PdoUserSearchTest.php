@@ -18,6 +18,14 @@ class PdoUserSearchTest extends BaseTestCase
 {
     use TestPlaceholders;
 
+    /**
+     * @covers \Bristolian\Repo\UserSearch\PdoUserSearch
+     * @return void
+     * @throws \Bristolian\PdoSimple\PdoSimpleException
+     * @throws \DI\InjectionException
+     * @throws \DataType\Exception\ValidationException
+     * @throws \Random\RandomException
+     */
     public function testWorks()
     {
         $prefix = 'username_testWorks' . time();

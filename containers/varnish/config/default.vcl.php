@@ -240,6 +240,9 @@ sub vcl_backend_response {
 ###############################################################################
 sub vcl_deliver {
 
+  # Remove the cache tags invalidation to the user response
+  unset resp.http.X-Cache-Tags;
+
   # Insert Diagnostic header to show Hit or Miss
   if (obj.hits > 0) {
       set resp.http.X-Cache = "HIT";

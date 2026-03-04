@@ -16,6 +16,8 @@ class EchoCliOutput implements CliOutput
 
     public function exit(int $code): never
     {
+        // @codeCoverageIgnoreStart
         exit($code);
+        // @codeCoverageIgnoreEnd
     }
 }

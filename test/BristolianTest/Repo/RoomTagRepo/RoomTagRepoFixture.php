@@ -18,9 +18,12 @@ use VarMap\ArrayVarMap;
  */
 abstract class RoomTagRepoFixture extends BaseTestCase
 {
-    private const TEST_ROOM_ID = 'test-room-id-123';
-
     abstract public function getTestInstance(): RoomTagRepo;
+
+    /**
+     * Room id to use for tests (must exist in DB for PdoRoomTagRepo).
+     */
+    abstract protected function getTestRoomId(): string;
 
     /**
      * @covers \Bristolian\Repo\RoomTagRepo\RoomTagRepo::getTagsForRoom
@@ -29,7 +32,7 @@ abstract class RoomTagRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $tags = $repo->getTagsForRoom(self::TEST_ROOM_ID);
+        $tags = $repo->getTagsForRoom($this->getTestRoomId());
 
         foreach ($tags as $tag) {
             $this->assertInstanceOf(RoomTag::class, $tag);
@@ -53,10 +56,10 @@ abstract class RoomTagRepoFixture extends BaseTestCase
             'description' => 'Second tag',
         ]));
 
-        $repo->createTag(self::TEST_ROOM_ID, $tagParam1);
-        $repo->createTag(self::TEST_ROOM_ID, $tagParam2);
+        $repo->createTag($this->getTestRoomId(), $tagParam1);
+        $repo->createTag($this->getTestRoomId(), $tagParam2);
 
-        $tags = $repo->getTagsForRoom(self::TEST_ROOM_ID);
+        $tags = $repo->getTagsForRoom($this->getTestRoomId());
 
         $this->assertGreaterThanOrEqual(2, count($tags));
         $this->assertContainsOnlyInstancesOf(RoomTag::class, $tags);
@@ -67,6 +70,8 @@ abstract class RoomTagRepoFixture extends BaseTestCase
     }
 
     /**
+     *
+     * @group production_test
      * @covers \Bristolian\Repo\RoomTagRepo\RoomTagRepo::createTag
      * @covers \Bristolian\Exception\TooManyRoomTagsException
      */
@@ -79,7 +84,7 @@ abstract class RoomTagRepoFixture extends BaseTestCase
                 'text' => "tag-$i",
                 'description' => "Tag $i",
             ]));
-            $repo->createTag(self::TEST_ROOM_ID, $tagParam);
+            $repo->createTag($this->getTestRoomId(), $tagParam);
         }
 
         $tagParamOver = TagParams::createFromVarMap(new ArrayVarMap([
@@ -88,6 +93,7 @@ abstract class RoomTagRepoFixture extends BaseTestCase
         ]));
 
         $this->expectException(TooManyRoomTagsException::class);
-        $repo->createTag(self::TEST_ROOM_ID, $tagParamOver);
+        $repo->createTag($this->getTestRoomId(), $tagParamOver);
     }
+
 }

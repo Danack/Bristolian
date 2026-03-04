@@ -1,5 +1,9 @@
 # Container-Based Development Instructions
 
+## Library code location
+
+All library code is in the `vendor` directory. It can always be read there when you need to understand or extend third-party behaviour.
+
 ## Important: All Commands Must Run Inside Containers
 
 This project uses Docker containers for development. **All commands, scripts, and tools must be executed inside the appropriate container**, not on the host machine.
@@ -80,6 +84,11 @@ Common container names (may vary based on Docker Compose project name):
 6. **Check js_builder logs after editing TypeScript files** - Use `docker logs bristolian-js_builder-1 --tail 100` to verify TypeScript compilation succeeded (look for "webpack compiled" message)
 7. Frontend and backend are deployed together; avoid legacy/fallback response handling—prefer updating both sides in tandem.
 8. Never edit generated files, always fix the generation if there is a problem.
+9. **Do not manually create Database or Model classes for new tables.** When adding a new migration that creates tables: create only the migration file; then wait for the user to run the migration. After the migration has been run, use the project generators to create the table helpers and model classes: `php cli.php generate:php_table_helper_classes` and `php cli.php generate:model_classes` (run inside the php_fpm container). Do not write `src/Bristolian/Database/*.php` or `src/Bristolian/Model/Generated/*.php` by hand for new tables.
+10. **Prefer plain functions over classes with only static methods.** Put new functions in `src/functions.php` (global namespace) unless they are chat-specific, in which case use the appropriate chat functions file. Do not create classes that only have static methods for stateless helpers; use functions in `functions.php` instead.
+11. **Do not use abbreviations for variable names.** Use full words (e.g. `$matches` not `$m`, `$videoId` not `$vid`, `$configuration` not `$config`).
+12. **Use the DataType library for parameter classes.** Do not parse request/JSON arrays by hand. Create param classes that implement `DataType` and `StaticFactory`, use the traits `CreateFromArray`, `CreateFromRequest`, `CreateFromVarMap`, and `GetInputTypesFromAttributes`, and define each property with an attribute from `Bristolian\Parameters\PropertyType\` or `DataType\` (e.g. `BasicString`, `BasicInteger`, `OptionalBasicString`). See e.g. `BristolStairsGpsParams`, `CreateClipParam`, or `LinkParam` for the pattern. The DataType library source lives in `vendor/danack/datatype/` (Composer package `danack/datatype`)—consult it for trait behaviour, built-in extract rules, and validation messages when implementing or debugging param classes.
+13. **Do not use raw `JsonNoCacheResponse` unless instructed to.** Always create a custom response class in `src/Bristolian/Response` (or a subdirectory such as `Response/TinnedFish`) that implements `StubResponse`, and return that from controllers. See e.g. `CreateClipResponse`, `SuccessResponse`, `ValidationErrorResponse`.
 
 ## Sharing Constants Between PHP and TypeScript
 

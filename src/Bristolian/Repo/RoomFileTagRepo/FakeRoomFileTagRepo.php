@@ -27,6 +27,9 @@ class FakeRoomFileTagRepo implements RoomFileTagRepo
         return $this->storage[$this->key($room_id, $stored_file_id)] ?? [];
     }
 
+    /**
+     * @param array<string> $tag_ids
+     */
     public function setTagsForRoomFile(string $room_id, string $stored_file_id, array $tag_ids): void
     {
         $this->storage[$this->key($room_id, $stored_file_id)] = array_values($tag_ids);

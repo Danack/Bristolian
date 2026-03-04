@@ -24,6 +24,7 @@ import { RoomFilesPanel } from "./RoomFilesPanel";
 import { RoomFileUploadPanel } from "./RoomFileUploadPanel";
 import { RoomLinksPanel } from "./RoomLinksPanel";
 import { RoomAnnotationsPanel } from "./RoomAnnotationsPanel";
+import { RoomVideosPanel } from "./RoomVideosPanel";
 import { RoomManagementPanel } from "./RoomManagementPanel";
 import { AnnotationPanel } from "./AnnotationPanel";
 import { TeleprompterPanel } from "./TeleprompterPanel";
@@ -103,6 +104,10 @@ let panels: WidgetClassBinding[] = [
     {
         class: 'room_annotations_panel',
         component: RoomAnnotationsPanel
+    },
+    {
+        class: 'room_videos_panel',
+        component: RoomVideosPanel
     },
     {
         class: 'room_management_panel',

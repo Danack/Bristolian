@@ -11,5 +11,8 @@ interface RoomAnnotationTagRepo
      */
     public function getTagIdsForRoomAnnotation(string $room_annotation_id): array;
 
+    /**
+     * @param array<string> $tag_ids
+     */
     public function setTagsForRoomAnnotation(string $room_annotation_id, array $tag_ids): void;
 }
