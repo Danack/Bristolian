@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Bristolian\Response;
 
+use Bristolian\Model\Types\RoomVideoTranscriptList;
 use SlimDispatcher\Response\StubResponse;
 
 /**
  * Response for GET room video transcripts list (result + data.transcripts).
+ * Converts RoomVideoTranscriptList to JSON-serializable form via convertToValueSafe.
  */
 class GetTranscriptsResponse implements StubResponse
 {
     private string $body;
 
-    /**
-     * @param list<array<string, mixed>> $transcripts Each item: id, transcript_number, language, created_at
-     */
-    public function __construct(array $transcripts)
+    public function __construct(RoomVideoTranscriptList $transcriptList)
     {
+        $convertedTranscripts = \convertToValueSafe($transcriptList->transcripts);
         $response = [
             'result' => 'success',
-            'data' => ['transcripts' => $transcripts],
+            'data' => ['transcripts' => $convertedTranscripts],
         ];
         $this->body = json_encode_safe($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }

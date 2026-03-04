@@ -238,51 +238,9 @@ class Rooms
 
     public function getVideos(
         RoomVideoRepo $roomVideoRepo,
-        VideoRepo $videoRepo,
-        RoomVideoTagRepo $roomVideoTagRepo,
-        RoomTagRepo $roomTagRepo,
         string $room_id
     ): GetRoomsVideosResponse {
-        $videos = $roomVideoRepo->getVideosForRoom($room_id);
-        $roomTags = $roomTagRepo->getTagsForRoom($room_id);
-        $roomTagsById = [];
-        foreach ($roomTags as $tag) {
-            $roomTagsById[$tag->tag_id] = $tag;
-        }
-        $parentTitlesById = [];
-        foreach ($videos as $roomVideo) {
-            if ($roomVideo->parent_room_video_id !== null) {
-                $parent = $roomVideoRepo->getRoomVideo($roomVideo->parent_room_video_id);
-                $parentTitlesById[$roomVideo->parent_room_video_id] = $parent !== null
-                    ? ($parent->title ?? $parent->id)
-                    : null;
-            }
-        }
-        $withTags = [];
-        foreach ($videos as $roomVideo) {
-            $tagIds = $roomVideoTagRepo->getTagIdsForRoomVideo($roomVideo->id);
-            $tags = self::resolveTagIdsToTags($tagIds, $roomTagsById);
-            $video = $videoRepo->getById($roomVideo->video_id);
-            $youtube_video_id = $video->youtube_video_id;
-            $parent_title = $roomVideo->parent_room_video_id !== null
-                ? ($parentTitlesById[$roomVideo->parent_room_video_id] ?? null)
-                : null;
-            $withTags[] = new RoomVideoWithTags(
-                $roomVideo->id,
-                $roomVideo->room_id,
-                $roomVideo->video_id,
-                $youtube_video_id,
-                $roomVideo->title,
-                $roomVideo->description,
-                $roomVideo->parent_room_video_id,
-                $parent_title,
-                $roomVideo->start_seconds,
-                $roomVideo->end_seconds,
-                $roomVideo->created_at,
-                $tags
-            );
-        }
-        return new GetRoomsVideosResponse($withTags);
+        return new GetRoomsVideosResponse($roomVideoRepo->getVideosForRoomWithTags($room_id));
     }
 
     public function addVideo(
@@ -318,34 +276,19 @@ class Rooms
     }
 
     public function getTranscripts(
-        RoomVideoRepo $roomVideoRepo,
         RoomVideoTranscriptRepo $transcriptRepo,
-        string $room_id,
         string $room_video_id
     ): StubResponse {
-        $roomVideoRepo->getRoomVideoForRoom($room_id, $room_video_id);
-        $transcripts = $transcriptRepo->getTranscriptsForRoomVideo($room_video_id);
-        $list = array_map(fn ($t) => [
-            'id' => $t->id,
-            'transcript_number' => $t->transcript_number,
-            'language' => $t->language,
-            'created_at' => $t->created_at->format('c'),
-        ], $transcripts);
-        return new GetTranscriptsResponse($list);
+        $transcriptList = $transcriptRepo->getTranscriptsForRoomVideo($room_video_id);
+        return new GetTranscriptsResponse($transcriptList);
     }
 
     public function getTranscript(
-        RoomVideoRepo $roomVideoRepo,
         RoomVideoTranscriptRepo $transcriptRepo,
-        string $room_id,
         string $room_video_id,
         string $transcript_id
     ): StubResponse {
-        $roomVideoRepo->getRoomVideoForRoom($room_id, $room_video_id);
         $transcript = $transcriptRepo->getTranscriptById($transcript_id);
-        if ($transcript->room_video_id !== $room_video_id) {
-            throw new ContentNotFoundException('Transcript not found');
-        }
         return new GetTranscriptResponse($transcript->vtt_content);
     }
 
@@ -354,10 +297,9 @@ class Rooms
         VideoRepo $videoRepo,
         RoomVideoTranscriptRepo $transcriptRepo,
         YouTubeTranscriptFetcher $transcriptFetcher,
-        string $room_id,
         string $room_video_id
     ): StubResponse {
-        $roomVideo = $roomVideoRepo->getRoomVideoForRoom($room_id, $room_video_id);
+        $roomVideo = $roomVideoRepo->getRoomVideo($room_video_id);
         $video = $videoRepo->getById($roomVideo->video_id);
         try {
             [$vttContent, $language] = $transcriptFetcher->fetchAsVtt($video->youtube_video_id);

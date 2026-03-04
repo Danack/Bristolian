@@ -5,6 +5,7 @@ namespace Bristolian\Repo\RoomVideoTranscriptRepo;
 use Bristolian\Database\room_video_transcript;
 use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\RoomVideoTranscript;
+use Bristolian\Model\Types\RoomVideoTranscriptList;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 
@@ -14,17 +15,15 @@ class PdoRoomVideoTranscriptRepo implements RoomVideoTranscriptRepo
     {
     }
 
-    /**
-     * @return RoomVideoTranscript[]
-     */
-    public function getTranscriptsForRoomVideo(string $room_video_id): array
+    public function getTranscriptsForRoomVideo(string $room_video_id): RoomVideoTranscriptList
     {
         $sql = room_video_transcript::SELECT . " where room_video_id = :room_video_id order by transcript_number asc";
-        return $this->pdoSimple->fetchAllAsObjectConstructor(
+        $transcripts = $this->pdoSimple->fetchAllAsObjectConstructor(
             $sql,
             ['room_video_id' => $room_video_id],
             RoomVideoTranscript::class
         );
+        return new RoomVideoTranscriptList($transcripts);
     }
 
     public function addTranscript(

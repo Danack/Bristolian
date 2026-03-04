@@ -254,7 +254,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
 
     loadTranscriptsForVideo(room_video_id: string) {
         this.setState({ transcripts: [], selectedTranscriptId: null, vttContent: null, vttCues: [] });
-        fetch(`/api/rooms/${this.props.room_id}/videos/${room_video_id}/transcripts`)
+        fetch(`/api/room-videos/${room_video_id}/transcripts`)
             .then((r) => r.json())
             .then((data) => {
                 if (data.result === "success" && Array.isArray(data.data.transcripts)) {
@@ -265,7 +265,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
     }
 
     loadTranscriptContent(room_video_id: string, transcript_id: string) {
-        fetch(`/api/rooms/${this.props.room_id}/videos/${room_video_id}/transcripts/${transcript_id}`)
+        fetch(`/api/room-videos/${room_video_id}/transcripts/${transcript_id}`)
             .then((r) => r.json())
             .then((data) => {
                 if (data.result === "success" && data.data.vtt_content != null) {
@@ -278,7 +278,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
 
     fetchTranscript(room_video_id: string) {
         this.setState({ transcriptFetching: true });
-        fetch(`/api/rooms/${this.props.room_id}/videos/${room_video_id}/transcripts/fetch`, { method: "POST" })
+        fetch(`/api/room-videos/${room_video_id}/transcripts/fetch`, { method: "POST" })
             .then((r) => r.json())
             .then((data) => {
                 this.setState({ transcriptFetching: false });
@@ -321,8 +321,8 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         return (
             <tr key={video.id}>
                 <td>
-                    {isClip && video.parent_title && (
-                        <span className="room_video_clip_badge">Clip of: {video.parent_title}</span>
+                    {isClip && (
+                        <span className="room_video_clip_badge">Clip</span>
                     )}
                     <span>{title}</span>
                     {video.description && <div className="room_video_description">{video.description}</div>}

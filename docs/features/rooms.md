@@ -56,9 +56,9 @@ Migrations: `db/migrations/35_room_entity_tags.php`, `db/migrations/36_room_vide
 - GET `/api/rooms/{room_id}/videos` → `GetRoomsVideosResponse` (videos: RoomVideoWithTags[])
 - POST `/api/rooms/{room_id}/videos` – body `{ "url", "title?", "description?" }`
 - POST `/api/rooms/{room_id}/videos/clips` – body `{ "room_video_id", "start_seconds", "end_seconds", "description?" }`
-- GET `/api/rooms/{room_id}/videos/{room_video_id}/transcripts` – list transcripts
-- GET `/api/rooms/{room_id}/videos/{room_video_id}/transcripts/{transcript_id}` – get one transcript VTT
-- POST `/api/rooms/{room_id}/videos/{room_video_id}/transcripts/fetch` – fetch transcript from YouTube (unofficial API)
+- GET `/api/room-videos/{room_video_id}/transcripts` – list transcripts (no room in path; transcripts are not secret)
+- GET `/api/room-videos/{room_video_id}/transcripts/{transcript_id}` – get one transcript VTT
+- POST `/api/room-videos/{room_video_id}/transcripts/fetch` – fetch transcript from YouTube (unofficial API)
 - PUT `/api/rooms/{room_id}/videos/{room_video_id}/tags` – body `{ "tag_ids": string[] }`
 - GET `/api/rooms/{room_id}/annotations` → `GetRoomsAnnotationsResponse` (annotations: RoomAnnotationWithTags[])
 - GET `/api/rooms/{room_id}/file/{file_id}/annotations` → `GetRoomsFileAnnotationsResponse` (annotations: RoomAnnotationWithTags[])

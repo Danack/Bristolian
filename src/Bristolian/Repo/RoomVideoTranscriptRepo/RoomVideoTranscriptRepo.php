@@ -3,13 +3,14 @@
 namespace Bristolian\Repo\RoomVideoTranscriptRepo;
 
 use Bristolian\Model\Generated\RoomVideoTranscript;
+use Bristolian\Model\Types\RoomVideoTranscriptList;
 
 interface RoomVideoTranscriptRepo
 {
     /**
-     * @return RoomVideoTranscript[]
+     * Return all transcripts for a room video, ordered by transcript_number.
      */
-    public function getTranscriptsForRoomVideo(string $room_video_id): array;
+    public function getTranscriptsForRoomVideo(string $room_video_id): RoomVideoTranscriptList;
 
     /**
      * Insert a transcript; transcript_number is computed via subquery (next per room_video_id).

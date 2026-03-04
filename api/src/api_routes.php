@@ -369,9 +369,9 @@ function getAllApiRoutes()
             null,
         ],
 
-        // List stored transcripts for a room video.
+        // List stored transcripts for a room video (no room_id in path; transcripts are not secret).
         [
-            '/api/rooms/{room_id:.*}/videos/{room_video_id:.*}/transcripts',
+            '/api/room-videos/{room_video_id:.*}/transcripts',
             'GET',
             'Bristolian\AppController\Rooms::getTranscripts',
             null,
@@ -379,7 +379,7 @@ function getAllApiRoutes()
 
         // Get a single transcript by id (returns VTT content etc.).
         [
-            '/api/rooms/{room_id:.*}/videos/{room_video_id:.*}/transcripts/{transcript_id:.*}',
+            '/api/room-videos/{room_video_id:.*}/transcripts/{transcript_id:.*}',
             'GET',
             'Bristolian\AppController\Rooms::getTranscript',
             null,
@@ -387,7 +387,7 @@ function getAllApiRoutes()
 
         // Fetch transcript from YouTube and store it (unofficial API); unique per (room_video_id, language).
         [
-            '/api/rooms/{room_id:.*}/videos/{room_video_id:.*}/transcripts/fetch',
+            '/api/room-videos/{room_video_id:.*}/transcripts/fetch',
             'POST',
             'Bristolian\AppController\Rooms::fetchTranscript',
             null,

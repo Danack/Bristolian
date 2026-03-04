@@ -25,6 +25,11 @@ class ContentNotFoundException extends BristolianException
         return new self("room video with id ($room_video_id) in room ($room_id) not found");
     }
 
+    public static function room_video_not_found_by_id(string $room_video_id): self
+    {
+        return new self("room video with id ($room_video_id) not found");
+    }
+
     public static function video_not_found(string $video_id): self
     {
         return new self("video with id ($video_id) not found");
