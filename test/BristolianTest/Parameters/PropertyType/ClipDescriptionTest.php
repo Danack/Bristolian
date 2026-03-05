@@ -28,9 +28,9 @@ class ClipDescriptionTest extends BaseTestCase
         ];
         yield 'short allowed min 0' => [['description_input' => 'x'], 'x'];
         yield 'max length' => [['description_input' => str_repeat('a', ClipDescription::DESCRIPTION_MAXIMUM_LENGTH)], str_repeat('a', ClipDescription::DESCRIPTION_MAXIMUM_LENGTH)];
-        yield 'missing' => [[], null];
         yield 'empty string' => [['description_input' => ''], null];
         yield 'whitespace only' => [['description_input' => '   '], null];
+        yield 'null value' => [['description_input' => null], null];
     }
 
     /**
@@ -49,7 +49,8 @@ class ClipDescriptionTest extends BaseTestCase
      */
     public static function provides_invalid_input_and_expected_error(): \Generator
     {
-        yield 'null value' => [['description_input' => null], Messages::STRING_EXPECTED];
+        yield 'missing' => [[], Messages::VALUE_NOT_SET];
+
         yield 'too long' => [['description_input' => str_repeat('a', ClipDescription::DESCRIPTION_MAXIMUM_LENGTH + 1)], Messages::STRING_TOO_LONG];
     }
 

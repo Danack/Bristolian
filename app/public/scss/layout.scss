@@ -160,6 +160,8 @@
 #room_tab_annotations:checked ~ .room_tab_strip .room_tab_label[for="room_tab_annotations"],
 #room_tab_video:checked ~ .room_tab_strip .room_tab_label[for="room_tab_video"],
 #room_tab_management:checked ~ .room_tab_strip .room_tab_label[for="room_tab_management"] {
+  position: relative;
+  z-index: 1;
   background: #fff;
   color: #000;
   border: 1px solid #333;

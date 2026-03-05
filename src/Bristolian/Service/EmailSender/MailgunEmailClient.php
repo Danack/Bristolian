@@ -3,12 +3,15 @@
 namespace Bristolian\Service\EmailSender;
 
 use Bristolian\Model\Types\Email;
+use Bristolian\Service\CliOutput\CliOutput;
 use Mailgun\Mailgun;
 
 class MailgunEmailClient implements EmailClient
 {
-    public function __construct(private Mailgun $mailgun)
-    {
+    public function __construct(
+        private Mailgun $mailgun,
+        private CliOutput $cliOutput
+    ) {
     }
 
     public function send(Email $email): bool
@@ -27,8 +30,8 @@ class MailgunEmailClient implements EmailClient
             );
             return true;
         }
-        catch (\Mailgun\Exception\HttpClientException $hce) {
-            \error_log("Exception: " . $hce->getMessage());
+        catch (\Mailgun\Exception\HttpClientException $httpClientException) {
+            $this->cliOutput->writeError("Exception: " . $httpClientException->getMessage());
         }
         return false;
     }

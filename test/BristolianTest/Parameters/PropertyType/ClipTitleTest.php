@@ -28,9 +28,9 @@ class ClipTitleTest extends BaseTestCase
         ];
         yield 'single char' => [['title_input' => 'x'], 'x'];
         yield 'max length' => [['title_input' => str_repeat('a', ClipTitle::TITLE_MAXIMUM_LENGTH)], str_repeat('a', ClipTitle::TITLE_MAXIMUM_LENGTH)];
-        yield 'missing' => [[], null];
         yield 'empty string' => [['title_input' => ''], null];
         yield 'whitespace only' => [['title_input' => '   '], null];
+        yield 'null value' => [['title_input' => null], null];
     }
 
     /**
@@ -49,7 +49,7 @@ class ClipTitleTest extends BaseTestCase
      */
     public static function provides_invalid_input_and_expected_error(): \Generator
     {
-        yield 'null value' => [['title_input' => null], Messages::STRING_EXPECTED];
+        yield 'missing' => [[], Messages::VALUE_NOT_SET];
         yield 'too long' => [['title_input' => str_repeat('a', ClipTitle::TITLE_MAXIMUM_LENGTH + 1)], Messages::STRING_TOO_LONG];
     }
 

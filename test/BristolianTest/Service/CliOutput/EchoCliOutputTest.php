@@ -40,4 +40,24 @@ class EchoCliOutputTest extends BaseTestCase
 
         $this->assertSame('onetwo', $out);
     }
+
+//    /**
+//     * @covers \Bristolian\Service\CliOutput\EchoCliOutput::writeError
+//     */
+//    public function test_writeError_invokes_error_log_without_throwing(): void
+//    {
+////        $old = ini_get('error_log');
+////        ini_set('error_log', '/dev/null');
+////
+////        try {
+////            // run code that calls error_log()
+////        } finally {
+////            ini_set('error_log', $old);
+////        }
+////
+//
+//        $output = new EchoCliOutput();
+//        $output->writeError('test error message');
+//        $this->addToAssertionCount(1);
+//    }
 }

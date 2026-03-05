@@ -28,6 +28,7 @@ class MemeOcr
 
     public function process(): void
     {
+        // @codeCoverageIgnoreStart
         $callable = function () {
             $this->runInternal();
         };
@@ -38,6 +39,7 @@ class MemeOcr
             $sleepTime = 1,
             $maxRunTime = 600
         );
+        // @codeCoverageIgnoreEnd
     }
 
     public function runInternal(): void

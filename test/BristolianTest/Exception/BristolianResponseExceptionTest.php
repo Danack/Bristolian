@@ -1,6 +1,6 @@
 <?php
 
-namespace BristolianTest;
+declare(strict_types=1);
 
 namespace BristolianTest\Exception;
 
@@ -13,12 +13,14 @@ use BristolianTest\BaseTestCase;
 class BristolianResponseExceptionTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Exception\BristolianResponseException
+     * @covers \Bristolian\Exception\BristolianResponseException::failedToOpenFile
      */
-    public function testWorks_cannot_instantiate()
+    public function test_failedToOpenFile_returns_exception_with_filename_in_message(): void
     {
-        $exception = BristolianResponseException::failedToOpenFile(__FILE__);
+        $filename = '/some/path/to/file.txt';
+        $exception = BristolianResponseException::failedToOpenFile($filename);
         $this->assertInstanceOf(BristolianResponseException::class, $exception);
-        $this->assertStringContainsString(__FILE__, $exception->getMessage());
+        $this->assertStringContainsString($filename, $exception->getMessage());
+        $this->assertStringContainsString('Failed to open file', $exception->getMessage());
     }
 }

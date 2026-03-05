@@ -1324,16 +1324,16 @@
         },
         {
             "name": "amphp/redis",
-            "version": "v2.0.3",
+            "version": "v2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/redis.git",
-                "reference": "1572c2fec2849d272570919e998f9a3c1a5b1703"
+                "reference": "964bcf6c2574645058371925a3668240a622bdab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/redis/zipball/1572c2fec2849d272570919e998f9a3c1a5b1703",
-                "reference": "1572c2fec2849d272570919e998f9a3c1a5b1703",
+                "url": "https://api.github.com/repos/amphp/redis/zipball/964bcf6c2574645058371925a3668240a622bdab",
+                "reference": "964bcf6c2574645058371925a3668240a622bdab",
                 "shasum": ""
             },
             "require": {
@@ -1393,7 +1393,7 @@
             ],
             "support": {
                 "issues": "https://github.com/amphp/redis/issues",
-                "source": "https://github.com/amphp/redis/tree/v2.0.3"
+                "source": "https://github.com/amphp/redis/tree/v2.0.4"
             },
             "funding": [
                 {
@@ -1401,7 +1401,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-15T04:14:11+00:00"
+            "time": "2026-03-03T20:52:26+00:00"
         },
         {
             "name": "amphp/serialization",

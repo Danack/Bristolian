@@ -634,7 +634,7 @@ class Rooms
       <label for="room_tab_links" class="room_tab_label">Links</label>
       <label for="room_tab_files" class="room_tab_label">Files</label>
       <label for="room_tab_annotations" class="room_tab_label">Annotations</label>
-      <label for="room_tab_video" class="room_tab_label">Video</label>
+      <label for="room_tab_video" class="room_tab_label">Videos</label>
       <label for="room_tab_management" class="room_tab_label">Room Management</label>
     </div>
 

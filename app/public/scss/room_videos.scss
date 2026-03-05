@@ -1,21 +1,94 @@
 // Room Video panel: list, embed, add form, create clip
 
 .room_videos_panel_react {
+  .room_video_playing_block {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    .room_video_playing_content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .room_video_close_player_wrapper {
+      flex-shrink: 0;
+    }
+  }
+
+  .room_video_player_with_controls {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    .room_video_embed_container {
+      flex-shrink: 0;
+    }
+
+    .room_video_player_controls {
+      flex-shrink: 0;
+      min-width: 0;
+    }
+  }
+
+  .room_video_current_time {
+    font-variant-numeric: tabular-nums;
+    color: #555;
+    margin-bottom: 0.5rem;
+  }
+
+  .room_video_mark_clip_ts {
+    margin-bottom: 0.5rem;
+  }
+
+  .room_video_clip_field {
+    display: block;
+    margin-bottom: 0.5rem;
+
+    .room_video_clip_field_label {
+      display: block;
+      font-size: 0.9em;
+      color: #555;
+      margin-bottom: 0.25rem;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      min-width: 140px;
+      max-width: 220px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      min-height: 2.5em;
+      resize: vertical;
+    }
+  }
+
+  .room_video_clip_error {
+    margin-top: 0.5rem;
+  }
+
   .room_video_embed_container {
     margin-bottom: 1rem;
     position: relative;
     width: 100%;
-    max-width: 640px;
-    padding-bottom: 56.25%; // 16:9
-    height: 0;
+    height: 500px;
+    max-width: 640px; // 16:9 → 320×180, about half the previous 640×360
+
+    //padding-bottom: 56.25%; // 16:9
+    //height: 500px;
     overflow: hidden;
 
     iframe {
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      //width: 100%;
+      //height: 100%;
     }
   }
 
@@ -86,25 +159,29 @@
     margin-right: 0.5em;
   }
 
-  .room_videos_add_section,
-  .room_videos_clip_section {
+  .room_videos_add_section {
     margin-top: 1.5rem;
     padding-top: 1rem;
     border-top: 1px solid #ddd;
 
-    input[type="text"],
-    input[type="number"],
-    textarea {
-      display: block;
-      margin-bottom: 0.5rem;
-      min-width: 200px;
-    }
-    textarea {
-      min-height: 60px;
-    }
-    label {
-      display: block;
-      margin-top: 0.5rem;
+    .room_videos_add_form {
+      width: 400px;
+
+      input[type="text"],
+      textarea {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 0.5rem;
+      }
+      textarea {
+        min-height: 60px;
+      }
+      > button.button_standard {
+        display: block;
+        margin-left: auto;
+      }
     }
   }
+
 }

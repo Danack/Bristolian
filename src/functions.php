@@ -1235,7 +1235,7 @@ function createBlankUserProfileForUserId(string $user_id): \Bristolian\Model\Gen
 
 /**
  * Extract YouTube video ID from various URL formats.
- * Supports: youtube.com/watch?v=ID, youtu.be/ID, youtube.com/embed/ID, youtube.com/v/ID
+ * Supports: youtube.com/watch?v=ID, youtu.be/ID, youtube.com/embed/ID, youtube.com/v/ID, youtube.com/live/ID
  *
  * @return string|null The 11-character video ID or null if not found/invalid
  */
@@ -1259,8 +1259,8 @@ function extract_youtube_video_id(string $url): ?string
         return $matches[1];
     }
 
-    // youtube.com/embed/VIDEO_ID or youtube.com/v/VIDEO_ID
-    if (preg_match('#^https?://(?:www\.)?youtube\.com/(?:embed|v)/([a-zA-Z0-9_-]{11})#', $url, $matches)) {
+    // youtube.com/embed/VIDEO_ID, youtube.com/v/VIDEO_ID, or youtube.com/live/VIDEO_ID
+    if (preg_match('#^https?://(?:www\.)?youtube\.com/(?:embed|v|live)/([a-zA-Z0-9_-]{11})#', $url, $matches)) {
         return $matches[1];
     }
 

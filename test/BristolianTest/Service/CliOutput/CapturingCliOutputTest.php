@@ -29,6 +29,19 @@ class CapturingCliOutputTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::writeError
+     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::getCapturedErrorLines
+     */
+    public function test_writeError_captures_error_messages(): void
+    {
+        $output = new CapturingCliOutput();
+        $output->writeError('error one');
+        $output->writeError('error two');
+
+        $this->assertSame(['error one', 'error two'], $output->getCapturedErrorLines());
+    }
+
+    /**
      * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::exit
      */
     public function test_exit_throws_with_code(): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\Service\TooMuchMemoryNotifier;
 
+use Bristolian\Service\CliOutput\CapturingCliOutput;
 use Bristolian\Service\TooMuchMemoryNotifier\LoggingTooMuchMemoryNotifier;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
@@ -15,11 +16,13 @@ use Laminas\Diactoros\Uri;
 class LoggingTooMuchMemoryNotifierTest extends BaseTestCase
 {
     /**
+     * @covers \Bristolian\Service\TooMuchMemoryNotifier\LoggingTooMuchMemoryNotifier::__construct
      * @covers \Bristolian\Service\TooMuchMemoryNotifier\LoggingTooMuchMemoryNotifier::tooMuchMemory
      */
     public function test_tooMuchMemory_logs_request_path(): void
     {
-        $notifier = new LoggingTooMuchMemoryNotifier();
+        $cliOutput = new CapturingCliOutput();
+        $notifier = new LoggingTooMuchMemoryNotifier($cliOutput);
         $request = new ServerRequest(
             [],
             [],
@@ -27,6 +30,10 @@ class LoggingTooMuchMemoryNotifierTest extends BaseTestCase
             'GET'
         );
         $notifier->tooMuchMemory($request);
-        $this->addToAssertionCount(1);
+
+        $errorLines = $cliOutput->getCapturedErrorLines();
+        $this->assertCount(1, $errorLines);
+        $this->assertStringContainsString('Request is using too much memory', $errorLines[0]);
+        $this->assertStringContainsString('/some/path', $errorLines[0]);
     }
 }

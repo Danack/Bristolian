@@ -22,7 +22,11 @@ class AddVideoParamTest extends BaseTestCase
     {
         $videoId = 'dQw4w9WgXcQ';
         yield 'url only' => [
-            ['url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
+            [
+                'url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                'description' => null,
+                'title' => null,
+            ],
             $videoId,
             null,
             null,
@@ -38,20 +42,40 @@ class AddVideoParamTest extends BaseTestCase
             'Optional description',
         ];
         yield 'url with title only' => [
-            ['url' => 'https://youtu.be/dQw4w9WgXcQ', 'title' => 'Title only'],
+            [
+                'url' => 'https://youtu.be/dQw4w9WgXcQ',
+                'title' => 'Title only',
+                'description' => null,
+            ],
             $videoId,
             'Title only',
             null,
         ];
         yield 'raw video id' => [
-            ['url' => 'dQw4w9WgXcQ'],
+            [
+                'url' => 'dQw4w9WgXcQ',
+                'description' => null,
+                'title' => null,
+            ],
             $videoId,
+            null,
+            null,
+        ];
+
+        yield 'a live url' => [
+            [
+                'url' => "https://www.youtube.com/live/bJFZlj9nnVU",
+                'description' => null,
+                'title' => null,
+            ],
+            'bJFZlj9nnVU',
             null,
             null,
         ];
     }
 
     /**
+     * @group wip
      * @covers \Bristolian\Parameters\AddVideoParam
      * @covers \Bristolian\Parameters\AddVideoParam::__construct
      * @dataProvider provides_valid_input_and_expected_output

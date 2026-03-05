@@ -12,9 +12,17 @@ class CapturingCliOutput implements CliOutput
     /** @var string[] */
     private array $lines = [];
 
+    /** @var string[] */
+    private array $errorLines = [];
+
     public function write(string $message): void
     {
         $this->lines[] = $message;
+    }
+
+    public function writeError(string $message): void
+    {
+        $this->errorLines[] = $message;
     }
 
     /**
@@ -31,6 +39,14 @@ class CapturingCliOutput implements CliOutput
     public function getCapturedOutput(): string
     {
         return implode('', $this->lines);
+    }
+
+    /**
+     * @return string[] All messages passed to writeError (in order).
+     */
+    public function getCapturedErrorLines(): array
+    {
+        return $this->errorLines;
     }
 
     public function exit(int $code): never

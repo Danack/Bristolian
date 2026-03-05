@@ -13,6 +13,11 @@ interface CliOutput
     public function write(string $message): void;
 
     /**
+     * Write an error message (e.g. for logging). Production: error_log; test: capture for assertion.
+     */
+    public function writeError(string $message): void;
+
+    /**
      * Request the process to exit with the given code.
      * Production: exits the process. Test: throws CliExitRequestedException.
      */

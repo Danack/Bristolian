@@ -83,4 +83,26 @@ class ContentNotFoundExceptionTest extends BaseTestCase
         $this->assertStringContainsString($video_id, $exception->getMessage());
         $this->assertStringContainsString("video with id", $exception->getMessage());
     }
+
+    /**
+     * @covers \Bristolian\Exception\ContentNotFoundException::room_video_not_found_by_id
+     */
+    public function test_room_video_not_found_by_id(): void
+    {
+        $roomVideoId = "rv_456";
+        $exception = ContentNotFoundException::room_video_not_found_by_id($roomVideoId);
+        $this->assertInstanceOf(ContentNotFoundException::class, $exception);
+        $this->assertStringContainsString($roomVideoId, $exception->getMessage());
+        $this->assertStringContainsString("room video with id", $exception->getMessage());
+    }
+
+    /**
+     * @covers \Bristolian\Exception\ContentNotFoundException::transcript_not_found
+     */
+    public function test_transcript_not_found(): void
+    {
+        $exception = ContentNotFoundException::transcript_not_found("trans_123");
+        $this->assertInstanceOf(ContentNotFoundException::class, $exception);
+        $this->assertSame("Transcript not found", $exception->getMessage());
+    }
 }

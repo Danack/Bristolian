@@ -1,13 +1,67 @@
-import { h, Component } from "preact";
+import { h, Component, Fragment } from "preact";
 import { api, GetRoomsVideosResponse } from "./generated/api_routes";
 import { RoomVideoWithTags, createRoomVideoWithTags, createRoomTag, RoomTag } from "./generated/types";
 import { get_logged_in, subscribe_logged_in } from "./store";
 import { setVideoTags } from "./api_room_entity_tags";
 
+/** Set to true when transcript fetching is fixed. */
+const TRANSCRIPT_ENABLED = false;
+
+const YOUTUBE_IFRAME_API_URL = "https://www.youtube.com/iframe_api";
+
+/** Minimal type for YouTube IFrame API player. */
+interface YouTubePlayer {
+    getCurrentTime(): number;
+    destroy(): void;
+}
+
 function formatTimestamp(seconds: number): string {
-    const m = Math.floor(seconds / 60);
-    const s = Math.floor(seconds % 60);
-    return `${m}:${s.toString().padStart(2, "0")}`;
+    const totalSeconds = Math.floor(seconds);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const secs = totalSeconds % 60;
+    if (hours > 0) {
+        return `${hours}:${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+    }
+    return `${minutes}:${secs.toString().padStart(2, "0")}`;
+}
+
+/**
+ * Parse timestamp string to seconds. Accepts: "45", "1:23" (M:SS), "1:00:00" (H:MM:SS).
+ * @return seconds or null if invalid
+ */
+function parseTimestampToSeconds(input: string): number | null {
+    const trimmed = input.trim();
+    if (trimmed === "") return null;
+    const parts = trimmed.split(":");
+    if (parts.length === 1) {
+        const seconds = parseInt(parts[0], 10);
+        return Number.isNaN(seconds) || seconds < 0 ? null : seconds;
+    }
+    if (parts.length === 2) {
+        const minutes = parseInt(parts[0], 10);
+        const seconds = parseInt(parts[1], 10);
+        if (Number.isNaN(minutes) || Number.isNaN(seconds) || minutes < 0 || seconds < 0 || seconds >= 60) return null;
+        return minutes * 60 + seconds;
+    }
+    if (parts.length === 3) {
+        const hours = parseInt(parts[0], 10);
+        const minutes = parseInt(parts[1], 10);
+        const seconds = parseInt(parts[2], 10);
+        if (
+            Number.isNaN(hours) ||
+            Number.isNaN(minutes) ||
+            Number.isNaN(seconds) ||
+            hours < 0 ||
+            minutes < 0 ||
+            minutes >= 60 ||
+            seconds < 0 ||
+            seconds >= 60
+        )
+            return null;
+        return hours * 3600 + minutes * 60 + seconds;
+    }
+    return null;
 }
 
 function parseVttToCues(vtt: string): VttCue[] {
@@ -71,9 +125,10 @@ interface RoomVideosPanelState {
     addDescription: string;
     addError: string | null;
     addSuccess: string | null;
-    clipSourceId: string | null;
-    clipStartSeconds: string;
-    clipEndSeconds: string;
+    clipMarkedStartSeconds: number | null;
+    clipMarkedEndSeconds: number | null;
+    clipStartInput: string;
+    clipEndInput: string;
     clipTitle: string;
     clipDescription: string;
     clipError: string | null;
@@ -86,6 +141,7 @@ interface RoomVideosPanelState {
     autoScrollTranscript: boolean;
     embedKey: number; // force iframe re-mount when seek changes
     embedStartSeconds: number;
+    currentTimeSeconds: number | null;
 }
 
 function getDefaultState(): RoomVideosPanelState {
@@ -102,9 +158,10 @@ function getDefaultState(): RoomVideosPanelState {
         addDescription: "",
         addError: null,
         addSuccess: null,
-        clipSourceId: null,
-        clipStartSeconds: "0",
-        clipEndSeconds: "60",
+        clipMarkedStartSeconds: null,
+        clipMarkedEndSeconds: null,
+        clipStartInput: "",
+        clipEndInput: "",
         clipTitle: "",
         clipDescription: "",
         clipError: null,
@@ -117,11 +174,15 @@ function getDefaultState(): RoomVideosPanelState {
         autoScrollTranscript: true,
         embedKey: 0,
         embedStartSeconds: 0,
+        currentTimeSeconds: null,
     };
 }
 
 export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosPanelState> {
     unsubscribe_logged_in: (() => void) | null = null;
+    embedContainerRef: HTMLDivElement | null = null;
+    ytPlayer: YouTubePlayer | null = null;
+    timeUpdateIntervalId: ReturnType<typeof setInterval> | null = null;
 
     constructor(props: RoomVideosPanelProps) {
         super(props);
@@ -135,11 +196,81 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         });
     }
 
+    componentDidUpdate(prevProps: RoomVideosPanelProps, prevState: RoomVideosPanelState) {
+        const { playingVideo } = this.state;
+        if (!playingVideo) {
+            if (prevState.playingVideo) {
+                this.destroyYouTubePlayer();
+            }
+            return;
+        }
+        if (!prevState.playingVideo || prevState.playingVideo.id !== playingVideo.id) {
+            this.setState({ currentTimeSeconds: null });
+            this.destroyYouTubePlayer();
+        }
+        if (playingVideo && this.embedContainerRef && !this.ytPlayer) {
+            this.ensureYouTubeApi().then(() => this.createYouTubePlayer());
+        }
+    }
+
     componentWillUnmount() {
         if (this.unsubscribe_logged_in) {
             this.unsubscribe_logged_in();
             this.unsubscribe_logged_in = null;
         }
+        this.destroyYouTubePlayer();
+    }
+
+    ensureYouTubeApi(): Promise<void> {
+        if (typeof window !== "undefined" && (window as unknown as { YT?: unknown }).YT) {
+            return Promise.resolve();
+        }
+        return new Promise((resolve) => {
+            (window as unknown as { onYouTubeIframeAPIReady?: () => void }).onYouTubeIframeAPIReady = () => resolve();
+            const script = document.createElement("script");
+            script.src = YOUTUBE_IFRAME_API_URL;
+            script.async = true;
+            document.head.appendChild(script);
+        });
+    }
+
+    createYouTubePlayer() {
+        const { playingVideo, embedStartSeconds } = this.state;
+        if (!playingVideo || !this.embedContainerRef) return;
+        const YT = (window as unknown as { YT?: { Player: new (elementId: string, opts: unknown) => YouTubePlayer } }).YT;
+        if (!YT) return;
+        this.ytPlayer = new YT.Player("room_video_yt_player", {
+            videoId: playingVideo.youtube_video_id,
+            playerVars: { start: Math.floor(embedStartSeconds) },
+            events: {
+                onReady: (event: { target: YouTubePlayer }) => {
+                    this.startTimePolling(event.target);
+                },
+            },
+        });
+    }
+
+    startTimePolling(player: YouTubePlayer) {
+        this.ytPlayer = player;
+        this.timeUpdateIntervalId = setInterval(() => {
+            if (!this.ytPlayer) return;
+            const seconds = this.ytPlayer.getCurrentTime();
+            if (typeof seconds === "number" && !Number.isNaN(seconds)) {
+                this.setState({ currentTimeSeconds: seconds });
+            }
+        }, 500);
+    }
+
+    destroyYouTubePlayer() {
+        if (this.timeUpdateIntervalId !== null) {
+            clearInterval(this.timeUpdateIntervalId);
+            this.timeUpdateIntervalId = null;
+        }
+        if (this.ytPlayer && typeof this.ytPlayer.destroy === "function") {
+            this.ytPlayer.destroy();
+            this.ytPlayer = null;
+        }
+        this.setState({ currentTimeSeconds: null });
     }
 
     refreshVideos() {
@@ -157,6 +288,28 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         this.setState({ videos, error: null });
     }
 
+    handleAddVideoResponse(response: Response, data: { result?: string; error?: string; errors?: string[] }) {
+        if (!response.ok) {
+            const message =
+                data?.error ??
+                (Array.isArray(data?.errors) ? data.errors.join(" ") : null) ??
+                (response.statusText || "Failed to add video");
+            this.setState({ addError: message });
+            return;
+        }
+        if (data.result === "error") {
+            this.setState({ addError: data.error || "Failed to add video" });
+            return;
+        }
+        this.setState({
+            addUrl: "",
+            addTitle: "",
+            addDescription: "",
+            addSuccess: "Video added",
+        });
+        this.refreshVideos();
+    }
+
     addVideo() {
         const { addUrl, addTitle, addDescription } = this.state;
         this.setState({ addError: null, addSuccess: null });
@@ -165,36 +318,66 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ url: addUrl, title: addTitle || null, description: addDescription || null }),
         })
-            .then((r) => r.json())
-            .then((data) => {
-                if (data.result === "error") {
-                    this.setState({ addError: data.error || "Failed to add video" });
-                    return;
-                }
-                this.setState({
-                    addUrl: "",
-                    addTitle: "",
-                    addDescription: "",
-                    addSuccess: "Video added",
-                });
-                this.refreshVideos();
+            .then((response) => {
+                return response.json().then((data) => ({ response, data }));
             })
+            .then(({ response, data }) => this.handleAddVideoResponse(response, data))
             .catch((err) => this.setState({ addError: String(err) }));
     }
 
+    markClipTimestamp() {
+        const currentSeconds = this.state.currentTimeSeconds ?? this.state.embedStartSeconds;
+        const currentFormatted = formatTimestamp(currentSeconds);
+        this.setState((prev) => {
+            const { clipMarkedStartSeconds, clipMarkedEndSeconds } = prev;
+            if (clipMarkedStartSeconds === null) {
+                return {
+                    clipMarkedStartSeconds: currentSeconds,
+                    clipMarkedEndSeconds: null,
+                    clipStartInput: currentFormatted,
+                    clipEndInput: "",
+                };
+            }
+            if (clipMarkedEndSeconds === null) {
+                if (currentSeconds >= clipMarkedStartSeconds) {
+                    return {
+                        clipMarkedEndSeconds: currentSeconds,
+                        clipEndInput: currentFormatted,
+                    };
+                }
+                return {
+                    clipMarkedStartSeconds: currentSeconds,
+                    clipMarkedEndSeconds: clipMarkedStartSeconds,
+                    clipStartInput: currentFormatted,
+                    clipEndInput: formatTimestamp(clipMarkedStartSeconds),
+                };
+            }
+            return {
+                clipMarkedStartSeconds: currentSeconds,
+                clipMarkedEndSeconds: null,
+                clipStartInput: currentFormatted,
+                clipEndInput: "",
+            };
+        });
+    }
+
     createClip() {
-        const { clipSourceId, clipStartSeconds, clipEndSeconds, clipTitle, clipDescription } = this.state;
-        if (!clipSourceId) return;
-        const start = parseInt(clipStartSeconds, 10) || 0;
-        const end = parseInt(clipEndSeconds, 10) || 0;
+        const { playingVideo, clipStartInput, clipEndInput, clipTitle, clipDescription } = this.state;
+        if (!playingVideo) return;
+        const startSeconds = parseTimestampToSeconds(clipStartInput);
+        const endSeconds = parseTimestampToSeconds(clipEndInput);
+        if (startSeconds === null || endSeconds === null) {
+            this.setState({ clipError: "Start and end must be in timestamp format (e.g. 1:23 or 1:00:00)" });
+            return;
+        }
         this.setState({ clipError: null });
         fetch(`/api/rooms/${this.props.room_id}/videos/clips`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                room_video_id: clipSourceId,
-                start_seconds: start,
-                end_seconds: end,
+                room_video_id: playingVideo.id,
+                start_seconds: startSeconds,
+                end_seconds: endSeconds,
                 title: clipTitle || null,
                 description: clipDescription || null,
             }),
@@ -206,9 +389,10 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                     return;
                 }
                 this.setState({
-                    clipSourceId: null,
-                    clipStartSeconds: "0",
-                    clipEndSeconds: "60",
+                    clipMarkedStartSeconds: null,
+                    clipMarkedEndSeconds: null,
+                    clipStartInput: "",
+                    clipEndInput: "",
                     clipTitle: "",
                     clipDescription: "",
                 });
@@ -346,8 +530,16 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                     playingVideo: video,
                                     embedStartSeconds: start,
                                     embedKey: (this.state.embedKey ?? 0) + 1,
+                                    clipMarkedStartSeconds: null,
+                                    clipMarkedEndSeconds: null,
+                                    clipStartInput: "",
+                                    clipEndInput: "",
+                                    clipTitle: "",
+                                    clipDescription: "",
                                 });
-                                this.loadTranscriptsForVideo(video.id);
+                                if (TRANSCRIPT_ENABLED) {
+                                    this.loadTranscriptsForVideo(video.id);
+                                }
                             }}
                         >
                             Play
@@ -355,17 +547,41 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                         <button className="button_standard button_chat" onClick={() => this.openEditTags(video)}>
                             Edit tags
                         </button>
-                        {!video.parent_room_video_id && (
-                            <button
-                                className="button_standard button_chat"
-                                onClick={() => this.setState({ clipSourceId: video.id })}
-                            >
-                                Create clip
-                            </button>
-                        )}
                     </td>
                 )}
             </tr>
+        );
+    }
+
+    renderTranscriptActions(
+        playingVideo: RoomVideoWithTags,
+        transcripts: TranscriptItem[],
+        selectedTranscriptId: string | null,
+        transcriptFetching: boolean,
+    ) {
+        const transcriptButtons = transcripts.map((transcript) => (
+            <button
+                key={transcript.id}
+                className={"button_standard " + (selectedTranscriptId === transcript.id ? "selected" : "")}
+                onClick={() => this.loadTranscriptContent(playingVideo.id, transcript.id)}
+            >
+                Transcript {transcript.transcript_number}
+                {transcript.language ? ` (${transcript.language})` : ""}
+            </button>
+        ));
+
+        return (
+            // @ts-ignore Fragment should be valid
+            <Fragment>
+                {transcriptButtons}
+                <button
+                    className="button_standard"
+                    onClick={() => this.fetchTranscript(playingVideo.id)}
+                    disabled={transcriptFetching}
+                >
+                    {transcriptFetching ? "Fetching…" : "Fetch transcript"}
+                </button>
+            </Fragment>
         );
     }
 
@@ -414,162 +630,186 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
             <div className="room_videos_panel_react">
                 <h2>Video</h2>
                 {state.error && <div className="error">{state.error}</div>}
-                {playingVideo && (
-                    <>
-                        <div className="room_video_embed_container">
-                            <iframe
-                                key={state.embedKey}
-                                title="YouTube player"
-                                src={this.embedUrl(playingVideo, state.embedStartSeconds)}
-                                frameBorder={0}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                            />
+                {playingVideo ? (
+                    <div className="room_video_playing_block">
+                        <div className="room_video_playing_content">
+                            <div className="room_video_player_with_controls">
+                                <div id="room_video_yt_player" className="room_video_embed_container" ref={(el) => { this.embedContainerRef = el; }} />
+                                <div className="room_video_player_controls">
+                                    <div className="room_video_current_time">
+                                        {state.currentTimeSeconds != null
+                                            ? formatTimestamp(state.currentTimeSeconds)
+                                            : formatTimestamp(state.embedStartSeconds)}
+                                    </div>
+                                    {state.logged_in && !playingVideo.parent_room_video_id && (
+                                        <Fragment>
+                                            <button
+                                                type="button"
+                                                className="button_standard room_video_mark_clip_ts"
+                                                onClick={() => this.markClipTimestamp()}
+                                            >
+                                                Mark clip timestamp
+                                            </button>
+                                            <label className="room_video_clip_field">
+                                                <span className="room_video_clip_field_label">Start (e.g. 1:23 or 1:00:00)</span>
+                                                <input
+                                                    type="text"
+                                                    placeholder="0:00"
+                                                    value={state.clipStartInput}
+                                                    onInput={(e) => this.setState({ clipStartInput: (e.target as HTMLInputElement).value })}
+                                                />
+                                            </label>
+                                            <label className="room_video_clip_field">
+                                                <span className="room_video_clip_field_label">End (e.g. 2:45 or 1:00:00)</span>
+                                                <input
+                                                    type="text"
+                                                    placeholder="0:00"
+                                                    value={state.clipEndInput}
+                                                    onInput={(e) => this.setState({ clipEndInput: (e.target as HTMLInputElement).value })}
+                                                />
+                                            </label>
+                                            <label className="room_video_clip_field">
+                                                <span className="room_video_clip_field_label">Title</span>
+                                                <input
+                                                    type="text"
+                                                    placeholder="Clip title (optional)"
+                                                    value={state.clipTitle}
+                                                    onInput={(e) => this.setState({ clipTitle: (e.target as HTMLInputElement).value })}
+                                                />
+                                            </label>
+                                            <label className="room_video_clip_field">
+                                                <span className="room_video_clip_field_label">Description (optional)</span>
+                                                <textarea
+                                                    placeholder="Clip description"
+                                                    value={state.clipDescription}
+                                                    onInput={(e) => this.setState({ clipDescription: (e.target as HTMLTextAreaElement).value })}
+                                                    rows={2}
+                                                />
+                                            </label>
+                                            <button
+                                                type="button"
+                                                className="button_standard"
+                                                onClick={() => this.createClip()}
+                                                disabled={
+                                                    parseTimestampToSeconds(state.clipStartInput) === null ||
+                                                    parseTimestampToSeconds(state.clipEndInput) === null
+                                                }
+                                            >
+                                                Create clip
+                                            </button>
+                                            {state.clipError && (
+                                                <div className="error room_video_clip_error">{state.clipError}</div>
+                                            )}
+                                        </Fragment>
+                                    )}
+                                </div>
+                            </div>
+                            {TRANSCRIPT_ENABLED && (
+                                <div className="room_video_transcript_section">
+                                    <h3>Transcript</h3>
+                                    <div className="room_video_transcript_actions">
+                                        {this.renderTranscriptActions(
+                                            playingVideo,
+                                            state.transcripts,
+                                            state.selectedTranscriptId,
+                                            state.transcriptFetching,
+                                        )}
+                                    </div>
+                                    <label className="room_video_auto_scroll">
+                                        <input
+                                            type="checkbox"
+                                            checked={state.autoScrollTranscript}
+                                            onChange={(e) => this.setState({ autoScrollTranscript: (e.target as HTMLInputElement).checked })}
+                                        />
+                                        Auto-scroll transcript
+                                    </label>
+                                    <div className="room_video_transcript_view">
+                                        {state.vttCues.length > 0 ? (
+                                            state.vttCues.map((cue, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    className="room_video_transcript_cue"
+                                                    data-start={cue.startSeconds}
+                                                    onClick={() => this.seekToSeconds(cue.startSeconds)}
+                                                >
+                                                    <span className="room_video_transcript_cue_time">
+                                                        {formatTimestamp(cue.startSeconds)}
+                                                    </span>
+                                                    {cue.text}
+                                                </div>
+                                            ))
+                                        ) : state.selectedTranscriptId ? (
+                                            <p>Loading…</p>
+                                        ) : state.transcripts.length === 0 ? (
+                                            <p>No transcripts. Click &quot;Fetch transcript&quot; to get captions from YouTube.</p>
+                                        ) : (
+                                            <p>Select a transcript above.</p>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                        <div className="room_video_transcript_section">
-                            <h3>Transcript</h3>
-                            <div className="room_video_transcript_actions">
-                                {state.transcripts.map((t) => (
-                                    <button
-                                        key={t.id}
-                                        className={"button_standard " + (state.selectedTranscriptId === t.id ? "selected" : "")}
-                                        onClick={() => this.loadTranscriptContent(playingVideo.id, t.id)}
-                                    >
-                                        Transcript {t.transcript_number}
-                                        {t.language ? ` (${t.language})` : ""}
+                        <div className="room_video_close_player_wrapper">
+                            <button
+                                className="button_standard"
+                                onClick={() => this.setState({ playingVideo: null, clipMarkedStartSeconds: null, clipMarkedEndSeconds: null, clipStartInput: "", clipEndInput: "" })}
+                            >
+                                Close player
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    <Fragment>
+                        <div className="room_videos_list">
+                            {state.videos.length === 0 ? (
+                                <p>No videos.</p>
+                            ) : (
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>Title</td>
+                                            <td>Tags</td>
+                                            {state.logged_in && <td />}
+                                        </tr>
+                                        {state.videos.map((v) => this.renderVideoRow(v))}
+                                    </tbody>
+                                </table>
+                            )}
+                        </div>
+                        <button className="button_standard" onClick={() => this.refreshVideos()}>
+                            Refresh
+                        </button>
+
+                        {state.logged_in && (
+                            <div className="room_videos_add_section">
+                                <h3>Add video</h3>
+                                <div className="room_videos_add_form">
+                                    <input
+                                        type="text"
+                                        placeholder="YouTube URL"
+                                        value={state.addUrl}
+                                        onInput={(e) => this.setState({ addUrl: (e.target as HTMLInputElement).value })}
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Title (optional)"
+                                        value={state.addTitle}
+                                        onInput={(e) => this.setState({ addTitle: (e.target as HTMLInputElement).value })}
+                                    />
+                                    <textarea
+                                        placeholder="Description (optional)"
+                                        value={state.addDescription}
+                                        onInput={(e) => this.setState({ addDescription: (e.target as HTMLTextAreaElement).value })}
+                                    />
+                                    <button className="button_standard" onClick={() => this.addVideo()}>
+                                        Add video
                                     </button>
-                                ))}
-                                <button
-                                    className="button_standard"
-                                    onClick={() => this.fetchTranscript(playingVideo.id)}
-                                    disabled={state.transcriptFetching}
-                                >
-                                    {state.transcriptFetching ? "Fetching…" : "Fetch transcript"}
-                                </button>
+                                </div>
+                                {state.addError && <div className="error">{state.addError}</div>}
+                                {state.addSuccess && <div className="success">{state.addSuccess}</div>}
                             </div>
-                            <label className="room_video_auto_scroll">
-                                <input
-                                    type="checkbox"
-                                    checked={state.autoScrollTranscript}
-                                    onChange={(e) => this.setState({ autoScrollTranscript: (e.target as HTMLInputElement).checked })}
-                                />
-                                Auto-scroll transcript
-                            </label>
-                            <div className="room_video_transcript_view">
-                                {state.vttCues.length > 0 ? (
-                                    state.vttCues.map((cue, idx) => (
-                                        <div
-                                            key={idx}
-                                            className="room_video_transcript_cue"
-                                            data-start={cue.startSeconds}
-                                            onClick={() => this.seekToSeconds(cue.startSeconds)}
-                                        >
-                                            <span className="room_video_transcript_cue_time">
-                                                {formatTimestamp(cue.startSeconds)}
-                                            </span>
-                                            {cue.text}
-                                        </div>
-                                    ))
-                                ) : state.selectedTranscriptId ? (
-                                    <p>Loading…</p>
-                                ) : state.transcripts.length === 0 ? (
-                                    <p>No transcripts. Click &quot;Fetch transcript&quot; to get captions from YouTube.</p>
-                                ) : (
-                                    <p>Select a transcript above.</p>
-                                )}
-                            </div>
-                        </div>
-                    </>
-                )}
-                <div className="room_videos_list">
-                    {state.videos.length === 0 ? (
-                        <p>No videos.</p>
-                    ) : (
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td>Title</td>
-                                    <td>Tags</td>
-                                    {state.logged_in && <td />}
-                                </tr>
-                                {state.videos.map((v) => this.renderVideoRow(v))}
-                            </tbody>
-                        </table>
-                    )}
-                </div>
-                <button className="button_standard" onClick={() => this.refreshVideos()}>
-                    Refresh
-                </button>
-
-                {state.logged_in && (
-                    <div className="room_videos_add_section">
-                        <h3>Add video</h3>
-                        <div>
-                            <input
-                                type="text"
-                                placeholder="YouTube URL"
-                                value={state.addUrl}
-                                onInput={(e) => this.setState({ addUrl: (e.target as HTMLInputElement).value })}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Title (optional)"
-                                value={state.addTitle}
-                                onInput={(e) => this.setState({ addTitle: (e.target as HTMLInputElement).value })}
-                            />
-                            <textarea
-                                placeholder="Description (optional)"
-                                value={state.addDescription}
-                                onInput={(e) => this.setState({ addDescription: (e.target as HTMLTextAreaElement).value })}
-                            />
-                            <button className="button_standard" onClick={() => this.addVideo()}>
-                                Add video
-                            </button>
-                        </div>
-                        {state.addError && <div className="error">{state.addError}</div>}
-                        {state.addSuccess && <div className="success">{state.addSuccess}</div>}
-                    </div>
-                )}
-
-                {state.clipSourceId && state.logged_in && (
-                    <div className="room_videos_clip_section">
-                        <h3>Create clip</h3>
-                        <div>
-                            <label>Start (seconds)</label>
-                            <input
-                                type="number"
-                                min={0}
-                                value={state.clipStartSeconds}
-                                onInput={(e) => this.setState({ clipStartSeconds: (e.target as HTMLInputElement).value })}
-                            />
-                            <label>End (seconds)</label>
-                            <input
-                                type="number"
-                                min={0}
-                                value={state.clipEndSeconds}
-                                onInput={(e) => this.setState({ clipEndSeconds: (e.target as HTMLInputElement).value })}
-                            />
-                            <label>Title</label>
-                            <input
-                                type="text"
-                                value={state.clipTitle}
-                                onInput={(e) => this.setState({ clipTitle: (e.target as HTMLInputElement).value })}
-                            />
-                            <label>Description (optional)</label>
-                            <input
-                                type="text"
-                                value={state.clipDescription}
-                                onInput={(e) => this.setState({ clipDescription: (e.target as HTMLInputElement).value })}
-                            />
-                            <button className="button_standard" onClick={() => this.createClip()}>
-                                Create clip
-                            </button>
-                            <button className="button_standard" onClick={() => this.setState({ clipSourceId: null })}>
-                                Cancel
-                            </button>
-                        </div>
-                        {state.clipError && <div className="error">{state.clipError}</div>}
-                    </div>
+                        )}
+                    </Fragment>
                 )}
 
                 {this.renderEditTagsModal()}

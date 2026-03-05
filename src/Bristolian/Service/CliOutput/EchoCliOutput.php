@@ -14,6 +14,13 @@ class EchoCliOutput implements CliOutput
         echo $message;
     }
 
+    public function writeError(string $message): void
+    {
+        // @codeCoverageIgnoreStart
+        \error_log($message);
+        // @codeCoverageIgnoreEnd
+    }
+
     public function exit(int $code): never
     {
         // @codeCoverageIgnoreStart

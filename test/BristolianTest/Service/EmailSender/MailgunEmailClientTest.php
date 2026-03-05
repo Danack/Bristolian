@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BristolianTest\Service\EmailSender;
 
 use Bristolian\Model\Types\Email;
+use Bristolian\Service\CliOutput\CapturingCliOutput;
 use Bristolian\Service\EmailSender\FakeMailgunHttpClient;
 use Bristolian\Service\EmailSender\MailgunEmailClient;
 use Bristolian\Service\EmailSender\TestableMailgun;
@@ -44,7 +45,8 @@ class MailgunEmailClientTest extends BaseTestCase
         $fakeClient = new FakeMailgunHttpClient();
         $fakeClient->setNextResponseStatusCode(200);
         $mailgun = $this->createMailgunWithFakeClient($fakeClient);
-        $client = new MailgunEmailClient($mailgun);
+        $cliOutput = new CapturingCliOutput();
+        $client = new MailgunEmailClient($mailgun, $cliOutput);
         $email = $this->createEmail();
 
         $result = $client->send($email);
@@ -57,7 +59,7 @@ class MailgunEmailClientTest extends BaseTestCase
      * @covers \Bristolian\Service\EmailSender\FakeMailgunHttpClient::sendRequest
      * @covers \Bristolian\Service\EmailSender\FakeMailgunHttpClient::setNextResponseStatusCode
      * @covers \Bristolian\Service\EmailSender\FakeMailgunHttpClient::setNextBody
-     * Covers the "exit" / failure path: catch block and return false.
+     * Covers the failure path: catch block logs via CliOutput and returns false.
      */
     public function test_send_returns_false_when_mailgun_throws_http_client_exception(): void
     {
@@ -65,12 +67,17 @@ class MailgunEmailClientTest extends BaseTestCase
         $fakeClient->setNextResponseStatusCode(400);
         $fakeClient->setNextBody('{"message":"Bad request"}');
         $mailgun = $this->createMailgunWithFakeClient($fakeClient);
-        $client = new MailgunEmailClient($mailgun);
+        $cliOutput = new CapturingCliOutput();
+        $client = new MailgunEmailClient($mailgun, $cliOutput);
         $email = $this->createEmail();
 
         $result = $client->send($email);
 
         $this->assertFalse($result);
+        $errorLines = $cliOutput->getCapturedErrorLines();
+        $this->assertCount(1, $errorLines);
+        $this->assertStringContainsString('Exception:', $errorLines[0]);
+        $this->assertStringContainsString('Bad request', $errorLines[0]);
     }
 
     /**

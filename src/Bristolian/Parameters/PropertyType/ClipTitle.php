@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bristolian\Parameters\PropertyType;
 
-use DataType\ExtractRule\GetStringOrDefault;
+use DataType\ExtractRule\GetStringOrNull;
 use DataType\HasInputType;
 use DataType\InputType;
 use DataType\ProcessRule\NullIfEmptyString;
@@ -21,7 +21,7 @@ class ClipTitle implements HasInputType
     public const TITLE_MINIMUM_LENGTH = 1;
 
     public function __construct(
-        private string $name
+        private string|null $name
     ) {
     }
 
@@ -29,7 +29,7 @@ class ClipTitle implements HasInputType
     {
         return new InputType(
             $this->name,
-            new GetStringOrDefault(null),
+            new GetStringOrNull(),
             new TrimOrNull(),
             new NullIfEmptyString(),
             new SkipIfNull(),
