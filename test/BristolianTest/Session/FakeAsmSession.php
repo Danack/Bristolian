@@ -11,7 +11,7 @@ use Asm\Session;
  */
 class FakeAsmSession implements Session
 {
-    /** @var array<string, int|bool|array|string|float> */
+    /** @var array<string, int|bool|array<mixed>|string|float> */
     private array $data = [];
 
     private bool $saved = false;
@@ -30,6 +30,9 @@ class FakeAsmSession implements Session
         $this->headers = $headers;
     }
 
+    /**
+     * @return list<array{0:string, 1:string}>
+     */
     public function getHeaders(
         string $privacy,
         ?string $path = null,
@@ -45,11 +48,17 @@ class FakeAsmSession implements Session
         return $this->sessionId;
     }
 
+    /**
+     * @return array<string, int|bool|array<mixed>|string|float>
+     */
     public function getData(): array
     {
         return $this->data;
     }
 
+    /**
+     * @param array<string, int|bool|array<mixed>|string|float> $data
+     */
     public function setData(array $data): void
     {
         $this->data = $data;
@@ -105,11 +114,18 @@ class FakeAsmSession implements Session
         return true;
     }
 
+    /**
+     * @param int|bool|array<mixed>|string|float $value
+     */
     public function set(string $name, int|bool|array|string|float $value): void
     {
         $this->data[$name] = $value;
     }
 
+    /**
+     * @param int|bool|array<mixed>|string|float|null $default
+     * @return int|bool|array<mixed>|string|float|null
+     */
     public function get(
         string $name,
         int|bool|array|string|float $default = null,

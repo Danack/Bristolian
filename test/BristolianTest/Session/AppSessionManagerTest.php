@@ -28,6 +28,9 @@ class AppSessionManagerTest extends BaseTestCase
         return new SessionManager($config, $driver, null, new NullEncrypterFactory());
     }
 
+    /**
+     * @param array<string, string> $cookies
+     */
     private function createRequest(array $cookies = []): ServerRequest
     {
         return (new ServerRequest())->withCookieParams($cookies);
@@ -161,7 +164,7 @@ class AppSessionManagerTest extends BaseTestCase
 
         $rawSession = $manager->createRawSession();
 
-        $this->assertNotNull($rawSession);
+        $this->assertInstanceOf(\Asm\Session::class, $rawSession);
     }
 
     /**

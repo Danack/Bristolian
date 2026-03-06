@@ -128,10 +128,10 @@ class OpenFoodFactsFetcherTest extends BaseTestCase
  */
 final class MapHttpFetcher implements HttpFetcher
 {
-    /** @var array<string, array{0: int, 1: string, 2: array}> */
+    /** @var array<string, array{0: int, 1: string, 2: mixed[]}> */
     private array $urlToResponse;
 
-    /** @param array<string, array{0: int, 1: string, 2: array}> $urlToResponse */
+    /** @param array<string, array{0: int, 1: string, 2: mixed[]}> $urlToResponse */
     public function __construct(array $urlToResponse)
     {
         $this->urlToResponse = $urlToResponse;

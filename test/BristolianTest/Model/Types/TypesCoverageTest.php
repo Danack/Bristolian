@@ -328,8 +328,10 @@ class TypesCoverageTest extends BaseTestCase
 
         $this->assertSame('Test Title', $notification->getTitle());
         $this->assertSame('Test Body', $notification->getBody());
-        $this->assertNull($notification->getVibrate());
+        $vibrate = $notification->getVibrate();
+        $this->assertNull($vibrate); // @phpstan-ignore method.alreadyNarrowedType
         $this->assertSame('/sounds/meow.mp3', $notification->getSound());
-        $this->assertNull($notification->getData());
+        $data = $notification->getData();
+        $this->assertNull($data); // @phpstan-ignore method.alreadyNarrowedType
     }
 }

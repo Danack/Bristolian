@@ -37,7 +37,8 @@ class FakeFoiRequestRepoTest extends FoiRequestRepoFixture
         $repo->createFoiRequest($param);
         $requests = $repo->getAllFoiRequests();
         $this->assertCount(1, $requests);
-        $this->assertInstanceOf(FoiRequest::class, $requests[0]);
+        $first = current($requests);
+        $this->assertInstanceOf(FoiRequest::class, $first);
     }
 
     /**
