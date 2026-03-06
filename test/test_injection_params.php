@@ -30,6 +30,9 @@ function testInjectionParams() : InjectionParams
         \Bristolian\Service\SecureTokenGenerator\SecureTokenGenerator::class =>
             \Bristolian\Service\SecureTokenGenerator\RandomBytesSecureTokenGenerator::class,
 
+        \Bristolian\Service\UuidGenerator\UuidGenerator::class =>
+            \Bristolian\Service\UuidGenerator\RamseyUuidGenerator::class,
+
         \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::class =>
             \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::class,
 
