@@ -69,7 +69,9 @@ class CommonMarkRenderer implements MarkdownRenderer
         }
         else {
             // This errors "Unexpected item 'disallowed_raw_html'."
+            // @codeCoverageIgnoreStart
             $environment->addExtension(new GithubFlavoredMarkdownExtension());
+            // @codeCoverageIgnoreEnd
         }
 
         // Add the extension

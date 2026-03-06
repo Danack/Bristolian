@@ -150,13 +150,28 @@ SQL;
     public function test_fetchOneAsObject()
     {
         $pdo_simple = $this->injector->make(PdoSimple::class);
-        $sql = pdo_simple_test::SELECT;
 
-        // TODO - fix this
-        // PdoSimpleTestObjectProperties has no constructor, but fetchOneAsObject requires one
-        $this->markTestSkipped("PdoSimpleTestObjectProperties has no constructor, but fetchOneAsObject requires constructor arguments");
+        $sql_insert = pdo_simple_test::INSERT;
+        $test_string = $this->getTestString();
+        $test_int = rand(1, 100);
+        $params = [
+            'test_string' => $test_string,
+            'test_int' => $test_int
+        ];
+        $insert_id = $pdo_simple->insert($sql_insert, $params);
 
-        // "second test string"
+        $sql_select = pdo_simple_test::SELECT . ' where id = :id';
+        $result = $pdo_simple->fetchOneAsObject(
+            $sql_select,
+            [':id' => $insert_id],
+            PdoSimpleTestObjectConstructor::class
+        );
+
+        $this->assertInstanceOf(PdoSimpleTestObjectConstructor::class, $result);
+        $this->assertSame($insert_id, $result->id);
+        $this->assertSame($test_string, $result->test_string);
+        $this->assertSame($test_int, $result->test_int);
+        $this->assertInstanceOf(\DateTimeInterface::class, $result->created_at);
     }
 
     public function test_fetchOneAsObject_errors()
