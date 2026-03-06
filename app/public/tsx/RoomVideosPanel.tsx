@@ -12,6 +12,7 @@ const YOUTUBE_IFRAME_API_URL = "https://www.youtube.com/iframe_api";
 /** Minimal type for YouTube IFrame API player. */
 interface YouTubePlayer {
     getCurrentTime(): number;
+    getVideoData(): { video_id: string; title: string; author: string };
     destroy(): void;
 }
 
@@ -270,7 +271,15 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
             playerVars: { start: Math.floor(startSeconds) },
             events: {
                 onReady: (event: { target: YouTubePlayer }) => {
-                    this.startTimePolling(event.target);
+                    const player = event.target;
+                    if (this.state.addVideoPreview != null) {
+                        const videoData = player.getVideoData();
+                        const title = (videoData?.title ?? "").trim();
+                        if (title) {
+                            this.setState({ addTitle: title });
+                        }
+                    }
+                    this.startTimePolling(player);
                 },
             },
         });
@@ -826,6 +835,11 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                             <div className="room_video_player_with_controls">
                                 <div id="room_video_yt_player" className="room_video_embed_container" ref={(el) => { this.embedContainerRef = el; }} />
                                 <div className="room_video_player_controls">
+                                    <div className="room_video_current_time">
+                                        {state.currentTimeSeconds != null
+                                            ? formatTimestamp(state.currentTimeSeconds)
+                                            : formatTimestamp(state.embedStartSeconds)}
+                                    </div>
                                     {addVideoPreview ? (
                                         <Fragment>
                                             <button

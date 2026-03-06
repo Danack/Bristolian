@@ -78,7 +78,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
      *
      * @return string[]
      */
-    private function fetchTagIdsForRoomVideo(string $room_video_id): array
+    public function fetchTagIdsForRoomVideo(string $room_video_id): array
     {
         $sql = room_video_tag::SELECT . " where room_video_id = :room_video_id";
         $rows = $this->pdoSimple->fetchAllAsData($sql, ['room_video_id' => $room_video_id]);
@@ -95,7 +95,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
      * @param array<string, RoomTag> $roomTagsById Room tags for the room, keyed by tag_id
      * @return RoomTag[]
      */
-    private function resolveTagIdsToTags(array $tagIds, array $roomTagsById): array
+    public function resolveTagIdsToTags(array $tagIds, array $roomTagsById): array
     {
         $tags = [];
         foreach ($tagIds as $id) {
@@ -111,7 +111,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
      *
      * @throws ContentNotFoundException
      */
-    private function fetchVideoById(string $video_id): Video
+    public function fetchVideoById(string $video_id): Video
     {
         $sql = videoTable::SELECT . " where id = :id";
         $video = $this->pdoSimple->fetchOneAsObjectOrNullConstructor(

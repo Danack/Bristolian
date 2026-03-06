@@ -15,7 +15,7 @@ class PdoWebPushSubscriptionRepo implements WebPushSubscriptionRepo
     {
     }
 
-    public function getUserSubscriptions(string $user_id): array
+    public function getUserSubscriptions(string $username): array
     {
 
         $sql = <<< SQL
@@ -31,7 +31,7 @@ SQL;
 
         $userWebPushSubscriptionsData = $this->pdo_simple->fetchAllAsData(
             $sql,
-            ['user_id' => $user_id],
+            ['user_id' => $username],
             //            UserWebPushSubscription::class
         );
 
@@ -96,8 +96,10 @@ SQL;
                 );
             }
 
+            // @codeCoverageIgnoreStart
             // Rethrow original exception as it wasn't a failure to insert.
             throw $pswpe;
+            // @codeCoverageIgnoreEnd
         }
     }
 }

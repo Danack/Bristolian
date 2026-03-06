@@ -72,7 +72,9 @@ class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInf
                     $pdoException
                 );
             }
+            // @codeCoverageIgnoreStart
             throw $e;
+            // @codeCoverageIgnoreEnd
         }
 
         return $id;

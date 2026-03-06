@@ -25,6 +25,17 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
     }
 
     /**
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::__construct
+     */
+    public function test_fake_construct_accepts_null_or_storage_repo(): void
+    {
+        $repoNull = new FakeMemeTagRepo(null);
+        $this->assertSame([], $repoNull->getUserTagsForMeme('u', 'm'));
+        $repoWithStorage = new FakeMemeTagRepo(new FakeMemeStorageRepo());
+        $this->assertSame([], $repoWithStorage->getUserTagsForMeme('u', 'm'));
+    }
+
+    /**
      * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getUserTagsForMeme
      */
     public function test_getUserTagsForMeme_returns_empty_when_meme_not_in_storage(): void
@@ -232,6 +243,31 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
     }
 
     /**
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTags
+     */
+    public function test_getMostCommonTags_skips_tag_when_storage_says_meme_not_uploaded(): void
+    {
+        $memeStorageRepo = new FakeMemeStorageRepo();
+        $uploaded_id = $memeStorageRepo->storeMeme($this->getTestUserId(), 'a.jpg', UploadedFile::fromFile(__FILE__));
+        $memeStorageRepo->setUploaded($uploaded_id);
+        $not_uploaded_id = $memeStorageRepo->storeMeme($this->getTestUserId(), 'b.jpg', UploadedFile::fromFile(__FILE__));
+        $repo = new FakeMemeTagRepo($memeStorageRepo);
+        $repo->addTagForMeme($this->getTestUserId(), MemeTagParams::createFromVarMap(new ArrayVarMap([
+            'meme_id' => $uploaded_id,
+            'type' => MemeTagType::USER_TAG->value,
+            'text' => 'on-uploaded',
+        ])));
+        $repo->addTagForMeme($this->getTestUserId(), MemeTagParams::createFromVarMap(new ArrayVarMap([
+            'meme_id' => $not_uploaded_id,
+            'type' => MemeTagType::USER_TAG->value,
+            'text' => 'on-not-uploaded',
+        ])));
+        $result = $repo->getMostCommonTags($this->getTestUserId(), 10);
+        $this->assertCount(1, $result);
+        $this->assertSame('on-uploaded', $result[0]['text']);
+    }
+
+    /**
      * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTagsForMemes
      */
     public function test_getMostCommonTagsForMemes_returns_empty_when_meme_ids_empty(): void
@@ -272,6 +308,125 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame(2, $result[0]['count']);
         $this->assertSame('only-m1', $result[1]['text']);
         $this->assertSame(1, $result[1]['count']);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTagsForMemes
+     */
+    public function test_getMostCommonTagsForMemes_skips_tag_when_meme_not_uploaded(): void
+    {
+        $memeStorageRepo = new FakeMemeStorageRepo();
+        $m1 = $memeStorageRepo->storeMeme($this->getTestUserId(), 'a.jpg', UploadedFile::fromFile(__FILE__));
+        $m2 = $memeStorageRepo->storeMeme($this->getTestUserId(), 'b.jpg', UploadedFile::fromFile(__FILE__));
+        $memeStorageRepo->setUploaded($m1);
+        $repo = new FakeMemeTagRepo($memeStorageRepo);
+        $repo->addTagForMeme($this->getTestUserId(), MemeTagParams::createFromVarMap(new ArrayVarMap([
+            'meme_id' => $m1,
+            'type' => MemeTagType::USER_TAG->value,
+            'text' => 'on-uploaded',
+        ])));
+        $repo->addTagForMeme($this->getTestUserId(), MemeTagParams::createFromVarMap(new ArrayVarMap([
+            'meme_id' => $m2,
+            'type' => MemeTagType::USER_TAG->value,
+            'text' => 'on-not-uploaded',
+        ])));
+        $result = $repo->getMostCommonTagsForMemes($this->getTestUserId(), [$m1, $m2], 10);
+        $this->assertCount(1, $result);
+        $this->assertSame('on-uploaded', $result[0]['text']);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTagsForMemes
+     */
+    public function test_getMostCommonTagsForMemes_skips_tag_when_type_not_user_tag(): void
+    {
+        $memeStorageRepo = new FakeMemeStorageRepo();
+        $meme_id = $memeStorageRepo->storeMeme($this->getTestUserId(), 'a.jpg', UploadedFile::fromFile(__FILE__));
+        $memeStorageRepo->setUploaded($meme_id);
+        $repo = new FakeMemeTagRepo($memeStorageRepo);
+        $repo->addTagForMeme($this->getTestUserId(), MemeTagParams::createFromVarMap(new ArrayVarMap([
+            'meme_id' => $meme_id,
+            'type' => 'character',
+            'text' => 'character-tag',
+        ])));
+        $result = $repo->getMostCommonTagsForMemes($this->getTestUserId(), [$meme_id], 10);
+        $this->assertSame([], $result);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTags
+     */
+    public function test_getMostCommonTags_skips_non_user_tag_when_storage_set(): void
+    {
+        $memeStorageRepo = new FakeMemeStorageRepo();
+        $meme_id = $memeStorageRepo->storeMeme($this->getTestUserId(), 'a.jpg', UploadedFile::fromFile(__FILE__));
+        $memeStorageRepo->setUploaded($meme_id);
+        $repo = new FakeMemeTagRepo($memeStorageRepo);
+        $repo->addTagForMeme($this->getTestUserId(), MemeTagParams::createFromVarMap(new ArrayVarMap([
+            'meme_id' => $meme_id,
+            'type' => 'character',
+            'text' => 'character-tag',
+        ])));
+        $result = $repo->getMostCommonTags($this->getTestUserId(), 10);
+        $this->assertSame([], $result);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTags
+     */
+    public function test_getMostCommonTags_skips_tag_when_meme_not_in_storage(): void
+    {
+        $memeStorageRepo = new FakeMemeStorageRepo();
+        $repo = new FakeMemeTagRepo($memeStorageRepo);
+        $repo->addTagForMeme($this->getTestUserId(), MemeTagParams::createFromVarMap(new ArrayVarMap([
+            'meme_id' => 'nonexistent-meme',
+            'type' => MemeTagType::USER_TAG->value,
+            'text' => 'orphan-tag',
+        ])));
+        $result = $repo->getMostCommonTags($this->getTestUserId(), 10);
+        $this->assertSame([], $result);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTagsForMemes
+     */
+    public function test_getMostCommonTagsForMemes_skips_tag_when_meme_not_in_storage(): void
+    {
+        $memeStorageRepo = new FakeMemeStorageRepo();
+        $repo = new FakeMemeTagRepo($memeStorageRepo);
+        $repo->addTagForMeme($this->getTestUserId(), MemeTagParams::createFromVarMap(new ArrayVarMap([
+            'meme_id' => 'nonexistent-meme',
+            'type' => MemeTagType::USER_TAG->value,
+            'text' => 'orphan-tag',
+        ])));
+        $result = $repo->getMostCommonTagsForMemes($this->getTestUserId(), ['nonexistent-meme'], 10);
+        $this->assertSame([], $result);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTagsForMemes
+     */
+    public function test_getMostCommonTagsForMemes_skips_tag_when_meme_id_not_in_requested_list(): void
+    {
+        $memeStorageRepo = new FakeMemeStorageRepo();
+        $m1 = $memeStorageRepo->storeMeme($this->getTestUserId(), 'a.jpg', UploadedFile::fromFile(__FILE__));
+        $m2 = $memeStorageRepo->storeMeme($this->getTestUserId(), 'b.jpg', UploadedFile::fromFile(__FILE__));
+        $memeStorageRepo->setUploaded($m1);
+        $memeStorageRepo->setUploaded($m2);
+        $repo = new FakeMemeTagRepo($memeStorageRepo);
+        $repo->addTagForMeme($this->getTestUserId(), MemeTagParams::createFromVarMap(new ArrayVarMap([
+            'meme_id' => $m1,
+            'type' => MemeTagType::USER_TAG->value,
+            'text' => 'on-m1',
+        ])));
+        $repo->addTagForMeme($this->getTestUserId(), MemeTagParams::createFromVarMap(new ArrayVarMap([
+            'meme_id' => $m2,
+            'type' => MemeTagType::USER_TAG->value,
+            'text' => 'on-m2',
+        ])));
+        $result = $repo->getMostCommonTagsForMemes($this->getTestUserId(), [$m1], 10);
+        $this->assertCount(1, $result);
+        $this->assertSame('on-m1', $result[0]['text']);
     }
 
     /**

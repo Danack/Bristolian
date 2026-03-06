@@ -126,6 +126,16 @@ class FakeMemeTextRepoTest extends MemeTextRepoFixture
     }
 
     /**
+     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::__construct
+     */
+    public function test_fake_construct_accepts_meme_storage_repo(): void
+    {
+        $storageRepo = new FakeMemeStorageRepo();
+        $repo = new FakeMemeTextRepo($storageRepo);
+        $this->assertNull($repo->getNextMemeToOCR());
+    }
+
+    /**
      * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::searchMemeIdsByText
      */
     public function test_searchMemeIdsByText_excludes_deleted_memes(): void

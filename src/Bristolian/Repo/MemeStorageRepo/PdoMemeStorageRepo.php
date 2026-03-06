@@ -5,16 +5,19 @@ namespace Bristolian\Repo\MemeStorageRepo;
 use Bristolian\Database\stored_meme;
 use Bristolian\Model\Types\Meme;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Repo\MemeTagRepo\MemeTagType;
 use Bristolian\Repo\RoomFileObjectInfoRepo\FileState;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
+use Bristolian\Service\UuidGenerator\UuidGenerator;
 use Bristolian\UploadedFiles\UploadedFile;
-use Ramsey\Uuid\Uuid;
 
 class PdoMemeStorageRepo implements MemeStorageRepo
 {
-    public function __construct(private PdoSimple $pdo_simple)
-    {
+    public function __construct(
+        private PdoSimple $pdo_simple,
+        private UuidGenerator $uuidGenerator
+    ) {
     }
 
 
@@ -230,8 +233,7 @@ SQL;
 
         $sql = stored_meme::INSERT;
 
-        $uuid = Uuid::uuid7();
-        $id = $uuid->toString();
+        $id = $this->uuidGenerator->generate();
 
         $params = [
             ':id' => $id,
@@ -245,9 +247,8 @@ SQL;
 
         try {
             $this->pdo_simple->insert($sql, $params);
-        }
-        catch (\PDOException $pdoException) {
-            // TODO - technically, this should check the message also.
+        } catch (PdoSimpleWithPreviousException $e) {
+            $pdoException = $e->getPreviousPdoException();
             if ((int)$pdoException->getCode() === 23000) {
                 throw new UserConstraintFailedException(
                     "Failed to insert, user constraint errored.",
@@ -255,9 +256,9 @@ SQL;
                     $pdoException
                 );
             }
-
-            // Rethrow original exception as it wasn't a failure to insert.
-            throw $pdoException;
+            // @codeCoverageIgnoreStart
+            throw $e;
+            // @codeCoverageIgnoreEnd
         }
 
         return $id;

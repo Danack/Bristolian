@@ -39,7 +39,9 @@ class PdoLinkRepo implements LinkRepo
                     $pdoException
                 );
             }
+            // @codeCoverageIgnoreStart
             throw $e;
+            // @codeCoverageIgnoreEnd
         }
 
         return $id;

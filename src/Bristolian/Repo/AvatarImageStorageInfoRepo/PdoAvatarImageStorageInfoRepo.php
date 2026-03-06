@@ -71,7 +71,9 @@ class PdoAvatarImageStorageInfoRepo implements AvatarImageStorageInfoRepo
                     $pdoException
                 );
             }
+            // @codeCoverageIgnoreStart
             throw $e;
+            // @codeCoverageIgnoreEnd
         }
 
         return $id;

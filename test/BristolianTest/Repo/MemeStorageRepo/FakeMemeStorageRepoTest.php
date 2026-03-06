@@ -152,4 +152,107 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
 
         $repo->markAsDeleted('nonexistent-id');
     }
+
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getMeme
+     */
+    public function test_getMeme_returns_stored_meme(): void
+    {
+        $repo = new FakeMemeStorageRepo();
+        $meme_id = $repo->storeMeme('user_1', 'g.jpg', UploadedFile::fromFile(__FILE__));
+
+        $meme = $repo->getMeme($meme_id);
+        $this->assertNotNull($meme);
+        $this->assertSame($meme_id, $meme->id);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getByNormalizedName
+     */
+    public function test_getByNormalizedName_returns_meme_when_found(): void
+    {
+        $repo = new FakeMemeStorageRepo();
+        $repo->storeMeme('user_1', 'normalized.jpg', UploadedFile::fromFile(__FILE__));
+
+        $meme = $repo->getByNormalizedName('normalized.jpg');
+        $this->assertNotNull($meme);
+        $this->assertSame('normalized.jpg', $meme->normalized_name);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getByNormalizedName
+     */
+    public function test_getByNormalizedName_returns_null_when_not_found(): void
+    {
+        $repo = new FakeMemeStorageRepo();
+        $repo->storeMeme('user_1', 'other.jpg', UploadedFile::fromFile(__FILE__));
+
+        $this->assertNull($repo->getByNormalizedName('nonexistent.jpg'));
+    }
+
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::storeMeme
+     */
+    public function test_storeMeme_creates_meme_and_returns_id(): void
+    {
+        $repo = new FakeMemeStorageRepo();
+        $id = $repo->storeMeme('user_1', 'stored.jpg', UploadedFile::fromFile(__FILE__));
+
+        $this->assertNotEmpty($id);
+        $meme = $repo->getMeme($id);
+        $this->assertSame('user_1', $meme->user_id);
+        $this->assertSame('stored.jpg', $meme->normalized_name);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::listMemesForUser
+     */
+    public function test_listMemesForUser_returns_only_that_users_memes(): void
+    {
+        $repo = new FakeMemeStorageRepo();
+        $repo->storeMeme('user_1', 'a.jpg', UploadedFile::fromFile(__FILE__));
+        $repo->storeMeme('user_1', 'b.jpg', UploadedFile::fromFile(__FILE__));
+        $repo->storeMeme('user_2', 'c.jpg', UploadedFile::fromFile(__FILE__));
+
+        $memes = $repo->listMemesForUser('user_1');
+        $this->assertCount(2, $memes);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::listAllMemes
+     */
+    public function test_listAllMemes_excludes_deleted(): void
+    {
+        $repo = new FakeMemeStorageRepo();
+        $id1 = $repo->storeMeme('user_1', 'a.jpg', UploadedFile::fromFile(__FILE__));
+        $repo->storeMeme('user_1', 'b.jpg', UploadedFile::fromFile(__FILE__));
+        $repo->markAsDeleted($id1);
+
+        $all = $repo->listAllMemes();
+        $this->assertCount(1, $all);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getMemeByOriginalFilename
+     */
+    public function test_getMemeByOriginalFilename_returns_meme_when_found(): void
+    {
+        $repo = new FakeMemeStorageRepo();
+        $uploadedFile = UploadedFile::fromFile(__FILE__);
+        $repo->storeMeme('user_1', 'norm.jpg', $uploadedFile);
+
+        $meme = $repo->getMemeByOriginalFilename('user_1', $uploadedFile->getOriginalName());
+        $this->assertNotNull($meme);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getMemeByOriginalFilename
+     */
+    public function test_getMemeByOriginalFilename_returns_null_when_not_found(): void
+    {
+        $repo = new FakeMemeStorageRepo();
+        $repo->storeMeme('user_1', 'norm.jpg', UploadedFile::fromFile(__FILE__));
+
+        $this->assertNull($repo->getMemeByOriginalFilename('user_1', 'other.jpg'));
+    }
 }

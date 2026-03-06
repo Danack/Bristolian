@@ -16,17 +16,32 @@ use Bristolian\Model\Generated\MemeText;
 use Bristolian\Model\Generated\Migrations;
 use Bristolian\Model\Generated\PdoSimpleTest;
 use Bristolian\Model\Generated\Processor;
-use Bristolian\Model\Generated\RoomFile;
 use Bristolian\Model\Generated\RoomAnnotation;
+use Bristolian\Model\Generated\RoomAnnotationTag;
+use Bristolian\Model\Generated\RoomFile;
+use Bristolian\Model\Generated\RoomFileTag;
+use Bristolian\Model\Generated\RoomLinkTag;
+use Bristolian\Model\Generated\RoomTag;
+use Bristolian\Model\Generated\RoomVideo;
+use Bristolian\Model\Generated\RoomVideoTag;
+use Bristolian\Model\Generated\RoomVideoTranscript;
 use Bristolian\Model\Generated\RunTimeRecorder;
 use Bristolian\Model\Generated\Annotation;
 use Bristolian\Model\Generated\StoredMeme;
-use Bristolian\Model\Generated\RoomTag;
 use Bristolian\Model\Generated\TinnedFishProduct;
 use Bristolian\Model\Generated\UserAuthEmailPassword;
 use Bristolian\Model\Generated\UserDisplayName;
 use Bristolian\Model\Generated\UserProfile;
 use Bristolian\Model\Generated\UserWebpushSubscription;
+use Bristolian\Model\Generated\Video;
+use Bristolian\Model\Generated\BristolStairInfo;
+use Bristolian\Model\Generated\Link;
+use Bristolian\Model\Generated\ProcessorRunRecord;
+use Bristolian\Model\Generated\Room;
+use Bristolian\Model\Generated\RoomFileObjectInfo;
+use Bristolian\Model\Generated\RoomLink;
+use Bristolian\Model\Generated\StairImageObjectInfo;
+use Bristolian\Model\Generated\User;
 use Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo;
 use function createBlankUserProfileForUserId;
 use BristolianTest\BaseTestCase;
@@ -215,5 +230,124 @@ class GeneratedModelCoverageTest extends BaseTestCase
     {
         $o = new UserWebpushSubscription(1, 'uid', 'ep', 'exp', 'raw', self::now());
         $this->assertSame(1, $o->user_webpush_subscription_id);
+    }
+
+    /** @covers \Bristolian\Model\Generated\RoomAnnotationTag */
+    public function test_RoomAnnotationTag(): void
+    {
+        $o = new RoomAnnotationTag('annotation_id', 'tag_id');
+        $this->assertSame('annotation_id', $o->room_annotation_id);
+        $this->assertSame('tag_id', $o->tag_id);
+    }
+
+    /** @covers \Bristolian\Model\Generated\RoomFileTag */
+    public function test_RoomFileTag(): void
+    {
+        $o = new RoomFileTag('room_id', 'file_id', 'tag_id');
+        $this->assertSame('room_id', $o->room_id);
+        $this->assertSame('tag_id', $o->tag_id);
+    }
+
+    /** @covers \Bristolian\Model\Generated\RoomLinkTag */
+    public function test_RoomLinkTag(): void
+    {
+        $o = new RoomLinkTag('link_id', 'tag_id');
+        $this->assertSame('link_id', $o->room_link_id);
+        $this->assertSame('tag_id', $o->tag_id);
+    }
+
+    /** @covers \Bristolian\Model\Generated\RoomVideo */
+    public function test_RoomVideo(): void
+    {
+        $o = new RoomVideo('id', 'room_id', 'video_id', 'title', 'desc', 10, 60, self::now());
+        $this->assertSame('id', $o->id);
+        $this->assertSame('room_id', $o->room_id);
+    }
+
+    /** @covers \Bristolian\Model\Generated\RoomVideoTag */
+    public function test_RoomVideoTag(): void
+    {
+        $o = new RoomVideoTag('room_video_id', 'tag_id');
+        $this->assertSame('room_video_id', $o->room_video_id);
+        $this->assertSame('tag_id', $o->tag_id);
+    }
+
+    /** @covers \Bristolian\Model\Generated\RoomVideoTranscript */
+    public function test_RoomVideoTranscript(): void
+    {
+        $o = new RoomVideoTranscript('id', 'rv_id', 1, 'en', 'WEBVTT', self::now());
+        $this->assertSame('id', $o->id);
+        $this->assertSame('rv_id', $o->room_video_id);
+    }
+
+    /** @covers \Bristolian\Model\Generated\Video */
+    public function test_Video(): void
+    {
+        $o = new Video('id', 'uid', 'yt_id', self::now());
+        $this->assertSame('id', $o->id);
+        $this->assertSame('yt_id', $o->youtube_video_id);
+    }
+
+    /** @covers \Bristolian\Model\Generated\BristolStairInfo */
+    public function test_BristolStairInfo(): void
+    {
+        $o = new BristolStairInfo(1, 'desc', 51.45, -2.58, 'file_id', 20, 0, self::now(), null);
+        $this->assertSame(1, $o->id);
+        $this->assertSame(20, $o->steps);
+    }
+
+    /** @covers \Bristolian\Model\Generated\Link */
+    public function test_Link(): void
+    {
+        $o = new Link('id', 'uid', 'https://example.com', self::now());
+        $this->assertSame('id', $o->id);
+        $this->assertSame('https://example.com', $o->url);
+    }
+
+    /** @covers \Bristolian\Model\Generated\ProcessorRunRecord */
+    public function test_ProcessorRunRecord(): void
+    {
+        $o = new ProcessorRunRecord(1, 'type', 'debug', self::now(), 'ok', null);
+        $this->assertSame(1, $o->id);
+        $this->assertSame('type', $o->processor_type);
+    }
+
+    /** @covers \Bristolian\Model\Generated\Room */
+    public function test_Room(): void
+    {
+        $o = new Room('id', 'uid', 'name', 'purpose', self::now());
+        $this->assertSame('id', $o->id);
+        $this->assertSame('name', $o->name);
+    }
+
+    /** @covers \Bristolian\Model\Generated\RoomFileObjectInfo */
+    public function test_RoomFileObjectInfo(): void
+    {
+        $o = new RoomFileObjectInfo('id', 'norm', 'orig', 'active', 100, 'uid', self::now());
+        $this->assertSame('id', $o->id);
+        $this->assertSame('norm', $o->normalized_name);
+    }
+
+    /** @covers \Bristolian\Model\Generated\RoomLink */
+    public function test_RoomLink(): void
+    {
+        $o = new RoomLink('id', 'room_id', 'link_id', 'title', 'desc', self::now());
+        $this->assertSame('id', $o->id);
+        $this->assertSame('room_id', $o->room_id);
+    }
+
+    /** @covers \Bristolian\Model\Generated\StairImageObjectInfo */
+    public function test_StairImageObjectInfo(): void
+    {
+        $o = new StairImageObjectInfo('id', 'norm', 'orig', 'active', 100, 'uid', self::now());
+        $this->assertSame('id', $o->id);
+        $this->assertSame('norm', $o->normalized_name);
+    }
+
+    /** @covers \Bristolian\Model\Generated\User */
+    public function test_User(): void
+    {
+        $o = new User('id', self::now());
+        $this->assertSame('id', $o->id);
     }
 }

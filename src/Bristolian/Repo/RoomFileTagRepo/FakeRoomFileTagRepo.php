@@ -14,7 +14,7 @@ class FakeRoomFileTagRepo implements RoomFileTagRepo
      */
     private array $storage = [];
 
-    private function key(string $room_id, string $stored_file_id): string
+    public function key(string $room_id, string $stored_file_id): string
     {
         return $room_id . '|' . $stored_file_id;
     }
