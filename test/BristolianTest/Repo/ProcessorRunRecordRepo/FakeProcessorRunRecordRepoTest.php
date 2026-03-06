@@ -44,4 +44,17 @@ class FakeProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         $this->assertCount(1, $records);
         $this->assertSame('debug', $records[0]->debug_info);
     }
+
+    /**
+     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::getRunRecords
+     */
+    public function test_getRunRecords_returns_records_sorted_by_id_desc(): void
+    {
+        $repo = new FakeProcessorRunRecordRepo();
+        $repo->startRun(ProcessType::email_send);
+        $repo->startRun(ProcessType::email_send);
+        $records = $repo->getRunRecords(ProcessType::email_send);
+        $this->assertCount(2, $records);
+        $this->assertGreaterThan($records[1]->id, $records[0]->id);
+    }
 }

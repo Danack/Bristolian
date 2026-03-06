@@ -117,4 +117,14 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $repo = new FakeRoomLinkRepo($linkRepo);
         $this->assertNull($repo->getLastAddedLink());
     }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getRoomLink
+     */
+    public function test_getRoomLink_returns_null_for_unknown_id(): void
+    {
+        $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
+        $repo = new FakeRoomLinkRepo($linkRepo);
+        $this->assertNull($repo->getRoomLink('nonexistent-link-id'));
+    }
 }

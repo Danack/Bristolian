@@ -39,12 +39,13 @@ select :id, :room_video_id, sub.next_num, :language, :vtt_content
 from (
     select coalesce(max(transcript_number), 0) + 1 as next_num
     from room_video_transcript
-    where room_video_id = :room_video_id
+    where room_video_id = :room_video_id_subquery
 ) sub
 SQL;
         $this->pdoSimple->insert($sql, [
             'id' => $id,
             'room_video_id' => $room_video_id,
+            'room_video_id_subquery' => $room_video_id,
             'language' => $language,
             'vtt_content' => $vtt_content,
         ]);

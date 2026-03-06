@@ -23,6 +23,15 @@ class FakeUserProfileRepoTest extends UserProfileRepoFixture
     /**
      * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::getDisplayNameHistory
      */
+    public function test_getDisplayNameHistory_returns_empty_for_unknown_user(): void
+    {
+        $repo = new FakeUserProfileRepo();
+        $this->assertSame([], $repo->getDisplayNameHistory('nonexistent-user-id'));
+    }
+
+    /**
+     * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::getDisplayNameHistory
+     */
     public function test_getDisplayNameHistory_returns_history_after_updateProfile(): void
     {
         $repo = new FakeUserProfileRepo();

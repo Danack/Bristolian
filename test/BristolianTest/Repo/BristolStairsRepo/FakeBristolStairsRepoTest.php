@@ -309,6 +309,7 @@ class FakeBristolStairsRepoTest extends BristolStairsRepoFixture
     }
 
     /**
+     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::updateStairInfo
      * Test updateStairInfo throws exception for non-existent ID
      */
     public function test_updateStairInfo_throws_exception_for_nonexistent_id(): void
@@ -423,6 +424,7 @@ class FakeBristolStairsRepoTest extends BristolStairsRepoFixture
     }
 
     /**
+     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::updateStairPosition
      * Test updateStairPosition throws exception for non-existent ID
      */
     public function test_updateStairPosition_throws_exception_for_nonexistent_id(): void

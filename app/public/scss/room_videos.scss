@@ -57,8 +57,8 @@
     input,
     textarea {
       width: 100%;
-      min-width: 140px;
-      max-width: 220px;
+      min-width: 200px;
+      max-width: 420px;
       box-sizing: border-box;
     }
 
@@ -159,29 +159,74 @@
     margin-right: 0.5em;
   }
 
-  .room_videos_add_section {
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid #ddd;
+  .room_video_add_modal_overlay {
+    // same as room_edit_tags_modal_overlay
+  }
 
-    .room_videos_add_form {
-      width: 400px;
+  .room_video_add_modal {
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
 
-      input[type="text"],
-      textarea {
-        display: block;
-        width: 100%;
-        box-sizing: border-box;
-        margin-bottom: 0.5rem;
-      }
-      textarea {
-        min-height: 60px;
-      }
-      > button.button_standard {
-        display: block;
-        margin-left: auto;
-      }
+  .room_video_add_modal_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h3 {
+      margin: 0;
     }
   }
 
+  .room_video_add_modal_close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #666;
+    padding: 0 0.25rem;
+
+    &:hover {
+      color: #000;
+    }
+  }
+
+  .room_video_add_modal_step1 {
+    min-width: 520px;
+
+    input {
+      width: 100%;
+      min-width: 400px;
+      box-sizing: border-box;
+    }
+  }
+
+  .room_video_add_modal_step2 {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .room_video_add_modal_player_wrap {
+    flex-shrink: 0;
+
+    .room_video_embed_container {
+      max-width: 480px;
+      height: 270px;
+    }
+  }
+
+  .room_video_add_modal_controls {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .room_video_add_modal_actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
 }

@@ -22,6 +22,7 @@ class FakeWebPushSubscriptionRepoTest extends WebPushSubscriptionRepoFixture
     }
 
     /**
+     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::save
      * Fake-specific test: verify duplicate endpoint throws exception
      */
     public function test_save_throws_exception_for_duplicate_endpoint(): void

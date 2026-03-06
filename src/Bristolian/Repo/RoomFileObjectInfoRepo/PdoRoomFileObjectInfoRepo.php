@@ -4,9 +4,10 @@ namespace Bristolian\Repo\RoomFileObjectInfoRepo;
 
 use Bristolian\Database\room_file_object_info;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
+use Bristolian\Service\UuidGenerator\UuidGenerator;
 use Bristolian\UploadedFiles\UploadedFile;
-use Ramsey\Uuid\Uuid;
 
 /**
  * Stores information about a file in the local database.
@@ -14,10 +15,11 @@ use Ramsey\Uuid\Uuid;
  */
 class PdoRoomFileObjectInfoRepo implements RoomFileObjectInfoRepo
 {
-    public function __construct(private PdoSimple $pdo_simple)
-    {
+    public function __construct(
+        private PdoSimple $pdo_simple,
+        private UuidGenerator $uuidGenerator
+    ) {
     }
-
 
     public function createRoomFileObjectInfo(
         string $user_id,
@@ -27,8 +29,7 @@ class PdoRoomFileObjectInfoRepo implements RoomFileObjectInfoRepo
 
         $sql = room_file_object_info::INSERT;
 
-        $uuid = Uuid::uuid7();
-        $id = $uuid->toString();
+        $id = $this->uuidGenerator->generate();
 
         $params = [
             ':id' => $id,
@@ -39,11 +40,11 @@ class PdoRoomFileObjectInfoRepo implements RoomFileObjectInfoRepo
             ':size' => $uploadedFile->getSize(),
         ];
 
+        // TODO - move this into pdo_simple
         try {
             $this->pdo_simple->insert($sql, $params);
-        }
-        catch (\PDOException $pdoException) {
-            // TODO - technically, this should check the message also.
+        } catch (PdoSimpleWithPreviousException $e) {
+            $pdoException = $e->getPreviousPdoException();
             if ((int)$pdoException->getCode() === 23000) {
                 throw new UserConstraintFailedException(
                     "Failed to insert, user constraint errored.",
@@ -51,9 +52,9 @@ class PdoRoomFileObjectInfoRepo implements RoomFileObjectInfoRepo
                     $pdoException
                 );
             }
-
-            // Rethrow original exception as it wasn't a failure to insert.
-            throw $pdoException;
+            // @codeCoverageIgnoreStart
+            throw $e;
+            // @codeCoverageIgnoreEnd
         }
 
         return $id;

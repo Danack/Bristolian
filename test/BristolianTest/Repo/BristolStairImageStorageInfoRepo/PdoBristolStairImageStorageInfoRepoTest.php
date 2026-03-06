@@ -2,12 +2,15 @@
 
 namespace BristolianTest\Repo\BristolStairImageStorageInfoRepo;
 
+use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
+use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\FileState;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo;
+use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
+use Bristolian\Service\UuidGenerator\FixedUuidGenerator;
 use Bristolian\UploadedFiles\UploadedFile;
-use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use BristolianTest\Repo\TestPlaceholders;
-use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -21,6 +24,28 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
     public function getTestInstance(): BristolStairImageStorageInfoRepo
     {
         return $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
+    }
+
+    /**
+     * Duplicate id triggers constraint violation (23000); repo throws UserConstraintFailedException.
+     *
+     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo::storeFileInfo
+     */
+    public function test_storeFileInfo_throws_UserConstraintFailedException_on_duplicate_id(): void
+    {
+        $fixedUuid = Uuid::uuid7()->toString();
+        $pdoSimple = $this->injector->make(PdoSimple::class);
+        $uuidGenerator = new FixedUuidGenerator($fixedUuid);
+        $repo = new PdoBristolStairImageStorageInfoRepo($pdoSimple, $uuidGenerator);
+
+        $user = $this->createTestAdminUser();
+        $normalizedFilename = $fixedUuid . '.jpg';
+        $uploadedFile = UploadedFile::fromFile(__FILE__);
+
+        $repo->storeFileInfo($user->getUserId(), $normalizedFilename, $uploadedFile);
+
+        $this->expectException(UserConstraintFailedException::class);
+        $repo->storeFileInfo($user->getUserId(), 'other.jpg', $uploadedFile);
     }
 
     /**

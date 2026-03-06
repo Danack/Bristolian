@@ -48,7 +48,6 @@ interface RoomVideoRepo
     public function addClip(
         string $room_id,
         string $video_id,
-        string $parent_room_video_id,
         ?string $title,
         ?string $description,
         int $start_seconds,

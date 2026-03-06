@@ -23,10 +23,7 @@ class FakeAdminRepoTest extends FakeAdminRepoFixture
     /**
      * Explicitly cover FakeAdminRepo so coverage is attributed when running this class.
      *
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::__construct
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::addUser
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::getAdminUser
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::getAdminUserId
+     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo
      */
     public function test_fake_admin_repo_add_get_and_get_id(): void
     {

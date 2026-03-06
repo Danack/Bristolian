@@ -69,7 +69,10 @@ class PdoApiTokenRepo implements ApiTokenRepo
                 // MySQL duplicate key: SQLSTATE 23000 or driver code 1062
                 $isDuplicate = $code === '23000' || $driverCode === 1062;
                 if (!$isDuplicate) {
+                    // TODO - inject ID generator
+                    // @codeCoverageIgnoreStart
                     throw $e;
+                    // @codeCoverageIgnoreEnd
                 }
             }
         }
@@ -92,21 +95,21 @@ WHERE token = :token
 LIMIT 1
 SQL;
 
-        $row = $this->pdo_simple->fetchOneAsDataOrNull(
+        $apiToken = $this->pdo_simple->fetchOneAsObjectOrNullConstructor(
             $sql,
-            [':token' => $token]
+            [':token' => $token],
+            ApiToken::class
         );
 
-        if ($row === null) {
+        if ($apiToken === null) {
             return null;
         }
 
-        // Check if token is revoked
-        if ($row['is_revoked'] === true || $row['is_revoked'] === 1) {
+        if ($apiToken->is_revoked) {
             return null;
         }
 
-        return $this->rowToApiToken($row);
+        return $apiToken;
     }
 
     public function revokeToken(string $tokenId): void
@@ -120,20 +123,5 @@ LIMIT 1
 SQL;
 
         $this->pdo_simple->execute($sql, [':id' => $tokenId]);
-    }
-
-    /**
-     * @param array<string, mixed> $row
-     */
-    private function rowToApiToken(array $row): ApiToken
-    {
-        return new ApiToken(
-            id: $row['id'],
-            token: $row['token'],
-            name: $row['name'],
-            created_at: new \DateTimeImmutable($row['created_at']),
-            is_revoked: (bool)$row['is_revoked'],
-            revoked_at: $row['revoked_at'] !== null ? new \DateTimeImmutable($row['revoked_at']) : null
-        );
     }
 }

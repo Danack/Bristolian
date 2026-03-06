@@ -266,7 +266,6 @@ class Rooms
         $roomVideo = $roomVideoRepo->addClip(
             $room_id,
             $source->video_id,
-            $source->id,
             $param->title,
             $param->description,
             $param->start_seconds,

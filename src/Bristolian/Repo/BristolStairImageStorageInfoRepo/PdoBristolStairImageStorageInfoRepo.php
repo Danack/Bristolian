@@ -5,14 +5,17 @@ namespace Bristolian\Repo\BristolStairImageStorageInfoRepo;
 use Bristolian\Database\stair_image_object_info;
 use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
+use Bristolian\Service\UuidGenerator\UuidGenerator;
 use Bristolian\UploadedFiles\UploadedFile;
-use Ramsey\Uuid\Uuid;
 
 class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInfoRepo
 {
-    public function __construct(private PdoSimple $pdo_simple)
-    {
+    public function __construct(
+        private PdoSimple $pdo_simple,
+        private UuidGenerator $uuidGenerator
+    ) {
     }
 
     public function getByNormalizedName(string $normalized_name): BristolStairImageFile|null
@@ -47,8 +50,7 @@ class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInf
 
         $sql = stair_image_object_info::INSERT;
 
-        $uuid = Uuid::uuid7();
-        $id = $uuid->toString();
+        $id = $this->uuidGenerator->generate();
 
         $params = [
             ':id' => $id,
@@ -61,9 +63,8 @@ class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInf
 
         try {
             $this->pdo_simple->insert($sql, $params);
-        }
-        catch (\PDOException $pdoException) {
-            // TODO - technically, this should check the message also.
+        } catch (PdoSimpleWithPreviousException $e) {
+            $pdoException = $e->getPreviousPdoException();
             if ((int)$pdoException->getCode() === 23000) {
                 throw new UserConstraintFailedException(
                     "Failed to insert, user constraint errored.",
@@ -71,9 +72,7 @@ class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInf
                     $pdoException
                 );
             }
-
-            // Rethrow original exception as it wasn't a failure to insert.
-            throw $pdoException;
+            throw $e;
         }
 
         return $id;

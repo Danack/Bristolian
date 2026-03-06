@@ -16,4 +16,15 @@ class FakeRoomFileTagRepoTest extends RoomFileTagRepoFixture
     {
         return new FakeRoomFileTagRepo();
     }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::getTagIdsForRoomFile
+     * @covers \Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::setTagsForRoomFile
+     */
+    public function test_fake_setTags_and_getTagIds_roundtrip(): void
+    {
+        $repo = new FakeRoomFileTagRepo();
+        $repo->setTagsForRoomFile('room-1', 'file-1', ['tag-a', 'tag-b']);
+        $this->assertEquals(['tag-a', 'tag-b'], $repo->getTagIdsForRoomFile('room-1', 'file-1'));
+    }
 }

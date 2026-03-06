@@ -64,7 +64,6 @@ class PdoRoomVideoRepo implements RoomVideoRepo
                 $video->youtube_video_id,
                 $roomVideo->title,
                 $roomVideo->description,
-                $roomVideo->parent_room_video_id,
                 $roomVideo->start_seconds,
                 $roomVideo->end_seconds,
                 $roomVideo->created_at,
@@ -176,7 +175,6 @@ class PdoRoomVideoRepo implements RoomVideoRepo
             'video_id' => $video_id,
             'title' => $title,
             'description' => $description,
-            'parent_room_video_id' => null,
             'start_seconds' => null,
             'end_seconds' => null,
         ]);
@@ -189,7 +187,6 @@ class PdoRoomVideoRepo implements RoomVideoRepo
     public function addClip(
         string $room_id,
         string $video_id,
-        string $parent_room_video_id,
         ?string $title,
         ?string $description,
         int $start_seconds,
@@ -203,7 +200,6 @@ class PdoRoomVideoRepo implements RoomVideoRepo
             'video_id' => $video_id,
             'title' => $title,
             'description' => $description,
-            'parent_room_video_id' => $parent_room_video_id,
             'start_seconds' => $start_seconds,
             'end_seconds' => $end_seconds,
         ]);

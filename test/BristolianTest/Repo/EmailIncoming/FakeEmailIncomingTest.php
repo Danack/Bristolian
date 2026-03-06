@@ -20,6 +20,7 @@ class FakeEmailIncomingTest extends EmailIncomingFixture
     }
 
     /**
+     * @covers \Bristolian\Repo\EmailIncoming\FakeEmailIncoming::getEmails
      * Fake-specific test: verify emails can be retrieved via getEmails()
      */
     public function test_getEmails_returns_empty_array_initially(): void

@@ -22,6 +22,7 @@ function convertRowToDatetime(array $row): array
         'updated_at',
         'start_time',
         'end_time',
+        'revoked_at',
     ];
 
     $data = [];

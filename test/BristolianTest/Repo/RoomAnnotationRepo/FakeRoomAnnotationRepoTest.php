@@ -44,6 +44,15 @@ class FakeRoomAnnotationRepoTest extends RoomAnnotationRepoFixture
     }
 
     /**
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::__construct
+     */
+    public function test_fake_construct_with_no_args_returns_empty_from_getAnnotationsForRoom(): void
+    {
+        $repo = new FakeRoomAnnotationRepo();
+        $this->assertSame([], $repo->getAnnotationsForRoom('any-room'));
+    }
+
+    /**
      * When a room annotation references a missing annotation, getAnnotationsForRoom skips it (defensive path).
      *
      * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoom

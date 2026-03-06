@@ -5,6 +5,7 @@ namespace Bristolian\Repo\AvatarImageStorageInfoRepo;
 use Bristolian\Database\avatar_image_object_info;
 use Bristolian\Model\Types\AvatarImageFile;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
@@ -61,9 +62,8 @@ class PdoAvatarImageStorageInfoRepo implements AvatarImageStorageInfoRepo
 
         try {
             $this->pdo_simple->insert($sql, $params);
-        }
-        catch (\PDOException $pdoException) {
-            // TODO - technically, this should check the message also.
+        } catch (PdoSimpleWithPreviousException $e) {
+            $pdoException = $e->getPreviousPdoException();
             if ((int)$pdoException->getCode() === 23000) {
                 throw new UserConstraintFailedException(
                     "Failed to insert, user constraint errored.",
@@ -71,9 +71,7 @@ class PdoAvatarImageStorageInfoRepo implements AvatarImageStorageInfoRepo
                     $pdoException
                 );
             }
-
-            // Rethrow original exception as it wasn't a failure to insert.
-            throw $pdoException;
+            throw $e;
         }
 
         return $id;

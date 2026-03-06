@@ -22,7 +22,19 @@ class FakeEmailQueueTest extends EmailQueueFixture
     }
 
     /**
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailById
+     */
+    public function test_getEmailById_returns_null_for_nonexistent_id(): void
+    {
+        $fakeQueue = new FakeEmailQueue();
+
+        $this->assertNull($fakeQueue->getEmailById(999));
+    }
+
+    /**
      * Fake-specific test: verify emails are stored
+     *
+     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getAllEmails
      */
     public function test_queueEmailToUsers_stores_emails(): void
     {
