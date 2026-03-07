@@ -14,7 +14,7 @@ use UrlFetcher\UrlNotOkException;
  * Fetches transcript/captions from YouTube using the unofficial timedtext/caption
  * data exposed on the watch page. No API key or OAuth required.
  */
-class YouTubeTranscriptFetcher
+class YouTubeTranscriptFetcher implements TranscriptFetcher
 {
     private const WATCH_URL_TEMPLATE = 'https://www.youtube.com/watch?v=%s';
 

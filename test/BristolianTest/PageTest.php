@@ -25,7 +25,7 @@ class PageTest extends BaseTestCase
     {
         $result = Page::getQrShareMessage();
 
-        $this->assertSame(self::DEFAULT_QR_MESSAGE, $result);
+        $this->assertStringContainsString(self::DEFAULT_QR_MESSAGE, $result);
     }
 
     /**

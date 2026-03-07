@@ -64,6 +64,9 @@ function injectionParams()
         UrlFetcher\UrlFetcher::class =>
           UrlFetcher\RedisCachedUrlFetcher::class,
 
+        \Bristolian\Service\YouTube\TranscriptFetcher::class =>
+            \Bristolian\Service\YouTube\YouTubeTranscriptFetcher::class,
+
         Bristolian\ExternalMarkdownRenderer\ExternalMarkdownRenderer::class =>
           \Bristolian\ExternalMarkdownRenderer\StandardExternalMarkdownRenderer::class,
 

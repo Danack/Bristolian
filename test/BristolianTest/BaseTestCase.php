@@ -134,6 +134,110 @@ class BaseTestCase extends TestCase
         }
     }
 
+    /**
+     * Aliases all repo and service interfaces to their Fake/InMemory
+     * implementations so AppController tests can run without PDO or
+     * external services.
+     */
+    public function setupAppControllerFakes(): void
+    {
+        $fakes = [
+            // Repos
+            \Bristolian\Repo\AdminRepo\AdminRepo::class =>
+                \Bristolian\Repo\AdminRepo\FakeAdminRepo::class,
+            \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::class =>
+                \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::class,
+            \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::class =>
+                \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::class,
+            \Bristolian\Repo\DbInfo\DbInfo::class =>
+                \Bristolian\Repo\DbInfo\FakeDbInfo::class,
+            \Bristolian\Repo\FoiRequestRepo\FoiRequestRepo::class =>
+                \Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::class,
+            \Bristolian\Repo\LinkRepo\LinkRepo::class =>
+                \Bristolian\Repo\LinkRepo\FakeLinkRepo::class,
+            \Bristolian\Repo\MemeStorageRepo\MemeStorageRepo::class =>
+                \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class,
+            \Bristolian\Repo\MemeTagRepo\MemeTagRepo::class =>
+                \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::class,
+            \Bristolian\Repo\MemeTextRepo\MemeTextRepo::class =>
+                \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::class,
+            \Bristolian\Repo\ProcessorRepo\ProcessorRepo::class =>
+                \Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::class,
+            \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::class =>
+                \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::class,
+            \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::class =>
+                \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::class,
+            \Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo::class =>
+                \Bristolian\Repo\RoomAnnotationTagRepo\FakeRoomAnnotationTagRepo::class,
+            \Bristolian\Repo\RoomFileRepo\RoomFileRepo::class =>
+                \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::class,
+            \Bristolian\Repo\RoomFileTagRepo\RoomFileTagRepo::class =>
+                \Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::class,
+            \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::class =>
+                \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::class,
+            \Bristolian\Repo\RoomLinkTagRepo\RoomLinkTagRepo::class =>
+                \Bristolian\Repo\RoomLinkTagRepo\FakeRoomLinkTagRepo::class,
+            \Bristolian\Repo\RoomRepo\RoomRepo::class =>
+                \Bristolian\Repo\RoomRepo\FakeRoomRepo::class,
+            \Bristolian\Repo\RoomTagRepo\RoomTagRepo::class =>
+                \Bristolian\Repo\RoomTagRepo\FakeRoomTagRepo::class,
+            \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::class =>
+                \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::class,
+            \Bristolian\Repo\UserProfileRepo\UserProfileRepo::class =>
+                \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::class,
+            \Bristolian\Repo\UserSearch\UserSearch::class =>
+                \Bristolian\Repo\UserSearch\InMemoryUserSearch::class,
+            \Bristolian\Repo\VideoRepo\VideoRepo::class =>
+                \Bristolian\Repo\VideoRepo\InMemoryVideoRepo::class,
+            \Bristolian\Repo\RoomVideoRepo\RoomVideoRepo::class =>
+                \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::class,
+            \Bristolian\Repo\RoomVideoTagRepo\RoomVideoTagRepo::class =>
+                \Bristolian\Repo\RoomVideoTagRepo\InMemoryRoomVideoTagRepo::class,
+            \Bristolian\Repo\RoomVideoTranscriptRepo\RoomVideoTranscriptRepo::class =>
+                \Bristolian\Repo\RoomVideoTranscriptRepo\InMemoryRoomVideoTranscriptRepo::class,
+            \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::class =>
+                \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::class,
+
+            // Services
+            \Bristolian\Service\YouTube\TranscriptFetcher::class =>
+                \Bristolian\Service\YouTube\FakeYouTubeTranscriptFetcher::class,
+            \Bristolian\Basic\ErrorLogger::class =>
+                \Bristolian\Basic\FakeErrorLogger::class,
+            \Bristolian\CSPViolation\CSPViolationStorage::class =>
+                \Bristolian\CSPViolation\FakeCSPViolationStorage::class,
+            \Bristolian\MarkdownRenderer\MarkdownRenderer::class =>
+                \Bristolian\MarkdownRenderer\CommonMarkRenderer::class,
+            \Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage::class =>
+                \Bristolian\Service\BristolStairImageStorage\FakeWorksBristolStairImageStorage::class,
+            \Bristolian\Service\MemeStorageProcessor\MemeStorageProcessor::class =>
+                \Bristolian\Service\MemeStorageProcessor\FakeWorksMemeStorageProcessor::class,
+            \Bristolian\Service\RoomMessageService\RoomMessageService::class =>
+                \Bristolian\Service\RoomMessageService\FakeRoomMessageService::class,
+        ];
+
+        foreach ($fakes as $interface => $implementation) {
+            $this->injector->alias($interface, $implementation);
+            $this->injector->share($implementation);
+        }
+    }
+
+    /**
+     * Sets up a FakeUserSession and shares it with the injector.
+     * Returns the session so tests can use the user_id.
+     */
+    public function setupFakeUserSession(
+        string $userId = 'test-user-id-001',
+        string $username = 'testuser@example.com'
+    ): \Bristolian\Session\FakeUserSession {
+        $session = new \Bristolian\Session\FakeUserSession(true, $userId, $username);
+        $this->injector->alias(
+            \Bristolian\Session\UserSession::class,
+            \Bristolian\Session\FakeUserSession::class
+        );
+        $this->injector->share($session);
+        return $session;
+    }
+
 
 
 

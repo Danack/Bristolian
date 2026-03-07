@@ -52,7 +52,7 @@ use Bristolian\Response\Typed\GetRoomsAnnotationsResponse;
 use Bristolian\Response\Typed\GetRoomsTagsResponse;
 use Bristolian\Response\Typed\GetRoomsVideosResponse;
 use Bristolian\Service\RequestNonce;
-use Bristolian\Service\YouTube\YouTubeTranscriptFetcher;
+use Bristolian\Service\YouTube\TranscriptFetcher;
 use Bristolian\Service\RoomFileStorage\RoomFileStorage;
 use Bristolian\Service\RoomFileStorage\UploadError;
 use Bristolian\Session\UserSession;
@@ -295,7 +295,7 @@ class Rooms
         RoomVideoRepo $roomVideoRepo,
         VideoRepo $videoRepo,
         RoomVideoTranscriptRepo $transcriptRepo,
-        YouTubeTranscriptFetcher $transcriptFetcher,
+        TranscriptFetcher $transcriptFetcher,
         string $room_video_id
     ): StubResponse {
         $roomVideo = $roomVideoRepo->getRoomVideo($room_video_id);

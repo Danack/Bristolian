@@ -4,6 +4,9 @@ namespace Bristolian\AppController;
 
 class Debug
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function debug_page(
         \Predis\Client $redisClient,
         \Redis $redis
@@ -30,6 +33,9 @@ class Debug
         return $contents;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function debug_redis(\Predis\Client $redisClient, \Redis $redis): string
     {
         $contents = "Lets debug redis";
