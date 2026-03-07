@@ -9,6 +9,7 @@ function testInjectionParams() : InjectionParams
         \PDO::class,
         \Redis::class,
         \Bristolian\PdoSimple\PdoSimple::class,
+        \Bristolian\Cache\RequestTableAccessRecorder::class,
     ];
 
     // Alias interfaces (or classes) to the actual types that should be used
@@ -38,6 +39,12 @@ function testInjectionParams() : InjectionParams
 
         \Bristolian\Service\CliOutput\CliOutput::class =>
             \Bristolian\Service\CliOutput\CapturingCliOutput::class,
+
+        \Bristolian\Cache\TableAccessRecorder::class =>
+            \Bristolian\Cache\RequestTableAccessRecorder::class,
+
+        \Bristolian\Cache\UnknownQueryHandler::class =>
+            \Bristolian\Cache\ThrowOnUnknownQuery::class,
     ];
 
     // Delegate the creation of types to callables.
@@ -48,6 +55,9 @@ function testInjectionParams() : InjectionParams
 
         \Bristolian\Filesystem\RoomFileFilesystem::class =>
             'createRoomFileFilesystem',
+
+        \Bristolian\PdoSimple\PdoSimple::class =>
+            'createPdoSimpleWithTableTracking',
     ];
 
     // Define some params that can be injected purely by name.
