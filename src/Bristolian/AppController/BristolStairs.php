@@ -54,9 +54,6 @@ class BristolStairs
 
         $bristolStairsRepo->updateStairPosition($stairs_position_params);
 
-        // Usage after storing a post:
-        purgeVarnish("/api/bristol_stairs");
-
         return new SuccessResponse();
     }
 
@@ -277,9 +274,6 @@ HTML;
         }
 
         $response = new UploadBristolStairsImageResponse($stairInfoOrError);
-
-        // Usage after storing a post:
-        purgeVarnish("/api/bristol_stairs");
 
         return $response;
     }

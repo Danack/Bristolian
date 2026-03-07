@@ -68,6 +68,7 @@ function createSlimAppForApi(
     // This means the last middleware added is the first one to be executed.
     // If you add multiple middleware components, they will be executed
     // in the reverse order of their addition.
+    $app->add($injector->make(\Bristolian\Middleware\CacheTagMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\PermissionsCheckHtmlMiddleware::class));
     $app->add($injector->make(\Bristolian\Middleware\AllowAllCors::class));
     $app->add($injector->make(\Bristolian\Middleware\ExceptionToJsonResponseMiddleware::class));

@@ -9,7 +9,8 @@ function apiInjectionParams() : InjectionParams
         \Di\Injector::class,
         \Asm\SessionManager::class,
         \Bristolian\Session\AppSessionManager::class,
-        \Bristolian\Session\AppSession::class
+        \Bristolian\Session\AppSession::class,
+        \Bristolian\Cache\RequestTableAccessRecorder::class,
     ];
 
     // Alias interfaces (or classes) to the actual types that should be used
@@ -163,6 +164,9 @@ function apiInjectionParams() : InjectionParams
 
         \UrlFetcher\UrlFetcher::class =>
             \UrlFetcher\RedisCachedUrlFetcher::class,
+
+        \Bristolian\Cache\TableAccessRecorder::class =>
+            \Bristolian\Cache\RequestTableAccessRecorder::class,
     ];
 
     // Delegate the creation of types to callables.
@@ -214,6 +218,12 @@ function apiInjectionParams() : InjectionParams
 
         \UrlFetcher\RedisCachedUrlFetcher::class =>
             'createRedisCachedUrlFetcher',
+
+        \Bristolian\Cache\UnknownQueryHandler::class =>
+            'createUnknownQueryHandler',
+
+        \Bristolian\PdoSimple\PdoSimple::class =>
+            'createPdoSimpleWithTableTracking',
     ];
 
     // Define some params that can be injected purely by name.

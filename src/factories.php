@@ -481,6 +481,36 @@ function createDeployLogRenderer(Config $config): DeployLogRenderer
 }
 
 
+function createUnknownQueryHandler(
+    Config $config,
+    \Redis $redis
+): \Bristolian\Cache\UnknownQueryHandler {
+    if ($config->isProductionEnv()) {
+        return new \Bristolian\Cache\RedisLogUnknownQuery($redis);
+    }
+
+    return new \Bristolian\Cache\ThrowOnUnknownQuery();
+}
+
+
+function createPdoSimpleWithTableTracking(
+    \PDO $pdo,
+    \Bristolian\Cache\TableAccessRecorder $recorder,
+    \Bristolian\Cache\UnknownQueryHandler $unknownQueryHandler
+): \Bristolian\PdoSimple\PdoSimpleWithTableTracking {
+    $exactMappings = \Bristolian\Cache\QueryTagMapping::getExactMappings();
+    $patternMappings = \Bristolian\Cache\QueryTagMapping::getPatternMappings();
+
+    return new \Bristolian\PdoSimple\PdoSimpleWithTableTracking(
+        $pdo,
+        $recorder,
+        $exactMappings,
+        $patternMappings,
+        $unknownQueryHandler
+    );
+}
+
+
 /**
  * @param Config $config
  * @return \Mailgun\Mailgun

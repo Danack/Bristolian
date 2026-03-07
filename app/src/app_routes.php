@@ -172,6 +172,8 @@ function getAllAppRoutes()
         // API: list emails
         ['/api/admin/email', 'GET', 'Bristolian\AppController\Admin::getEmails'],
 
+        // Admin: unknown cache queries
+        ['/admin/unknown_cache_queries', 'GET', 'Bristolian\AppController\Admin::showUnknownCacheQueries'],
         // Admin index
         ['/admin', 'GET', 'Bristolian\AppController\Admin::showAdminPage'],
         // Topics index

@@ -1197,6 +1197,51 @@ function purgeVarnish(string $urlPath): bool
 }
 
 
+function banVarnishByTag(string $table): bool
+{
+    $tag = 'table:' . $table;
+    $varnishHost = 'varnish';
+    $varnishPort = 80;
+
+    $errno = 0;
+    $errstr = '';
+    $fp = fsockopen($varnishHost, $varnishPort, $errno, $errstr, 2);
+    if (!$fp) {
+        \error_log(sprintf("Failed to connect to Varnish for BAN: %s (%d)\n", $errstr, $errno));
+        return false;
+    }
+
+    $request = "BAN / HTTP/1.1\r\n";
+    $request .= "Host: bristolian.org\r\n";
+    $request .= "X-Ban-Tag: $tag\r\n";
+    $request .= "Connection: close\r\n\r\n";
+
+    fwrite($fp, $request);
+
+    $response = '';
+    while (!feof($fp)) {
+        $response .= fgets($fp, 1024);
+    }
+
+    fclose($fp);
+
+    if (preg_match('#HTTP/\d\.\d (\d{3})#', $response, $matches)) {
+        $status = (int)$matches[1];
+        if ($status >= 200 && $status < 300) {
+            return true;
+        }
+        else {
+            \error_log(sprintf("Varnish BAN failed: HTTP %d\n%s", $status, $response));
+            return false;
+        }
+    }
+    else {
+        \error_log("Could not read HTTP response from Varnish BAN\n");
+        return false;
+    }
+}
+
+
 /**
  * We want notifications to happen during the middle of the day.
  * This function checks that we are sometime between noon and 3pm.

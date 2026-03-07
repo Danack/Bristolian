@@ -101,12 +101,23 @@ sub vcl_recv {
       return (purge);
   }
 
+  if (req.method == "BAN") {
+      if (!client.ip ~ purge) {
+          return (synth(405, "Not allowed"));
+      }
+      if (!req.http.X-Ban-Tag) {
+          return (synth(400, "Missing X-Ban-Tag header"));
+      }
+      ban("obj.http.X-Cache-Tags ~ " + req.http.X-Ban-Tag);
+      return (synth(200, "Banned"));
+  }
+
   if (req.method != "GET" && # Disallow custom methods
     req.method != "HEAD" &&
     req.method != "POST" &&
     req.method != "OPTIONS" &&
     req.method != "PUT" &&
-    
+    req.method != "BAN" &&
     req.method != "DELETE") {
       return (synth(405, "Method Not Allowed"));
   }

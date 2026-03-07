@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\AppController;
 
+use Bristolian\Keys\UnknownCacheQueryKey;
 use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\UserSearch\UserSearch;
@@ -42,6 +43,7 @@ class Admin
         $content .= "<ul>";
         $content .= "<li><a href='/admin/control_processors'>Control processors</a></li>";
         $content .= "<li><a href='/admin/email'>Email status</a></li>";
+        $content .= "<li><a href='/admin/unknown_cache_queries'>Unknown cache queries</a></li>";
         $content .= "</ul>";
 
         return $content;
@@ -164,6 +166,36 @@ HTML;
         );
 
         return new RedirectResponse($message);
+    }
+
+    public function showUnknownCacheQueries(\Redis $redis): string
+    {
+        $content = "<h1>Unknown Cache Queries</h1>";
+
+        $keys = $redis->sMembers(UnknownCacheQueryKey::SET_KEY);
+
+        if ($keys === false || count($keys) === 0) {
+            $content .= "<p>No unknown queries logged.</p>";
+            return $content;
+        }
+
+        $content .= "<p>" . count($keys) . " unknown queries found.</p>";
+        $content .= "<table><tr><th>#</th><th>Query</th></tr>";
+
+        $index = 1;
+        foreach ($keys as $key) {
+            $query = $redis->get($key);
+            if ($query === false) {
+                continue;
+            }
+            $escapedQuery = htmlspecialchars($query);
+            $content .= "<tr><td>{$index}</td><td><pre>{$escapedQuery}</pre></td></tr>";
+            $index++;
+        }
+
+        $content .= "</table>";
+
+        return $content;
     }
 
     public function search_users(

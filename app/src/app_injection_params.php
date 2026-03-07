@@ -14,6 +14,7 @@ function injectionParams()
         \Asm\SessionManager::class,
         \Bristolian\Session\AppSessionManager::class,
         \Bristolian\SiteHtml\ExtraAssets::class,
+        \Bristolian\Cache\RequestTableAccessRecorder::class,
     ];
 
     // Alias interfaces (or classes) to the actual types that should be used
@@ -165,6 +166,9 @@ function injectionParams()
 
         \Bristolian\Repo\RoomVideoTagRepo\RoomVideoTagRepo::class =>
             \Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::class,
+
+        \Bristolian\Cache\TableAccessRecorder::class =>
+            \Bristolian\Cache\RequestTableAccessRecorder::class,
     ];
 
     // Delegate the creation of types to callables.
@@ -217,6 +221,12 @@ function injectionParams()
 
         \Bristolian\Session\AppSession::class =>
             'createAppSession',
+
+        \Bristolian\Cache\UnknownQueryHandler::class =>
+            'createUnknownQueryHandler',
+
+        \Bristolian\PdoSimple\PdoSimple::class =>
+            'createPdoSimpleWithTableTracking',
     ];
 
     // Define some params that can be injected purely by name.
