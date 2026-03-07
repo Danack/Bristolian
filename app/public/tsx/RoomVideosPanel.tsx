@@ -719,8 +719,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         ));
 
         return (
-            // @ts-ignore Fragment should be valid
-            <Fragment>
+            <>
                 {transcriptButtons}
                 <button
                     className="button_standard"
@@ -729,7 +728,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                 >
                     {transcriptFetching ? "Fetching…" : "Fetch transcript"}
                 </button>
-            </Fragment>
+            </>
         );
     }
 
@@ -841,7 +840,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                             : formatTimestamp(state.embedStartSeconds)}
                                     </div>
                                     {addVideoPreview ? (
-                                        <Fragment>
+                                        <>
                                             <button
                                                 type="button"
                                                 className="button_standard room_video_mark_clip_ts"
@@ -905,9 +904,9 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                                     Cancel
                                                 </button>
                                             </div>
-                                        </Fragment>
+                                        </>
                                     ) : state.logged_in && playingVideo != null && playingVideo.start_seconds == null ? (
-                                        <Fragment>
+                                        <>
                                             <button
                                                 type="button"
                                                 className="button_standard room_video_mark_clip_ts"
@@ -965,7 +964,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                             {state.clipError && (
                                                 <div className="error room_video_clip_error">{state.clipError}</div>
                                             )}
-                                        </Fragment>
+                                        </>
                                     ) : null}
                                 </div>
                             </div>
@@ -1027,7 +1026,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                         )}
                     </div>
                 ) : (
-                    <Fragment>
+                    <>
                         {state.addSuccess && <div className="success">{state.addSuccess}</div>}
                         <div className="room_videos_list">
                             {state.videos.length === 0 ? (
@@ -1058,7 +1057,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                 Add video
                             </button>
                         )}
-                    </Fragment>
+                    </>
                 )}
 
                 {this.renderAddVideoModal()}

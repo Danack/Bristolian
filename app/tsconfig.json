@@ -2,6 +2,7 @@
   "compilerOptions": {
     "jsx": "react",
     "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
     "module": "ES6",
     "moduleResolution": "node",
     "esModuleInterop": true,
