@@ -10,6 +10,7 @@ use Asm\SessionManager;
 use Bristolian\Exception\BristolianException;
 use Bristolian\Session\AppSession;
 use Bristolian\Session\AppSessionManager;
+use Bristolian\Session\FakeAsmDriver;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
 

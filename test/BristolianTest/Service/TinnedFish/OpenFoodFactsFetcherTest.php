@@ -123,7 +123,7 @@ class OpenFoodFactsFetcherTest extends BaseTestCase
 /**
  * HttpFetcher that returns fixed [statusCode, body, headers] per URL.
  * Used to test OpenFoodFactsFetcher without network.
- *
+ * @coversNothing
  * @internal
  */
 final class MapHttpFetcher implements HttpFetcher

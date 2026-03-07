@@ -291,6 +291,7 @@ class YouTubeTranscriptFetcherTest extends BaseTestCase
 /**
  * UrlFetcher that returns fixed content per URL; throws UrlNotOkException for missing or null URLs.
  * Used to drive YouTubeTranscriptFetcher without network.
+ * @coversNothing
  */
 final class MapUrlFetcher implements UrlFetcher
 {

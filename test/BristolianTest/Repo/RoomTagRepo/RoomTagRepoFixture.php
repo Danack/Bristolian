@@ -95,5 +95,4 @@ abstract class RoomTagRepoFixture extends BaseTestCase
         $this->expectException(TooManyRoomTagsException::class);
         $repo->createTag($this->getTestRoomId(), $tagParamOver);
     }
-
 }

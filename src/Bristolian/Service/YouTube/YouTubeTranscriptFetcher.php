@@ -85,12 +85,14 @@ class YouTubeTranscriptFetcher
         $url = $captionTrackUrl;
         if (strpos($url, '?') !== false) {
             $url .= '&fmt=json3';
-        } else {
+        }
+        else {
             $url .= '?fmt=json3';
         }
         try {
             return $this->urlFetcher->getUrl($url);
-        } catch (UrlNotOkException $e) {
+        }
+        catch (UrlNotOkException $e) {
             // Fallback: try without fmt=json3 (some return srv1 XML)
             try {
                 return $this->urlFetcher->getUrl($captionTrackUrl);

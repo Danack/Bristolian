@@ -8,6 +8,7 @@ use Asm\Session;
 
 /**
  * In-memory implementation of the Asm\Session interface for unit testing.
+ * @coversNothing
  */
 class FakeAsmSession implements Session
 {

@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace BristolianTest\Session;
+namespace Bristolian\Session;
 
 use Asm\Driver;
 use Asm\Encrypter;
 use Asm\Session;
 use Asm\SessionManager;
 use Asm\Profile\SimpleProfile;
+use BristolianTest\Session\FakeAsmSession;
 
 /**
  * In-memory Asm\Driver for unit testing AppSessionManager.
