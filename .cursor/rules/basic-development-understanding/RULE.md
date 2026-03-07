@@ -4,6 +4,7 @@ alwaysApply: true
 ---
 - No enthusiastic confirmation phrases at the start of responses. Be direct.
 - NEVER start responses with "Perfect!", "Excellent!", "Great!", or similar enthusiastic phrases. Be direct and factual.
+- All PHP code written must be covered by PHPunit tests.
 - Never create mocks or expect mocks to be used in this project. Use real objects and dependencies instead of mock objects in tests.
 - If you need to invoke a tool please read the files in @docs.
 - If you are writing any code, or running any scripts, read the document @docs/developing/development_setup.md.
