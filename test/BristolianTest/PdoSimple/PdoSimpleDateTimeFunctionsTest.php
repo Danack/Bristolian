@@ -17,6 +17,18 @@ class PdoSimpleDateTimeFunctionsTest extends BaseTestCase
 {
     use TestPlaceholders;
 
+    public function setup(): void
+    {
+        parent::setup();
+        $this->injector = createTestInjector();
+        $this->injector->delegate(
+            PdoSimple::class,
+            function (\PDO $pdo) {
+                return new PdoSimple($pdo);
+            }
+        );
+    }
+
     public function test_convertRowToDatetime_with_time_columns()
     {
         $row = [

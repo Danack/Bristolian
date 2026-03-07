@@ -11,7 +11,7 @@ use Ramsey\Uuid\Uuid;
 
 class PdoAdminRepo implements AdminRepo
 {
-    public function __construct(private PdoSimple $pdo)
+    public function __construct(private PdoSimple $pdo_simple)
     {
     }
 
@@ -27,7 +27,7 @@ values (
 )
 SQL;
 
-        $this->pdo->insert($userSQL, ['id' => $uuid->toString()]);
+        $this->pdo_simple->insert($userSQL, ['id' => $uuid->toString()]);
 
         return $uuid->toString();
     }
@@ -55,7 +55,7 @@ SQL;
             ':password_hash' => $password_hash,
         ];
 
-        $this->pdo->insert($userAuthSQL, $params);
+        $this->pdo_simple->insert($userAuthSQL, $params);
 
         return AdminUser::new(
             $user_id,
@@ -83,7 +83,7 @@ where
     email_address = :email_address
 SQL;
 
-        $data = $this->pdo->fetchOneAsDataOrNull(
+        $data = $this->pdo_simple->fetchOneAsDataOrNull(
             $sql,
             [':email_address' => $username]
         );
@@ -111,7 +111,7 @@ where
     email_address = :email_address
 SQL;
 
-        $adminUser = $this->pdo->fetchOneAsObjectOrNull(
+        $adminUser = $this->pdo_simple->fetchOneAsObjectOrNull(
             $sql,
             [':email_address' => $username],
             \Bristolian\Model\Types\AdminUser::class

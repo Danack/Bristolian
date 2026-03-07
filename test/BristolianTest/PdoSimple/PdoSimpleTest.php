@@ -22,6 +22,18 @@ class PdoSimpleTest extends BaseTestCase
 {
     use TestPlaceholders;
 
+    public function setup(): void
+    {
+        parent::setup();
+        $this->injector = createTestInjector();
+        $this->injector->delegate(
+            PdoSimple::class,
+            function (\PDO $pdo) {
+                return new PdoSimple($pdo);
+            }
+        );
+    }
+
     public function testWorks_fetchAllAsObject()
     {
         $pdo_simple = $this->injector->make(PdoSimple::class);

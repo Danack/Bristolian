@@ -280,6 +280,9 @@ SQL,
                 EmailController::STATE_RETRY,
             )) => ['read' => [], 'write' => ['email_send_queue']],
 
+            trim('DELETE FROM email_send_queue')
+                => ['read' => [], 'write' => ['email_send_queue']],
+
             // ===== FoiRequestRepo =====
             trim(foi_requests::SELECT . " where foi_request_id = :foi_request_id limit 1")
                 => ['read' => ['foi_requests'], 'write' => []],
@@ -896,7 +899,7 @@ SQL) => ['read' => [], 'write' => ['user_webpush_subscription']],
         return [
             // MemeStorageRepo::searchMemesByExactTags - dynamic IN clause
             [
-                'pattern' => '#SELECT DISTINCT\s+sm\.id.*FROM\s+stored_meme\s+sm\s+WHERE.*sm\.id\s+IN\s*\(.*\)\s*\)\s*=\s*:tag_count#s',
+                'pattern' => '#SELECT DISTINCT\s+sm\.id.*FROM\s+stored_meme\s+sm\s+WHERE.*mt\.text\s+IN\s*\(.*\)\s*\)\s*=\s*:tag_count#s',
                 'read' => ['stored_meme', 'meme_tag'],
                 'write' => [],
             ],

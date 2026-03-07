@@ -35,9 +35,19 @@ class PdoSimpleWithTableTracking extends PdoSimple
     ) {
         parent::__construct($pdo);
         $this->recorder = $recorder;
-        $this->exactMappings = $exactMappings;
         $this->patternMappings = $patternMappings;
         $this->unknownQueryHandler = $unknownQueryHandler;
+
+        $normalized = [];
+        foreach ($exactMappings as $query => $tags) {
+            $normalized[self::normalizeWhitespace($query)] = $tags;
+        }
+        $this->exactMappings = $normalized;
+    }
+
+    private static function normalizeWhitespace(string $sql): string
+    {
+        return preg_replace('/\s+/', ' ', trim($sql));
     }
 
     /**
@@ -46,14 +56,14 @@ class PdoSimpleWithTableTracking extends PdoSimple
      */
     private function lookupTags(string $query): array|null
     {
-        $trimmed = trim($query);
+        $normalized = self::normalizeWhitespace($query);
 
-        if (isset($this->exactMappings[$trimmed])) {
-            return $this->exactMappings[$trimmed];
+        if (isset($this->exactMappings[$normalized])) {
+            return $this->exactMappings[$normalized];
         }
 
         foreach ($this->patternMappings as $entry) {
-            if (preg_match($entry['pattern'], $trimmed) === 1) {
+            if (preg_match($entry['pattern'], $normalized) === 1) {
                 return ['read' => $entry['read'], 'write' => $entry['write']];
             }
         }
@@ -67,6 +77,7 @@ class PdoSimpleWithTableTracking extends PdoSimple
 
         if ($tags === null) {
             $this->unknownQueryHandler->handle($query);
+            // Hmm.
             return;
         }
 

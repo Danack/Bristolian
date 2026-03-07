@@ -6,12 +6,25 @@ $varnishPassAllString = <<< CACHING
 # return(pass) is not used - aka caching is enabled
 CACHING;
 
+$varnishUnsetCacheTagsString = <<< CACHING
+    # Remove the cache tags invalidation to the user response
+    unset resp.http.X-Cache-Tags;
+CACHING;
+
 
 if (${'varnish.pass_all_requests'} === true) {
+
     $varnishPassAllString .= <<< TEXT
 # pass all requests - aka caching is disabled
 return(pass);
 TEXT;
+
+    $varnishUnsetCacheTagsString = <<< TEXT
+    # Remove the cache tags invalidation to the user response
+    # Disabled for local dev
+    # unset resp.http.X-Cache-Tags;
+TEXT;
+
 
 }
 
@@ -164,7 +177,7 @@ sub vcl_recv {
     return (pipe);
   }
 
-  ${'varnishPassAllString'}  
+  ${'varnishPassAllString'}
 
   return(hash);
 }
@@ -250,9 +263,8 @@ sub vcl_backend_response {
 # You can do accounting or modifying the final object here.
 ###############################################################################
 sub vcl_deliver {
-
-  # Remove the cache tags invalidation to the user response
-  unset resp.http.X-Cache-Tags;
+  
+  $varnishUnsetCacheTagsString
 
   # Insert Diagnostic header to show Hit or Miss
   if (obj.hits > 0) {

@@ -68,8 +68,8 @@ function injectionParams() : InjectionParams
         \Bristolian\Service\BccTroFetcher\BccTroFetcher::class =>
           \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::class,
 
-        Bristolian\Repo\MemeTextRepo\MemeTextRepo::class =>
-            \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class,
+//        Bristolian\Repo\MemeTextRepo\MemeTextRepo::class =>
+//            \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class,
 
         \Bristolian\Repo\BccTroRepo\BccTroRepo::class =>
             \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class,

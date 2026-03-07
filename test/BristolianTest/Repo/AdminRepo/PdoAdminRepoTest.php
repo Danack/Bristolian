@@ -10,6 +10,7 @@ use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 
 /**
+ * @group debug_pdo_tracking
  * @group db
  * @coversNothing
  */
