@@ -54,18 +54,96 @@
       margin-bottom: 0.25rem;
     }
 
+    h3.room_video_clip_field_label {
+      margin-top: 0;
+      font-size: 1.1em;
+      font-weight: 600;
+    }
+
     input,
     textarea {
-      width: 100%;
-      min-width: 200px;
-      max-width: 420px;
+      //min-width: 150px;
+      //max-width: 420px;
       box-sizing: border-box;
     }
 
+    input {
+      width: 75px;
+    }
+
     textarea {
+      width: 100%;
       min-height: 2.5em;
       resize: vertical;
     }
+
+    &.room_video_clip_field_wide {
+      input,
+      textarea {
+        min-width: 280px;
+        max-width: 480px;
+      }
+    }
+
+    &.room_video_clip_field_narrow {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .room_video_clip_field_label {
+        display: inline;
+        margin-bottom: 0;
+        white-space: nowrap;
+        width: 3rem;
+        flex-shrink: 0;
+      }
+
+      h3.room_video_clip_field_label {
+        margin: 0;
+        font-size: 1em;
+      }
+
+      input {
+        //width: 152px;
+        //max-width: 100%;
+        box-sizing: border-box;
+      }
+    }
+  }
+
+  .room_video_add_clip_form {
+    width: 480px;
+    max-width: 100%;
+  }
+
+  .room_video_clip_actions_right {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+
+    &.room_video_clip_actions_right_with_cancel {
+      justify-content: space-between;
+    }
+  }
+
+  .room_video_clip_hr {
+    margin: 0.75rem 0;
+    border: 0;
+    border-top: 1px solid #ccc;
+  }
+
+  .room_video_clip_timestamp_instructions {
+    font-size: 0.9em;
+    color: #555;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .room_video_clip_timestamp_row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    min-height: 2.5rem; /* match button height to prevent layout shift when "Set from video" appears */
   }
 
   .room_video_clip_error {
