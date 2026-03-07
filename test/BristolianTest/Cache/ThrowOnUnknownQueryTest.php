@@ -39,17 +39,24 @@ class ThrowOnUnknownQueryTest extends TestCase
             $this->fail('Expected RuntimeException was not thrown');
         } catch (\RuntimeException $exception) {
             $message = $exception->getMessage();
-            $queryPart = substr($message, strlen('Unknown query not in cache tag mapping: '));
-            $this->assertSame(200, strlen($queryPart));
+            $this->assertStringContainsString(str_repeat('A', 200), $message);
+            $this->assertStringNotContainsString(str_repeat('A', 201), $message);
         }
     }
 
-    public function testExceptionMessagePrefix(): void
+    public function testExceptionMessageContainsFixInstructions(): void
     {
         $handler = new ThrowOnUnknownQuery();
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Unknown query not in cache tag mapping:');
-        $handler->handle('SELECT 1');
+        try {
+            $handler->handle('SELECT 1');
+            $this->fail('Expected RuntimeException was not thrown');
+        } catch (\RuntimeException $exception) {
+            $message = $exception->getMessage();
+            $this->assertStringContainsString('QueryTagMapping.php', $message);
+            $this->assertStringContainsString('getExactMappings()', $message);
+            $this->assertStringContainsString('getPatternMappings()', $message);
+            $this->assertStringContainsString('Unknown query not in cache tag mapping', $message);
+        }
     }
 }

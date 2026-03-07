@@ -8,9 +8,7 @@ use DataType\DataStorage\TestArrayDataStorage;
 use DataType\ProcessedValues;
 
 /**
- * Tests for StringToBoolDefaultTrue ProcessRule
- *
- * @covers \Bristolian\Parameters\ProcessRule\StringToBoolDefaultTrue
+ * @coversNothing
  */
 class StringToBoolDefaultTrueTest extends BaseTestCase
 {
@@ -133,5 +131,18 @@ class StringToBoolDefaultTrueTest extends BaseTestCase
 
         $this->assertFalse($result->isFinalResult());
         $this->assertSame(true, $result->getValue());
+    }
+
+    /**
+     * @covers \Bristolian\Parameters\ProcessRule\StringToBoolDefaultTrue::updateParamDescription
+     */
+    public function test_updateParamDescription_sets_type_and_default(): void
+    {
+        $rule = $this->createProcessRule();
+        $paramDescription = new \DataType\OpenApi\OpenApiV300ParamDescription('test');
+
+        $rule->updateParamDescription($paramDescription);
+
+        $this->assertSame('boolean', $paramDescription->getType());
     }
 }

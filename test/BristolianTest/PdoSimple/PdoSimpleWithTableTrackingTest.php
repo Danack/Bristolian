@@ -165,14 +165,17 @@ class PdoSimpleWithTableTrackingTest extends BaseTestCase
         $handledQueries = [];
         $this->unknownQueryHandler = new class ($handledQueries) implements UnknownQueryHandler {
             /** @var string[] */
-            private array $handled;
-            public function __construct(array &$handled)
+            public array $queries;
+            /**
+             * @param string[] $queries
+             */
+            public function __construct(array &$queries)
             {
-                $this->handled = &$handled;
+                $this->queries = &$queries;
             }
             public function handle(string $query): void
             {
-                $this->handled[] = $query;
+                $this->queries[] = $query;
             }
         };
 

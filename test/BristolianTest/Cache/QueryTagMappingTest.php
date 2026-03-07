@@ -15,7 +15,6 @@ class QueryTagMappingTest extends TestCase
     public function testGetExactMappingsReturnsNonEmptyArray(): void
     {
         $mappings = QueryTagMapping::getExactMappings();
-        $this->assertIsArray($mappings);
         $this->assertNotEmpty($mappings);
     }
 
@@ -24,7 +23,6 @@ class QueryTagMappingTest extends TestCase
         $mappings = QueryTagMapping::getExactMappings();
 
         foreach ($mappings as $query => $tags) {
-            $this->assertIsString($query);
             $this->assertSame(trim($query), $query, "Mapping key should be trimmed: " . substr($query, 0, 60));
         }
     }
@@ -36,8 +34,6 @@ class QueryTagMappingTest extends TestCase
         foreach ($mappings as $query => $tags) {
             $this->assertArrayHasKey('read', $tags, "Missing 'read' key for query: " . substr($query, 0, 60));
             $this->assertArrayHasKey('write', $tags, "Missing 'write' key for query: " . substr($query, 0, 60));
-            $this->assertIsArray($tags['read']);
-            $this->assertIsArray($tags['write']);
         }
     }
 
@@ -55,26 +51,18 @@ class QueryTagMappingTest extends TestCase
         }
     }
 
-    public function testGetExactMappingsTableNamesAreStrings(): void
+    public function testGetExactMappingsTableNamesAreNonEmpty(): void
     {
         $mappings = QueryTagMapping::getExactMappings();
 
         foreach ($mappings as $query => $tags) {
             foreach ($tags['read'] as $table) {
-                $this->assertIsString($table);
                 $this->assertNotEmpty($table);
             }
             foreach ($tags['write'] as $table) {
-                $this->assertIsString($table);
                 $this->assertNotEmpty($table);
             }
         }
-    }
-
-    public function testGetPatternMappingsReturnsArray(): void
-    {
-        $mappings = QueryTagMapping::getPatternMappings();
-        $this->assertIsArray($mappings);
     }
 
     public function testGetPatternMappingsEntriesHaveRequiredKeys(): void

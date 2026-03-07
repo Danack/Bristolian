@@ -77,7 +77,6 @@ class PdoSimpleWithTableTracking extends PdoSimple
 
         if ($tags === null) {
             $this->unknownQueryHandler->handle($query);
-            // Hmm.
             return;
         }
 
