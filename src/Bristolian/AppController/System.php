@@ -51,6 +51,7 @@ HTML;
         $error_log = "Does not exist \o/";
 
         if (file_exists("/var/app/data/git_pull_error.log") === true) {
+            // @codeCoverageIgnoreStart
             $file_contents = file_get_contents("/var/app/data/git_pull_error.log");
             if ($file_contents === false) {
                 $error_log = "Unable to read log file";
@@ -58,6 +59,7 @@ HTML;
             else {
                 $error_log = $file_contents;
             }
+            // @codeCoverageIgnoreEnd
         }
 
 

@@ -163,8 +163,14 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         const logged_in = this.state.logged_in;
         return (
             <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Tags</th>
+                        {logged_in && <th />}
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr><td>Title</td><td>Tags</td>{logged_in && <td></td>}</tr>
                     {this.state.roomLinks.map((roomLink) => this.renderRoomLink(roomLink, logged_in))}
                 </tbody>
             </table>

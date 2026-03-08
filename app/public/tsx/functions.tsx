@@ -35,6 +35,13 @@ export function humanFileSize(bytes:number, si=false, dp=1) {
 
 
 
+/**
+ * Formats a date for display in chat (message timestamps).
+ * - Today: time only (e.g. "14:30")
+ * - Yesterday: "yst " + time (e.g. "yst 14:30")
+ * - Within last 6 days: weekday + time (e.g. "Mon 14:30")
+ * - Older: month + date + time (e.g. "Oct 6, 14:30")
+ */
 export function formatDateTimeForChat(date: Date) {
   var min = date.getMinutes();
   var today = (new Date()).setHours(0, 0, 0, 0);

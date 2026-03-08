@@ -156,13 +156,15 @@ export class RoomAnnotationsPanel extends Component<RoomAnnotationPanelProps, Ro
             <div>
                 <h2>Annotations</h2>
                 <table>
-                    <tbody>
+                    <thead>
                         <tr>
-                            <td>Name</td>
-                            <td>Tags</td>
-                            <td></td>
-                            {logged_in && <td></td>}
+                            <th>Name</th>
+                            <th>Tags</th>
+                            <th />
+                            {logged_in && <th />}
                         </tr>
+                    </thead>
+                    <tbody>
                         {this.state.annotations.map((annotation) => this.renderRoomAnnotation(annotation, logged_in))}
                     </tbody>
                 </table>

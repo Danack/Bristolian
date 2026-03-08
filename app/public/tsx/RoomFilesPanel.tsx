@@ -166,15 +166,17 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             <span>
                 <span className="section-heading">Files</span>
                 <table>
-                    <tbody>
+                    <thead>
                         <tr>
-                            <td>Name</td>
-                            <td>Size</td>
-                            <td>Date</td>
-                            <td>Tags</td>
-                            <td></td>
-                            {logged_in && <td></td>}
+                            <th>Name</th>
+                            <th>Size</th>
+                            <th>Date</th>
+                            <th>Tags</th>
+                            <th />
+                            {logged_in && <th />}
                         </tr>
+                    </thead>
+                    <tbody>
                         {this.state.files.map((roomFile) => this.renderRoomFile(roomFile, logged_in))}
                     </tbody>
                 </table>

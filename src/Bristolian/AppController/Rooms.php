@@ -18,6 +18,7 @@ use Bristolian\Model\Types\RoomLinkWithTags;
 use Bristolian\Model\Types\RoomVideoWithTags;
 use Bristolian\Parameters\AddVideoParam;
 use Bristolian\Parameters\CreateClipParam;
+use Bristolian\Parameters\UpdateRoomVideoParam;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Parameters\SetEntityTagsParam;
 use Bristolian\Parameters\TagParams;
@@ -272,6 +273,23 @@ class Rooms
             $param->end_seconds
         );
         return new CreateClipResponse($roomVideo->id);
+    }
+
+    public function updateVideo(
+        RoomVideoRepo $roomVideoRepo,
+        JsonInput $jsonInput,
+        string $room_id,
+        string $room_video_id
+    ): SuccessResponse {
+        $roomVideoRepo->getRoomVideoForRoom($room_id, $room_video_id);
+        $param = UpdateRoomVideoParam::createFromArray($jsonInput->getData());
+        $roomVideoRepo->updateTitleAndDescription(
+            $room_id,
+            $room_video_id,
+            $param->title,
+            $param->description
+        );
+        return new SuccessResponse();
     }
 
     public function getTranscripts(

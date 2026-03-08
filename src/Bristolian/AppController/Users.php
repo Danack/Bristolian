@@ -97,6 +97,7 @@ class Users
         $avatar_image_id = $user_profile->getAvatarImageId();
         $fileDetails = $avatarImageStorageInfoRepo->getById($avatar_image_id);
 
+        // Hard to test: defensive path when profile has avatar_image_id but storage has no record (data inconsistency).
         if ($fileDetails === null) {
             return new \Bristolian\Response\StoredFileErrorResponse($avatar_image_id);
         }
@@ -105,6 +106,7 @@ class Users
         try {
             ensureFileCachedFromStream($localCacheFilesystem, $avatarFilesystem, $normalized_name);
         }
+        // Hard to test: requires forcing Flysystem to throw UnableToReadFile (e.g. missing file in object store or I/O failure).
         catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
             return new \Bristolian\Response\StoredFileErrorResponse($normalized_name);
         }
@@ -112,6 +114,7 @@ class Users
         $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;
         $filenameToServe = realpath($localCacheFilename);
 
+        // Hard to test: realpath() only returns false if the file is missing or path invalid after cache write; would require simulating filesystem/permission failure.
         if ($filenameToServe === false) {
             throw new \Bristolian\Exception\BristolianException(
                 "Failed to retrieve avatar from object store [" . $normalized_name . "]."
@@ -316,6 +319,7 @@ HTML;
         try {
             ensureFileCachedFromStream($localCacheFilesystem, $avatarFilesystem, $normalized_name);
         }
+        // Hard to test: requires forcing Flysystem to throw UnableToReadFile (e.g. missing file in object store or I/O failure).
         catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
             return new \Bristolian\Response\StoredFileErrorResponse($normalized_name);
         }
@@ -323,6 +327,7 @@ HTML;
         $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;
         $filenameToServe = realpath($localCacheFilename);
 
+        // Hard to test: realpath() only returns false if the file is missing or path invalid after cache write; would require simulating filesystem/permission failure.
         if ($filenameToServe === false) {
             throw new \Bristolian\Exception\BristolianException(
                 "Failed to retrieve avatar from object store [" . $normalized_name . "]."

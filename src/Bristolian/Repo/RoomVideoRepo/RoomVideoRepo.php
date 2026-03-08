@@ -53,4 +53,16 @@ interface RoomVideoRepo
         int $start_seconds,
         int $end_seconds
     ): RoomVideo;
+
+    /**
+     * Update a room video's title and/or description. Omitted fields are left unchanged.
+     *
+     * @throws ContentNotFoundException if not found or room_video is in a different room
+     */
+    public function updateTitleAndDescription(
+        string $room_id,
+        string $room_video_id,
+        ?string $title,
+        ?string $description
+    ): void;
 }

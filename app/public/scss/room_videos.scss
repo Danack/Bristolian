@@ -111,9 +111,30 @@
     }
   }
 
+  .room_video_player_actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
   .room_video_add_clip_form {
     width: 480px;
     max-width: 100%;
+  }
+
+  .room_videos_table {
+    td:nth-child(1),
+    th:nth-child(1) {
+      min-width: 250px;
+    }
+    td:nth-child(2),
+    th:nth-child(2) {
+      min-width: 120px;
+    }
+    td:nth-child(3),
+    th:nth-child(3) {
+      min-width: 150px;
+    }
   }
 
   .room_video_clip_actions_right {
@@ -168,13 +189,6 @@
       //width: 100%;
       //height: 100%;
     }
-  }
-
-  .room_video_clip_badge {
-    display: block;
-    font-size: 0.85em;
-    color: #666;
-    margin-bottom: 0.25em;
   }
 
   .room_video_description {

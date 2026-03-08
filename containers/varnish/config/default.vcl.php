@@ -130,6 +130,7 @@ sub vcl_recv {
     req.method != "POST" &&
     req.method != "OPTIONS" &&
     req.method != "PUT" &&
+    req.method != "PATCH" &&
     req.method != "BAN" &&
     req.method != "DELETE") {
       return (synth(405, "Method Not Allowed"));

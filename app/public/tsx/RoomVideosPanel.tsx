@@ -3,6 +3,7 @@ import { api, GetRoomsVideosResponse } from "./generated/api_routes";
 import { RoomVideoWithTags, createRoomVideoWithTags, createRoomTag, RoomTag } from "./generated/types";
 import { get_logged_in, subscribe_logged_in } from "./store";
 import { setVideoTags } from "./api_room_entity_tags";
+import { formatDateTimeForContent, spacesToNbsp } from "./functions";
 
 /** Set to true when transcript fetching is fixed. */
 const TRANSCRIPT_ENABLED = false;
@@ -165,6 +166,13 @@ interface RoomVideosPanelState {
     embedKey: number; // force iframe re-mount when seek changes
     embedStartSeconds: number;
     currentTimeSeconds: number | null;
+    /** When playing an existing video: 'default' | 'create_clip' | 'edit_video'. */
+    playerPanelMode: "default" | "create_clip" | "edit_video";
+    /** For edit-video form (title/description). */
+    editVideoTitle: string;
+    editVideoDescription: string;
+    editVideoSaving: boolean;
+    editVideoError: string | null;
 }
 
 function getDefaultState(): RoomVideosPanelState {
@@ -201,6 +209,11 @@ function getDefaultState(): RoomVideosPanelState {
         embedKey: 0,
         embedStartSeconds: 0,
         currentTimeSeconds: null,
+        playerPanelMode: "default",
+        editVideoTitle: "",
+        editVideoDescription: "",
+        editVideoSaving: false,
+        editVideoError: null,
     };
 }
 
@@ -550,6 +563,46 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         this.setState({ editingVideoId: null, roomTags: [], selectedTagIds: new Set() });
     }
 
+    openEditVideo() {
+        const { playingVideo } = this.state;
+        if (!playingVideo) return;
+        this.setState({
+            playerPanelMode: "edit_video",
+            editVideoTitle: playingVideo.title ?? "",
+            editVideoDescription: playingVideo.description ?? "",
+            editVideoError: null,
+        });
+    }
+
+    cancelEditVideo() {
+        this.setState({ playerPanelMode: "default", editVideoError: null });
+    }
+
+    saveEditVideo() {
+        const { playingVideo, editVideoTitle, editVideoDescription } = this.state;
+        if (!playingVideo) return;
+        this.setState({ editVideoSaving: true, editVideoError: null });
+        fetch(`/api/rooms/${this.props.room_id}/videos/${playingVideo.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title: editVideoTitle || null, description: editVideoDescription || null }),
+        })
+            .then((response) => {
+                if (!response.ok) throw new Error(response.statusText);
+                return response.json();
+            })
+            .then((data) => {
+                if (data?.result === "error") throw new Error(data.error ?? "Failed to update");
+                this.setState({
+                    playerPanelMode: "default",
+                    editVideoSaving: false,
+                    editVideoError: null,
+                });
+                this.refreshVideos();
+            })
+            .catch((err) => this.setState({ editVideoSaving: false, editVideoError: String(err) }));
+    }
+
     toggleTagForEdit(tag_id: string) {
         const next = new Set(this.state.selectedTagIds);
         if (next.has(tag_id)) next.delete(tag_id);
@@ -623,7 +676,6 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
 
     renderVideoRow(video: RoomVideoWithTags) {
         const title = video.title || video.youtube_video_id || video.id;
-        const isClip = video.start_seconds != null;
         const tagsBlock =
             video.tags.length > 0 ? (
                 <span className="room_entity_tags">
@@ -639,12 +691,10 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         return (
             <tr key={video.id}>
                 <td>
-                    {isClip && (
-                        <span className="room_video_clip_badge">Clip</span>
-                    )}
                     <span>{title}</span>
                     {video.description && <div className="room_video_description">{video.description}</div>}
                 </td>
+                <td>{spacesToNbsp(formatDateTimeForContent(video.created_at instanceof Date ? video.created_at : new Date(String(video.created_at))))}</td>
                 <td>{tagsBlock}</td>
                 {this.state.logged_in && (
                     <td>
@@ -652,9 +702,8 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                             href={this.youtubeUrl(video)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="button_standard button_chat"
                         >
-                            YouTube
+                            Watch on youtube
                         </a>
                         <button
                             className="button_standard button_chat"
@@ -671,6 +720,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                     clipTimestampFocus: null,
                                     clipTitle: "",
                                     clipDescription: "",
+                                    playerPanelMode: "default",
                                 });
                                 if (TRANSCRIPT_ENABLED) {
                                     this.loadTranscriptsForVideo(video.id);
@@ -678,9 +728,6 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                             }}
                         >
                             Play
-                        </button>
-                        <button className="button_standard button_chat" onClick={() => this.openEditTags(video)}>
-                            Edit tags
                         </button>
                     </td>
                 )}
@@ -813,7 +860,6 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         const showingPlayer = playingVideo != null || addVideoPreview != null;
         return (
             <div className="room_videos_panel_react">
-                <h2>Video</h2>
                 {state.error && <div className="error">{state.error}</div>}
                 {showingPlayer ? (
                     <div className="room_video_playing_block">
@@ -821,13 +867,6 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                             <div className="room_video_player_with_controls">
                                 <div id="room_video_yt_player" className="room_video_embed_container" ref={(el) => { this.embedContainerRef = el; }} />
                                 <div className="room_video_player_controls">
-                                    {!addVideoPreview && (
-                                        <div className="room_video_current_time">
-                                            {state.currentTimeSeconds != null
-                                                ? formatTimestamp(state.currentTimeSeconds)
-                                                : formatTimestamp(state.embedStartSeconds)}
-                                        </div>
-                                    )}
                                     {addVideoPreview ? (
                                         <div className="room_video_add_clip_form">
                                             <label className="room_video_clip_field room_video_clip_field_wide">
@@ -927,87 +966,138 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                                 </button>
                                             </div>
                                         </div>
-                                    ) : state.logged_in && playingVideo != null && playingVideo.start_seconds == null ? (
-                                        <>
-                                            <div className="room_video_clip_timestamp_row">
-                                                <label className="room_video_clip_field room_video_clip_field_narrow">
-                                                    <h3 className="room_video_clip_field_label">Start</h3>
+                                    ) : state.logged_in && playingVideo != null ? (
+                                        state.playerPanelMode === "default" ? (
+                                            <div className="room_video_player_actions">
+                                                <button type="button" className="button_standard" onClick={() => this.setState({ playerPanelMode: "create_clip" })}>
+                                                    Create clip
+                                                </button>
+                                                <button type="button" className="button_standard" onClick={() => this.openEditVideo()}>
+                                                    Edit video
+                                                </button>
+                                                <button type="button" className="button_standard" onClick={() => this.openEditTags(playingVideo)}>
+                                                    Edit tags
+                                                </button>
+                                            </div>
+                                        ) : state.playerPanelMode === "create_clip" ? (
+                                            <div className="room_video_add_clip_form">
+                                                <label className="room_video_clip_field room_video_clip_field_wide">
+                                                    <h3 className="room_video_clip_field_label">Title (optional)</h3>
                                                     <input
                                                         type="text"
-                                                        placeholder="0:00"
-                                                        value={state.clipStartInput}
-                                                        onInput={(e) => this.setState({ clipStartInput: (e.target as HTMLInputElement).value })}
-                                                        onFocus={() => this.setState({ clipTimestampFocus: "start" })}
-                                                        onBlur={() => this.setState({ clipTimestampFocus: null })}
+                                                        placeholder="Clip title (optional)"
+                                                        value={state.clipTitle}
+                                                        onInput={(e) => this.setState({ clipTitle: (e.target as HTMLInputElement).value })}
                                                     />
                                                 </label>
-                                                {state.clipTimestampFocus === "start" && (
+                                                <label className="room_video_clip_field room_video_clip_field_wide">
+                                                    <h3 className="room_video_clip_field_label">Description (optional)</h3>
+                                                    <textarea
+                                                        placeholder="Clip description"
+                                                        value={state.clipDescription}
+                                                        onInput={(e) => this.setState({ clipDescription: (e.target as HTMLTextAreaElement).value })}
+                                                        rows={4}
+                                                    />
+                                                </label>
+                                                {state.clipError && <div className="error room_video_clip_error">{state.clipError}</div>}
+                                                <hr className="room_video_clip_hr" />
+                                                <p className="room_video_clip_timestamp_instructions">
+                                                    To set start or end time: focus the Start or End field below, then click &quot;Set from video&quot; to use the current player time.
+                                                </p>
+                                                <div className="room_video_clip_timestamp_row">
+                                                    <label className="room_video_clip_field room_video_clip_field_narrow">
+                                                        <h3 className="room_video_clip_field_label">Start</h3>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="0:00"
+                                                            value={state.clipStartInput}
+                                                            onInput={(e) => this.setState({ clipStartInput: (e.target as HTMLInputElement).value })}
+                                                            onFocus={() => this.setState({ clipTimestampFocus: "start" })}
+                                                            onBlur={() => this.setState({ clipTimestampFocus: null })}
+                                                        />
+                                                    </label>
+                                                    {state.clipTimestampFocus === "start" && (
+                                                        <button
+                                                            type="button"
+                                                            className="button_standard room_video_mark_clip_ts"
+                                                            onMouseDown={(e) => e.preventDefault()}
+                                                            onClick={() => this.markClipTimestamp()}
+                                                        >
+                                                            Set from video
+                                                        </button>
+                                                    )}
+                                                </div>
+                                                <div className="room_video_clip_timestamp_row">
+                                                    <label className="room_video_clip_field room_video_clip_field_narrow">
+                                                        <h3 className="room_video_clip_field_label">End</h3>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="0:00"
+                                                            value={state.clipEndInput}
+                                                            onInput={(e) => this.setState({ clipEndInput: (e.target as HTMLInputElement).value })}
+                                                            onFocus={() => this.setState({ clipTimestampFocus: "end" })}
+                                                            onBlur={() => this.setState({ clipTimestampFocus: null })}
+                                                        />
+                                                    </label>
+                                                    {state.clipTimestampFocus === "end" && (
+                                                        <button
+                                                            type="button"
+                                                            className="button_standard room_video_mark_clip_ts"
+                                                            onMouseDown={(e) => e.preventDefault()}
+                                                            onClick={() => this.markClipTimestamp()}
+                                                        >
+                                                            Set from video
+                                                        </button>
+                                                    )}
+                                                </div>
+                                                <div className="room_video_clip_actions_right room_video_clip_actions_right_with_cancel">
+                                                    <button type="button" className="button_standard" onClick={() => this.setState({ playerPanelMode: "default" })}>
+                                                        Back
+                                                    </button>
                                                     <button
                                                         type="button"
-                                                        className="button_standard room_video_mark_clip_ts"
-                                                        onMouseDown={(e) => e.preventDefault()}
-                                                        onClick={() => this.markClipTimestamp()}
+                                                        className="button_standard"
+                                                        onClick={() => this.createClip()}
+                                                        disabled={
+                                                            parseTimestampToSeconds(state.clipStartInput) === null ||
+                                                            parseTimestampToSeconds(state.clipEndInput) === null
+                                                        }
                                                     >
-                                                        Set from video
+                                                        Create clip
                                                     </button>
-                                                )}
+                                                </div>
                                             </div>
-                                            <div className="room_video_clip_timestamp_row">
-                                                <label className="room_video_clip_field room_video_clip_field_narrow">
-                                                    <h3 className="room_video_clip_field_label">End</h3>
+                                        ) : (
+                                            <div className="room_video_add_clip_form">
+                                                <label className="room_video_clip_field room_video_clip_field_wide">
+                                                    <h3 className="room_video_clip_field_label">Title</h3>
                                                     <input
                                                         type="text"
-                                                        placeholder="0:00"
-                                                        value={state.clipEndInput}
-                                                        onInput={(e) => this.setState({ clipEndInput: (e.target as HTMLInputElement).value })}
-                                                        onFocus={() => this.setState({ clipTimestampFocus: "end" })}
-                                                        onBlur={() => this.setState({ clipTimestampFocus: null })}
+                                                        placeholder="Video or clip title"
+                                                        value={state.editVideoTitle}
+                                                        onInput={(e) => this.setState({ editVideoTitle: (e.target as HTMLInputElement).value })}
                                                     />
                                                 </label>
-                                                {state.clipTimestampFocus === "end" && (
-                                                    <button
-                                                        type="button"
-                                                        className="button_standard room_video_mark_clip_ts"
-                                                        onMouseDown={(e) => e.preventDefault()}
-                                                        onClick={() => this.markClipTimestamp()}
-                                                    >
-                                                        Set from video
+                                                <label className="room_video_clip_field room_video_clip_field_wide">
+                                                    <h3 className="room_video_clip_field_label">Description</h3>
+                                                    <textarea
+                                                        placeholder="Description"
+                                                        value={state.editVideoDescription}
+                                                        onInput={(e) => this.setState({ editVideoDescription: (e.target as HTMLTextAreaElement).value })}
+                                                        rows={4}
+                                                    />
+                                                </label>
+                                                {state.editVideoError && <div className="error room_video_clip_error">{state.editVideoError}</div>}
+                                                <div className="room_video_clip_actions_right room_video_clip_actions_right_with_cancel">
+                                                    <button type="button" className="button_standard" onClick={() => this.cancelEditVideo()} disabled={state.editVideoSaving}>
+                                                        Cancel
                                                     </button>
-                                                )}
+                                                    <button type="button" className="button_standard" onClick={() => this.saveEditVideo()} disabled={state.editVideoSaving}>
+                                                        {state.editVideoSaving ? "Saving…" : "Save"}
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <label className="room_video_clip_field">
-                                                <span className="room_video_clip_field_label">Title</span>
-                                                <input
-                                                    type="text"
-                                                    placeholder="Clip title (optional)"
-                                                    value={state.clipTitle}
-                                                    onInput={(e) => this.setState({ clipTitle: (e.target as HTMLInputElement).value })}
-                                                />
-                                            </label>
-                                            <label className="room_video_clip_field">
-                                                <span className="room_video_clip_field_label">Description (optional)</span>
-                                                <textarea
-                                                    placeholder="Clip description"
-                                                    value={state.clipDescription}
-                                                    onInput={(e) => this.setState({ clipDescription: (e.target as HTMLTextAreaElement).value })}
-                                                    rows={2}
-                                                />
-                                            </label>
-                                            <button
-                                                type="button"
-                                                className="button_standard"
-                                                onClick={() => this.createClip()}
-                                                disabled={
-                                                    parseTimestampToSeconds(state.clipStartInput) === null ||
-                                                    parseTimestampToSeconds(state.clipEndInput) === null
-                                                }
-                                            >
-                                                Create clip
-                                            </button>
-                                            {state.clipError && (
-                                                <div className="error room_video_clip_error">{state.clipError}</div>
-                                            )}
-                                        </>
+                                        )
                                     ) : null}
                                 </div>
                             </div>
@@ -1061,7 +1151,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                 <button
                                     type="button"
                                     className="button_standard"
-                                    onClick={() => this.setState({ playingVideo: null, clipMarkedStartSeconds: null, clipMarkedEndSeconds: null, clipStartInput: "", clipEndInput: "", clipTimestampFocus: null })}
+                                    onClick={() => this.setState({ playingVideo: null, clipMarkedStartSeconds: null, clipMarkedEndSeconds: null, clipStartInput: "", clipEndInput: "", clipTimestampFocus: null, playerPanelMode: "default" })}
                                 >
                                     Close player
                                 </button>
@@ -1075,16 +1165,19 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                             {state.videos.length === 0 ? (
                                 <p>No videos.</p>
                             ) : (
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td>Title</td>
-                                            <td>Tags</td>
-                                            {state.logged_in && <td />}
-                                        </tr>
-                                        {state.videos.map((v) => this.renderVideoRow(v))}
-                                    </tbody>
-                                </table>
+                              <table className="room_videos_table">
+                                <thead>
+                                  <tr>
+                                      <th>Title</th>
+                                      <th>Added</th>
+                                      <th>Tags</th>
+                                      {state.logged_in && <th />}
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {state.videos.map((v) => this.renderVideoRow(v))}
+                                </tbody>
+                              </table>
                             )}
                         </div>
                         <button className="button_standard" onClick={() => this.refreshVideos()}>

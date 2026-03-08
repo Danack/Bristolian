@@ -47,20 +47,7 @@ HTML;
     ): GetChatRoomMessagesResponse {
         $messages = $chatMessageRepo->getMessagesForRoom($room_id);
 
-        // Convert messages to array format for JSON response
-        $messageData = [];
-        foreach ($messages as $message) {
-            $messageData[] = [
-                'id' => $message->id,
-                'user_id' => $message->user_id,
-                'room_id' => $message->room_id,
-                'text' => $message->text,
-                'reply_message_id' => $message->reply_message_id,
-                'created_at' => $message->created_at->format('Y-m-d H:i:s')
-            ];
-        }
-
-        return new GetChatRoomMessagesResponse($messageData);
+        return new GetChatRoomMessagesResponse($messages);
     }
 
 

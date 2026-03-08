@@ -136,4 +136,26 @@ class InMemoryRoomVideoRepo implements RoomVideoRepo
         $this->roomVideos[$id] = $roomVideo;
         return $roomVideo;
     }
+
+    public function updateTitleAndDescription(
+        string $room_id,
+        string $room_video_id,
+        ?string $title,
+        ?string $description
+    ): void {
+        $roomVideo = $this->getRoomVideoForRoom($room_id, $room_video_id);
+        $newTitle = $title !== null ? $title : $roomVideo->title;
+        $newDescription = $description !== null ? $description : $roomVideo->description;
+        $updated = new RoomVideo(
+            id: $roomVideo->id,
+            room_id: $roomVideo->room_id,
+            video_id: $roomVideo->video_id,
+            title: $newTitle,
+            description: $newDescription,
+            start_seconds: $roomVideo->start_seconds,
+            end_seconds: $roomVideo->end_seconds,
+            created_at: $roomVideo->created_at
+        );
+        $this->roomVideos[$room_video_id] = $updated;
+    }
 }

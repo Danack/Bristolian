@@ -36,6 +36,10 @@ Use `snake_case` for CSS class names (e.g. `room_links_panel_react`, `room_edit_
 
 Display entity tags using `<span className="room_entity_tags">` containing `<span className="room_entity_tag_chip">` elements for each tag. When there are no tags, render `<span className="room_entity_tags empty">—</span>`.
 
+## Date/time for files, links and videos
+
+When displaying timestamps for files, links and videos (e.g. in lists or panels), use the `formatDateTimeForContent` function from `functions.tsx`. It shows relative time within the last hour, "Today" + time for the same day, and date-only for older items.
+
 ## Empty states
 
 When a list has no items, render a short descriptive `<p>` element (e.g. `<p>No videos.</p>`, `<p>No links.</p>`, `<p>No files.</p>`).

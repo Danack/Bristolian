@@ -2,7 +2,7 @@
 
 namespace BristolianTest\Response;
 
-use Bristolian\Exception\DataEncodingException;
+use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\Response\GetChatRoomMessagesResponse;
 use BristolianTest\BaseTestCase;
 
@@ -11,36 +11,48 @@ use BristolianTest\BaseTestCase;
  */
 class GetChatRoomMessagesResponseTest extends BaseTestCase
 {
-    public function testGetStatusReturns200()
+    private static function message(int $id, string $text, string $userId = 'user-1', string $roomId = 'room-1', ?int $replyMessageId = null): UserChatMessage
+    {
+        return new UserChatMessage(
+            $id,
+            $userId,
+            $roomId,
+            $text,
+            $replyMessageId,
+            new \DateTimeImmutable('2025-01-01 12:00:00')
+        );
+    }
+
+    public function testGetStatusReturns200(): void
     {
         $messages = [
-            ['id' => 1, 'text' => 'Hello', 'user_id' => 'user-1'],
-            ['id' => 2, 'text' => 'World', 'user_id' => 'user-2']
+            self::message(1, 'Hello', 'user-1'),
+            self::message(2, 'World', 'user-2'),
         ];
         $response = new GetChatRoomMessagesResponse($messages);
-        
+
         $this->assertSame(200, $response->getStatus());
     }
 
-    public function testGetHeadersReturnsContentType()
+    public function testGetHeadersReturnsContentType(): void
     {
-        $messages = [['id' => 1, 'text' => 'Hello']];
+        $messages = [self::message(1, 'Hello')];
         $response = new GetChatRoomMessagesResponse($messages);
         $headers = $response->getHeaders();
-        
+
         $this->assertArrayHasKey('Content-Type', $headers);
         $this->assertSame('application/json', $headers['Content-Type']);
     }
 
-    public function testGetBodyReturnsMessages()
+    public function testGetBodyReturnsMessages(): void
     {
         $messages = [
-            ['id' => 1, 'text' => 'Hello', 'user_id' => 'user-1'],
-            ['id' => 2, 'text' => 'World', 'user_id' => 'user-2']
+            self::message(1, 'Hello', 'user-1'),
+            self::message(2, 'World', 'user-2'),
         ];
         $response = new GetChatRoomMessagesResponse($messages);
         $body = $response->getBody();
-        
+
         $decoded = json_decode($body, true);
         $this->assertIsArray($decoded);
         $this->assertSame('success', $decoded['result']);
@@ -49,7 +61,7 @@ class GetChatRoomMessagesResponseTest extends BaseTestCase
         $this->assertCount(2, $decoded['data']['messages']);
     }
 
-    public function testGetBodyWithEmptyMessages()
+    public function testGetBodyWithEmptyMessages(): void
     {
         $messages = [];
         $response = new GetChatRoomMessagesResponse($messages);

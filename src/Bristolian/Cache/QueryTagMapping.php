@@ -752,6 +752,9 @@ SQL) => ['read' => ['room'], 'write' => []],
             trim(room_video::INSERT)
                 => ['read' => [], 'write' => ['room_video']],
 
+            trim('UPDATE room_video SET title = :title, description = :description WHERE id = :id AND room_id = :room_id')
+                => ['read' => [], 'write' => ['room_video']],
+
             // ===== RoomVideoTagRepo =====
             trim('DELETE FROM room_video_tag WHERE room_video_id = :room_video_id')
                 => ['read' => [], 'write' => ['room_video_tag']],

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\Response;
 
+use Bristolian\Model\Chat\UserChatMessage;
 use SlimDispatcher\Response\StubResponse;
 
 class GetChatRoomMessagesResponse implements StubResponse
@@ -11,7 +12,8 @@ class GetChatRoomMessagesResponse implements StubResponse
     private string $body;
 
     /**
-     * @param array<int, array<string, mixed>> $messages
+     * @param UserChatMessage[] $messages
+     * @phpstan-param array<int, UserChatMessage> $messages
      */
     public function __construct(array $messages)
     {

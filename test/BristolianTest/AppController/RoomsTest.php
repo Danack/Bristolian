@@ -300,6 +300,32 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\AppController\Rooms::updateVideo
+     */
+    public function test_updateVideo(): void
+    {
+        $videoRepo = $this->injector->make(InMemoryVideoRepo::class);
+        $videoId = $videoRepo->create('test-user-id-001', 'abc123');
+        $roomVideoRepo = $this->injector->make(InMemoryRoomVideoRepo::class);
+        $roomVideo = $roomVideoRepo->addVideo($this->roomId, $videoId, 'Original Title', 'Original description');
+
+        $jsonInput = new FakeJsonInput([
+            'title' => 'Updated Title',
+            'description' => 'Updated description',
+        ]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+        $this->injector->defineParam('room_video_id', $roomVideo->id);
+
+        $result = $this->injector->execute([Rooms::class, 'updateVideo']);
+        $this->assertInstanceOf(SuccessResponse::class, $result);
+
+        $fetched = $roomVideoRepo->getRoomVideoForRoom($this->roomId, $roomVideo->id);
+        $this->assertSame('Updated Title', $fetched->title);
+        $this->assertSame('Updated description', $fetched->description);
+    }
+
+    /**
      * @covers \Bristolian\AppController\Rooms::setAnnotationTags
      */
     public function test_setAnnotationTags(): void

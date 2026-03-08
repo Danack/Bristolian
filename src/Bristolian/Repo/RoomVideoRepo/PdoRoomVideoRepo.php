@@ -205,4 +205,25 @@ class PdoRoomVideoRepo implements RoomVideoRepo
         ]);
         return $this->getRoomVideo($id);
     }
+
+    /**
+     * Update a room video's title and/or description. Null means leave unchanged.
+     */
+    public function updateTitleAndDescription(
+        string $room_id,
+        string $room_video_id,
+        ?string $title,
+        ?string $description
+    ): void {
+        $roomVideo = $this->getRoomVideoForRoom($room_id, $room_video_id);
+        $newTitle = $title !== null ? $title : $roomVideo->title;
+        $newDescription = $description !== null ? $description : $roomVideo->description;
+        $sql = 'UPDATE room_video SET title = :title, description = :description WHERE id = :id AND room_id = :room_id';
+        $this->pdoSimple->execute($sql, [
+            'title' => $newTitle,
+            'description' => $newDescription,
+            'id' => $room_video_id,
+            'room_id' => $room_id,
+        ]);
+    }
 }

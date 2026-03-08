@@ -300,7 +300,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\Chat::get_room_messages',
             [
-                ['messages', \Bristolian\Model\Generated\ChatMessage::class, true]
+                ['messages', \Bristolian\Model\Chat\UserChatMessage::class, true]
             ],
         ], // GetChatRoomMessagesResponse
 
@@ -366,6 +366,14 @@ function getAllApiRoutes()
             '/api/rooms/{room_id:.*}/videos/clips',
             'POST',
             'Bristolian\AppController\Rooms::createClip',
+            null,
+        ],
+
+        // Update a room video's title and/or description (body: title?, description?).
+        [
+            '/api/rooms/{room_id:.*}/videos/{room_video_id:.*}',
+            'PATCH',
+            'Bristolian\AppController\Rooms::updateVideo',
             null,
         ],
 

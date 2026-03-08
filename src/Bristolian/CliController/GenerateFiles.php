@@ -1010,6 +1010,7 @@ SQL;
                     'doc_type' => $doc_type,
                     'short_name' => $short_name,
                     'is_array' => $is_array,
+                    'full_type' => $field_type,
                 ];
                 
                 $dataFields[] = [
@@ -1045,6 +1046,9 @@ SQL;
         $param_list = [];
         foreach ($constructorParams as $param) {
             $param_doc[] = "     * @param {$param['doc_type']} \${$param['name']}";
+            if (!empty($param['is_array']) && !empty($param['full_type'])) {
+                $param_doc[] = "     * @phpstan-param array<int, \\" . $param['full_type'] . "> \${$param['name']}";
+            }
             if ($param['is_array']) {
                 $param_list[] = "array \${$param['name']}";
             }
@@ -1213,10 +1217,9 @@ SQL;
             
             $importNames = [];
             foreach (array_keys($modelTypes) as $modelType) {
-                $rc = new \ReflectionClass($modelType);
-                $importNames[] = $rc->getShortName();
+                $importNames[] = $this->getTypeScriptTypeNameForPhpClass($modelType);
             }
-            
+            $importNames = array_unique($importNames);
             sort($importNames);
             $content .= implode(", ", $importNames);
             $content .= " } from './types';\n\n";
@@ -1347,6 +1350,18 @@ SQL;
     }
     
     /**
+     * Return the TypeScript type name to use for a PHP model class in generated api_routes.tsx.
+     * Some PHP types (e.g. UserChatMessage) are not exported from types.tsx; they map to an equivalent that is (e.g. ChatMessage).
+     */
+    private function getTypeScriptTypeNameForPhpClass(string $phpClass): string
+    {
+        $phpToTs = [
+            \Bristolian\Model\Chat\UserChatMessage::class => 'ChatMessage',
+        ];
+        return $phpToTs[$phpClass] ?? (new \ReflectionClass($phpClass))->getShortName();
+    }
+
+    /**
      * Generate TypeScript interface for a response type.
      */
     private function generateTypeScriptResponseInterface(string $typeName, array $type_info): string
@@ -1372,8 +1387,7 @@ SQL;
             }
             
             if (is_string($field_type) && class_exists($field_type)) {
-                $rc = new \ReflectionClass($field_type);
-                $short_name = $rc->getShortName();
+                $short_name = $this->getTypeScriptTypeNameForPhpClass($field_type);
                 
                 // Check if this model type has date fields by generating its interface
                 // and checking if date fields are returned

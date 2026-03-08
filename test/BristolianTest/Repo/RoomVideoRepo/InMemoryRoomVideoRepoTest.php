@@ -210,4 +210,69 @@ class InMemoryRoomVideoRepoTest extends TestCase
         $this->assertCount(1, $withTags);
         $this->assertSame([], $withTags[0]->tags);
     }
+
+    public function test_updateTitleAndDescription_updates_title_and_description(): void
+    {
+        $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
+        $roomVideo = $this->repo->addVideo('room-1', $videoId, 'Original Title', 'Original description');
+
+        $this->repo->updateTitleAndDescription('room-1', $roomVideo->id, 'New Title', 'New description');
+
+        $fetched = $this->repo->getRoomVideo($roomVideo->id);
+        $this->assertSame('New Title', $fetched->title);
+        $this->assertSame('New description', $fetched->description);
+        $this->assertSame($roomVideo->id, $fetched->id);
+        $this->assertSame($roomVideo->created_at->getTimestamp(), $fetched->created_at->getTimestamp());
+    }
+
+    public function test_updateTitleAndDescription_leaves_unchanged_when_null(): void
+    {
+        $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
+        $roomVideo = $this->repo->addVideo('room-1', $videoId, 'Keep Title', 'Keep description');
+
+        $this->repo->updateTitleAndDescription('room-1', $roomVideo->id, null, null);
+
+        $fetched = $this->repo->getRoomVideo($roomVideo->id);
+        $this->assertSame('Keep Title', $fetched->title);
+        $this->assertSame('Keep description', $fetched->description);
+    }
+
+    public function test_updateTitleAndDescription_updates_only_title_when_description_null(): void
+    {
+        $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
+        $roomVideo = $this->repo->addVideo('room-1', $videoId, 'Old', 'Keep this');
+
+        $this->repo->updateTitleAndDescription('room-1', $roomVideo->id, 'New Title', null);
+
+        $fetched = $this->repo->getRoomVideo($roomVideo->id);
+        $this->assertSame('New Title', $fetched->title);
+        $this->assertSame('Keep this', $fetched->description);
+    }
+
+    public function test_updateTitleAndDescription_updates_only_description_when_title_null(): void
+    {
+        $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
+        $roomVideo = $this->repo->addVideo('room-1', $videoId, 'Keep this', 'Old desc');
+
+        $this->repo->updateTitleAndDescription('room-1', $roomVideo->id, null, 'New description');
+
+        $fetched = $this->repo->getRoomVideo($roomVideo->id);
+        $this->assertSame('Keep this', $fetched->title);
+        $this->assertSame('New description', $fetched->description);
+    }
+
+    public function test_updateTitleAndDescription_throws_for_wrong_room(): void
+    {
+        $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
+        $roomVideo = $this->repo->addVideo('room-1', $videoId, 'Video', null);
+
+        $this->expectException(ContentNotFoundException::class);
+        $this->repo->updateTitleAndDescription('room-2', $roomVideo->id, 'Hacked', null);
+    }
+
+    public function test_updateTitleAndDescription_throws_for_nonexistent_id(): void
+    {
+        $this->expectException(ContentNotFoundException::class);
+        $this->repo->updateTitleAndDescription('room-1', 'nonexistent-id', 'Title', null);
+    }
 }
