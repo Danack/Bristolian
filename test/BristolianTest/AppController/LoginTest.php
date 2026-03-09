@@ -115,7 +115,7 @@ class LoginTest extends BaseTestCase
         $appSessionManager->initialize($this->createRequest());
         $this->injector->share($appSessionManager);
 
-        $previousPost = $_POST ?? null;
+        $previousPost = $_POST;
         $_POST = ['username' => 'admin@test.com', 'password' => 'secret'];
         try {
             $result = $this->injector->execute([Login::class, 'processLoginPage']);
@@ -139,7 +139,7 @@ class LoginTest extends BaseTestCase
         $appSessionManager->initialize($this->createRequest());
         $this->injector->share($appSessionManager);
 
-        $previousPost = $_POST ?? null;
+        $previousPost = $_POST;
         $_POST = [];
         try {
             $result = $this->injector->execute([Login::class, 'processLoginPage']);
@@ -163,7 +163,7 @@ class LoginTest extends BaseTestCase
         $appSessionManager->initialize($this->createRequest());
         $this->injector->share($appSessionManager);
 
-        $previousPost = $_POST ?? null;
+        $previousPost = $_POST;
         $_POST = ['username' => 'someone@example.com'];
         try {
             $result = $this->injector->execute([Login::class, 'processLoginPage']);
@@ -191,7 +191,7 @@ class LoginTest extends BaseTestCase
         $appSessionManager->initialize($this->createRequest());
         $this->injector->share($appSessionManager);
 
-        $previousPost = $_POST ?? null;
+        $previousPost = $_POST;
         $_POST = ['username' => 'admin@test.com', 'password' => 'wrong'];
         try {
             $result = $this->injector->execute([Login::class, 'processLoginPage']);

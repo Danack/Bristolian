@@ -22,15 +22,11 @@ class ClipTitleTest extends BaseTestCase
      */
     public static function provides_valid_input_and_expected_output(): \Generator
     {
-        yield 'valid' => [
-            ['title_input' => 'A valid clip title'],
-            'A valid clip title',
-        ];
-        yield 'single char' => [['title_input' => 'x'], 'x'];
-        yield 'max length' => [['title_input' => str_repeat('a', ClipTitle::TITLE_MAXIMUM_LENGTH)], str_repeat('a', ClipTitle::TITLE_MAXIMUM_LENGTH)];
-        yield 'empty string' => [['title_input' => ''], null];
-        yield 'whitespace only' => [['title_input' => '   '], null];
-        yield 'null value' => [['title_input' => null], null];
+        $min_length_title = str_repeat('a', ClipTitle::TITLE_MINIMUM_LENGTH);
+        yield 'min length' => [['title_input' => $min_length_title], $min_length_title];
+
+        $max_length_title = str_repeat('a', ClipTitle::TITLE_MAXIMUM_LENGTH);
+        yield 'max length' => [['title_input' => $max_length_title], $max_length_title];
     }
 
     /**

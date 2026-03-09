@@ -123,7 +123,7 @@ class RoomsTest extends BaseTestCase
     {
         $jsonInput = new FakeJsonInput([
             'url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-            'title' => 'Test Video',
+            'title' => 'Test Video with at least 16 chars',
             'description' => 'A test video',
         ]);
         $this->injector->alias(JsonInput::class, FakeJsonInput::class);
@@ -147,7 +147,7 @@ class RoomsTest extends BaseTestCase
             'room_video_id' => $roomVideo->id,
             'start_seconds' => 10,
             'end_seconds' => 60,
-            'title' => 'A clip',
+            'title' => 'A clip title that is at least 16 chars',
             'description' => 'Clip from source',
         ]);
         $this->injector->alias(JsonInput::class, FakeJsonInput::class);
@@ -307,10 +307,12 @@ class RoomsTest extends BaseTestCase
         $videoRepo = $this->injector->make(InMemoryVideoRepo::class);
         $videoId = $videoRepo->create('test-user-id-001', 'abc123');
         $roomVideoRepo = $this->injector->make(InMemoryRoomVideoRepo::class);
-        $roomVideo = $roomVideoRepo->addVideo($this->roomId, $videoId, 'Original Title', 'Original description');
+        $roomVideo = $roomVideoRepo->addVideo($this->roomId, $videoId, 'Original Title of enough chars', 'Original description');
+
+        $new_title = 'Updated Title that is at least 16 chars';
 
         $jsonInput = new FakeJsonInput([
-            'title' => 'Updated Title',
+            'title' => $new_title,
             'description' => 'Updated description',
         ]);
         $this->injector->alias(JsonInput::class, FakeJsonInput::class);
@@ -321,7 +323,7 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(SuccessResponse::class, $result);
 
         $fetched = $roomVideoRepo->getRoomVideoForRoom($this->roomId, $roomVideo->id);
-        $this->assertSame('Updated Title', $fetched->title);
+        $this->assertSame($new_title, $fetched->title);
         $this->assertSame('Updated description', $fetched->description);
     }
 

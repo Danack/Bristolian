@@ -19,15 +19,14 @@ class UpdateRoomVideoParamTest extends BaseTestCase
      */
     public static function provides_valid_input_and_expected_output(): \Generator
     {
-        yield 'empty array' => [[], null, null];
-        yield 'title only' => [['title' => 'New Title'], 'New Title', null];
-        yield 'description only' => [['description' => 'New description'], null, 'New description'];
+        $title = "updated title that is at least 16 chars long";
+        $description = "updated description that is at least 16 chars long";
+
         yield 'both' => [
-            ['title' => 'Updated Title', 'description' => 'Updated description'],
-            'Updated Title',
-            'Updated description',
+            ['title' => $title, 'description' => $description],
+            $title,
+            $description,
         ];
-        yield 'empty strings' => [['title' => '', 'description' => ''], '', ''];
     }
 
     /**

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "919c1865a3d66693fed16bcd0341c8ed",
+    "content-hash": "b54408eb8a1cd54a574121a5d7158381",
     "packages": [
         {
             "name": "auroras-live/suncalc-php",
@@ -100,16 +100,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.372.1",
+            "version": "3.372.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "a48ff951eaad7f038eca3e0e89f168048b99082b"
+                "reference": "d1885c8c5db03c2a23121e6df58ef5693df41b95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a48ff951eaad7f038eca3e0e89f168048b99082b",
-                "reference": "a48ff951eaad7f038eca3e0e89f168048b99082b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d1885c8c5db03c2a23121e6df58ef5693df41b95",
+                "reference": "d1885c8c5db03c2a23121e6df58ef5693df41b95",
                 "shasum": ""
             },
             "require": {
@@ -191,9 +191,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.372.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.372.2"
             },
-            "time": "2026-03-06T21:27:21+00:00"
+            "time": "2026-03-09T18:21:50+00:00"
         },
         {
             "name": "behat/behat",
@@ -8119,16 +8119,16 @@
     "packages-dev": [
         {
             "name": "danack/coding-standard",
-            "version": "0.3.0",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Danack/coding-standard.git",
-                "reference": "a876ac7de2f6a0c49e4e54ce2fdb0c24a6a38813"
+                "reference": "e1dc1b481f170cd9c1141a769328a575a241e683"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Danack/coding-standard/zipball/a876ac7de2f6a0c49e4e54ce2fdb0c24a6a38813",
-                "reference": "a876ac7de2f6a0c49e4e54ce2fdb0c24a6a38813",
+                "url": "https://api.github.com/repos/Danack/coding-standard/zipball/e1dc1b481f170cd9c1141a769328a575a241e683",
+                "reference": "e1dc1b481f170cd9c1141a769328a575a241e683",
                 "shasum": ""
             },
             "require": {
@@ -8136,6 +8136,11 @@
                 "squizlabs/php_codesniffer": "^3.4.0"
             },
             "type": "phpcodesniffer-standard",
+            "autoload": {
+                "psr-0": {
+                    "Danack\\Sniffs\\": "lib/"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -8143,9 +8148,9 @@
             "description": "Danack Coding Standard for PHP_CodeSniffer complements Consistence Coding Standard by providing sniffs with additional checks.",
             "support": {
                 "issues": "https://github.com/Danack/coding-standard/issues",
-                "source": "https://github.com/Danack/coding-standard/tree/0.3.0"
+                "source": "https://github.com/Danack/coding-standard/tree/0.4.0"
             },
-            "time": "2021-04-26T14:27:32+00:00"
+            "time": "2026-03-09T21:42:14+00:00"
         },
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",

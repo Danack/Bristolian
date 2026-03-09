@@ -54,11 +54,10 @@ use Bristolian\Response\Typed\GetRoomsTagsResponse;
 use Bristolian\Response\Typed\GetRoomsVideosResponse;
 use Bristolian\Service\RequestNonce;
 use Bristolian\Service\YouTube\TranscriptFetcher;
-use Bristolian\Service\RoomFileStorage\RoomFileStorage;
-use Bristolian\Service\RoomFileStorage\UploadError;
+use Bristolian\Response\RoomFileUploadErrorResponse;
+use Bristolian\Response\RoomFileUploadSuccessResponse;
+use Bristolian\Service\RoomFileStorage\HandleRoomFileUpload;
 use Bristolian\Session\UserSession;
-use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
-use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\StubResponse;
 use function DataType\createArrayOfTypeOrError;
 
@@ -122,45 +121,25 @@ class Rooms
 
 
     public function handleFileUpload(
-        RoomFileStorage              $roomFileStorage,
-        UserSession                  $appSession,
-        UserSessionFileUploadHandler $usfuh,
-        string                       $room_id
+        HandleRoomFileUpload $handleRoomFileUpload,
+        UserSession $appSession,
+        string $room_id
     ): StubResponse {
-
-//        // TODO - check user logged in
-//        if ($appSession->isLoggedIn() !== true) {
-//            $data = ['not logged in' => true];
-//            return new JsonResponse($data, [], 400);
-//        }
-
-        // Get the user uploaded file.
-        $fileOrResponse = $usfuh->fetchUploadedFile(self::ROOM_FILE_UPLOAD_FORM_NAME);
-        if ($fileOrResponse instanceof StubResponse) {
-            return $fileOrResponse;
-        }
-
-        $storedFileOrError = $roomFileStorage->storeFileForRoomAndUser(
+        $result = $handleRoomFileUpload->handle(
             $appSession->getUserId(),
             $room_id,
-            $fileOrResponse
+            self::ROOM_FILE_UPLOAD_FORM_NAME
         );
 
-        if ($storedFileOrError instanceof UploadError) {
-            $data = [
-                'result' => 'error',
-                'error' => $storedFileOrError->error_message
-            ];
-            // todo - change to helper function
-            return new JsonNoCacheResponse($data, [], 400);
+        if ($result->errorResponse !== null) {
+            return $result->errorResponse;
         }
 
-        $response = [
-            'result' => 'success',
-            'file_id' => $storedFileOrError
-        ];
+        if ($result->ok === false) {
+            return new RoomFileUploadErrorResponse($result->error);
+        }
 
-        return new JsonNoCacheResponse($response);
+        return new RoomFileUploadSuccessResponse($result->fileId);
     }
 
     /**

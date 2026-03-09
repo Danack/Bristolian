@@ -283,12 +283,15 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
     createYouTubePlayer() {
         const displayVideoId = this.state.playingVideo?.youtube_video_id ?? this.state.addVideoPreview?.youtubeVideoId;
         if (!displayVideoId || !this.embedContainerRef) return;
-        const startSeconds = this.state.playingVideo != null ? (this.state.embedStartSeconds ?? 0) : 0;
+        const startSeconds =
+            this.state.playingVideo != null
+                ? (this.state.embedStartSeconds ?? this.state.playingVideo.start_seconds ?? 0)
+                : 0;
         const YT = (window as unknown as { YT?: { Player: new (elementId: string, opts: unknown) => YouTubePlayer } }).YT;
         if (!YT) return;
         this.ytPlayer = new YT.Player("room_video_yt_player", {
             videoId: displayVideoId,
-            playerVars: { start: Math.floor(startSeconds) },
+            playerVars: { start: Math.floor(startSeconds), autoplay: 1 },
             events: {
                 onReady: (event: { target: YouTubePlayer }) => {
                     const player = event.target;
@@ -665,8 +668,13 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         this.setState((s) => ({ embedStartSeconds: seconds, embedKey: (s.embedKey ?? 0) + 1 }));
     }
 
-    youtubeUrl(v: RoomVideoWithTags): string {
-        return `https://www.youtube.com/watch?v=${v.youtube_video_id}`;
+    youtubeWatchUrl(v: RoomVideoWithTags): string {
+        const base = `https://www.youtube.com/watch?v=${v.youtube_video_id}`;
+        const start = v.start_seconds ?? 0;
+        if (start > 0) {
+            return `${base}&t=${Math.floor(start)}`;
+        }
+        return base;
     }
 
     embedUrl(v: RoomVideoWithTags, startSeconds?: number): string {
@@ -691,46 +699,39 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         return (
             <tr key={video.id}>
                 <td>
-                    <span>{title}</span>
+                    <a href={this.youtubeWatchUrl(video)} target="_blank" rel="noopener noreferrer">
+                        {title}
+                    </a>
                     {video.description && <div className="room_video_description">{video.description}</div>}
                 </td>
                 <td>{spacesToNbsp(formatDateTimeForContent(video.created_at instanceof Date ? video.created_at : new Date(String(video.created_at))))}</td>
                 <td>{tagsBlock}</td>
-                {this.state.logged_in && (
-                    <td>
-                        <a
-                            href={this.youtubeUrl(video)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Watch on youtube
-                        </a>
-                        <button
-                            className="button_standard button_chat"
-                            onClick={() => {
-                                const start = video.start_seconds ?? 0;
-                                this.setState({
-                                    playingVideo: video,
-                                    embedStartSeconds: start,
-                                    embedKey: (this.state.embedKey ?? 0) + 1,
-                                    clipMarkedStartSeconds: null,
-                                    clipMarkedEndSeconds: null,
-                                    clipStartInput: "",
-                                    clipEndInput: "",
-                                    clipTimestampFocus: null,
-                                    clipTitle: "",
-                                    clipDescription: "",
-                                    playerPanelMode: "default",
-                                });
-                                if (TRANSCRIPT_ENABLED) {
-                                    this.loadTranscriptsForVideo(video.id);
-                                }
-                            }}
-                        >
-                            Play
-                        </button>
-                    </td>
-                )}
+                <td>
+                    <button
+                        className="button_standard button_chat"
+                        onClick={() => {
+                            const start = video.start_seconds ?? 0;
+                            this.setState({
+                                playingVideo: video,
+                                embedStartSeconds: start,
+                                embedKey: (this.state.embedKey ?? 0) + 1,
+                                clipMarkedStartSeconds: null,
+                                clipMarkedEndSeconds: null,
+                                clipStartInput: "",
+                                clipEndInput: "",
+                                clipTimestampFocus: null,
+                                clipTitle: "",
+                                clipDescription: "",
+                                playerPanelMode: "default",
+                            });
+                            if (TRANSCRIPT_ENABLED) {
+                                this.loadTranscriptsForVideo(video.id);
+                            }
+                        }}
+                    >
+                        Play
+                    </button>
+                </td>
             </tr>
         );
     }
@@ -1070,7 +1071,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                         ) : (
                                             <div className="room_video_add_clip_form">
                                                 <label className="room_video_clip_field room_video_clip_field_wide">
-                                                    <h3 className="room_video_clip_field_label">Title</h3>
+                                                    <h3 className="room_video_clip_field_label">Title (16–1024 characters)</h3>
                                                     <input
                                                         type="text"
                                                         placeholder="Video or clip title"
@@ -1092,7 +1093,16 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                                     <button type="button" className="button_standard" onClick={() => this.cancelEditVideo()} disabled={state.editVideoSaving}>
                                                         Cancel
                                                     </button>
-                                                    <button type="button" className="button_standard" onClick={() => this.saveEditVideo()} disabled={state.editVideoSaving}>
+                                                    <button
+                                                        type="button"
+                                                        className="button_standard"
+                                                        onClick={() => this.saveEditVideo()}
+                                                        disabled={
+                                                            state.editVideoSaving ||
+                                                            (state.editVideoTitle.trim().length > 0 &&
+                                                                (state.editVideoTitle.trim().length < 16 || state.editVideoTitle.trim().length > 1024))
+                                                        }
+                                                    >
                                                         {state.editVideoSaving ? "Saving…" : "Save"}
                                                     </button>
                                                 </div>
@@ -1171,7 +1181,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                       <th>Title</th>
                                       <th>Added</th>
                                       <th>Tags</th>
-                                      {state.logged_in && <th />}
+                                      <th />
                                   </tr>
                                 </thead>
                                 <tbody>

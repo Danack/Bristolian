@@ -2,6 +2,7 @@ import { h, Component } from "preact";
 import { RoomTag, createRoomTag } from "./generated/types";
 import { api, GetRoomsTagsResponse } from "./generated/api_routes";
 import { MAX_TAGS_PER_ROOM } from "./generated/constants";
+import { formatDateTimeForContent, spacesToNbsp } from "./functions";
 
 export interface RoomManagementPanelProps {
     room_id: string;
@@ -113,9 +114,11 @@ export class RoomManagementPanel extends Component<RoomManagementPanelProps, Roo
                                 <td>{tag.text}</td>
                                 <td>{tag.description}</td>
                                 <td>
-                                    {tag.created_at instanceof Date
-                                        ? tag.created_at.toLocaleString()
-                                        : String(tag.created_at)}
+                                    {spacesToNbsp(
+                                        formatDateTimeForContent(
+                                            tag.created_at instanceof Date ? tag.created_at : new Date(String(tag.created_at))
+                                        )
+                                    )}
                                 </td>
                             </tr>
                         ))}

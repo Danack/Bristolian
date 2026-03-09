@@ -190,72 +190,77 @@ export class UserProfilePanel extends Component<UserProfilePanelProps, UserProfi
                     </div>
                 )}
                 
-                <div class="profile-field">
-                    <label htmlFor="avatar_upload">Avatar Image:</label>
-                    <input
-                        id="avatar_upload"
-                        type="file"
-                        accept="image/png,image/jpeg,image/jpg"
-                        onChange={this.handleAvatarUpload}
-                        disabled={uploading_avatar}
-                    />
-                    {uploading_avatar && <span class="upload-status">Uploading...</span>}
-                </div>
-                
-                <div class="profile-field">
-                    <label htmlFor="display_name">Display Name:</label>
-                    <input
-                        id="display_name"
-                        type="text"
-                        value={display_name}
-                        onInput={(e: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
-                            this.handleDisplayNameChange(e.currentTarget.value)
-                        }
-                        disabled={saving}
-                        placeholder="Enter your display name"
-                        minLength={MINIMUM_DISPLAY_NAME_LENGTH}
-                        maxLength={MAXIMUM_DISPLAY_NAME_LENGTH}
-                    />
-                    <small class="field-hint">
-                        {MINIMUM_DISPLAY_NAME_LENGTH}-{MAXIMUM_DISPLAY_NAME_LENGTH} characters
-                    </small>
-                </div>
-
-                <div class="profile-field">
-                    <label htmlFor="about_me">About Me:</label>
-                    <textarea
-                        id="about_me"
-                        value={about_me}
-                        onInput={(e: h.JSX.TargetedEvent<HTMLTextAreaElement, Event>) =>
-                            this.handleAboutMeChange(e.currentTarget.value)
-                        }
-                        disabled={saving}
-                        placeholder="Tell us about yourself..."
-                        rows={6}
-                        minLength={MINIMUM_ABOUT_ME_LENGTH}
-                        maxLength={MAXIMUM_ABOUT_ME_LENGTH}
-                    />
-                    <small class="field-hint">
-                        Maximum {MAXIMUM_ABOUT_ME_LENGTH} characters
-                    </small>
-                </div>
-
-                <div class="button-group">
-                    <button 
-                        onClick={this.handleSave} 
-                        disabled={!changes_made || saving}
-                        class="btn-save"
-                    >
-                        {saving ? 'Saving...' : 'Save Changes'}
-                    </button>
+                <div class="profile-edit-form">
+                    <div class="profile-field">
+                        <label htmlFor="avatar_upload">Avatar Image</label>
+                        <input
+                            id="avatar_upload"
+                            type="file"
+                            accept="image/png,image/jpeg,image/jpg"
+                            onChange={this.handleAvatarUpload}
+                            disabled={uploading_avatar}
+                        />
+                        {uploading_avatar && <span class="upload-status">Uploading...</span>}
+                    </div>
                     
-                    <button 
-                        onClick={this.cancelEditing}
-                        disabled={saving}
-                        class="btn-cancel"
-                    >
-                        Cancel
-                    </button>
+                    <div class="profile-field">
+                        <label htmlFor="display_name">Display name</label>
+                        <input
+                            id="display_name"
+                            type="text"
+                            value={display_name}
+                            onInput={(e: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+                                this.handleDisplayNameChange(e.currentTarget.value)
+                            }
+                            disabled={saving}
+                            placeholder="Enter your display name"
+                            minLength={MINIMUM_DISPLAY_NAME_LENGTH}
+                            maxLength={MAXIMUM_DISPLAY_NAME_LENGTH}
+                        />
+                        <small class="field-hint">
+                            {MINIMUM_DISPLAY_NAME_LENGTH}-{MAXIMUM_DISPLAY_NAME_LENGTH} characters
+                        </small>
+                    </div>
+
+                    <div class="profile-field">
+                        <label htmlFor="about_me">About Me</label>
+                        <textarea
+                            id="about_me"
+                            class="profile-edit-about-me"
+                            value={about_me}
+                            onInput={(e: h.JSX.TargetedEvent<HTMLTextAreaElement, Event>) =>
+                                this.handleAboutMeChange(e.currentTarget.value)
+                            }
+                            disabled={saving}
+                            placeholder="Tell us about yourself..."
+                            rows={4}
+                            minLength={MINIMUM_ABOUT_ME_LENGTH}
+                            maxLength={MAXIMUM_ABOUT_ME_LENGTH}
+                        />
+                        <small class="field-hint">
+                            Maximum {MAXIMUM_ABOUT_ME_LENGTH} characters
+                        </small>
+                    </div>
+
+                    <div class="profile-edit-button-group">
+                        <button 
+                            type="button"
+                            onClick={this.handleSave} 
+                            disabled={!changes_made || saving}
+                            class="button_standard"
+                        >
+                            {saving ? 'Saving...' : 'Save Changes'}
+                        </button>
+                        
+                        <button 
+                            type="button"
+                            onClick={this.cancelEditing}
+                            disabled={saving}
+                            class="button_standard"
+                        >
+                            Cancel
+                        </button>
+                    </div>
                 </div>
             </div>
         );

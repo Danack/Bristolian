@@ -15,6 +15,7 @@ use Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo;
 use Bristolian\Repo\UserProfileRepo\UserProfileRepo;
 use Bristolian\Response\GetUserInfoResponse;
 use Bristolian\Response\UpdateUserProfileResponse;
+use Bristolian\Response\UploadAvatarErrorResponse;
 use Bristolian\Response\UploadAvatarResponse;
 use Bristolian\Session\AppSession;
 use Bristolian\Session\AppSessionManager;
@@ -34,6 +35,7 @@ use VarMap\ArrayVarMap;
 
 /**
  * Fake AvatarImageStorage for UsersTest uploadAvatar tests.
+ * @coversNothing
  */
 final class FakeAvatarImageStorageForUsersTest implements AvatarImageStorage
 {
@@ -103,7 +105,7 @@ class UsersTest extends BaseTestCase
         $this->assertInstanceOf(HtmlResponse::class, $result);
         $this->assertSame(404, $result->getStatus());
         $body = $result->getBody();
-        $this->assertStringContainsString('Not logged in', is_string($body) ? $body : $body->getContents());
+        $this->assertStringContainsString('Not logged in', $body);
     }
 
     /**
@@ -126,7 +128,7 @@ class UsersTest extends BaseTestCase
 
         $this->assertInstanceOf(JsonResponse::class, $result);
         $rawBody = $result->getBody();
-        $body = json_decode(is_string($rawBody) ? $rawBody : $rawBody->getContents(), true);
+        $body = json_decode($rawBody, true);
         $this->assertSame('test-user-id-001', $body['user_id']);
     }
 
@@ -227,7 +229,7 @@ class UsersTest extends BaseTestCase
 
         $this->assertInstanceOf(\Bristolian\Response\StoredFileErrorResponse::class, $result);
         $responseBody = $result->getBody();
-        $this->assertStringContainsString('No avatar for user', is_string($responseBody) ? $responseBody : $responseBody->getContents());
+        $this->assertStringContainsString('No avatar for user', $responseBody);
     }
 
     /**
@@ -282,7 +284,7 @@ class UsersTest extends BaseTestCase
 
         $this->assertInstanceOf(\Bristolian\Response\StoredFileErrorResponse::class, $result);
         $responseBody = $result->getBody();
-        $this->assertStringContainsString('nonexistent-avatar-id', is_string($responseBody) ? $responseBody : $responseBody->getContents());
+        $this->assertStringContainsString('nonexistent-avatar-id', $responseBody);
     }
 
     /**
@@ -350,7 +352,7 @@ class UsersTest extends BaseTestCase
 
         $result = $this->injector->execute([Users::class, 'uploadAvatar']);
 
-        $this->assertInstanceOf(\SlimDispatcher\Response\JsonNoCacheResponse::class, $result);
+        $this->assertInstanceOf(UploadAvatarErrorResponse::class, $result);
         $this->assertSame(400, $result->getStatus());
     }
 

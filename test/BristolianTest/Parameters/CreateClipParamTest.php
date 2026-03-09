@@ -20,32 +20,34 @@ class CreateClipParamTest extends BaseTestCase
      */
     public static function provides_valid_input_and_expected_output(): \Generator
     {
-        yield 'required only' => [
-            [
-                'room_video_id' => '550e8400-e29b-41d4-a716-446655440000',
-                'start_seconds' => 0,
-                'end_seconds' => 60,
-                'title' => '',
-                'description' => '',
-            ],
-            '550e8400-e29b-41d4-a716-446655440000',
-            0,
-            60,
-            null,
-            null,
-        ];
+//        yield 'required only' => [
+//            [
+//                'room_video_id' => '550e8400-e29b-41d4-a716-446655440000',
+//                'start_seconds' => 0,
+//                'end_seconds' => 60,
+//                'title' => '',
+//                'description' => '',
+//            ],
+//            '550e8400-e29b-41d4-a716-446655440000',
+//            0,
+//            60,
+//            null,
+//            null,
+//        ];
+        $title = 'Clip title with enough chars';
+
         yield 'with title and description' => [
             [
                 'room_video_id' => '550e8400-e29b-41d4-a716-446655440000',
                 'start_seconds' => 10,
                 'end_seconds' => 120,
-                'title' => 'Clip title',
+                'title' => $title,
                 'description' => 'Clip description',
             ],
             '550e8400-e29b-41d4-a716-446655440000',
             10,
             120,
-            'Clip title',
+            $title,
             'Clip description',
         ];
         yield 'max seconds' => [
@@ -53,13 +55,13 @@ class CreateClipParamTest extends BaseTestCase
                 'room_video_id' => '550e8400-e29b-41d4-a716-446655440000',
                 'start_seconds' => ClipSeconds::MAX_SECONDS,
                 'end_seconds' => ClipSeconds::MAX_SECONDS,
-                'title' => '',
+                'title' => $title,
                 'description' => '',
             ],
             '550e8400-e29b-41d4-a716-446655440000',
             ClipSeconds::MAX_SECONDS,
             ClipSeconds::MAX_SECONDS,
-            null,
+            $title,
             null,
         ];
     }

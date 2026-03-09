@@ -61,7 +61,7 @@ class RoomMessageFetcher
             $this->logger->error("Exception watching for new messages: " . $e->getMessage());
         }
 
-        $this->logger->info("RoomMessageFetcher has looped.");
+//        $this->logger->info("RoomMessageFetcher has looped.");
     }
 
     public function run(): void

@@ -6,13 +6,17 @@ use Bristolian\Parameters\UserProfileUpdateParams;
 use Bristolian\Repo\UserProfileRepo\UserProfileRepo;
 use Bristolian\Response\GetUserInfoResponse;
 use Bristolian\Response\UpdateUserProfileResponse;
+use Bristolian\Response\UploadAvatarErrorResponse;
 use Bristolian\Response\UploadAvatarResponse;
+use Bristolian\Service\AvatarImageStorage\HandleAvatarUpload;
 use Bristolian\Session\UserSession;
 use SlimDispatcher\Response\JsonResponse;
 use user_repo\UserRepo\UserRepo;
 
 class Users
 {
+    public const AVATAR_FILE_UPLOAD_FORM_NAME = 'avatar_file';
+
     public function index(/*UserRepo $userRepo*/): string
     {
         $contents = "<h1>User list</h1>";
@@ -201,55 +205,6 @@ HTML;
         return $content;
     }
 
-
-//    public function showUser(
-//        UserRepo $userRepo,
-//        //        UserDocumentRepo $userDocumentRepo,
-//        string $username
-//    ): string {
-//        $user = $userRepo->findUser($username);
-//
-//        if ($user === null) {
-//            return "User not found.";
-//        }
-//
-//        $contents = "<h1>User has these documents</h1>";
-//
-////        $documents = $userDocumentRepo->getUserDocuments($user);
-////        $contents = "<h1>User has these documents</h1>";
-////        $template = "<a href='/users/:uri_username/docs/:uri_link'>:html_title</a>";
-////
-////        foreach ($documents as $document) {
-////            $params = [
-////                ':uri_username' => $user->username,
-////                ':uri_link' => slugify($document->title),
-////                ':html_title' => $document->title
-////            ];
-////
-////            $contents .= esprintf($template, $params);
-////            $contents .= "<br/>";
-////        }
-//
-//        $contents .= "<br/><br/>This is a little broken<br/><br/><br/>";
-//
-//        return $contents;
-//    }
-
-//    public function showUserDocument(
-//        UserRepo $userRepo,
-//        UserDocumentRepo $userDocumentRepo,
-//        string $username,
-//        string $title
-//    ): string {
-//        $user = $userRepo->findUser($username);
-//
-//        if ($user === null) {
-//            return "User not found.";
-//        }
-//
-//        return $userDocumentRepo->renderUserDocument($user, $title);
-//    }
-
     public function updateProfile(
         UserSession $userSession,
         UserProfileRepo $userProfileRepo,
@@ -267,40 +222,23 @@ HTML;
     }
 
     public function uploadAvatar(
+        HandleAvatarUpload $handleAvatarUpload,
         UserSession $userSession,
-        UserProfileRepo $userProfileRepo,
-        \Bristolian\Service\AvatarImageStorage\AvatarImageStorage $avatarImageStorage,
-        \Bristolian\UserUploadedFile\UserSessionFileUploadHandler $uploadHandler
     ): \SlimDispatcher\Response\StubResponse {
-        
-        // Get the uploaded file
-        $fileOrResponse = $uploadHandler->fetchUploadedFile('avatar_file');
-        if ($fileOrResponse instanceof \SlimDispatcher\Response\StubResponse) {
-            return $fileOrResponse;
-        }
-
-        // Store the avatar image
-        $avatarImageIdOrError = $avatarImageStorage->storeAvatarForUser(
+        $result = $handleAvatarUpload->handle(
             $userSession->getUserId(),
-            $fileOrResponse,
-            get_supported_avatar_image_extensions()
+            self::AVATAR_FILE_UPLOAD_FORM_NAME
         );
 
-        if ($avatarImageIdOrError instanceof \Bristolian\Service\AvatarImageStorage\UploadError) {
-            return new \SlimDispatcher\Response\JsonNoCacheResponse(
-                ['error' => $avatarImageIdOrError->error_message],
-                [],
-                400
-            );
+        if ($result->errorResponse !== null) {
+            return $result->errorResponse;
         }
 
-        // Update the user profile with the new avatar ID
-        $userProfileRepo->updateAvatarImage(
-            $userSession->getUserId(),
-            $avatarImageIdOrError
-        );
+        if ($result->ok === false) {
+            return new UploadAvatarErrorResponse($result->error);
+        }
 
-        return new UploadAvatarResponse($avatarImageIdOrError);
+        return new UploadAvatarResponse($result->avatarImageId);
     }
 
     public function getAvatarImage(
