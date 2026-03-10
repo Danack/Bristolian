@@ -7,7 +7,7 @@ We are finishing a piece of work. All the code quality tools should be run. Any 
 **Before running PHPUnit / runAllTests.sh:** ensure slow tests and HTML coverage are **enabled** by running the restore script inside the `php_fpm` container (from the project root in the container):
 
 ```bash
-docker exec bristolian-php_fpm-1 bash -c "php scripts/streamdeck/toggle_restore_content.php phpunit.xml"
+docker exec bristolian-php_fpm-1 bash -c "php scripts/streamdeck/toggle_make_slow.php phpunit.xml"
 ```
 
 That restores:
@@ -17,7 +17,7 @@ That restores:
 To disable them again (fast runs):
 
 ```bash
-docker exec bristolian-php_fpm-1 bash -c "php scripts/streamdeck/toggle_remove_content.php phpunit.xml"
+docker exec bristolian-php_fpm-1 bash -c "php scripts/streamdeck/toggle_make_fast.php phpunit.xml"
 ```
 
 ## Code Quality Tools
