@@ -174,6 +174,7 @@ class Rooms
                 $file->size,
                 $file->user_id,
                 $file->created_at,
+                $file->document_timestamp,
                 $tags
             );
         }
@@ -210,6 +211,7 @@ class Rooms
                 $link->title,
                 $link->description,
                 $link->created_at,
+                $link->document_timestamp,
                 $tags
             );
         }

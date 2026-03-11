@@ -638,10 +638,11 @@ select
     sf.state,
     sf.size,
     sf.user_id,
-    sf.created_at
+    sf.created_at,
+    rf.document_timestamp
 from room_file_object_info as sf
 left join room_file as rf on sf.id = rf.stored_file_id
-where room_id = :room_id
+where rf.room_id = :room_id
 SQL) => ['read' => ['room_file_object_info', 'room_file'], 'write' => []],
 
             trim(<<<SQL

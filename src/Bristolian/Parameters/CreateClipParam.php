@@ -33,7 +33,7 @@ class CreateClipParam implements DataType, StaticFactory
         #[ClipSeconds('end_seconds')]
         public readonly int $end_seconds,
         #[ClipTitle('title')]
-        public readonly ?string $title,
+        public readonly string $title,
         #[ClipDescription('description')]
         public readonly ?string $description,
     ) {

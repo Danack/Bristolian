@@ -16,7 +16,7 @@ use VarMap\ArrayVarMap;
 class CreateClipParamTest extends BaseTestCase
 {
     /**
-     * @return \Generator<string, array{array<string, mixed>, string, int, int, string|null, string|null}>
+     * @return \Generator<string, array{array<string, mixed>, string, int, int, string, string|null}>
      */
     public static function provides_valid_input_and_expected_output(): \Generator
     {
@@ -77,7 +77,7 @@ class CreateClipParamTest extends BaseTestCase
         string $expectedRoomVideoId,
         int $expectedStartSeconds,
         int $expectedEndSeconds,
-        ?string $expectedTitle,
+        string $expectedTitle,
         ?string $expectedDescription
     ): void {
         $params = CreateClipParam::createFromVarMap(new ArrayVarMap($input));
@@ -94,23 +94,24 @@ class CreateClipParamTest extends BaseTestCase
      */
     public static function provides_invalid_input_and_expected_error(): \Generator
     {
+        $validTitle = 'Clip title with enough chars';
         yield 'missing room_video_id' => [
-            ['start_seconds' => 0, 'end_seconds' => 60],
+            ['start_seconds' => 0, 'end_seconds' => 60, 'title' => $validTitle],
             '/room_video_id',
             Messages::VALUE_NOT_SET,
         ];
         yield 'empty room_video_id' => [
-            ['room_video_id' => '', 'start_seconds' => 0, 'end_seconds' => 60],
+            ['room_video_id' => '', 'start_seconds' => 0, 'end_seconds' => 60, 'title' => $validTitle],
             '/room_video_id',
             Messages::STRING_TOO_SHORT,
         ];
         yield 'missing start_seconds' => [
-            ['room_video_id' => '550e8400-e29b-41d4-a716-446655440000', 'end_seconds' => 60],
+            ['room_video_id' => '550e8400-e29b-41d4-a716-446655440000', 'end_seconds' => 60, 'title' => $validTitle],
             '/start_seconds',
             Messages::VALUE_NOT_SET,
         ];
         yield 'missing end_seconds' => [
-            ['room_video_id' => '550e8400-e29b-41d4-a716-446655440000', 'start_seconds' => 0],
+            ['room_video_id' => '550e8400-e29b-41d4-a716-446655440000', 'start_seconds' => 0, 'title' => $validTitle],
             '/end_seconds',
             Messages::VALUE_NOT_SET,
         ];
@@ -119,6 +120,7 @@ class CreateClipParamTest extends BaseTestCase
                 'room_video_id' => '550e8400-e29b-41d4-a716-446655440000',
                 'start_seconds' => -1,
                 'end_seconds' => 60,
+                'title' => $validTitle,
             ],
             '/start_seconds',
             Messages::INT_TOO_SMALL,
@@ -128,6 +130,7 @@ class CreateClipParamTest extends BaseTestCase
                 'room_video_id' => '550e8400-e29b-41d4-a716-446655440000',
                 'start_seconds' => 0,
                 'end_seconds' => ClipSeconds::MAX_SECONDS + 1,
+                'title' => $validTitle,
             ],
             '/end_seconds',
             Messages::INT_TOO_LARGE,
@@ -137,9 +140,29 @@ class CreateClipParamTest extends BaseTestCase
                 'room_video_id' => '550e8400-e29b-41d4-a716-446655440000',
                 'start_seconds' => 'not-a-number',
                 'end_seconds' => 60,
+                'title' => $validTitle,
             ],
             '/start_seconds',
             Messages::INT_REQUIRED_FOUND_NON_DIGITS2,
+        ];
+        yield 'missing title' => [
+            [
+                'room_video_id' => '550e8400-e29b-41d4-a716-446655440000',
+                'start_seconds' => 0,
+                'end_seconds' => 60,
+            ],
+            '/title',
+            Messages::VALUE_NOT_SET,
+        ];
+        yield 'title too short' => [
+            [
+                'room_video_id' => '550e8400-e29b-41d4-a716-446655440000',
+                'start_seconds' => 0,
+                'end_seconds' => 60,
+                'title' => 'short',
+            ],
+            '/title',
+            Messages::STRING_TOO_SHORT,
         ];
     }
 

@@ -684,6 +684,9 @@ class GenerateFiles
             'MEMES_DISPLAY_LIMIT' => \Bristolian\AppController\User::MEMES_DISPLAY_LIMIT,
 
             'MAX_TAGS_PER_ROOM' => \Bristolian\Repo\RoomTagRepo\RoomTagRepo::MAX_TAGS_PER_ROOM,
+
+            'CLIP_TITLE_MINIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\ClipTitle::TITLE_MINIMUM_LENGTH,
+            'CLIP_TITLE_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\ClipTitle::TITLE_MAXIMUM_LENGTH,
         ];
 
         $string_template = <<< TEMPLATE

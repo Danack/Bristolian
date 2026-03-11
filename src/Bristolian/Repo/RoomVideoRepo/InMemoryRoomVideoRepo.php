@@ -70,6 +70,7 @@ class InMemoryRoomVideoRepo implements RoomVideoRepo
                 $roomVideo->start_seconds,
                 $roomVideo->end_seconds,
                 $roomVideo->created_at,
+                null,
                 $tags
             );
         }
@@ -108,7 +109,8 @@ class InMemoryRoomVideoRepo implements RoomVideoRepo
             description: $description,
             start_seconds: null,
             end_seconds: null,
-            created_at: new \DateTimeImmutable()
+            created_at: new \DateTimeImmutable(),
+            document_timestamp: null
         );
         $this->roomVideos[$id] = $roomVideo;
         return $roomVideo;
@@ -131,7 +133,8 @@ class InMemoryRoomVideoRepo implements RoomVideoRepo
             description: $description,
             start_seconds: $start_seconds,
             end_seconds: $end_seconds,
-            created_at: new \DateTimeImmutable()
+            created_at: new \DateTimeImmutable(),
+            document_timestamp: null
         );
         $this->roomVideos[$id] = $roomVideo;
         return $roomVideo;
@@ -154,7 +157,8 @@ class InMemoryRoomVideoRepo implements RoomVideoRepo
             description: $newDescription,
             start_seconds: $roomVideo->start_seconds,
             end_seconds: $roomVideo->end_seconds,
-            created_at: $roomVideo->created_at
+            created_at: $roomVideo->created_at,
+            document_timestamp: $roomVideo->document_timestamp
         );
         $this->roomVideos[$room_video_id] = $updated;
     }

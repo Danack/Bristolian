@@ -4,6 +4,7 @@ import { registerMessageListener, sendMessage } from "./message/message";
 import { PdfSelectionType } from "./constants";
 import { api, GetRoomsLinksResponse } from "./generated/api_routes";
 import { RoomLinkWithTags, createRoomLinkWithTags, createRoomTag, RoomTag } from "./generated/types";
+import { formatDateTimeForContent, spacesToNbsp } from "./functions";
 import { get_logged_in, subscribe_logged_in } from "./store";
 import { setLinkTags } from "./api_room_entity_tags";
 
@@ -141,9 +142,15 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
             ? <span className="room_entity_tags">{link.tags.map((t) => <span key={t.tag_id} className="room_entity_tag_chip">{t.text}</span>)}</span>
             : <span className="room_entity_tags empty">—</span>;
 
+        const dateDisplay = link.document_timestamp != null
+            ? spacesToNbsp(formatDateTimeForContent(link.document_timestamp))
+            : "—";
+
         return (
             <tr key={link.id}>
                 <td><span>{resolved_title}</span></td>
+                <td>{spacesToNbsp(formatDateTimeForContent(link.created_at))}</td>
+                <td>{dateDisplay}</td>
                 <td>{tagsBlock}</td>
                 {logged_in && (
                     <td>
@@ -166,6 +173,8 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
                 <thead>
                     <tr>
                         <th>Title</th>
+                        <th>Added</th>
+                        <th>Date</th>
                         <th>Tags</th>
                         {logged_in && <th />}
                     </tr>

@@ -141,6 +141,13 @@ function addDatabaseCommands(Application $console)
 
     $command->setDescription("Make the database have the latest structure");
     $console->add($command);
+
+    $command = new Command(
+        'db:set_max_connections',
+        'Bristolian\CliController\Database::setMaxConnections'
+    );
+    $command->setDescription("Set MySQL max_connections to 2000 (until server restart).");
+    $console->add($command);
 }
 
 

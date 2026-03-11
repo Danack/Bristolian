@@ -67,6 +67,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
                 $roomVideo->start_seconds,
                 $roomVideo->end_seconds,
                 $roomVideo->created_at,
+                $roomVideo->document_timestamp,
                 $tags
             );
         }
@@ -177,6 +178,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
             'description' => $description,
             'start_seconds' => null,
             'end_seconds' => null,
+            'document_timestamp' => null,
         ]);
         return $this->getRoomVideo($id);
     }
@@ -202,6 +204,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
             'description' => $description,
             'start_seconds' => $start_seconds,
             'end_seconds' => $end_seconds,
+            'document_timestamp' => null,
         ]);
         return $this->getRoomVideo($id);
     }

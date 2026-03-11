@@ -3,6 +3,7 @@
 namespace Bristolian\Repo\RoomFileRepo;
 
 use Bristolian\Model\Generated\RoomFileObjectInfo;
+use Bristolian\Model\Types\RoomFileInRoom;
 use Bristolian\PdoSimple\PdoSimple;
 
 class PdoRoomFileRepo implements RoomFileRepo
@@ -36,7 +37,7 @@ SQL;
 
     /**
      * @param string $room_id
-     * @return RoomFileObjectInfo[]
+     * @return RoomFileInRoom[]
      * @throws \ReflectionException
      */
     public function getFilesForRoom(string $room_id): array
@@ -49,7 +50,8 @@ select
     sf.state,
     sf.size,
     sf.user_id,
-    sf.created_at
+    sf.created_at,
+    rf.document_timestamp
 from
   room_file_object_info as sf
 left join
@@ -57,7 +59,7 @@ left join
 on 
  sf.id = rf.stored_file_id
 where
-  room_id = :room_id
+  rf.room_id = :room_id
 SQL;
         $params = [
           ':room_id' => $room_id
@@ -66,7 +68,7 @@ SQL;
         return $this->pdoSimple->fetchAllAsObjectConstructor(
             $sql,
             $params,
-            RoomFileObjectInfo::class
+            RoomFileInRoom::class
         );
     }
 

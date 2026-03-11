@@ -248,7 +248,7 @@ class TypesCoverageTest extends BaseTestCase
     {
         $tag = new RoomTag('tag-1', 'room-1', 'Tag', '', self::now());
         $file = new RoomFileWithTags(
-            'id-1', 'normalized.pdf', 'original.pdf', 'uploaded', 2048, 'user-1', self::now(), [$tag]
+            'id-1', 'normalized.pdf', 'original.pdf', 'uploaded', 2048, 'user-1', self::now(), null, [$tag]
         );
 
         $this->assertSame('id-1', $file->id);
@@ -261,7 +261,7 @@ class TypesCoverageTest extends BaseTestCase
     {
         $tag = new RoomTag('tag-1', 'room-1', 'Tag', '', self::now());
         $link = new RoomLinkWithTags(
-            'id-1', 'room-1', 'link-1', 'Title', 'Description', self::now(), [$tag]
+            'id-1', 'room-1', 'link-1', 'Title', 'Description', self::now(), null, [$tag]
         );
 
         $this->assertSame('id-1', $link->id);
@@ -285,7 +285,7 @@ class TypesCoverageTest extends BaseTestCase
     {
         $tag = new RoomTag('tag-1', 'room-1', 'Tag', '', self::now());
         $video = new RoomVideoWithTags(
-            'id-1', 'room-1', 'vid-1', 'dQw4w9WgXcQ', 'Title', 'Desc', 10, 60, self::now(), [$tag]
+            'id-1', 'room-1', 'vid-1', 'dQw4w9WgXcQ', 'Title', 'Desc', 10, 60, self::now(), null, [$tag]
         );
 
         $this->assertSame('id-1', $video->id);

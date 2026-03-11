@@ -62,7 +62,7 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo->addFileToRoom($file_id, $room->id);
         $files = $roomFileRepo->getFilesForRoom($room->id);
         $this->assertCount(1, $files);
-        $this->assertInstanceOf(RoomFileObjectInfo::class, $files[0]);
+        $this->assertInstanceOf(\Bristolian\Model\Types\RoomFileInRoom::class, $files[0]);
 
         // Check other room still has no files listed
         $files = $roomFileRepo->getFilesForRoom("some other room");
@@ -101,7 +101,7 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $files = $roomFileRepo->getFilesForRoom($room->id);
 
         $this->assertCount(3, $files);
-        $this->assertContainsOnlyInstancesOf(RoomFileObjectInfo::class, $files);
+        $this->assertContainsOnlyInstancesOf(\Bristolian\Model\Types\RoomFileInRoom::class, $files);
     }
 
     /**

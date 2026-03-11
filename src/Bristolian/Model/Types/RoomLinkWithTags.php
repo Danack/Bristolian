@@ -24,6 +24,7 @@ class RoomLinkWithTags
         public readonly ?string $title,
         public readonly ?string $description,
         public readonly \DateTimeInterface $created_at,
+        public readonly ?\DateTimeInterface $document_timestamp,
         public readonly array $tags
     ) {
     }

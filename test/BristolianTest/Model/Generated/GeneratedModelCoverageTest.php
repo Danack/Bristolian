@@ -259,7 +259,7 @@ class GeneratedModelCoverageTest extends BaseTestCase
     /** @covers \Bristolian\Model\Generated\RoomVideo */
     public function test_RoomVideo(): void
     {
-        $o = new RoomVideo('id', 'room_id', 'video_id', 'title', 'desc', 10, 60, self::now());
+        $o = new RoomVideo('id', 'room_id', 'video_id', 'title', 'desc', 10, 60, self::now(), null);
         $this->assertSame('id', $o->id);
         $this->assertSame('room_id', $o->room_id);
     }
@@ -331,7 +331,7 @@ class GeneratedModelCoverageTest extends BaseTestCase
     /** @covers \Bristolian\Model\Generated\RoomLink */
     public function test_RoomLink(): void
     {
-        $o = new RoomLink('id', 'room_id', 'link_id', 'title', 'desc', self::now());
+        $o = new RoomLink('id', 'room_id', 'link_id', 'title', 'desc', self::now(), null);
         $this->assertSame('id', $o->id);
         $this->assertSame('room_id', $o->room_id);
     }

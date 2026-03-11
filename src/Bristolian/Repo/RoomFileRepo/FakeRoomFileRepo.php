@@ -3,6 +3,7 @@
 namespace Bristolian\Repo\RoomFileRepo;
 
 use Bristolian\Model\Generated\RoomFileObjectInfo;
+use Bristolian\Model\Types\RoomFileInRoom;
 
 class FakeRoomFileRepo implements RoomFileRepo
 {
@@ -40,7 +41,7 @@ class FakeRoomFileRepo implements RoomFileRepo
 
     /**
      * @param string $room_id
-     * @return RoomFileObjectInfo[]
+     * @return RoomFileInRoom[]
      */
     public function getFilesForRoom(string $room_id): array
     {
@@ -51,7 +52,17 @@ class FakeRoomFileRepo implements RoomFileRepo
         $filesForRoom = [];
         foreach ($this->roomFiles[$room_id] as $fileStorageId) {
             if (isset($this->files[$fileStorageId])) {
-                $filesForRoom[] = $this->files[$fileStorageId];
+                $file = $this->files[$fileStorageId];
+                $filesForRoom[] = new RoomFileInRoom(
+                    $file->id,
+                    $file->normalized_name,
+                    $file->original_filename,
+                    $file->state,
+                    $file->size,
+                    $file->user_id,
+                    $file->created_at,
+                    null
+                );
             }
         }
 

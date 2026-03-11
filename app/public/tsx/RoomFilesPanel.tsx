@@ -138,6 +138,10 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             ? <span className="room_entity_tags">{file.tags.map((t) => <span key={t.tag_id} className="room_entity_tag_chip">{t.text}</span>)}</span>
             : <span className="room_entity_tags empty">—</span>;
 
+        const dateDisplay = file.document_timestamp != null
+            ? spacesToNbsp(formatDateTimeForContent(file.document_timestamp))
+            : "—";
+
         return (
             <tr key={file.id}>
                 <td>
@@ -145,6 +149,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                 </td>
                 <td>{spacesToNbsp(humanFileSize(file.size, true))}</td>
                 <td>{spacesToNbsp(formatDateTimeForContent(file.created_at))}</td>
+                <td>{dateDisplay}</td>
                 <td>{tagsBlock}</td>
                 <td>{annotate_block}</td>
                 {logged_in && (
@@ -170,6 +175,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                         <tr>
                             <th>Name</th>
                             <th>Size</th>
+                            <th>Added</th>
                             <th>Date</th>
                             <th>Tags</th>
                             <th />

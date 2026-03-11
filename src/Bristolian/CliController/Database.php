@@ -262,4 +262,11 @@ class Database
 
         runAllQueries($pdoSimple, $list_of_migrations_that_need_to_be_run);
     }
+
+    public function setMaxConnections(\PDO $pdo): void
+    {
+        echo "this won't actually work as it requires more privileges than we have.";
+        $pdo->exec('SET GLOBAL max_connections = 2000');
+        echo "max_connections set to 2000.\n";
+    }
 }

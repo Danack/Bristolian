@@ -94,7 +94,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $files = $roomFileRepo->getFilesForRoom($room_id);
 
         $this->assertCount(1, $files);
-        $this->assertInstanceOf(RoomFileObjectInfo::class, $files[0]);
+        $this->assertInstanceOf(\Bristolian\Model\Types\RoomFileInRoom::class, $files[0]);
         $this->assertSame($file_id, $files[0]->id);
     }
 
@@ -252,7 +252,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $files = $roomFileRepo->getFilesForRoom($room_id);
 
         $this->assertCount(3, $files);
-        $this->assertContainsOnlyInstancesOf(RoomFileObjectInfo::class, $files);
+        $this->assertContainsOnlyInstancesOf(\Bristolian\Model\Types\RoomFileInRoom::class, $files);
     }
 
     /**
@@ -272,7 +272,9 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
 
         $file_details = $roomFileRepo->getFileDetails($room_id, $file_id);
 
-        // Should be the same object
-        $this->assertSame($file_from_list, $file_details);
+        $this->assertInstanceOf(RoomFileObjectInfo::class, $file_details);
+        $this->assertInstanceOf(\Bristolian\Model\Types\RoomFileInRoom::class, $file_from_list);
+        $this->assertSame($file_id, $file_from_list->id);
+        $this->assertSame($file_id, $file_details->id);
     }
 }

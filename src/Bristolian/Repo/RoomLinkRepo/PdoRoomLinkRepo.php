@@ -35,7 +35,8 @@ class PdoRoomLinkRepo implements RoomLinkRepo
             'description' => $linkParam->description,
             'link_id' => $link_id,
             'room_id' => $room_id,
-            'title' => $linkParam->title
+            'title' => $linkParam->title,
+            'document_timestamp' => null,
         ];
 
         $this->pdoSimple->insert($sql, $params);
@@ -74,7 +75,7 @@ class PdoRoomLinkRepo implements RoomLinkRepo
         $sql .= "where room_id = :room_id";
 
         $params = [
-          ':room_id' => $room_id
+            'room_id' => $room_id,
         ];
 
         return $this->pdoSimple->fetchAllAsObjectConstructor(

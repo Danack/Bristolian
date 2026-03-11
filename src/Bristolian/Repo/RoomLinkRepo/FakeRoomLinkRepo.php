@@ -59,7 +59,8 @@ class FakeRoomLinkRepo implements RoomLinkRepo
             $link_id,
             $linkParam->title,
             $linkParam->description,
-            $time
+            $time,
+            null
         );
 
         $this->roomLinks[] = $roomLink;

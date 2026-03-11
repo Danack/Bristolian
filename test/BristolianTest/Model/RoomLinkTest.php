@@ -30,7 +30,8 @@ class RoomLinkTest extends BaseTestCase
             $link_id = $linkId,
             $title,
             $description,
-            $created_at = $createdAt
+            $created_at = $createdAt,
+            $document_timestamp = null
         );
 
         $this->assertSame($id, $roomLink->id);

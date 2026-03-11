@@ -27,6 +27,7 @@ class RoomVideoWithTags
         public readonly ?int $start_seconds,
         public readonly ?int $end_seconds,
         public readonly \DateTimeInterface $created_at,
+        public readonly ?\DateTimeInterface $document_timestamp,
         public readonly array $tags
     ) {
     }

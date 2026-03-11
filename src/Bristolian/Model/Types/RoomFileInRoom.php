@@ -4,19 +4,12 @@ declare(strict_types = 1);
 
 namespace Bristolian\Model\Types;
 
-use Bristolian\Model\Generated\RoomTag;
-use Bristolian\ToArray;
-
 /**
- * Room file (RoomFileObjectInfo) with tags for list API responses.
+ * File in a room with room-level fields (e.g. document_timestamp from room_file).
+ * Used for list responses; getFileDetails continues to return RoomFileObjectInfo.
  */
-class RoomFileWithTags
+class RoomFileInRoom
 {
-    use ToArray;
-
-    /**
-     * @param RoomTag[] $tags
-     */
     public function __construct(
         public readonly string $id,
         public readonly string $normalized_name,
@@ -25,8 +18,7 @@ class RoomFileWithTags
         public readonly int $size,
         public readonly string $user_id,
         public readonly \DateTimeInterface $created_at,
-        public readonly ?\DateTimeInterface $document_timestamp,
-        public readonly array $tags
+        public readonly ?\DateTimeInterface $document_timestamp
     ) {
     }
 }

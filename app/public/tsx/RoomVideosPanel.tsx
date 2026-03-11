@@ -4,6 +4,7 @@ import { RoomVideoWithTags, createRoomVideoWithTags, createRoomTag, RoomTag } fr
 import { get_logged_in, subscribe_logged_in } from "./store";
 import { setVideoTags } from "./api_room_entity_tags";
 import { formatDateTimeForContent, spacesToNbsp } from "./functions";
+import { CLIP_TITLE_MINIMUM_LENGTH, CLIP_TITLE_MAXIMUM_LENGTH } from "./generated/constants";
 
 /** Set to true when transcript fetching is fixed. */
 const TRANSCRIPT_ENABLED = false;
@@ -519,6 +520,19 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
             this.setState({ clipError: "Start and end must be in timestamp format (e.g. 1:23 or 1:00:00)" });
             return;
         }
+        const trimmedTitle = clipTitle.trim();
+        if (trimmedTitle.length < CLIP_TITLE_MINIMUM_LENGTH) {
+            this.setState({
+                clipError: `Title is required and must be at least ${CLIP_TITLE_MINIMUM_LENGTH} characters (${trimmedTitle.length} entered).`,
+            });
+            return;
+        }
+        if (trimmedTitle.length > CLIP_TITLE_MAXIMUM_LENGTH) {
+            this.setState({
+                clipError: `Title must be at most ${CLIP_TITLE_MAXIMUM_LENGTH} characters (${trimmedTitle.length} entered).`,
+            });
+            return;
+        }
         this.setState({ clipError: null });
         fetch(`/api/rooms/${this.props.room_id}/videos/clips`, {
             method: "POST",
@@ -527,28 +541,53 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                 room_video_id: playingVideo.id,
                 start_seconds: startSeconds,
                 end_seconds: endSeconds,
-                title: clipTitle || null,
+                title: trimmedTitle,
                 description: clipDescription || null,
             }),
         })
-            .then((r) => r.json())
-            .then((data) => {
-                if (data.result === "error") {
-                    this.setState({ clipError: data.error || "Failed to create clip" });
-                    return;
-                }
-                this.setState({
-                    clipMarkedStartSeconds: null,
-                    clipMarkedEndSeconds: null,
-                    clipStartInput: "",
-                    clipEndInput: "",
-                    clipTimestampFocus: null,
-                    clipTitle: "",
-                    clipDescription: "",
-                });
-                this.refreshVideos();
-            })
+            .then((response) =>
+                response.json().then((data) => ({ response, data }))
+            )
+            .then(({ response, data }) =>
+                this.handleCreateClipResponse(response, data)
+            )
             .catch((err) => this.setState({ clipError: String(err) }));
+    }
+
+    private handleCreateClipResponse(
+        response: Response,
+        data: {
+            result?: string;
+            error?: string;
+            errors?: string[];
+        }
+    ): void {
+        if (!response.ok) {
+            const message =
+                (Array.isArray(data?.errors)
+                    ? data.errors.join(" ")
+                    : data?.error) ??
+                response.statusText ??
+                "Failed to create clip";
+            this.setState({ clipError: message });
+            return;
+        }
+        if (data.result === "error") {
+            this.setState({
+                clipError: data.error || "Failed to create clip",
+            });
+            return;
+        }
+        this.setState({
+            clipMarkedStartSeconds: null,
+            clipMarkedEndSeconds: null,
+            clipStartInput: "",
+            clipEndInput: "",
+            clipTimestampFocus: null,
+            clipTitle: "",
+            clipDescription: "",
+        });
+        this.refreshVideos();
     }
 
     openEditTags(video: RoomVideoWithTags) {
@@ -696,6 +735,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
             ) : (
                 <span className="room_entity_tags empty">—</span>
             );
+
         return (
             <tr key={video.id}>
                 <td>
@@ -704,7 +744,8 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                     </a>
                     {video.description && <div className="room_video_description">{video.description}</div>}
                 </td>
-                <td>{spacesToNbsp(formatDateTimeForContent(video.created_at instanceof Date ? video.created_at : new Date(String(video.created_at))))}</td>
+                <td>{spacesToNbsp(formatDateTimeForContent(video.created_at))}</td>
+                <td>{video.document_timestamp != null ? spacesToNbsp(formatDateTimeForContent(video.document_timestamp)) : "—"}</td>
                 <td>{tagsBlock}</td>
                 <td>
                     <button
@@ -983,10 +1024,10 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                         ) : state.playerPanelMode === "create_clip" ? (
                                             <div className="room_video_add_clip_form">
                                                 <label className="room_video_clip_field room_video_clip_field_wide">
-                                                    <h3 className="room_video_clip_field_label">Title (optional)</h3>
+                                                    <h3 className="room_video_clip_field_label">Title (required, {CLIP_TITLE_MINIMUM_LENGTH}–{CLIP_TITLE_MAXIMUM_LENGTH} characters)</h3>
                                                     <input
                                                         type="text"
-                                                        placeholder="Clip title (optional)"
+                                                        placeholder={`Clip title (${CLIP_TITLE_MINIMUM_LENGTH}–${CLIP_TITLE_MAXIMUM_LENGTH} characters)`}
                                                         value={state.clipTitle}
                                                         onInput={(e) => this.setState({ clipTitle: (e.target as HTMLInputElement).value })}
                                                     />
@@ -1060,6 +1101,8 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                                         className="button_standard"
                                                         onClick={() => this.createClip()}
                                                         disabled={
+                                                            state.clipTitle.trim().length < CLIP_TITLE_MINIMUM_LENGTH ||
+                                                            state.clipTitle.trim().length > CLIP_TITLE_MAXIMUM_LENGTH ||
                                                             parseTimestampToSeconds(state.clipStartInput) === null ||
                                                             parseTimestampToSeconds(state.clipEndInput) === null
                                                         }
@@ -1180,6 +1223,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                   <tr>
                                       <th>Title</th>
                                       <th>Added</th>
+                                      <th>Date</th>
                                       <th>Tags</th>
                                       <th />
                                   </tr>
