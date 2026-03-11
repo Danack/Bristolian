@@ -299,6 +299,15 @@ $z_index_chat_panel: 2;
   }
 }
 
+// Extra space at the bottom so content can scroll fully above the fixed chat bottom bar.
+// Files tab: spacer is below the upload panel (room_file_upload_panel), not the file list.
+.room_file_upload_panel,
+.room_links_panel_react,
+.room_videos_panel_react,
+.room_annotations_panel_react {
+  padding-bottom: 130px;
+}
+
 .bottom-bar {
   position: fixed;
   bottom: 0;
