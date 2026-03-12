@@ -13,7 +13,6 @@ use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Laminas\Diactoros\Response;
 use Bristolian\Middleware\ContentSecurityPolicyMiddleware;
 
 /**
@@ -33,16 +32,7 @@ class ContentSecurityPolicyMiddlewareTest extends BaseTestCase
         );
 
         $request = new ServerRequest();
-        $request_handler = new class() implements RequestHandler {
-            public function __construct()
-            {
-            }
-
-            public function handle(ServerRequestInterface $request): ResponseInterface
-            {
-                return new Response();
-            }
-        };
+        $request_handler = new FakeRequestHandler();
 
         $result = $middleware->process($request, $request_handler);
 
@@ -61,16 +51,7 @@ class ContentSecurityPolicyMiddlewareTest extends BaseTestCase
         );
 
         $request = new ServerRequest();
-        $request_handler = new class() implements RequestHandler {
-            public function __construct()
-            {
-            }
-
-            public function handle(ServerRequestInterface $request): ResponseInterface
-            {
-                return new Response();
-            }
-        };
+        $request_handler = new FakeRequestHandler();
 
         $result = $middleware->process($request, $request_handler);
 

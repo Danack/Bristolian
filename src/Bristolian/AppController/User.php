@@ -21,7 +21,7 @@ use Bristolian\Response\Typed\GetMemesResponse;
 use Bristolian\Response\Typed\GetMemesTagsResponse;
 use Bristolian\Response\Typed\PostMemetagaddResponse;
 use Bristolian\Response\Typed\PostMemetagdeleteResponse;
-use Bristolian\Session\AppSessionManager;
+use Bristolian\Session\AppSessionManagerInterface;
 use Bristolian\Session\UserSession;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use SlimDispatcher\Response\JsonNoCacheResponse;
@@ -365,7 +365,7 @@ class User
     }
 
 
-    public function get_login_status(AppSessionManager $appSessionManager): JsonNoCacheResponse
+    public function get_login_status(AppSessionManagerInterface $appSessionManager): JsonNoCacheResponse
     {
         $data = [
             'logged_in' => false,

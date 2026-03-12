@@ -493,6 +493,12 @@ function createUnknownQueryHandler(
 }
 
 
+function createUnknownCacheQueriesProvider(\Redis $redis): \Bristolian\Service\UnknownCacheQueries\UnknownCacheQueriesProvider
+{
+    return new \Bristolian\Service\UnknownCacheQueries\RedisUnknownCacheQueriesProvider($redis);
+}
+
+
 function createPdoSimpleWithTableTracking(
     \PDO $pdo,
     \Bristolian\Cache\TableAccessRecorder $recorder,

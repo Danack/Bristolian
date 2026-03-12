@@ -9,6 +9,7 @@ use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Filesystem\LocalCacheFilesystem;
 use Bristolian\Filesystem\MemeFilesystem;
 use Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo;
+use Bristolian\Response\StoredFileErrorResponse;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
@@ -33,6 +34,7 @@ class ImagesTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\AppController\Images::__construct
      * @covers \Bristolian\AppController\Images::show_meme
      */
     public function test_show_meme_throws_when_meme_not_found(): void
@@ -67,5 +69,24 @@ class ImagesTest extends BaseTestCase
         $result = $this->injector->execute([Images::class, 'show_meme']);
 
         $this->assertInstanceOf(ImageResponse::class, $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Images::show_meme
+     */
+    public function test_show_meme_returns_StoredFileErrorResponse_when_file_unreadable(): void
+    {
+        $normalizedName = 'meme-missing-' . uniqid() . '.jpg';
+        $tempFilePath = $this->tempRoot . '/other.jpg';
+        file_put_contents($tempFilePath, 'x');
+        $uploadedFile = new UploadedFile($tempFilePath, 1, 'other.jpg', 0);
+        $memeStorageRepo = $this->injector->make(FakeMemeStorageRepo::class);
+        $memeId = $memeStorageRepo->storeMeme('test-user-id', $normalizedName, $uploadedFile);
+        $this->injector->defineParam('id', $memeId);
+
+        $result = $this->injector->execute([Images::class, 'show_meme']);
+
+        $this->assertInstanceOf(StoredFileErrorResponse::class, $result);
+        $this->assertStringContainsString($normalizedName, $result->getBody());
     }
 }

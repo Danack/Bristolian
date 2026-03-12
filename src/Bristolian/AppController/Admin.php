@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Bristolian\AppController;
 
-use Bristolian\Keys\UnknownCacheQueryKey;
 use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\UserSearch\UserSearch;
+use Bristolian\Service\UnknownCacheQueries\UnknownCacheQueriesProvider;
 use Bristolian\Session\UserSession;
 //use Bristolian\UserNotifier\UserNotifier;
 use SlimDispatcher\Response\HtmlNoCacheResponse;
@@ -168,11 +168,11 @@ HTML;
         return new RedirectResponse($message);
     }
 
-    public function showUnknownCacheQueries(\Redis $redis): string
+    public function showUnknownCacheQueries(UnknownCacheQueriesProvider $unknownCacheQueriesProvider): string
     {
         $content = "<h1>Unknown Cache Queries</h1>";
 
-        $keys = $redis->sMembers(UnknownCacheQueryKey::SET_KEY);
+        $keys = $unknownCacheQueriesProvider->getMemberKeys();
 
         if ($keys === false || count($keys) === 0) {
             $content .= "<p>No unknown queries logged.</p>";
@@ -184,7 +184,7 @@ HTML;
 
         $index = 1;
         foreach ($keys as $key) {
-            $query = $redis->get($key);
+            $query = $unknownCacheQueriesProvider->getQuery($key);
             if ($query === false) {
                 continue;
             }

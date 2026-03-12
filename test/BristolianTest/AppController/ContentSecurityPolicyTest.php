@@ -7,6 +7,7 @@ namespace BristolianTest\AppController;
 use Bristolian\AppController\ContentSecurityPolicy;
 use Bristolian\CSPViolation\CSPViolationStorage;
 use Bristolian\CSPViolation\FakeCSPViolationStorage;
+use Bristolian\Data\ContentPolicyViolationReport;
 use Bristolian\JsonInput\FakeJsonInput;
 use Bristolian\JsonInput\JsonInput;
 use BristolianTest\BaseTestCase;
@@ -71,6 +72,29 @@ class ContentSecurityPolicyTest extends BaseTestCase
     {
         $result = $this->injector->execute([ContentSecurityPolicy::class, 'getReports']);
         $this->assertInstanceOf(JsonNoCacheResponse::class, $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\ContentSecurityPolicy::getReports
+     */
+    public function test_getReports_with_stored_reports_returns_array_of_toArray(): void
+    {
+        $report = ContentPolicyViolationReport::fromArray([
+            'document-uri' => 'https://example.com/page',
+            'referrer' => '',
+            'blocked-uri' => 'https://evil.com/script.js',
+            'violated-directive' => 'script-src',
+            'original-policy' => "default-src 'self'",
+        ]);
+        $storage = $this->injector->make(FakeCSPViolationStorage::class);
+        $storage->report($report);
+
+        $result = $this->injector->execute([ContentSecurityPolicy::class, 'getReports']);
+
+        $this->assertInstanceOf(JsonNoCacheResponse::class, $result);
+        $body = $result->getBody();
+        $this->assertStringContainsString('example.com/page', $body);
+        $this->assertStringContainsString('script-src', $body);
     }
 
     /**

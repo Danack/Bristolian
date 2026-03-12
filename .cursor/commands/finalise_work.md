@@ -108,6 +108,15 @@ docker exec bristolian-php_fpm-1 bash -c "sh runAllTests.sh"
 
 **Note:** This is the recommended command to run before finalizing work, as it checks code style, static analysis, and unit tests all at once.
 
+### 6. Test code: review anonymous classes
+
+When finalising work, consider reviewing **anonymous classes** in test code. If the same pattern appears in multiple tests (e.g. an anonymous class implementing `UploadedFiles`, `RoomFileStorage`, or `RequestHandlerInterface`), prefer replacing them with:
+
+- **Existing Fakes** – e.g. `FakeUploadedFiles`, `FakeRoomFileStorage`, `FakeRequestHandler` – so tests stay consistent and duplication is removed.
+- **Named test doubles** – e.g. a small class in the test file or a shared Fake in `src/` – instead of one-off anonymous implementations.
+
+This keeps test doubles reusable and easier to maintain. One-off anonymous classes that extend a Fake to override specific behaviour (e.g. a single test that needs a custom `renewSession()`) can stay as-is.
+
 ## Recommended Workflow
 
 Before finalizing work, run all code quality tools:

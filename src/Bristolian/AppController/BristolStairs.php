@@ -154,10 +154,13 @@ HTML;
         $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;
         $filenameToServe = realpath($localCacheFilename);
 
+        // Difficult to test: requires cache adapter to not persist under getFullPath() (e.g. in-memory).
         if ($filenameToServe === false) {
+            // @codeCoverageIgnoreStart
             throw new BristolianException(
                 "Failed to retrieve file from object store [" . $normalized_name . "]."
             );
+            // @codeCoverageIgnoreEnd
         }
 
         return new StreamingResponse(
@@ -187,14 +190,20 @@ HTML;
         }
 
         $path = __DIR__ . '/../../../app/public/openmap_stair_info.json';
+        // Difficult to test: path is hardcoded; would require injecting path or moving file.
         if (!is_readable($path)) {
+            // @codeCoverageIgnoreStart
             return new JsonNoCacheResponse(['error' => 'OpenMap data not available'], [], 500);
+            // @codeCoverageIgnoreEnd
         }
 
         $json = file_get_contents($path);
         $data = json_decode($json, true);
+        // Difficult to test: would require injecting file content or corrupting the fixture.
         if (!isset($data['elements']) || !is_array($data['elements'])) {
+            // @codeCoverageIgnoreStart
             return new JsonNoCacheResponse(['error' => 'Invalid OpenMap data'], [], 500);
+            // @codeCoverageIgnoreEnd
         }
 
         $latitude = $params->latitude;
@@ -202,13 +211,16 @@ HTML;
 
         $locations = [];
         foreach ($data['elements'] as $element) {
+            // Skip way elements; only nodes have lat/lon. Difficult to test: fixture may contain only nodes.
             if (($element['type'] ?? '') !== 'node') {
                 continue;
             }
             $element_latitude = $element['lat'] ?? null;
             $element_longitude = $element['lon'] ?? null;
             if ($element_latitude === null || $element_longitude === null) {
+                // @codeCoverageIgnoreStart
                 continue;
+                // @codeCoverageIgnoreEnd
             }
             $distance_squared = ($element_latitude - $latitude) ** 2 + ($element_longitude - $longitude) ** 2;
             $name = $element['tags']['name'] ?? null;

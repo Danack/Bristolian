@@ -5,7 +5,6 @@ namespace BristolianTest\Middleware;
 use Bristolian\Middleware\AppSessionMiddleware;
 use BristolianTest\BaseTestCase;
 
-use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -33,16 +32,7 @@ class AppSessionMiddlewareTest extends BaseTestCase
         $middleware = new AppSessionMiddleware($appSessionManager);
 
         $request = new ServerRequest();
-        $request_handler = new class() implements RequestHandler {
-            public function __construct()
-            {
-            }
-
-            public function handle(ServerRequestInterface $request): ResponseInterface
-            {
-                return new Response();
-            }
-        };
+        $request_handler = new FakeRequestHandler();
 
         $result = $middleware->process($request, $request_handler);
 
@@ -89,16 +79,7 @@ class AppSessionMiddlewareTest extends BaseTestCase
 
         $request = new ServerRequest();
         $request = $request->withHeader('x-session-renew', 'true');
-        $request_handler = new class() implements RequestHandler {
-            public function __construct()
-            {
-            }
-
-            public function handle(ServerRequestInterface $request): ResponseInterface
-            {
-                return new Response();
-            }
-        };
+        $request_handler = new FakeRequestHandler();
 
         $result = $middleware->process($request, $request_handler);
 

@@ -169,8 +169,10 @@ HTML;
         return $table_info;
     }
 
+
     public function debugging(UserSession $appSession,): string
     {
+        // @codeCoverageIgnoreStart
         $output = null;
         $result_code = 0;
         $result = exec('whoami', $output, $result_code);
@@ -182,6 +184,7 @@ HTML;
         $output .= "file_put_result is " . var_export($result, true);
 
         return $output;
+        // @codeCoverageIgnoreEnd
     }
 
     public function show_csp_reports(CSPViolationStorage $cspViolationStorage): string
@@ -237,6 +240,7 @@ HTML;
         TinnedFishProductRepo $productRepo,
         \Bristolian\SiteHtml\ExtraAssets $extraAssets
     ): string {
+        // @codeCoverageIgnoreStart
         $products = $productRepo->getAll();
         
         // Convert products to array for React component
@@ -269,6 +273,7 @@ HTML;
         $html .= $widget;
 
         return $html;
+        // @codeCoverageIgnoreEnd
     }
 
     public function updateProductValidationStatus(

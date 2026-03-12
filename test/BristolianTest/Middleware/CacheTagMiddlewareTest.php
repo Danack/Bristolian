@@ -6,7 +6,6 @@ namespace BristolianTest\Middleware;
 
 use Bristolian\Cache\RequestTableAccessRecorder;
 use Bristolian\Middleware\CacheTagMiddleware;
-use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -27,16 +26,7 @@ class CacheTagMiddlewareTest extends TestCase
 
     private function createHandler(int $statusCode = 200): RequestHandlerInterface
     {
-        return new class ($statusCode) implements RequestHandlerInterface {
-            public function __construct(private int $statusCode)
-            {
-            }
-
-            public function handle(ServerRequestInterface $request): ResponseInterface
-            {
-                return (new Response())->withStatus($this->statusCode);
-            }
-        };
+        return new FakeRequestHandler($statusCode);
     }
 
     public function testGetRequestWithReadTablesSetsCacheTagsHeader(): void

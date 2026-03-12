@@ -28,6 +28,16 @@ class FoiRequestsTest extends BaseTestCase
     /**
      * @covers \Bristolian\AppController\FoiRequests::view
      */
+    public function test_view_with_no_requests_returns_message(): void
+    {
+        $result = $this->injector->execute([FoiRequests::class, 'view']);
+        $this->assertIsString($result);
+        $this->assertSame('No FOI requests created on system yet.', $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\FoiRequests::view
+     */
     public function test_view_with_requests(): void
     {
         $repo = $this->injector->make(FakeFoiRequestRepo::class);

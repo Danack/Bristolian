@@ -5,9 +5,29 @@ declare(strict_types = 1);
 namespace BristolianTest\AppController;
 
 use Bristolian\AppController\Pages;
-use Bristolian\MarkdownRenderer\MarkdownRenderer;
 use Bristolian\MarkdownRenderer\CommonMarkRenderer;
+use Bristolian\MarkdownRenderer\MarkdownRenderer;
+use Bristolian\SiteHtml\AssetLinkEmitter;
+use Bristolian\SiteHtml\ExtraAssets;
+use Bristolian\SiteHtml\PageStubResponseGenerator;
 use BristolianTest\BaseTestCase;
+use Laminas\Diactoros\ServerRequest;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use SlimDispatcher\Response\StubResponse;
+
+/** Fake MarkdownRenderer for tests when doc files are not present (e.g. complaints/, questions/). */
+final class FakeMarkdownRendererForPages implements MarkdownRenderer
+{
+    public function render(string $markdown): string
+    {
+        return $markdown;
+    }
+
+    public function renderFile(string $filepath): string
+    {
+        return '<p>Rendered content from ' . basename($filepath) . '</p>';
+    }
+}
 
 /**
  * @coversNothing
@@ -130,12 +150,84 @@ class PagesTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\AppController\Pages::get404Page
+     */
+    public function test_get404Page(): void
+    {
+        $request = new ServerRequest(
+            serverParams: [],
+            uploadedFiles: [],
+            uri: 'https://example.com/not/found/path',
+            method: 'GET',
+        );
+        $extraAssets = new ExtraAssets();
+        $assetLinkEmitter = new AssetLinkEmitter(new \Bristolian\Config\HardCodedAssetLinkConfig(false, 'test'));
+        $pageStubResponseGenerator = new PageStubResponseGenerator($assetLinkEmitter);
+
+        $this->injector->alias(Request::class, ServerRequest::class);
+        $this->injector->share($request);
+        $this->injector->share($extraAssets);
+        $this->injector->share($pageStubResponseGenerator);
+
+        $result = $this->injector->execute([Pages::class, 'get404Page']);
+
+        $this->assertInstanceOf(StubResponse::class, $result);
+        $this->assertStringContainsString('/not/found/path', $result->getBody());
+        $this->assertSame(404, $result->getStatus());
+    }
+
+    /**
      * @covers \Bristolian\AppController\Pages::about
      */
     public function test_about(): void
     {
         $result = $this->injector->execute([Pages::class, 'about']);
         $this->assertIsString($result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Pages::triangle_road
+     */
+    public function test_triangle_road(): void
+    {
+        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRendererForPages::class);
+        $this->injector->share(new FakeMarkdownRendererForPages());
+
+        $result = $this->injector->execute([Pages::class, 'triangle_road']);
+        $this->assertIsString($result);
+        $this->assertStringContainsString('<hr/>', $result);
+        $this->assertStringContainsString('Rendered content from triangle_road.md', $result);
+        $this->assertMatchesRegularExpression('/share|qr|QR/', $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Pages::bristol_rovers
+     */
+    public function test_bristol_rovers(): void
+    {
+        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRendererForPages::class);
+        $this->injector->share(new FakeMarkdownRendererForPages());
+
+        $result = $this->injector->execute([Pages::class, 'bristol_rovers']);
+        $this->assertIsString($result);
+        $this->assertStringContainsString('<hr/>', $result);
+        $this->assertStringContainsString('Rendered content from bristol_rovers.md', $result);
+        $this->assertMatchesRegularExpression('/share|qr|QR/', $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Pages::avon_crescent
+     */
+    public function test_avon_crescent(): void
+    {
+        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRendererForPages::class);
+        $this->injector->share(new FakeMarkdownRendererForPages());
+
+        $result = $this->injector->execute([Pages::class, 'avon_crescent']);
+        $this->assertIsString($result);
+        $this->assertStringContainsString('<hr/>', $result);
+        $this->assertStringContainsString('Rendered content from avon_crescent_spike_island.md', $result);
+        $this->assertMatchesRegularExpression('/share|qr|QR/', $result);
     }
 
     /**
@@ -182,6 +274,32 @@ class PagesTest extends BaseTestCase
         $result = $this->injector->execute([Pages::class, 'questions']);
         $this->assertIsString($result);
         $this->assertStringContainsString('Questions for WECA', $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Pages::weca_question_active_travel
+     */
+    public function test_weca_question_active_travel(): void
+    {
+        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRendererForPages::class);
+        $this->injector->share(new FakeMarkdownRendererForPages());
+
+        $result = $this->injector->execute([Pages::class, 'weca_question_active_travel']);
+        $this->assertIsString($result);
+        $this->assertStringContainsString('Rendered content from 1_active_travel_weca.md', $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Pages::weca_question_tram
+     */
+    public function test_weca_question_tram(): void
+    {
+        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRendererForPages::class);
+        $this->injector->share(new FakeMarkdownRendererForPages());
+
+        $result = $this->injector->execute([Pages::class, 'weca_question_tram']);
+        $this->assertIsString($result);
+        $this->assertStringContainsString('Rendered content from 2_cumberland_basin_weca_road_feasilbity.md', $result);
     }
 
     /**

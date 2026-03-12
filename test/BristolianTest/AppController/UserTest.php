@@ -20,6 +20,9 @@ use Bristolian\Response\Typed\GetMemesResponse;
 use Bristolian\Response\Typed\GetMemesTagsResponse;
 use Bristolian\Response\Typed\PostMemetagaddResponse;
 use Bristolian\Response\Typed\PostMemetagdeleteResponse;
+use Bristolian\Model\Generated\StoredMeme;
+use Bristolian\Session\AppSessionManagerInterface;
+use Bristolian\Session\FakeAppSessionManager;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -61,6 +64,48 @@ class UserTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\AppController\User::listMemes
+     */
+    public function test_listMemes_truncates_when_over_display_limit(): void
+    {
+        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $this->assertFileExists($pdfPath);
+        $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
+        $repo = $this->injector->make(FakeMemeStorageRepo::class);
+        for ($i = 0; $i < User::MEMES_DISPLAY_LIMIT + 1; $i++) {
+            $repo->storeMeme('test-user-id-001', 'meme-' . $i . '.pdf', $uploadedFile);
+        }
+
+        $result = $this->injector->execute([User::class, 'listMemes']);
+
+        $this->assertInstanceOf(GetMemesResponse::class, $result);
+        $data = json_decode($result->getBody(), true);
+        $this->assertTrue($data['data']['truncated']);
+        $this->assertCount(User::MEMES_DISPLAY_LIMIT, $data['data']['memes']);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\User::listUntaggedMemes
+     */
+    public function test_listUntaggedMemes_truncates_when_over_display_limit(): void
+    {
+        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $this->assertFileExists($pdfPath);
+        $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
+        $repo = $this->injector->make(FakeMemeStorageRepo::class);
+        for ($i = 0; $i < User::MEMES_DISPLAY_LIMIT + 1; $i++) {
+            $repo->storeMeme('test-user-id-001', 'meme-' . $i . '.pdf', $uploadedFile);
+        }
+
+        $result = $this->injector->execute([User::class, 'listUntaggedMemes']);
+
+        $this->assertInstanceOf(GetMemesResponse::class, $result);
+        $data = json_decode($result->getBody(), true);
+        $this->assertTrue($data['data']['truncated']);
+        $this->assertCount(User::MEMES_DISPLAY_LIMIT, $data['data']['memes']);
+    }
+
+    /**
      * @covers \Bristolian\AppController\User::searchMemes
      */
     public function test_searchMemes_no_criteria(): void
@@ -84,6 +129,84 @@ class UserTest extends BaseTestCase
 
         $result = $this->injector->execute([User::class, 'searchMemes']);
         $this->assertInstanceOf(GetMemesResponse::class, $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\User::searchMemes
+     */
+    public function test_searchMemes_with_tags(): void
+    {
+        $params = MemeSearchParams::createFromVarMap(new ArrayVarMap([
+            'tags' => 'a,b',
+        ]));
+        $this->injector->share($params);
+
+        $result = $this->injector->execute([User::class, 'searchMemes']);
+        $this->assertInstanceOf(GetMemesResponse::class, $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\User::searchMemes
+     */
+    public function test_searchMemes_with_text_search_returns_matching_memes(): void
+    {
+        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $this->assertFileExists($pdfPath);
+        $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
+        $storageRepo = $this->injector->make(FakeMemeStorageRepo::class);
+        $memeId = $storageRepo->storeMeme('test-user-id-001', 'meme-with-text.pdf', $uploadedFile);
+        $meme = $storageRepo->getMeme($memeId);
+        $storedMeme = new StoredMeme(
+            id: $meme->id,
+            normalized_name: $meme->normalized_name,
+            original_filename: $meme->original_filename,
+            state: $meme->state,
+            size: $meme->size,
+            user_id: $meme->user_id,
+            created_at: $meme->created_at,
+            deleted: $meme->deleted ? 1 : 0,
+        );
+        $textRepo = $this->injector->make(FakeMemeTextRepo::class);
+        $textRepo->saveMemeText($storedMeme, 'needle in haystack');
+
+        $params = MemeSearchParams::createFromVarMap(new ArrayVarMap([
+            'text_search' => 'needle',
+        ]));
+        $this->injector->share($params);
+
+        $result = $this->injector->execute([User::class, 'searchMemes']);
+
+        $this->assertInstanceOf(GetMemesResponse::class, $result);
+        $data = json_decode($result->getBody(), true);
+        $memes = $data['data']['memes'];
+        $this->assertCount(1, $memes);
+        $this->assertSame($memeId, $memes[0]['id']);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\User::searchMemes
+     */
+    public function test_searchMemes_combined_results_truncated(): void
+    {
+        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $this->assertFileExists($pdfPath);
+        $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
+        $repo = $this->injector->make(FakeMemeStorageRepo::class);
+        for ($i = 0; $i < User::MEMES_DISPLAY_LIMIT + 1; $i++) {
+            $repo->storeMeme('test-user-id-001', 'meme-' . $i . '.pdf', $uploadedFile);
+        }
+
+        $params = MemeSearchParams::createFromVarMap(new ArrayVarMap([
+            'query' => 'any',
+        ]));
+        $this->injector->share($params);
+
+        $result = $this->injector->execute([User::class, 'searchMemes']);
+
+        $this->assertInstanceOf(GetMemesResponse::class, $result);
+        $data = json_decode($result->getBody(), true);
+        $this->assertTrue($data['data']['truncated']);
+        $this->assertCount(User::MEMES_DISPLAY_LIMIT, $data['data']['memes']);
     }
 
     /**
@@ -114,6 +237,39 @@ class UserTest extends BaseTestCase
         $this->injector->defineParam('meme_id', 'nonexistent-meme-id');
         $result = $this->injector->execute([User::class, 'getMemeText']);
         $this->assertInstanceOf(GetMemeTextResponse::class, $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\User::getMemeText
+     */
+    public function test_getMemeText_found_returns_text(): void
+    {
+        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $this->assertFileExists($pdfPath);
+        $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
+        $storageRepo = $this->injector->make(FakeMemeStorageRepo::class);
+        $memeId = $storageRepo->storeMeme('test-user-id-001', 'meme-with-text.pdf', $uploadedFile);
+        $meme = $storageRepo->getMeme($memeId);
+        $storedMeme = new StoredMeme(
+            id: $meme->id,
+            normalized_name: $meme->normalized_name,
+            original_filename: $meme->original_filename,
+            state: $meme->state,
+            size: $meme->size,
+            user_id: $meme->user_id,
+            created_at: $meme->created_at,
+            deleted: $meme->deleted ? 1 : 0,
+        );
+        $textRepo = $this->injector->make(FakeMemeTextRepo::class);
+        $textRepo->saveMemeText($storedMeme, 'Stored meme text');
+
+        $this->injector->defineParam('meme_id', $memeId);
+        $result = $this->injector->execute([User::class, 'getMemeText']);
+
+        $this->assertInstanceOf(GetMemeTextResponse::class, $result);
+        $data = json_decode($result->getBody(), true);
+        $this->assertNotNull($data['data']['meme_text']);
+        $this->assertSame('Stored meme text', $data['data']['meme_text']['text']);
     }
 
     /**
@@ -187,6 +343,60 @@ class UserTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\AppController\User::getMemeTagSuggestions
+     */
+    public function test_getMemeTagSuggestions_with_meme_ids_calls_getMostCommonTagsForMemes(): void
+    {
+        $request = new ServerRequest(
+            serverParams: [],
+            uploadedFiles: [],
+            uri: '/api/meme_tag_suggestions',
+            method: 'GET',
+        );
+        $request = $request->withQueryParams(['meme_ids' => 'id-one,id-two', 'limit' => '5']);
+        $this->injector->alias(Request::class, ServerRequest::class);
+        $this->injector->share($request);
+
+        $result = $this->injector->execute([User::class, 'getMemeTagSuggestions']);
+
+        $this->assertInstanceOf(GetMemeTagSuggestionsResponse::class, $result);
+        $data = json_decode($result->getBody(), true);
+        $this->assertIsArray($data['data']['tags']);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\User::get_login_status
+     */
+    public function test_get_login_status_not_logged_in(): void
+    {
+        $sessionManager = new FakeAppSessionManager();
+        $this->injector->alias(AppSessionManagerInterface::class, FakeAppSessionManager::class);
+        $this->injector->share($sessionManager);
+
+        $result = $this->injector->execute([User::class, 'get_login_status']);
+
+        $this->assertInstanceOf(\SlimDispatcher\Response\JsonNoCacheResponse::class, $result);
+        $body = json_decode($result->getBody(), true);
+        $this->assertFalse($body['logged_in']);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\User::get_login_status
+     */
+    public function test_get_login_status_logged_in(): void
+    {
+        $sessionManager = FakeAppSessionManager::createLoggedIn();
+        $this->injector->alias(AppSessionManagerInterface::class, FakeAppSessionManager::class);
+        $this->injector->share($sessionManager);
+
+        $result = $this->injector->execute([User::class, 'get_login_status']);
+
+        $this->assertInstanceOf(\SlimDispatcher\Response\JsonNoCacheResponse::class, $result);
+        $body = json_decode($result->getBody(), true);
+        $this->assertTrue($body['logged_in']);
+    }
+
+    /**
      * @covers \Bristolian\AppController\User::getMemeTagSuggestions_get
      */
     public function test_getMemeTagSuggestions_get(): void
@@ -215,6 +425,143 @@ class UserTest extends BaseTestCase
 
         $result = $this->injector->execute([User::class, 'updateMemeText']);
         $this->assertInstanceOf(SuccessResponse::class, $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\User::updateMemeText
+     */
+    public function test_updateMemeText_success(): void
+    {
+        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $this->assertFileExists($pdfPath);
+        $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
+        $storageRepo = $this->injector->make(FakeMemeStorageRepo::class);
+        $memeId = $storageRepo->storeMeme('test-user-id-001', 'meme-to-update.pdf', $uploadedFile);
+
+        $this->injector->defineParam('meme_id', $memeId);
+        $request = new ServerRequest(
+            serverParams: [],
+            uploadedFiles: [],
+            uri: '/api/meme_text',
+            method: 'PUT',
+            body: 'php://memory',
+            headers: ['Content-Type' => 'application/x-www-form-urlencoded'],
+            parsedBody: ['text' => 'New meme text']
+        );
+        $this->injector->alias(Request::class, ServerRequest::class);
+        $this->injector->share($request);
+
+        $result = $this->injector->execute([User::class, 'updateMemeText']);
+
+        $this->assertInstanceOf(SuccessResponse::class, $result);
+        $textRepo = $this->injector->make(FakeMemeTextRepo::class);
+        $memeText = $textRepo->getMemeText($memeId);
+        $this->assertNotNull($memeText);
+        $this->assertSame('New meme text', $memeText->text);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\User::updateMemeText
+     */
+    public function test_updateMemeText_truncates_long_text(): void
+    {
+        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $this->assertFileExists($pdfPath);
+        $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
+        $storageRepo = $this->injector->make(FakeMemeStorageRepo::class);
+        $memeId = $storageRepo->storeMeme('test-user-id-001', 'meme-long-text.pdf', $uploadedFile);
+
+        $longText = str_repeat('x', 5000);
+        $this->injector->defineParam('meme_id', $memeId);
+        $request = new ServerRequest(
+            serverParams: [],
+            uploadedFiles: [],
+            uri: '/api/meme_text',
+            method: 'PUT',
+            body: 'php://memory',
+            headers: ['Content-Type' => 'application/x-www-form-urlencoded'],
+            parsedBody: ['text' => $longText]
+        );
+        $this->injector->alias(Request::class, ServerRequest::class);
+        $this->injector->share($request);
+
+        $this->injector->execute([User::class, 'updateMemeText']);
+
+        $textRepo = $this->injector->make(FakeMemeTextRepo::class);
+        $memeText = $textRepo->getMemeText($memeId);
+        $this->assertNotNull($memeText);
+        $this->assertSame(4096, strlen($memeText->text));
+        $this->assertSame(str_repeat('x', 4096), $memeText->text);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\User::updateMemeText
+     */
+    public function test_updateMemeText_uses_array_access_parsed_body(): void
+    {
+        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $this->assertFileExists($pdfPath);
+        $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
+        $storageRepo = $this->injector->make(FakeMemeStorageRepo::class);
+        $memeId = $storageRepo->storeMeme('test-user-id-001', 'meme-array-access.pdf', $uploadedFile);
+
+        $body = new \ArrayObject(['text' => 'Text from ArrayAccess']);
+        $request = new ServerRequest(
+            serverParams: [],
+            uploadedFiles: [],
+            uri: '/api/meme_text',
+            method: 'PUT',
+            body: 'php://memory',
+            headers: ['Content-Type' => 'application/x-www-form-urlencoded'],
+            parsedBody: $body
+        );
+        $this->injector->defineParam('meme_id', $memeId);
+        $this->injector->alias(Request::class, ServerRequest::class);
+        $this->injector->share($request);
+
+        $this->injector->execute([User::class, 'updateMemeText']);
+
+        $textRepo = $this->injector->make(FakeMemeTextRepo::class);
+        $memeText = $textRepo->getMemeText($memeId);
+        $this->assertNotNull($memeText);
+        $this->assertSame('Text from ArrayAccess', $memeText->text);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\User::updateMemeText
+     */
+    public function test_updateMemeText_uses_post_fallback_when_parsed_body_empty(): void
+    {
+        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $this->assertFileExists($pdfPath);
+        $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
+        $storageRepo = $this->injector->make(FakeMemeStorageRepo::class);
+        $memeId = $storageRepo->storeMeme('test-user-id-001', 'meme-post-fallback.pdf', $uploadedFile);
+
+        $request = new ServerRequest(
+            serverParams: [],
+            uploadedFiles: [],
+            uri: '/api/meme_text',
+            method: 'PUT',
+            body: 'php://memory',
+            headers: ['Content-Type' => 'application/x-www-form-urlencoded'],
+            parsedBody: null
+        );
+        $this->injector->defineParam('meme_id', $memeId);
+        $this->injector->alias(Request::class, ServerRequest::class);
+        $this->injector->share($request);
+
+        $_POST['text'] = 'Text from POST';
+
+        try {
+            $this->injector->execute([User::class, 'updateMemeText']);
+            $textRepo = $this->injector->make(FakeMemeTextRepo::class);
+            $memeText = $textRepo->getMemeText($memeId);
+            $this->assertNotNull($memeText);
+            $this->assertSame('Text from POST', $memeText->text);
+        } finally {
+            unset($_POST['text']);
+        }
     }
 
     /**

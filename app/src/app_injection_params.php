@@ -228,6 +228,9 @@ function injectionParams()
         \Bristolian\Cache\UnknownQueryHandler::class =>
             'createUnknownQueryHandler',
 
+        \Bristolian\Service\UnknownCacheQueries\UnknownCacheQueriesProvider::class =>
+            'createUnknownCacheQueriesProvider',
+
         \Bristolian\PdoSimple\PdoSimple::class =>
             'createPdoSimpleWithTableTracking',
     ];

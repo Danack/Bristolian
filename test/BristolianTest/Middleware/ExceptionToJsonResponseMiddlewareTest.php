@@ -23,17 +23,7 @@ class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
         $middleware = new ExceptionToJsonResponseMiddleware($responseFactory, []);
         $request = new ServerRequest();
 
-        $foo = new class() implements RequestHandler {
-            public function __construct()
-            {
-            }
-
-            public function handle(ServerRequestInterface $request): ResponseInterface
-            {
-                $responseFactory = new ResponseFactory();
-                return $responseFactory->createResponse(505);
-            }
-        };
+        $foo = new FakeRequestHandler(505);
 
         $response = $middleware->process($request, $foo);
         $this->assertSame(505, $response->getStatusCode());
@@ -67,16 +57,7 @@ class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
         $middleware = new ExceptionToJsonResponseMiddleware($responseFactory, $handlers);
         $request = new ServerRequest();
 
-        $foo = new class($message) implements RequestHandler {
-            public function __construct(private string $message)
-            {
-            }
-
-            public function handle(ServerRequestInterface $request): ResponseInterface
-            {
-                throw new BristolianException($this->message);
-            }
-        };
+        $foo = new ThrowingRequestHandler(new BristolianException($message));
 
         // Call the code
         $result = $middleware->process($request, $foo);
@@ -105,16 +86,7 @@ class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
         $middleware = new ExceptionToJsonResponseMiddleware($responseFactory, []);
         $request = new ServerRequest();
 
-        $foo = new class($message) implements RequestHandler {
-            public function __construct(private string $message)
-            {
-            }
-
-            public function handle(ServerRequestInterface $request): ResponseInterface
-            {
-                throw new BristolianException($this->message);
-            }
-        };
+        $foo = new ThrowingRequestHandler(new BristolianException($message));
 
         $this->expectException(BristolianException::class);
         $this->expectExceptionMessage($message);
@@ -147,16 +119,7 @@ class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
         $middleware = new ExceptionToJsonResponseMiddleware($responseFactory, $handlers);
         $request = new ServerRequest();
 
-        $request_handler = new class($message) implements RequestHandler {
-            public function __construct(private string $message)
-            {
-            }
-
-            public function handle(ServerRequestInterface $request): ResponseInterface
-            {
-                throw new BristolianException($this->message);
-            }
-        };
+        $request_handler = new ThrowingRequestHandler(new BristolianException($message));
 
         $this->expectExceptionMessageMatchesTemplateString(
             MiddlewareException::ERROR_HANDLER_FAILED_TO_RETURN_RESPONSE
