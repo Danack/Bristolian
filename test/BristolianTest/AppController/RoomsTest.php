@@ -549,7 +549,13 @@ class RoomsTest extends BaseTestCase
         $roomVideoRepo = $this->injector->make(InMemoryRoomVideoRepo::class);
         $roomVideo = $roomVideoRepo->addVideo($this->roomId, $videoId, 'Video', null);
 
-        $jsonInput = new FakeJsonInput(['tag_ids' => []]);
+        $roomTagRepo = $this->injector->make(FakeRoomTagRepo::class);
+        $tag = $roomTagRepo->createTag($this->roomId, TagParams::createFromVarMap(new ArrayVarMap([
+            'text' => 'video-tag',
+            'description' => 'Tag for video',
+        ])));
+
+        $jsonInput = new FakeJsonInput(['tag_ids' => [$tag->tag_id]]);
         $this->injector->alias(JsonInput::class, FakeJsonInput::class);
         $this->injector->share($jsonInput);
         $this->injector->defineParam('room_video_id', $roomVideo->id);
@@ -619,7 +625,13 @@ class RoomsTest extends BaseTestCase
             $annotationParam
         );
 
-        $jsonInput = new FakeJsonInput(['tag_ids' => []]);
+        $roomTagRepo = $this->injector->make(FakeRoomTagRepo::class);
+        $tag = $roomTagRepo->createTag($this->roomId, TagParams::createFromVarMap(new ArrayVarMap([
+            'text' => 'annotation-tag',
+            'description' => 'Tag for annotation',
+        ])));
+
+        $jsonInput = new FakeJsonInput(['tag_ids' => [$tag->tag_id]]);
         $this->injector->alias(JsonInput::class, FakeJsonInput::class);
         $this->injector->share($jsonInput);
         $this->injector->defineParam('room_annotation_id', $annotationId);

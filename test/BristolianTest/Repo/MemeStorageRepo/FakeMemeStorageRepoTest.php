@@ -106,13 +106,13 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
     /**
      * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::searchMemesByExactTags
      */
-    public function test_searchMemesByExactTags_with_tags_returns_empty(): void
+    public function test_searchMemesByExactTags_with_tags_returns_user_memes(): void
     {
         $repo = new FakeMemeStorageRepo();
         $repo->storeMeme('user_1', 'f.jpg', UploadedFile::fromFile(__FILE__));
 
         $memes = $repo->searchMemesByExactTags('user_1', ['tag1']);
-        $this->assertCount(0, $memes);
+        $this->assertCount(1, $memes);
     }
 
     /**

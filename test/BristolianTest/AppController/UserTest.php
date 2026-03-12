@@ -136,6 +136,12 @@ class UserTest extends BaseTestCase
      */
     public function test_searchMemes_with_tags(): void
     {
+        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $this->assertFileExists($pdfPath);
+        $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
+        $storageRepo = $this->injector->make(FakeMemeStorageRepo::class);
+        $memeId = $storageRepo->storeMeme('test-user-id-001', 'tagged-meme.pdf', $uploadedFile);
+
         $params = MemeSearchParams::createFromVarMap(new ArrayVarMap([
             'tags' => 'a,b',
         ]));
@@ -143,6 +149,9 @@ class UserTest extends BaseTestCase
 
         $result = $this->injector->execute([User::class, 'searchMemes']);
         $this->assertInstanceOf(GetMemesResponse::class, $result);
+        $data = json_decode($result->getBody(), true);
+        $this->assertCount(1, $data['data']['memes']);
+        $this->assertSame($memeId, $data['data']['memes'][0]['id']);
     }
 
     /**

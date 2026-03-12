@@ -8,6 +8,13 @@ use Bristolian\Config\Config;
 use Bristolian\Exception\BristolianException;
 use PDO;
 
+// None of this file is unit tested. If there are bugs, they will stop
+// a lot of other code from working.
+
+
+/**
+ * @codeCoverageIgnore
+ */
 function generate_table_strings($sorted_column_names)
 {
     $separator = "";
@@ -33,7 +40,9 @@ function generate_table_strings($sorted_column_names)
     return [$columns_separated_by_comma_new_line, $values_names_separated_by_comma_new_line];
 }
 
-
+/**
+ * @codeCoverageIgnore
+ */
 function generate_table_update_strings($sorted_column_names)
 {
     $separator = "";
@@ -290,6 +299,9 @@ function generate_table_helper_class(string $tableName, array $columns_info): vo
     \Safe\file_put_contents($output_filename, $contents);
 }
 
+/**
+ * @codeCoverageIgnore
+ */
 function getTypeDocDescription(\ReflectionClass $rc)
 {
     $description = '';

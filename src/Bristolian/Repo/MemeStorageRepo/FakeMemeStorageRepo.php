@@ -135,15 +135,7 @@ class FakeMemeStorageRepo implements MemeStorageRepo
 
     public function searchMemesByExactTags(string $user_id, array $tagTexts): array
     {
-        // Fake implementation: return all memes for user if no tags specified
-        // For a full implementation, this would need to check tags via MemeTagRepo
-        if (empty($tagTexts)) {
-            return $this->listMemesForUser($user_id);
-        }
-        
-        // Basic implementation: return empty array when tags are specified
-        // A complete fake would need integration with FakeMemeTagRepo
-        return [];
+        return $this->listMemesForUser($user_id);
     }
 
     public function markAsDeleted(string $meme_id): void
