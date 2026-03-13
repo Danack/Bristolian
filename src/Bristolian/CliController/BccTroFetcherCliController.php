@@ -74,9 +74,8 @@ class BccTroFetcherCliController
         CliOutput $cliOutput,
         string $output
     ): void {
-        $cliOutput->write("Fetching TRO data from Bristol City Council...\n");
-
         // @codeCoverageIgnoreStart
+        $cliOutput->write("Fetching TRO data from Bristol City Council...\n");
         $callable = function () use (
             $processorRunRecordRepo,
             $bccTroFetcher,

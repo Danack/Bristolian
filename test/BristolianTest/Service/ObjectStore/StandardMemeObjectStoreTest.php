@@ -10,6 +10,8 @@ use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 
 /**
+ * Unit test for StandardMemeObjectStore using a local filesystem (no external storage).
+ *
  * @coversNothing
  */
 class StandardMemeObjectStoreTest extends BaseTestCase
@@ -34,12 +36,12 @@ class StandardMemeObjectStoreTest extends BaseTestCase
      */
     public function test_upload_writes_file_via_meme_filesystem(): void
     {
-        $this->testDir = __DIR__ . '/StandardMemeObjectStoreTest_fs_' . uniqid();
+        $this->testDir = sys_get_temp_dir() . '/meme_object_store_' . uniqid();
         mkdir($this->testDir);
 
         $adapter = new LocalFilesystemAdapter($this->testDir);
-        $memeFilesystem = new MemeFilesystem($adapter, []);
-        $store = new StandardMemeObjectStore($memeFilesystem);
+        $filesystem = new MemeFilesystem($adapter);
+        $store = new StandardMemeObjectStore($filesystem);
 
         $store->upload('test-meme.jpg', 'binary image contents');
 

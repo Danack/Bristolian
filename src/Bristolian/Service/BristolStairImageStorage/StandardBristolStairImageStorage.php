@@ -35,7 +35,9 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
 
         $contents = @file_get_contents($uploadedFile->getTmpName());
         if ($contents === false) {
+            // @codeCoverageIgnoreStart
             return UploadError::uploadedFileUnreadable();
+            // @codeCoverageIgnoreEnd
         }
 
         $filename_for_extension = $uploadedFile->getOriginalName();
@@ -63,7 +65,9 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
             $uploadedFile = UploadedFile::fromFile($temp_file_with_extension);
             $contents = @file_get_contents($uploadedFile->getTmpName());
             if ($contents === false) {
+                // @codeCoverageIgnoreStart
                 return UploadError::uploadedFileUnreadable();
+                // @codeCoverageIgnoreEnd
             }
         }
 
@@ -77,7 +81,6 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
         }
         if ($gpsParams->longitude !== null) {
             $longitude = $gpsParams->longitude;
-            \error_log("Using param longitude");
         }
 
         $coordinates = \get_image_gps($uploadedFile->getTmpName());

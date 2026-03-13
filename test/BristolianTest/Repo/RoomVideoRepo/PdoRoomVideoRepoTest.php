@@ -244,7 +244,7 @@ class PdoRoomVideoRepoTest extends BaseTestCase
      */
     public function test_resolveTagIdsToTags_returns_matching_tags_skips_missing_ids(): void
     {
-        $repo = $this->getRepo();
+        $repo = $this->injector->make(PdoRoomVideoRepo::class);
         assert($this->roomId !== null);
 
         $roomTagRepo = $this->injector->make(PdoRoomTagRepo::class);

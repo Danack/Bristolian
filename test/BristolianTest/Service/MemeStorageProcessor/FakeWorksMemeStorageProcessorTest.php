@@ -1,33 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BristolianTest\Service\MemeStorageProcessor;
 
-use Bristolian\Service\ObjectStore\FakeRoomFileObjectStore;
-use Bristolian\Service\ObjectStore\FileObjectStore;
-use Bristolian\UploadedFiles\UploadedFile;
-use BristolianTest\BaseTestCase;
 use Bristolian\Service\MemeStorageProcessor\FakeWorksMemeStorageProcessor;
 use Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme;
+use Bristolian\Service\ObjectStore\FakeMemeObjectStore;
+use Bristolian\UploadedFiles\UploadedFile;
+use BristolianTest\BaseTestCase;
 
 /**
- * @covers \Bristolian\Service\MemeStorageProcessor\FakeWorksMemeStorageProcessor
+ * @coversNothing
  */
 class FakeWorksMemeStorageProcessorTest extends BaseTestCase
 {
-    public function testWorks()
+    /**
+     * @covers \Bristolian\Service\MemeStorageProcessor\FakeWorksMemeStorageProcessor::storeMemeForUser
+     */
+    public function test_storeMemeForUser_returns_ObjectStoredMeme(): void
     {
         $storageProcessor = new FakeWorksMemeStorageProcessor();
-
         $uploadedFile = UploadedFile::fromFile(__FILE__);
-        $objectStore = new FakeRoomFileObjectStore();
+        $objectStore = new FakeMemeObjectStore();
 
         $result = $storageProcessor->storeMemeForUser(
-            $user_id = '12345',
+            '12345',
             $uploadedFile,
-            $allowedExtensions = ["php"],
+            ['php'],
             $objectStore
         );
 
         $this->assertInstanceOf(ObjectStoredMeme::class, $result);
+        $this->assertStringEndsWith('.pdf', $result->normalized_filename);
+        $this->assertNotEmpty($result->meme_id);
     }
 }

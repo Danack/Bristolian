@@ -10,6 +10,8 @@ use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 
 /**
+ * Unit test for StandardAvatarImageObjectStore using a local filesystem (no external storage).
+ *
  * @coversNothing
  */
 class StandardAvatarImageObjectStoreTest extends BaseTestCase
@@ -32,9 +34,9 @@ class StandardAvatarImageObjectStoreTest extends BaseTestCase
      * @covers \Bristolian\Service\ObjectStore\StandardAvatarImageObjectStore::__construct
      * @covers \Bristolian\Service\ObjectStore\StandardAvatarImageObjectStore::upload
      */
-    public function test_upload_writes_file_via_avatar_filesystem(): void
+    public function test_upload_writes_file_via_avatar_image_filesystem(): void
     {
-        $this->testDir = __DIR__ . '/StandardAvatarImageObjectStoreTest_fs_' . uniqid();
+        $this->testDir = sys_get_temp_dir() . '/avatar_image_store_' . uniqid();
         mkdir($this->testDir);
 
         $adapter = new LocalFilesystemAdapter($this->testDir);

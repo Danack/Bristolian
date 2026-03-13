@@ -247,12 +247,22 @@ sub vcl_backend_response {
   #  return (abandon);
   #}
 
-  # Do ESI processing
-  set beresp.do_esi = true;
+  # Do ESI processing - we don't use ESI so disabled 
+  # set beresp.do_esi = true;
+
+    # Generate ETag from X-Cache-Tag if present, else hash body
+    if (!beresp.http.ETag) {
+        # fallback: hash body for ETag (use std.digest_sha256)
+        set beresp.http.ETag = "\"" + std.digest_sha256(beresp.body) + "\"";
+    }
+
 
   if (!beresp.http.cache-control) {
     set beresp.ttl = 60 s;
-    set beresp.http.cache-control = "public, max-age=60";
+    # set beresp.http.cache-control = "public, max-age=60";
+    
+    # lets try changing the cache control to make stale date less of a problem.
+    set beresp.http.Cache-Control = "public, max-age=10, s-maxage=600, must-revalidate";
   }
 }
 

@@ -13,6 +13,7 @@ use BristolianTest\BaseTestCase;
 class FakeMemeImageOcrRunnerTest extends BaseTestCase
 {
     /**
+     * @covers \Bristolian\Service\MemeImageOcr\FakeMemeImageOcrRunner::__construct
      * @covers \Bristolian\Service\MemeImageOcr\FakeMemeImageOcrRunner::extractTextFromImageFile
      */
     public function test_extractTextFromImageFile_returns_configured_text(): void

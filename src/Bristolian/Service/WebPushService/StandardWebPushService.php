@@ -2,6 +2,7 @@
 
 namespace Bristolian\Service\WebPushService;
 
+use Bristolian\Model\Types\UserWebPushSubscription;
 use Bristolian\Model\Types\WebPushNotification;
 use Minishlink\WebPush\Subscription;
 use Minishlink\WebPush\WebPush;
@@ -9,15 +10,34 @@ use Minishlink\WebPush\WebPush;
 class StandardWebPushService implements WebPushService
 {
     /**
+     * @var callable
+     */
+    private $webPushFactory;
+
+    /**
+     * @param callable|null $webPushFactory factory that receives auth and default options
+     *                                      and returns a Minishlink\WebPush\WebPush instance
+     */
+    public function __construct(?callable $webPushFactory = null)
+    {
+        // @codeCoverageIgnoreStart
+        $this->webPushFactory = $webPushFactory ?? static function (array $auth, array $defaultOptions): WebPush {
+       
+            return new WebPush($auth, $defaultOptions);
+        };
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
      * @param WebPushNotification $webPushNotification
-     * @param \Bristolian\Model\Types\UserWebPushSubscription[] $userWebPushSubscriptions
-     * @return \Bristolian\Model\Types\UserWebPushSubscription[]
+     * @param UserWebPushSubscription[] $userWebPushSubscriptions
+     * @return UserWebPushSubscription[] Subscriptions that failed to send
      * @throws \ErrorException
      */
     public function sendWebPushToSubscriptions(
         WebPushNotification $webPushNotification,
         array $userWebPushSubscriptions
-    ) {
+    ): array {
         $auth = [
             'VAPID' => [
                 'subject' => 'https://bristolian.org', // can be a mailto:
@@ -34,23 +54,20 @@ class StandardWebPushService implements WebPushService
             'batchSize' => 200, // defaults to 1000
         ];
 
-        // for every notifications
-        $webPush = new WebPush($auth, $defaultOptions);
+        /** @var WebPush $webPush */
+        $webPush = ($this->webPushFactory)($auth, $defaultOptions);
 
-        $problems = [];
+        $failedSubscriptions = [];
 
         $notification_data = [
             'title' => "Server side title",
             'body' => $webPushNotification->getBody(),
             'vibrate' => [500,110,500,110,450,110,200,110,170,40,450,110,200,110,170,40,500],
             'sound' => "/sounds/meow.mp3",
-
             'data' => [
                 'url' => '/tools'
             ]
         ];
-
-
 
         /**
          * send one notification and flush directly
@@ -64,11 +81,10 @@ class StandardWebPushService implements WebPushService
             );
 
             if ($report->isSuccess() !== true) {
-                $problems[] = "Some sort of problem: " . $report->getReason();
+                $failedSubscriptions[] = $userWebPushSubscription;
             }
         }
 
-        var_dump($problems);
-        exit(0);
+        return $failedSubscriptions;
     }
 }

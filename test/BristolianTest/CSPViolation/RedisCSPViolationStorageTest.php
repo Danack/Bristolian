@@ -47,5 +47,13 @@ class RedisCSPViolationStorageTest extends BaseTestCase
         // reports are returned most recent first.
         $expected_line_number = 200 - (($page_number * CSPViolationStorage::REPORTS_PER_PAGE) + 1);
         $this->assertSame("$expected_line_number", $reports[0]->getLineNumber());
+
+        $page_number_requested = -1;
+        $page_number_actual = 0;
+        $reports = $cspViolationStorage->getReportsByPage($page_number_requested);
+        $this->assertCount(CSPViolationStorage::REPORTS_PER_PAGE, $reports);
+        // reports are returned most recent first.
+        $expected_line_number = 200 - (($page_number_actual * CSPViolationStorage::REPORTS_PER_PAGE) + 1);
+        $this->assertSame("$expected_line_number", $reports[0]->getLineNumber());
     }
 }

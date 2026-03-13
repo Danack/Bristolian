@@ -30,9 +30,6 @@ function injectionParams() : InjectionParams
         \Bristolian\MoonAlert\MoonAlertRepo::class =>
             \Bristolian\MoonAlert\StandardMoonAlertRepo::class,
 
-        Bristolian\Service\MoonAlertNotifier\MoonAlertNotifier::class =>
-            \Bristolian\Service\MoonAlertNotifier\StandardMoonAlertNotifier::class,
-
         \Bristolian\Repo\EmailQueue\EmailQueue::class =>
             \Bristolian\Repo\EmailQueue\PdoEmailQueue::class,
 

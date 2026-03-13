@@ -90,6 +90,34 @@ class FlysystemEnsureMemeFileCachedTest extends BaseTestCase
         }
     }
 
+    /**
+     * @covers \Bristolian\Service\MemeFileLocalCache\FlysystemEnsureMemeFileCached::ensureMemeFileCached
+     */
+    public function test_failure_with_non_s3_previous_writes_previous_type_and_message(): void
+    {
+        $cacheDir = sys_get_temp_dir() . '/fly_cache_non_s3_' . uniqid();
+        $memeDir = sys_get_temp_dir() . '/fly_meme_non_s3_' . uniqid();
+        mkdir($cacheDir, 0755, true);
+        mkdir($memeDir, 0755, true);
+        try {
+            $local = new LocalCacheFilesystem(new LocalFilesystemAdapter($cacheDir), $cacheDir);
+            $previous = new \RuntimeException('Underlying IO error');
+            $unable = UnableToReadFile::fromLocation('file.png', 'read failed', $previous);
+            $meme = new MemeFilesystemThrowsOnReadStream($memeDir, $unable);
+            $service = new FlysystemEnsureMemeFileCached();
+            $out = new CapturingCliOutput();
+            $repo = new FakeMemeStorageRepo();
+            $result = $service->ensureMemeFileCached($local, $meme, 'file.png', 'm1', $repo, $out);
+            $this->assertFalse($result->succeeded);
+            $captured = $out->getCapturedOutput();
+            $this->assertStringContainsString('Previous type: ' . \RuntimeException::class, $captured);
+            $this->assertStringContainsString('Underlying IO error', $captured);
+        } finally {
+            $this->rrmdir($cacheDir);
+            $this->rrmdir($memeDir);
+        }
+    }
+
     public function test_s3_404_marks_meme_deleted(): void
     {
         $cacheDir = sys_get_temp_dir() . '/fly_cache4_' . uniqid();

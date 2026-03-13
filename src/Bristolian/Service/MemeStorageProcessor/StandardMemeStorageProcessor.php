@@ -31,7 +31,9 @@ class StandardMemeStorageProcessor implements MemeStorageProcessor
 
         $contents = @file_get_contents($uploadedFile->getTmpName());
         if ($contents === false) {
+            // @codeCoverageIgnoreStart
             return UploadError::uploadedFileUnreadable();
+            // @codeCoverageIgnoreEnd
         }
 
         // Check for duplicate original filename

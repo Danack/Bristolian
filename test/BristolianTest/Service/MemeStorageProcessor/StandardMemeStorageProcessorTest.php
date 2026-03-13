@@ -1,80 +1,113 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BristolianTest\Service\MemeStorageProcessor;
 
+use Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo;
+use Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme;
+use Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor;
+use Bristolian\Service\MemeStorageProcessor\UploadError;
 use Bristolian\Service\ObjectStore\FakeMemeObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
-use Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor;
-use Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo;
-use Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme;
-use Bristolian\Service\MemeStorageProcessor\UploadError;
 
 /**
- * @covers \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor
+ * @coversNothing
  */
 class StandardMemeStorageProcessorTest extends BaseTestCase
 {
-    public function testWorks()
+    /**
+     * @covers \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::__construct
+     * @covers \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::storeMemeForUser
+     */
+    public function test_storeMemeForUser_returns_ObjectStoredMeme_and_uploads_to_object_store(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
         $uploadedFile = UploadedFile::fromFile(__FILE__);
         $objectStore = new FakeMemeObjectStore();
 
-        $storage_processor = new StandardMemeStorageProcessor($memeStorageRepo);
+        $storageProcessor = new StandardMemeStorageProcessor($memeStorageRepo);
 
-        // TODO - make work
-        $this->markTestSkipped("The fake repo isn't working yet.");
-
-        $result = $storage_processor->storeMemeForUser(
-            $user_id = '12345',
+        $result = $storageProcessor->storeMemeForUser(
+            '12345',
             $uploadedFile,
-            $allowedExtensions = ["php"],
+            ['php'],
             $objectStore
         );
 
         $this->assertInstanceOf(ObjectStoredMeme::class, $result);
+        $this->assertStringEndsWith('.php', $result->normalized_filename);
         $this->assertTrue($objectStore->hasFile($result->normalized_filename));
     }
 
-    public function testErrors_unreadable_file()
+    /**
+     * @covers \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::storeMemeForUser
+     */
+    public function test_storeMemeForUser_returns_duplicateOriginalFilename_when_user_already_has_file(): void
     {
-        $fileStorageInfoRepo = new FakeMemeStorageRepo();
-        $uploadedFile = UploadedFile::fromFile(__DIR__ . "/test_unreadable.txt");
-        \Safe\chmod(__DIR__ . "/test_unreadable.txt", 0o055);
+        $memeStorageRepo = new FakeMemeStorageRepo();
+        $uploadedFile = UploadedFile::fromFile(__FILE__);
         $objectStore = new FakeMemeObjectStore();
+        $storageProcessor = new StandardMemeStorageProcessor($memeStorageRepo);
 
-        $storage_processor = new StandardMemeStorageProcessor($fileStorageInfoRepo);
+        $first = $storageProcessor->storeMemeForUser('12345', $uploadedFile, ['php'], $objectStore);
+        $this->assertInstanceOf(ObjectStoredMeme::class, $first);
 
-        $result = $storage_processor->storeMemeForUser(
-            $user_id = '12345',
-            $uploadedFile,
-            $allowedExtensions = ["php"],
-            $objectStore
-        );
-        \Safe\chmod(__DIR__ . "/test_unreadable.txt", 0o755);
-
-        $this->assertInstanceOf(UploadError::class, $result);
-        $this->assertSame(UploadError::UNREADABLE_FILE_MESSAGE, $result->error_message);
+        $second = $storageProcessor->storeMemeForUser('12345', $uploadedFile, ['php'], $objectStore);
+        $this->assertInstanceOf(UploadError::class, $second);
+        $this->assertSame(UploadError::DUPLICATE_FILENAME, $second->error_code);
     }
 
-
-    public function testErrors_unsupported_file_type()
+    /**
+     * @covers \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::storeMemeForUser
+     */
+    public function test_storeMemeForUser_returns_uploadError_when_file_unreadable(): void
     {
-        $fileStorageInfoRepo = new FakeMemeStorageRepo();
+        $tempFile = tempnam(sys_get_temp_dir(), 'meme_test_') . '.txt';
+        file_put_contents($tempFile, 'content');
+        \Safe\chmod($tempFile, 0o000);
+        try {
+            if (@file_get_contents($tempFile) !== false) {
+                $this->markTestSkipped('chmod 0o000 does not prevent read in this environment');
+            }
+            $memeStorageRepo = new FakeMemeStorageRepo();
+            $uploadedFile = UploadedFile::fromFile($tempFile);
+            $objectStore = new FakeMemeObjectStore();
+            $storageProcessor = new StandardMemeStorageProcessor($memeStorageRepo);
+
+            $result = $storageProcessor->storeMemeForUser(
+                '12345',
+                $uploadedFile,
+                ['txt'],
+                $objectStore
+            );
+
+            $this->assertInstanceOf(UploadError::class, $result);
+            $this->assertSame(UploadError::UNREADABLE_FILE_MESSAGE, $result->error_message);
+        } finally {
+            @chmod($tempFile, 0o600);
+            @unlink($tempFile);
+        }
+    }
+
+    /**
+     * @covers \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::storeMemeForUser
+     */
+    public function test_storeMemeForUser_returns_uploadError_when_extension_not_allowed(): void
+    {
+        $memeStorageRepo = new FakeMemeStorageRepo();
         $uploadedFile = UploadedFile::fromFile(__FILE__);
-
-
         $objectStore = new FakeMemeObjectStore();
+        $storageProcessor = new StandardMemeStorageProcessor($memeStorageRepo);
 
-        $storage_processor = new StandardMemeStorageProcessor($fileStorageInfoRepo);
-
-        $result = $storage_processor->storeMemeForUser(
-            $user_id = '12345',
+        $result = $storageProcessor->storeMemeForUser(
+            '12345',
             $uploadedFile,
-            $allowedExtensions = ["pdf"],
+            ['pdf'],
             $objectStore
         );
+
         $this->assertInstanceOf(UploadError::class, $result);
         $this->assertSame(UploadError::UNSUPPORTED_FILE_TYPE, $result->error_message);
     }

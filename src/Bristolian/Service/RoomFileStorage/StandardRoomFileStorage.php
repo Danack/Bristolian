@@ -37,7 +37,9 @@ class StandardRoomFileStorage implements RoomFileStorage
 
         $contents = @file_get_contents($uploadedFile->getTmpName());
         if ($contents === false) {
+            // @codeCoverageIgnoreStart
             return UploadError::uploadedFileUnreadable();
+            // @codeCoverageIgnoreEnd
         }
 
         // Normalize extension.

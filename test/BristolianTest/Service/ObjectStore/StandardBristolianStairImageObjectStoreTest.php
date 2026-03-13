@@ -10,6 +10,8 @@ use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 
 /**
+ * Unit test for StandardBristolianStairImageObjectStore using a local filesystem (no external storage).
+ *
  * @coversNothing
  */
 class StandardBristolianStairImageObjectStoreTest extends BaseTestCase
@@ -34,7 +36,7 @@ class StandardBristolianStairImageObjectStoreTest extends BaseTestCase
      */
     public function test_upload_writes_file_via_bristol_stairs_filesystem(): void
     {
-        $this->testDir = __DIR__ . '/StandardBristolianStairImageObjectStoreTest_fs_' . uniqid();
+        $this->testDir = sys_get_temp_dir() . '/bristol_stair_image_store_' . uniqid();
         mkdir($this->testDir);
 
         $adapter = new LocalFilesystemAdapter($this->testDir);

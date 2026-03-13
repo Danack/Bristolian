@@ -125,6 +125,6 @@ class FakeAsmDriverTest extends BaseTestCase
     public function test_forceReleaseLockByID_does_not_throw(): void
     {
         $this->driver->forceReleaseLockByID('any-id');
-        $this->assertTrue(true);
+        $this->addToAssertionCount(1);
     }
 }
