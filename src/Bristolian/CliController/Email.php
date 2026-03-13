@@ -65,6 +65,7 @@ class Email
      */
     public function processEmailSendQueue(): void
     {
+        // @codeCoverageIgnoreStart
         $callable = function () {
             $this->runInternal();
         };
@@ -75,6 +76,7 @@ class Email
             $sleepTime = 1,
             $maxRunTime = 600
         );
+        // @codeCoverageIgnoreEnd
     }
 
 

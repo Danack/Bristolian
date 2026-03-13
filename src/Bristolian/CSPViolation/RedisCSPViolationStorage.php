@@ -90,7 +90,9 @@ class RedisCSPViolationStorage implements CSPViolationStorage
         );
 
         if ($result === false) {
+            // @codeCoverageIgnoreStart
             return 0;
+            // @codeCoverageIgnoreEnd
         }
 
         return $result;

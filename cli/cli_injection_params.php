@@ -92,6 +92,15 @@ function injectionParams() : InjectionParams
         \Bristolian\Service\CliOutput\CliOutput::class =>
             \Bristolian\Service\CliOutput\EchoCliOutput::class,
 
+        \Bristolian\Service\DailyProcessorSchedule\DailyProcessorSchedule::class =>
+            \Bristolian\Service\DailyProcessorSchedule\StandardDailyProcessorSchedule::class,
+
+        \Bristolian\Service\MemeImageOcr\MemeImageOcrRunner::class =>
+            \Bristolian\Service\MemeImageOcr\ProcOpenPythonMemeImageOcrRunner::class,
+
+        \Bristolian\Service\MemeFileLocalCache\EnsureMemeFileCached::class =>
+            \Bristolian\Service\MemeFileLocalCache\FlysystemEnsureMemeFileCached::class,
+
     ];
 
     // Delegate the creation of types to callables.

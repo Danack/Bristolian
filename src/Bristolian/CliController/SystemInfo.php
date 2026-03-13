@@ -5,31 +5,22 @@ namespace Bristolian\CliController;
 use Bristolian\Repo\EmailQueue\EmailQueue;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
-
-function isOverXHoursAgo(int $hours, \DateTimeInterface $datetime): bool
-{
-    $now = new \DateTimeImmutable(); // current time
-
-    $interval_format = sprintf('PT%dH', $hours);
-
-    $threshold = $now->sub(new \DateInterval($interval_format)); // hours ago
-    return $datetime < $threshold;
-}
-
-
-
-
+use Bristolian\Service\CliOutput\CliOutput;
+use Bristolian\Service\DailyProcessorSchedule\DailyProcessorSchedule;
 
 class SystemInfo
 {
     public function __construct(
         private ProcessorRunRecordRepo $processorRunRecordRepo,
         private EmailQueue $emailQueue,
+        private DailyProcessorSchedule $dailyProcessorSchedule,
+        private CliOutput $cliOutput,
     ) {
     }
 
     public function process_daily_system_info(): void
     {
+        // @codeCoverageIgnoreStart
         $callable = function () {
             $this->runInternal();
         };
@@ -40,26 +31,25 @@ class SystemInfo
             $sleepTime = 20,
             $maxRunTime = 6000
         );
+        // @codeCoverageIgnoreEnd
     }
 
     public function runInternal(): void
     {
-        echo "I am the daily system info.\n";
+        $this->cliOutput->write("I am the daily system info.\n");
 
-        // Check the time, if it is between noon and 3pm, exit
-        if (isTimeToRunDailySystemInfo() !== true) {
-            echo "Skipping, not currently time to process_daily_system_info\n";
+        if ($this->dailyProcessorSchedule->isTimeToRunDailySystemInfo() !== true) {
+            $this->cliOutput->write("Skipping, not currently time to process_daily_system_info\n");
             return;
         }
 
-        // Get the last run time, if it is less than 21 hours then exit
         $last_run_time = $this->processorRunRecordRepo->getLastRunDateTime(
             ProcessType::daily_system_info
         );
 
         if ($last_run_time !== null) {
-            if (isOverXHoursAgo(21, $last_run_time) === false) {
-                echo "Skipping, process_daily_system_info was run within the last 21 hours.\n";
+            if ($this->dailyProcessorSchedule->isOverXHoursAgo(21, $last_run_time) === false) {
+                $this->cliOutput->write("Skipping, process_daily_system_info was run within the last 21 hours.\n");
                 return;
             }
         }
@@ -68,22 +58,19 @@ class SystemInfo
             ProcessType::daily_system_info
         );
 
-        // Generate the system info email
-        echo "Email generated, queueing to send.\n";
+        $this->cliOutput->write("Email generated, queueing to send.\n");
 
-        // Put it in the email queue
         $this->emailQueue->queueEmailToUsers(
             ['danack@basereality.com'],
             $subject = "Daily system info",
             $body = generateSystemInfoEmailContent()
         );
 
-        // Mark last run time.
         $this->processorRunRecordRepo->setRunFinished(
             $run_id,
             ""
         );
 
-        echo "Fin.\n";
+        $this->cliOutput->write("Fin.\n");
     }
 }

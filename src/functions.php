@@ -1242,30 +1242,6 @@ function banVarnishByTag(string $table): bool
 }
 
 
-/**
- * We want notifications to happen during the middle of the day.
- * This function checks that we are sometime between noon and 3pm.
- *
- * @return bool
- */
-function isTimeToRunDailySystemInfo(): bool
-{
-    $now = new \DateTime(); // current time
-
-    // Create DateTime objects for today at 12:00 and 15:00
-    $start = (clone $now)->setTime(12, 0); // 12:00 PM
-    $end = (clone $now)->setTime(15, 0);   // 3:00 PM
-
-    if ($now >= $start && $now < $end) {
-        // echo "The time is between noon and 3 PM.";
-        return true;
-    }
-
-    // echo "The time is NOT between noon and 3 PM.";
-    return false;
-}
-
-
 function createBlankUserProfileForUserId(string $user_id): \Bristolian\Model\Generated\UserProfile
 {
     $now = new \DateTimeImmutable();

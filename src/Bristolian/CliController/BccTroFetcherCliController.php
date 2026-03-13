@@ -7,6 +7,8 @@ use Bristolian\Repo\BccTroRepo\BccTroRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use Bristolian\Service\BccTroFetcher\BccTroFetcher;
+use Bristolian\Service\CliOutput\CliOutput;
+use Bristolian\Service\DailyProcessorSchedule\DailyProcessorSchedule;
 
 /**
  * @param BccTro[] $tros
@@ -46,46 +48,46 @@ function output_tro_list_to_output($tros)
 
 class BccTroFetcherCliController
 {
-
     public function fetchTros(
         BccTroFetcher $bccTroFetcher,
         BccTroRepo $bccTroRepo,
+        CliOutput $cliOutput,
         string $output
     ): void {
-        echo "Fetching TRO data from Bristol City Council...\n";
-
-//        var_dump($output);
+        $cliOutput->write("Fetching TRO data from Bristol City Council...\n");
 
         try {
             $tros = $bccTroFetcher->fetchTros();
         }
-        catch (\Exception $e) {
-            echo "Error fetching TRO data: " . $e->getMessage() . "\n";
-            exit(1);
+        catch (\Exception $exception) {
+            $cliOutput->write("Error fetching TRO data: " . $exception->getMessage() . "\n");
+            $cliOutput->exit(1);
         }
 
-
         $bccTroRepo->saveData($tros);
-//
-//        var_dump($tros);
-
-//        // 'CLI' or 'room'"
-//        if (strcasecmp($output, 'CLI') === 0) {
-//            output_tro_list_to_output($tros);
-//        }
     }
 
     public function daily_bcc_tro(
         ProcessorRunRecordRepo $processorRunRecordRepo,
         BccTroFetcher $bccTroFetcher,
+        DailyProcessorSchedule $dailyProcessorSchedule,
+        CliOutput $cliOutput,
         string $output
     ): void {
-        echo "Fetching TRO data from Bristol City Council...\n";
+        $cliOutput->write("Fetching TRO data from Bristol City Council...\n");
 
-        $callable = function () use ($processorRunRecordRepo, $bccTroFetcher) {
+        // @codeCoverageIgnoreStart
+        $callable = function () use (
+            $processorRunRecordRepo,
+            $bccTroFetcher,
+            $dailyProcessorSchedule,
+            $cliOutput
+        ) {
             $this->runInternal(
                 $processorRunRecordRepo,
-                $bccTroFetcher
+                $bccTroFetcher,
+                $dailyProcessorSchedule,
+                $cliOutput
             );
         };
 
@@ -95,30 +97,29 @@ class BccTroFetcherCliController
             $sleepTime = 20,
             $maxRunTime = 6000
         );
+        // @codeCoverageIgnoreEnd
     }
 
     public function runInternal(
         ProcessorRunRecordRepo $processorRunRecordRepo,
-        BccTroFetcher $bccTroFetcher
+        BccTroFetcher $bccTroFetcher,
+        DailyProcessorSchedule $dailyProcessorSchedule,
+        CliOutput $cliOutput,
     ): void {
+        $cliOutput->write("I am the daily_bcc_tro processor\n");
 
-
-        echo "I am the daily_bcc_tro processor\n";
-
-        // Check the time, if it is between noon and 3pm, exit
-        if (isTimeToRunDailySystemInfo() !== true) {
-            echo "Skipping, not currently time to process_daily_system_info\n";
+        if ($dailyProcessorSchedule->isTimeToRunDailySystemInfo() !== true) {
+            $cliOutput->write("Skipping, not currently time to process_daily_system_info\n");
             return;
         }
 
-        // Get the last run time, if it is less than 21 hours then exit
         $last_run_time = $processorRunRecordRepo->getLastRunDateTime(
             ProcessType::daily_bcc_tro
         );
 
         if ($last_run_time !== null) {
-            if (isOverXHoursAgo(21, $last_run_time) === false) {
-                echo "Skipping, daily_bcc_tro was run within the last 21 hours.\n";
+            if ($dailyProcessorSchedule->isOverXHoursAgo(21, $last_run_time) === false) {
+                $cliOutput->write("Skipping, daily_bcc_tro was run within the last 21 hours.\n");
                 return;
             }
         }
@@ -127,27 +128,14 @@ class BccTroFetcherCliController
             ProcessType::daily_bcc_tro
         );
 
+        $cliOutput->write("Fetching TROs.\n");
+        $bccTroFetcher->fetchTros();
 
-        // Generate the system info email
-
-        // Fetch the TROs
-        echo "Fetching TROs.\n";
-        $tros = $bccTroFetcher->fetchTros();
-
-
-//        // Put it in the email queue
-//        $this->emailQueue->queueEmailToUsers(
-//            ['danack@basereality.com'],
-//            $subject = "Daily system info",
-//            $body = generateSystemInfoEmailContent()
-//        );
-
-        // Mark last run time.
         $processorRunRecordRepo->setRunFinished(
             $run_id,
             ""
         );
 
-        echo "Fin.\n";
+        $cliOutput->write("Fin.\n");
     }
 }

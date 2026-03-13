@@ -244,7 +244,7 @@ class PdoRoomVideoRepoTest extends BaseTestCase
      */
     public function test_resolveTagIdsToTags_returns_matching_tags_skips_missing_ids(): void
     {
-        $repo = $this->injector->make(PdoRoomVideoRepo::class);
+        $repo = $this->getRepo();
         assert($this->roomId !== null);
 
         $roomTagRepo = $this->injector->make(PdoRoomTagRepo::class);
@@ -264,6 +264,50 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $tags = $repo->resolveTagIdsToTags([$tag->tag_id, 'nonexistent-id'], $roomTagsById);
         $this->assertCount(1, $tags);
         $this->assertSame($tag->tag_id, $tags[0]->tag_id);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::updateTitleAndDescription
+     */
+    public function test_updateTitleAndDescription_updates_both_fields(): void
+    {
+        $repo = $this->getRepo();
+        assert($this->roomId !== null && $this->videoId !== null);
+
+        $roomVideo = $repo->addVideo($this->roomId, $this->videoId, 'Old title', 'Old description');
+
+        $repo->updateTitleAndDescription(
+            $this->roomId,
+            $roomVideo->id,
+            'New title',
+            'New description'
+        );
+
+        $updated = $repo->getRoomVideo($roomVideo->id);
+        $this->assertSame('New title', $updated->title);
+        $this->assertSame('New description', $updated->description);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::updateTitleAndDescription
+     */
+    public function test_updateTitleAndDescription_keeps_existing_when_null_passed(): void
+    {
+        $repo = $this->getRepo();
+        assert($this->roomId !== null && $this->videoId !== null);
+
+        $roomVideo = $repo->addVideo($this->roomId, $this->videoId, 'Keep title', 'Keep description');
+
+        $repo->updateTitleAndDescription(
+            $this->roomId,
+            $roomVideo->id,
+            null,
+            null
+        );
+
+        $updated = $repo->getRoomVideo($roomVideo->id);
+        $this->assertSame('Keep title', $updated->title);
+        $this->assertSame('Keep description', $updated->description);
     }
 
     /**
