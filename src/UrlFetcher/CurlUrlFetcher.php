@@ -17,7 +17,9 @@ class CurlUrlFetcher implements UrlFetcher
         );
 
         if ($statusCode !== 200) {
+            // @codeCoverageIgnoreStart
             throw UrlFetcherException::notOk($statusCode, $uri);
+            // @codeCoverageIgnoreEnd
         }
 
         return $body;

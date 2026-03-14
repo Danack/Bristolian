@@ -24,5 +24,8 @@ class FakeUrlFetcherTest extends BaseTestCase
             $data,
             $result
         );
+
+        $hits = $urlFetcher->getHits();
+        $this->assertSame(1, $hits);
     }
 }

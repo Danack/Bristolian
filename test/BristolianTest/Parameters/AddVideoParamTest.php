@@ -77,7 +77,6 @@ class AddVideoParamTest extends BaseTestCase
     }
 
     /**
-     * @group wip
      * @covers \Bristolian\Parameters\AddVideoParam
      * @covers \Bristolian\Parameters\AddVideoParam::__construct
      * @dataProvider provides_valid_input_and_expected_output

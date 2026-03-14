@@ -10,7 +10,6 @@ use Laminas\Diactoros\ServerRequest;
 
 /**
  * @coversNothing
- * @group wip
  */
 class DevEnvironmentMemoryWarningTest extends BaseTestCase
 {

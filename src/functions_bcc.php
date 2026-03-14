@@ -75,7 +75,9 @@ function extractDocumentLinksFromUl(\DOMXPath $xpath, \DOMElement $ulElement): a
 
     foreach ($linkElements as $linkNode) {
         if (!($linkNode instanceof \DOMElement)) {
+            // @codeCoverageIgnoreStart
             continue;
+            // @codeCoverageIgnoreEnd
         }
         $link = $linkNode;
         $href = $link->getAttribute('href');

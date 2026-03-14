@@ -703,6 +703,7 @@ TEXT;
         yield [true, "a bool"];
         yield [3.14, "a float"];
         yield [[1, 2], "an array"];
+        yield [fopen("php://memory", "r"), "resource (stream)"];
     }
 
     /**

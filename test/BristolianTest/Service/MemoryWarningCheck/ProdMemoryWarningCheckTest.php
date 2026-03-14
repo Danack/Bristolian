@@ -11,7 +11,6 @@ use Laminas\Diactoros\ServerRequest;
 
 /**
  * @coversNothing
- * @group wip
  */
 class ProdMemoryWarningCheckTest extends BaseTestCase
 {

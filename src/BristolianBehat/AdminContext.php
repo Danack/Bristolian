@@ -76,7 +76,7 @@ class AdminContext extends MinkContext
      */
     public function beforeScenarios(BeforeScenarioScope $scope): void
     {
-        $this->setMinkParameter('base_url', 'http://local.admin.opensourcefees.com');
+//        $this->setMinkParameter('base_url', 'http://local.admin.opensourcefees.com');
 //        // Load and save the environment for each scenario.
 //        $this->environment = $scope->getEnvironment();
 //        // Set the base URL. Can be overridden check @see.

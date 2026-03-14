@@ -31,6 +31,7 @@
     </include>
     <exclude>
       <directory>src/BristolianChat</directory>
+      <directory>src/BristolianBehat</directory>
       <file>src/functions_chat.php</file>
 
       <directory>src/TypeSpec/OpenApi</directory>
