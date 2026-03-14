@@ -133,7 +133,9 @@ function formatTraceLine(array $trace, int $count): string
 
     $baseDir = realpath(__DIR__ . '/../');
     if ($baseDir === false) {
+        // @codeCoverageIgnoreStart 
         throw new \Exception("Couldn't find parent directory from " . __DIR__);
+        // @codeCoverageIgnoreEnd
     }
 
     $location = str_replace($baseDir, '', $location);

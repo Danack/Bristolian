@@ -45,6 +45,9 @@ function testInjectionParams() : InjectionParams
 
         \Bristolian\Cache\UnknownQueryHandler::class =>
             \Bristolian\Cache\ThrowOnUnknownQuery::class,
+
+        \Bristolian\Service\TooMuchMemoryNotifier\TooMuchMemoryNotifier::class =>
+            \Bristolian\Service\TooMuchMemoryNotifier\NullTooMuchMemoryNotifier::class,
     ];
 
     // Delegate the creation of types to callables.

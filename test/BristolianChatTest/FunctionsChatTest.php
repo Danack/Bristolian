@@ -20,9 +20,27 @@ class FunctionsChatTest extends BaseTestCase
     /**
      * @covers ::generateFakeChatMessage
      */
-    public function test_generateFakeChatMessage(): void
+    public function test_generateFakeChatMessage_returns_message_with_expected_shape(): void
     {
         $message = generateFakeChatMessage();
+
+        $this->assertInstanceOf(ChatMessage::class, $message);
+        $this->assertGreaterThanOrEqual(1000, $message->id);
+        $this->assertIsString($message->text);
+        $this->assertNotEmpty($message->text);
+        $this->assertMatchesRegularExpression('/^user_[a-z]+$/', $message->user_id);
+        $this->assertSame('room_12345', $message->room_id);
+        $this->assertInstanceOf(\DateTimeInterface::class, $message->created_at);
+    }
+
+    /**
+     * @covers ::generateFakeChatMessage
+     */
+    public function test_generateFakeChatMessage_increments_id_on_each_call(): void
+    {
+        $first = generateFakeChatMessage();
+        $second = generateFakeChatMessage();
+        $this->assertSame($first->id + 1, $second->id);
     }
 
     /**
@@ -40,7 +58,7 @@ class FunctionsChatTest extends BaseTestCase
         }
 
         $this->assertNotNull($messagesWithReply, 'Should get a message with reply_message_id within 10 calls');
-        $this->assertLessThan($messagesWithReply->id, $messagesWithReply->reply_message_id);
+        $this->assertLessThan($messagesWithReply->id, $messagesWithReply->reply_message_id, 'reply_message_id must refer to an earlier message');
     }
 
     /**

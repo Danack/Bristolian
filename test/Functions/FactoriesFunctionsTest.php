@@ -31,6 +31,44 @@ class TestProductionConfig extends Config
 }
 
 /**
+ * AppSessionManager that returns null from getCurrentAppSession for testing createAppSession throw path.
+ *
+ * @coversNothing
+ */
+class AppSessionManagerReturnsNull extends \Bristolian\Session\AppSessionManager
+{
+    public function __construct(\Asm\SessionManager $sessionManager)
+    {
+        parent::__construct($sessionManager);
+    }
+
+    public function getCurrentAppSession(): \Bristolian\Session\AppSession|null
+    {
+        return null;
+    }
+}
+
+/**
+ * AppSessionManager that returns a given session from getCurrentAppSession for testing success path.
+ *
+ * @coversNothing
+ */
+class AppSessionManagerReturnsSession extends \Bristolian\Session\AppSessionManager
+{
+    public function __construct(
+        \Asm\SessionManager $sessionManager,
+        private \Bristolian\Session\AppSession $appSession
+    ) {
+        parent::__construct($sessionManager);
+    }
+
+    public function getCurrentAppSession(): \Bristolian\Session\AppSession|null
+    {
+        return $this->appSession;
+    }
+}
+
+/**
  * @coversNothing
  */
 class FactoriesFunctionsTest extends BaseTestCase
@@ -64,15 +102,19 @@ class FactoriesFunctionsTest extends BaseTestCase
 
     /**
      * @covers ::createMemoryWarningCheck
-     * Note: Production path (line 34) requires complex dependency setup
-     * and is better tested through integration tests
      */
-    public function test_createMemoryWarningCheck_production()
+    public function test_createMemoryWarningCheck_production(): void
     {
-        // Production path testing requires TooMuchMemoryNotifier dependency
-        // which is complex to set up in unit tests. This path is tested
-        // through integration tests in production-like environments.
-        $this->markTestSkipped('Production path requires complex dependency setup');
+        $config = new TestProductionConfig(true);
+        $result = createMemoryWarningCheck($config, $this->injector);
+        $this->assertInstanceOf(
+            \Bristolian\Service\MemoryWarningCheck\MemoryWarningCheck::class,
+            $result
+        );
+        $this->assertInstanceOf(
+            \Bristolian\Service\MemoryWarningCheck\ProdMemoryWarningCheck::class,
+            $result
+        );
     }
 
     /**
@@ -358,6 +400,57 @@ class FactoriesFunctionsTest extends BaseTestCase
     }
 
     /**
+     * @covers ::createUnknownQueryHandler
+     * @group db
+     */
+    public function test_createUnknownQueryHandler_dev_returns_ThrowOnUnknownQuery(): void
+    {
+        $config = new TestProductionConfig(false);
+        $redis = $this->injector->make(\Redis::class);
+        $result = createUnknownQueryHandler($config, $redis);
+        $this->assertInstanceOf(\Bristolian\Cache\ThrowOnUnknownQuery::class, $result);
+    }
+
+    /**
+     * @covers ::createUnknownQueryHandler
+     * @group db
+     */
+    public function test_createUnknownQueryHandler_production_returns_RedisLogUnknownQuery(): void
+    {
+        $config = new TestProductionConfig(true);
+        $redis = $this->injector->make(\Redis::class);
+        $result = createUnknownQueryHandler($config, $redis);
+        $this->assertInstanceOf(\Bristolian\Cache\RedisLogUnknownQuery::class, $result);
+    }
+
+    /**
+     * @covers ::createUnknownCacheQueriesProvider
+     * @group db
+     */
+    public function test_createUnknownCacheQueriesProvider_returns_RedisProvider(): void
+    {
+        $redis = $this->injector->make(\Redis::class);
+        $result = createUnknownCacheQueriesProvider($redis);
+        $this->assertInstanceOf(
+            \Bristolian\Service\UnknownCacheQueries\RedisUnknownCacheQueriesProvider::class,
+            $result
+        );
+    }
+
+    /**
+     * @covers ::createPdoSimpleWithTableTracking
+     * @group db
+     */
+    public function test_createPdoSimpleWithTableTracking_returns_instance(): void
+    {
+        $result = $this->injector->execute(createPdoSimpleWithTableTracking(...));
+        $this->assertInstanceOf(
+            \Bristolian\PdoSimple\PdoSimpleWithTableTracking::class,
+            $result
+        );
+    }
+
+    /**
      * @covers ::createMailgun
      */
     public function test_createMailgun()
@@ -370,40 +463,49 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createOptionalUserSession
      */
-    public function test_createOptionalUserSession()
+    public function test_createOptionalUserSession(): void
     {
-        // Test through injector since it requires AppSessionManager (concrete class)
-        // This function is typically used through dependency injection
-        try {
-            $result = $this->injector->execute(createOptionalUserSession(...));
-            
-            $this->assertInstanceOf(
-                \Bristolian\Session\StandardOptionalUserSession::class,
-                $result
-            );
-        } catch (\DI\InjectionException $e) {
-            // If dependencies aren't available, that's okay - the function is tested
-            // through integration tests
-            $this->markTestSkipped('AppSessionManager not available in test environment');
-        }
+        $sessionManager = new \Asm\SessionManager(
+            createSessionConfig(),
+            new \Bristolian\Session\FakeAsmDriver()
+        );
+        $appSessionManager = new AppSessionManagerReturnsNull($sessionManager);
+        $result = createOptionalUserSession($appSessionManager);
+        $this->assertInstanceOf(
+            \Bristolian\Session\StandardOptionalUserSession::class,
+            $result
+        );
+        $this->assertNull($result->getAppSession());
     }
 
     /**
      * @covers ::createAppSession
      */
-    public function test_createAppSession()
+    public function test_createAppSession_throws_when_not_logged_in(): void
     {
-        // Test through injector since it requires AppSessionManager (concrete class)
-        // This function is typically used through dependency injection
-        try {
-            $result = $this->injector->execute(createAppSession(...));
-            
-            $this->assertInstanceOf(\Bristolian\Session\AppSession::class, $result);
-        /** @phpstan-ignore-next-line */
-        } catch (\DI\InjectionException | \Bristolian\Exception\UnauthorisedException $e) {
-            // If dependencies aren't available or user not logged in, that's okay
-            // The function is tested through integration tests
-            $this->markTestSkipped('AppSessionManager not available or user not logged in');
-        }
+        $sessionManager = new \Asm\SessionManager(
+            createSessionConfig(),
+            new \Bristolian\Session\FakeAsmDriver()
+        );
+        $appSessionManager = new AppSessionManagerReturnsNull($sessionManager);
+        $this->expectException(\Bristolian\Exception\UnauthorisedException::class);
+        $this->expectExceptionMessage('Something depends on AppSession but user not logged in');
+        createAppSession($appSessionManager);
+    }
+
+    /**
+     * @covers ::createAppSession
+     */
+    public function test_createAppSession_returns_session_when_logged_in(): void
+    {
+        $sessionManager = new \Asm\SessionManager(
+            createSessionConfig(),
+            new \Bristolian\Session\FakeAsmDriver()
+        );
+        $appSession = new \Bristolian\Session\AppSession(new \BristolianTest\Session\FakeAsmSession());
+        $appSessionManager = new AppSessionManagerReturnsSession($sessionManager, $appSession);
+        $result = createAppSession($appSessionManager);
+        $this->assertInstanceOf(\Bristolian\Session\AppSession::class, $result);
+        $this->assertSame($appSession, $result);
     }
 }

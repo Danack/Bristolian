@@ -126,16 +126,6 @@ function createApiDomain(Config $config)
     return new \Bristolian\Data\ApiDomain("http://local.api.bristolian.org");
 }
 
-$number_of_pdo_connections = 0;
-
-//function seriously_wtf()
-//{
-//    global $number_of_pdo_connections;
-//
-//    echo "number_of_pdo_connections = $number_of_pdo_connections\n";
-//}
-//
-//register_shutdown_function(seriously_wtf(...));
 
 
 /**
@@ -144,10 +134,8 @@ $number_of_pdo_connections = 0;
  */
 function createPDOForUser(Config $config)
 {
-    global $number_of_pdo_connections;
-
-
-    $number_of_pdo_connections += 1;
+//    global $number_of_pdo_connections;
+//    $number_of_pdo_connections += 1;
 
     $db_config = $config->getDatabaseUserConfig();
 

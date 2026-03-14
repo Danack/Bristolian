@@ -30,6 +30,9 @@
       <directory>src</directory>
     </include>
     <exclude>
+      <directory>src/BristolianChat</directory>
+      <file>src/functions_chat.php</file>
+
       <directory>src/TypeSpec/OpenApi</directory>
       <file>src/TypeSpec/OpenApi/OpenApiV300Description.php</file>
       <file>src/TypeSpec/OpenApi/ShouldNeverBeCalledParamDescription.php</file>

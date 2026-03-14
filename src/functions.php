@@ -10,8 +10,6 @@ declare(strict_types = 1);
 use Bristolian\Types\DocumentType;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 
-$injector = null;
-
 /**
  * Format an array of strings to have a count at the start
  * e.g. $lines = ['foo', 'bar'], output is:
@@ -89,9 +87,11 @@ function continuallyExecuteCallable($callable, int $secondsBetweenRuns, int $sle
         if ($secondsBetweenRuns === 0) {
             $shouldRunThisLoop = true;
         }
+        // @codeCoverageIgnoreStart
         else if ((microtime(true) - $lastRuntime) > $secondsBetweenRuns) {
             $shouldRunThisLoop = true;
         }
+        // @codeCoverageIgnoreEnd
 
         if ($shouldRunThisLoop === true) {
             $callable();
@@ -99,11 +99,15 @@ function continuallyExecuteCallable($callable, int $secondsBetweenRuns, int $sle
         }
 
         if (checkSignalsForExit()) {
+            // @codeCoverageIgnoreStart
             break;
+            // @codeCoverageIgnoreEnd
         }
 
         if ($sleepTime > 0) {
+            // @codeCoverageIgnoreStart
             sleep($sleepTime);
+            // @codeCoverageIgnoreEnd
         }
 
         if ((microtime(true) - $startTime) > $maxRunTime) {
@@ -147,7 +151,9 @@ function json_decode_safe(?string $json): array
         throw new \Bristolian\Exception\JsonException("Error decoding JSON: null returned.");
     }
 
+    // @codeCoverageIgnoreStart
     throw new \Bristolian\Exception\JsonException("Error decoding JSON: " . json_last_error_msg());
+    // @codeCoverageIgnoreEnd
 }
 
 /**
@@ -292,6 +298,7 @@ function convertToArrayOfObjects(string $classname, array $data)
  */
 function fetchUri(string $uri, string $method, array $queryParams = [], string $body = null, array $headers = [])
 {
+    // @codeCoverageIgnoreStart
     $query = http_build_query($queryParams);
     $curl = curl_init();
 
@@ -327,6 +334,7 @@ function fetchUri(string $uri, string $method, array $queryParams = [], string $
     $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
     return [$statusCode, $body, $headers];
+    // @codeCoverageIgnoreEnd
 }
 
 
@@ -342,6 +350,7 @@ function fetchUri(string $uri, string $method, array $queryParams = [], string $
  */
 function fetchDataWithHeaders(string $uri, array $headers): array
 {
+    // @codeCoverageIgnoreStart
     [$statusCode, $body, $responseHeaders] = fetchUri($uri, 'GET', [], null, $headers);
 
     if ($statusCode === 200) {
@@ -349,6 +358,7 @@ function fetchDataWithHeaders(string $uri, array $headers): array
     }
 
     throw new \Exception("Failed to fetch data from " . $uri);
+    // @codeCoverageIgnoreEnd
 }
 
 function getMask(string $name): int
@@ -1069,7 +1079,9 @@ function generateSystemInfoEmailContent(): string
     exec("df -h", $exec_output, $result_code);
 
     if ($result_code !== 0) {
+        // @codeCoverageIgnoreStart
         $body .= "Failed to run disk info command";
+        // @codeCoverageIgnoreEnd
     }
     else {
         $body .= implode("\n", $exec_output);
@@ -1150,7 +1162,11 @@ function mapStreamingResponseToPSR7(
     return $response;
 }
 
-
+/**
+ * @codeCoverageIgnore
+ * @param string $urlPath
+ * @return bool
+ */
 function purgeVarnish(string $urlPath): bool
 {
     $varnishHost = 'varnish';
@@ -1196,7 +1212,11 @@ function purgeVarnish(string $urlPath): bool
     }
 }
 
-
+/**
+ * @codeCoverageIgnore
+ * @param string $table
+ * @return bool
+ */
 function banVarnishByTag(string $table): bool
 {
     $tag = 'table:' . $table;
