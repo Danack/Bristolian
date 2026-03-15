@@ -17,13 +17,13 @@ RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee -a /
     supervisor
 
 
-RUN apt install -y \
-  libgl1 \
-  libglib2.0-0 \
-  libsm6 \
-  libxext6 \
-  libxrender1 \
-  python3-pip
+#RUN apt install -y \
+#  libgl1 \
+#  libglib2.0-0 \
+#  libsm6 \
+#  libxext6 \
+#  libxrender1 \
+#  python3-pip
 
 # Attempt to align user id's across containers
 RUN usermod -u 1000 www-data
@@ -31,7 +31,7 @@ USER www-data
 
 
 # 2. Install EasyOCR (this will pull torch + models)
-RUN pip install --no-cache-dir easyocr
+# RUN pip install --no-cache-dir easyocr
 
 #  pre-download models at build time
 #  (avoids first-run network access)
