@@ -35,12 +35,4 @@ class DebugTest extends BaseTestCase
         $this->expectExceptionMessage('This is on line');
         $debug->stack_trace();
     }
-
-    public function test_send_message_to_room(): void
-    {
-        $this->markTestSkipped('Test not implemented yet');
-
-        $this->injector->defineParam('message', "Woot this is a test message");
-        $this->injector->execute([Debug::class, 'send_message_to_room']);
-    }
 }

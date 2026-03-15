@@ -14,6 +14,7 @@ class PdoSimpleTestObjectProperties
     public int $id;
     public string $test_string;
     public int $test_int;
+    public string $created_at;
 
     /**
      * @return int

@@ -557,27 +557,6 @@ TEXT;
         $this->assertSame($expected, $result);
     }
 
-
-    public function test_render_markdown_file()
-    {
-        $this->markTestSkipped('Test not implemented yet');
-
-        $document = new \deadish\UserDocument(
-            \Bristolian\Types\DocumentType::markdown_file->value,
-            "Some title",
-            "FOIA Section 12 and the 18-hour time_cost limit.md"
-        );
-        $user = new \User(\Bristolian\Types\UserList::sid->value);
-
-        $document->setUser($user);
-
-        $result = render_markdown_file($document);
-        $this->assertStringStartsWith(
-            '<h1>FOIA Section 12 and the 18-hour time/cost limit<a id="user-content-foia-section-12-and-the-18-hour-timecost-limit" href="#content-foia-section-12-and-the-18-hour-timecost-limit" class="h',
-            $result
-        );
-    }
-
     /**
      * @covers ::convertToArrayOfObjects
      */

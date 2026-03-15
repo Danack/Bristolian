@@ -230,9 +230,6 @@ SQL;
 
         // Assertions
         $this->assertInstanceOf(PdoSimpleTestObjectProperties::class, $result);
-//        $this->assertArrayHasKey('id', $result->id);
-//        $this->assertArrayHasKey('test_string', $result->test_string);
-//        $this->assertArrayHasKey('test_int', $result->test_int);
 
         // Setup
         $pdo_simple = $this->injector->make(PdoSimple::class);

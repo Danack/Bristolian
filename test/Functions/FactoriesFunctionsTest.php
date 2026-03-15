@@ -212,20 +212,6 @@ class FactoriesFunctionsTest extends BaseTestCase
     }
 
     /**
-     * @covers ::createPDOForUser
-     * Note: Exception handling path (lines 166-171) is defensive code
-     * that's difficult to trigger in a test environment without breaking
-     * the test database connection. This path is tested through integration tests.
-     */
-    public function test_createPDOForUser_exception_handling()
-    {
-        // Exception handling requires invalid database credentials which would
-        // break other tests. This defensive code path is acceptable to leave
-        // uncovered as it's tested through integration tests.
-        $this->markTestSkipped('Exception path requires invalid DB credentials');
-    }
-
-    /**
      * @covers ::createSessionConfig
      */
     public function test_createSessionConfig()

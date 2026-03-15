@@ -41,14 +41,4 @@ class BristolStairImageFileTest extends BaseTestCase
         $this->assertSame($userId, $imageFile->user_id);
         $this->assertSame($createdAt, $imageFile->created_at);
     }
-
-    /**
-     * @covers \Bristolian\Model\Generated\StairImageObjectInfo
-     */
-    public function testToArray()
-    {
-        // StairImageObjectInfo doesn't have toArray() method (uses FromArray trait instead)
-        // This test is kept for compatibility but may need to be updated
-        $this->markTestSkipped('StairImageObjectInfo uses FromArray trait, not ToArray - toArray() method not available');
-    }
 }

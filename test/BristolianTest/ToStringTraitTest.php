@@ -103,63 +103,6 @@ class ToStringTraitTest extends BaseTestCase
         return $properties;
     }
 
-    /**
-     * Test that all Model classes with ToString trait can serialize and deserialize correctly
-     */
-    public function testToStringAndFromStringRoundTrip(/*string $className*/): void
-    {
-        $className = 'Bob';
-
-        $this->markTestSkipped("Need to fix this");
-
-        // Create an instance
-        $original = $this->createModelInstance($className);
-
-        // Convert to string
-        $this->assertMethodExists($original, 'toString');
-        $serialized = $original->toString();
-
-        // Verify it's valid JSON
-        $this->assertJson($serialized, "toString() should produce valid JSON");
-
-        // Convert back from string
-        $this->assertMethodExists($className, 'fromString');
-        $recreated = $className::fromString($serialized);
-
-        // Verify the recreated object is of the correct type
-        $this->assertInstanceOf($className, $recreated);
-
-        // Compare all public properties
-        $originalProperties = $this->getExpectedPropertyValues($original);
-        $recreatedProperties = $this->getExpectedPropertyValues($recreated);
-
-        foreach ($originalProperties as $propertyName => $originalValue) {
-            $this->assertArrayHasKey(
-                $propertyName,
-                $recreatedProperties,
-                "Recreated object should have property: $propertyName"
-            );
-
-            $recreatedValue = $recreatedProperties[$propertyName];
-
-            // Special handling for DateTime objects - compare at second precision
-            // since serialization may lose microsecond precision
-            if ($originalValue instanceof \DateTimeInterface && $recreatedValue instanceof \DateTimeInterface) {
-                $this->assertEquals(
-                    $originalValue->getTimestamp(),
-                    $recreatedValue->getTimestamp(),
-                    "DateTime property '$propertyName' should match at second precision"
-                );
-            }
-            else {
-                $this->assertSame(
-                    $originalValue,
-                    $recreatedValue,
-                    "Property '$propertyName' should match after round-trip"
-                );
-            }
-        }
-    }
 
     /**
      * Test that Model classes with null values handle serialization correctly

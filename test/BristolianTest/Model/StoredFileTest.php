@@ -41,14 +41,4 @@ class StoredFileTest extends BaseTestCase
         $this->assertSame($userId, $storedFile->user_id);
         $this->assertSame($createdAt, $storedFile->created_at);
     }
-
-    /**
-     * @covers \Bristolian\Model\Generated\RoomFileObjectInfo
-     */
-    public function testToArray()
-    {
-        // RoomFileObjectInfo doesn't have toArray() method (uses FromArray trait instead)
-        // This test is kept for compatibility but may need to be updated
-        $this->markTestSkipped('RoomFileObjectInfo uses FromArray trait, not ToArray - toArray() method not available');
-    }
 }

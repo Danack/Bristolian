@@ -44,46 +44,4 @@ class RoomLinkTest extends BaseTestCase
         $this->assertSame($createdAt, $roomLink->created_at);
     }
 
-    /**
-     * @covers \RoomLink
-     */
-    public function testConstructWithNullTitleAndDescription()
-    {
-        $this->markTestSkipped("fix later");
-        $roomLink = new RoomLink(
-            'id',
-            'link-id',
-            'https://example.com',
-            null,
-            null,
-            'room-id',
-            'user-id',
-            new \DateTimeImmutable()
-        );
-
-        $this->assertNull($roomLink->title);
-        $this->assertNull($roomLink->description);
-    }
-
-    /**
-     * @covers \RoomLink
-     */
-    public function testToArray()
-    {
-        $this->markTestSkipped("fix later");
-        $roomLink = new RoomLink(
-            'id',
-            'link-id',
-            'url',
-            'title',
-            'desc',
-            'room-id',
-            'user-id',
-            new \DateTimeImmutable()
-        );
-
-        $array = $roomLink->toArray();
-        $this->assertArrayHasKey('id', $array);
-        $this->assertArrayHasKey('url', $array);
-    }
 }

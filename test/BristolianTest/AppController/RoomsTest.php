@@ -69,7 +69,7 @@ use Bristolian\UploadedFiles\UploadedFiles;
 use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use VarMap\ArrayVarMap;
-
+use Bristolian\Service\YouTube\ThrowingTranscriptFetcher;
 
 /**
  * @coversNothing

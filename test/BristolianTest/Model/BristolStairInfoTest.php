@@ -47,14 +47,4 @@ class BristolStairInfoTest extends BaseTestCase
         $this->assertSame($createdAt, $stairInfo->created_at);
         $this->assertSame($updatedAt, $stairInfo->updated_at);
     }
-
-    /**
-     * @covers \Bristolian\Model\Generated\BristolStairInfo
-     */
-    public function testToArray()
-    {
-        // BristolStairInfo doesn't have toArray() method (uses FromArray trait instead)
-        // This test is kept for compatibility but may need to be updated
-        $this->markTestSkipped('BristolStairInfo uses FromArray trait, not ToArray - toArray() method not available');
-    }
 }

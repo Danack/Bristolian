@@ -134,7 +134,9 @@ function createPageHtml(
 
 function share_this_page(): string
 {
-    $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    $host = $_SERVER['HTTP_HOST'] ?? '';
+    $uri = $_SERVER['REQUEST_URI'] ?? '';
+    $url = $host . $uri;
     $query = http_build_query(['url' => $url]);
     $content = "<h3>Share this page</h3>";
     $content .= "<p>" . \Bristolian\Page::getQrShareMessage() . "</p>";

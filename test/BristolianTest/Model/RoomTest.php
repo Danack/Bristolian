@@ -33,21 +33,6 @@ class RoomTest extends BaseTestCase
     /**
      * @covers \Bristolian\Model\Generated\Room
      */
-    public function testGetters()
-    {
-        $this->markTestSkipped("This code is dead");
-
-        $room = new Room('room-id', 'owner-id', 'Room Name', 'Room Purpose');
-
-        $this->assertSame('room-id', $room->getRoomId());
-        $this->assertSame('owner-id', $room->getOwnerUserId());
-        $this->assertSame('Room Name', $room->getName());
-        $this->assertSame('Room Purpose', $room->getPurpose());
-    }
-
-    /**
-     * @covers \Bristolian\Model\Generated\Room
-     */
     public function testToArray()
     {
         $created_at = new \DateTime();

@@ -16,7 +16,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use SlimDispatcher\Response\StubResponse;
 use Bristolian\MarkdownRenderer\FakeMarkdownRendererForPages;
 
-
 /**
  * @coversNothing
  */
