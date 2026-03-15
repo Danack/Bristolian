@@ -57,8 +57,8 @@ export class RoomAnnotationsPanel extends Component<RoomAnnotationPanelProps, Ro
         }
     }
 
-    refreshRoomAnnotations() {
-        api.rooms.annotations(this.props.room_id).
+    refreshRoomAnnotations(cacheBust?: boolean) {
+        api.rooms.annotations(this.props.room_id, cacheBust ? { cacheBust: true } : undefined).
         then((data:GetRoomsAnnotationsResponse) => this.processData(data)).
         catch((data:any) => this.processError(data));
     }
@@ -113,7 +113,7 @@ export class RoomAnnotationsPanel extends Component<RoomAnnotationPanelProps, Ro
             .then(() => {
                 this.closeEditTags();
                 this.setState({ tagsSaveInProgress: false });
-                this.refreshRoomAnnotations();
+                this.refreshRoomAnnotations(true);
             })
             .catch(() => this.setState({ tagsSaveInProgress: false }));
     }

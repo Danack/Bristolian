@@ -1201,6 +1201,7 @@ SQL;
                 'type_info' => $type_info,
                 'params' => $params,
                 'path_structure' => $pathStructure,
+                'cache_bust' => $this->isRoomListEndpoint($path),
             ];
         }
         
@@ -1457,6 +1458,31 @@ SQL;
     }
     
     /**
+     * Whether this API path is a room list endpoint that can accept optional cacheBust when the client has just mutated content.
+     */
+    private function isRoomListEndpoint(string $path): bool
+    {
+        $path = preg_replace('#^/api#', '', $path);
+        $path = preg_replace('#\{[^}]+\}#', '', $path);
+        $path = preg_replace('#/+#', '/', $path);
+        $path = trim($path, '/');
+        if (!str_starts_with($path, 'rooms/')) {
+            return false;
+        }
+        $suffixes = ['files', 'links', 'videos', 'annotations', 'tags'];
+        foreach ($suffixes as $suffix) {
+            if ($path === 'rooms/' . $suffix) {
+                return true;
+            }
+        }
+        // rooms/file/annotations (file-specific annotations; path params removed so segment between file and annotations is gone)
+        if ($path === 'rooms/file/annotations') {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Build a nested path structure from a route path.
      * Example: '/api/rooms/{room_id:.*}/files' -> ['rooms', 'files']
      */
@@ -1531,6 +1557,7 @@ SQL;
                     'params' => [],
                     'url' => $path,
                     'response_type' => $responseTypeName,
+                    'cache_bust' => $route['cache_bust'] ?? false,
                 ];
             }
             else {
@@ -1540,6 +1567,7 @@ SQL;
                     'params' => $paramTypes,
                     'url' => $urlParts,
                     'response_type' => $responseTypeName,
+                    'cache_bust' => $route['cache_bust'] ?? false,
                 ];
             }
         }
@@ -1636,22 +1664,34 @@ SQL;
                 $params = $value['params'];
                 $urlParts = $value['url'];
                 $responseType = $value['response_type'];
+                $cacheBust = $value['cache_bust'] ?? false;
                 
                 if (count($params) === 0) {
                     // No parameters
-                    $content .= "{$indentStr}  {$key}: (): Promise<{$responseType}> => {\n";
-                    $content .= "{$indentStr}    return apiCall<{$responseType}>(`{$urlParts}`);\n";
-                    $content .= "{$indentStr}  },\n";
+                    if ($cacheBust) {
+                        $content .= "{$indentStr}  {$key}: (options?: { cacheBust?: boolean }): Promise<{$responseType}> => {\n";
+                        $content .= "{$indentStr}    let endpoint = `{$urlParts}`;\n";
+                        $content .= "{$indentStr}    if (options?.cacheBust) { endpoint += (endpoint.includes('?') ? '&' : '?') + '_=' + Date.now(); }\n";
+                        $content .= "{$indentStr}    return apiCall<{$responseType}>(endpoint);\n";
+                        $content .= "{$indentStr}  },\n";
+                    } else {
+                        $content .= "{$indentStr}  {$key}: (): Promise<{$responseType}> => {\n";
+                        $content .= "{$indentStr}    return apiCall<{$responseType}>(`{$urlParts}`);\n";
+                        $content .= "{$indentStr}  },\n";
+                    }
                 }
                 else {
                     // Has parameters
                     $paramList = implode(', ', array_map(function ($p) {
                         return "{$p}: string";
                     }, $params));
+                    if ($cacheBust) {
+                        $paramList .= ', options?: { cacheBust?: boolean }';
+                    }
                     $content .= "{$indentStr}  {$key}: ({$paramList}): Promise<{$responseType}> => {\n";
                     
                     // Build template literal for URL
-                    $urlTemplate = "{$indentStr}    const endpoint = `";
+                    $urlTemplate = "{$indentStr}    let endpoint = `";
                     foreach ($urlParts as $part) {
                         if ($part['type'] === 'literal') {
                             $urlTemplate .= $part['value'];
@@ -1662,6 +1702,9 @@ SQL;
                     }
                     $urlTemplate .= "`;\n";
                     $content .= $urlTemplate;
+                    if ($cacheBust) {
+                        $content .= "{$indentStr}    if (options?.cacheBust) { endpoint += (endpoint.includes('?') ? '&' : '?') + '_=' + Date.now(); }\n";
+                    }
                     $content .= "{$indentStr}    return apiCall<{$responseType}>(endpoint);\n";
                     $content .= "{$indentStr}  },\n";
                 }

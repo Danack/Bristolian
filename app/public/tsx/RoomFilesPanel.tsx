@@ -45,7 +45,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
 
     componentDidMount() {
         this.refreshFiles();
-        this.message_listener = registerMessageListener(PdfSelectionType.ROOM_FILES_CHANGED, () => this.refreshFiles());
+        this.message_listener = registerMessageListener(PdfSelectionType.ROOM_FILES_CHANGED, () => this.refreshFiles(true));
         
         // Subscribe to login state changes to re-render when login status changes
         this.unsubscribe_logged_in = subscribe_logged_in((logged_in: boolean) => {
@@ -63,8 +63,8 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         }
     }
 
-    refreshFiles() {
-        api.rooms.files(this.props.room_id).
+    refreshFiles(cacheBust?: boolean) {
+        api.rooms.files(this.props.room_id, cacheBust ? { cacheBust: true } : undefined).
         then((data:GetRoomsFilesResponse) => this.processData(data)).
         catch((data:any) => this.processError(data));
     }
@@ -122,7 +122,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             .then(() => {
                 this.closeEditTags();
                 this.setState({ tagsSaveInProgress: false });
-                this.refreshFiles();
+                this.refreshFiles(true);
             })
             .catch(() => this.setState({ tagsSaveInProgress: false }));
     }

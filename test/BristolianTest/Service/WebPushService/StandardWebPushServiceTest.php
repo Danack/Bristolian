@@ -103,4 +103,3 @@ class StandardWebPushServiceTest extends BaseTestCase
         $this->assertSame([$subscription2], $failed);
     }
 }
-

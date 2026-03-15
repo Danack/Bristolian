@@ -181,8 +181,8 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
   restoreState(state_to_restore: object) {
   }
 
-  refreshRoomFileAnnotations() {
-    api.rooms.file.annotations(this.props.room_id, this.props.file_id).
+  refreshRoomFileAnnotations(cacheBust?: boolean) {
+    api.rooms.file.annotations(this.props.room_id, this.props.file_id, cacheBust ? { cacheBust: true } : undefined).
     then((data:GetRoomsFileAnnotationsResponse) => this.processData(data)).
     catch((data:any) => this.processError(data));
   }
@@ -283,7 +283,7 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
       // New expected shape: SuccessResponse => { result: "success" }
       if (data.result === 'success') {
         this.setState({create_status: "Annotation created. Make a new selection to create another.", error: null})
-        this.refreshRoomFileAnnotations();
+        this.refreshRoomFileAnnotations(true);
         return;
       }
 
@@ -333,7 +333,7 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
       .then(() => {
         this.closeEditTags();
         this.setState({ tagsSaveInProgress: false });
-        this.refreshRoomFileAnnotations();
+        this.refreshRoomFileAnnotations(true);
       })
       .catch(() => this.setState({ tagsSaveInProgress: false }));
   }

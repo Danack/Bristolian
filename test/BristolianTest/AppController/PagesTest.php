@@ -14,20 +14,8 @@ use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use SlimDispatcher\Response\StubResponse;
+use Bristolian\MarkdownRenderer\FakeMarkdownRendererForPages;
 
-/** Fake MarkdownRenderer for tests when doc files are not present (e.g. complaints/, questions/). */
-final class FakeMarkdownRendererForPages implements MarkdownRenderer
-{
-    public function render(string $markdown): string
-    {
-        return $markdown;
-    }
-
-    public function renderFile(string $filepath): string
-    {
-        return '<p>Rendered content from ' . basename($filepath) . '</p>';
-    }
-}
 
 /**
  * @coversNothing

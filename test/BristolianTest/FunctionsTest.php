@@ -123,7 +123,6 @@ TEXT;
     {
         $data = ['foo' => 'bar', 'n' => 42];
         $result = json_encode_safe($data);
-        $this->assertIsString($result);
         $decoded = json_decode($result, true);
         $this->assertSame($data, $decoded);
     }
@@ -795,7 +794,6 @@ TEXT;
     {
         $data = ['key' => 'value'];
         $result = encodeWidgetyData($data);
-        $this->assertIsString($result);
         $this->assertStringContainsString('key', $result);
         $this->assertStringContainsString('value', $result);
     }
@@ -841,7 +839,6 @@ TEXT;
     public function test_getEnumCases_returns_cases_for_enum(): void
     {
         $cases = getEnumCases(DocumentType::class);
-        $this->assertIsArray($cases);
         $this->assertNotEmpty($cases);
         $this->assertContainsOnlyInstancesOf(\UnitEnum::class, $cases);
     }
@@ -853,6 +850,7 @@ TEXT;
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('does not exist');
+        /** @phpstan-ignore argument.type (intentionally invalid to test exception) */
         getEnumCases('NonExistentClass');
     }
 
@@ -863,6 +861,7 @@ TEXT;
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('is not an enum');
+        /** @phpstan-ignore argument.type (intentionally invalid to test exception) */
         getEnumCases(\StdClass::class);
     }
 
@@ -872,7 +871,6 @@ TEXT;
     public function test_getEnumCaseValues_returns_values_for_enum(): void
     {
         $values = getEnumCaseValues(DocumentType::class);
-        $this->assertIsArray($values);
         $this->assertNotEmpty($values);
     }
 
@@ -882,6 +880,7 @@ TEXT;
     public function test_getEnumCaseValues_throws_for_non_existent_class(): void
     {
         $this->expectException(\InvalidArgumentException::class);
+        /** @phpstan-ignore argument.type (intentionally invalid to test exception) */
         getEnumCaseValues('NonExistentClass');
     }
 
@@ -892,6 +891,7 @@ TEXT;
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('is not an enum');
+        /** @phpstan-ignore argument.type (intentionally invalid to test exception) */
         getEnumCaseValues(\StdClass::class);
     }
 

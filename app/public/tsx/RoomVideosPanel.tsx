@@ -407,7 +407,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                     });
                     return;
                 }
-                return api.rooms.videos(this.props.room_id);
+                return api.rooms.videos(this.props.room_id, { cacheBust: true });
             })
             .then((videosResponse) => {
                 if (!videosResponse?.data?.videos) return;
@@ -441,14 +441,14 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                     }
                     this.setState({ addVideoPreview: null, addUrl: "", addTitle: "", addDescription: "" });
                     this.destroyYouTubePlayer();
-                    this.refreshVideos();
+                    this.refreshVideos(true);
                 });
             })
             .catch((err) => this.setState({ addError: String(err) }));
     }
 
-    refreshVideos() {
-        api.rooms.videos(this.props.room_id)
+    refreshVideos(cacheBust?: boolean) {
+        api.rooms.videos(this.props.room_id, cacheBust ? { cacheBust: true } : undefined)
             .then((data: GetRoomsVideosResponse) => this.processData(data))
             .catch((err) => this.setState({ error: String(err) }));
     }
@@ -481,7 +481,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
             addDescription: "",
             addSuccess: "Video added",
         });
-        this.refreshVideos();
+        this.refreshVideos(true);
     }
 
     addVideo() {
@@ -587,7 +587,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
             clipTitle: "",
             clipDescription: "",
         });
-        this.refreshVideos();
+        this.refreshVideos(true);
     }
 
     openEditTags(video: RoomVideoWithTags) {
@@ -640,7 +640,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                     editVideoSaving: false,
                     editVideoError: null,
                 });
-                this.refreshVideos();
+                this.refreshVideos(true);
             })
             .catch((err) => this.setState({ editVideoSaving: false, editVideoError: String(err) }));
     }
@@ -660,7 +660,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
             .then(() => {
                 this.closeEditTags();
                 this.setState({ tagsSaveInProgress: false });
-                this.refreshVideos();
+                this.refreshVideos(true);
             })
             .catch(() => this.setState({ tagsSaveInProgress: false }));
     }

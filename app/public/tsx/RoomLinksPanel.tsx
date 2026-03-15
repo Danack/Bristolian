@@ -50,7 +50,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         this.refreshLinks();
         this.message_listener = registerMessageListener(
           PdfSelectionType.ROOM_LINKS_CHANGED,
-          () => this.refreshLinks()
+          () => this.refreshLinks(true)
         );
         this.unsubscribe_logged_in = subscribe_logged_in((logged_in: boolean) => {
             this.setState({logged_in: logged_in});
@@ -64,8 +64,8 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         }
     }
 
-    refreshLinks() {
-        api.rooms.links(this.props.room_id).
+    refreshLinks(cacheBust?: boolean) {
+        api.rooms.links(this.props.room_id, cacheBust ? { cacheBust: true } : undefined).
         then((data:GetRoomsLinksResponse) => this.processData(data)).
         catch((data:any) => this.processError(data));
     }
@@ -131,7 +131,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
             .then(() => {
                 this.closeEditTags();
                 this.setState({ tagsSaveInProgress: false });
-                this.refreshLinks();
+                this.refreshLinks(true);
             })
             .catch(() => this.setState({ tagsSaveInProgress: false }));
     }

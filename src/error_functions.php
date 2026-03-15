@@ -116,7 +116,7 @@ function saneErrorHandler(
 }
 
 /**
- * @param array<string, string> $trace
+ * @param array<string, int|string> $trace
  * @return string
  * @throws Exception
  */
@@ -124,7 +124,7 @@ function formatTraceLine(array $trace, int $count): string
 {
     $location = '??';
     if (isset($trace["file"]) && isset($trace["line"])) {
-        $location = $trace["file"]. ':' . $trace["line"];
+        $location = $trace["file"] . ':' . (string) $trace["line"];
     }
     else if (isset($trace["file"])) {
         $location = $trace["file"] . ':??';

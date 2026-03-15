@@ -200,10 +200,9 @@ class ErrorFunctionsTest extends BaseTestCase
     {
         $exception = new \Exception('Stack array');
         $lines = getExceptionStackAsArray($exception);
-        $this->assertIsArray($lines);
         $this->assertNotEmpty($lines);
         foreach ($lines as $line) {
-            $this->assertIsString($line);
+            $this->assertMatchesRegularExpression('/#\d+\s+/', $line, 'each line should look like a trace line');
         }
     }
 

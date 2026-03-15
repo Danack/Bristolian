@@ -70,14 +70,6 @@ use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use VarMap\ArrayVarMap;
 
-/** TranscriptFetcher that throws for testing error path */
-final class ThrowingTranscriptFetcher implements TranscriptFetcher
-{
-    public function fetchAsVtt(string $youtubeVideoId): array
-    {
-        throw new \RuntimeException('Transcript fetch failed');
-    }
-}
 
 /**
  * @coversNothing
@@ -977,5 +969,4 @@ class RoomsTest extends BaseTestCase
         }
         rmdir($cacheTempDir);
     }
-
 }

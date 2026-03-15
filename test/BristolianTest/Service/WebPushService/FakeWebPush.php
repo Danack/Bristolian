@@ -53,4 +53,3 @@ class FakeWebPush extends WebPush
         return new MessageSentReport($request, null, $success, $reason);
     }
 }
-

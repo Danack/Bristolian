@@ -26,7 +26,6 @@ class FunctionsChatTest extends BaseTestCase
 
         $this->assertInstanceOf(ChatMessage::class, $message);
         $this->assertGreaterThanOrEqual(1000, $message->id);
-        $this->assertIsString($message->text);
         $this->assertNotEmpty($message->text);
         $this->assertMatchesRegularExpression('/^user_[a-z]+$/', $message->user_id);
         $this->assertSame('room_12345', $message->room_id);
