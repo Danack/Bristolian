@@ -251,10 +251,10 @@ sub vcl_backend_response {
   # set beresp.do_esi = true;
 
     # Generate ETag from X-Cache-Tag if present, else hash body
-    if (!beresp.http.ETag) {
-        # fallback: hash body for ETag (use std.digest_sha256)
-        set beresp.http.ETag = "\"" + std.digest_sha256(beresp.body) + "\"";
-    }
+    # if (!beresp.http.ETag) {
+    #     # fallback: hash body for ETag (use std.digest_sha256)
+    #     set beresp.http.ETag = "\"" + std.digest_sha256(beresp.body) + "\"";
+    # }
 
 
   if (!beresp.http.cache-control) {
