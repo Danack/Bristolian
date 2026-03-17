@@ -30,6 +30,8 @@ interface RoomLinksPanelState {
     searchDocBefore: string;
     searchTagIds: Set<string>;
     searchLimit: number;
+    searchWaiting: boolean;
+    searchInFlight: boolean;
 }
 
 function getDefaultState(): RoomLinksPanelState {
@@ -49,6 +51,8 @@ function getDefaultState(): RoomLinksPanelState {
         searchDocBefore: "",
         searchTagIds: new Set(),
         searchLimit: ROOM_CONTENT_LIST_DEFAULT_LIMIT,
+        searchWaiting: false,
+        searchInFlight: false,
     };
 }
 
@@ -56,6 +60,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
 
     message_listener: number|null;
     unsubscribe_logged_in: (() => void)|null = null;
+    private searchTimeout: number | null = null;
 
     constructor(props: RoomLinksPanelProps) {
         super(props);
@@ -88,6 +93,11 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
             this.unsubscribe_logged_in();
             this.unsubscribe_logged_in = null;
         }
+
+        if (this.searchTimeout !== null) {
+            clearTimeout(this.searchTimeout);
+            this.searchTimeout = null;
+        }
     }
 
     buildSearchParams(): RoomContentSearchParams {
@@ -104,13 +114,19 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
     }
 
     refreshLinks() {
+        this.setState({ searchInFlight: true, searchWaiting: false });
         fetchRoomLinks(this.props.room_id, this.buildSearchParams())
             .then((data: GetRoomsLinksResponse) => this.processData(data))
             .catch((data: unknown) => this.processError(data));
     }
 
-    onSearch = () => {
-        this.refreshLinks();
+    scheduleSearch = () => {
+        if (this.searchTimeout !== null) {
+            clearTimeout(this.searchTimeout);
+        }
+        this.searchTimeout = window.setTimeout(() => {
+            this.refreshLinks();
+        }, 250);
     };
 
     onClearSearch = () => {
@@ -122,6 +138,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
             searchDocBefore: "",
             searchTagIds: new Set(),
             searchLimit: ROOM_CONTENT_LIST_DEFAULT_LIMIT,
+            searchWaiting: false,
         }, () => this.refreshLinks());
     };
 
@@ -129,21 +146,21 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         const next = new Set(this.state.searchTagIds);
         if (next.has(tagId)) next.delete(tagId);
         else next.add(tagId);
-        this.setState({ searchTagIds: next });
+        this.setState({ searchTagIds: next, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch());
     }
 
     processData(data: GetRoomsLinksResponse) {
         if (data.data.links === undefined) {
-            this.setState({ error: "Server response did not contains 'links'." });
+            this.setState({ error: "Server response did not contains 'links'.", searchInFlight: false });
             return;
         }
         const roomLinks: RoomLinkWithTags[] = data.data.links.map((link) =>
             createRoomLinkWithTags(link)
         );
-        this.setState({ roomLinks });
+        this.setState({ roomLinks, searchInFlight: false });
     }
     processError(data: unknown) {
-        this.setState({ error: data instanceof Error ? data.message : "Request failed." });
+        this.setState({ error: data instanceof Error ? data.message : "Request failed.", searchInFlight: false });
     }
 
     restoreState(state_to_restore: object) {
@@ -228,12 +245,18 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         const s = this.state;
         return (
             <div className="room_content_search_form">
-                <label>Title <input type="text" value={s.searchTitle} onInput={(e) => this.setState({ searchTitle: (e.target as HTMLInputElement).value })} placeholder="Filter by title" /></label>
-                <label>Created after <input type="date" value={s.searchCreatedAfter} onInput={(e) => this.setState({ searchCreatedAfter: (e.target as HTMLInputElement).value })} /></label>
-                <label>Created before <input type="date" value={s.searchCreatedBefore} onInput={(e) => this.setState({ searchCreatedBefore: (e.target as HTMLInputElement).value })} /></label>
-                <label>Document date after <input type="date" value={s.searchDocAfter} onInput={(e) => this.setState({ searchDocAfter: (e.target as HTMLInputElement).value })} /></label>
-                <label>Document date before <input type="date" value={s.searchDocBefore} onInput={(e) => this.setState({ searchDocBefore: (e.target as HTMLInputElement).value })} /></label>
-                <label>Limit <input type="number" min={1} max={1000} value={s.searchLimit} onInput={(e) => this.setState({ searchLimit: parseInt((e.target as HTMLInputElement).value, 10) || ROOM_CONTENT_LIST_DEFAULT_LIMIT })} /></label>
+                <label>Title <input type="text" value={s.searchTitle} onInput={(e) => this.setState({ searchTitle: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} placeholder="Filter by title" /></label>
+                <label>Created after <input type="date" value={s.searchCreatedAfter} onInput={(e) => this.setState({ searchCreatedAfter: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
+                <label>Created before <input type="date" value={s.searchCreatedBefore} onInput={(e) => this.setState({ searchCreatedBefore: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
+                <label>Document date after <input type="date" value={s.searchDocAfter} onInput={(e) => this.setState({ searchDocAfter: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
+                <label>Document date before <input type="date" value={s.searchDocBefore} onInput={(e) => this.setState({ searchDocBefore: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
+                <label>Limit <input type="number" min={1} max={1000} value={s.searchLimit} onInput={(e) => {
+                    const value = parseInt((e.target as HTMLInputElement).value, 10);
+                    this.setState(
+                        { searchLimit: Number.isNaN(value) ? ROOM_CONTENT_LIST_DEFAULT_LIMIT : value, searchWaiting: true, searchInFlight: false },
+                        () => this.scheduleSearch()
+                    );
+                }} /></label>
                 {s.roomTags.length > 0 && (
                     <fieldset className="room_search_tags">
                         <legend>Filter by tags (must have all)</legend>
@@ -246,7 +269,6 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
                     </fieldset>
                 )}
                 <div className="room_search_actions">
-                    <button type="button" className="button_standard" onClick={this.onSearch}>Search</button>
                     <button type="button" className="button_standard" onClick={this.onClearSearch}>Clear</button>
                 </div>
             </div>
@@ -410,8 +432,16 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
             error_block = <div class="error">Last error: {this.state.error}</div>
         }
         let length = this.state.roomLinks.length;
-        // let number_block = <div>There are {length} links</div>;
-        let links_block = this.renderLinks();
+        let links_block;
+        if (this.state.searchWaiting) {
+            links_block = <div>Waiting....</div>;
+        }
+        else if (this.state.searchInFlight) {
+            links_block = <div>Searching....</div>;
+        }
+        else {
+            links_block = this.renderLinks();
+        }
 
         return <div>
             {error_block}

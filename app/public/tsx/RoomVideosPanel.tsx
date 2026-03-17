@@ -183,6 +183,8 @@ interface RoomVideosPanelState {
     editVideoDescription: string;
     editVideoSaving: boolean;
     editVideoError: string | null;
+    searchWaiting: boolean;
+    searchInFlight: boolean;
 }
 
 function getDefaultState(): RoomVideosPanelState {
@@ -231,6 +233,8 @@ function getDefaultState(): RoomVideosPanelState {
         editVideoDescription: "",
         editVideoSaving: false,
         editVideoError: null,
+        searchWaiting: false,
+        searchInFlight: false,
     };
 }
 
@@ -240,6 +244,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
     addVideoUrlInputRef: HTMLInputElement | null = null;
     ytPlayer: YouTubePlayer | null = null;
     timeUpdateIntervalId: ReturnType<typeof setInterval> | null = null;
+    private searchTimeout: number | null = null;
 
     constructor(props: RoomVideosPanelProps) {
         super(props);
@@ -292,6 +297,11 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
             this.unsubscribe_logged_in = null;
         }
         this.destroyYouTubePlayer();
+
+        if (this.searchTimeout !== null) {
+            clearTimeout(this.searchTimeout);
+            this.searchTimeout = null;
+        }
     }
 
     ensureYouTubeApi(): Promise<void> {
@@ -487,13 +497,19 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
     }
 
     refreshVideos() {
+        this.setState({ searchInFlight: true, searchWaiting: false });
         fetchRoomVideos(this.props.room_id, this.buildSearchParams())
             .then((data: GetRoomsVideosResponse) => this.processData(data))
             .catch((err) => this.setState({ error: String(err) }));
     }
 
-    onSearch = () => {
-        this.refreshVideos();
+    scheduleSearch = () => {
+        if (this.searchTimeout !== null) {
+            clearTimeout(this.searchTimeout);
+        }
+        this.searchTimeout = window.setTimeout(() => {
+            this.refreshVideos();
+        }, 250);
     };
 
     onClearSearch = () => {
@@ -505,6 +521,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
             searchDocBefore: "",
             searchTagIds: new Set(),
             searchLimit: ROOM_CONTENT_LIST_DEFAULT_LIMIT,
+            searchWaiting: false,
         }, () => this.refreshVideos());
     };
 
@@ -512,28 +529,34 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         const next = new Set(this.state.searchTagIds);
         if (next.has(tagId)) next.delete(tagId);
         else next.add(tagId);
-        this.setState({ searchTagIds: next });
+        this.setState({ searchTagIds: next, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch());
     }
 
     processData(data: GetRoomsVideosResponse) {
         if (data.data.videos === undefined) {
-            this.setState({ error: "Server response did not contain 'videos'." });
+            this.setState({ error: "Server response did not contain 'videos'.", searchInFlight: false });
             return;
         }
         const videos: RoomVideoWithTags[] = data.data.videos.map((v) => createRoomVideoWithTags(v));
-        this.setState({ videos, error: null });
+        this.setState({ videos, error: null, searchInFlight: false });
     }
 
     renderSearchForm() {
         const s = this.state;
         return (
             <div className="room_content_search_form">
-                <label>Title <input type="text" value={s.searchTitle} onInput={(e) => this.setState({ searchTitle: (e.target as HTMLInputElement).value })} placeholder="Filter by title" /></label>
-                <label>Created after <input type="date" value={s.searchCreatedAfter} onInput={(e) => this.setState({ searchCreatedAfter: (e.target as HTMLInputElement).value })} /></label>
-                <label>Created before <input type="date" value={s.searchCreatedBefore} onInput={(e) => this.setState({ searchCreatedBefore: (e.target as HTMLInputElement).value })} /></label>
-                <label>Document date after <input type="date" value={s.searchDocAfter} onInput={(e) => this.setState({ searchDocAfter: (e.target as HTMLInputElement).value })} /></label>
-                <label>Document date before <input type="date" value={s.searchDocBefore} onInput={(e) => this.setState({ searchDocBefore: (e.target as HTMLInputElement).value })} /></label>
-                <label>Limit <input type="number" min={1} max={1000} value={s.searchLimit} onInput={(e) => this.setState({ searchLimit: parseInt((e.target as HTMLInputElement).value, 10) || ROOM_CONTENT_LIST_DEFAULT_LIMIT })} /></label>
+                <label>Title <input type="text" value={s.searchTitle} onInput={(e) => this.setState({ searchTitle: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} placeholder="Filter by title" /></label>
+                <label>Created after <input type="date" value={s.searchCreatedAfter} onInput={(e) => this.setState({ searchCreatedAfter: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
+                <label>Created before <input type="date" value={s.searchCreatedBefore} onInput={(e) => this.setState({ searchCreatedBefore: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
+                <label>Document date after <input type="date" value={s.searchDocAfter} onInput={(e) => this.setState({ searchDocAfter: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
+                <label>Document date before <input type="date" value={s.searchDocBefore} onInput={(e) => this.setState({ searchDocBefore: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
+                <label>Limit <input type="number" min={1} max={1000} value={s.searchLimit} onInput={(e) => {
+                    const value = parseInt((e.target as HTMLInputElement).value, 10);
+                    this.setState(
+                        { searchLimit: Number.isNaN(value) ? ROOM_CONTENT_LIST_DEFAULT_LIMIT : value, searchWaiting: true, searchInFlight: false },
+                        () => this.scheduleSearch()
+                    );
+                }} /></label>
                 {s.roomTags.length > 0 && (
                     <fieldset className="room_search_tags">
                         <legend>Filter by tags (must have all)</legend>
@@ -546,7 +569,6 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                     </fieldset>
                 )}
                 <div className="room_search_actions">
-                    <button type="button" className="button_standard" onClick={this.onSearch}>Search</button>
                     <button type="button" className="button_standard" onClick={this.onClearSearch}>Clear</button>
                 </div>
             </div>
@@ -1323,27 +1345,31 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                 ) : (
                     <>
                         {state.addSuccess && <div className="success">{state.addSuccess}</div>}
-                        {this.renderSearchForm()}
-                        <div className="room_videos_list">
-                            {state.videos.length === 0 ? (
-                                <p>No videos.</p>
-                            ) : (
-                              <table className="room_videos_table large_table">
-                                <thead>
-                                  <tr>
-                                      <th>Title</th>
-                                      <th>Added</th>
-                                      <th>Date</th>
-                                      <th>Tags</th>
-                                      <th />
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {state.videos.map((v) => this.renderVideoRow(v))}
-                                </tbody>
-                              </table>
-                            )}
-                        </div>
+                {this.renderSearchForm()}
+                <div className="room_videos_list">
+                    {state.searchWaiting ? (
+                        <div>Waiting....</div>
+                    ) : state.searchInFlight ? (
+                        <div>Searching....</div>
+                    ) : state.videos.length === 0 ? (
+                        <p>No videos.</p>
+                    ) : (
+                      <table className="room_videos_table large_table">
+                        <thead>
+                          <tr>
+                              <th>Title</th>
+                              <th>Added</th>
+                              <th>Date</th>
+                              <th>Tags</th>
+                              <th />
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {state.videos.map((v) => this.renderVideoRow(v))}
+                        </tbody>
+                      </table>
+                    )}
+                </div>
                         <div>Showing {state.videos.length} videos</div>
                         <button className="button_standard" onClick={() => this.refreshVideos()}>
                             Refresh

@@ -28,6 +28,8 @@ interface RoomFilesPanelState {
     searchDocBefore: string;
     searchTagIds: Set<string>;
     searchLimit: number;
+    searchWaiting: boolean;
+    searchInFlight: boolean;
 }
 
 function getDefaultState(): RoomFilesPanelState {
@@ -46,6 +48,8 @@ function getDefaultState(): RoomFilesPanelState {
         searchDocBefore: "",
         searchTagIds: new Set(),
         searchLimit: ROOM_CONTENT_LIST_DEFAULT_LIMIT,
+        searchWaiting: false,
+        searchInFlight: false,
     };
 }
 
@@ -53,6 +57,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
 
     message_listener: number|null;
     unsubscribe_logged_in: (() => void)|null = null;
+    private searchTimeout: number | null = null;
 
     constructor(props: RoomFilesPanelProps) {
         super(props);
@@ -86,6 +91,11 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             this.unsubscribe_logged_in();
             this.unsubscribe_logged_in = null;
         }
+
+        if (this.searchTimeout !== null) {
+            clearTimeout(this.searchTimeout);
+            this.searchTimeout = null;
+        }
     }
 
     buildSearchParams(): RoomContentSearchParams {
@@ -102,13 +112,19 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
     }
 
     refreshFiles() {
+        this.setState({ searchInFlight: true, searchWaiting: false });
         fetchRoomFiles(this.props.room_id, this.buildSearchParams())
             .then((data: GetRoomsFilesResponse) => this.processData(data))
             .catch((data: unknown) => this.processError(data));
     }
 
-    onSearch = () => {
-        this.refreshFiles();
+    scheduleSearch = () => {
+        if (this.searchTimeout !== null) {
+            clearTimeout(this.searchTimeout);
+        }
+        this.searchTimeout = window.setTimeout(() => {
+            this.refreshFiles();
+        }, 250);
     };
 
     onClearSearch = () => {
@@ -120,6 +136,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             searchDocBefore: "",
             searchTagIds: new Set(),
             searchLimit: ROOM_CONTENT_LIST_DEFAULT_LIMIT,
+            searchWaiting: false,
         }, () => this.refreshFiles());
     };
 
@@ -127,22 +144,22 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         const next = new Set(this.state.searchTagIds);
         if (next.has(tagId)) next.delete(tagId);
         else next.add(tagId);
-        this.setState({ searchTagIds: next });
+        this.setState({ searchTagIds: next, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch());
     }
 
     processData(data: GetRoomsFilesResponse) {
         if (data.data.files === undefined) {
-            this.setState({ error: "Server response did not contains 'files'." });
+            this.setState({ error: "Server response did not contains 'files'.", searchInFlight: false });
             return;
         }
         const files: RoomFileWithTags[] = data.data.files.map((file) =>
             createRoomFileWithTags(file)
         );
-        this.setState({ files });
+        this.setState({ files, searchInFlight: false });
     }
 
     processError(data: unknown) {
-        this.setState({ error: data instanceof Error ? data.message : "Request failed." });
+        this.setState({ error: data instanceof Error ? data.message : "Request failed.", searchInFlight: false });
     }
 
     shareFile(file: RoomFileWithTags, file_url: string) {
@@ -226,12 +243,18 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         const s = this.state;
         return (
             <div className="room_content_search_form">
-                <label>Title <input type="text" value={s.searchTitle} onInput={(e) => this.setState({ searchTitle: (e.target as HTMLInputElement).value })} placeholder="Filter by name" /></label>
-                <label>Created after <input type="date" value={s.searchCreatedAfter} onInput={(e) => this.setState({ searchCreatedAfter: (e.target as HTMLInputElement).value })} /></label>
-                <label>Created before <input type="date" value={s.searchCreatedBefore} onInput={(e) => this.setState({ searchCreatedBefore: (e.target as HTMLInputElement).value })} /></label>
-                <label>Document date after <input type="date" value={s.searchDocAfter} onInput={(e) => this.setState({ searchDocAfter: (e.target as HTMLInputElement).value })} /></label>
-                <label>Document date before <input type="date" value={s.searchDocBefore} onInput={(e) => this.setState({ searchDocBefore: (e.target as HTMLInputElement).value })} /></label>
-                <label>Limit <input type="number" min={1} max={1000} value={s.searchLimit} onInput={(e) => this.setState({ searchLimit: parseInt((e.target as HTMLInputElement).value, 10) || ROOM_CONTENT_LIST_DEFAULT_LIMIT })} /></label>
+                <label>Title <input type="text" value={s.searchTitle} onInput={(e) => this.setState({ searchTitle: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} placeholder="Filter by name" /></label>
+                <label>Created after <input type="date" value={s.searchCreatedAfter} onInput={(e) => this.setState({ searchCreatedAfter: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
+                <label>Created before <input type="date" value={s.searchCreatedBefore} onInput={(e) => this.setState({ searchCreatedBefore: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
+                <label>Document date after <input type="date" value={s.searchDocAfter} onInput={(e) => this.setState({ searchDocAfter: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
+                <label>Document date before <input type="date" value={s.searchDocBefore} onInput={(e) => this.setState({ searchDocBefore: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
+                <label>Limit <input type="number" min={1} max={1000} value={s.searchLimit} onInput={(e) => {
+                    const value = parseInt((e.target as HTMLInputElement).value, 10);
+                    this.setState(
+                        { searchLimit: Number.isNaN(value) ? ROOM_CONTENT_LIST_DEFAULT_LIMIT : value, searchWaiting: true, searchInFlight: false },
+                        () => this.scheduleSearch()
+                    );
+                }} /></label>
                 {s.roomTags.length > 0 && (
                     <fieldset className="room_search_tags">
                         <legend>Filter by tags (must have all)</legend>
@@ -244,7 +267,6 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                     </fieldset>
                 )}
                 <div className="room_search_actions">
-                    <button type="button" className="button_standard" onClick={this.onSearch}>Search</button>
                     <button type="button" className="button_standard" onClick={this.onClearSearch}>Clear</button>
                 </div>
             </div>
@@ -316,11 +338,21 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             ? <div className="error">Last error: {this.state.error}</div>
             : <span>&nbsp;</span>;
         const length = this.state.files.length;
+        let body;
+        if (this.state.searchWaiting) {
+            body = <div>Waiting....</div>;
+        }
+        else if (this.state.searchInFlight) {
+            body = <div>Searching....</div>;
+        }
+        else {
+            body = this.renderFiles();
+        }
         return (
             <div className="room_files_panel_react">
                 {error_block}
                 {this.renderSearchForm()}
-                {this.renderFiles()}
+                {body}
                 <div>Showing {length} files</div>
                 <button className="button_standard" onClick={() => this.refreshFiles()}>Refresh</button>
                 {this.renderEditTagsModal()}
