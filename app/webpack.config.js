@@ -15,6 +15,7 @@ const optionDefinitions = [
 
 // const TimestampWebpackPlugin = require('timestamp-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const isCoverageBuild = process.env.BRISTOLIAN_JS_COVERAGE === '1';
 
 
 const commandLineArgs = require('command-line-args');
@@ -71,7 +72,20 @@ module.exports = {
                 enforce: "pre",
                 test: /\.js$/,
                 loader: "source-map-loader"
-            }
+            },
+            ...(isCoverageBuild ? [
+                {
+                    enforce: 'post',
+                    test: /\.(ts|tsx|js)$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: '@jsdevtools/coverage-istanbul-loader',
+                        options: {
+                            esModules: true,
+                        }
+                    }
+                }
+            ] : [])
         ]
     },
     optimization: {

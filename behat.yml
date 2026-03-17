@@ -22,6 +22,7 @@ default:
     DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
     Behat\MinkExtension:
       base_url: http://local.bristolian.org
+      files_path: "%paths.base%/test/fixtures/"
       sessions:
         default:
           chrome:

@@ -11,6 +11,7 @@ use Behat\Behat\Hook\Scope\AfterStepScope;
 //use Behat\Mink\Element\NodeElement;
 use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 
 //use Behat\Mink\Element\DocumentElement;
@@ -132,6 +133,79 @@ class SiteContext extends MinkContext
          $this->markerWasClicked = false;
          $this->generatedLatitude = null;
          $this->generatedLongitude = null;
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function collectJavascriptCoverage(AfterScenarioScope $scope): void
+    {
+        $session = $this->getSession();
+
+        try {
+            $rawJson = $session->evaluateScript(
+                <<<JS
+(function () {
+    if (typeof window === 'undefined' || typeof window.__coverage__ === 'undefined' || !window.__coverage__) {
+        return "";
+    }
+    try {
+        return JSON.stringify(window.__coverage__);
+    }
+    catch (e) {
+        return "";
+    }
+})();
+JS
+            );
+        }
+        catch (\Throwable $e) {
+            return;
+        }
+
+        if (!is_string($rawJson) || $rawJson === '') {
+            return;
+        }
+
+        $coverageData = json_decode($rawJson, true);
+        if (!is_array($coverageData) || $coverageData === []) {
+            return;
+        }
+
+        $projectRoot = dirname(__DIR__, 2);
+        $coverageDir = $projectRoot . '/tmp/behat-js-coverage';
+
+        if (!is_dir($coverageDir) && !@mkdir($coverageDir, 0775, true) && !is_dir($coverageDir)) {
+            return;
+        }
+
+        $feature = $scope->getFeature();
+        $scenario = $scope->getScenario();
+
+        $featureTitle = $feature ? $feature->getTitle() : 'feature';
+        $scenarioTitle = $scenario ? $scenario->getTitle() : 'scenario';
+        $scenarioLine = $scenario ? $scenario->getLine() : 0;
+
+        $slug = static function (string $value): string {
+            $value = preg_replace('/[^a-zA-Z0-9_-]+/', '_', $value);
+            if ($value === null || $value === '') {
+                $value = 'coverage';
+            }
+            return substr($value, 0, 80);
+        };
+
+        $featureSlug = $slug($featureTitle);
+        $scenarioSlug = $slug($scenarioTitle);
+
+        $filename = sprintf(
+            '%s/coverage_%s_%s_%d.json',
+            $coverageDir,
+            $featureSlug,
+            $scenarioSlug,
+            $scenarioLine
+        );
+
+        @file_put_contents($filename, json_encode($coverageData));
     }
 
     /**
@@ -1125,10 +1199,10 @@ class SiteContext extends MinkContext
         $session = $this->getSession();
         $page = $session->getPage();
         
-        // Convert relative path to absolute (filePath is relative to project root)
-        // SiteContext.php is in src/BristolianBehat/, so go up 2 levels to project root
+        // Resolve path using Behat Mink files_path (behat.yml: files_path: %paths.base%/test/fixtures/)
         $projectRoot = dirname(__DIR__, 2);
-        $absolutePath = $projectRoot . '/' . $filePath;
+        $filesPath = $projectRoot . '/test/fixtures/';
+        $absolutePath = $filesPath . ltrim($filePath, '/');
         
         if (!file_exists($absolutePath)) {
             throw new \Exception("File not found: $absolutePath");
@@ -1285,9 +1359,17 @@ JS
             // Check for error messages on the page
             $page = $session->getPage();
             $pageText = $page->getText();
+
+
             if (strpos($pageText, 'Error:') !== false || strpos($pageText, 'Upload failed') !== false) {
-                $errorText = substr($pageText, 0, 500);
-                throw new \Exception("Upload failed with error. Page text: " . $errorText);
+                $this->takeDebugScreenshot('upload_failed');
+                $errorPos = strpos($pageText, 'Error:');
+                if ($errorPos === false) {
+                    $errorPos = strpos($pageText, 'Upload failed');
+                }
+                $start = max(0, $errorPos - 100);
+                $errorSnippet = substr($pageText, $start, 600);
+                throw new \Exception("Upload failed with error. Page text (around error): " . $errorSnippet);
             }
             
             usleep(100 * 1000); // 100ms
@@ -1892,6 +1974,19 @@ JS
         $session = $this->getSession();
         $maxAttempts = 30; // 3 seconds
         $attempt = 0;
+
+        // Ensure the "Files" tab is selected so that the files panel is visible
+        $page = $session->getPage();
+        $filesTabLabel = $page->find(
+            'xpath',
+            '//label[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
+        );
+
+        if ($filesTabLabel !== null) {
+            $filesTabLabel->click();
+            // Small wait for panel to become visible
+            usleep(100 * 1000);
+        }
         
         while ($attempt < $maxAttempts) {
             $page = $session->getPage();
@@ -1919,6 +2014,17 @@ JS
     {
         $session = $this->getSession();
         $page = $session->getPage();
+
+        // Make sure the Files tab is active so the files panel (and buttons) are visible
+        $filesTabLabel = $page->find(
+            'xpath',
+            '//label[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
+        );
+
+        if ($filesTabLabel !== null) {
+            $filesTabLabel->click();
+            usleep(100 * 1000);
+        }
         
         // Check if there are files (look for file links in the table)
         $fileLinks = $page->findAll('css', '.room_files_panel_react table a');
@@ -1928,84 +2034,107 @@ JS
             return;
         }
         
-        // Files exist, so button should be visible
+        // Files exist, so button should be visible (button text may contain &nbsp; so match by substrings)
         $button = $page->findButton($buttonText);
-        
+
         if ($button === null) {
-            // Try finding by text content
-            $xpath = sprintf('//button[contains(text(), "%s")]', $buttonText);
+            $words = array_filter(explode(' ', $buttonText));
+            $conditions = array_map(
+                static fn (string $word) => sprintf('contains(., "%s")', str_replace('"', '""', $word)),
+                $words
+            );
+            $xpath = '//div[contains(@class, "room_files_panel_react")]//button[' . implode(' and ', $conditions) . ']';
             $button = $page->find('xpath', $xpath);
         }
-        
+
         if ($button === null) {
             throw new \Exception("Button with text '$buttonText' not found, but files exist on the page.");
         }
     }
 
     /**
-     * @When /^I click a Share button if files exist$/
+     * @When /^I click the "([^"]*)" button if files exist$/
      */
-    public function iClickAShareButtonIfFilesExist(): void
+    public function iClickTheButtonIfFilesExist(string $buttonText): void
     {
         $session = $this->getSession();
         $page = $session->getPage();
-        
+
+        // Ensure the Files tab is active so that the files panel (and buttons) are visible
+        $filesTabLabel = $page->find(
+            'xpath',
+            '//label[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
+        );
+
+        if ($filesTabLabel !== null) {
+            $filesTabLabel->click();
+            usleep(100 * 1000);
+        }
+
         // Check if there are files (wait for them to load)
         $maxAttempts = 30; // 3 seconds
         $attempt = 0;
         $fileLinks = [];
-        
+
         while ($attempt < $maxAttempts) {
             $page = $session->getPage();
             $fileLinks = $page->findAll('css', '.room_files_panel_react table a');
-            
+
             if (count($fileLinks) > 0) {
                 break;
             }
-            
+
             // Also check for "No files" text
             $noFilesText = $page->find('xpath', '//*[contains(text(), "No files")]');
             if ($noFilesText !== null) {
                 // No files, skip this step
                 return;
             }
-            
+
             usleep(100 * 1000); // 100ms
             $attempt++;
         }
-        
+
         if (count($fileLinks) === 0) {
             // No files after waiting, skip this step
             return;
         }
-        
-        // Wait for Share button to appear (React needs time to render after login state updates)
-        $shareButton = null;
+
+        // Wait for button to appear (React needs time to render after login state updates)
+        $button = null;
         $maxAttempts = 30; // 3 seconds
         $attempt = 0;
-        
+
         while ($attempt < $maxAttempts) {
             $page = $session->getPage();
-            $shareButton = $page->find('xpath', '//button[contains(text(), "Share")]');
-            
-            if ($shareButton !== null) {
+            $button = $page->findButton($buttonText);
+
+            if ($button === null) {
+                $words = array_filter(explode(' ', $buttonText));
+                $conditions = array_map(
+                    static fn (string $word) => sprintf('contains(., "%s")', str_replace('"', '""', $word)),
+                    $words
+                );
+                $xpath = '//div[contains(@class, "room_files_panel_react")]//button[' . implode(' and ', $conditions) . ']';
+                $button = $page->find('xpath', $xpath);
+            }
+
+            if ($button !== null) {
                 break;
             }
-            
+
             usleep(100 * 1000); // 100ms
             $attempt++;
         }
-        
-        if ($shareButton === null) {
-            throw new \Exception("Share button not found on the page after waiting. Files exist but Share button is not visible - user may not be logged in.");
+
+        if ($button === null) {
+            throw new \Exception("Button with text '$buttonText' not found on the page after waiting. Files exist but button is not visible - user may not be logged in.");
         }
-        
-        $shareButton->click();
-        
+
+        $button->click();
+
         // Wait for the message to be processed
         sleep(1);
-
-        $this->takeDebugScreenshot('shareButton');
     }
 
     /**

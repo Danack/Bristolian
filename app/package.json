@@ -15,6 +15,8 @@
     "js:build:prod": "webpack --mode production",
     "js:build:prod:analyze": "webpack --mode production --profile --json=stats.json",
     "js:build:prod:watch": "webpack --watch --mode production",
+    "js:build:coverage": "BRISTOLIAN_JS_COVERAGE=1 webpack --mode development",
+    "js:coverage:report": "nyc merge ../tmp/behat-js-coverage ../tmp/behat-js-coverage/coverage-merged.json && nyc report --reporter=html --reporter=text-summary --reporter=clover --report-dir=../tmp/behat-js-coverage-report --temp-dir=../tmp/behat-js-coverage",
     "sass:build:dev": "sass public/scss/site.scss public/css/site.css",
     "sass:build:prod": "sass public/scss/site.scss public/css/site.css --style=compressed",
     "sass:build:watch": "sass public/scss/site.scss public/css/site.css --watch"
@@ -34,12 +36,14 @@
     "preact": "^10.11.3"
   },
   "devDependencies": {
+    "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
     "@types/node": "^18.11.9",
     "command-line-args": "^5.2.0",
     "compression-webpack-plugin": "^10.0.0",
     "css-loader": "^6.7.2",
     "jest": "^29.3.1",
     "jest-environment-jsdom": "^30.2.0",
+    "nyc": "^18.0.0",
     "raw-loader": "^4.0.2",
     "sass": "^1.56.1",
     "script-loader": "^0.7.2",

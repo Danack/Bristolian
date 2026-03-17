@@ -22,13 +22,13 @@ Feature: Bristol Stairs Map
     Then the URL should change to include a stair ID
     And I should see stair information displayed
 
-  @upload
+  @upload @debug
   Scenario: Upload stair image with 8 steps
     Given I am logged in
     When I go to "/tools/bristol_stairs"
     And I note the current total steps and flights
     And I click the "Upload image" button
-    And I upload the file "test/fixtures/stairs/stairs_test_a_8.jpeg" with random GPS coordinates
+    And I upload the file "stairs/stairs_test_a_8.jpeg" with random GPS coordinates
     Then I should be redirected to a stair detail page
     And I set the steps to 8
     And the stair should have 8 steps
@@ -43,7 +43,7 @@ Feature: Bristol Stairs Map
     When I go to "/tools/bristol_stairs"
     And I note the current total steps and flights
     And I click the "Upload image" button
-    And I upload the file "test/fixtures/stairs/stairs_test_b_9.jpeg" with random GPS coordinates
+    And I upload the file "stairs/stairs_test_b_9.jpeg" with random GPS coordinates
     Then I should be redirected to a stair detail page
     And I set the steps to 9
     And the stair should have 9 steps
@@ -78,5 +78,5 @@ Feature: Bristol Stairs Map
   Scenario: GET update endpoint returns error message
     Given I am logged in
     When I navigate to the GET update endpoint for stair ID "test_stair_123"
-    Then I should see the error message "This is a GET end point. You probably meant to POST."
+    Then I should see the error message "This endpoint expects a POST request. Please send a POST request instead of GET."
 

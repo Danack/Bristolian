@@ -153,6 +153,23 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
       }
     };
 
+    const getErrorFromResponse = (): string => {
+      const text = xhr.responseText?.trim() ?? "";
+      if (!text) {
+        return "";
+      }
+      try {
+        const data = JSON.parse(text);
+        const message =
+          (data && typeof data.error === "string" && data.error) ||
+          (data && typeof data.message === "string" && data.message) ||
+          text.slice(0, 200);
+        return message;
+      } catch {
+        return text.slice(0, 200);
+      }
+    };
+
     xhr.onload = () => {
       if (xhr.status === 200) {
         try {
@@ -164,14 +181,24 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
           onUploadError?.("Failed to parse server response.");
         }
       } else {
-        this.setState({ error: "Upload failed", uploadProgress: null });
-        onUploadError?.("Upload failed");
+        const detail = getErrorFromResponse();
+        const message = detail ? `Upload failed: ${detail}` : "Upload failed";
+        this.setState({ error: message, uploadProgress: null });
+        onUploadError?.(message);
       }
     };
 
     xhr.onerror = () => {
-      this.setState({ error: "An error occurred during upload", uploadProgress: null });
-      onUploadError?.("An error occurred during upload");
+      const detail = getErrorFromResponse();
+      const statusInfo =
+        xhr.status !== undefined || xhr.statusText
+          ? ` (HTTP ${xhr.status ?? "?"}${xhr.statusText ? ` ${xhr.statusText}` : ""})`
+          : "";
+      const message = detail
+        ? `An error occurred during upload: ${detail}`
+        : `An error occurred during upload${statusInfo}. Check the browser Network tab for details.`;
+      this.setState({ error: message, uploadProgress: null });
+      onUploadError?.(message);
     };
 
     xhr.send(formData);

@@ -37,4 +37,55 @@ The `features/chat/share_file_link.feature` tests the Share button functionality
 
 **Note**: These tests are conditional - if no files exist in the room, the file-dependent assertions are skipped gracefully.
 
+## Frontend JavaScript coverage from Behat
+
+Behat browser tests can generate **line-based coverage** for the frontend TypeScript/React code. This measures which JS/TS lines executed in the browser while the scenarios ran.
+
+### Generating coverage
+
+1. **Build an instrumented JS bundle** in the `js_builder` container:
+
+```bash
+docker exec bristolian-js_builder-1 bash -c "cd app && npm run js:build:coverage"
+```
+
+2. **Run the Behat tests** (inside `php_fpm`):
+
+```bash
+docker exec bristolian-php_fpm-1 bash -c "sh runBehat.sh"
+```
+
+During each scenario, the Behat `SiteContext` collects `window.__coverage__` from the browser (if present) and writes Istanbul coverage JSON files to (at **project root**):
+
+- **`tmp/behat-js-coverage/`** — e.g. from host: `<project>/tmp/behat-js-coverage/`; in containers: `/var/app/tmp/behat-js-coverage/`
+
+3. **Generate a coverage report** (inside `js_builder`):
+
+```bash
+docker exec bristolian-js_builder-1 bash -c "cd app && npm run js:coverage:report"
+```
+
+This merges all coverage JSON files from `tmp/behat-js-coverage/` and produces reports in (at **project root**):
+
+- **`tmp/behat-js-coverage-report/`** — e.g. from host: `<project>/tmp/behat-js-coverage-report/`; in containers: `/var/app/tmp/behat-js-coverage-report/`
+
+**Report formats generated:**
+
+| Format        | File / output        | Use case                          |
+|---------------|----------------------|-----------------------------------|
+| HTML          | `index.html` (+ dir) | Human browsing in a browser       |
+| text-summary  | stdout               | Quick terminal summary            |
+| Clover XML    | `clover.xml`         | CI (e.g. Jenkins, GitLab), tools  |
+
+Open the HTML report with:
+
+```bash
+open tmp/behat-js-coverage-report/index.html
+```
+
+### Notes and caveats
+
+- The report shows **frontend JS/TS lines exercised by Behat browser tests**; it does not include backend PHP coverage.
+- Scenarios that do not load the React/Preact app will not contribute to JS coverage.
+- As with any coverage tool, **UI coverage ≠ full behaviour coverage** – a component can render without all branches or edge cases being exercised. The report is a guide to untested areas, not a proof of correctness.
 

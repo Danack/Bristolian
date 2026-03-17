@@ -208,7 +208,7 @@ export class EmailLinkGeneratorPanel extends Component<EmailLinkGeneratorPanelPr
         <tbody>
         <tr>
           <td>Address</td>
-          <td><input type="email" size={80}
+          <td><input id="email_link_address" type="email" size={80}
             // @ts-ignore:event types are annoying
                      onInput={(e) => this.handleAddressChange(e)}
                      onChange={(e) => this.handleAddressChange(e)}
@@ -219,7 +219,7 @@ export class EmailLinkGeneratorPanel extends Component<EmailLinkGeneratorPanelPr
 
         <tr>
           <td>Link text (leave blank for email)</td>
-          <td><input type="email" size={80}
+          <td><input id="email_link_link_text" type="email" size={80}
             // @ts-ignore:event types are annoying
                      onInput={(e) => this.handleLinkTextChange(e)}
                      onChange={(e) => this.handleLinkTextChange(e)}
@@ -229,7 +229,7 @@ export class EmailLinkGeneratorPanel extends Component<EmailLinkGeneratorPanelPr
 
         <tr>
           <td>Subject</td>
-          <td><input type="text" size={80}
+          <td><input id="email_link_subject" type="text" size={80}
             // @ts-ignore:event types are annoying
                      onInput={(e) => this.handleSubjectChange(e)}
                      onChange={(e) => this.handleSubjectChange(e)}
@@ -237,7 +237,7 @@ export class EmailLinkGeneratorPanel extends Component<EmailLinkGeneratorPanelPr
         </tr>
         <tr>
           <td>CC</td>
-          <td><input type="text" size={80}
+          <td><input id="email_link_cc" type="text" size={80}
                      // @ts-ignore:event types are annoying
                      onInput={(e) => this.handleCCChange(e)}
                      onChange={(e) => this.handleCCChange(e)}
@@ -245,7 +245,7 @@ export class EmailLinkGeneratorPanel extends Component<EmailLinkGeneratorPanelPr
         </tr>
         <tr>
           <td>BCC</td>
-          <td><input type="text" size={80}
+          <td><input id="email_link_bcc" type="text" size={80}
                      // @ts-ignore:event types are annoying
                      onInput={(e) => this.handleBCCChange(e)}
                      onChange={(e) => this.handleBCCChange(e)}
@@ -254,7 +254,7 @@ export class EmailLinkGeneratorPanel extends Component<EmailLinkGeneratorPanelPr
 
         <tr>
           <td>Body</td>
-          <td><textarea cols={60} rows={5}
+          <td><textarea id="email_link_body" cols={60} rows={5}
                      // @ts-ignore:event types are annoying
                      onInput={(e) => this.handleBodyChange(e)}
                      onChange={(e) => this.handleBodyChange(e)}
