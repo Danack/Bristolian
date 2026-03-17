@@ -6,6 +6,7 @@
 export interface RoomContentSearchParams {
     limit?: number;
     title?: string;
+    description?: string;
     created_at_after?: string;
     created_at_before?: string;
     document_timestamp_after?: string;
@@ -20,6 +21,9 @@ function buildQueryString(params: RoomContentSearchParams): string {
     }
     if (params.title != null && params.title !== "") {
         searchParams.set("title", params.title);
+    }
+    if (params.description != null && params.description !== "") {
+        searchParams.set("description", params.description);
     }
     if (params.created_at_after != null && params.created_at_after !== "") {
         searchParams.set("created_at_after", params.created_at_after);

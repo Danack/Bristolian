@@ -21,6 +21,7 @@ class RoomContentSearchParamsTest extends BaseTestCase
         $this->assertSame([], $params->getTagIds());
         $this->assertNull($params->limit);
         $this->assertNull($params->title);
+        $this->assertNull($params->description);
         $this->assertNull($params->created_at_after);
         $this->assertNull($params->created_at_before);
         $this->assertNull($params->document_timestamp_after);
@@ -123,6 +124,7 @@ class RoomContentSearchParamsTest extends BaseTestCase
             new ArrayVarMap([
                 'limit' => '10',
                 'title' => 'foo',
+                'description' => 'bar',
                 'created_at_after' => '2024-01-01 00:00:00',
                 'created_at_before' => '2024-12-31 23:59:59',
                 'document_timestamp_after' => '2024-03-01 00:00:00',
@@ -132,6 +134,7 @@ class RoomContentSearchParamsTest extends BaseTestCase
         );
         $this->assertSame(10, $params->getLimit());
         $this->assertSame('foo', $params->title);
+        $this->assertSame('bar', $params->description);
         $this->assertNotNull($params->created_at_after);
         $this->assertSame('2024-01-01 00:00:00', $params->created_at_after->format('Y-m-d H:i:s'));
         $this->assertNotNull($params->created_at_before);

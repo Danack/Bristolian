@@ -159,6 +159,33 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
      * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
      * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::filterLinksBySearch
      */
+    public function test_getLinksForRoom_filters_by_description(): void
+    {
+        $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
+        $repo = new FakeRoomLinkRepo($linkRepo);
+        $roomId = 'room-1';
+        $repo->addLinkToRoomFromParam('user-1', $roomId, LinkParam::createFromVarMap(new ArrayVarMap([
+            'url' => 'https://example.com/a',
+            'title' => 'First link',
+            'description' => 'Some description',
+        ])));
+        $repo->addLinkToRoomFromParam('user-1', $roomId, LinkParam::createFromVarMap(new ArrayVarMap([
+            'url' => 'https://example.com/b',
+            'title' => 'Other title',
+            'description' => 'Report with unique desc slug here',
+        ])));
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['description' => 'unique desc slug']));
+        $links = $repo->getLinksForRoom($roomId, $search);
+
+        $this->assertCount(1, $links);
+        $this->assertSame('Report with unique desc slug here', $links[0]->description);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::filterLinksBySearch
+     */
     public function test_getLinksForRoom_filters_by_created_at_after(): void
     {
         $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();

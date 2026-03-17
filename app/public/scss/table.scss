@@ -51,8 +51,8 @@ table.large_table {
 }
 
 .room_content_search_form {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.75rem 1.5rem;
   align-items: center;
   margin-bottom: 1rem;
@@ -82,5 +82,13 @@ table.large_table {
   .room_search_actions {
     display: flex;
     gap: 0.5rem;
+    justify-content: flex-start;
   }
+}
+
+.room_content_search_toggle,
+.room_content_search_close {
+  background-color: transparent;
+  border: none;
+  padding: 0;
 }

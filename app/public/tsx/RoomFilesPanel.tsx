@@ -8,6 +8,7 @@ import { get_logged_in, subscribe_logged_in } from "./store";
 import { setFileTags } from "./api_room_entity_tags";
 import { fetchRoomFiles, RoomContentSearchParams } from "./api_room_content_list";
 import { ROOM_CONTENT_LIST_DEFAULT_LIMIT } from "./generated/constants";
+import { RoomContentSearchForm } from "./RoomContentSearchForm";
 
 export interface RoomFilesPanelProps {
     room_id: string;
@@ -22,6 +23,7 @@ interface RoomFilesPanelState {
     selectedTagIds: Set<string>;
     tagsSaveInProgress: boolean;
     searchTitle: string;
+    searchDescription: string;
     searchCreatedAfter: string;
     searchCreatedBefore: string;
     searchDocAfter: string;
@@ -30,6 +32,7 @@ interface RoomFilesPanelState {
     searchLimit: number;
     searchWaiting: boolean;
     searchInFlight: boolean;
+    searchVisible: boolean;
 }
 
 function getDefaultState(): RoomFilesPanelState {
@@ -42,6 +45,7 @@ function getDefaultState(): RoomFilesPanelState {
         selectedTagIds: new Set(),
         tagsSaveInProgress: false,
         searchTitle: "",
+        searchDescription: "",
         searchCreatedAfter: "",
         searchCreatedBefore: "",
         searchDocAfter: "",
@@ -50,6 +54,7 @@ function getDefaultState(): RoomFilesPanelState {
         searchLimit: ROOM_CONTENT_LIST_DEFAULT_LIMIT,
         searchWaiting: false,
         searchInFlight: false,
+        searchVisible: false,
     };
 }
 
@@ -103,6 +108,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         return {
             limit: s.searchLimit,
             title: s.searchTitle.trim() || undefined,
+            description: s.searchDescription.trim() || undefined,
             created_at_after: s.searchCreatedAfter.trim() || undefined,
             created_at_before: s.searchCreatedBefore.trim() || undefined,
             document_timestamp_after: s.searchDocAfter.trim() || undefined,
@@ -239,40 +245,6 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         );
     }
 
-    renderSearchForm() {
-        const s = this.state;
-        return (
-            <div className="room_content_search_form">
-                <label>Title <input type="text" value={s.searchTitle} onInput={(e) => this.setState({ searchTitle: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} placeholder="Filter by name" /></label>
-                <label>Created after <input type="date" value={s.searchCreatedAfter} onInput={(e) => this.setState({ searchCreatedAfter: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
-                <label>Created before <input type="date" value={s.searchCreatedBefore} onInput={(e) => this.setState({ searchCreatedBefore: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
-                <label>Document date after <input type="date" value={s.searchDocAfter} onInput={(e) => this.setState({ searchDocAfter: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
-                <label>Document date before <input type="date" value={s.searchDocBefore} onInput={(e) => this.setState({ searchDocBefore: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
-                <label>Limit <input type="number" min={1} max={1000} value={s.searchLimit} onInput={(e) => {
-                    const value = parseInt((e.target as HTMLInputElement).value, 10);
-                    this.setState(
-                        { searchLimit: Number.isNaN(value) ? ROOM_CONTENT_LIST_DEFAULT_LIMIT : value, searchWaiting: true, searchInFlight: false },
-                        () => this.scheduleSearch()
-                    );
-                }} /></label>
-                {s.roomTags.length > 0 && (
-                    <fieldset className="room_search_tags">
-                        <legend>Filter by tags (must have all)</legend>
-                        {s.roomTags.map((tag) => (
-                            <label key={tag.tag_id}>
-                                <input type="checkbox" checked={s.searchTagIds.has(tag.tag_id)} onChange={() => this.toggleSearchTag(tag.tag_id)} />
-                                {tag.text}
-                            </label>
-                        ))}
-                    </fieldset>
-                )}
-                <div className="room_search_actions">
-                    <button type="button" className="button_standard" onClick={this.onClearSearch}>Clear</button>
-                </div>
-            </div>
-        );
-    }
-
     renderFiles() {
         if (this.state.files.length === 0) {
             return <span>No files.</span>;
@@ -351,7 +323,81 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         return (
             <div className="room_files_panel_react">
                 {error_block}
-                {this.renderSearchForm()}
+                {this.state.searchVisible ? (
+                    <div className="room_content_search_container">
+                        <button
+                            type="button"
+                            className="button_standard room_content_search_close"
+                            onClick={() => this.setState({ searchVisible: false })}
+                        >
+                            <img src="/svg/close-icon.svg" alt="Hide search" width={16} height={16} />
+                        </button>
+                        <RoomContentSearchForm
+                            title={this.state.searchTitle}
+                            description={this.state.searchDescription}
+                            createdAfter={this.state.searchCreatedAfter}
+                            createdBefore={this.state.searchCreatedBefore}
+                            documentAfter={this.state.searchDocAfter}
+                            documentBefore={this.state.searchDocBefore}
+                            limit={this.state.searchLimit}
+                            roomTags={this.state.roomTags}
+                            selectedTagIds={this.state.searchTagIds}
+                            titlePlaceholder="Filter by name"
+                            onTitleChange={(value: string) =>
+                                this.setState(
+                                    { searchTitle: value, searchWaiting: true, searchInFlight: false },
+                                    () => this.scheduleSearch()
+                                )
+                            }
+                            onDescriptionChange={(value: string) =>
+                                this.setState(
+                                    { searchDescription: value, searchWaiting: true, searchInFlight: false },
+                                    () => this.scheduleSearch()
+                                )
+                            }
+                            onCreatedAfterChange={(value: string) =>
+                                this.setState(
+                                    { searchCreatedAfter: value, searchWaiting: true, searchInFlight: false },
+                                    () => this.scheduleSearch()
+                                )
+                            }
+                            onCreatedBeforeChange={(value: string) =>
+                                this.setState(
+                                    { searchCreatedBefore: value, searchWaiting: true, searchInFlight: false },
+                                    () => this.scheduleSearch()
+                                )
+                            }
+                            onDocumentAfterChange={(value: string) =>
+                                this.setState(
+                                    { searchDocAfter: value, searchWaiting: true, searchInFlight: false },
+                                    () => this.scheduleSearch()
+                                )
+                            }
+                            onDocumentBeforeChange={(value: string) =>
+                                this.setState(
+                                    { searchDocBefore: value, searchWaiting: true, searchInFlight: false },
+                                    () => this.scheduleSearch()
+                                )
+                            }
+                            onLimitChange={(value: number) =>
+                                this.setState(
+                                    { searchLimit: value, searchWaiting: true, searchInFlight: false },
+                                    () => this.scheduleSearch()
+                                )
+                            }
+                            onToggleTag={(tagId: string) => this.toggleSearchTag(tagId)}
+                            onClear={this.onClearSearch}
+                        />
+                    </div>
+                ) : (
+                    <button
+                        type="button"
+                        className="button_standard room_content_search_toggle"
+                        onClick={() => this.setState({ searchVisible: true })}
+                    >
+                        <img src="/svg/search-button-icon.svg" alt="Show search" width={16} height={16} />
+                    </button>
+                )}
                 {body}
                 <div>Showing {length} files</div>
                 <button className="button_standard" onClick={() => this.refreshFiles()}>Refresh</button>

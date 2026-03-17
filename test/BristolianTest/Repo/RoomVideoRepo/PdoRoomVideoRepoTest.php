@@ -357,6 +357,22 @@ class PdoRoomVideoRepoTest extends BaseTestCase
     /**
      * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getVideosForRoom
      */
+    public function test_getVideosForRoom_filters_by_description(): void
+    {
+        $repo = $this->getRepo();
+        assert($this->roomId !== null && $this->videoId !== null);
+
+        $repo->addVideo($this->roomId, $this->videoId, 'Some other title', 'Description unique_desc_slug ' . create_test_uniqid());
+
+        $search = \Bristolian\Parameters\RoomContentSearchParams::createFromVarMap(new \VarMap\ArrayVarMap(['description' => 'unique_desc_slug']));
+        $videos = $repo->getVideosForRoom($this->roomId, $search);
+
+        $this->assertCount(1, $videos);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getVideosForRoom
+     */
     public function test_getVideosForRoom_filters_by_created_at_after(): void
     {
         $repo = $this->getRepo();

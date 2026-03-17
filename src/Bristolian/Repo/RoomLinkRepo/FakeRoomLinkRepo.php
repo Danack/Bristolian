@@ -125,6 +125,10 @@ class FakeRoomLinkRepo implements RoomLinkRepo
             if ($search->title !== null && $search->title !== '' && stripos($title, $search->title) === false) {
                 return false;
             }
+            $description = $link->description ?? '';
+            if ($search->description !== null && $search->description !== '' && stripos($description, $search->description) === false) {
+                return false;
+            }
             if ($search->created_at_after !== null && $link->created_at < $search->created_at_after) {
                 return false;
             }

@@ -82,6 +82,10 @@ class PdoRoomLinkRepo implements RoomLinkRepo
             $where[] = 'title LIKE :title_pattern';
             $params['title_pattern'] = '%' . str_replace(['%', '_'], ['\%', '\_'], $search->title) . '%';
         }
+        if ($search->description !== null && $search->description !== '') {
+            $where[] = 'description LIKE :description_pattern';
+            $params['description_pattern'] = '%' . str_replace(['%', '_'], ['\%', '\_'], $search->description) . '%';
+        }
         $createdAtAfter = $search->getCreatedAtAfterForSql();
         if ($createdAtAfter !== null) {
             $where[] = 'created_at >= :created_at_after';

@@ -30,6 +30,8 @@ class RoomContentSearchParams implements DataType, StaticFactory
         public readonly ?string $limit,
         #[OptionalBasicString('title')]
         public readonly ?string $title,
+        #[OptionalBasicString('description')]
+        public readonly ?string $description,
         #[OptionalDateTime('created_at_after', ['Y-m-d H:i:s', 'Y-m-d'])]
         public readonly ?\DateTimeInterface $created_at_after,
         #[OptionalDateTime('created_at_before', ['Y-m-d H:i:s', 'Y-m-d'])]
@@ -48,7 +50,7 @@ class RoomContentSearchParams implements DataType, StaticFactory
      */
     public static function default(): self
     {
-        return new self(null, null, null, null, null, null, []);
+        return new self(null, null, null, null, null, null, null, []);
     }
 
     /** SQL-safe string for created_at_after (Y-m-d H:i:s) or null. */

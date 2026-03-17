@@ -197,6 +197,10 @@ class InMemoryRoomVideoRepo implements RoomVideoRepo
             if ($search->title !== null && $search->title !== '' && stripos($title, $search->title) === false) {
                 return false;
             }
+            $description = $video->description ?? '';
+            if ($search->description !== null && $search->description !== '' && stripos($description, $search->description) === false) {
+                return false;
+            }
             if ($search->created_at_after !== null && $video->created_at < $search->created_at_after) {
                 return false;
             }

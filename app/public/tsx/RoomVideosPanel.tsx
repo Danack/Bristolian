@@ -7,6 +7,7 @@ import { formatDateTimeForContent, spacesToNbsp } from "./functions";
 import { CLIP_TITLE_MINIMUM_LENGTH, CLIP_TITLE_MAXIMUM_LENGTH } from "./generated/constants";
 import { fetchRoomVideos, RoomContentSearchParams } from "./api_room_content_list";
 import { ROOM_CONTENT_LIST_DEFAULT_LIMIT } from "./generated/constants";
+import { RoomContentSearchForm } from "./RoomContentSearchForm";
 
 /** Set to true when transcript fetching is fixed. */
 const TRANSCRIPT_ENABLED = false;
@@ -144,6 +145,7 @@ interface RoomVideosPanelState {
     selectedTagIds: Set<string>;
     tagsSaveInProgress: boolean;
     searchTitle: string;
+    searchDescription: string;
     searchCreatedAfter: string;
     searchCreatedBefore: string;
     searchDocAfter: string;
@@ -185,6 +187,7 @@ interface RoomVideosPanelState {
     editVideoError: string | null;
     searchWaiting: boolean;
     searchInFlight: boolean;
+    searchVisible: boolean;
 }
 
 function getDefaultState(): RoomVideosPanelState {
@@ -197,6 +200,7 @@ function getDefaultState(): RoomVideosPanelState {
         selectedTagIds: new Set(),
         tagsSaveInProgress: false,
         searchTitle: "",
+        searchDescription: "",
         searchCreatedAfter: "",
         searchCreatedBefore: "",
         searchDocAfter: "",
@@ -235,6 +239,7 @@ function getDefaultState(): RoomVideosPanelState {
         editVideoError: null,
         searchWaiting: false,
         searchInFlight: false,
+        searchVisible: false,
     };
 }
 
@@ -488,6 +493,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         return {
             limit: s.searchLimit,
             title: s.searchTitle.trim() || undefined,
+            description: s.searchDescription.trim() || undefined,
             created_at_after: s.searchCreatedAfter.trim() || undefined,
             created_at_before: s.searchCreatedBefore.trim() || undefined,
             document_timestamp_after: s.searchDocAfter.trim() || undefined,
@@ -539,40 +545,6 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         }
         const videos: RoomVideoWithTags[] = data.data.videos.map((v) => createRoomVideoWithTags(v));
         this.setState({ videos, error: null, searchInFlight: false });
-    }
-
-    renderSearchForm() {
-        const s = this.state;
-        return (
-            <div className="room_content_search_form">
-                <label>Title <input type="text" value={s.searchTitle} onInput={(e) => this.setState({ searchTitle: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} placeholder="Filter by title" /></label>
-                <label>Created after <input type="date" value={s.searchCreatedAfter} onInput={(e) => this.setState({ searchCreatedAfter: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
-                <label>Created before <input type="date" value={s.searchCreatedBefore} onInput={(e) => this.setState({ searchCreatedBefore: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
-                <label>Document date after <input type="date" value={s.searchDocAfter} onInput={(e) => this.setState({ searchDocAfter: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
-                <label>Document date before <input type="date" value={s.searchDocBefore} onInput={(e) => this.setState({ searchDocBefore: (e.target as HTMLInputElement).value, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch())} /></label>
-                <label>Limit <input type="number" min={1} max={1000} value={s.searchLimit} onInput={(e) => {
-                    const value = parseInt((e.target as HTMLInputElement).value, 10);
-                    this.setState(
-                        { searchLimit: Number.isNaN(value) ? ROOM_CONTENT_LIST_DEFAULT_LIMIT : value, searchWaiting: true, searchInFlight: false },
-                        () => this.scheduleSearch()
-                    );
-                }} /></label>
-                {s.roomTags.length > 0 && (
-                    <fieldset className="room_search_tags">
-                        <legend>Filter by tags (must have all)</legend>
-                        {s.roomTags.map((tag) => (
-                            <label key={tag.tag_id}>
-                                <input type="checkbox" checked={s.searchTagIds.has(tag.tag_id)} onChange={() => this.toggleSearchTag(tag.tag_id)} />
-                                {tag.text}
-                            </label>
-                        ))}
-                    </fieldset>
-                )}
-                <div className="room_search_actions">
-                    <button type="button" className="button_standard" onClick={this.onClearSearch}>Clear</button>
-                </div>
-            </div>
-        );
     }
 
     handleAddVideoResponse(response: Response, data: { result?: string; error?: string; errors?: string[] }) {
@@ -1345,7 +1317,81 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                 ) : (
                     <>
                         {state.addSuccess && <div className="success">{state.addSuccess}</div>}
-                {this.renderSearchForm()}
+                        {state.searchVisible ? (
+                            <div className="room_content_search_container">
+                                <button
+                                    type="button"
+                                    className="button_standard room_content_search_close"
+                                    onClick={() => this.setState({ searchVisible: false })}
+                                >
+                                    <img src="/svg/close-icon.svg" alt="Hide search" width={16} height={16} />
+                                </button>
+                                <RoomContentSearchForm
+                                    title={state.searchTitle}
+                                    description={state.searchDescription}
+                                    createdAfter={state.searchCreatedAfter}
+                                    createdBefore={state.searchCreatedBefore}
+                                    documentAfter={state.searchDocAfter}
+                                    documentBefore={state.searchDocBefore}
+                                    limit={state.searchLimit}
+                                    roomTags={state.roomTags}
+                                    selectedTagIds={state.searchTagIds}
+                                    titlePlaceholder="Filter by title"
+                                    onTitleChange={(value: string) =>
+                                        this.setState(
+                                            { searchTitle: value, searchWaiting: true, searchInFlight: false },
+                                            () => this.scheduleSearch()
+                                        )
+                                    }
+                                    onDescriptionChange={(value: string) =>
+                                        this.setState(
+                                            { searchDescription: value, searchWaiting: true, searchInFlight: false },
+                                            () => this.scheduleSearch()
+                                        )
+                                    }
+                                    onCreatedAfterChange={(value: string) =>
+                                        this.setState(
+                                            { searchCreatedAfter: value, searchWaiting: true, searchInFlight: false },
+                                            () => this.scheduleSearch()
+                                        )
+                                    }
+                                    onCreatedBeforeChange={(value: string) =>
+                                        this.setState(
+                                            { searchCreatedBefore: value, searchWaiting: true, searchInFlight: false },
+                                            () => this.scheduleSearch()
+                                        )
+                                    }
+                                    onDocumentAfterChange={(value: string) =>
+                                        this.setState(
+                                            { searchDocAfter: value, searchWaiting: true, searchInFlight: false },
+                                            () => this.scheduleSearch()
+                                        )
+                                    }
+                                    onDocumentBeforeChange={(value: string) =>
+                                        this.setState(
+                                            { searchDocBefore: value, searchWaiting: true, searchInFlight: false },
+                                            () => this.scheduleSearch()
+                                        )
+                                    }
+                                    onLimitChange={(value: number) =>
+                                        this.setState(
+                                            { searchLimit: value, searchWaiting: true, searchInFlight: false },
+                                            () => this.scheduleSearch()
+                                        )
+                                    }
+                                    onToggleTag={(tagId: string) => this.toggleSearchTag(tagId)}
+                                    onClear={this.onClearSearch}
+                                />
+                            </div>
+                        ) : (
+                            <button
+                                type="button"
+                                className="button_standard room_content_search_toggle"
+                                onClick={() => this.setState({ searchVisible: true })}
+                            >
+                                <img src="/svg/search-button-icon.svg" alt="Show search" width={16} height={16} />
+                            </button>
+                        )}
                 <div className="room_videos_list">
                     {state.searchWaiting ? (
                         <div>Waiting....</div>

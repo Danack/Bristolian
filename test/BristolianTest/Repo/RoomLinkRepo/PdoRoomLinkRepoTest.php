@@ -268,6 +268,26 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
     /**
      * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
      */
+    public function test_getLinksForRoom_filters_by_description(): void
+    {
+        $this->initPdoTestObjects();
+        [$room, $user] = $this->createTestUserAndRoom();
+        $roomLinkRepo = $this->injector->make(PdoRoomLinkRepo::class);
+        $roomLinkRepo->addLinkToRoomFromParam($user->getUserId(), $room->id, LinkParam::createFromArray([
+            'url' => $this->getTestLink(),
+            'title' => 'Some other title',
+            'description' => 'Description unique_desc_slug ' . create_test_uniqid(),
+        ]));
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['description' => 'unique_desc_slug']));
+        $links = $roomLinkRepo->getLinksForRoom($room->id, $search);
+
+        $this->assertCount(1, $links);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
+     */
     public function test_getLinksForRoom_filters_by_created_at_after(): void
     {
         $this->initPdoTestObjects();

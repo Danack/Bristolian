@@ -298,6 +298,23 @@ class InMemoryRoomVideoRepoTest extends TestCase
      * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::getVideosForRoom
      * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::filterVideosBySearch
      */
+    public function test_getVideosForRoom_filters_by_description(): void
+    {
+        $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
+        $this->repo->addVideo('room-1', $videoId, 'First video', 'Some description');
+        $this->repo->addVideo('room-1', $videoId, 'Other video', 'Report with unique desc slug here');
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['description' => 'unique desc slug']));
+        $videos = $this->repo->getVideosForRoom('room-1', $search);
+
+        $this->assertCount(1, $videos);
+        $this->assertSame('Report with unique desc slug here', $videos[0]->description);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::getVideosForRoom
+     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::filterVideosBySearch
+     */
     public function test_getVideosForRoom_filters_by_created_at_after(): void
     {
         $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
