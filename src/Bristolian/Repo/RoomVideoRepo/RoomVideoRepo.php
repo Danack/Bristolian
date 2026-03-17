@@ -5,18 +5,19 @@ namespace Bristolian\Repo\RoomVideoRepo;
 use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\RoomVideo;
 use Bristolian\Model\Types\RoomVideoWithTags;
+use Bristolian\Parameters\RoomContentSearchParams;
 
 interface RoomVideoRepo
 {
     /**
      * @return RoomVideo[]
      */
-    public function getVideosForRoom(string $room_id): array;
+    public function getVideosForRoom(string $room_id, RoomContentSearchParams $search): array;
 
     /**
      * @return RoomVideoWithTags[]
      */
-    public function getVideosForRoomWithTags(string $room_id): array;
+    public function getVideosForRoomWithTags(string $room_id, RoomContentSearchParams $search): array;
 
     /**
      * Get a room video by id. Assumes valid id; throws if not found.

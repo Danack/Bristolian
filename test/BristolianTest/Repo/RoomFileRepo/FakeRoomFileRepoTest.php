@@ -5,8 +5,10 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo\RoomFileRepo;
 
 use Bristolian\Model\Generated\RoomFileObjectInfo;
+use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
+use VarMap\ArrayVarMap;
 
 /**
  * Tests for FakeRoomFileRepo
@@ -49,7 +51,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     {
         $roomFileRepo = new FakeRoomFileRepo();
 
-        $files = $roomFileRepo->getFilesForRoom('room_123');
+        $files = $roomFileRepo->getFilesForRoom('room_123', RoomContentSearchParams::default());
 
         $this->assertEmpty($files);
     }
@@ -66,17 +68,17 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $file_id_2 = 'file_2';
 
         // Check room has no files listed
-        $files = $roomFileRepo->getFilesForRoom($room_id);
+        $files = $roomFileRepo->getFilesForRoom($room_id, RoomContentSearchParams::default());
         $this->assertEmpty($files);
 
         // Check adding files works
         $roomFileRepo->addFileToRoom($file_id_1, $room_id);
         $roomFileRepo->addFileToRoom($file_id_2, $room_id);
-        $files = $roomFileRepo->getFilesForRoom($room_id);
+        $files = $roomFileRepo->getFilesForRoom($room_id, RoomContentSearchParams::default());
         $this->assertCount(2, $files);
 
         // Check other room still has no files listed
-        $files = $roomFileRepo->getFilesForRoom("some_other_room");
+        $files = $roomFileRepo->getFilesForRoom("some_other_room", RoomContentSearchParams::default());
         $this->assertEmpty($files);
     }
 
@@ -91,7 +93,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $file_id = 'file_1';
 
         $roomFileRepo->addFileToRoom($file_id, $room_id);
-        $files = $roomFileRepo->getFilesForRoom($room_id);
+        $files = $roomFileRepo->getFilesForRoom($room_id, RoomContentSearchParams::default());
 
         $this->assertCount(1, $files);
         $this->assertInstanceOf(\Bristolian\Model\Types\RoomFileInRoom::class, $files[0]);
@@ -113,8 +115,8 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo->addFileToRoom($file_id_1, $room_id_1);
         $roomFileRepo->addFileToRoom($file_id_2, $room_id_2);
 
-        $room1_files = $roomFileRepo->getFilesForRoom($room_id_1);
-        $room2_files = $roomFileRepo->getFilesForRoom($room_id_2);
+        $room1_files = $roomFileRepo->getFilesForRoom($room_id_1, RoomContentSearchParams::default());
+        $room2_files = $roomFileRepo->getFilesForRoom($room_id_2, RoomContentSearchParams::default());
 
         $this->assertCount(1, $room1_files);
         $this->assertCount(1, $room2_files);
@@ -209,8 +211,8 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo->addFileToRoom($file_id, $room_id_1);
         $roomFileRepo->addFileToRoom($file_id, $room_id_2);
 
-        $room1_files = $roomFileRepo->getFilesForRoom($room_id_1);
-        $room2_files = $roomFileRepo->getFilesForRoom($room_id_2);
+        $room1_files = $roomFileRepo->getFilesForRoom($room_id_1, RoomContentSearchParams::default());
+        $room2_files = $roomFileRepo->getFilesForRoom($room_id_2, RoomContentSearchParams::default());
 
         // Both rooms should have the file
         $this->assertCount(1, $room1_files);
@@ -230,7 +232,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $file_id = 'file_1';
 
         $roomFileRepo->addFileToRoom($file_id, $room_id);
-        $files = $roomFileRepo->getFilesForRoom($room_id);
+        $files = $roomFileRepo->getFilesForRoom($room_id, RoomContentSearchParams::default());
 
         $file = $files[0];
         $this->assertInstanceOf(\DateTimeInterface::class, $file->created_at);
@@ -249,7 +251,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo->addFileToRoom('file_2', $room_id);
         $roomFileRepo->addFileToRoom('file_3', $room_id);
 
-        $files = $roomFileRepo->getFilesForRoom($room_id);
+        $files = $roomFileRepo->getFilesForRoom($room_id, RoomContentSearchParams::default());
 
         $this->assertCount(3, $files);
         $this->assertContainsOnlyInstancesOf(\Bristolian\Model\Types\RoomFileInRoom::class, $files);
@@ -267,7 +269,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
 
         $roomFileRepo->addFileToRoom($file_id, $room_id);
 
-        $files_list = $roomFileRepo->getFilesForRoom($room_id);
+        $files_list = $roomFileRepo->getFilesForRoom($room_id, RoomContentSearchParams::default());
         $file_from_list = $files_list[0];
 
         $file_details = $roomFileRepo->getFileDetails($room_id, $file_id);
@@ -276,5 +278,97 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertInstanceOf(\Bristolian\Model\Types\RoomFileInRoom::class, $file_from_list);
         $this->assertSame($file_id, $file_from_list->id);
         $this->assertSame($file_id, $file_details->id);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
+     */
+    public function test_getFilesForRoom_filters_by_title(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_123';
+        $roomFileRepo->addFileToRoom('file_alpha', $room_id);
+        $roomFileRepo->addFileToRoom('match_me_in_name', $room_id);
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['title' => 'match_me']));
+        $files = $roomFileRepo->getFilesForRoom($room_id, $search);
+
+        $this->assertCount(1, $files);
+        $this->assertSame('match_me_in_name', $files[0]->id);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
+     */
+    public function test_getFilesForRoom_filters_by_created_at_after(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_123';
+        $roomFileRepo->addFileToRoom('file_1', $room_id);
+
+        $future = (new \DateTimeImmutable('now'))->modify('+1 day')->format('Y-m-d H:i:s');
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_after' => $future]));
+        $files = $roomFileRepo->getFilesForRoom($room_id, $search);
+
+        $this->assertCount(0, $files);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
+     */
+    public function test_getFilesForRoom_filters_by_created_at_before(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_123';
+        $roomFileRepo->addFileToRoom('file_1', $room_id);
+
+        $past = (new \DateTimeImmutable('now'))->modify('-1 day')->format('Y-m-d H:i:s');
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_before' => $past]));
+        $files = $roomFileRepo->getFilesForRoom($room_id, $search);
+
+        $this->assertCount(0, $files);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::setDocumentTimestampForFileInRoom
+     */
+    public function test_getFilesForRoom_filters_by_document_timestamp_after(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_123';
+        $roomFileRepo->addFileToRoom('file_1', $room_id);
+        $roomFileRepo->setDocumentTimestampForFileInRoom($room_id, 'file_1', new \DateTimeImmutable('2024-06-01 12:00:00'));
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap([
+            'document_timestamp_after' => '2024-06-02 00:00:00',
+        ]));
+        $files = $roomFileRepo->getFilesForRoom($room_id, $search);
+
+        $this->assertCount(0, $files);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::setDocumentTimestampForFileInRoom
+     */
+    public function test_getFilesForRoom_filters_by_document_timestamp_before(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_123';
+        $roomFileRepo->addFileToRoom('file_1', $room_id);
+        $roomFileRepo->setDocumentTimestampForFileInRoom($room_id, 'file_1', new \DateTimeImmutable('2024-06-15 12:00:00'));
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap([
+            'document_timestamp_before' => '2024-06-01 00:00:00',
+        ]));
+        $files = $roomFileRepo->getFilesForRoom($room_id, $search);
+
+        $this->assertCount(0, $files);
     }
 }

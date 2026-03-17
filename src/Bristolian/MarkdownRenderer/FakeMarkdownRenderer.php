@@ -10,7 +10,7 @@ use Bristolian\MarkdownRenderer\MarkdownRenderer;
  * Fake MarkdownRenderer for tests when doc files are not present (e.g. complaints/, questions/).
  * @coversNothing
  */
-final class FakeMarkdownRendererForPages implements MarkdownRenderer
+final class FakeMarkdownRenderer implements MarkdownRenderer
 {
     public function render(string $markdown): string
     {

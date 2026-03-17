@@ -7,6 +7,8 @@ import { RoomLinkWithTags, createRoomLinkWithTags, createRoomTag, RoomTag } from
 import { formatDateTimeForContent, spacesToNbsp } from "./functions";
 import { get_logged_in, subscribe_logged_in } from "./store";
 import { setLinkTags } from "./api_room_entity_tags";
+import { fetchRoomLinks, RoomContentSearchParams } from "./api_room_content_list";
+import { ROOM_CONTENT_LIST_DEFAULT_LIMIT } from "./generated/constants";
 
 export interface RoomLinksPanelProps {
     room_id: string;
@@ -21,6 +23,13 @@ interface RoomLinksPanelState {
     roomTags: RoomTag[];
     selectedTagIds: Set<string>;
     tagsSaveInProgress: boolean;
+    searchTitle: string;
+    searchCreatedAfter: string;
+    searchCreatedBefore: string;
+    searchDocAfter: string;
+    searchDocBefore: string;
+    searchTagIds: Set<string>;
+    searchLimit: number;
 }
 
 function getDefaultState(): RoomLinksPanelState {
@@ -33,6 +42,13 @@ function getDefaultState(): RoomLinksPanelState {
         roomTags: [],
         selectedTagIds: new Set(),
         tagsSaveInProgress: false,
+        searchTitle: "",
+        searchCreatedAfter: "",
+        searchCreatedBefore: "",
+        searchDocAfter: "",
+        searchDocBefore: "",
+        searchTagIds: new Set(),
+        searchLimit: ROOM_CONTENT_LIST_DEFAULT_LIMIT,
     };
 }
 
@@ -48,13 +64,23 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
 
     componentDidMount() {
         this.refreshLinks();
+        this.loadRoomTags();
         this.message_listener = registerMessageListener(
           PdfSelectionType.ROOM_LINKS_CHANGED,
-          () => this.refreshLinks(true)
+          () => this.refreshLinks()
         );
         this.unsubscribe_logged_in = subscribe_logged_in((logged_in: boolean) => {
             this.setState({logged_in: logged_in});
         });
+    }
+
+    loadRoomTags() {
+        api.rooms.tags(this.props.room_id)
+            .then((data) => {
+                const roomTags = data.data.tags.map((t) => createRoomTag(t));
+                this.setState({ roomTags });
+            })
+            .catch(() => this.setState({ roomTags: [] }));
     }
 
     componentWillUnmount() {
@@ -64,10 +90,46 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         }
     }
 
-    refreshLinks(cacheBust?: boolean) {
-        api.rooms.links(this.props.room_id, cacheBust ? { cacheBust: true } : undefined).
-        then((data:GetRoomsLinksResponse) => this.processData(data)).
-        catch((data:any) => this.processError(data));
+    buildSearchParams(): RoomContentSearchParams {
+        const s = this.state;
+        return {
+            limit: s.searchLimit,
+            title: s.searchTitle.trim() || undefined,
+            created_at_after: s.searchCreatedAfter.trim() || undefined,
+            created_at_before: s.searchCreatedBefore.trim() || undefined,
+            document_timestamp_after: s.searchDocAfter.trim() || undefined,
+            document_timestamp_before: s.searchDocBefore.trim() || undefined,
+            tag_ids: s.searchTagIds.size > 0 ? Array.from(s.searchTagIds) : undefined,
+        };
+    }
+
+    refreshLinks() {
+        fetchRoomLinks(this.props.room_id, this.buildSearchParams())
+            .then((data: GetRoomsLinksResponse) => this.processData(data))
+            .catch((data: unknown) => this.processError(data));
+    }
+
+    onSearch = () => {
+        this.refreshLinks();
+    };
+
+    onClearSearch = () => {
+        this.setState({
+            searchTitle: "",
+            searchCreatedAfter: "",
+            searchCreatedBefore: "",
+            searchDocAfter: "",
+            searchDocBefore: "",
+            searchTagIds: new Set(),
+            searchLimit: ROOM_CONTENT_LIST_DEFAULT_LIMIT,
+        }, () => this.refreshLinks());
+    };
+
+    toggleSearchTag(tagId: string) {
+        const next = new Set(this.state.searchTagIds);
+        if (next.has(tagId)) next.delete(tagId);
+        else next.add(tagId);
+        this.setState({ searchTagIds: next });
     }
 
     processData(data: GetRoomsLinksResponse) {
@@ -80,9 +142,8 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         );
         this.setState({ roomLinks });
     }
-    processError (data:any) {
-        console.log("something went wrong.");
-        console.log(data)
+    processError(data: unknown) {
+        this.setState({ error: data instanceof Error ? data.message : "Request failed." });
     }
 
     restoreState(state_to_restore: object) {
@@ -131,7 +192,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
             .then(() => {
                 this.closeEditTags();
                 this.setState({ tagsSaveInProgress: false });
-                this.refreshLinks(true);
+                this.refreshLinks();
             })
             .catch(() => this.setState({ tagsSaveInProgress: false }));
     }
@@ -163,13 +224,42 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         );
     }
 
+    renderSearchForm() {
+        const s = this.state;
+        return (
+            <div className="room_content_search_form">
+                <label>Title <input type="text" value={s.searchTitle} onInput={(e) => this.setState({ searchTitle: (e.target as HTMLInputElement).value })} placeholder="Filter by title" /></label>
+                <label>Created after <input type="date" value={s.searchCreatedAfter} onInput={(e) => this.setState({ searchCreatedAfter: (e.target as HTMLInputElement).value })} /></label>
+                <label>Created before <input type="date" value={s.searchCreatedBefore} onInput={(e) => this.setState({ searchCreatedBefore: (e.target as HTMLInputElement).value })} /></label>
+                <label>Document date after <input type="date" value={s.searchDocAfter} onInput={(e) => this.setState({ searchDocAfter: (e.target as HTMLInputElement).value })} /></label>
+                <label>Document date before <input type="date" value={s.searchDocBefore} onInput={(e) => this.setState({ searchDocBefore: (e.target as HTMLInputElement).value })} /></label>
+                <label>Limit <input type="number" min={1} max={1000} value={s.searchLimit} onInput={(e) => this.setState({ searchLimit: parseInt((e.target as HTMLInputElement).value, 10) || ROOM_CONTENT_LIST_DEFAULT_LIMIT })} /></label>
+                {s.roomTags.length > 0 && (
+                    <fieldset className="room_search_tags">
+                        <legend>Filter by tags (must have all)</legend>
+                        {s.roomTags.map((tag) => (
+                            <label key={tag.tag_id}>
+                                <input type="checkbox" checked={s.searchTagIds.has(tag.tag_id)} onChange={() => this.toggleSearchTag(tag.tag_id)} />
+                                {tag.text}
+                            </label>
+                        ))}
+                    </fieldset>
+                )}
+                <div className="room_search_actions">
+                    <button type="button" className="button_standard" onClick={this.onSearch}>Search</button>
+                    <button type="button" className="button_standard" onClick={this.onClearSearch}>Clear</button>
+                </div>
+            </div>
+        );
+    }
+
     renderLinks() {
         if (this.state.roomLinks.length === 0) {
             return <span>No links.</span>;
         }
         const logged_in = this.state.logged_in;
         return (
-            <table>
+            <table className="large_table">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -325,7 +415,9 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
 
         return <div>
             {error_block}
+            {this.renderSearchForm()}
             {links_block}
+            <div>Showing {length} links</div>
             <button className="button_standard" onClick={() => this.refreshLinks()}>Refresh</button>
             <RoomLinkAddPanel room_id={this.props.room_id}/>
         </div>

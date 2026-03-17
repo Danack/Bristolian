@@ -6,6 +6,8 @@ import { api, GetRoomsFilesResponse } from "./generated/api_routes";
 import { RoomFileWithTags, createRoomFileWithTags, createRoomTag, RoomTag } from "./generated/types";
 import { get_logged_in, subscribe_logged_in } from "./store";
 import { setFileTags } from "./api_room_entity_tags";
+import { fetchRoomFiles, RoomContentSearchParams } from "./api_room_content_list";
+import { ROOM_CONTENT_LIST_DEFAULT_LIMIT } from "./generated/constants";
 
 export interface RoomFilesPanelProps {
     room_id: string;
@@ -19,6 +21,13 @@ interface RoomFilesPanelState {
     roomTags: RoomTag[];
     selectedTagIds: Set<string>;
     tagsSaveInProgress: boolean;
+    searchTitle: string;
+    searchCreatedAfter: string;
+    searchCreatedBefore: string;
+    searchDocAfter: string;
+    searchDocBefore: string;
+    searchTagIds: Set<string>;
+    searchLimit: number;
 }
 
 function getDefaultState(): RoomFilesPanelState {
@@ -30,6 +39,13 @@ function getDefaultState(): RoomFilesPanelState {
         roomTags: [],
         selectedTagIds: new Set(),
         tagsSaveInProgress: false,
+        searchTitle: "",
+        searchCreatedAfter: "",
+        searchCreatedBefore: "",
+        searchDocAfter: "",
+        searchDocBefore: "",
+        searchTagIds: new Set(),
+        searchLimit: ROOM_CONTENT_LIST_DEFAULT_LIMIT,
     };
 }
 
@@ -45,12 +61,21 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
 
     componentDidMount() {
         this.refreshFiles();
-        this.message_listener = registerMessageListener(PdfSelectionType.ROOM_FILES_CHANGED, () => this.refreshFiles(true));
+        this.loadRoomTags();
+        this.message_listener = registerMessageListener(PdfSelectionType.ROOM_FILES_CHANGED, () => this.refreshFiles());
         
-        // Subscribe to login state changes to re-render when login status changes
         this.unsubscribe_logged_in = subscribe_logged_in((logged_in: boolean) => {
             this.setState({logged_in: logged_in});
         });
+    }
+
+    loadRoomTags() {
+        api.rooms.tags(this.props.room_id)
+            .then((data) => {
+                const roomTags = data.data.tags.map((t) => createRoomTag(t));
+                this.setState({ roomTags });
+            })
+            .catch(() => this.setState({ roomTags: [] }));
     }
 
     componentWillUnmount() {
@@ -63,10 +88,46 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         }
     }
 
-    refreshFiles(cacheBust?: boolean) {
-        api.rooms.files(this.props.room_id, cacheBust ? { cacheBust: true } : undefined).
-        then((data:GetRoomsFilesResponse) => this.processData(data)).
-        catch((data:any) => this.processError(data));
+    buildSearchParams(): RoomContentSearchParams {
+        const s = this.state;
+        return {
+            limit: s.searchLimit,
+            title: s.searchTitle.trim() || undefined,
+            created_at_after: s.searchCreatedAfter.trim() || undefined,
+            created_at_before: s.searchCreatedBefore.trim() || undefined,
+            document_timestamp_after: s.searchDocAfter.trim() || undefined,
+            document_timestamp_before: s.searchDocBefore.trim() || undefined,
+            tag_ids: s.searchTagIds.size > 0 ? Array.from(s.searchTagIds) : undefined,
+        };
+    }
+
+    refreshFiles() {
+        fetchRoomFiles(this.props.room_id, this.buildSearchParams())
+            .then((data: GetRoomsFilesResponse) => this.processData(data))
+            .catch((data: unknown) => this.processError(data));
+    }
+
+    onSearch = () => {
+        this.refreshFiles();
+    };
+
+    onClearSearch = () => {
+        this.setState({
+            searchTitle: "",
+            searchCreatedAfter: "",
+            searchCreatedBefore: "",
+            searchDocAfter: "",
+            searchDocBefore: "",
+            searchTagIds: new Set(),
+            searchLimit: ROOM_CONTENT_LIST_DEFAULT_LIMIT,
+        }, () => this.refreshFiles());
+    };
+
+    toggleSearchTag(tagId: string) {
+        const next = new Set(this.state.searchTagIds);
+        if (next.has(tagId)) next.delete(tagId);
+        else next.add(tagId);
+        this.setState({ searchTagIds: next });
     }
 
     processData(data: GetRoomsFilesResponse) {
@@ -80,9 +141,8 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         this.setState({ files });
     }
 
-    processError (data:any) {
-        console.log("something went wrong.");
-        console.log(data)
+    processError(data: unknown) {
+        this.setState({ error: data instanceof Error ? data.message : "Request failed." });
     }
 
     shareFile(file: RoomFileWithTags, file_url: string) {
@@ -122,7 +182,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             .then(() => {
                 this.closeEditTags();
                 this.setState({ tagsSaveInProgress: false });
-                this.refreshFiles(true);
+                this.refreshFiles();
             })
             .catch(() => this.setState({ tagsSaveInProgress: false }));
     }
@@ -162,6 +222,35 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         );
     }
 
+    renderSearchForm() {
+        const s = this.state;
+        return (
+            <div className="room_content_search_form">
+                <label>Title <input type="text" value={s.searchTitle} onInput={(e) => this.setState({ searchTitle: (e.target as HTMLInputElement).value })} placeholder="Filter by name" /></label>
+                <label>Created after <input type="date" value={s.searchCreatedAfter} onInput={(e) => this.setState({ searchCreatedAfter: (e.target as HTMLInputElement).value })} /></label>
+                <label>Created before <input type="date" value={s.searchCreatedBefore} onInput={(e) => this.setState({ searchCreatedBefore: (e.target as HTMLInputElement).value })} /></label>
+                <label>Document date after <input type="date" value={s.searchDocAfter} onInput={(e) => this.setState({ searchDocAfter: (e.target as HTMLInputElement).value })} /></label>
+                <label>Document date before <input type="date" value={s.searchDocBefore} onInput={(e) => this.setState({ searchDocBefore: (e.target as HTMLInputElement).value })} /></label>
+                <label>Limit <input type="number" min={1} max={1000} value={s.searchLimit} onInput={(e) => this.setState({ searchLimit: parseInt((e.target as HTMLInputElement).value, 10) || ROOM_CONTENT_LIST_DEFAULT_LIMIT })} /></label>
+                {s.roomTags.length > 0 && (
+                    <fieldset className="room_search_tags">
+                        <legend>Filter by tags (must have all)</legend>
+                        {s.roomTags.map((tag) => (
+                            <label key={tag.tag_id}>
+                                <input type="checkbox" checked={s.searchTagIds.has(tag.tag_id)} onChange={() => this.toggleSearchTag(tag.tag_id)} />
+                                {tag.text}
+                            </label>
+                        ))}
+                    </fieldset>
+                )}
+                <div className="room_search_actions">
+                    <button type="button" className="button_standard" onClick={this.onSearch}>Search</button>
+                    <button type="button" className="button_standard" onClick={this.onClearSearch}>Clear</button>
+                </div>
+            </div>
+        );
+    }
+
     renderFiles() {
         if (this.state.files.length === 0) {
             return <span>No files.</span>;
@@ -170,7 +259,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         return (
             <span>
                 <span className="section-heading">Files</span>
-                <table>
+                <table className="large_table">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -230,8 +319,9 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         return (
             <div className="room_files_panel_react">
                 {error_block}
+                {this.renderSearchForm()}
                 {this.renderFiles()}
-                <div>There are {length} files</div>
+                <div>Showing {length} files</div>
                 <button className="button_standard" onClick={() => this.refreshFiles()}>Refresh</button>
                 {this.renderEditTagsModal()}
             </div>

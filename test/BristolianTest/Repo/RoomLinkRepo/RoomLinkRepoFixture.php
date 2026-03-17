@@ -83,7 +83,7 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
 
         $repo->addLinkToRoomFromParam($user_id, $room_id, $linkParam);
 
-        $links = $repo->getLinksForRoom($room_id);
+        $links = $repo->getLinksForRoom($room_id, \Bristolian\Parameters\RoomContentSearchParams::default());
         $this->assertNotEmpty($links);
         $this->assertContainsOnlyInstancesOf(RoomLink::class, $links);
     }

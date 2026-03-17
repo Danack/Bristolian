@@ -14,7 +14,7 @@ use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use SlimDispatcher\Response\StubResponse;
-use Bristolian\MarkdownRenderer\FakeMarkdownRendererForPages;
+use Bristolian\MarkdownRenderer\FakeMarkdownRenderer;
 
 /**
  * @coversNothing
@@ -177,8 +177,8 @@ class PagesTest extends BaseTestCase
      */
     public function test_triangle_road(): void
     {
-        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRendererForPages::class);
-        $this->injector->share(new FakeMarkdownRendererForPages());
+        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRenderer::class);
+        $this->injector->share(new FakeMarkdownRenderer());
 
         $result = $this->injector->execute([Pages::class, 'triangle_road']);
         $this->assertIsString($result);
@@ -192,8 +192,8 @@ class PagesTest extends BaseTestCase
      */
     public function test_bristol_rovers(): void
     {
-        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRendererForPages::class);
-        $this->injector->share(new FakeMarkdownRendererForPages());
+        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRenderer::class);
+        $this->injector->share(new FakeMarkdownRenderer());
 
         $result = $this->injector->execute([Pages::class, 'bristol_rovers']);
         $this->assertIsString($result);
@@ -207,8 +207,8 @@ class PagesTest extends BaseTestCase
      */
     public function test_avon_crescent(): void
     {
-        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRendererForPages::class);
-        $this->injector->share(new FakeMarkdownRendererForPages());
+        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRenderer::class);
+        $this->injector->share(new FakeMarkdownRenderer());
 
         $result = $this->injector->execute([Pages::class, 'avon_crescent']);
         $this->assertIsString($result);
@@ -268,8 +268,8 @@ class PagesTest extends BaseTestCase
      */
     public function test_weca_question_active_travel(): void
     {
-        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRendererForPages::class);
-        $this->injector->share(new FakeMarkdownRendererForPages());
+        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRenderer::class);
+        $this->injector->share(new FakeMarkdownRenderer());
 
         $result = $this->injector->execute([Pages::class, 'weca_question_active_travel']);
         $this->assertIsString($result);
@@ -281,8 +281,8 @@ class PagesTest extends BaseTestCase
      */
     public function test_weca_question_tram(): void
     {
-        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRendererForPages::class);
-        $this->injector->share(new FakeMarkdownRendererForPages());
+        $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRenderer::class);
+        $this->injector->share(new FakeMarkdownRenderer());
 
         $result = $this->injector->execute([Pages::class, 'weca_question_tram']);
         $this->assertIsString($result);

@@ -4,6 +4,7 @@ namespace Bristolian\Repo\RoomFileRepo;
 
 use Bristolian\Model\Generated\RoomFileObjectInfo;
 use Bristolian\Model\Types\RoomFileInRoom;
+use Bristolian\Parameters\RoomContentSearchParams;
 
 class FakeRoomFileRepo implements RoomFileRepo
 {
@@ -16,6 +17,12 @@ class FakeRoomFileRepo implements RoomFileRepo
      * @var array<string, array<string>>
      */
     private array $roomFiles = [];
+
+    /**
+     * document_timestamp per (room_id, fileStorageId) for testing filter behaviour.
+     * @var array<string, array<string, \DateTimeInterface>>
+     */
+    private array $documentTimestamps = [];
 
     public function addFileToRoom(string $fileStorageId, string $room_id): void
     {
@@ -43,7 +50,7 @@ class FakeRoomFileRepo implements RoomFileRepo
      * @param string $room_id
      * @return RoomFileInRoom[]
      */
-    public function getFilesForRoom(string $room_id): array
+    public function getFilesForRoom(string $room_id, RoomContentSearchParams $search): array
     {
         if (!isset($this->roomFiles[$room_id])) {
             return [];
@@ -53,6 +60,7 @@ class FakeRoomFileRepo implements RoomFileRepo
         foreach ($this->roomFiles[$room_id] as $fileStorageId) {
             if (isset($this->files[$fileStorageId])) {
                 $file = $this->files[$fileStorageId];
+                $documentTimestamp = $this->documentTimestamps[$room_id][$fileStorageId] ?? null;
                 $filesForRoom[] = new RoomFileInRoom(
                     $file->id,
                     $file->normalized_name,
@@ -61,12 +69,14 @@ class FakeRoomFileRepo implements RoomFileRepo
                     $file->size,
                     $file->user_id,
                     $file->created_at,
-                    null
+                    $documentTimestamp
                 );
             }
         }
 
-        return $filesForRoom;
+        $filesForRoom = $this->filterFilesBySearch($filesForRoom, $search);
+        usort($filesForRoom, fn ($a, $b) => $b->created_at <=> $a->created_at);
+        return array_slice($filesForRoom, 0, $search->getLimit());
     }
 
     public function getFileDetails(string $room_id, string $file_id): RoomFileObjectInfo|null
@@ -81,5 +91,43 @@ class FakeRoomFileRepo implements RoomFileRepo
         }
 
         return $this->files[$file_id] ?? null;
+    }
+
+    /**
+     * Set document_timestamp for a file in a room (for testing filter behaviour).
+     * Call after addFileToRoom; the file must already be in the room.
+     */
+    public function setDocumentTimestampForFileInRoom(string $room_id, string $fileStorageId, \DateTimeInterface $documentTimestamp): void
+    {
+        if (!isset($this->documentTimestamps[$room_id])) {
+            $this->documentTimestamps[$room_id] = [];
+        }
+        $this->documentTimestamps[$room_id][$fileStorageId] = $documentTimestamp;
+    }
+
+    /**
+     * @param RoomFileInRoom[] $files
+     * @return RoomFileInRoom[]
+     */
+    private function filterFilesBySearch(array $files, RoomContentSearchParams $search): array
+    {
+        return array_filter($files, function (RoomFileInRoom $file) use ($search): bool {
+            if ($search->title !== null && $search->title !== '' && stripos($file->original_filename, $search->title) === false) {
+                return false;
+            }
+            if ($search->created_at_after !== null && $file->created_at < $search->created_at_after) {
+                return false;
+            }
+            if ($search->created_at_before !== null && $file->created_at > $search->created_at_before) {
+                return false;
+            }
+            if ($search->document_timestamp_after !== null && $file->document_timestamp !== null && $file->document_timestamp < $search->document_timestamp_after) {
+                return false;
+            }
+            if ($search->document_timestamp_before !== null && $file->document_timestamp !== null && $file->document_timestamp > $search->document_timestamp_before) {
+                return false;
+            }
+            return true;
+        });
     }
 }

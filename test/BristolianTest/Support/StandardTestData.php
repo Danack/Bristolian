@@ -111,7 +111,7 @@ final class StandardTestData
         $uploadedFile = UploadedFile::fromFile(__FILE__);
 
         foreach ($rooms as $room) {
-            $files = $this->world->roomFileRepo()->getFilesForRoom($room->id);
+            $files = $this->world->roomFileRepo()->getFilesForRoom($room->id, \Bristolian\Parameters\RoomContentSearchParams::default());
             $existing = count($files);
             if ($existing >= self::MIN_DOCUMENTS_PER_ROOM) {
                 continue;

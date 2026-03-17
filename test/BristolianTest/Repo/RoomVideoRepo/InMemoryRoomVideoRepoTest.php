@@ -7,6 +7,7 @@ namespace BristolianTest\Repo\RoomVideoRepo;
 use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\RoomVideo;
 use Bristolian\Model\Types\RoomVideoWithTags;
+use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Parameters\TagParams;
 use Bristolian\Repo\RoomTagRepo\FakeRoomTagRepo;
 use Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo;
@@ -40,7 +41,7 @@ class InMemoryRoomVideoRepoTest extends TestCase
 
     public function test_getVideosForRoom_returns_empty_initially(): void
     {
-        $videos = $this->repo->getVideosForRoom('room-1');
+        $videos = $this->repo->getVideosForRoom('room-1', RoomContentSearchParams::default());
 
         $this->assertSame([], $videos);
     }
@@ -94,7 +95,7 @@ class InMemoryRoomVideoRepoTest extends TestCase
         $this->repo->addVideo('room-1', $videoId, 'Video 1');
         $this->repo->addVideo('room-1', $videoId, 'Video 2');
 
-        $videos = $this->repo->getVideosForRoom('room-1');
+        $videos = $this->repo->getVideosForRoom('room-1', RoomContentSearchParams::default());
 
         $this->assertCount(2, $videos);
         $this->assertContainsOnlyInstancesOf(RoomVideo::class, $videos);
@@ -107,8 +108,8 @@ class InMemoryRoomVideoRepoTest extends TestCase
         $this->repo->addVideo('room-1', $videoId, 'Room 1 Video');
         $this->repo->addVideo('room-2', $videoId, 'Room 2 Video');
 
-        $room1Videos = $this->repo->getVideosForRoom('room-1');
-        $room2Videos = $this->repo->getVideosForRoom('room-2');
+        $room1Videos = $this->repo->getVideosForRoom('room-1', RoomContentSearchParams::default());
+        $room2Videos = $this->repo->getVideosForRoom('room-2', RoomContentSearchParams::default());
 
         $this->assertCount(1, $room1Videos);
         $this->assertCount(1, $room2Videos);
@@ -160,7 +161,7 @@ class InMemoryRoomVideoRepoTest extends TestCase
 
     public function test_getVideosForRoomWithTags_returns_empty_initially(): void
     {
-        $withTags = $this->repo->getVideosForRoomWithTags('room-1');
+        $withTags = $this->repo->getVideosForRoomWithTags('room-1', RoomContentSearchParams::default());
 
         $this->assertSame([], $withTags);
     }
@@ -170,7 +171,7 @@ class InMemoryRoomVideoRepoTest extends TestCase
         $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
         $this->repo->addVideo('room-1', $videoId, 'My Video');
 
-        $withTags = $this->repo->getVideosForRoomWithTags('room-1');
+        $withTags = $this->repo->getVideosForRoomWithTags('room-1', RoomContentSearchParams::default());
 
         $this->assertCount(1, $withTags);
         $this->assertInstanceOf(RoomVideoWithTags::class, $withTags[0]);
@@ -191,7 +192,7 @@ class InMemoryRoomVideoRepoTest extends TestCase
         $roomTag = $this->roomTagRepo->createTag('room-1', $tagParams);
         $this->roomVideoTagRepo->setTagsForRoomVideo($roomVideo->id, [$roomTag->tag_id]);
 
-        $withTags = $this->repo->getVideosForRoomWithTags('room-1');
+        $withTags = $this->repo->getVideosForRoomWithTags('room-1', RoomContentSearchParams::default());
 
         $this->assertCount(1, $withTags);
         $this->assertCount(1, $withTags[0]->tags);
@@ -205,7 +206,7 @@ class InMemoryRoomVideoRepoTest extends TestCase
 
         $this->roomVideoTagRepo->setTagsForRoomVideo($roomVideo->id, ['nonexistent-tag-id']);
 
-        $withTags = $this->repo->getVideosForRoomWithTags('room-1');
+        $withTags = $this->repo->getVideosForRoomWithTags('room-1', RoomContentSearchParams::default());
 
         $this->assertCount(1, $withTags);
         $this->assertSame([], $withTags[0]->tags);
@@ -274,5 +275,88 @@ class InMemoryRoomVideoRepoTest extends TestCase
     {
         $this->expectException(ContentNotFoundException::class);
         $this->repo->updateTitleAndDescription('room-1', 'nonexistent-id', 'Title', null);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::getVideosForRoom
+     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::filterVideosBySearch
+     */
+    public function test_getVideosForRoom_filters_by_title(): void
+    {
+        $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
+        $this->repo->addVideo('room-1', $videoId, 'First video');
+        $this->repo->addVideo('room-1', $videoId, 'Report with unique slug here');
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['title' => 'unique slug']));
+        $videos = $this->repo->getVideosForRoom('room-1', $search);
+
+        $this->assertCount(1, $videos);
+        $this->assertSame('Report with unique slug here', $videos[0]->title);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::getVideosForRoom
+     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::filterVideosBySearch
+     */
+    public function test_getVideosForRoom_filters_by_created_at_after(): void
+    {
+        $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
+        $this->repo->addVideo('room-1', $videoId, 'Video');
+
+        $future = (new \DateTimeImmutable('now'))->modify('+1 day')->format('Y-m-d H:i:s');
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_after' => $future]));
+        $videos = $this->repo->getVideosForRoom('room-1', $search);
+
+        $this->assertCount(0, $videos);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::getVideosForRoom
+     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::filterVideosBySearch
+     */
+    public function test_getVideosForRoom_filters_by_created_at_before(): void
+    {
+        $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
+        $this->repo->addVideo('room-1', $videoId, 'Video');
+
+        $past = (new \DateTimeImmutable('now'))->modify('-1 day')->format('Y-m-d H:i:s');
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_before' => $past]));
+        $videos = $this->repo->getVideosForRoom('room-1', $search);
+
+        $this->assertCount(0, $videos);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::getVideosForRoom
+     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::filterVideosBySearch
+     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::setDocumentTimestampForRoomVideo
+     */
+    public function test_getVideosForRoom_filters_by_document_timestamp_after(): void
+    {
+        $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
+        $roomVideo = $this->repo->addVideo('room-1', $videoId, 'Video');
+        $this->repo->setDocumentTimestampForRoomVideo($roomVideo->id, new \DateTimeImmutable('2024-06-01 12:00:00'));
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['document_timestamp_after' => '2024-06-02 00:00:00']));
+        $videos = $this->repo->getVideosForRoom('room-1', $search);
+
+        $this->assertCount(0, $videos);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::getVideosForRoom
+     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::filterVideosBySearch
+     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::setDocumentTimestampForRoomVideo
+     */
+    public function test_getVideosForRoom_filters_by_document_timestamp_before(): void
+    {
+        $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
+        $roomVideo = $this->repo->addVideo('room-1', $videoId, 'Video');
+        $this->repo->setDocumentTimestampForRoomVideo($roomVideo->id, new \DateTimeImmutable('2024-06-15 12:00:00'));
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['document_timestamp_before' => '2024-06-01 00:00:00']));
+        $videos = $this->repo->getVideosForRoom('room-1', $search);
+
+        $this->assertCount(0, $videos);
     }
 }

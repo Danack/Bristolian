@@ -5,6 +5,7 @@ namespace Bristolian\Repo\RoomVideoRepo;
 use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\RoomVideo;
 use Bristolian\Model\Types\RoomVideoWithTags;
+use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Repo\RoomTagRepo\RoomTagRepo;
 use Bristolian\Repo\RoomVideoTagRepo\RoomVideoTagRepo;
 use Bristolian\Repo\VideoRepo\VideoRepo;
@@ -25,7 +26,7 @@ class InMemoryRoomVideoRepo implements RoomVideoRepo
     /**
      * @return RoomVideo[]
      */
-    public function getVideosForRoom(string $room_id): array
+    public function getVideosForRoom(string $room_id, RoomContentSearchParams $search): array
     {
         $results = [];
         foreach ($this->roomVideos as $roomVideo) {
@@ -33,16 +34,17 @@ class InMemoryRoomVideoRepo implements RoomVideoRepo
                 $results[] = $roomVideo;
             }
         }
-        usort($results, fn ($a, $b) => $a->created_at <=> $b->created_at);
-        return $results;
+        $results = $this->filterVideosBySearch($results, $search);
+        usort($results, fn ($a, $b) => $b->created_at <=> $a->created_at);
+        return array_slice($results, 0, $search->getLimit());
     }
 
     /**
      * @return RoomVideoWithTags[]
      */
-    public function getVideosForRoomWithTags(string $room_id): array
+    public function getVideosForRoomWithTags(string $room_id, RoomContentSearchParams $search): array
     {
-        $videos = $this->getVideosForRoom($room_id);
+        $videos = $this->getVideosForRoom($room_id, $search);
 
         $roomTags = $this->roomTagRepo->getTagsForRoom($room_id);
         $roomTagsById = [];
@@ -161,5 +163,53 @@ class InMemoryRoomVideoRepo implements RoomVideoRepo
             document_timestamp: $roomVideo->document_timestamp
         );
         $this->roomVideos[$room_video_id] = $updated;
+    }
+
+    /**
+     * Set document_timestamp for a room video (for testing filter behaviour).
+     * Call after addVideo/addClip; the video must already exist.
+     */
+    public function setDocumentTimestampForRoomVideo(string $room_video_id, \DateTimeInterface $documentTimestamp): void
+    {
+        $roomVideo = $this->getRoomVideo($room_video_id);
+        $updated = new RoomVideo(
+            id: $roomVideo->id,
+            room_id: $roomVideo->room_id,
+            video_id: $roomVideo->video_id,
+            title: $roomVideo->title,
+            description: $roomVideo->description,
+            start_seconds: $roomVideo->start_seconds,
+            end_seconds: $roomVideo->end_seconds,
+            created_at: $roomVideo->created_at,
+            document_timestamp: $documentTimestamp
+        );
+        $this->roomVideos[$room_video_id] = $updated;
+    }
+
+    /**
+     * @param RoomVideo[] $videos
+     * @return RoomVideo[]
+     */
+    private function filterVideosBySearch(array $videos, RoomContentSearchParams $search): array
+    {
+        return array_filter($videos, function (RoomVideo $video) use ($search): bool {
+            $title = $video->title ?? '';
+            if ($search->title !== null && $search->title !== '' && stripos($title, $search->title) === false) {
+                return false;
+            }
+            if ($search->created_at_after !== null && $video->created_at < $search->created_at_after) {
+                return false;
+            }
+            if ($search->created_at_before !== null && $video->created_at > $search->created_at_before) {
+                return false;
+            }
+            if ($search->document_timestamp_after !== null && $video->document_timestamp !== null && $video->document_timestamp < $search->document_timestamp_after) {
+                return false;
+            }
+            if ($search->document_timestamp_before !== null && $video->document_timestamp !== null && $video->document_timestamp > $search->document_timestamp_before) {
+                return false;
+            }
+            return true;
+        });
     }
 }

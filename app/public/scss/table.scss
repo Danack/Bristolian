@@ -49,3 +49,38 @@ table.large_table {
     background: rgba(230, 230, 230, 0.5)
   }
 }
+
+.room_content_search_form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="number"] {
+    min-width: 8rem;
+  }
+
+  .room_search_tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+
+    legend {
+      width: 100%;
+    }
+  }
+
+  .room_search_actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+}

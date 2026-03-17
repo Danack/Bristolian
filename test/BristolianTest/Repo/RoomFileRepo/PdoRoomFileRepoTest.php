@@ -2,13 +2,19 @@
 
 namespace BristolianTest\Repo\RoomFileRepo;
 
+use Bristolian\Parameters\RoomContentSearchParams;
+use Bristolian\Parameters\TagParams;
+use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
+use Bristolian\Repo\RoomFileTagRepo\PdoRoomFileTagRepo;
+use Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
 use Bristolian\Model\Generated\RoomFileObjectInfo;
 use Bristolian\Model\Generated\Room;
+use VarMap\ArrayVarMap;
 
 /**
  * @group db
@@ -55,17 +61,17 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
 
         // Check room has no files listed
-        $files = $roomFileRepo->getFilesForRoom($room->id);
+        $files = $roomFileRepo->getFilesForRoom($room->id, RoomContentSearchParams::default());
         $this->assertEmpty($files);
 
         // Check adding files works
         $roomFileRepo->addFileToRoom($file_id, $room->id);
-        $files = $roomFileRepo->getFilesForRoom($room->id);
+        $files = $roomFileRepo->getFilesForRoom($room->id, RoomContentSearchParams::default());
         $this->assertCount(1, $files);
         $this->assertInstanceOf(\Bristolian\Model\Types\RoomFileInRoom::class, $files[0]);
 
         // Check other room still has no files listed
-        $files = $roomFileRepo->getFilesForRoom("some other room");
+        $files = $roomFileRepo->getFilesForRoom("some other room", RoomContentSearchParams::default());
         $this->assertEmpty($files);
     }
 
@@ -76,7 +82,7 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
     {
         $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
 
-        $files = $roomFileRepo->getFilesForRoom('nonexistent-room-id');
+        $files = $roomFileRepo->getFilesForRoom('nonexistent-room-id', RoomContentSearchParams::default());
 
         $this->assertIsArray($files);
         $this->assertEmpty($files);
@@ -98,7 +104,7 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo->addFileToRoom($file_id_2, $room->id);
         $roomFileRepo->addFileToRoom($file_id_3, $room->id);
 
-        $files = $roomFileRepo->getFilesForRoom($room->id);
+        $files = $roomFileRepo->getFilesForRoom($room->id, RoomContentSearchParams::default());
 
         $this->assertCount(3, $files);
         $this->assertContainsOnlyInstancesOf(\Bristolian\Model\Types\RoomFileInRoom::class, $files);
@@ -119,8 +125,8 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo->addFileToRoom($file_id_1, $room1->id);
         $roomFileRepo->addFileToRoom($file_id_2, $room2->id);
 
-        $room1_files = $roomFileRepo->getFilesForRoom($room1->id);
-        $room2_files = $roomFileRepo->getFilesForRoom($room2->id);
+        $room1_files = $roomFileRepo->getFilesForRoom($room1->id, RoomContentSearchParams::default());
+        $room2_files = $roomFileRepo->getFilesForRoom($room2->id, RoomContentSearchParams::default());
 
         $this->assertCount(1, $room1_files);
         $this->assertCount(1, $room2_files);
@@ -140,7 +146,7 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
 
         $roomFileRepo->addFileToRoom($file_id, $room->id);
-        $files = $roomFileRepo->getFilesForRoom($room->id);
+        $files = $roomFileRepo->getFilesForRoom($room->id, RoomContentSearchParams::default());
 
         $file = $files[0];
         $this->assertIsInt($file->size);
@@ -208,7 +214,7 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
 
         $roomFileRepo->addFileToRoom($file_id, $room->id);
 
-        $files_list = $roomFileRepo->getFilesForRoom($room->id);
+        $files_list = $roomFileRepo->getFilesForRoom($room->id, RoomContentSearchParams::default());
         $file_from_list = $files_list[0];
 
         $file_details = $roomFileRepo->getFileDetails($room->id, $file_id);
@@ -236,8 +242,8 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo->addFileToRoom($file_id, $room1->id);
         $roomFileRepo->addFileToRoom($file_id, $room2->id);
 
-        $room1_files = $roomFileRepo->getFilesForRoom($room1->id);
-        $room2_files = $roomFileRepo->getFilesForRoom($room2->id);
+        $room1_files = $roomFileRepo->getFilesForRoom($room1->id, RoomContentSearchParams::default());
+        $room2_files = $roomFileRepo->getFilesForRoom($room2->id, RoomContentSearchParams::default());
 
         // Both rooms should have the file
         $this->assertCount(1, $room1_files);
@@ -245,4 +251,144 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($file_id, $room1_files[0]->id);
         $this->assertSame($file_id, $room2_files[0]->id);
     }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
+     */
+    public function test_getFilesForRoom_filters_by_title(): void
+    {
+        [$room, $user] = $this->createTestUserAndRoom();
+        $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
+        $path = __DIR__ . '/../../../sample.pdf';
+        $uploadedFile = new UploadedFile($path, (int) filesize($path), 'report_unique_title_slug.pdf', 0);
+        $fileId = $this->world()->roomFileObjectInfoRepo()->createRoomFileObjectInfo(
+            $user->getUserId(),
+            'r_uniq.pdf',
+            $uploadedFile
+        );
+        $this->world()->roomFileObjectInfoRepo()->setRoomFileObjectUploaded($fileId);
+        $roomFileRepo->addFileToRoom($fileId, $room->id);
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['title' => 'unique_title_slug']));
+        $files = $roomFileRepo->getFilesForRoom($room->id, $search);
+
+        $this->assertCount(1, $files);
+        $this->assertSame($fileId, $files[0]->id);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
+     */
+    public function test_getFilesForRoom_filters_by_created_at_after(): void
+    {
+        [$room, $user] = $this->createTestUserAndRoom();
+        $fileId = $this->createTestFile($user);
+        $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
+        $roomFileRepo->addFileToRoom($fileId, $room->id);
+
+        $future = (new \DateTimeImmutable('now'))->modify('+1 day')->format('Y-m-d H:i:s');
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_after' => $future]));
+        $files = $roomFileRepo->getFilesForRoom($room->id, $search);
+
+        $this->assertCount(0, $files);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
+     */
+    public function test_getFilesForRoom_filters_by_created_at_before(): void
+    {
+        [$room, $user] = $this->createTestUserAndRoom();
+        $fileId = $this->createTestFile($user);
+        $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
+        $roomFileRepo->addFileToRoom($fileId, $room->id);
+
+        $past = (new \DateTimeImmutable('now'))->modify('-1 day')->format('Y-m-d H:i:s');
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_before' => $past]));
+        $files = $roomFileRepo->getFilesForRoom($room->id, $search);
+
+        $this->assertCount(0, $files);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
+     */
+    public function test_getFilesForRoom_filters_by_document_timestamp_after(): void
+    {
+        [$room, $user] = $this->createTestUserAndRoom();
+        $fileId = $this->createTestFile($user);
+        $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
+        $roomFileRepo->addFileToRoom($fileId, $room->id);
+
+        $pdoSimple = $this->injector->make(PdoSimple::class);
+        $pdoSimple->execute(
+            'UPDATE room_file SET document_timestamp = :ts WHERE room_id = :room_id AND stored_file_id = :stored_file_id',
+            [
+                ':ts' => '2024-06-01 12:00:00',
+                ':room_id' => $room->id,
+                ':stored_file_id' => $fileId,
+            ]
+        );
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap([
+            'document_timestamp_after' => '2024-06-02 00:00:00',
+        ]));
+        $files = $roomFileRepo->getFilesForRoom($room->id, $search);
+
+        $this->assertCount(0, $files);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
+     */
+    public function test_getFilesForRoom_filters_by_document_timestamp_before(): void
+    {
+        [$room, $user] = $this->createTestUserAndRoom();
+        $fileId = $this->createTestFile($user);
+        $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
+        $roomFileRepo->addFileToRoom($fileId, $room->id);
+
+        $pdoSimple = $this->injector->make(PdoSimple::class);
+        $pdoSimple->execute(
+            'UPDATE room_file SET document_timestamp = :ts WHERE room_id = :room_id AND stored_file_id = :stored_file_id',
+            [
+                ':ts' => '2024-06-15 12:00:00',
+                ':room_id' => $room->id,
+                ':stored_file_id' => $fileId,
+            ]
+        );
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap([
+            'document_timestamp_before' => '2024-06-01 00:00:00',
+        ]));
+        $files = $roomFileRepo->getFilesForRoom($room->id, $search);
+
+        $this->assertCount(0, $files);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
+     */
+    public function test_getFilesForRoom_filters_by_tag_ids(): void
+    {
+        [$room, $user] = $this->createTestUserAndRoom();
+        $fileId = $this->createTestFile($user);
+        $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
+        $roomFileRepo->addFileToRoom($fileId, $room->id);
+
+        $roomTagRepo = $this->injector->make(PdoRoomTagRepo::class);
+        $tag = $roomTagRepo->createTag($room->id, TagParams::createFromVarMap(new ArrayVarMap([
+            'text' => 'file-tag-' . create_test_uniqid(),
+            'description' => 'Tag for file filter test',
+        ])));
+        $roomFileTagRepo = $this->injector->make(PdoRoomFileTagRepo::class);
+        $roomFileTagRepo->setTagsForRoomFile($room->id, $fileId, [$tag->tag_id]);
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['tag_ids' => $tag->tag_id]));
+        $files = $roomFileRepo->getFilesForRoom($room->id, $search);
+
+        $this->assertCount(1, $files);
+        $this->assertSame($fileId, $files[0]->id);
+    }
+
 }

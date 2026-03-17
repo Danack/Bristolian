@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\RoomLinkRepo;
 
+use Bristolian\Model\Generated\RoomLink;
 use Bristolian\Parameters\LinkParam;
+use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Repo\LinkRepo\LinkRepo;
 use Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
@@ -80,7 +82,7 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
     {
         $this->initInMemoryFakes();
         $roomLinkRepo = $this->injector->make(FakeRoomLinkRepo::class);
-        $roomLinks = $roomLinkRepo->getLinksForRoom('12345');
+        $roomLinks = $roomLinkRepo->getLinksForRoom('12345', RoomContentSearchParams::default());
 
         $this->assertEmpty($roomLinks);
     }
@@ -101,7 +103,7 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
             'description' => 'Description text here',
         ]));
         $repo->addLinkToRoomFromParam('user-1', $room_id, $params);
-        $links = $repo->getLinksForRoom($room_id);
+        $links = $repo->getLinksForRoom($room_id, RoomContentSearchParams::default());
         $this->assertCount(1, $links);
         $last = $repo->getLastAddedLink();
         $this->assertNotNull($last);
@@ -126,5 +128,102 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
         $repo = new FakeRoomLinkRepo($linkRepo);
         $this->assertNull($repo->getRoomLink('nonexistent-link-id'));
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::filterLinksBySearch
+     */
+    public function test_getLinksForRoom_filters_by_title(): void
+    {
+        $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
+        $repo = new FakeRoomLinkRepo($linkRepo);
+        $roomId = 'room-1';
+        $repo->addLinkToRoomFromParam('user-1', $roomId, LinkParam::createFromVarMap(new ArrayVarMap([
+            'url' => 'https://example.com/a',
+            'title' => 'First link',
+        ])));
+        $repo->addLinkToRoomFromParam('user-1', $roomId, LinkParam::createFromVarMap(new ArrayVarMap([
+            'url' => 'https://example.com/b',
+            'title' => 'Report with unique slug here',
+        ])));
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['title' => 'unique slug']));
+        $links = $repo->getLinksForRoom($roomId, $search);
+
+        $this->assertCount(1, $links);
+        $this->assertSame('Report with unique slug here', $links[0]->title);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::filterLinksBySearch
+     */
+    public function test_getLinksForRoom_filters_by_created_at_after(): void
+    {
+        $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
+        $repo = new FakeRoomLinkRepo($linkRepo);
+        $roomId = 'room-1';
+        $repo->addLinkToRoomFromParam('user-1', $roomId, LinkParam::createFromVarMap(new ArrayVarMap(['url' => 'https://example.com'])));
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_after' => '2010-01-29 00:00:00']));
+        $links = $repo->getLinksForRoom($roomId, $search);
+
+        $this->assertCount(0, $links);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::filterLinksBySearch
+     */
+    public function test_getLinksForRoom_filters_by_created_at_before(): void
+    {
+        $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
+        $repo = new FakeRoomLinkRepo($linkRepo);
+        $roomId = 'room-1';
+        $repo->addLinkToRoomFromParam('user-1', $roomId, LinkParam::createFromVarMap(new ArrayVarMap(['url' => 'https://example.com'])));
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_before' => '2010-01-27 00:00:00']));
+        $links = $repo->getLinksForRoom($roomId, $search);
+
+        $this->assertCount(0, $links);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::filterLinksBySearch
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::setDocumentTimestampForRoomLink
+     */
+    public function test_getLinksForRoom_filters_by_document_timestamp_after(): void
+    {
+        $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
+        $repo = new FakeRoomLinkRepo($linkRepo);
+        $roomId = 'room-1';
+        $roomLinkId = $repo->addLinkToRoomFromParam('user-1', $roomId, LinkParam::createFromVarMap(new ArrayVarMap(['url' => 'https://example.com'])));
+        $repo->setDocumentTimestampForRoomLink($roomLinkId, new \DateTimeImmutable('2024-06-01 12:00:00'));
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['document_timestamp_after' => '2024-06-02 00:00:00']));
+        $links = $repo->getLinksForRoom($roomId, $search);
+
+        $this->assertCount(0, $links);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::filterLinksBySearch
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::setDocumentTimestampForRoomLink
+     */
+    public function test_getLinksForRoom_filters_by_document_timestamp_before(): void
+    {
+        $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
+        $repo = new FakeRoomLinkRepo($linkRepo);
+        $roomId = 'room-1';
+        $roomLinkId = $repo->addLinkToRoomFromParam('user-1', $roomId, LinkParam::createFromVarMap(new ArrayVarMap(['url' => 'https://example.com'])));
+        $repo->setDocumentTimestampForRoomLink($roomLinkId, new \DateTimeImmutable('2024-06-15 12:00:00'));
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['document_timestamp_before' => '2024-06-01 00:00:00']));
+        $links = $repo->getLinksForRoom($roomId, $search);
+
+        $this->assertCount(0, $links);
     }
 }

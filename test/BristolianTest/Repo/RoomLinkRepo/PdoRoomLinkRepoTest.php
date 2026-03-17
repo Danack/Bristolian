@@ -4,13 +4,19 @@ namespace BristolianTest\Repo\RoomLinkRepo;
 
 use Bristolian\Exception\BristolianException;
 use Bristolian\Parameters\LinkParam;
+use Bristolian\Parameters\RoomContentSearchParams;
+use Bristolian\Parameters\TagParams;
+use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Repo\LinkRepo\LinkRepo;
+use Bristolian\Repo\LinkRepo\PdoLinkRepo;
 use Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
-use Bristolian\Repo\LinkRepo\PdoLinkRepo;
+use Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo;
+use Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
 use Bristolian\Model\Generated\RoomLink;
-use Bristolian\Repo\LinkRepo\LinkRepo;
+use VarMap\ArrayVarMap;
 
 /**
  * @group db
@@ -123,7 +129,7 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $roomLinkRepo = $this->injector->make(PdoRoomLinkRepo::class);
 
         // Initially room should have no links
-        $roomLinks = $roomLinkRepo->getLinksForRoom($room->id);
+        $roomLinks = $roomLinkRepo->getLinksForRoom($room->id, \Bristolian\Parameters\RoomContentSearchParams::default());
         $this->assertEmpty($roomLinks);
 
         // Add first link
@@ -151,7 +157,7 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         );
 
         // Retrieve all links for the room
-        $roomLinks = $roomLinkRepo->getLinksForRoom($room->id);
+        $roomLinks = $roomLinkRepo->getLinksForRoom($room->id, \Bristolian\Parameters\RoomContentSearchParams::default());
 
         $this->assertCount(2, $roomLinks);
         $this->assertContainsOnlyInstancesOf(RoomLink::class, $roomLinks);
@@ -178,7 +184,7 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $roomLinkRepo = $this->injector->make(PdoRoomLinkRepo::class);
 
         // Try to get links for a room that doesn't exist
-        $roomLinks = $roomLinkRepo->getLinksForRoom('non-existent-room-id');
+        $roomLinks = $roomLinkRepo->getLinksForRoom('non-existent-room-id', \Bristolian\Parameters\RoomContentSearchParams::default());
 
         $this->assertEmpty($roomLinks);
     }
@@ -236,7 +242,129 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertSame($room->id, $link2->room_id);
 
         // Verify both appear in the room's links
-        $roomLinks = $roomLinkRepo->getLinksForRoom($room->id);
+        $roomLinks = $roomLinkRepo->getLinksForRoom($room->id, RoomContentSearchParams::default());
         $this->assertCount(2, $roomLinks);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
+     */
+    public function test_getLinksForRoom_filters_by_title(): void
+    {
+        $this->initPdoTestObjects();
+        [$room, $user] = $this->createTestUserAndRoom();
+        $roomLinkRepo = $this->injector->make(PdoRoomLinkRepo::class);
+        $roomLinkRepo->addLinkToRoomFromParam($user->getUserId(), $room->id, LinkParam::createFromArray([
+            'url' => $this->getTestLink(),
+            'title' => 'Report unique_title_slug ' . create_test_uniqid(),
+        ]));
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['title' => 'unique_title_slug']));
+        $links = $roomLinkRepo->getLinksForRoom($room->id, $search);
+
+        $this->assertCount(1, $links);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
+     */
+    public function test_getLinksForRoom_filters_by_created_at_after(): void
+    {
+        $this->initPdoTestObjects();
+        [$room, $user] = $this->createTestUserAndRoom();
+        $roomLinkRepo = $this->injector->make(PdoRoomLinkRepo::class);
+        $roomLinkRepo->addLinkToRoomFromParam($user->getUserId(), $room->id, LinkParam::createFromArray(['url' => $this->getTestLink()]));
+
+        $future = (new \DateTimeImmutable('now'))->modify('+1 day')->format('Y-m-d H:i:s');
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_after' => $future]));
+        $links = $roomLinkRepo->getLinksForRoom($room->id, $search);
+
+        $this->assertCount(0, $links);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
+     */
+    public function test_getLinksForRoom_filters_by_created_at_before(): void
+    {
+        $this->initPdoTestObjects();
+        [$room, $user] = $this->createTestUserAndRoom();
+        $roomLinkRepo = $this->injector->make(PdoRoomLinkRepo::class);
+        $roomLinkRepo->addLinkToRoomFromParam($user->getUserId(), $room->id, LinkParam::createFromArray(['url' => $this->getTestLink()]));
+
+        $past = (new \DateTimeImmutable('now'))->modify('-1 day')->format('Y-m-d H:i:s');
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_before' => $past]));
+        $links = $roomLinkRepo->getLinksForRoom($room->id, $search);
+
+        $this->assertCount(0, $links);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
+     */
+    public function test_getLinksForRoom_filters_by_document_timestamp_after(): void
+    {
+        $this->initPdoTestObjects();
+        [$room, $user] = $this->createTestUserAndRoom();
+        $roomLinkRepo = $this->injector->make(PdoRoomLinkRepo::class);
+        $roomLinkId = $roomLinkRepo->addLinkToRoomFromParam($user->getUserId(), $room->id, LinkParam::createFromArray(['url' => $this->getTestLink()]));
+
+        $pdoSimple = $this->injector->make(PdoSimple::class);
+        $pdoSimple->execute(
+            'UPDATE room_link SET document_timestamp = :ts WHERE id = :id',
+            [':ts' => '2024-06-01 12:00:00', ':id' => $roomLinkId]
+        );
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['document_timestamp_after' => '2024-06-02 00:00:00']));
+        $links = $roomLinkRepo->getLinksForRoom($room->id, $search);
+
+        $this->assertCount(0, $links);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
+     */
+    public function test_getLinksForRoom_filters_by_document_timestamp_before(): void
+    {
+        $this->initPdoTestObjects();
+        [$room, $user] = $this->createTestUserAndRoom();
+        $roomLinkRepo = $this->injector->make(PdoRoomLinkRepo::class);
+        $roomLinkId = $roomLinkRepo->addLinkToRoomFromParam($user->getUserId(), $room->id, LinkParam::createFromArray(['url' => $this->getTestLink()]));
+
+        $pdoSimple = $this->injector->make(PdoSimple::class);
+        $pdoSimple->execute(
+            'UPDATE room_link SET document_timestamp = :ts WHERE id = :id',
+            [':ts' => '2024-06-15 12:00:00', ':id' => $roomLinkId]
+        );
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['document_timestamp_before' => '2024-06-01 00:00:00']));
+        $links = $roomLinkRepo->getLinksForRoom($room->id, $search);
+
+        $this->assertCount(0, $links);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
+     */
+    public function test_getLinksForRoom_filters_by_tag_ids(): void
+    {
+        $this->initPdoTestObjects();
+        [$room, $user] = $this->createTestUserAndRoom();
+        $roomLinkRepo = $this->injector->make(PdoRoomLinkRepo::class);
+        $roomLinkId = $roomLinkRepo->addLinkToRoomFromParam($user->getUserId(), $room->id, LinkParam::createFromArray(['url' => $this->getTestLink()]));
+
+        $roomTagRepo = $this->injector->make(PdoRoomTagRepo::class);
+        $tag = $roomTagRepo->createTag($room->id, TagParams::createFromVarMap(new ArrayVarMap([
+            'text' => 'link-tag-' . create_test_uniqid(),
+            'description' => 'Tag for link filter test',
+        ])));
+        $roomLinkTagRepo = $this->injector->make(PdoRoomLinkTagRepo::class);
+        $roomLinkTagRepo->setTagsForRoomLink($roomLinkId, [$tag->tag_id]);
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['tag_ids' => $tag->tag_id]));
+        $links = $roomLinkRepo->getLinksForRoom($room->id, $search);
+
+        $this->assertCount(1, $links);
+        $this->assertSame($roomLinkId, $links[0]->id);
     }
 }

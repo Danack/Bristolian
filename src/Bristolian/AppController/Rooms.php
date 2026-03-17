@@ -20,6 +20,7 @@ use Bristolian\Parameters\AddVideoParam;
 use Bristolian\Parameters\CreateClipParam;
 use Bristolian\Parameters\UpdateRoomVideoParam;
 use Bristolian\Parameters\LinkParam;
+use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Parameters\SetEntityTagsParam;
 use Bristolian\Parameters\TagParams;
 use Bristolian\Parameters\AnnotationHighlightParam;
@@ -154,9 +155,10 @@ class Rooms
         RoomFileRepo $roomfileRepo,
         RoomFileTagRepo $roomFileTagRepo,
         RoomTagRepo $roomTagRepo,
-        string $room_id
+        string $room_id,
+        RoomContentSearchParams $search
     ): GetRoomsFilesResponse {
-        $files = $roomfileRepo->getFilesForRoom($room_id);
+        $files = $roomfileRepo->getFilesForRoom($room_id, $search);
         $roomTags = $roomTagRepo->getTagsForRoom($room_id);
         $roomTagsById = [];
         foreach ($roomTags as $tag) {
@@ -192,9 +194,10 @@ class Rooms
         RoomLinkRepo $roomLinkRepo,
         RoomLinkTagRepo $roomLinkTagRepo,
         RoomTagRepo $roomTagRepo,
-        string $room_id
+        string $room_id,
+        RoomContentSearchParams $search
     ): GetRoomsLinksResponse {
-        $links = $roomLinkRepo->getLinksForRoom($room_id);
+        $links = $roomLinkRepo->getLinksForRoom($room_id, $search);
         $roomTags = $roomTagRepo->getTagsForRoom($room_id);
         $roomTagsById = [];
         foreach ($roomTags as $tag) {
@@ -220,9 +223,10 @@ class Rooms
 
     public function getVideos(
         RoomVideoRepo $roomVideoRepo,
-        string $room_id
+        string $room_id,
+        RoomContentSearchParams $search
     ): GetRoomsVideosResponse {
-        return new GetRoomsVideosResponse($roomVideoRepo->getVideosForRoomWithTags($room_id));
+        return new GetRoomsVideosResponse($roomVideoRepo->getVideosForRoomWithTags($room_id, $search));
     }
 
     public function addVideo(
@@ -320,17 +324,7 @@ class Rooms
         string $room_id,
         string $room_video_id
     ): SuccessResponse {
-        $videos = $roomVideoRepo->getVideosForRoom($room_id);
-        $found = false;
-        foreach ($videos as $v) {
-            if ($v->id === $room_video_id) {
-                $found = true;
-                break;
-            }
-        }
-        if (!$found) {
-            throw ContentNotFoundException::room_video_not_found($room_id, $room_video_id);
-        }
+        $roomVideoRepo->getRoomVideoForRoom($room_id, $room_video_id);
         $param = SetEntityTagsParam::fromArray($jsonInput->getData());
         $roomTags = $roomTagRepo->getTagsForRoom($room_id);
         $validIds = [];

@@ -630,20 +630,10 @@ values (
 )
 SQL) => ['read' => [], 'write' => ['room_file']],
 
-            trim(<<<SQL
-select
-    sf.id,
-    sf.normalized_name,
-    sf.original_filename,
-    sf.state,
-    sf.size,
-    sf.user_id,
-    sf.created_at,
-    rf.document_timestamp
-from room_file_object_info as sf
-left join room_file as rf on sf.id = rf.stored_file_id
-where rf.room_id = :room_id
-SQL) => ['read' => ['room_file_object_info', 'room_file'], 'write' => []],
+            trim('UPDATE room_file SET document_timestamp = :ts WHERE room_id = :room_id AND stored_file_id = :stored_file_id')
+                => ['read' => [], 'write' => ['room_file']],
+
+            // RoomFileRepo::getFilesForRoom - see getPatternMappings() (dynamic WHERE)
 
             trim(<<<SQL
 select
@@ -677,8 +667,10 @@ SQL) => ['read' => ['room_file_object_info', 'room_file'], 'write' => []],
             trim(room_link::SELECT . "where id = :id")
                 => ['read' => ['room_link'], 'write' => []],
 
-            trim(room_link::SELECT . "where room_id = :room_id")
-                => ['read' => ['room_link'], 'write' => []],
+            trim('UPDATE room_link SET document_timestamp = :ts WHERE id = :id')
+                => ['read' => [], 'write' => ['room_link']],
+
+            // RoomLinkRepo::getLinksForRoom - see getPatternMappings() (dynamic WHERE)
 
             // ===== RoomLinkTagRepo =====
             trim("SELECT tag_id FROM room_link_tag WHERE room_link_id = :room_link_id")
@@ -738,8 +730,7 @@ SQL) => ['read' => ['room'], 'write' => []],
                 => ['read' => ['room_tag'], 'write' => []],
 
             // ===== RoomVideoRepo =====
-            trim(room_video::SELECT . " where room_id = :room_id order by created_at asc")
-                => ['read' => ['room_video'], 'write' => []],
+            // RoomVideoRepo::getVideosForRoom - see getPatternMappings() (dynamic WHERE)
 
             trim(room_video_tag::SELECT . " where room_video_id = :room_video_id")
                 => ['read' => ['room_video_tag'], 'write' => []],
@@ -754,6 +745,9 @@ SQL) => ['read' => ['room'], 'write' => []],
                 => ['read' => [], 'write' => ['room_video']],
 
             trim('UPDATE room_video SET title = :title, description = :description WHERE id = :id AND room_id = :room_id')
+                => ['read' => [], 'write' => ['room_video']],
+
+            trim('UPDATE room_video SET document_timestamp = :ts WHERE id = :id')
                 => ['read' => [], 'write' => ['room_video']],
 
             // ===== RoomVideoTagRepo =====
@@ -911,6 +905,24 @@ SQL) => ['read' => [], 'write' => ['user_webpush_subscription']],
             [
                 'pattern' => '#SELECT\s+mt\.text.*COUNT\(\*\)\s+as\s+count.*FROM\s+meme_tag\s+mt.*sm\.id\s+IN\s*\(.*\).*GROUP\s+BY.*LIMIT\s+:limit#s',
                 'read' => ['meme_tag', 'stored_meme'],
+                'write' => [],
+            ],
+            // RoomFileRepo::getFilesForRoom - dynamic WHERE (title, date filters)
+            [
+                'pattern' => '#select sf\.id.*from room_file_object_info as sf left join room_file as rf on sf\.id = rf\.stored_file_id where .* order by sf\.created_at desc limit :limit#s',
+                'read' => ['room_file_object_info', 'room_file'],
+                'write' => [],
+            ],
+            // RoomLinkRepo::getLinksForRoom - dynamic WHERE (title, date filters)
+            [
+                'pattern' => '#select id, room_id, link_id, title, description, created_at, document_timestamp from room_link where .* order by created_at desc limit :limit#s',
+                'read' => ['room_link'],
+                'write' => [],
+            ],
+            // RoomVideoRepo::getVideosForRoom - dynamic WHERE (title, date filters)
+            [
+                'pattern' => '#select id, room_id, video_id, title, description, start_seconds, end_seconds, created_at, document_timestamp from room_video where .* order by created_at desc limit :limit#s',
+                'read' => ['room_video'],
                 'write' => [],
             ],
         ];

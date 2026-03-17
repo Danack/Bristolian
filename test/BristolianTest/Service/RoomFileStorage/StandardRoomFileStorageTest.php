@@ -43,7 +43,7 @@ class StandardRoomFileStorageTest extends BaseTestCase
         $info = array_values($storedFileInfo)[0];
         $this->assertMatchesRegularExpression('/\.(jpeg|jpg)$/', $info->normalized_name);
         $this->assertTrue($fileObjectStore->hasFile($info->normalized_name));
-        $filesInRoom = $roomFileRepo->getFilesForRoom('room_1');
+        $filesInRoom = $roomFileRepo->getFilesForRoom('room_1', \Bristolian\Parameters\RoomContentSearchParams::default());
         $this->assertCount(1, $filesInRoom);
     }
 

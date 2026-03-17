@@ -699,6 +699,8 @@ class GenerateFiles
 
             'CLIP_TITLE_MINIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\ClipTitle::TITLE_MINIMUM_LENGTH,
             'CLIP_TITLE_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\ClipTitle::TITLE_MAXIMUM_LENGTH,
+
+            'ROOM_CONTENT_LIST_DEFAULT_LIMIT' => \Bristolian\Parameters\RoomContentSearchParams::DEFAULT_LIMIT,
         ];
 
         $string_template = <<< TEMPLATE

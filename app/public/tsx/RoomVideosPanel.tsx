@@ -5,6 +5,8 @@ import { get_logged_in, subscribe_logged_in } from "./store";
 import { setVideoTags } from "./api_room_entity_tags";
 import { formatDateTimeForContent, spacesToNbsp } from "./functions";
 import { CLIP_TITLE_MINIMUM_LENGTH, CLIP_TITLE_MAXIMUM_LENGTH } from "./generated/constants";
+import { fetchRoomVideos, RoomContentSearchParams } from "./api_room_content_list";
+import { ROOM_CONTENT_LIST_DEFAULT_LIMIT } from "./generated/constants";
 
 /** Set to true when transcript fetching is fixed. */
 const TRANSCRIPT_ENABLED = false;
@@ -141,6 +143,13 @@ interface RoomVideosPanelState {
     roomTags: RoomTag[];
     selectedTagIds: Set<string>;
     tagsSaveInProgress: boolean;
+    searchTitle: string;
+    searchCreatedAfter: string;
+    searchCreatedBefore: string;
+    searchDocAfter: string;
+    searchDocBefore: string;
+    searchTagIds: Set<string>;
+    searchLimit: number;
     addUrl: string;
     addTitle: string;
     addDescription: string;
@@ -185,6 +194,13 @@ function getDefaultState(): RoomVideosPanelState {
         roomTags: [],
         selectedTagIds: new Set(),
         tagsSaveInProgress: false,
+        searchTitle: "",
+        searchCreatedAfter: "",
+        searchCreatedBefore: "",
+        searchDocAfter: "",
+        searchDocBefore: "",
+        searchTagIds: new Set(),
+        searchLimit: ROOM_CONTENT_LIST_DEFAULT_LIMIT,
         addUrl: "",
         addTitle: "",
         addDescription: "",
@@ -232,9 +248,19 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
 
     componentDidMount() {
         this.refreshVideos();
+        this.loadRoomTags();
         this.unsubscribe_logged_in = subscribe_logged_in((logged_in: boolean) => {
             this.setState({ logged_in });
         });
+    }
+
+    loadRoomTags() {
+        api.rooms.tags(this.props.room_id)
+            .then((data) => {
+                const roomTags = data.data.tags.map((t) => createRoomTag(t));
+                this.setState({ roomTags });
+            })
+            .catch(() => this.setState({ roomTags: [] }));
     }
 
     componentDidUpdate(prevProps: RoomVideosPanelProps, prevState: RoomVideosPanelState) {
@@ -441,16 +467,52 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                     }
                     this.setState({ addVideoPreview: null, addUrl: "", addTitle: "", addDescription: "" });
                     this.destroyYouTubePlayer();
-                    this.refreshVideos(true);
+                    this.refreshVideos();
                 });
             })
             .catch((err) => this.setState({ addError: String(err) }));
     }
 
-    refreshVideos(cacheBust?: boolean) {
-        api.rooms.videos(this.props.room_id, cacheBust ? { cacheBust: true } : undefined)
+    buildSearchParams(): RoomContentSearchParams {
+        const s = this.state;
+        return {
+            limit: s.searchLimit,
+            title: s.searchTitle.trim() || undefined,
+            created_at_after: s.searchCreatedAfter.trim() || undefined,
+            created_at_before: s.searchCreatedBefore.trim() || undefined,
+            document_timestamp_after: s.searchDocAfter.trim() || undefined,
+            document_timestamp_before: s.searchDocBefore.trim() || undefined,
+            tag_ids: s.searchTagIds.size > 0 ? Array.from(s.searchTagIds) : undefined,
+        };
+    }
+
+    refreshVideos() {
+        fetchRoomVideos(this.props.room_id, this.buildSearchParams())
             .then((data: GetRoomsVideosResponse) => this.processData(data))
             .catch((err) => this.setState({ error: String(err) }));
+    }
+
+    onSearch = () => {
+        this.refreshVideos();
+    };
+
+    onClearSearch = () => {
+        this.setState({
+            searchTitle: "",
+            searchCreatedAfter: "",
+            searchCreatedBefore: "",
+            searchDocAfter: "",
+            searchDocBefore: "",
+            searchTagIds: new Set(),
+            searchLimit: ROOM_CONTENT_LIST_DEFAULT_LIMIT,
+        }, () => this.refreshVideos());
+    };
+
+    toggleSearchTag(tagId: string) {
+        const next = new Set(this.state.searchTagIds);
+        if (next.has(tagId)) next.delete(tagId);
+        else next.add(tagId);
+        this.setState({ searchTagIds: next });
     }
 
     processData(data: GetRoomsVideosResponse) {
@@ -460,6 +522,35 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         }
         const videos: RoomVideoWithTags[] = data.data.videos.map((v) => createRoomVideoWithTags(v));
         this.setState({ videos, error: null });
+    }
+
+    renderSearchForm() {
+        const s = this.state;
+        return (
+            <div className="room_content_search_form">
+                <label>Title <input type="text" value={s.searchTitle} onInput={(e) => this.setState({ searchTitle: (e.target as HTMLInputElement).value })} placeholder="Filter by title" /></label>
+                <label>Created after <input type="date" value={s.searchCreatedAfter} onInput={(e) => this.setState({ searchCreatedAfter: (e.target as HTMLInputElement).value })} /></label>
+                <label>Created before <input type="date" value={s.searchCreatedBefore} onInput={(e) => this.setState({ searchCreatedBefore: (e.target as HTMLInputElement).value })} /></label>
+                <label>Document date after <input type="date" value={s.searchDocAfter} onInput={(e) => this.setState({ searchDocAfter: (e.target as HTMLInputElement).value })} /></label>
+                <label>Document date before <input type="date" value={s.searchDocBefore} onInput={(e) => this.setState({ searchDocBefore: (e.target as HTMLInputElement).value })} /></label>
+                <label>Limit <input type="number" min={1} max={1000} value={s.searchLimit} onInput={(e) => this.setState({ searchLimit: parseInt((e.target as HTMLInputElement).value, 10) || ROOM_CONTENT_LIST_DEFAULT_LIMIT })} /></label>
+                {s.roomTags.length > 0 && (
+                    <fieldset className="room_search_tags">
+                        <legend>Filter by tags (must have all)</legend>
+                        {s.roomTags.map((tag) => (
+                            <label key={tag.tag_id}>
+                                <input type="checkbox" checked={s.searchTagIds.has(tag.tag_id)} onChange={() => this.toggleSearchTag(tag.tag_id)} />
+                                {tag.text}
+                            </label>
+                        ))}
+                    </fieldset>
+                )}
+                <div className="room_search_actions">
+                    <button type="button" className="button_standard" onClick={this.onSearch}>Search</button>
+                    <button type="button" className="button_standard" onClick={this.onClearSearch}>Clear</button>
+                </div>
+            </div>
+        );
     }
 
     handleAddVideoResponse(response: Response, data: { result?: string; error?: string; errors?: string[] }) {
@@ -481,7 +572,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
             addDescription: "",
             addSuccess: "Video added",
         });
-        this.refreshVideos(true);
+        this.refreshVideos();
     }
 
     addVideo() {
@@ -499,12 +590,22 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
             .catch((err) => this.setState({ addError: String(err) }));
     }
 
-    markClipTimestamp() {
-        const { clipTimestampFocus } = this.state;
-        if (clipTimestampFocus === null) return;
-        const currentSeconds = this.state.currentTimeSeconds ?? this.state.embedStartSeconds;
+    /** Which field to set can be passed explicitly to avoid focus/blur race when clicking "Set from video". */
+    markClipTimestamp(field?: "start" | "end") {
+        const focus = field ?? this.state.clipTimestampFocus;
+        if (focus === null || focus === undefined) return;
+        let currentSeconds = this.state.currentTimeSeconds;
+        if (currentSeconds == null && this.ytPlayer && typeof this.ytPlayer.getCurrentTime === "function") {
+            const fromPlayer = this.ytPlayer.getCurrentTime();
+            if (typeof fromPlayer === "number" && !Number.isNaN(fromPlayer)) {
+                currentSeconds = fromPlayer;
+            }
+        }
+        if (currentSeconds == null) {
+            currentSeconds = this.state.embedStartSeconds;
+        }
         const currentFormatted = formatTimestamp(currentSeconds);
-        if (clipTimestampFocus === "start") {
+        if (focus === "start") {
             this.setState({ clipMarkedStartSeconds: currentSeconds, clipStartInput: currentFormatted });
         } else {
             this.setState({ clipMarkedEndSeconds: currentSeconds, clipEndInput: currentFormatted });
@@ -587,7 +688,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
             clipTitle: "",
             clipDescription: "",
         });
-        this.refreshVideos(true);
+        this.refreshVideos();
     }
 
     openEditTags(video: RoomVideoWithTags) {
@@ -640,7 +741,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                     editVideoSaving: false,
                     editVideoError: null,
                 });
-                this.refreshVideos(true);
+                this.refreshVideos();
             })
             .catch((err) => this.setState({ editVideoSaving: false, editVideoError: String(err) }));
     }
@@ -660,7 +761,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
             .then(() => {
                 this.closeEditTags();
                 this.setState({ tagsSaveInProgress: false });
-                this.refreshVideos(true);
+                this.refreshVideos();
             })
             .catch(() => this.setState({ tagsSaveInProgress: false }));
     }
@@ -960,8 +1061,10 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                                     <button
                                                         type="button"
                                                         className="button_standard room_video_mark_clip_ts"
-                                                        onMouseDown={(e) => e.preventDefault()}
-                                                        onClick={() => this.markClipTimestamp()}
+                                                        onMouseDown={(e) => {
+                                                            e.preventDefault();
+                                                            this.markClipTimestamp("start");
+                                                        }}
                                                     >
                                                         Set from video
                                                     </button>
@@ -983,8 +1086,10 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                                     <button
                                                         type="button"
                                                         className="button_standard room_video_mark_clip_ts"
-                                                        onMouseDown={(e) => e.preventDefault()}
-                                                        onClick={() => this.markClipTimestamp()}
+                                                        onMouseDown={(e) => {
+                                                            e.preventDefault();
+                                                            this.markClipTimestamp("end");
+                                                        }}
                                                     >
                                                         Set from video
                                                     </button>
@@ -1062,8 +1167,10 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                                         <button
                                                             type="button"
                                                             className="button_standard room_video_mark_clip_ts"
-                                                            onMouseDown={(e) => e.preventDefault()}
-                                                            onClick={() => this.markClipTimestamp()}
+                                                            onMouseDown={(e) => {
+                                                                e.preventDefault();
+                                                                this.markClipTimestamp("start");
+                                                            }}
                                                         >
                                                             Set from video
                                                         </button>
@@ -1085,8 +1192,10 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                                                         <button
                                                             type="button"
                                                             className="button_standard room_video_mark_clip_ts"
-                                                            onMouseDown={(e) => e.preventDefault()}
-                                                            onClick={() => this.markClipTimestamp()}
+                                                            onMouseDown={(e) => {
+                                                                e.preventDefault();
+                                                                this.markClipTimestamp("end");
+                                                            }}
                                                         >
                                                             Set from video
                                                         </button>
@@ -1214,11 +1323,12 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                 ) : (
                     <>
                         {state.addSuccess && <div className="success">{state.addSuccess}</div>}
+                        {this.renderSearchForm()}
                         <div className="room_videos_list">
                             {state.videos.length === 0 ? (
                                 <p>No videos.</p>
                             ) : (
-                              <table className="room_videos_table">
+                              <table className="room_videos_table large_table">
                                 <thead>
                                   <tr>
                                       <th>Title</th>
@@ -1234,6 +1344,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
                               </table>
                             )}
                         </div>
+                        <div>Showing {state.videos.length} videos</div>
                         <button className="button_standard" onClick={() => this.refreshVideos()}>
                             Refresh
                         </button>

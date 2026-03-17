@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo\RoomFileRepo;
 
 use Bristolian\Model\Generated\RoomFileObjectInfo;
+use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
 use BristolianTest\BaseTestCase;
 
@@ -66,7 +67,7 @@ abstract class RoomFileRepoFixture extends BaseTestCase
 
         $repo->addFileToRoom($fileStorageId, $room_id);
 
-        $files = $repo->getFilesForRoom($room_id);
+        $files = $repo->getFilesForRoom($room_id, RoomContentSearchParams::default());
         $this->assertNotEmpty($files);
         $this->assertContainsOnlyInstancesOf(\Bristolian\Model\Types\RoomFileInRoom::class, $files);
     }

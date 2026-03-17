@@ -11,6 +11,7 @@ use Bristolian\Model\Generated\RoomTag;
 use Bristolian\Model\Generated\RoomVideo;
 use Bristolian\Model\Generated\Video;
 use Bristolian\Model\Types\RoomVideoWithTags;
+use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 
@@ -21,16 +22,60 @@ class PdoRoomVideoRepo implements RoomVideoRepo
     }
 
     /**
-     * Return all room videos for a room, ordered by created_at.
+     * Return all room videos for a room, ordered by created_at desc, limited.
      *
      * @return RoomVideo[]
      */
-    public function getVideosForRoom(string $room_id): array
+    public function getVideosForRoom(string $room_id, RoomContentSearchParams $search): array
     {
-        $sql = room_video::SELECT . " where room_id = :room_id order by created_at asc";
+        $where = ['room_id = :room_id'];
+        $params = [
+            'room_id' => $room_id,
+            'limit' => $search->getLimit(),
+        ];
+
+        if ($search->title !== null && $search->title !== '') {
+            $where[] = 'title LIKE :title_pattern';
+            $params['title_pattern'] = '%' . str_replace(['%', '_'], ['\%', '\_'], $search->title) . '%';
+        }
+        $createdAtAfter = $search->getCreatedAtAfterForSql();
+        if ($createdAtAfter !== null) {
+            $where[] = 'created_at >= :created_at_after';
+            $params['created_at_after'] = $createdAtAfter;
+        }
+        $createdAtBefore = $search->getCreatedAtBeforeForSql();
+        if ($createdAtBefore !== null) {
+            $where[] = 'created_at <= :created_at_before';
+            $params['created_at_before'] = $createdAtBefore;
+        }
+        $documentTimestampAfter = $search->getDocumentTimestampAfterForSql();
+        if ($documentTimestampAfter !== null) {
+            $where[] = 'document_timestamp >= :document_timestamp_after';
+            $params['document_timestamp_after'] = $documentTimestampAfter;
+        }
+        $documentTimestampBefore = $search->getDocumentTimestampBeforeForSql();
+        if ($documentTimestampBefore !== null) {
+            $where[] = 'document_timestamp <= :document_timestamp_before';
+            $params['document_timestamp_before'] = $documentTimestampBefore;
+        }
+
+        $tagIds = $search->getTagIds();
+        if (count($tagIds) > 0) {
+            $placeholders = [];
+            foreach ($tagIds as $index => $tagId) {
+                $key = ':tag_id_' . $index;
+                $placeholders[] = $key;
+                $params[$key] = $tagId;
+            }
+            $params[':tag_count'] = count($tagIds);
+            $where[] = 'id IN (SELECT room_video_id FROM room_video_tag WHERE tag_id IN (' . implode(', ', $placeholders) . ') GROUP BY room_video_id HAVING COUNT(DISTINCT tag_id) = :tag_count)';
+        }
+
+        $whereClause = implode(' and ', $where);
+        $sql = room_video::SELECT . " where {$whereClause} order by created_at desc limit :limit";
         return $this->pdoSimple->fetchAllAsObjectConstructor(
             $sql,
-            ['room_id' => $room_id],
+            $params,
             RoomVideo::class
         );
     }
@@ -40,9 +85,9 @@ class PdoRoomVideoRepo implements RoomVideoRepo
      *
      * @return RoomVideoWithTags[]
      */
-    public function getVideosForRoomWithTags(string $room_id): array
+    public function getVideosForRoomWithTags(string $room_id, RoomContentSearchParams $search): array
     {
-        $videos = $this->getVideosForRoom($room_id);
+        $videos = $this->getVideosForRoom($room_id, $search);
         $roomTags = $this->pdoSimple->fetchAllAsObjectConstructor(
             room_tag::SELECT . " where room_id = :room_id",
             ['room_id' => $room_id],

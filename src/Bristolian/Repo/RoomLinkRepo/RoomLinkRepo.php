@@ -4,6 +4,7 @@ namespace Bristolian\Repo\RoomLinkRepo;
 
 use Bristolian\Model\Generated\RoomLink;
 use Bristolian\Parameters\LinkParam;
+use Bristolian\Parameters\RoomContentSearchParams;
 
 /**
  * Stores and retrieves information about which links are in which rooms.
@@ -14,7 +15,7 @@ interface RoomLinkRepo
      * @param string $room_id
      * @return RoomLink[]
      */
-    public function getLinksForRoom(string $room_id): array;
+    public function getLinksForRoom(string $room_id, RoomContentSearchParams $search): array;
 
     public function addLinkToRoomFromParam(
         string $user_id,

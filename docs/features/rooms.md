@@ -47,9 +47,10 @@ When the client has just mutated content (e.g. uploaded a file, added a link/vid
 
 ## Frontend
 
-- `app/public/tsx/RoomFilesPanel.tsx` – file list with tags column and Edit tags modal
-- `app/public/tsx/RoomLinksPanel.tsx` – link list with tags and Edit tags modal
-- `app/public/tsx/RoomVideosPanel.tsx` – video list, add video, create clip, embedded player, transcript fetch/list/VTT viewer with click-to-seek
+- `app/public/tsx/RoomFilesPanel.tsx` – file list with search form (title, date ranges, tags, limit), tags column, Edit tags modal
+- `app/public/tsx/RoomLinksPanel.tsx` – link list with search form, tags and Edit tags modal
+- `app/public/tsx/RoomVideosPanel.tsx` – video list with search form, add video, create clip, embedded player, transcript fetch/list/VTT viewer with click-to-seek
+- `app/public/tsx/api_room_content_list.ts` – fetchRoomFiles, fetchRoomLinks, fetchRoomVideos with optional search params (builds query string; list endpoints accept same params)
 - `app/public/tsx/RoomAnnotationsPanel.tsx` – annotation list with tags and Edit tags modal
 - `app/public/tsx/AnnotationPanel.tsx` – per-file annotations with tags and Edit tags
 - `app/public/tsx/RoomManagementPanel.tsx` – create/manage room tags
@@ -59,9 +60,9 @@ When the client has just mutated content (e.g. uploaded a file, added a link/vid
 
 ## API
 
-- GET `/api/rooms/{room_id}/files` → `GetRoomsFilesResponse` (files: RoomFileWithTags[])
-- GET `/api/rooms/{room_id}/links` → `GetRoomsLinksResponse` (links: RoomLinkWithTags[])
-- GET `/api/rooms/{room_id}/videos` → `GetRoomsVideosResponse` (videos: RoomVideoWithTags[])
+- GET `/api/rooms/{room_id}/files` → `GetRoomsFilesResponse` (files: RoomFileWithTags[]). Optional query params: `limit` (default 20), `title` (substring match on filename), `created_at_after`, `created_at_before`, `document_timestamp_after`, `document_timestamp_before` (date strings), `tag_ids` (comma-separated; results must have all listed tags). Results ordered by `created_at` DESC.
+- GET `/api/rooms/{room_id}/links` → `GetRoomsLinksResponse` (links: RoomLinkWithTags[]). Same optional query params as files; `title` matches link title. Results ordered by `created_at` DESC.
+- GET `/api/rooms/{room_id}/videos` → `GetRoomsVideosResponse` (videos: RoomVideoWithTags[]). Same optional query params as files; `title` matches video title. Results ordered by `created_at` DESC.
 - POST `/api/rooms/{room_id}/videos` – body `{ "url", "title?", "description?" }`
 - POST `/api/rooms/{room_id}/videos/clips` – body `{ "room_video_id", "start_seconds", "end_seconds", "description?" }`
 - GET `/api/room-videos/{room_video_id}/transcripts` – list transcripts (no room in path; transcripts are not secret)

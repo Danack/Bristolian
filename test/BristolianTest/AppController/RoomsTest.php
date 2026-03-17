@@ -13,6 +13,7 @@ use Bristolian\JsonInput\FakeJsonInput;
 use Bristolian\JsonInput\JsonInput;
 use Bristolian\Parameters\AnnotationParam;
 use Bristolian\Parameters\LinkParam;
+use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Parameters\TagParams;
 use Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo;
 use Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo;
@@ -88,6 +89,7 @@ class RoomsTest extends BaseTestCase
         $room = $roomRepo->createRoom('test-user-id-001', 'Test Room', 'A room for testing');
         $this->roomId = $room->id;
         $this->injector->defineParam('room_id', $this->roomId);
+        $this->injector->share(RoomContentSearchParams::default());
     }
 
     /**
@@ -205,7 +207,7 @@ class RoomsTest extends BaseTestCase
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
         $roomFileRepo->addFileToRoom('file-with-tag', $this->roomId);
-        $files = $roomFileRepo->getFilesForRoom($this->roomId);
+        $files = $roomFileRepo->getFilesForRoom($this->roomId, RoomContentSearchParams::default());
         $fileId = $files[0]->id;
 
         $roomTagRepo = $this->injector->make(FakeRoomTagRepo::class);
@@ -368,7 +370,7 @@ class RoomsTest extends BaseTestCase
         $result = $this->injector->execute([Rooms::class, 'fetchTranscript']);
 
         $this->assertInstanceOf(FetchTranscriptErrorResponse::class, $result);
-        $this->assertStringContainsString('Transcript fetch failed', $result->getBody());
+        $this->assertStringContainsString('No caption tracks found for this video', $result->getBody());
     }
 
     /**
@@ -459,7 +461,7 @@ class RoomsTest extends BaseTestCase
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
         $roomFileRepo->addFileToRoom('storage-id-annot', $this->roomId);
-        $files = $roomFileRepo->getFilesForRoom($this->roomId);
+        $files = $roomFileRepo->getFilesForRoom($this->roomId, RoomContentSearchParams::default());
         $fileId = $files[0]->id;
 
         $annotationRepo = $this->injector->make(FakeRoomAnnotationRepo::class);
@@ -671,7 +673,7 @@ class RoomsTest extends BaseTestCase
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
         $roomFileRepo->addFileToRoom('file-for-tags', $this->roomId);
-        $files = $roomFileRepo->getFilesForRoom($this->roomId);
+        $files = $roomFileRepo->getFilesForRoom($this->roomId, RoomContentSearchParams::default());
         $fileId = $files[0]->id;
 
         $roomTagRepo = $this->injector->make(FakeRoomTagRepo::class);
@@ -740,7 +742,7 @@ class RoomsTest extends BaseTestCase
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
         $roomFileRepo->addFileToRoom('some-storage-id', $this->roomId);
-        $files = $roomFileRepo->getFilesForRoom($this->roomId);
+        $files = $roomFileRepo->getFilesForRoom($this->roomId, RoomContentSearchParams::default());
         $fileId = $files[0]->id;
 
         // highlights_json must be a JSON array (frontend sends JSON.stringify(highlights)); min length 16
@@ -767,7 +769,7 @@ class RoomsTest extends BaseTestCase
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
         $roomFileRepo->addFileToRoom('some-storage-id', $this->roomId);
-        $files = $roomFileRepo->getFilesForRoom($this->roomId);
+        $files = $roomFileRepo->getFilesForRoom($this->roomId, RoomContentSearchParams::default());
         $fileId = $files[0]->id;
 
         $annotationParam = AnnotationParam::createFromVarMap(new ArrayVarMap([
@@ -794,7 +796,7 @@ class RoomsTest extends BaseTestCase
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
         $roomFileRepo->addFileToRoom('some-storage-id', $this->roomId);
-        $files = $roomFileRepo->getFilesForRoom($this->roomId);
+        $files = $roomFileRepo->getFilesForRoom($this->roomId, RoomContentSearchParams::default());
         $fileId = $files[0]->id;
         $this->injector->defineParam('file_id', $fileId);
 
@@ -826,7 +828,7 @@ class RoomsTest extends BaseTestCase
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
         $roomFileRepo->addFileToRoom('some-storage-id', $this->roomId);
-        $files = $roomFileRepo->getFilesForRoom($this->roomId);
+        $files = $roomFileRepo->getFilesForRoom($this->roomId, RoomContentSearchParams::default());
         $fileId = $files[0]->id;
         $this->injector->defineParam('file_id', $fileId);
         $selectedAnnotationId = 'some-annotation-id';
@@ -860,7 +862,7 @@ class RoomsTest extends BaseTestCase
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
         $roomFileRepo->addFileToRoom('iframe-file', $this->roomId);
-        $files = $roomFileRepo->getFilesForRoom($this->roomId);
+        $files = $roomFileRepo->getFilesForRoom($this->roomId, RoomContentSearchParams::default());
         $fileId = $files[0]->id;
 
         $this->injector->share(new RequestNonce());
@@ -904,7 +906,7 @@ class RoomsTest extends BaseTestCase
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
         $roomFileRepo->addFileToRoom('unreadable-file', $this->roomId);
-        $files = $roomFileRepo->getFilesForRoom($this->roomId);
+        $files = $roomFileRepo->getFilesForRoom($this->roomId, RoomContentSearchParams::default());
         $fileId = $files[0]->id;
 
         $roomTempDir = sys_get_temp_dir() . '/bristolian_room_fs_' . uniqid();
@@ -937,7 +939,7 @@ class RoomsTest extends BaseTestCase
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
         $roomFileRepo->addFileToRoom('serve-test', $this->roomId);
-        $files = $roomFileRepo->getFilesForRoom($this->roomId);
+        $files = $roomFileRepo->getFilesForRoom($this->roomId, RoomContentSearchParams::default());
         $fileId = $files[0]->id;
         $normalizedName = 'normalized_serve-test.txt';
 
