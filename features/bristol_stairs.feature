@@ -22,7 +22,7 @@ Feature: Bristol Stairs Map
     Then the URL should change to include a stair ID
     And I should see stair information displayed
 
-  @upload @debug
+  @upload
   Scenario: Upload stair image with 8 steps
     Given I am logged in
     When I go to "/tools/bristol_stairs"
@@ -37,7 +37,7 @@ Feature: Bristol Stairs Map
     Then the total steps should have increased by 8
     And the total flights should have increased by 1
 
-  @upload @broken
+  @upload @wip
   Scenario: Upload stair image with 9 steps
     Given I am logged in
     When I go to "/tools/bristol_stairs"

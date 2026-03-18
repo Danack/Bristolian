@@ -18,6 +18,18 @@ To run specific feature files:
 docker exec bristolian-php_fpm-1 bash -c "vendor/bin/behat features/chat/"
 ```
 
+## Fail Aid (failure screenshots)
+
+Behat uses [behat-fail-aid](https://github.com/forceedge01/behat-fail-aid) via `BristolianBehat\BristolianFailureContext`, which extends `FailAid\Context\FailureContext`. On step failure, `[SCREENSHOT]` lines in the exception output are rewritten to host `file://` URLs when `BRISTOLIAN_HOST_PATH` is set (same mapping as `containerPathToHostPath()` in `SiteContext.php`). Screenshots are written under `/var/app/tmp` in the container (see `behat.yml`).
+
+**`BRISTOLIAN_HOST_PATH` in Docker:** `docker-compose.yml` already passes it into `php_fpm` / `php_fpm_debug` as `BRISTOLIAN_HOST_PATH=${BRISTOLIAN_HOST_PATH}`. Define the value in a **`.env` file next to `docker-compose.yml`** (Compose loads it automatically), using the **absolute path to the Bristolian repo on your host**, for example:
+
+```env
+BRISTOLIAN_HOST_PATH=/Users/yourname/projects/github/Bristolian
+```
+
+Restart the PHP containers after changing `.env`. Alternatively, export that variable in your shell before `docker compose up`.
+
 ## Excluded Test Cases
 
 The following test cases are **not** covered by Behat tests for specific reasons:

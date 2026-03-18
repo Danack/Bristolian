@@ -8,6 +8,7 @@ default:
       contexts:
 #        - FeatureContext:
         - BristolianBehat\SiteContext
+        - BristolianBehat\BristolianFailureContext
       filters:
         tags: "~@broken"
 #    app:
@@ -20,6 +21,13 @@ default:
 #        tags: "~@broken"
   extensions:
     DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
+    FailAid\Extension:
+      screenshot:
+        directory: /var/app/tmp
+        autoClean: false
+        mode: png
+        hostDirectory: "%paths.base%/tmp"
+        size: 1444x1280
     Behat\MinkExtension:
       base_url: http://local.bristolian.org
       files_path: "%paths.base%/test/fixtures/"

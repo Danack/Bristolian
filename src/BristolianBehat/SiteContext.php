@@ -13,6 +13,7 @@ use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
+use Behat\Behat\Hook\Scope\AfterFeatureScope;
 
 //use Behat\Mink\Element\DocumentElement;
 //use Osf\Repo\StripeCheckoutSessionRepo\StripeCheckoutSessionRepo;
@@ -216,6 +217,28 @@ JS
 //        // prepare system for test feature
 //        self::$featureData = [];
     }
+
+//    /**
+//     * @AfterFeature
+//     */
+//    public static function after(AfterFeatureScope $scope): void
+//    {
+////        // prepare system for test feature
+////        self::$featureData = [];
+//
+//        if ($scope->getTestResult()->isPassed() === false) {
+//            //$this->takeScreenshot($scope, $event->getFeature()->getTitle());
+////
+////            $scope->getFeature()->
+////            $this->getSession()->getDriver()->getScreenshot();
+////
+////            $this->takeDebugScreenshot("failed " . $scope->getFeature()->getTitle());
+//        }
+//    }
+
+
+
+
 
     /**
      * Take screenshot when step fails.
@@ -1436,7 +1459,7 @@ JS
             $attempt++;
         }
 
-        $this->takeDebugScreenshot('file_should_be attached');
+//        $this->takeDebugScreenshot('file_should_be attached');
         
         if ($fileInput === null) {
             // Try to get more info about what's on the page
@@ -1450,7 +1473,7 @@ JS
         // Give time for the file to be selected and GPS to be requested
         sleep(2);
 
-        $this->takeDebugScreenshot('button has been clicked');
+//        $this->takeDebugScreenshot('button has been clicked');
 
         // Verify GPS coordinates were set by checking the component state via JavaScript
         $gpsLatitude = $session->evaluateScript("
@@ -1662,46 +1685,55 @@ JS
     public function theStairShouldAppearOnTheMap(): void
     {
         $session = $this->getSession();
-        
-        // Get the stair ID from the URL
+
         $currentUrl = $session->getCurrentUrl();
-        if (preg_match('#/tools/bristol_stairs/([^/]+)$#', $currentUrl, $matches) !== 1) {
+        if (preg_match('#/tools/bristol_stairs/([^/]+)$#', $currentUrl, $urlMatches) !== 1) {
             throw new \Exception("Could not extract stair ID from URL: $currentUrl");
         }
-        
-        $stairId = $matches[1];
-        
-        // Navigate back to the main map page
-        $this->visitPath('/tools/bristol_stairs');
-        
-        // Wait for map to load
-        $this->iWaitForTheMapToLoad();
-        
-        // Check if a marker with this stair ID exists
-        $markerExists = $session->evaluateScript(sprintf(
-            <<<JS
+
+        $stairId = $urlMatches[1];
+
+        $maximumAttempts = 15;
+        $sleepMicrosecondsBetweenAttempts = 1_500_000;
+
+        for ($attemptNumber = 1; $attemptNumber <= $maximumAttempts; $attemptNumber++) {
+            $cacheBustParameter = 'behat_cache_bust=' . rawurlencode((string) microtime(true)) . '_' . $attemptNumber;
+            $this->visitPath('/tools/bristol_stairs?' . $cacheBustParameter);
+            $this->iWaitForTheMapToLoad();
+
+            $markerExists = $session->evaluateScript(sprintf(
+                <<<JS
 (function() {
     if (typeof markers === "undefined" || markers === null) {
         return false;
     }
-    
+
     var found = false;
     markers.eachLayer(function(marker) {
         if (String(marker.stairId) === "%s") {
             found = true;
         }
     });
-    
+
     return found;
 })();
 JS
-            ,
-            addslashes($stairId)
-        ));
-        
-        if (!$markerExists) {
-            throw new \Exception("Marker for stair ID $stairId not found on map.");
+                ,
+                addslashes($stairId)
+            ));
+
+            if ($markerExists) {
+                return;
+            }
+
+            if ($attemptNumber < $maximumAttempts) {
+                usleep($sleepMicrosecondsBetweenAttempts);
+            }
         }
+
+        throw new \Exception(
+            "Marker for stair ID $stairId not found on map after $maximumAttempts reloads (API data may still be stale)."
+        );
     }
 
     /**
