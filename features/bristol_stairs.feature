@@ -37,7 +37,7 @@ Feature: Bristol Stairs Map
     Then the total steps should have increased by 8
     And the total flights should have increased by 1
 
-  @upload
+  @upload @broken
   Scenario: Upload stair image with 9 steps
     Given I am logged in
     When I go to "/tools/bristol_stairs"

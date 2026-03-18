@@ -76,3 +76,7 @@ When the client has just mutated content (e.g. uploaded a file, added a link/vid
 - PUT `/api/rooms/{room_id}/annotations/{room_annotation_id}/tags` – body `{ "tag_ids": string[] }`
 
 Only tag_ids that belong to the room (from Room Management) are accepted; invalid ids are filtered out.
+
+## Behat
+
+- `features/chat/room_videos.feature` – Videos tab, search panel (title filter + Clear), add-video modal URL parsing (Continue enabled), Refresh. Steps live in `src/BristolianBehat/SiteContext.php` (e.g. wait for room videos panel, open search, fill title with dispatched `input` event).

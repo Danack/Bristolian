@@ -5,7 +5,7 @@
 Tests are organized by feature area:
 - `features/basic.feature` - Basic site functionality tests
 - `features/bristol_stairs.feature` - Bristol Stairs map feature tests
-- `features/chat/` - Chat room feature tests
+- `features/chat/` - Chat room feature tests (including `room_videos.feature` for the room Videos tab)
 
 ## Running Tests
 

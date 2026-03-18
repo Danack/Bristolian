@@ -801,6 +801,130 @@ JS
     }
 
     /**
+     * @Then /^I should see "([^"]*)" on the page within (\d+) seconds$/
+     */
+    public function iShouldSeeTextOnThePageWithinSeconds(string $text, int $seconds): void
+    {
+        $session = $this->getSession();
+        $deadline = microtime(true) + $seconds;
+
+        while (microtime(true) < $deadline) {
+            $pageText = $session->getPage()->getText();
+            if (strpos($pageText, $text) !== false) {
+                return;
+            }
+            usleep(200 * 1000);
+        }
+
+        $sanitized = preg_replace('/[^a-zA-Z0-9_-]/', '_', $text);
+        $identifier = 'missing_text_' . substr($sanitized ?? 'text', 0, 40);
+        $this->takeDebugScreenshot($identifier);
+
+        $pageText = $session->getPage()->getText();
+        throw new \Exception(
+            "Expected to see '$text' on the page within {$seconds}s, but it was not found. " .
+            "Page text snippet: " . substr($pageText, 0, 300)
+        );
+    }
+
+    /**
+     * @When /^I type the following text into the twitter splitter textarea:$/
+     */
+    public function iTypeTheFollowingTextIntoTheTwitterSplitterTextarea(\Behat\Gherkin\Node\PyStringNode $string): void
+    {
+        $session = $this->getSession();
+        $text = $string->getRaw();
+        $json = json_encode($text, JSON_THROW_ON_ERROR);
+        $session->executeScript(
+            <<<JS
+(function() {
+  var el = document.querySelector('.twitter_splitter_panel_react textarea[placeholder=\"Type here...\"]');
+  if (!el) return;
+  el.value = {$json};
+  el.dispatchEvent(new Event('input', { bubbles: true }));
+  el.dispatchEvent(new Event('change', { bubbles: true }));
+})();
+JS
+        );
+        usleep(200 * 1000);
+    }
+
+    /**
+     * @When /^I select twitter splitter numbering "([^"]*)"$/
+     */
+    public function iSelectTwitterSplitterNumbering(string $label): void
+    {
+        $session = $this->getSession();
+        $json = json_encode($label, JSON_THROW_ON_ERROR);
+        $session->executeScript(
+            <<<JS
+(function() {
+  var select = document.querySelector('.twitter_splitter_panel_react select');
+  if (!select) return;
+  select.value = {$json};
+  select.dispatchEvent(new Event('change', { bubbles: true }));
+})();
+JS
+        );
+        usleep(200 * 1000);
+    }
+
+    /**
+     * @When /^I click copy for the first tweet$/
+     */
+    public function iClickCopyForTheFirstTweet(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $cell = $page->find('css', '.twitter_splitter_panel_react table.split_tweets tr td:nth-child(2)');
+        if ($cell === null) {
+            throw new \Exception('Could not find copy cell for first tweet.');
+        }
+        $cell->click();
+        usleep(200 * 1000);
+    }
+
+    /**
+     * @Given /^I stub clipboard writeText$/
+     */
+    public function iStubClipboardWriteText(): void
+    {
+        $session = $this->getSession();
+        $session->executeScript(
+            <<<'JS'
+(function () {
+  if (!navigator.clipboard) {
+    navigator.clipboard = {};
+  }
+  navigator.clipboard.writeText = function () {
+    return Promise.resolve();
+  };
+})();
+JS
+        );
+    }
+
+    /**
+     * @Then /^the twitter splitter should show (\d+) tweets$/
+     */
+    public function theTwitterSplitterShouldShowTweets(int $expected): void
+    {
+        $session = $this->getSession();
+        $count = $session->evaluateScript(
+            <<<'JS'
+(function () {
+  var table = document.querySelector('.twitter_splitter_panel_react table.split_tweets');
+  if (!table) return 0;
+  return table.querySelectorAll('tr').length;
+})();
+JS
+        );
+        if ((int)$count !== $expected) {
+            throw new \Exception("Expected twitter splitter to show {$expected} tweets, but found {$count}.");
+        }
+    }
+
+    /**
      * @Then /^take a screenshot$/
      */
     public function takeAScreenshot(): void
@@ -1192,6 +1316,29 @@ JS
     }
 
     /**
+     * @When /^I click the "([^"]*)" button if it is present$/
+     */
+    public function iClickTheButtonIfItIsPresent(string $buttonText): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+
+        $button = $page->findButton($buttonText);
+        if ($button === null) {
+            $xpath = sprintf('//input[@type="button" and @value="%s"]', addslashes($buttonText));
+            $button = $page->find('xpath', $xpath);
+        }
+        if ($button === null) {
+            $xpath = sprintf('//button[contains(text(), "%s")]', addslashes($buttonText));
+            $button = $page->find('xpath', $xpath);
+        }
+
+        if ($button !== null) {
+            $button->click();
+        }
+    }
+
+    /**
      * @When /^I upload the file "([^"]*)" with random GPS coordinates$/
      */
     public function iUploadTheFileWithRandomGpsCoordinates(string $filePath): void
@@ -1203,7 +1350,7 @@ JS
         $projectRoot = dirname(__DIR__, 2);
         $filesPath = $projectRoot . '/test/fixtures/';
         $absolutePath = $filesPath . ltrim($filePath, '/');
-        
+
         if (!file_exists($absolutePath)) {
             throw new \Exception("File not found: $absolutePath");
         }
@@ -1288,6 +1435,8 @@ JS
             usleep(100 * 1000); // 100ms
             $attempt++;
         }
+
+        $this->takeDebugScreenshot('file_should_be attached');
         
         if ($fileInput === null) {
             // Try to get more info about what's on the page
@@ -1300,7 +1449,9 @@ JS
         // The FileUpload component will request GPS when a file is selected
         // Give time for the file to be selected and GPS to be requested
         sleep(2);
-        
+
+        $this->takeDebugScreenshot('button has been clicked');
+
         // Verify GPS coordinates were set by checking the component state via JavaScript
         $gpsLatitude = $session->evaluateScript("
             (function() {
@@ -1328,7 +1479,10 @@ JS
                 }
             }
 
-            usleep(100 * 1000); // 100ms
+//            usleep(100 * 1000); // 100ms
+            sleep(1);
+
+            $this->takeDebugScreenshot("waiting to see - $attempt");
             $attempt++;
         }
         
@@ -1339,7 +1493,7 @@ JS
         
         // Click upload button
         $uploadButton->click();
-        
+
         // Wait for upload to complete and redirect
         // The upload should redirect to /tools/bristol_stairs/{stair_id}
         // Wait up to 10 seconds for the redirect
@@ -1367,7 +1521,7 @@ JS
                 if ($errorPos === false) {
                     $errorPos = strpos($pageText, 'Upload failed');
                 }
-                $start = max(0, $errorPos - 100);
+                $start = $errorPos;// // max(0, $errorPos - 100);
                 $errorSnippet = substr($pageText, $start, 600);
                 throw new \Exception("Upload failed with error. Page text (around error): " . $errorSnippet);
             }
@@ -1533,7 +1687,7 @@ JS
     
     var found = false;
     markers.eachLayer(function(marker) {
-        if (marker.stairId === "%s") {
+        if (String(marker.stairId) === "%s") {
             found = true;
         }
     });
@@ -1721,32 +1875,6 @@ JS
     }
 
     /**
-     * @When /^I click the "Edit Position" button$/
-     */
-    public function iClickTheEditPositionButton(): void
-    {
-        $session = $this->getSession();
-        $page = $session->getPage();
-        
-        $button = $page->findButton('Edit Position');
-        
-        if ($button === null) {
-            // Try finding by text content
-            $xpath = '//button[contains(text(), "Edit Position")]';
-            $button = $page->find('xpath', $xpath);
-        }
-        
-        if ($button === null) {
-            throw new \Exception("Edit Position button not found.");
-        }
-        
-        $button->click();
-        
-        // Wait for position editing mode to activate
-        sleep(2);
-    }
-
-    /**
      * @When /^I generate a random position within Bristol$/
      */
     public function iGenerateARandomPositionWithinBristol(): void
@@ -1794,31 +1922,31 @@ JS
         sleep(1);
     }
 
-    /**
-     * @When /^I click the "Update Position" button$/
-     */
-    public function iClickTheUpdatePositionButton(): void
-    {
-        $session = $this->getSession();
-        $page = $session->getPage();
-        
-        $button = $page->findButton('Update Position');
-        
-        if ($button === null) {
-            // Try finding by text content
-            $xpath = '//button[contains(text(), "Update Position")]';
-            $button = $page->find('xpath', $xpath);
-        }
-        
-        if ($button === null) {
-            throw new \Exception("Update Position button not found.");
-        }
-        
-        $button->click();
-        
-        // Wait for position update to complete
-        sleep(2);
-    }
+//    /**
+//     * @When /^I click the "Update Position" button$/
+//     */
+//    public function iClickTheUpdatePositionButton(): void
+//    {
+//        $session = $this->getSession();
+//        $page = $session->getPage();
+//
+//        $button = $page->findButton('Update Position');
+//
+//        if ($button === null) {
+//            // Try finding by text content
+//            $xpath = '//button[contains(text(), "Update Position")]';
+//            $button = $page->find('xpath', $xpath);
+//        }
+//
+//        if ($button === null) {
+//            throw new \Exception("Update Position button not found.");
+//        }
+//
+//        $button->click();
+//
+//        // Wait for position update to complete
+//        sleep(2);
+//    }
 
     /**
      * @Then /^the stair position should be approximately the generated position$/
@@ -1841,7 +1969,23 @@ JS
     public function theStairPositionShouldBeApproximatelyLatitudeAndLongitude(float $expectedLatitude, float $expectedLongitude): void
     {
         $session = $this->getSession();
-        
+
+        // Scroll to top so the map is on screen
+        $session->executeScript("window.scrollTo(0, 0);");
+
+        // Zoom the map out so all markers are shown, then allow time to redraw
+        $session->executeScript(
+            <<<'JS'
+(function() {
+    if (typeof map !== "undefined" && map !== null) {
+        map.setZoom(11);
+        map.invalidateSize();
+    }
+})();
+JS
+        );
+        sleep(2);
+
         // Get the stair ID from the URL
         $currentUrl = $session->getCurrentUrl();
         if (preg_match('#/tools/bristol_stairs/([^/]+)$#', $currentUrl, $matches) !== 1) {
@@ -1863,7 +2007,7 @@ JS
     var actualLng = null;
     
     markers.eachLayer(function(marker) {
-        if (marker.stairId === "%s") {
+        if (String(marker.stairId) === "%s") {
             var latLng = marker.getLatLng();
             actualLat = latLng.lat;
             actualLng = latLng.lng;
@@ -1897,10 +2041,12 @@ JS
         ));
         
         if (!$positionMatches['found']) {
+            $this->takeDebugScreenshot('stair_marker_not_found');
             throw new \Exception("Marker for stair ID $stairId not found on map.");
         }
         
         if (!$positionMatches['isApproximate']) {
+            $this->takeDebugScreenshot('stair_position_mismatch');
             throw new \Exception(
                 "Expected stair position to be approximately ($expectedLatitude, $expectedLongitude), " .
                 "but found ({$positionMatches['actualLat']}, {$positionMatches['actualLng']}). " .
@@ -2005,6 +2151,391 @@ JS
         }
         
         throw new \Exception("Room files panel did not load within timeout.");
+    }
+
+    /**
+     * @When /^I open the room files search panel$/
+     */
+    public function iOpenTheRoomFilesSearchPanel(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+
+        // Ensure Files tab is active
+        $filesTabLabel = $page->find(
+            'xpath',
+            '//label[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
+        );
+        if ($filesTabLabel !== null) {
+            $filesTabLabel->click();
+            usleep(200 * 1000);
+        }
+
+        $button = $page->find('css', '.room_files_panel_react button.room_content_search_toggle');
+        if ($button === null) {
+            throw new \Exception('Room files search toggle button not found.');
+        }
+        $button->click();
+        usleep(300 * 1000);
+    }
+
+    /**
+     * @When /^I close the room files search panel$/
+     */
+    public function iCloseTheRoomFilesSearchPanel(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $close = $page->find('css', '.room_files_panel_react button.room_content_search_close');
+        if ($close === null) {
+            throw new \Exception('Room files search close button not found.');
+        }
+        $close->click();
+        usleep(300 * 1000);
+    }
+
+    /**
+     * @When /^I fill in the room files search title with "([^"]*)"$/
+     */
+    public function iFillInTheRoomFilesSearchTitleWith(string $value): void
+    {
+        $session = $this->getSession();
+        $json = json_encode($value, JSON_THROW_ON_ERROR);
+        $session->executeScript(
+            <<<JS
+(function() {
+  var el = document.querySelector('.room_files_panel_react .room_content_search_form input[placeholder="Filter by name"]');
+  if (!el) return;
+  el.value = {$json};
+  el.dispatchEvent(new Event('input', { bubbles: true }));
+})();
+JS
+        );
+        sleep(2);
+    }
+
+    /**
+     * @When /^I click the "Clear" button in the room files search form$/
+     */
+    public function iClickTheClearButtonInTheRoomFilesSearchForm(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $button = $page->find(
+            'xpath',
+            '//div[contains(@class, "room_files_panel_react")]//div[contains(@class, "room_search_actions")]//button[contains(normalize-space(.), "Clear")]'
+        );
+        if ($button === null) {
+            throw new \Exception('Clear button in room files search form not found.');
+        }
+        $button->click();
+        sleep(2);
+    }
+
+    /**
+     * @When /^I click the "Edit tags" button for the first file if files exist$/
+     */
+    public function iClickEditTagsForTheFirstFileIfFilesExist(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+
+        // Ensure Files tab is active
+        $filesTabLabel = $page->find(
+            'xpath',
+            '//label[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
+        );
+        if ($filesTabLabel !== null) {
+            $filesTabLabel->click();
+            usleep(200 * 1000);
+        }
+
+        $fileLinks = $page->findAll('css', '.room_files_panel_react table a');
+        if (count($fileLinks) === 0) {
+            return;
+        }
+
+        $editButtons = $page->findAll('xpath', '//div[contains(@class, "room_files_panel_react")]//button[contains(normalize-space(.), "Edit tags")]');
+        if (count($editButtons) === 0) {
+            throw new \Exception('Files exist but no "Edit tags" button found.');
+        }
+        $editButtons[0]->click();
+        usleep(300 * 1000);
+    }
+
+    /**
+     * @Then /^I should see the edit tags modal$/
+     */
+    public function iShouldSeeTheEditTagsModal(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $fileLinks = $page->findAll('css', '.room_files_panel_react table a');
+        if (count($fileLinks) === 0) {
+            return;
+        }
+        $modal = $page->find('css', '.room_edit_tags_modal');
+        if ($modal === null) {
+            throw new \Exception('Edit tags modal not found.');
+        }
+        $heading = $modal->find('xpath', './/h3[contains(normalize-space(.), "Edit tags")]');
+        if ($heading === null) {
+            throw new \Exception('Edit tags modal heading not found.');
+        }
+    }
+
+    /**
+     * @When /^I click the "([^"]*)" room tab$/
+     */
+    public function iClickTheRoomTab(string $tabLabel): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $escaped = str_replace('"', '""', $tabLabel);
+        $tab = $page->find(
+            'xpath',
+            '//label[contains(@class, "room_tab_label") and normalize-space(text()) = "' . $escaped . '"]'
+        );
+        if ($tab === null) {
+            throw new \Exception("Room tab not found: " . $tabLabel);
+        }
+        $tab->click();
+        usleep(200 * 1000);
+    }
+
+    /**
+     * @When /^I wait for the room videos panel to load$/
+     */
+    public function iWaitForTheRoomVideosPanelToLoad(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $videosTab = $page->find(
+            'xpath',
+            '//label[contains(@class, "room_tab_label") and normalize-space(text()) = "Videos"]'
+        );
+        if ($videosTab !== null) {
+            $videosTab->click();
+            usleep(200 * 1000);
+        }
+
+        $maxAttempts = 50;
+        $attempt = 0;
+        while ($attempt < $maxAttempts) {
+            $page = $session->getPage();
+            $panel = $page->find('css', '.room_videos_panel_react');
+            if ($panel !== null) {
+                $text = $panel->getText();
+                if (strpos($text, 'No videos') !== false
+                    || strpos($text, 'Showing ') !== false
+                    || $page->find('css', '.room_videos_table') !== null
+                ) {
+                    return;
+                }
+            }
+            usleep(100 * 1000);
+            $attempt++;
+        }
+
+        throw new \Exception('Room videos panel did not load within timeout.');
+    }
+
+    /**
+     * @When /^I open the room videos search panel$/
+     */
+    public function iOpenTheRoomVideosSearchPanel(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $button = $page->find('css', '.room_videos_panel_react button.room_content_search_toggle');
+        if ($button === null) {
+            throw new \Exception('Room videos search toggle button not found.');
+        }
+        $button->click();
+        usleep(300 * 1000);
+    }
+
+    /**
+     * @When /^I fill in the room videos search title with "([^"]*)"$/
+     */
+    public function iFillInTheRoomVideosSearchTitleWith(string $value): void
+    {
+        $session = $this->getSession();
+        $json = json_encode($value, JSON_THROW_ON_ERROR);
+        $session->executeScript(
+            <<<JS
+(function() {
+    var el = document.querySelector('.room_videos_panel_react .room_content_search_form input[placeholder="Filter by title"]');
+    if (!el) return;
+    el.value = {$json};
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+})();
+JS
+        );
+        sleep(2);
+    }
+
+    /**
+     * @When /^I click the "Clear" button in the room videos search form$/
+     */
+    public function iClickTheClearButtonInTheRoomVideosSearchForm(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $button = $page->find(
+            'xpath',
+            '//div[contains(@class, "room_videos_panel_react")]//div[contains(@class, "room_search_actions")]//button[contains(normalize-space(.), "Clear")]'
+        );
+        if ($button === null) {
+            throw new \Exception('Clear button in room videos search form not found.');
+        }
+        $button->click();
+        sleep(2);
+    }
+
+    /**
+     * @When /^I type a sample YouTube URL in the add video modal$/
+     */
+    public function iTypeASampleYoutubeUrlInTheAddVideoModal(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $input = $page->find('css', '.room_video_add_modal input[type="text"]');
+        if ($input === null) {
+            throw new \Exception('Add video URL input not found.');
+        }
+        $input->setValue('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+    }
+
+    /**
+     * @When /^I type the YouTube URL "([^"]*)" in the add video modal$/
+     */
+    public function iTypeTheYoutubeUrlInTheAddVideoModal(string $url): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $input = $page->find('css', '.room_video_add_modal input[type="text"]');
+        if ($input === null) {
+            throw new \Exception('Add video URL input not found.');
+        }
+        $input->setValue($url);
+    }
+
+    /**
+     * @When /^I close the add video modal$/
+     */
+    public function iCloseTheAddVideoModal(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $close = $page->find('css', '.room_video_add_modal_close');
+        if ($close === null) {
+            throw new \Exception('Add video modal close button not found.');
+        }
+        $close->click();
+        usleep(200 * 1000);
+    }
+
+    /**
+     * @Then /^I should see an enabled Continue button in the add video modal$/
+     */
+    public function iShouldSeeAnEnabledContinueButtonInTheAddVideoModal(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $enabled = $page->find(
+            'xpath',
+            '//div[contains(@class, "room_video_add_modal")]//button[contains(normalize-space(.), "Continue") and not(@disabled)]'
+        );
+        if ($enabled === null) {
+            throw new \Exception('Enabled Continue button not found in add video modal.');
+        }
+    }
+
+    /**
+     * @Given /^I stub the YouTube IFrame API$/
+     */
+    public function iStubTheYouTubeIFrameApi(): void
+    {
+        $session = $this->getSession();
+
+        $session->executeScript(
+            <<<'JS'
+(function () {
+  // Provide a minimal stub so the app doesn't fetch the real YouTube IFrame API.
+  window.YT = {
+    Player: function (elementId, opts) {
+      this._currentTime = 42;
+      this.getCurrentTime = function () { return this._currentTime; };
+      this.getVideoData = function () {
+        return { video_id: "dQw4w9WgXcQ", title: "Behat test video title long enough", author: "test" };
+      };
+      this.destroy = function () {};
+      if (opts && opts.events && typeof opts.events.onReady === "function") {
+        try { opts.events.onReady({ target: this }); } catch (e) {}
+      }
+      return this;
+    }
+  };
+})();
+JS
+        );
+    }
+
+    /**
+     * @When /^I click Continue in the add video modal$/
+     */
+    public function iClickContinueInTheAddVideoModal(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $enabled = $page->find(
+            'xpath',
+            '//div[contains(@class, "room_video_add_modal")]//button[contains(normalize-space(.), "Continue") and not(@disabled)]'
+        );
+        if ($enabled === null) {
+            throw new \Exception('Enabled Continue button not found in add video modal.');
+        }
+        $enabled->click();
+        sleep(2);
+    }
+
+    /**
+     * @When /^I fill in the add video clip timestamps start "([^"]*)" and end "([^"]*)"$/
+     */
+    public function iFillInTheAddVideoClipTimestamps(string $start, string $end): void
+    {
+        $session = $this->getSession();
+        $startJson = json_encode($start, JSON_THROW_ON_ERROR);
+        $endJson = json_encode($end, JSON_THROW_ON_ERROR);
+        $session->executeScript(
+            <<<JS
+(function() {
+  var root = document.querySelector('.room_videos_panel_react');
+  if (!root) return;
+  var inputs = root.querySelectorAll('.room_video_add_clip_form input[type="text"]');
+  if (!inputs || inputs.length < 2) return;
+  inputs[0].value = {$startJson};
+  inputs[0].dispatchEvent(new Event('input', { bubbles: true }));
+  inputs[1].value = {$endJson};
+  inputs[1].dispatchEvent(new Event('input', { bubbles: true }));
+})();
+JS
+        );
+        sleep(1);
+    }
+
+    /**
+     * @Then /^I should see the add video preview form$/
+     */
+    public function iShouldSeeTheAddVideoPreviewForm(): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $form = $page->find('css', '.room_videos_panel_react .room_video_add_clip_form');
+        if ($form === null) {
+            throw new \Exception('Add video preview form not found.');
+        }
     }
 
     /**

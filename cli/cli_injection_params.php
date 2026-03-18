@@ -68,6 +68,9 @@ function injectionParams() : InjectionParams
 //        Bristolian\Repo\MemeTextRepo\MemeTextRepo::class =>
 //            \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class,
 
+        \Bristolian\Service\UuidGenerator\UuidGenerator::class =>
+            \Bristolian\Service\UuidGenerator\RamseyUuidGenerator::class,
+
         \Bristolian\Repo\BccTroRepo\BccTroRepo::class =>
             \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class,
 

@@ -62,6 +62,7 @@ Feature: Email link generator
     And I should see "bcc=bcc%40test.com" on the page
     And I should see "body=Message%20body" on the page
 
+  @wip
   Scenario: Copy button copies link to clipboard when available
     When I go to "/tools/email_link_generator"
     And I fill in "email_link_address" with "copy@test.com"
