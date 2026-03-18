@@ -12,10 +12,6 @@ services:
   chrome_headless:
     # build: containers/chrome_gaaaaaaah
     image: chromedp/headless-shell
-    # image: browserless/chrome:latest
-    # image: femtopixel/google-chrome-headless
-    # image: zenika/alpine-chrome
-    # image: alpeware/chrome-headless-stable
     ports:
       - "9222:9222"
       - "9223:9223"
@@ -27,11 +23,10 @@ services:
       app_network:
     security_opt:
       - seccomp:unconfined
-      #extra_hosts:
-      #      - "local.phpimagick.com:imagick_php_backend"
-      # - "local.phpimagick.com:162.242.195.82"
-   # entrypoint: ['/usr/local/bin/dlv', '--listen=: 2345', '--headless=true', '--api-version=2', 'exec', 'cmd/main.go']
-
+    volumes:
+      # We share the app directory so that file uploads can work. The mink driver sends a message
+      # to upload a file from a path, not the file itself.
+      - .:/var/app
   mediawiki:
     image: mediawiki:latest
     container_name: mediawiki
