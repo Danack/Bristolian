@@ -119,6 +119,7 @@ export function ChatBottomPanel(props: ChatBottomPanelProps) {
     interactive_section = <div>
       <div className="input-row">
         <textarea
+          id="chat-message-input"
           ref={textareaRef}
           className="message-input"
           placeholder={props.replyingToMessage ? "Reply... (Enter to send)" : "Write a message... (Enter to send)"}

@@ -134,18 +134,21 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
     }
 
 
+    const fieldIdPrefix = `room_link_add_${props.room_id}_`;
+
     // @ts-ignore
     return <div class='room_links_add_panel_react'>
       <table>
         <tbody>
         <tr>
           <td>
-            <label for={"url"}>
+            <label htmlFor={`${fieldIdPrefix}url`}>
               Url
             </label>
           </td>
           <td>
-            <input name="url"
+            <input id={`${fieldIdPrefix}url`}
+                   name="url"
                    size={100}
                    value={this.state.url}
                    // @ts-ignore
@@ -155,12 +158,13 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
         </tr>
         <tr>
           <td>
-            <label>
+            <label htmlFor={`${fieldIdPrefix}title`}>
               Title
             </label>
           </td>
           <td>
-            <input name="title"
+            <input id={`${fieldIdPrefix}title`}
+                   name="title"
                    size={100}
                    value={this.state.title}
                    onChange={
@@ -172,11 +176,12 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
         </tr>
         <tr>
           <td>
-            <label for={"description"}>Description</label>
+            <label htmlFor={`${fieldIdPrefix}description`}>Description</label>
           </td>
 
           <td>
             <textarea
+              id={`${fieldIdPrefix}description`}
               name="description"
               rows={4}
               cols={80}
