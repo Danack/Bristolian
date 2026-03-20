@@ -127,14 +127,15 @@ function render_page_into_container(pdfPage, pageNum) {
     canvas.style.width = Math.floor(viewport.width) + "px";
     canvas.style.height =  Math.floor(viewport.height) + "px";
 
-    canvas.width = viewport.width * 2;
-    canvas.height = viewport.height * 2;
+    // PDF.js text layer: `.pdfViewer .page { --total-scale-factor: calc(var(--scale-factor) * ...) }` reads
+    // `--scale-factor` from the page element. `.pdfViewer { --scale-factor: 1 }` is otherwise inherited, so zoom
+    // only changed the canvas/viewport while text stayed laid out at scale 1 — misaligned / unselectable.
+    page.style.setProperty('--scale-factor', String(g_scale));
+
     page.style.width = `${viewport.width}px`;
     page.style.height = `${viewport.height}px`;
     wrapper.style.width = `${viewport.width}px`;
     wrapper.style.height = `${viewport.height}px`;
-    container.style.width = `${viewport.width}px`;
-    container.style.height = `${viewport.height}px`;
 
     var transform = outputScale !== 1
         ? [outputScale, 0, 0, outputScale, 0, 0]
@@ -145,8 +146,6 @@ function render_page_into_container(pdfPage, pageNum) {
         transform: transform,
         viewport: viewport
     };
-
-    container.style.setProperty('--scale-factor', g_scale);
 
     var renderTask = pdfPage.render(renderContext);
     renderTask.promise.then(() => page_rendered(container, pdfPage, viewport, pageNum));
@@ -310,6 +309,19 @@ function mergeRectsOnSameLine(rectangles, tolerance = 1) {
     return mergedRects;
 }
 
+/**
+ * True when selection rect overlaps the page/canvas area (with tolerance).
+ * Strict containment fails at high zoom when subpixel rects sit slightly outside the canvas box.
+ */
+function clientRectOverlapsPage(rect, boundingRect, tolerance) {
+    return !(
+        rect.right < boundingRect.left - tolerance ||
+        rect.left > boundingRect.right + tolerance ||
+        rect.bottom < boundingRect.top - tolerance ||
+        rect.top > boundingRect.bottom + tolerance
+    );
+}
+
 
 function processSelectionChange() {
     const selection = window.getSelection();
@@ -339,7 +351,6 @@ function processSelectionChange() {
         };
     });
 
-
     let simpleRects = [];
     for(let i = 0; i < rects.length; i +=1) {
         const rect = rects[i];
@@ -352,14 +363,11 @@ function processSelectionChange() {
 
         let pageNum = null;
 
-        // Determine the page that contains this rect
+        // Determine the page that contains this rect (overlap + tolerance, not strict containment).
+        // Tolerance is in CSS pixels (same units as getClientRects() / getBoundingClientRect()).
+        const pageMatchTolerance = 3;
         for (let { pageIndex, boundingRect } of pageRects) {
-            if (
-                rect.top >= boundingRect.top &&
-                rect.bottom <= boundingRect.bottom &&
-                rect.left >= boundingRect.left &&
-                rect.right <= boundingRect.right
-            ) {
+            if (clientRectOverlapsPage(rect, boundingRect, pageMatchTolerance)) {
                 pageNum = pageIndex;
                 break;
             }
@@ -413,9 +421,8 @@ function clearAllHighlights() {
 
 function drawHighlights(highlights) {
 
+    // Highlights are stored in CSS pixels relative to the canvas; map to canvas bitmap pixels using DPR only.
     var outputScale = window.devicePixelRatio || 1;
-
-    outputScale = outputScale * g_scale;
 
     console.log("Drawing highlights", highlights);
 
@@ -496,8 +503,8 @@ function adjustZoomLevel(change)
         g_current_zoom_level_index = 0;
     }
 
-    if (g_current_zoom_level_index > g_zoom_levels.length) {
-        g_current_zoom_level_index = g_zoom_levels.length;
+    if (g_current_zoom_level_index >= g_zoom_levels.length) {
+        g_current_zoom_level_index = g_zoom_levels.length - 1;
     }
 
     g_scale = g_zoom_levels[g_current_zoom_level_index];

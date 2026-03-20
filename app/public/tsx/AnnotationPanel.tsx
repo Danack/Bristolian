@@ -461,10 +461,17 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
           {/*</div>*/}
 
           <label>
-            Enter a title <input name="title" size={100} onInput={
-            // @ts-ignore
-            e => this.setState({title: e.target.value})
-          }/>
+            Enter a title
+            <br />
+            <textarea
+              name="title"
+              rows={4}
+              cols={40}
+              onInput={
+                // @ts-ignore
+                e => this.setState({title: e.target.value})
+              }
+            />
             <br/>
             {error_title}
             {title_length_error}

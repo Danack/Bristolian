@@ -82,7 +82,12 @@ body.wait::before{
     forced-color-adjust:none;
     transform-origin:0 0;
     caret-color:CanvasText;
-    z-index:0;
+    z-index:1;
+}
+
+/* Selection hits the text layer; canvas is display-only (matches PDF.js viewer behaviour). */
+.pdfViewer .canvasWrapper canvas{
+    pointer-events:none;
 }
 
 .textLayer.highlighting{
