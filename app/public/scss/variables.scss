@@ -8,6 +8,7 @@ $screen_break_small: 640px;
 :root {
   --page_padding_left: 24px;
   --page_padding_right: 24px;
+  --room_tab_border_subtle_color: #ccc;
 
   @media (max-width: 1200px) {
     --page_padding_left: 12px;

@@ -42,8 +42,8 @@
 
 .bristolian_content {
   grid-area: mc;
-  // padding-left: var(--page_padding_left);
-  // padding-right: var(--page_padding_right);
+  padding-left: var(--page_padding_left);
+  padding-right: var(--page_padding_right);
   overflow-x: auto;
 }
 
@@ -124,6 +124,8 @@
 
 .roompage_tabs {
   margin-top: 1rem;
+  margin-left: calc(var(--page_padding_left) * -1);
+  margin-right: calc(var(--page_padding_right) * -1);
 }
 
 .room_tab_radio {
@@ -136,6 +138,8 @@
   align-items: stretch;
   border-top: 1px solid #ccc;
   background: #f0f0f0;
+  padding-left: var(--page_padding_left);
+  padding-right: var(--page_padding_right);
 }
 
 .room_tab_label {
@@ -144,9 +148,19 @@
   cursor: pointer;
   font-weight: 600;
   border: 1px solid transparent;
+  border-top-color: var(--room_tab_border_subtle_color);
+
   margin: -1px 0 0 -1px;
   background: #e8e8e8;
   color: #555;
+}
+
+.room_tab_strip .room_tab_label:first-child {
+  border-left-color: var(--room_tab_border_subtle_color);
+}
+
+.room_tab_strip .room_tab_label:last-child {
+  border-right-color: var(--room_tab_border_subtle_color);
 }
 
 .room_tab_label:hover {
@@ -173,6 +187,8 @@
   margin-top: 0;
   border-top: 1px solid #333;
   padding: 1rem;
+  padding-left: var(--page_padding_left);
+  padding-right: var(--page_padding_right);
 }
 
 .room_tab_panel {
