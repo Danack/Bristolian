@@ -27,6 +27,9 @@ let g_textlayer_drawn = null;
 // or whether messages are still being queued.
 let g_annotation_listener_setup = false;
 
+// Last draw_highlights rects (scale-1); reapplied after zoom/reload when canvases are recreated.
+let g_last_stored_highlights = null;
+
 
 // Define what zoom levels are available
 let g_zoom_levels = [
@@ -179,6 +182,10 @@ function renderingTextLayerForPageIsFinished(pageNum) {
     setTimeout(process_annotation_queue_and_setup_annotation_listener, 1);
 
     sendPdfReadyToParent();
+
+    if (g_last_stored_highlights !== null) {
+        drawHighlights(g_last_stored_highlights);
+    }
 }
 
 
@@ -533,13 +540,14 @@ export function receiveDrawHightlightsMessage(data) {
             console.warn("No highlights received.");
             return;
         }
-        // TODO - this interacts with drawHighlights, really badly.
-        // clearAllHighlights();
+        // Shallow copy so we keep our own snapshot if the parent reuses or mutates the array.
+        g_last_stored_highlights = highlights.slice();
         drawHighlights(highlights);
     }
 
     if (data.type === "clear_highlights") {
         console.log("Received clear highlights message");
+        g_last_stored_highlights = null;
         clearAllHighlights();
     }
 }
