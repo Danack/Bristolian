@@ -10,6 +10,12 @@ containers/varnish/config/default.vcl
 containers/varnish/libvmod-geoip2-1.3.0
 site.css
 site.css.map
+app/temp/
+temp/
+trc/
+*.DS_store
+.phpunit.result.cache
+this_is_local.txt
 app/public/js/app.bundle.js
 app/public/js/app.bundle.map
 app/public/js/app.bundle.map.gz
