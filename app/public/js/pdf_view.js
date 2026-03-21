@@ -322,6 +322,50 @@ function clientRectOverlapsPage(rect, boundingRect, tolerance) {
     );
 }
 
+/**
+ * Convert rects from current-zoom canvas CSS space to PDF.js viewport at scale 1 (CSS px).
+ * Stored highlights_json / AnnotationHighlightParam use this space so zoom only affects rendering.
+ */
+function cssRectsToScale1(rects) {
+    return rects.map(function (rect) {
+        var pdfPage = g_pdf_page[rect.page];
+        if (!pdfPage) {
+            return rect;
+        }
+        var viewportAt1 = pdfPage.getViewport({ scale: 1.0 });
+        var viewportAtCurrent = pdfPage.getViewport({ scale: g_scale });
+        var sx = viewportAt1.width / viewportAtCurrent.width;
+        var sy = viewportAt1.height / viewportAtCurrent.height;
+        return {
+            page: rect.page,
+            left: rect.left * sx,
+            top: rect.top * sy,
+            right: rect.right * sx,
+            bottom: rect.bottom * sy,
+        };
+    });
+}
+
+/**
+ * Map stored scale-1 coordinates to current-zoom CSS pixels for drawing on the canvas bitmap.
+ */
+function highlightScale1ToCssPixels(highlight) {
+    var pdfPage = g_pdf_page[highlight.page];
+    if (!pdfPage) {
+        return null;
+    }
+    var viewportAt1 = pdfPage.getViewport({ scale: 1.0 });
+    var viewportAtCurrent = pdfPage.getViewport({ scale: g_scale });
+    var sx = viewportAtCurrent.width / viewportAt1.width;
+    var sy = viewportAtCurrent.height / viewportAt1.height;
+    return {
+        left: highlight.left * sx,
+        top: highlight.top * sy,
+        right: highlight.right * sx,
+        bottom: highlight.bottom * sy,
+    };
+}
+
 
 function processSelectionChange() {
     const selection = window.getSelection();
@@ -389,7 +433,7 @@ function processSelectionChange() {
         });
     }
 
-    let reduced_simple_rects = mergeRectsOnSameLine(simpleRects, 1)
+    let reduced_simple_rects = mergeRectsOnSameLine(cssRectsToScale1(simpleRects), 1);
 
     // Reduce rectangles to be integer values, as this is accurate enough,
     // and significantly reduces the data size when sent to the server.
@@ -421,7 +465,7 @@ function clearAllHighlights() {
 
 function drawHighlights(highlights) {
 
-    // Highlights are stored in CSS pixels relative to the canvas; map to canvas bitmap pixels using DPR only.
+    // highlights_json is in PDF viewport scale-1 CSS px; convert to current g_scale, then to bitmap via DPR.
     var outputScale = window.devicePixelRatio || 1;
 
     console.log("Drawing highlights", highlights);
@@ -460,11 +504,16 @@ function drawHighlights(highlights) {
         var context = g_page_canvas_context[highlight.page];
         context.fillStyle = 'rgba(255,221,0,0.25)';
 
+        var css = highlightScale1ToCssPixels(highlight);
+        if (!css) {
+            continue;
+        }
+
         context.fillRect(
-            (highlight.left) * outputScale,
-            (highlight.top) * outputScale,
-            (highlight.right - highlight.left) * outputScale,
-            (highlight.bottom - highlight.top) * outputScale
+            css.left * outputScale,
+            css.top * outputScale,
+            (css.right - css.left) * outputScale,
+            (css.bottom - css.top) * outputScale
         );
     }
 }
