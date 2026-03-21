@@ -1,4 +1,7 @@
 
+set -e
+set -x
+
 # These placeholders should only be run once, and only on a dev box.
 
 php cli.php admin:create_user testing@example.com testing

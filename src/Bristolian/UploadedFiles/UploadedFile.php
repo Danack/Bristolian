@@ -23,13 +23,17 @@ class UploadedFile
         // user control, and so neither should be used.
     }
 
+    /**
+     * Build an upload descriptor from a path on disk. The stored original name is the
+     * filename only (basename), matching browser uploads which send no directory path.
+     */
     public static function fromFile(string $filename): self
     {
         $fullpath = \Safe\realpath($filename);
         return new self(
             $fullpath,
             \Safe\filesize($fullpath),
-            $filename,
+            basename($fullpath),
             0
         );
     }
