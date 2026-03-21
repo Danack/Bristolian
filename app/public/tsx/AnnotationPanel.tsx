@@ -99,6 +99,20 @@ function getDefaultState(props: AnnotationPanelProps): AnnotationPanelState {
   };
 }
 
+/** Deep links use room_annotation_id; list clicks use annotation.id — treat both as selection. */
+function annotationMatchesSelectedId(
+  annotation: RoomAnnotationWithTags,
+  selected_annotation_id: string | null
+): boolean {
+  if (selected_annotation_id === null) {
+    return false;
+  }
+  return (
+    annotation.id === selected_annotation_id ||
+    annotation.room_annotation_id === selected_annotation_id
+  );
+}
+
 function sendDataToPDFJS(data: object) {
   let iframe = document.getElementById('pdf_iframe');
 // @ts-ignore:content window does exist
@@ -220,7 +234,7 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
   componentDidUpdate(prevProps: AnnotationPanelProps, prevState: AnnotationPanelState) {
     // The whole lifecycle and interaction between this panel and
     // the iframe containing the PDF could do with some re-thinking.
-    if (this.pending_annotation_id && this.state.annotations) {
+    if (this.pending_annotation_id && this.state.annotations.length > 0) {
       console.log("we had pending_annotation_id and data is now loaded, so sending highlights");
       this.sendHighlightsToDraw();
       this.pending_annotation_id = null;
@@ -231,8 +245,8 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
   }
 
   sendHighlightsToDraw() {
-    const selectedAnnotation = this.state.annotations.find(
-      (annotation: RoomAnnotationWithTags) => annotation.id === this.state.selected_annotation_id
+    const selectedAnnotation = this.state.annotations.find((annotation: RoomAnnotationWithTags) =>
+      annotationMatchesSelectedId(annotation, this.state.selected_annotation_id)
     );
 
     if (!selectedAnnotation) {
@@ -390,7 +404,7 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
           return (
             <li
               key={index}
-              className={`annotation ${this.state.selected_annotation_id === annotation.id ? 'selected' : ''}`}
+              className={`annotation ${annotationMatchesSelectedId(annotation, this.state.selected_annotation_id) ? 'selected' : ''}`}
               onClick={() => this.setState({ selected_annotation_id: annotation.id })}
             >
               <span>{annotation.title}</span>
