@@ -118,7 +118,7 @@ class StandardBristolStairImageStorageTest extends BaseTestCase
             new FakeBristolStairsRepo()
         );
 
-        $uploadedFile = UploadedFile::fromFile(__DIR__ . '/../../../sample.pdf');
+        $uploadedFile = UploadedFile::fromFile(__DIR__ . '/../../../fixtures/pdfs/sample.pdf');
         $gpsParams = BristolStairsGpsParams::createFromVarMap(new ArrayVarMap([]));
 
         $result = $storage->storeFileForUser(

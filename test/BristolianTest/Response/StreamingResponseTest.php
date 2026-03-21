@@ -14,7 +14,7 @@ class StreamingResponseTest extends BaseTestCase
 {
     public function testWorksWithValidPdfFile()
     {
-        $filepath = __DIR__ . "/../../sample.pdf";
+        $filepath = __DIR__ . "/../../fixtures/pdfs/sample.pdf";
         
         $response = new StreamingResponse($filepath);
         
@@ -23,7 +23,7 @@ class StreamingResponseTest extends BaseTestCase
 
     public function testGetStatusCodeReturns200()
     {
-        $filepath = __DIR__ . "/../../sample.pdf";
+        $filepath = __DIR__ . "/../../fixtures/pdfs/sample.pdf";
         
         $response = new StreamingResponse($filepath);
         
@@ -32,7 +32,7 @@ class StreamingResponseTest extends BaseTestCase
 
     public function testGetBodyStreamReturnsStreamInterface()
     {
-        $filepath = __DIR__ . "/../../sample.pdf";
+        $filepath = __DIR__ . "/../../fixtures/pdfs/sample.pdf";
         
         $response = new StreamingResponse($filepath);
         $stream = $response->getBodyStream();
@@ -42,7 +42,7 @@ class StreamingResponseTest extends BaseTestCase
 
     public function testGetBodyStreamContainsFileContents()
     {
-        $filepath = __DIR__ . "/../../sample.pdf";
+        $filepath = __DIR__ . "/../../fixtures/pdfs/sample.pdf";
         
         $response = new StreamingResponse($filepath);
         $stream = $response->getBodyStream();
@@ -55,7 +55,7 @@ class StreamingResponseTest extends BaseTestCase
 
     public function testGetHeadersContainsContentType()
     {
-        $filepath = __DIR__ . "/../../sample.pdf";
+        $filepath = __DIR__ . "/../../fixtures/pdfs/sample.pdf";
         
         $response = new StreamingResponse($filepath);
         $headers = $response->getHeaders();
@@ -66,7 +66,7 @@ class StreamingResponseTest extends BaseTestCase
 
     public function testGetHeadersWithCustomHeaders()
     {
-        $filepath = __DIR__ . "/../../sample.pdf";
+        $filepath = __DIR__ . "/../../fixtures/pdfs/sample.pdf";
         $customHeaders = [
             'X-Custom-Header' => 'custom-value',
             'Cache-Control' => 'max-age=3600'
@@ -84,7 +84,7 @@ class StreamingResponseTest extends BaseTestCase
 
     public function testCustomHeadersOverrideDefaults()
     {
-        $filepath = __DIR__ . "/../../sample.pdf";
+        $filepath = __DIR__ . "/../../fixtures/pdfs/sample.pdf";
         $customHeaders = [
             'Content-Type' => 'application/octet-stream'
         ];
@@ -138,7 +138,7 @@ class StreamingResponseTest extends BaseTestCase
 
     public function testStreamCanBeReadMultipleTimes()
     {
-        $filepath = __DIR__ . "/../../sample.pdf";
+        $filepath = __DIR__ . "/../../fixtures/pdfs/sample.pdf";
         
         $response = new StreamingResponse($filepath);
         $stream = $response->getBodyStream();
@@ -155,7 +155,7 @@ class StreamingResponseTest extends BaseTestCase
 
     public function testMultipleHeadersWork()
     {
-        $filepath = __DIR__ . "/../../sample.pdf";
+        $filepath = __DIR__ . "/../../fixtures/pdfs/sample.pdf";
         $customHeaders = [
             'X-Header-1' => 'value1',
             'X-Header-2' => 'value2',
@@ -173,7 +173,7 @@ class StreamingResponseTest extends BaseTestCase
 
     public function testStreamIsReadable()
     {
-        $filepath = __DIR__ . "/../../sample.pdf";
+        $filepath = __DIR__ . "/../../fixtures/pdfs/sample.pdf";
         
         $response = new StreamingResponse($filepath);
         $stream = $response->getBodyStream();
@@ -183,7 +183,7 @@ class StreamingResponseTest extends BaseTestCase
 
     public function testGetHeadersReturnsArray()
     {
-        $filepath = __DIR__ . "/../../sample.pdf";
+        $filepath = __DIR__ . "/../../fixtures/pdfs/sample.pdf";
         
         $response = new StreamingResponse($filepath);
         $headers = $response->getHeaders();
@@ -194,7 +194,7 @@ class StreamingResponseTest extends BaseTestCase
 
     public function testWithEmptyCustomHeaders()
     {
-        $filepath = __DIR__ . "/../../sample.pdf";
+        $filepath = __DIR__ . "/../../fixtures/pdfs/sample.pdf";
         
         $response = new StreamingResponse($filepath, []);
         $headers = $response->getHeaders();

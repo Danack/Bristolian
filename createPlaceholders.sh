@@ -6,6 +6,11 @@ php cli.php admin:create_user danack@example.com testing
 php cli.php room:create  "Housing" "A place to discuss the problem that is BCC housing"
 php cli.php room:create  "Off-topic" "A place to discuss everything else"
 
+php cli.php room:add_file  "Housing" test/fixtures/pdfs/sample.pdf
+
+php cli.php room:add_file_annotation "Housing" "sample.pdf" '{"title":"Nulla consequat quam ut nisl - annotation.","highlights_json":"[{\"page\":0,\"left\":101,\"top\":392,\"right\":264,\"bottom\":407}]","text":""}'
+
+
 php cli.php debug:add_meme test/fixtures/memes/came-to-laugh-not-feel.jpg "sad,wojak,feel"  "I came here to laugh not to feel"
 php cli.php debug:add_meme test/fixtures/memes/one_yikes.jpeg "yikes,reaction" "You have been awarded on yike from the national committee of yikes"
 php cli.php debug:add_meme test/fixtures/memes/sipping_tea_yikes.jpeg "USA,tea" "alex morgan celebrates scoring against england by pretending to sip tea, I'm English and I laughed she pretended to sip some tea it was funny people need to chill out. It's what we're known for. It's like if the English pretended  to eat a big mac or shoot up a school."

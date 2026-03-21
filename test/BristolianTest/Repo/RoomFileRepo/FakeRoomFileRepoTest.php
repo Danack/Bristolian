@@ -371,4 +371,157 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
 
         $this->assertCount(0, $files);
     }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::registerFileObjectInfo
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesInRoomByOriginalFilename
+     */
+    public function test_registerFileObjectInfo_and_getFilesInRoomByOriginalFilename_returns_matching_files(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_1';
+        $created = new \DateTimeImmutable('2020-01-01 12:00:00');
+        $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
+            'file-a',
+            'norm.pdf',
+            'report.pdf',
+            'uploaded',
+            100,
+            'user-1',
+            $created
+        ));
+        $roomFileRepo->addFileToRoom('file-a', $room_id);
+
+        $matching = $roomFileRepo->getFilesInRoomByOriginalFilename($room_id, 'report.pdf');
+
+        $this->assertCount(1, $matching);
+        $this->assertSame('file-a', $matching[0]->id);
+        $this->assertSame('report.pdf', $matching[0]->original_filename);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesInRoomByOriginalFilename
+     */
+    public function test_getFilesInRoomByOriginalFilename_returns_empty_for_unknown_room(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+
+        $matching = $roomFileRepo->getFilesInRoomByOriginalFilename('no_such_room', 'x.pdf');
+
+        $this->assertSame([], $matching);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesInRoomByOriginalFilename
+     */
+    public function test_getFilesInRoomByOriginalFilename_returns_empty_when_no_original_filename_match(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_1';
+        $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
+            'file-a',
+            'norm.pdf',
+            'report.pdf',
+            'uploaded',
+            100,
+            'user-1',
+            new \DateTimeImmutable()
+        ));
+        $roomFileRepo->addFileToRoom('file-a', $room_id);
+
+        $matching = $roomFileRepo->getFilesInRoomByOriginalFilename($room_id, 'other.pdf');
+
+        $this->assertSame([], $matching);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesInRoomByOriginalFilename
+     */
+    public function test_getFilesInRoomByOriginalFilename_returns_newest_first_when_multiple_match(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_1';
+        $older = new \DateTimeImmutable('2019-01-01');
+        $newer = new \DateTimeImmutable('2021-01-01');
+        $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
+            'file-old',
+            'a.pdf',
+            'dup.pdf',
+            'uploaded',
+            100,
+            'user-1',
+            $older
+        ));
+        $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
+            'file-new',
+            'b.pdf',
+            'dup.pdf',
+            'uploaded',
+            200,
+            'user-1',
+            $newer
+        ));
+        $roomFileRepo->addFileToRoom('file-old', $room_id);
+        $roomFileRepo->addFileToRoom('file-new', $room_id);
+
+        $matching = $roomFileRepo->getFilesInRoomByOriginalFilename($room_id, 'dup.pdf');
+
+        $this->assertCount(2, $matching);
+        $this->assertSame('file-new', $matching[0]->id);
+        $this->assertSame('file-old', $matching[1]->id);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesInRoomByOriginalFilename
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::setDocumentTimestampForFileInRoom
+     */
+    public function test_getFilesInRoomByOriginalFilename_includes_document_timestamp_when_set(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_1';
+        $document_timestamp = new \DateTimeImmutable('2020-06-15 12:00:00');
+        $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
+            'file-a',
+            'norm.pdf',
+            'report.pdf',
+            'uploaded',
+            100,
+            'user-1',
+            new \DateTimeImmutable()
+        ));
+        $roomFileRepo->addFileToRoom('file-a', $room_id);
+        $roomFileRepo->setDocumentTimestampForFileInRoom($room_id, 'file-a', $document_timestamp);
+
+        $matching = $roomFileRepo->getFilesInRoomByOriginalFilename($room_id, 'report.pdf');
+
+        $this->assertCount(1, $matching);
+        $this->assertNotNull($matching[0]->document_timestamp);
+        $this->assertSame(
+            $document_timestamp->getTimestamp(),
+            $matching[0]->document_timestamp->getTimestamp()
+        );
+    }
+
+    /**
+     * Room membership can reference a file id without metadata if internal state is inconsistent; skip those ids.
+     *
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesInRoomByOriginalFilename
+     */
+    public function test_getFilesInRoomByOriginalFilename_skips_file_ids_without_registered_metadata(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_1';
+        $roomFileRepo->addFileToRoom('file_a', $room_id);
+
+        $reflection = new \ReflectionClass($roomFileRepo);
+        $files_property = $reflection->getProperty('files');
+        $files_property->setAccessible(true);
+        $files = $files_property->getValue($roomFileRepo);
+        unset($files['file_a']);
+        $files_property->setValue($roomFileRepo, $files);
+
+        $matching = $roomFileRepo->getFilesInRoomByOriginalFilename($room_id, 'original_file_a.txt');
+
+        $this->assertSame([], $matching);
+    }
 }

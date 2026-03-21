@@ -28,4 +28,11 @@ interface RoomFileRepo
      * @return RoomFileObjectInfo|null
      */
     public function getFileDetails(string $room_id, string $file_id): RoomFileObjectInfo|null;
+
+    /**
+     * Files in the room whose stored original filename equals $original_filename (exact match).
+     *
+     * @return RoomFileInRoom[]
+     */
+    public function getFilesInRoomByOriginalFilename(string $room_id, string $original_filename): array;
 }

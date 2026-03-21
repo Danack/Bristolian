@@ -259,7 +259,7 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
     {
         [$room, $user] = $this->createTestUserAndRoom();
         $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
-        $path = __DIR__ . '/../../../sample.pdf';
+        $path = __DIR__ . '/../../../fixtures/pdfs/sample.pdf';
         $uploadedFile = new UploadedFile($path, (int) filesize($path), 'report_unique_title_slug.pdf', 0);
         $fileId = $this->world()->roomFileObjectInfoRepo()->createRoomFileObjectInfo(
             $user->getUserId(),
@@ -389,6 +389,30 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
 
         $this->assertCount(1, $files);
         $this->assertSame($fileId, $files[0]->id);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesInRoomByOriginalFilename
+     */
+    public function test_getFilesInRoomByOriginalFilename_returns_matching_file(): void
+    {
+        [$room, $user] = $this->createTestUserAndRoom();
+        $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
+        $uniqueOriginal = 'unique_orig_' . create_test_uniqid() . '.pdf';
+        $path = __DIR__ . '/../../../fixtures/pdfs/sample.pdf';
+        $uploadedFile = new UploadedFile($path, (int) filesize($path), $uniqueOriginal, 0);
+        $fileId = $this->world()->roomFileObjectInfoRepo()->createRoomFileObjectInfo(
+            $user->getUserId(),
+            'norm_' . create_test_uniqid() . '.pdf',
+            $uploadedFile
+        );
+        $this->world()->roomFileObjectInfoRepo()->setRoomFileObjectUploaded($fileId);
+        $roomFileRepo->addFileToRoom($fileId, $room->id);
+
+        $byName = $roomFileRepo->getFilesInRoomByOriginalFilename($room->id, $uniqueOriginal);
+        $this->assertCount(1, $byName);
+        $this->assertSame($fileId, $byName[0]->id);
+        $this->assertSame($uniqueOriginal, $byName[0]->original_filename);
     }
 
 }

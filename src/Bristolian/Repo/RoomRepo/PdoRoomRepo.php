@@ -83,6 +83,35 @@ SQL;
      * @return Room[]
      * @throws \Exception
      */
+    public function getRoomByName(string $name): array
+    {
+        $sql = <<< SQL
+select
+    id,
+    owner_user_id,
+    name,
+    purpose,
+    created_at
+from
+    room
+where
+    name = :name
+SQL;
+        $params = [
+            ':name' => $name,
+        ];
+
+        return $this->pdoSimple->fetchAllAsObjectConstructor(
+            $sql,
+            $params,
+            Room::class
+        );
+    }
+
+    /**
+     * @return Room[]
+     * @throws \Exception
+     */
     public function getAllRooms(): array
     {
         $sql = <<< SQL

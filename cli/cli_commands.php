@@ -88,11 +88,6 @@ function addDebugCommands(Application $console)
     $console->add($command);
 
 
-    $command = new Command('debug:add_room_file', 'Bristolian\CliController\Debug::test_add_room_file');
-    $command->setDescription("Test adding a file to a room.");
-    $console->add($command);
-
-
     $command = new Command(
         'debug:send_message_to_room',
         'Bristolian\CliController\Debug::send_message_to_room'
@@ -277,6 +272,24 @@ function addRoomCommands(Application $console)
     $command->addArgument('name', InputArgument::REQUIRED, "The name of the room.");
     $command->addArgument('purpose', InputArgument::REQUIRED, "The purpose/description of the room.");
 
+    $console->add($command);
+
+    $command = new Command('room:add_file', 'Bristolian\CliController\Rooms::addFileFromCli');
+    $command->setDescription("Upload a file and attach it to a room by room name.");
+    $command->addArgument('room_name', InputArgument::REQUIRED, "The name of the room.");
+    $command->addArgument('file_path', InputArgument::REQUIRED, "Path to the file to upload.");
+    $console->add($command);
+
+    $command = new Command(
+        'room:add_file_annotation',
+        'Bristolian\CliController\Rooms::addFileAnnotationFromCli'
+    );
+    $command->setDescription(
+        'Add a file annotation for seeding/tests. annotation_json: JSON object with title, highlights_json (string or highlight array), text — same shape as the web UI / AnnotationParam.'
+    );
+    $command->addArgument('room_name', InputArgument::REQUIRED, "Room name (must be unique among rooms).");
+    $command->addArgument('original_filename', InputArgument::REQUIRED, "The file's stored original filename (e.g. sample.pdf).");
+    $command->addArgument('annotation_json', InputArgument::REQUIRED, "JSON string, e.g. {\"title\":\"...\",\"highlights_json\":\"[{\\\"page\\\":0,...}]\",\"text\":\"\"}");
     $console->add($command);
 }
 

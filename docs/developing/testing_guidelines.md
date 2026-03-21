@@ -69,6 +69,18 @@ class ExampleParamTest extends BaseTestCase
 
 ## General Testing Guidelines
 
+### CLI command handlers: use `CliOutput` instead of `echo` and `exit`
+
+Code invoked from `cli.php` (typically under `src/Bristolian/CliController/`) should **not** use `echo` or bare `exit()` for output and termination if you want it covered by PHPUnit.
+
+- Inject **`Bristolian\Service\CliOutput\CliOutput`** (usually via the controller constructor; see e.g. `BristolStairs`, `Rooms`, `MemeOcr`).
+- Use **`$cliOutput->write(string)`** instead of `echo`.
+- Use **`$cliOutput->exit(int $code)`** instead of `exit($code)`. In tests, **`CapturingCliOutput`** records writes and throws **`CliExitRequestedException`** (with the exit code) instead of ending the process.
+
+Production CLI binds **`EchoCliOutput`** in `cli/cli_injection_params.php`. Tests use **`CapturingCliOutput`** and assert on captured output or caught exceptions.
+
+**Do not** rely on `@codeCoverageIgnore` or comments such as “not unit-tested” to skip testing CLI code—prefer this pattern so behaviour is testable.
+
 ### PHPUnit Coverage Annotations
 
 - **Test class:** Use `@coversNothing` on the class docblock. This prevents coverage from being attributed to the class as a whole.
@@ -183,7 +195,7 @@ Example of using test fixtures:
 ```php
 public function testWithPdfFile(): void
 {
-    $pdfPath = __DIR__ . '/../../sample.pdf';
+    $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
     $uploadedFile = UploadedFile::fromFile($pdfPath);
     
     // Use the real test fixture file

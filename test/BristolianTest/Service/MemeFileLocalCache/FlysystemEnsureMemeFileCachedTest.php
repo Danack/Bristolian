@@ -136,7 +136,7 @@ class FlysystemEnsureMemeFileCachedTest extends BaseTestCase
             $service = new FlysystemEnsureMemeFileCached();
             $out = new CapturingCliOutput();
             $repo = new FakeMemeStorageRepo();
-            $pdfPath = __DIR__ . '/../../../sample.pdf';
+            $pdfPath = __DIR__ . '/../../../fixtures/pdfs/sample.pdf';
             $this->assertFileExists($pdfPath);
             $memeId = $repo->storeMeme('u1', 'gone.pdf', \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath));
             $memeRow = $repo->getMeme($memeId);

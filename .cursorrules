@@ -92,6 +92,7 @@ Common container names (may vary based on Docker Compose project name):
 13. **Do not use raw `JsonNoCacheResponse` unless instructed to.** Always create a custom response class in `src/Bristolian/Response` (or a subdirectory such as `Response/TinnedFish`) that implements `StubResponse`, and return that from controllers. See e.g. `CreateClipResponse`, `SuccessResponse`, `ValidationErrorResponse`.
 14. **Assume database integrity from foreign keys.** The database uses foreign keys to enforce referential integrity. Do not add redundant checks in application code (e.g. verifying that a related row exists or that it belongs to the expected parent) when the relationship is already enforced by the schema. Trust the data and throw only when the repo’s own query returns nothing (e.g. not found by id).
 15. **Get methods in repos:** Repo methods named **get** assume the caller has a valid id; they return the entity or throw if not found. Do not use "OrThrow" in method names.
+16. **CLI output and exit for testability:** In `CliController` (and similar code run from `cli.php`), inject `Bristolian\Service\CliOutput\CliOutput` and use `$cliOutput->write()` and `$cliOutput->exit()` instead of `echo` and bare `exit()`, so PHPUnit can use `CapturingCliOutput`. See `docs/developing/testing_guidelines.md` (CLI command handlers section).
 
 ## Sharing Constants Between PHP and TypeScript
 

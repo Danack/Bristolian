@@ -68,7 +68,7 @@ class UserTest extends BaseTestCase
      */
     public function test_listMemes_truncates_when_over_display_limit(): void
     {
-        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
         $this->assertFileExists($pdfPath);
         $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
         $repo = $this->injector->make(FakeMemeStorageRepo::class);
@@ -89,7 +89,7 @@ class UserTest extends BaseTestCase
      */
     public function test_listUntaggedMemes_truncates_when_over_display_limit(): void
     {
-        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
         $this->assertFileExists($pdfPath);
         $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
         $repo = $this->injector->make(FakeMemeStorageRepo::class);
@@ -136,7 +136,7 @@ class UserTest extends BaseTestCase
      */
     public function test_searchMemes_with_tags(): void
     {
-        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
         $this->assertFileExists($pdfPath);
         $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
         $storageRepo = $this->injector->make(FakeMemeStorageRepo::class);
@@ -159,7 +159,7 @@ class UserTest extends BaseTestCase
      */
     public function test_searchMemes_with_text_search_returns_matching_memes(): void
     {
-        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
         $this->assertFileExists($pdfPath);
         $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
         $storageRepo = $this->injector->make(FakeMemeStorageRepo::class);
@@ -197,7 +197,7 @@ class UserTest extends BaseTestCase
      */
     public function test_searchMemes_combined_results_truncated(): void
     {
-        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
         $this->assertFileExists($pdfPath);
         $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
         $repo = $this->injector->make(FakeMemeStorageRepo::class);
@@ -253,7 +253,7 @@ class UserTest extends BaseTestCase
      */
     public function test_getMemeText_found_returns_text(): void
     {
-        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
         $this->assertFileExists($pdfPath);
         $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
         $storageRepo = $this->injector->make(FakeMemeStorageRepo::class);
@@ -441,7 +441,7 @@ class UserTest extends BaseTestCase
      */
     public function test_updateMemeText_success(): void
     {
-        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
         $this->assertFileExists($pdfPath);
         $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
         $storageRepo = $this->injector->make(FakeMemeStorageRepo::class);
@@ -474,7 +474,7 @@ class UserTest extends BaseTestCase
      */
     public function test_updateMemeText_truncates_long_text(): void
     {
-        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
         $this->assertFileExists($pdfPath);
         $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
         $storageRepo = $this->injector->make(FakeMemeStorageRepo::class);
@@ -508,7 +508,7 @@ class UserTest extends BaseTestCase
      */
     public function test_updateMemeText_uses_array_access_parsed_body(): void
     {
-        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
         $this->assertFileExists($pdfPath);
         $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
         $storageRepo = $this->injector->make(FakeMemeStorageRepo::class);
@@ -541,7 +541,7 @@ class UserTest extends BaseTestCase
      */
     public function test_updateMemeText_uses_post_fallback_when_parsed_body_empty(): void
     {
-        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
         $this->assertFileExists($pdfPath);
         $uploadedFile = \Bristolian\UploadedFiles\UploadedFile::fromFile($pdfPath);
         $storageRepo = $this->injector->make(FakeMemeStorageRepo::class);

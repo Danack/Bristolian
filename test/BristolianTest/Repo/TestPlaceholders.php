@@ -146,7 +146,7 @@ trait TestPlaceholders
         $roomRepo = $this->injector->make(PdoRoomFileObjectInfoRepo::class);
         $normalized_filename = $this->getTestFileName();
 
-        $filepath = __DIR__ ."/../../sample.pdf";
+        $filepath = __DIR__ . "/../../fixtures/pdfs/sample.pdf";
 
         $original_filename =
 

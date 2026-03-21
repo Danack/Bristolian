@@ -13,7 +13,7 @@ class BristolianFileResponseTest extends BaseTestCase
 {
     public function testWorksCorrectlyWithDefaults()
     {
-        $filepath = __DIR__ . "/../../sample.pdf";
+        $filepath = __DIR__ . "/../../fixtures/pdfs/sample.pdf";
 
         $response = new BristolianFileResponse($filepath);
         self::assertEquals(\Safe\file_get_contents($filepath), $response->getBody());

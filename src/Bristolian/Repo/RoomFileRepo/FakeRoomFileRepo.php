@@ -94,6 +94,52 @@ class FakeRoomFileRepo implements RoomFileRepo
     }
 
     /**
+     * Register stored file metadata before addFileToRoom so tests can control original_filename.
+     *
+     * @internal
+     */
+    public function registerFileObjectInfo(RoomFileObjectInfo $info): void
+    {
+        $this->files[$info->id] = $info;
+    }
+
+    /**
+     * @return RoomFileInRoom[]
+     */
+    public function getFilesInRoomByOriginalFilename(string $room_id, string $original_filename): array
+    {
+        if (!isset($this->roomFiles[$room_id])) {
+            return [];
+        }
+
+        $matching = [];
+        foreach ($this->roomFiles[$room_id] as $fileStorageId) {
+            if (!isset($this->files[$fileStorageId])) {
+                continue;
+            }
+            $file = $this->files[$fileStorageId];
+            if ($file->original_filename !== $original_filename) {
+                continue;
+            }
+            $documentTimestamp = $this->documentTimestamps[$room_id][$fileStorageId] ?? null;
+            $matching[] = new RoomFileInRoom(
+                $file->id,
+                $file->normalized_name,
+                $file->original_filename,
+                $file->state,
+                $file->size,
+                $file->user_id,
+                $file->created_at,
+                $documentTimestamp
+            );
+        }
+
+        usort($matching, fn (RoomFileInRoom $a, RoomFileInRoom $b) => $b->created_at <=> $a->created_at);
+
+        return $matching;
+    }
+
+    /**
      * Set document_timestamp for a file in a room (for testing filter behaviour).
      * Call after addFileToRoom; the file must already be in the room.
      */

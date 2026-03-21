@@ -1000,7 +1000,7 @@ TEXT;
      */
     public function test_mapStreamingResponseToPSR7_returns_psr7_response_with_status_and_body(): void
     {
-        $filepath = __DIR__ . '/../sample.pdf';
+        $filepath = __DIR__ . '/../fixtures/pdfs/sample.pdf';
         $streamingResponse = new \Bristolian\Response\StreamingResponse($filepath);
         $response = mapStreamingResponseToPSR7($streamingResponse);
         $this->assertInstanceOf(\Psr\Http\Message\ResponseInterface::class, $response);

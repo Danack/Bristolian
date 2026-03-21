@@ -27,6 +27,21 @@ function injectionParams() : InjectionParams
         \Bristolian\Repo\RoomRepo\RoomRepo::class =>
           \Bristolian\Repo\RoomRepo\PdoRoomRepo::class,
 
+        \Bristolian\Service\RoomFileStorage\RoomFileStorage::class =>
+            \Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::class,
+
+        \Bristolian\Service\ObjectStore\RoomFileObjectStore::class =>
+            \Bristolian\Service\ObjectStore\StandardRoomFileObjectStore::class,
+
+        \Bristolian\Repo\RoomFileRepo\RoomFileRepo::class =>
+            \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class,
+
+        \Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo::class =>
+            \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::class,
+
+        \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::class =>
+            \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::class,
+
         \Bristolian\MoonAlert\MoonAlertRepo::class =>
             \Bristolian\MoonAlert\StandardMoonAlertRepo::class,
 
@@ -112,6 +127,8 @@ function injectionParams() : InjectionParams
             'createLocalCacheFilesystem',
         \Bristolian\Filesystem\MemeFilesystem::class =>
             'createMemeFilesystem',
+        \Bristolian\Filesystem\RoomFileFilesystem::class =>
+            'createRoomFileFilesystem',
         \Mailgun\Mailgun::class => 'createMailgun',
         \Bristolian\Filesystem\UserDocumentsFilesystem::class =>
             'createUserDocumentsFilesystem',

@@ -650,6 +650,28 @@ where room_id = :room_id
 and sf.id = :file_id
 SQL) => ['read' => ['room_file_object_info', 'room_file'], 'write' => []],
 
+            trim(<<<SQL
+select
+    sf.id,
+    sf.normalized_name,
+    sf.original_filename,
+    sf.state,
+    sf.size,
+    sf.user_id,
+    sf.created_at,
+    rf.document_timestamp
+from
+    room_file_object_info as sf
+inner join
+    room_file as rf
+on
+    sf.id = rf.stored_file_id
+where
+    rf.room_id = :room_id
+    and sf.original_filename = :original_filename
+order by sf.created_at desc
+SQL) => ['read' => ['room_file_object_info', 'room_file'], 'write' => []],
+
             // ===== RoomFileTagRepo =====
             trim("SELECT tag_id FROM room_file_tag WHERE room_id = :room_id AND stored_file_id = :stored_file_id")
                 => ['read' => ['room_file_tag'], 'write' => []],
@@ -717,6 +739,19 @@ select
     purpose,
     created_at
 from room
+SQL) => ['read' => ['room'], 'write' => []],
+
+            trim(<<<SQL
+select
+    id,
+    owner_user_id,
+    name,
+    purpose,
+    created_at
+from
+    room
+where
+    name = :name
 SQL) => ['read' => ['room'], 'write' => []],
 
             // ===== RoomTagRepo =====

@@ -97,4 +97,23 @@ class AnnotationParamTest extends BaseTestCase
             $this->assertValidationProblems($ve->getValidationProblems(), $expectedProblems);
         }
     }
+
+    /**
+     * @group wip
+     */
+    public function test_parses_valid_json_input_to_expected_output(): void {
+
+        $json = <<< JSON
+{"title":"Nulla consequat quam ut nisl - annotation.","highlights_json":"[{\"page\":0,\"left\":101,\"top\":392,\"right\":264,\"bottom\":407}]","text":""}
+JSON;
+
+        $expectedTitle = "Nulla consequat quam ut nisl - annotation.";
+        $expectedHighlightsJson = "[{\"page\":0,\"left\":101,\"top\":392,\"right\":264,\"bottom\":407}]";
+        $expectedText = "";
+
+        $params = AnnotationParam::createFromJson($json);
+        $this->assertSame($expectedTitle, $params->title);
+        $this->assertSame($expectedHighlightsJson, $params->highlights_json);
+        $this->assertSame($expectedText, $params->text);
+    }
 }

@@ -11,6 +11,11 @@ interface RoomRepo
     public function getRoomById(string $id): Room|null;
 
     /**
+     * @return Room[] All rooms with this exact name (may be empty).
+     */
+    public function getRoomByName(string $name): array;
+
+    /**
      * @return Room[]
      */
     public function getAllRooms(): array;

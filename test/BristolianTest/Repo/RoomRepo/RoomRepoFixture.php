@@ -130,4 +130,43 @@ abstract class RoomRepoFixture extends BaseTestCase
         $this->assertContains($room1->id, $roomIds);
         $this->assertContains($room2->id, $roomIds);
     }
+
+    /**
+     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getRoomByName
+     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getRoomByName
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getRoomByName
+     */
+    public function test_getRoomByName_returns_empty_when_no_match(): void
+    {
+        $repo = $this->getTestInstance();
+
+        $rooms = $repo->getRoomByName('Nonexistent Room Name ' . bin2hex(random_bytes(4)));
+
+        $this->assertSame([], $rooms);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getRoomByName
+     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::createRoom
+     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getRoomByName
+     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::createRoom
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getRoomByName
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::createRoom
+     */
+    public function test_getRoomByName_returns_all_rooms_with_that_name(): void
+    {
+        $repo = $this->getTestInstance();
+
+        $userId = $this->getValidUserId();
+        $sharedName = 'Shared Name ' . bin2hex(random_bytes(4));
+        $room1 = $repo->createRoom($userId, $sharedName, 'Purpose A');
+        $room2 = $repo->createRoom($userId, $sharedName, 'Purpose B');
+
+        $rooms = $repo->getRoomByName($sharedName);
+
+        $this->assertCount(2, $rooms);
+        $roomIds = array_map(fn(Room $r) => $r->id, $rooms);
+        $this->assertContains($room1->id, $roomIds);
+        $this->assertContains($room2->id, $roomIds);
+    }
 }

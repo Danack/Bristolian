@@ -22,7 +22,7 @@ class FakeWorksBristolStairImageStorageTest extends BaseTestCase
     public function test_storeFileForUser_returns_BristolStairInfo(): void
     {
         $storage = new FakeWorksBristolStairImageStorage();
-        $uploadedFile = UploadedFile::fromFile(__DIR__ . '/../../../sample.pdf');
+        $uploadedFile = UploadedFile::fromFile(__DIR__ . '/../../../fixtures/pdfs/sample.pdf');
         $gpsParams = BristolStairsGpsParams::createFromVarMap(new ArrayVarMap([
             'gps_latitude' => 51.4545,
             'gps_longitude' => -2.5879,
@@ -51,7 +51,7 @@ class FakeWorksBristolStairImageStorageTest extends BaseTestCase
     public function test_storeFileForUser_increments_id_on_each_call(): void
     {
         $storage = new FakeWorksBristolStairImageStorage();
-        $uploadedFile = UploadedFile::fromFile(__DIR__ . '/../../../sample.pdf');
+        $uploadedFile = UploadedFile::fromFile(__DIR__ . '/../../../fixtures/pdfs/sample.pdf');
         $gpsParams = BristolStairsGpsParams::createFromVarMap(new ArrayVarMap([
             'gps_latitude' => 51.4545,
             'gps_longitude' => -2.5879,

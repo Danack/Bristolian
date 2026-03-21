@@ -7,6 +7,7 @@ use Bristolian\Parameters\PropertyType\AnnotationText;
 use Bristolian\Parameters\PropertyType\AnnotationTitle;
 use Bristolian\StaticFactory;
 use DataType\Create\CreateFromArray;
+use DataType\Create\CreateFromJson;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
@@ -15,6 +16,7 @@ use DataType\GetInputTypesFromAttributes;
 class AnnotationParam implements DataType, StaticFactory
 {
     use CreateFromArray;
+    use CreateFromJson;
     use CreateFromRequest;
     use CreateFromVarMap;
     use GetInputTypesFromAttributes;

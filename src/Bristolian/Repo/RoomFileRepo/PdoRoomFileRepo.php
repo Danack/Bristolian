@@ -146,4 +146,43 @@ SQL;
             RoomFileObjectInfo::class
         );
     }
+
+    /**
+     * @return RoomFileInRoom[]
+     * @throws \ReflectionException
+     */
+    public function getFilesInRoomByOriginalFilename(string $room_id, string $original_filename): array
+    {
+        $sql = <<< SQL
+select
+    sf.id,
+    sf.normalized_name,
+    sf.original_filename,
+    sf.state,
+    sf.size,
+    sf.user_id,
+    sf.created_at,
+    rf.document_timestamp
+from
+    room_file_object_info as sf
+inner join
+    room_file as rf
+on
+    sf.id = rf.stored_file_id
+where
+    rf.room_id = :room_id
+    and sf.original_filename = :original_filename
+order by sf.created_at desc
+SQL;
+        $params = [
+            ':room_id' => $room_id,
+            ':original_filename' => $original_filename,
+        ];
+
+        return $this->pdoSimple->fetchAllAsObjectConstructor(
+            $sql,
+            $params,
+            RoomFileInRoom::class
+        );
+    }
 }

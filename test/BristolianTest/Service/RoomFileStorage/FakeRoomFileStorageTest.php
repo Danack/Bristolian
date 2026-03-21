@@ -22,7 +22,7 @@ class FakeRoomFileStorageTest extends BaseTestCase
     {
         $fileId = 'roomfile_abc';
         $storage = new FakeRoomFileStorage($fileId);
-        $uploadedFile = UploadedFile::fromFile(__DIR__ . '/../../../sample.pdf');
+        $uploadedFile = UploadedFile::fromFile(__DIR__ . '/../../../fixtures/pdfs/sample.pdf');
 
         $result = $storage->storeFileForRoomAndUser('user1', 'room1', $uploadedFile);
 
@@ -36,7 +36,7 @@ class FakeRoomFileStorageTest extends BaseTestCase
     {
         $error = UploadError::unsupportedFileType();
         $storage = new FakeRoomFileStorage($error);
-        $uploadedFile = UploadedFile::fromFile(__DIR__ . '/../../../sample.pdf');
+        $uploadedFile = UploadedFile::fromFile(__DIR__ . '/../../../fixtures/pdfs/sample.pdf');
 
         $result = $storage->storeFileForRoomAndUser('user1', 'room1', $uploadedFile);
 

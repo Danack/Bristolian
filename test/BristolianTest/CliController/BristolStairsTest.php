@@ -166,7 +166,7 @@ class BristolStairsTest extends BaseTestCase
         $controller = $this->injector->make(BristolStairs::class);
 
         try {
-            $controller->create($adminRepo, $storage, __DIR__ . '/../../sample.pdf');
+            $controller->create($adminRepo, $storage, __DIR__ . '/../../fixtures/pdfs/sample.pdf');
             $this->fail('Expected CliExitRequestedException');
         } catch (CliExitRequestedException $e) {
             $this->assertSame(-1, $e->getExitCode());
@@ -194,7 +194,7 @@ class BristolStairsTest extends BaseTestCase
         $this->injector->alias(\Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage::class, \Bristolian\Service\BristolStairImageStorage\FakeWorksBristolStairImageStorage::class);
 
         $controller = $this->injector->make(BristolStairs::class);
-        $controller->create($adminRepo, $storage, __DIR__ . '/../../sample.pdf');
+        $controller->create($adminRepo, $storage, __DIR__ . '/../../fixtures/pdfs/sample.pdf');
 
         $this->assertSame('', $output->getCapturedOutput());
     }
@@ -244,7 +244,7 @@ class BristolStairsTest extends BaseTestCase
         $controller = $this->injector->make(BristolStairs::class);
 
         try {
-            $controller->create($adminRepo, $storage, __DIR__ . '/../../sample.pdf');
+            $controller->create($adminRepo, $storage, __DIR__ . '/../../fixtures/pdfs/sample.pdf');
             $this->fail('Expected CliExitRequestedException');
         } catch (CliExitRequestedException $e) {
             $this->assertSame(-1, $e->getExitCode());

@@ -97,7 +97,7 @@ class MemeOcrTest extends BaseTestCase
             new FakeMemeImageOcrRunner('hello from fake ocr'),
             new FakeEnsureMemeFileCached(true),
         );
-        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
         $this->assertFileExists($pdfPath);
         $memeId = $memeStorageRepo->storeMeme('user-1', 'ocr-meme.pdf', UploadedFile::fromFile($pdfPath));
         $memeOcr->runInternal();
@@ -130,7 +130,7 @@ class MemeOcrTest extends BaseTestCase
             new FakeMemeImageOcrRunner($veryLongText),
             new FakeEnsureMemeFileCached(true),
         );
-        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
         $this->assertFileExists($pdfPath);
         $memeId = $memeStorageRepo->storeMeme('user-1', 'ocr-meme-long.pdf', UploadedFile::fromFile($pdfPath));
         $memeOcr->runInternal();
@@ -163,7 +163,7 @@ class MemeOcrTest extends BaseTestCase
             new FakeMemeImageOcrRunner('', new \RuntimeException('ocr failed')),
             new FakeEnsureMemeFileCached(true),
         );
-        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
         $memeStorageRepo->storeMeme('user-1', 'ocr-fail.pdf', UploadedFile::fromFile($pdfPath));
         $memeOcr->runInternal();
         $this->assertStringContainsString('Failed to process OCR', $cliOutput->getCapturedOutput());
@@ -192,7 +192,7 @@ class MemeOcrTest extends BaseTestCase
             new FakeMemeImageOcrRunner(),
             new FakeEnsureMemeFileCached(false, 'missing blob'),
         );
-        $pdfPath = __DIR__ . '/../../sample.pdf';
+        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
         $memeStorageRepo->storeMeme('user-1', 'cache-fail.pdf', UploadedFile::fromFile($pdfPath));
         $memeOcr->runInternal();
         $this->assertStringContainsString('Failed to download file', $cliOutput->getCapturedOutput());

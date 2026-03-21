@@ -44,6 +44,21 @@ class FakeRoomRepo implements RoomRepo
     /**
      * @return Room[]
      */
+    public function getRoomByName(string $name): array
+    {
+        $matching = [];
+        foreach ($this->rooms as $room) {
+            if ($room->name === $name) {
+                $matching[] = $room;
+            }
+        }
+
+        return $matching;
+    }
+
+    /**
+     * @return Room[]
+     */
     public function getAllRooms(): array
     {
         return array_values($this->rooms);
