@@ -384,138 +384,193 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
     );
   }
 
+  renderEditAnnotationButton(annotation: RoomAnnotationWithTags) {
+    return <button type="button"
+            className="button_standard button_chat"
+            onClick={(e) => { e.stopPropagation(); this.openEditTags(annotation); }
+    }>Edit tags</button>
+  }
+
+  renderTag(tag: RoomTag) {
+    return <span key={tag.tag_id}
+                 className="room_entity_tag_chip">{tag.text}</span>;
+  }
+  renderTagsBlock(tags: RoomTag[]) {
+
+    if (tags.length === 0) {
+      return null;
+    }
+
+    return <span className="room_entity_tags">{tags.map((t: RoomTag) => this.renderTag(t))}</span>
+  }
+
   renderAnnotations() {
     if (this.state.annotations.length === 0) {
       return <span>No annotations</span>;
     }
 
-    let clear_selection: preact.VNode = <span></span>;
+    let clear_selection: preact.VNode | null = null;
     if (this.state.selected_annotation_id !== null) {
-      clear_selection = <li onClick={() => this.clearSelectedAnnotation()}>Clear selection</li>;
+      clear_selection = (
+        <tr className="clear_selection">
+          <td colSpan={3} onClick={() => this.clearSelectedAnnotation()}>
+            Clear selection
+          </td>
+        </tr>
+      );
     }
 
     return (
-      <ul className="annotations">
-        {this.state.annotations.map((annotation, index) => {
-          const tags = annotation.tags || [];
-          const tagsBlock = tags.length > 0
-            ? <span className="room_entity_tags">{tags.map((t: RoomTag) => <span key={t.tag_id} className="room_entity_tag_chip">{t.text}</span>)}</span>
-            : null;
-          return (
-            <li
-              key={index}
-              className={`annotation ${annotationMatchesSelectedId(annotation, this.state.selected_annotation_id) ? 'selected' : ''}`}
-              onClick={() => this.setState({ selected_annotation_id: annotation.id })}
-            >
-              <span>{annotation.title}</span>
-              {tagsBlock}
-              {this.state.logged_in && (
-                <button type="button" className="button_standard button_chat" onClick={(e) => { e.stopPropagation(); this.openEditTags(annotation); }}>Edit tags</button>
-              )}
-            </li>
-          );
-        })}
+      <table className="annotations">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>View</th>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.state.annotations.map((annotation: RoomAnnotationWithTags) => {
+            const tags = annotation.tags || [];
+            const tagsBlock = this.renderTagsBlock(tags);
+            const selected = annotationMatchesSelectedId(annotation, this.state.selected_annotation_id);
 
-        {clear_selection}
+            return (
+              <tr
+                key={annotation.id}
+                className={`annotation ${selected ? 'selected' : ''}`}
+              >
+                <td className="annotation_title_cell">
+                  <span>{annotation.title}</span>
+                  {tagsBlock}
+                </td>
+                <td className="annotation_view_cell">
+                  <button
+                    type="button"
+                    className="button_standard"
+                    onClick={() => this.setState({ selected_annotation_id: annotation.id })}
+                  >
+                    View
+                  </button>
+                </td>
+                <td className="annotation_edit_cell">
+                  {this.state.logged_in && this.renderEditAnnotationButton(annotation)}
+                </td>
+              </tr>
+            );
+          })}
 
-      </ul>
+          {clear_selection}
+        </tbody>
+      </table>
     );
+  }
+
+  createAddAnnotationBlock() {
+
+    let create_section = null;
+
+    if (this.state.logged_in !== true) {
+      return <span></span>
+    }
+
+    let validToSubmit = true;
+
+    let error_title = <span></span>
+    if (this.state.error !== null) {
+      error_title = <span class="error">{this.state.error}</span>
+    }
+
+    let title_length_error = <span></span>
+    const titleTrimmed = this.state.title.trim();
+
+    if (titleTrimmed.length < ANNOTATION_TITLE_MINIMUM_LENGTH) {
+      validToSubmit = false;
+
+      if (titleTrimmed.length !== 0) {
+        title_length_error = <span>Title needs {ANNOTATION_TITLE_MINIMUM_LENGTH - titleTrimmed.length} more characters.</span>
+      }
+    }
+
+    let add_button = <span></span>
+    if (validToSubmit === true) {
+      add_button = <div>
+        <button type="submit" className="button_standard" onClick={() => this.addAnnotation()}>Add annotation</button>
+      </div>
+    }
+
+    let text_selected_box = <div>
+      <span>First, select some text in the PDF.</span>
+    </div>
+
+    if (this.state.selection_data !== null) {
+      const json = JSON.stringify(this.state.selection_data.highlights);
+      if (json.length > 16 * 1024) {
+        text_selected_box = <div>
+          <div>
+            <span>Too many lines selected. Please select fewer.</span>
+          </div>
+        </div>
+      } else {
+        text_selected_box = <div>
+          <div>
+            <label>
+              Enter a title
+              <br />
+              <textarea
+                name="title"
+                rows={4}
+                cols={40}
+                onInput={
+                  // @ts-ignore
+                  e => this.setState({title: e.target.value})
+                }
+              />
+              <br/>
+              {error_title}
+              {title_length_error}
+            </label>
+            {add_button}
+          </div>
+        </div>
+      }
+    }
+
+    if (this.state.create_status !== null) {
+      text_selected_box = <div>
+        <div>
+          <span>{this.state.create_status}</span>
+        </div>
+      </div>
+    }
+
+    create_section = (
+      <>
+        <h3>Create Annotation</h3>
+        {text_selected_box}
+      </>
+    );
+
+
+    return create_section
   }
 
   render(props: AnnotationPanelProps, state: AnnotationPanelState) {
     const annotations_block = this.renderAnnotations();
 
-    let create_section = null;
-
-    if (this.state.logged_in) {
-      let validToSubmit = true;
-
-      let error_title = <span></span>
-      if (this.state.error !== null) {
-        error_title = <span class="error">{this.state.error}</span>
-      }
-
-      let title_length_error = <span></span>
-      const titleTrimmed = this.state.title.trim();
-
-      if (titleTrimmed.length < ANNOTATION_TITLE_MINIMUM_LENGTH) {
-        validToSubmit = false;
-
-        if (titleTrimmed.length !== 0) {
-          title_length_error = <span>Title needs {ANNOTATION_TITLE_MINIMUM_LENGTH - titleTrimmed.length} more characters.</span>
-        }
-      }
-
-      let add_button = <span></span>
-      if (validToSubmit === true) {
-        add_button = <div>
-          <button type="submit" className="button_standard" onClick={() => this.addAnnotation()}>Add annotation</button>
-        </div>
-      }
-
-      let text_selected_box = <div>
-        <span>First, select some text in the PDF.</span>
-      </div>
-
-      if (this.state.selection_data !== null) {
-        const json = JSON.stringify(this.state.selection_data.highlights);
-        if (json.length > 16 * 1024) {
-          text_selected_box = <div>
-            <div>
-              <span>Too many lines selected. Please select fewer.</span>
-            </div>
-          </div>
-        } else {
-          text_selected_box = <div>
-            <div>
-              {/*<div>*/}
-              {/*<label>You have selected {countWords(this.state.selection_data.text)} words</label>*/}
-              {/*</div>*/}
-
-              <label>
-                Enter a title
-                <br />
-                <textarea
-                  name="title"
-                  rows={4}
-                  cols={40}
-                  onInput={
-                    // @ts-ignore
-                    e => this.setState({title: e.target.value})
-                  }
-                />
-                <br/>
-                {error_title}
-                {title_length_error}
-              </label>
-              {add_button}
-            </div>
-          </div>
-        }
-      }
-
-      if (this.state.create_status !== null) {
-        text_selected_box = <div>
-          <div>
-            <span>{this.state.create_status}</span>
-          </div>
-        </div>
-      }
-
-      create_section = (
-        <>
-          <h3>Create Annotation</h3>
-          {text_selected_box}
-        </>
-      );
-    }
+    let add_annotation_block = this.createAddAnnotationBlock();
 
     return (
       <div className="annotation_panel_react">
-        {create_section}
-        <h4>Current annotations</h4>
-        {annotations_block}
-        {this.renderEditTagsModal()}
+        <div>
+          {add_annotation_block}
+        </div>
+
+        <div>
+          <h4>Current annotations</h4>
+          {annotations_block}
+          {this.renderEditTagsModal()}
+        </div>
       </div>
     );
   }
