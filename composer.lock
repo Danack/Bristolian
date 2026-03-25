@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "48a60cdf9dafa6ad75fec9153988a9ff",
+    "content-hash": "951cfb20a65ef1432b5e3e1f0d2431e0",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.373.7",
+            "version": "3.373.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "4402bd10f913e66b7271f44466be8d5ba6c9146e"
+                "reference": "18035d80bab38c962af8580307a787bf4e15cc47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4402bd10f913e66b7271f44466be8d5ba6c9146e",
-                "reference": "4402bd10f913e66b7271f44466be8d5ba6c9146e",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/18035d80bab38c962af8580307a787bf4e15cc47",
+                "reference": "18035d80bab38c962af8580307a787bf4e15cc47",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.373.7"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.373.8"
             },
-            "time": "2026-03-20T18:14:19+00:00"
+            "time": "2026-03-23T18:08:22+00:00"
         },
         {
             "name": "brick/math",
@@ -558,16 +558,16 @@
         },
         {
             "name": "danack/datatype",
-            "version": "0.8.1",
+            "version": "0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Danack/DataType.git",
-                "reference": "7b18de396d0e168ef1d0ff321aaf5df93e00d6e0"
+                "reference": "72ee1fec2ffca440402f5bac212b09ec37b8d24d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Danack/DataType/zipball/7b18de396d0e168ef1d0ff321aaf5df93e00d6e0",
-                "reference": "7b18de396d0e168ef1d0ff321aaf5df93e00d6e0",
+                "url": "https://api.github.com/repos/Danack/DataType/zipball/72ee1fec2ffca440402f5bac212b09ec37b8d24d",
+                "reference": "72ee1fec2ffca440402f5bac212b09ec37b8d24d",
                 "shasum": ""
             },
             "require": {
@@ -605,9 +605,9 @@
             "description": "A library that makes using data types easier",
             "support": {
                 "issues": "https://github.com/Danack/DataType/issues",
-                "source": "https://github.com/Danack/DataType/tree/0.8.1"
+                "source": "https://github.com/Danack/DataType/tree/0.9.0"
             },
-            "time": "2026-02-21T13:13:24+00:00"
+            "time": "2026-03-23T20:15:37+00:00"
         },
         {
             "name": "danack/esprintf",
@@ -2158,16 +2158,16 @@
         },
         {
             "name": "mailgun/mailgun-php",
-            "version": "v4.3.7",
+            "version": "v4.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mailgun/mailgun-php.git",
-                "reference": "abafb44c763468fdff374f07a9104ec8fd30e908"
+                "reference": "7e736edfed645fb60e66ef183d7c08bdb7ac0ca8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/abafb44c763468fdff374f07a9104ec8fd30e908",
-                "reference": "abafb44c763468fdff374f07a9104ec8fd30e908",
+                "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/7e736edfed645fb60e66ef183d7c08bdb7ac0ca8",
+                "reference": "7e736edfed645fb60e66ef183d7c08bdb7ac0ca8",
                 "shasum": ""
             },
             "require": {
@@ -2216,9 +2216,9 @@
             "description": "The Mailgun SDK provides methods for all API functions.",
             "support": {
                 "issues": "https://github.com/mailgun/mailgun-php/issues",
-                "source": "https://github.com/mailgun/mailgun-php/tree/v4.3.7"
+                "source": "https://github.com/mailgun/mailgun-php/tree/v4.4.0"
             },
-            "time": "2026-02-22T22:53:35+00:00"
+            "time": "2026-03-21T11:45:49+00:00"
         },
         {
             "name": "michelf/php-markdown",

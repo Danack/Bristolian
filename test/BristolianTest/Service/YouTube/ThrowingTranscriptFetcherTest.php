@@ -19,7 +19,7 @@ class ThrowingTranscriptFetcherTest extends BaseTestCase
     function testWorks(): void
     {
         $id = "abcdef12345";
-        $thrower = new ThrowingTranscriptFetcher($id);
+        $thrower = new ThrowingTranscriptFetcher();
 
         $this->expectException(YouTubeNoCaptionTracksException::class);
         $thrower->fetchAsVtt($id);

@@ -7,6 +7,7 @@ namespace BristolianBehat;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Session;
+use Behat\Testwork\Tester\Result\ExceptionResult;
 use Behat\Testwork\Tester\Result\TestResult;
 use FailAid\Context\FailureContext;
 use FailAid\Service\Output;
@@ -25,7 +26,21 @@ class BristolianFailureContext extends FailureContext
      */
     public function gatherStateFactsAfterFailedStep(AfterStepScope $scope): mixed
     {
-        if ($scope->getTestResult()->getResultCode() !== TestResult::FAILED) {
+        $testResult = $scope->getTestResult();
+        if ($testResult->getResultCode() !== TestResult::FAILED) {
+            $this->setParentStaticProperty('exceptionHash', null);
+
+            return null;
+        }
+
+        if (!$testResult instanceof ExceptionResult) {
+            $this->setParentStaticProperty('exceptionHash', null);
+
+            return null;
+        }
+
+        $exception = $testResult->getException();
+        if ($exception === null) {
             $this->setParentStaticProperty('exceptionHash', null);
 
             return null;
@@ -34,12 +49,11 @@ class BristolianFailureContext extends FailureContext
         $message = null;
 
         try {
-            $objectHash = spl_object_hash($scope->getTestResult()->getException());
+            $objectHash = spl_object_hash($exception);
             $exceptionHash = $this->getParentStaticProperty('exceptionHash');
 
             if ($exceptionHash !== $objectHash) {
                 $this->setParentStaticProperty('exceptionHash', $objectHash);
-                $exception = $scope->getTestResult()->getException();
 
                 $message = '';
                 if (!$this->staticCaller->call(Output::class, 'getOption', ['api'])) {
@@ -114,7 +128,7 @@ class BristolianFailureContext extends FailureContext
 
             $feedbackOnFailure = $this->getParentStaticProperty('feedbackOnFailure');
             if ($feedbackOnFailure) {
-                echo PHP_EOL . '-- FAIL --' . PHP_EOL . $scope->getTestResult()->getException()->getMessage();
+                echo PHP_EOL . '-- FAIL --' . PHP_EOL . $exception->getMessage();
                 ob_flush();
             }
 

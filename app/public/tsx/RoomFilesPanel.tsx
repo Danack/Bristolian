@@ -213,10 +213,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
     renderRoomFile(file: RoomFileWithTags, logged_in: boolean) {
         const file_url = `/rooms/${this.props.room_id}/file/${file.id}/${file.original_filename}`;
         const annotate_url = `/rooms/${this.props.room_id}/file_annotate/${file.id}`;
-        let annotate_block: preact.VNode = <a href={annotate_url}>Annotate</a>;
-        if (!file_url.toLowerCase().endsWith(".pdf")) {
-            annotate_block = <span></span>;
-        }
+        const is_pdf = file_url.toLowerCase().endsWith(".pdf");
         const tagsBlock = file.tags.length > 0
             ? <span className="room_entity_tags">{file.tags.map((t) => <span key={t.tag_id} className="room_entity_tag_chip">{t.text}</span>)}</span>
             : <span className="room_entity_tags empty">—</span>;
@@ -234,7 +231,11 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                 <td>{spacesToNbsp(formatDateTimeForContent(file.created_at))}</td>
                 <td>{dateDisplay}</td>
                 <td>{tagsBlock}</td>
-                <td>{annotate_block}</td>
+                {logged_in && (
+                    <td>
+                        {is_pdf ? <a href={annotate_url}>Annotate</a> : <span></span>}
+                    </td>
+                )}
                 {logged_in && (
                     <td>
                         <button className="button_standard button_chat" onClick={() => this.openEditTags(file)}>Edit tags</button>
@@ -261,7 +262,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                             <th>Added</th>
                             <th>Date</th>
                             <th>Tags</th>
-                            <th />
+                            {logged_in && <th />}
                             {logged_in && <th />}
                         </tr>
                     </thead>

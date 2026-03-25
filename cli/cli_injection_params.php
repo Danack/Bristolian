@@ -48,6 +48,18 @@ function injectionParams() : InjectionParams
         \Bristolian\Repo\EmailQueue\EmailQueue::class =>
             \Bristolian\Repo\EmailQueue\PdoEmailQueue::class,
 
+        \Bristolian\Repo\LinkRepo\LinkRepo::class =>
+            \Bristolian\Repo\LinkRepo\PdoLinkRepo::class,
+
+        \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::class =>
+            \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::class,
+
+        \Bristolian\Repo\VideoRepo\VideoRepo::class =>
+            \Bristolian\Repo\VideoRepo\PdoVideoRepo::class,
+
+        \Bristolian\Repo\RoomVideoRepo\RoomVideoRepo::class =>
+            \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class,
+
         \Bristolian\Service\EmailSender\EmailClient::class =>
             \Bristolian\Service\EmailSender\MailgunEmailClient::class,
 

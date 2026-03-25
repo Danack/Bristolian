@@ -291,6 +291,34 @@ function addRoomCommands(Application $console)
     $command->addArgument('original_filename', InputArgument::REQUIRED, "The file's stored original filename (e.g. sample.pdf).");
     $command->addArgument('annotation_json', InputArgument::REQUIRED, "JSON string, e.g. {\"title\":\"...\",\"highlights_json\":\"[{\\\"page\\\":0,...}]\",\"text\":\"\"}");
     $console->add($command);
+
+    $command = new Command('room:add_link', 'Bristolian\CliController\Rooms::addLinkFromCli');
+    $command->setDescription('Add a link to a room by room name.');
+    $command->addArgument('room_name', InputArgument::REQUIRED, 'The name of the room (must be unique among rooms).');
+    $command->addArgument('url', InputArgument::REQUIRED, 'The link URL.');
+    $command->addArgument('title', InputArgument::OPTIONAL, 'Link title (optional). Omit or use empty string when skipping.', null);
+    $command->addArgument('description', InputArgument::OPTIONAL, 'Link description (optional). Omit or use empty string when skipping.', null);
+    $console->add($command);
+
+    $command = new Command('room:add_video', 'Bristolian\CliController\Rooms::addVideoFromCli');
+    $command->setDescription('Add a YouTube video to a room by room name (URL or video ID).');
+    $command->addArgument('room_name', InputArgument::REQUIRED, 'The name of the room (must be unique among rooms).');
+    $command->addArgument('url', InputArgument::REQUIRED, 'YouTube watch URL, youtu.be link, or 11-character video ID.');
+    $command->addArgument('title', InputArgument::OPTIONAL, 'Video title (optional). When set, at least 8 characters (same as room links).', null);
+    $command->addArgument('description', InputArgument::OPTIONAL, 'Video description (optional). Omit or use empty string when skipping.', null);
+    $console->add($command);
+
+    $command = new Command('room:add_video_clip', 'Bristolian\CliController\Rooms::addVideoClipFromCli');
+    $command->setDescription(
+        'Add a YouTube clip (start/end) to a room. Times: seconds, M:SS, or H:MM:SS. Use room:add_video for a full video without trim.'
+    );
+    $command->addArgument('room_name', InputArgument::REQUIRED, 'The name of the room (must be unique among rooms).');
+    $command->addArgument('url', InputArgument::REQUIRED, 'YouTube watch URL, youtu.be link, or 11-character video ID.');
+    $command->addArgument('start_time', InputArgument::REQUIRED, 'Clip start (e.g. 75, 1:15, 1:00:00).');
+    $command->addArgument('end_time', InputArgument::REQUIRED, 'Clip end (same formats as start; must be after start).');
+    $command->addArgument('title', InputArgument::OPTIONAL, 'Clip title (optional). When set, at least 8 characters.', null);
+    $command->addArgument('description', InputArgument::OPTIONAL, 'Clip description (optional).', null);
+    $console->add($command);
 }
 
 

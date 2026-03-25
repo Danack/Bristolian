@@ -21,16 +21,14 @@ class AddVideoParamTest extends BaseTestCase
     public static function provides_valid_input_and_expected_output(): \Generator
     {
         $videoId = 'dQw4w9WgXcQ';
-//        yield 'url only' => [
-//            [
-//                'url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-//                'description' => null,
-//                'title' => null,
-//            ],
-//            $videoId,
-//            null,
-//            null,
-//        ];
+        yield 'url only' => [
+            [
+                'url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            ],
+            $videoId,
+            null,
+            null,
+        ];
         $title = 'A video title of enough chars';
 
         yield 'url with title and description' => [
@@ -47,7 +45,6 @@ class AddVideoParamTest extends BaseTestCase
             [
                 'url' => 'https://youtu.be/dQw4w9WgXcQ',
                 'title' => $title,
-                'description' => null,
             ],
             $videoId,
             $title,
@@ -104,6 +101,14 @@ class AddVideoParamTest extends BaseTestCase
         yield 'invalid youtube url' => [['url' => 'not-a-url'], '/url', ExtractYoutubeVideoId::ERROR_INVALID_YOUTUBE_URL];
         yield 'empty url' => [['url' => ''], '/url', Messages::STRING_TOO_SHORT];
         yield 'null url' => [['url' => null], '/url', Messages::STRING_EXPECTED];
+        yield 'title too short when set' => [
+            [
+                'url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                'title' => 'short',
+            ],
+            '/title',
+            Messages::STRING_TOO_SHORT,
+        ];
     }
 
     /**

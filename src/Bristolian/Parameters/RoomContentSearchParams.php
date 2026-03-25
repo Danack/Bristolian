@@ -25,6 +25,9 @@ class RoomContentSearchParams implements DataType, StaticFactory
     use CreateFromVarMap;
     use GetInputTypesFromAttributes;
 
+    /**
+     * @param list<string> $tag_ids
+     */
     public function __construct(
         #[OptionalBasicString('limit')]
         public readonly ?string $limit,

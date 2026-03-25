@@ -10,6 +10,13 @@ php cli.php room:create  "Housing" "A place to discuss the problem that is BCC h
 php cli.php room:create  "Off-topic" "A place to discuss everything else"
 
 php cli.php room:add_file  "Housing" test/fixtures/pdfs/sample.pdf
+php cli.php room:add_file  "Housing" test/fixtures/pdfs/example_different_layout.pdf
+
+php cli.php room:add_link  "Housing" "https://google.com/" "Link title" "Link description"
+
+php cli.php room:add_video  "Housing" "https://www.youtube.com/watch?v=q84psZX6MbA" "Video title" "Video description"
+
+php cli.php room:add_video_clip  "Housing" "https://www.youtube.com/watch?v=q84psZX6MbA" "1:15" "4:15" "Clip title" "Clip description"
 
 php cli.php room:add_file_annotation "Housing" "sample.pdf" '{"title":"Nulla consequat quam ut nisl - annotation.","highlights_json":"[{\"page\":0,\"left\":101,\"top\":392,\"right\":264,\"bottom\":407}]","text":""}'
 

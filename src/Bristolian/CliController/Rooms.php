@@ -2,11 +2,17 @@
 
 namespace Bristolian\CliController;
 
+use Bristolian\Parameters\AddVideoClipParam;
+use Bristolian\Parameters\AddVideoParam;
 use Bristolian\Parameters\AnnotationParam;
+use Bristolian\Parameters\LinkParam;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
+use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
+use Bristolian\Repo\RoomVideoRepo\RoomVideoRepo;
+use Bristolian\Repo\VideoRepo\VideoRepo;
 use Bristolian\Service\CliOutput\CliOutput;
 use Bristolian\Service\RoomFileStorage\RoomFileStorage;
 use Bristolian\Service\RoomFileStorage\UploadError;
@@ -141,10 +147,8 @@ class Rooms
 
         try {
             $annotation_param = AnnotationParam::createFromJson($annotation_json);
-        } catch (JsonDecodeException $e) {
-            $this->cliOutput->write("Invalid JSON: " . $e->getMessage() . "\n");
-            $this->cliOutput->exit(-1);
-        } catch (ValidationException $e) {
+        }
+        catch (ValidationException $e) {
             $this->cliOutput->write("Invalid annotation parameters: " . $e->getMessage() . "\n");
             $this->cliOutput->exit(-1);
         }
@@ -157,5 +161,165 @@ class Rooms
         );
 
         $this->cliOutput->write("Annotation added with room_annotation id: " . $room_annotation_id . "\n");
+    }
+
+    public function addLinkFromCli(
+        AdminRepo $adminRepo,
+        RoomRepo $roomRepo,
+        RoomLinkRepo $roomLinkRepo,
+        string $room_name,
+        string $url,
+        ?string $title,
+        ?string $description
+    ): void {
+        $user_id = $adminRepo->getAdminUserId(getAdminEmailAddress());
+        if ($user_id === null) {
+            $this->cliOutput->write("Failed to find admin user\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        $matching_rooms = $roomRepo->getRoomByName($room_name);
+
+        if (count($matching_rooms) === 0) {
+            $this->cliOutput->write("No room found with name: " . $room_name . "\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        if (count($matching_rooms) > 1) {
+            $this->cliOutput->write(
+                "Multiple rooms have the name \"" . $room_name . "\"; names must be unique for this command.\n"
+            );
+            $this->cliOutput->exit(-1);
+        }
+
+        $room = $matching_rooms[0];
+
+        try {
+            $link_param = LinkParam::createFromArray([
+                'url' => $url,
+                'title' => $title ?? '',
+                'description' => $description ?? '',
+            ]);
+        } catch (ValidationException $e) {
+            $this->cliOutput->write("Invalid link parameters: " . $e->getMessage() . "\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        $room_link_id = $roomLinkRepo->addLinkToRoomFromParam(
+            $user_id,
+            $room->id,
+            $link_param
+        );
+
+        $this->cliOutput->write("Link added to room with room_link id: " . $room_link_id . "\n");
+    }
+
+    public function addVideoFromCli(
+        AdminRepo $adminRepo,
+        RoomRepo $roomRepo,
+        VideoRepo $videoRepo,
+        RoomVideoRepo $roomVideoRepo,
+        string $room_name,
+        string $url,
+        ?string $title,
+        ?string $description
+    ): void {
+        $user_id = $adminRepo->getAdminUserId(getAdminEmailAddress());
+        if ($user_id === null) {
+            $this->cliOutput->write("Failed to find admin user\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        $matching_rooms = $roomRepo->getRoomByName($room_name);
+
+        if (count($matching_rooms) === 0) {
+            $this->cliOutput->write("No room found with name: " . $room_name . "\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        if (count($matching_rooms) > 1) {
+            $this->cliOutput->write(
+                "Multiple rooms have the name \"" . $room_name . "\"; names must be unique for this command.\n"
+            );
+            $this->cliOutput->exit(-1);
+        }
+
+        $room = $matching_rooms[0];
+
+        try {
+            $param = AddVideoParam::createFromArray([
+                'url' => $url,
+                'title' => $title ?? '',
+                'description' => $description ?? '',
+            ]);
+        } catch (ValidationException $e) {
+            $this->cliOutput->write("Invalid video parameters: " . $e->getMessage() . "\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        $video_id = $videoRepo->create($user_id, $param->youtube_video_id);
+        $room_video = $roomVideoRepo->addVideo($room->id, $video_id, $param->title, $param->description);
+
+        $this->cliOutput->write("Video added to room with room_video id: " . $room_video->id . "\n");
+    }
+
+    public function addVideoClipFromCli(
+        AdminRepo $adminRepo,
+        RoomRepo $roomRepo,
+        VideoRepo $videoRepo,
+        RoomVideoRepo $roomVideoRepo,
+        string $room_name,
+        string $url,
+        string $start_time,
+        string $end_time,
+        ?string $title,
+        ?string $description
+    ): void {
+        $user_id = $adminRepo->getAdminUserId(getAdminEmailAddress());
+        if ($user_id === null) {
+            $this->cliOutput->write("Failed to find admin user\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        $matching_rooms = $roomRepo->getRoomByName($room_name);
+
+        if (count($matching_rooms) === 0) {
+            $this->cliOutput->write("No room found with name: " . $room_name . "\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        if (count($matching_rooms) > 1) {
+            $this->cliOutput->write(
+                "Multiple rooms have the name \"" . $room_name . "\"; names must be unique for this command.\n"
+            );
+            $this->cliOutput->exit(-1);
+        }
+
+        $room = $matching_rooms[0];
+
+        try {
+            $param = AddVideoClipParam::createFromArray([
+                'url' => $url,
+                'start_time' => $start_time,
+                'end_time' => $end_time,
+                'title' => $title ?? '',
+                'description' => $description ?? '',
+            ]);
+        } catch (ValidationException $e) {
+            $this->cliOutput->write("Invalid video clip parameters: " . $e->getMessage() . "\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        $video_id = $videoRepo->create($user_id, $param->youtube_video_id);
+        $room_video = $roomVideoRepo->addClip(
+            $room->id,
+            $video_id,
+            $param->title,
+            $param->description,
+            $param->start_seconds,
+            $param->end_seconds
+        );
+
+        $this->cliOutput->write("Video clip added to room with room_video id: " . $room_video->id . "\n");
     }
 }

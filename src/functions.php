@@ -1312,3 +1312,68 @@ function extract_youtube_video_id(string $url): ?string
 
     return null;
 }
+
+/**
+ * Parse a clip start/end time for CLI and similar inputs.
+ * Accepts: a non-negative integer (seconds), "M:SS" or "MM:SS", or "H:MM:SS" (matching the room videos UI).
+ *
+ * @return int|null Whole seconds, or null if invalid or out of range (0–36000 inclusive).
+ */
+function parse_clip_timestamp_to_seconds(string $input): ?int
+{
+    $trimmed = trim($input);
+    if ($trimmed === '') {
+        return null;
+    }
+
+    $parts = explode(':', $trimmed);
+    $partCount = count($parts);
+
+    if ($partCount === 1) {
+        if (preg_match('/^\d+$/', $parts[0]) !== 1) {
+            return null;
+        }
+        $seconds = (int) $parts[0];
+        if ($seconds < 0) {
+            return null;
+        }
+        // Same upper bound as Bristolian\Parameters\PropertyType\ClipSeconds::MAX_SECONDS (10 hours).
+        $maxSeconds = 36000;
+        return $seconds <= $maxSeconds ? $seconds : null;
+    }
+
+    if ($partCount === 2) {
+        if (preg_match('/^\d+$/', $parts[0]) !== 1 || preg_match('/^\d+$/', $parts[1]) !== 1) {
+            return null;
+        }
+        $minutes = (int) $parts[0];
+        $seconds = (int) $parts[1];
+        if ($minutes < 0 || $seconds < 0 || $seconds >= 60) {
+            return null;
+        }
+        $total = $minutes * 60 + $seconds;
+        $maxSeconds = 36000;
+        return $total <= $maxSeconds ? $total : null;
+    }
+
+    if ($partCount === 3) {
+        if (
+            preg_match('/^\d+$/', $parts[0]) !== 1
+            || preg_match('/^\d+$/', $parts[1]) !== 1
+            || preg_match('/^\d+$/', $parts[2]) !== 1
+        ) {
+            return null;
+        }
+        $hours = (int) $parts[0];
+        $minutes = (int) $parts[1];
+        $seconds = (int) $parts[2];
+        if ($hours < 0 || $minutes < 0 || $minutes >= 60 || $seconds < 0 || $seconds >= 60) {
+            return null;
+        }
+        $total = $hours * 3600 + $minutes * 60 + $seconds;
+        $maxSeconds = 36000;
+        return $total <= $maxSeconds ? $total : null;
+    }
+
+    return null;
+}

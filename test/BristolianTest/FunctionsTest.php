@@ -481,6 +481,32 @@ TEXT;
         $this->assertSame($expected, extract_youtube_video_id($url));
     }
 
+    /**
+     * @return \Generator<string, array{string, int|null}>
+     */
+    public static function provides_parse_clip_timestamp_to_seconds(): \Generator
+    {
+        yield 'seconds' => ['75', 75];
+        yield 'one colon form' => ['1:15', 75];
+        yield 'hms' => ['1:00:00', 3600];
+        yield 'trimmed' => ['  1:15  ', 75];
+        yield 'zero' => ['0', 0];
+        yield 'max boundary' => ['36000', 36000];
+        yield 'too many seconds' => ['36001', null];
+        yield 'invalid minute seconds' => ['1:60', null];
+        yield 'empty' => ['', null];
+        yield 'non numeric' => ['1:x', null];
+    }
+
+    /**
+     * @dataProvider provides_parse_clip_timestamp_to_seconds
+     * @covers ::parse_clip_timestamp_to_seconds
+     */
+    public function test_parse_clip_timestamp_to_seconds(string $input, ?int $expected): void
+    {
+        $this->assertSame($expected, parse_clip_timestamp_to_seconds($input));
+    }
+
     public static function provides_sanitise_filename()
     {
         yield ['John..Anyman', 'john_anyman'];

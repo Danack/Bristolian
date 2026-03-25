@@ -10,7 +10,7 @@
         "danack/looping-exec": "^0.3.0",
         "danack/json-safe": "^0.1.1",
         "danack/slim-dispatcher": "dev-dev",
-        "danack/datatype": "0.8.1",
+        "danack/datatype": "0.9.0",
         "hashids/hashids": "5.0.2",
         "ext-redis": "*",
         "justinrainbow/json-schema": "^5.2.7",

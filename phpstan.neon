@@ -1,3 +1,5 @@
+includes:
+    - vendor/danack/datatype/library.neon
 parameters:
     editorUrl: 'phpstorm://open?file=/Users/danack/projects/github/Bristolian/%%relFile%%&line=%%line%%'
     level: 6

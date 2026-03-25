@@ -6,11 +6,18 @@ namespace BristolianTest\CliController;
 
 use Bristolian\CliController\Rooms;
 use Bristolian\Model\Generated\RoomFileObjectInfo;
+use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Model\Types\AdminUser;
 use Bristolian\Repo\AdminRepo\FakeAdminRepo;
+use Bristolian\Repo\LinkRepo\FakeLinkRepo;
 use Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo;
 use Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo;
+use Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo;
 use Bristolian\Repo\RoomRepo\FakeRoomRepo;
+use Bristolian\Repo\RoomTagRepo\FakeRoomTagRepo;
+use Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo;
+use Bristolian\Repo\RoomVideoTagRepo\InMemoryRoomVideoTagRepo;
+use Bristolian\Repo\VideoRepo\InMemoryVideoRepo;
 use Bristolian\Service\CliOutput\CapturingCliOutput;
 use Bristolian\Service\CliOutput\CliExitRequestedException;
 use Bristolian\Service\RoomFileStorage\FakeRoomFileStorage;
@@ -521,5 +528,487 @@ class RoomsTest extends BaseTestCase
         );
 
         $this->assertStringContainsString('room_annotation id:', $cliOutput->getCapturedOutput());
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addLinkFromCli
+     */
+    public function test_addLinkFromCli_when_admin_not_found_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $linkRepo = new FakeLinkRepo();
+        $roomLinkRepo = new FakeRoomLinkRepo($linkRepo);
+
+        try {
+            $rooms->addLinkFromCli(
+                new FakeAdminRepo([]),
+                new FakeRoomRepo(),
+                $roomLinkRepo,
+                'Housing',
+                'https://example.com/',
+                null,
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Failed to find admin user', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addLinkFromCli
+     */
+    public function test_addLinkFromCli_when_no_room_match_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $linkRepo = new FakeLinkRepo();
+        $roomLinkRepo = new FakeRoomLinkRepo($linkRepo);
+
+        try {
+            $rooms->addLinkFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                new FakeRoomRepo(),
+                $roomLinkRepo,
+                'Housing',
+                'https://example.com/',
+                null,
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('No room found with name: Housing', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addLinkFromCli
+     */
+    public function test_addLinkFromCli_when_multiple_rooms_share_name_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $roomRepo->createRoom('user-1', 'Housing', 'first');
+        $roomRepo->createRoom('user-1', 'Housing', 'second');
+        $linkRepo = new FakeLinkRepo();
+        $roomLinkRepo = new FakeRoomLinkRepo($linkRepo);
+
+        try {
+            $rooms->addLinkFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                $roomRepo,
+                $roomLinkRepo,
+                'Housing',
+                'https://example.com/',
+                null,
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Multiple rooms have the name "Housing"', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addLinkFromCli
+     */
+    public function test_addLinkFromCli_when_validation_fails_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $roomRepo->createRoom('user-1', 'Housing', 'purpose');
+        $linkRepo = new FakeLinkRepo();
+        $roomLinkRepo = new FakeRoomLinkRepo($linkRepo);
+
+        try {
+            $rooms->addLinkFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                $roomRepo,
+                $roomLinkRepo,
+                'Housing',
+                'https://example.com/',
+                'short',
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Invalid link parameters:', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addLinkFromCli
+     */
+    public function test_addLinkFromCli_success_url_only_writes_room_link_id(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $roomRepo->createRoom('user-1', 'Housing', 'purpose');
+        $linkRepo = new FakeLinkRepo();
+        $roomLinkRepo = new FakeRoomLinkRepo($linkRepo);
+
+        $rooms->addLinkFromCli(
+            new FakeAdminRepo([$this->adminUserForCli()]),
+            $roomRepo,
+            $roomLinkRepo,
+            'Housing',
+            'https://example.com/',
+            null,
+            null
+        );
+
+        $this->assertStringContainsString('room_link id:', $cliOutput->getCapturedOutput());
+        $last = $roomLinkRepo->getLastAddedLink();
+        $this->assertNotNull($last);
+        $this->assertNull($last->title);
+        $this->assertNull($last->description);
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addLinkFromCli
+     */
+    public function test_addLinkFromCli_success_with_title_and_description_writes_room_link_id(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $roomRepo->createRoom('user-1', 'Housing', 'purpose');
+        $linkRepo = new FakeLinkRepo();
+        $roomLinkRepo = new FakeRoomLinkRepo($linkRepo);
+
+        $rooms->addLinkFromCli(
+            new FakeAdminRepo([$this->adminUserForCli()]),
+            $roomRepo,
+            $roomLinkRepo,
+            'Housing',
+            'https://example.com/',
+            'Link title',
+            'Link description'
+        );
+
+        $this->assertStringContainsString('room_link id:', $cliOutput->getCapturedOutput());
+        $last = $roomLinkRepo->getLastAddedLink();
+        $this->assertNotNull($last);
+        $this->assertSame('Link title', $last->title);
+        $this->assertSame('Link description', $last->description);
+    }
+
+    /**
+     * @return array{InMemoryVideoRepo, InMemoryRoomVideoRepo}
+     */
+    private function inMemoryVideoRepositories(): array
+    {
+        $videoRepo = new InMemoryVideoRepo();
+        $roomVideoRepo = new InMemoryRoomVideoRepo(
+            new InMemoryRoomVideoTagRepo(),
+            $videoRepo,
+            new FakeRoomTagRepo(),
+        );
+
+        return [$videoRepo, $roomVideoRepo];
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addVideoFromCli
+     */
+    public function test_addVideoFromCli_when_admin_not_found_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        [$videoRepo, $roomVideoRepo] = $this->inMemoryVideoRepositories();
+
+        try {
+            $rooms->addVideoFromCli(
+                new FakeAdminRepo([]),
+                new FakeRoomRepo(),
+                $videoRepo,
+                $roomVideoRepo,
+                'Housing',
+                'https://www.youtube.com/watch?v=q84psZX6MbA',
+                null,
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Failed to find admin user', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addVideoFromCli
+     */
+    public function test_addVideoFromCli_when_no_room_match_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        [$videoRepo, $roomVideoRepo] = $this->inMemoryVideoRepositories();
+
+        try {
+            $rooms->addVideoFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                new FakeRoomRepo(),
+                $videoRepo,
+                $roomVideoRepo,
+                'Housing',
+                'https://www.youtube.com/watch?v=q84psZX6MbA',
+                null,
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('No room found with name: Housing', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addVideoFromCli
+     */
+    public function test_addVideoFromCli_when_multiple_rooms_share_name_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $roomRepo->createRoom('user-1', 'Housing', 'first');
+        $roomRepo->createRoom('user-1', 'Housing', 'second');
+        [$videoRepo, $roomVideoRepo] = $this->inMemoryVideoRepositories();
+
+        try {
+            $rooms->addVideoFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                $roomRepo,
+                $videoRepo,
+                $roomVideoRepo,
+                'Housing',
+                'https://www.youtube.com/watch?v=q84psZX6MbA',
+                null,
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Multiple rooms have the name "Housing"', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addVideoFromCli
+     */
+    public function test_addVideoFromCli_when_validation_fails_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $roomRepo->createRoom('user-1', 'Housing', 'purpose');
+        [$videoRepo, $roomVideoRepo] = $this->inMemoryVideoRepositories();
+
+        try {
+            $rooms->addVideoFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                $roomRepo,
+                $videoRepo,
+                $roomVideoRepo,
+                'Housing',
+                'https://www.youtube.com/watch?v=q84psZX6MbA',
+                'short',
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Invalid video parameters:', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addVideoFromCli
+     */
+    public function test_addVideoFromCli_when_url_invalid_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $roomRepo->createRoom('user-1', 'Housing', 'purpose');
+        [$videoRepo, $roomVideoRepo] = $this->inMemoryVideoRepositories();
+
+        try {
+            $rooms->addVideoFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                $roomRepo,
+                $videoRepo,
+                $roomVideoRepo,
+                'Housing',
+                'not a youtube url',
+                null,
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Invalid video parameters:', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addVideoFromCli
+     */
+    public function test_addVideoFromCli_success_url_only_writes_room_video_id(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $room = $roomRepo->createRoom('user-1', 'Housing', 'purpose');
+        [$videoRepo, $roomVideoRepo] = $this->inMemoryVideoRepositories();
+
+        $rooms->addVideoFromCli(
+            new FakeAdminRepo([$this->adminUserForCli()]),
+            $roomRepo,
+            $videoRepo,
+            $roomVideoRepo,
+            'Housing',
+            'https://www.youtube.com/watch?v=q84psZX6MbA',
+            null,
+            null
+        );
+
+        $this->assertStringContainsString('room_video id:', $cliOutput->getCapturedOutput());
+        $videos = $roomVideoRepo->getVideosForRoom($room->id, RoomContentSearchParams::default());
+        $this->assertCount(1, $videos);
+        $this->assertNull($videos[0]->title);
+        $this->assertNull($videos[0]->description);
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addVideoFromCli
+     */
+    public function test_addVideoFromCli_success_with_title_and_description_writes_room_video_id(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $room = $roomRepo->createRoom('user-1', 'Housing', 'purpose');
+        [$videoRepo, $roomVideoRepo] = $this->inMemoryVideoRepositories();
+
+        $rooms->addVideoFromCli(
+            new FakeAdminRepo([$this->adminUserForCli()]),
+            $roomRepo,
+            $videoRepo,
+            $roomVideoRepo,
+            'Housing',
+            'https://www.youtube.com/watch?v=q84psZX6MbA',
+            'Video title',
+            'Video description'
+        );
+
+        $this->assertStringContainsString('room_video id:', $cliOutput->getCapturedOutput());
+        $videos = $roomVideoRepo->getVideosForRoom($room->id, RoomContentSearchParams::default());
+        $this->assertCount(1, $videos);
+        $this->assertSame('Video title', $videos[0]->title);
+        $this->assertSame('Video description', $videos[0]->description);
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addVideoClipFromCli
+     */
+    public function test_addVideoClipFromCli_when_end_before_start_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $roomRepo->createRoom('user-1', 'Housing', 'purpose');
+        [$videoRepo, $roomVideoRepo] = $this->inMemoryVideoRepositories();
+
+        try {
+            $rooms->addVideoClipFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                $roomRepo,
+                $videoRepo,
+                $roomVideoRepo,
+                'Housing',
+                'https://www.youtube.com/watch?v=q84psZX6MbA',
+                '4:15',
+                '1:15',
+                null,
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Invalid video clip parameters:', $cliOutput->getCapturedOutput());
+            $this->assertStringContainsString('End time must be after start time.', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addVideoClipFromCli
+     */
+    public function test_addVideoClipFromCli_success_times_only_writes_room_video_id(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $room = $roomRepo->createRoom('user-1', 'Housing', 'purpose');
+        [$videoRepo, $roomVideoRepo] = $this->inMemoryVideoRepositories();
+
+        $rooms->addVideoClipFromCli(
+            new FakeAdminRepo([$this->adminUserForCli()]),
+            $roomRepo,
+            $videoRepo,
+            $roomVideoRepo,
+            'Housing',
+            'https://www.youtube.com/watch?v=q84psZX6MbA',
+            '1:15',
+            '4:15',
+            null,
+            null
+        );
+
+        $this->assertStringContainsString('Video clip added to room with room_video id:', $cliOutput->getCapturedOutput());
+        $videos = $roomVideoRepo->getVideosForRoom($room->id, RoomContentSearchParams::default());
+        $this->assertCount(1, $videos);
+        $this->assertSame(75, $videos[0]->start_seconds);
+        $this->assertSame(255, $videos[0]->end_seconds);
+        $this->assertNull($videos[0]->title);
+        $this->assertNull($videos[0]->description);
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addVideoClipFromCli
+     */
+    public function test_addVideoClipFromCli_success_with_title_and_description(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $room = $roomRepo->createRoom('user-1', 'Housing', 'purpose');
+        [$videoRepo, $roomVideoRepo] = $this->inMemoryVideoRepositories();
+
+        $rooms->addVideoClipFromCli(
+            new FakeAdminRepo([$this->adminUserForCli()]),
+            $roomRepo,
+            $videoRepo,
+            $roomVideoRepo,
+            'Housing',
+            'https://www.youtube.com/watch?v=q84psZX6MbA',
+            '1:15',
+            '4:15',
+            'Clip title',
+            'Clip description'
+        );
+
+        $this->assertStringContainsString('Video clip added to room with room_video id:', $cliOutput->getCapturedOutput());
+        $videos = $roomVideoRepo->getVideosForRoom($room->id, RoomContentSearchParams::default());
+        $this->assertCount(1, $videos);
+        $this->assertSame('Clip title', $videos[0]->title);
+        $this->assertSame('Clip description', $videos[0]->description);
     }
 }

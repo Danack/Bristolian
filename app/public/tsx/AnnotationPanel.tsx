@@ -1,5 +1,5 @@
 
-import { h, Component } from "preact";
+import { h, Component, Fragment } from "preact";
 import { registerMessageListener, sendMessage, unregisterListener } from "./message/message";
 import { RoomAnnotationWithTags, createRoomTag, RoomTag } from "./generated/types";
 import { countWords } from "./functions";
@@ -423,93 +423,96 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
   }
 
   render(props: AnnotationPanelProps, state: AnnotationPanelState) {
+    const annotations_block = this.renderAnnotations();
 
-    let validToSubmit = true;
+    let create_section = null;
 
-    let error_title = <span></span>
-    if (this.state.error !== null) {
-      error_title = <span class="error">{this.state.error}</span>
-    }
+    if (this.state.logged_in) {
+      let validToSubmit = true;
 
-    let title_length_error = <span></span>
-    const titleTrimmed = this.state.title.trim();
-
-    if (titleTrimmed.length < ANNOTATION_TITLE_MINIMUM_LENGTH) {
-      validToSubmit = false;
-
-      if (titleTrimmed.length !== 0) {
-        title_length_error = <span>Title needs {ANNOTATION_TITLE_MINIMUM_LENGTH - titleTrimmed.length} more characters.</span>
+      let error_title = <span></span>
+      if (this.state.error !== null) {
+        error_title = <span class="error">{this.state.error}</span>
       }
-    }
 
+      let title_length_error = <span></span>
+      const titleTrimmed = this.state.title.trim();
 
+      if (titleTrimmed.length < ANNOTATION_TITLE_MINIMUM_LENGTH) {
+        validToSubmit = false;
 
-    let add_button = <span></span>
-    if (validToSubmit === true) {
-      add_button = <div>
-        <button type="submit" className="button_standard" onClick={() => this.addAnnotation()}>Add annotation</button>
+        if (titleTrimmed.length !== 0) {
+          title_length_error = <span>Title needs {ANNOTATION_TITLE_MINIMUM_LENGTH - titleTrimmed.length} more characters.</span>
+        }
+      }
+
+      let add_button = <span></span>
+      if (validToSubmit === true) {
+        add_button = <div>
+          <button type="submit" className="button_standard" onClick={() => this.addAnnotation()}>Add annotation</button>
+        </div>
+      }
+
+      let text_selected_box = <div>
+        <span>First, select some text in the PDF.</span>
       </div>
-    }
 
-    let annotations_block = this.renderAnnotations();
+      if (this.state.selection_data !== null) {
+        const json = JSON.stringify(this.state.selection_data.highlights);
+        if (json.length > 16 * 1024) {
+          text_selected_box = <div>
+            <div>
+              <span>Too many lines selected. Please select fewer.</span>
+            </div>
+          </div>
+        } else {
+          text_selected_box = <div>
+            <div>
+              {/*<div>*/}
+              {/*<label>You have selected {countWords(this.state.selection_data.text)} words</label>*/}
+              {/*</div>*/}
 
-    let text_selected_box = <div>
-      <span>First, select some text in the PDF.</span>
-    </div>
+              <label>
+                Enter a title
+                <br />
+                <textarea
+                  name="title"
+                  rows={4}
+                  cols={40}
+                  onInput={
+                    // @ts-ignore
+                    e => this.setState({title: e.target.value})
+                  }
+                />
+                <br/>
+                {error_title}
+                {title_length_error}
+              </label>
+              {add_button}
+            </div>
+          </div>
+        }
+      }
 
-    if (this.state.selection_data !== null) {
-      let json = JSON.stringify(this.state.selection_data.highlights);
-      if (json.length > 16 * 1024) {
-        return <div>
-          <h3>This is the text note panel.</h3>
+      if (this.state.create_status !== null) {
+        text_selected_box = <div>
           <div>
-            <span>Too many lines selected. Please select fewer.</span>
+            <span>{this.state.create_status}</span>
           </div>
         </div>
       }
 
-      text_selected_box = <div>
-        <div>
-          {/*<div>*/}
-          {/*<label>You have selected {countWords(this.state.selection_data.text)} words</label>*/}
-          {/*</div>*/}
-
-          <label>
-            Enter a title
-            <br />
-            <textarea
-              name="title"
-              rows={4}
-              cols={40}
-              onInput={
-                // @ts-ignore
-                e => this.setState({title: e.target.value})
-              }
-            />
-            <br/>
-            {error_title}
-            {title_length_error}
-          </label>
-          {add_button}
-        </div>
-      </div>
+      create_section = (
+        <>
+          <h3>Create Annotation</h3>
+          {text_selected_box}
+        </>
+      );
     }
-
-
-    // If already created, don't allow creating again.
-    if (this.state.create_status !== null) {
-      text_selected_box = <div>
-        <div>
-          <span>{this.state.create_status}</span>
-        </div>
-      </div>
-    }
-
 
     return (
       <div className="annotation_panel_react">
-        <h3>Create Annotation</h3>
-        {text_selected_box}
+        {create_section}
         <h4>Current annotations</h4>
         {annotations_block}
         {this.renderEditTagsModal()}

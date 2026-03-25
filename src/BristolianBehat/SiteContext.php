@@ -183,9 +183,9 @@ JS
         $feature = $scope->getFeature();
         $scenario = $scope->getScenario();
 
-        $featureTitle = $feature ? $feature->getTitle() : 'feature';
-        $scenarioTitle = $scenario ? $scenario->getTitle() : 'scenario';
-        $scenarioLine = $scenario ? $scenario->getLine() : 0;
+        $featureTitle = $feature->getTitle();
+        $scenarioTitle = $scenario->getTitle();
+        $scenarioLine = $scenario->getLine();
 
         $slug = static function (string $value): string {
             $value = preg_replace('/[^a-zA-Z0-9_-]+/', '_', $value);
