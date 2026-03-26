@@ -128,6 +128,14 @@ function injectionParams() : InjectionParams
         \Bristolian\Service\MemeFileLocalCache\EnsureMemeFileCached::class =>
             \Bristolian\Service\MemeFileLocalCache\FlysystemEnsureMemeFileCached::class,
 
+
+        Bristolian\Repo\RoomTagRepo\RoomTagRepo::class =>
+            \Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::class,
+
+
+        Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo::class =>
+            Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::class
+
     ];
 
     // Delegate the creation of types to callables.

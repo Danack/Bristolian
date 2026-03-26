@@ -261,7 +261,7 @@ class TypesCoverageTest extends BaseTestCase
     {
         $tag = new RoomTag('tag-1', 'room-1', 'Tag', '', self::now());
         $link = new RoomLinkWithTags(
-            'id-1', 'room-1', 'link-1', 'Title', 'Description', self::now(), null, [$tag]
+            'id-1', 'room-1', 'link-1', 'https://example.com', 'Title', 'Description', self::now(), null, [$tag]
         );
 
         $this->assertSame('id-1', $link->id);

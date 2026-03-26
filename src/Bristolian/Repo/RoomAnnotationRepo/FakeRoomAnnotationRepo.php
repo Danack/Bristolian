@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\Repo\RoomAnnotationRepo;
 
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Types\RoomAnnotationView;
 use Bristolian\Parameters\AnnotationParam;
 use Ramsey\Uuid\Uuid;
@@ -132,5 +133,56 @@ class FakeRoomAnnotationRepo implements RoomAnnotationRepo
         }
 
         return $results;
+    }
+
+    public function getAnnotationsForRoomAndTitle(
+        string $room_id,
+        string $title
+    ): array {
+        $results = [];
+
+        foreach ($this->roomAnnotations as $roomAnnotation) {
+            if ($roomAnnotation['room_id'] !== $room_id) {
+                continue;
+            }
+            if ($roomAnnotation['title'] !== $title) {
+                continue;
+            }
+
+            $annotation = $this->annotations[$roomAnnotation['annotation_id']] ?? null;
+            if ($annotation === null) {
+                continue;
+            }
+
+            $results[] = new RoomAnnotationView(
+                id: $annotation['id'],
+                user_id: $annotation['user_id'],
+                file_id: $annotation['file_id'],
+                highlights_json: $annotation['highlights_json'],
+                text: $annotation['text'],
+                title: $roomAnnotation['title'],
+                room_annotation_id: $roomAnnotation['id'],
+            );
+        }
+
+        return $results;
+    }
+
+    public function updateTitleAndText(
+        string $room_id,
+        string $room_annotation_id,
+        string $title,
+        string $text
+    ): void {
+        $roomAnnotation = $this->roomAnnotations[$room_annotation_id] ?? null;
+        if ($roomAnnotation === null || $roomAnnotation['room_id'] !== $room_id) {
+            throw new ContentNotFoundException('Annotation not found in room');
+        }
+        $annotation_id = $roomAnnotation['annotation_id'];
+        if (!isset($this->annotations[$annotation_id])) {
+            throw new ContentNotFoundException('Annotation not found in room');
+        }
+        $this->roomAnnotations[$room_annotation_id]['title'] = $title;
+        $this->annotations[$annotation_id]['text'] = $text;
     }
 }

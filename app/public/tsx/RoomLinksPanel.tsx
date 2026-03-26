@@ -181,8 +181,9 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
     }
 
     shareLink(link: RoomLinkWithTags) {
-        const resolved_title = link.title || link.link_id;
-        sendMessage(PdfSelectionType.APPEND_TO_MESSAGE_INPUT, { text: resolved_title });
+        const resolved_title = link.title || link.url;
+        const markdown_link = `[${resolved_title}](${link.url})`;
+        sendMessage(PdfSelectionType.APPEND_TO_MESSAGE_INPUT, { text: markdown_link });
     }
 
     openEditTags(link: RoomLinkWithTags) {
@@ -220,8 +221,9 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
             .catch(() => this.setState({ tagsSaveInProgress: false }));
     }
 
+
     renderRoomLink(link: RoomLinkWithTags, logged_in: boolean) {
-        const resolved_title = link.title || link.link_id;
+        const resolved_title = link.title || link.url;
         const tagsBlock = link.tags.length > 0
             ? <span className="room_entity_tags">{link.tags.map((t) => <span key={t.tag_id} className="room_entity_tag_chip">{t.text}</span>)}</span>
             : <span className="room_entity_tags empty">—</span>;
@@ -232,7 +234,7 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
 
         return (
             <tr key={link.id}>
-                <td><span>{resolved_title}</span></td>
+                <td><a href={link.url} target="_blank">{resolved_title}</a></td>
                 <td>{spacesToNbsp(formatDateTimeForContent(link.created_at))}</td>
                 <td>{dateDisplay}</td>
                 <td>{tagsBlock}</td>
@@ -333,11 +335,11 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
                 <tr>
                     <td>
                         <label>
-                            Link ID
+                            URL
                         </label>
                     </td>
                     <td>
-                        <span>{this.state.linkBeingEdited.link_id}</span>
+                        <span>{this.state.linkBeingEdited.url}</span>
                         {error_url}
                     </td>
                 </tr>

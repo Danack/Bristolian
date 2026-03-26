@@ -6,6 +6,7 @@ namespace BristolianTest\Repo\RoomLinkRepo;
 
 use Bristolian\Exception\BristolianException;
 use Bristolian\Model\Generated\RoomLink;
+use Bristolian\Model\Types\RoomLinkWithUrl;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use BristolianTest\BaseTestCase;
@@ -85,7 +86,7 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
 
         $links = $repo->getLinksForRoom($room_id, \Bristolian\Parameters\RoomContentSearchParams::default());
         $this->assertNotEmpty($links);
-        $this->assertContainsOnlyInstancesOf(RoomLink::class, $links);
+        $this->assertContainsOnlyInstancesOf(RoomLinkWithUrl::class, $links);
     }
 
     /**

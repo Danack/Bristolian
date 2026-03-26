@@ -602,6 +602,61 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\AppController\Rooms::updateAnnotation
+     */
+    public function test_updateAnnotation(): void
+    {
+        $annotationRepo = $this->injector->make(FakeRoomAnnotationRepo::class);
+        $annotationParam = AnnotationParam::createFromVarMap(new ArrayVarMap([
+            'title' => 'This is a longer source title that meets the minimum length requirement',
+            'highlights_json' => '{"highlights": []}',
+            'text' => 'Original annotation body text',
+        ]));
+        $roomAnnotationId = $annotationRepo->addAnnotation(
+            'test-user-id-001',
+            $this->roomId,
+            'some-file-id',
+            $annotationParam
+        );
+
+        $newTitle = 'Updated annotation title that is long enough';
+        $jsonInput = new FakeJsonInput([
+            'title' => $newTitle,
+            'text' => 'Updated description text for the annotation',
+        ]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+        $this->injector->defineParam('room_annotation_id', $roomAnnotationId);
+
+        $result = $this->injector->execute([Rooms::class, 'updateAnnotation']);
+        $this->assertInstanceOf(SuccessResponse::class, $result);
+
+        $views = $annotationRepo->getAnnotationsForRoom($this->roomId);
+        $this->assertCount(1, $views);
+        $this->assertSame($newTitle, $views[0]->title);
+        $this->assertSame('Updated description text for the annotation', $views[0]->text);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::updateAnnotation
+     */
+    public function test_updateAnnotation_throws_when_annotation_not_in_room(): void
+    {
+        $jsonInput = new FakeJsonInput([
+            'title' => 'Updated annotation title that is long enough',
+            'text' => 'Some text',
+        ]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+        $this->injector->defineParam('room_annotation_id', 'nonexistent-room-annotation-id');
+
+        $this->expectException(ContentNotFoundException::class);
+        $this->expectExceptionMessage('Annotation not found in room');
+
+        $this->injector->execute([Rooms::class, 'updateAnnotation']);
+    }
+
+    /**
      * @covers \Bristolian\AppController\Rooms::setAnnotationTags
      */
     public function test_setAnnotationTags(): void

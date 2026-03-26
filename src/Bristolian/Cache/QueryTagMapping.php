@@ -958,14 +958,14 @@ SQL) => ['read' => [], 'write' => ['user_webpush_subscription']],
             ],
             // RoomLinkRepo::getLinksForRoom - tag filter (subquery reads room_link_tag); must be before the general pattern
             [
-                'pattern' => '#^select\s+.+\s+from\s+room_link\s+where.+room_link_tag.+order\s+by\s+created_at\s+desc\s+limit\s+:limit$#',
-                'read' => ['room_link', 'room_link_tag'],
+                'pattern' => '#^select\s+.+\s+from\s+room_link\s+join\s+link\s+on\s+room_link\.link_id\s*=\s*link\.id\s+where.+room_link_tag.+order\s+by\s+room_link\.created_at\s+desc\s+limit\s+:limit$#',
+                'read' => ['room_link', 'link', 'room_link_tag'],
                 'write' => [],
             ],
             // RoomLinkRepo::getLinksForRoom - other dynamic WHERE (title, dates; uses room_link::SELECT)
             [
-                'pattern' => '#^select\s+.+\s+from\s+room_link\s+where\s+.+\s+order\s+by\s+created_at\s+desc\s+limit\s+:limit$#',
-                'read' => ['room_link'],
+                'pattern' => '#^select\s+.+\s+from\s+room_link\s+join\s+link\s+on\s+room_link\.link_id\s*=\s*link\.id\s+where\s+.+\s+order\s+by\s+room_link\.created_at\s+desc\s+limit\s+:limit$#',
+                'read' => ['room_link', 'link'],
                 'write' => [],
             ],
             // RoomVideoRepo::getVideosForRoom - tag filter (subquery reads room_video_tag); must be before the general pattern

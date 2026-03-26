@@ -134,7 +134,7 @@ export class RoomAnnotationsPanel extends Component<RoomAnnotationPanelProps, Ro
                 <td><a href={annotationUrl}>View</a></td>
                 {logged_in && (
                     <td>
-                        <button className="button_standard button_chat" onClick={() => this.openEditTags(annotation)}>Edit tags</button>
+                        {/*<button className="button_standard button_chat" onClick={() => this.openEditTags(annotation)}>Edit tags</button>*/}
                         <button className="button_standard button_chat" onClick={() => this.shareAnnotation(annotation, annotationUrl)} title="Share annotation to chat">Post&nbsp;to&nbsp;chat</button>
                     </td>
                 )}

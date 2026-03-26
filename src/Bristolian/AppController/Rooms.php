@@ -18,6 +18,7 @@ use Bristolian\Model\Types\RoomLinkWithTags;
 use Bristolian\Model\Types\RoomVideoWithTags;
 use Bristolian\Parameters\AddVideoParam;
 use Bristolian\Parameters\CreateClipParam;
+use Bristolian\Parameters\UpdateRoomAnnotationParam;
 use Bristolian\Parameters\UpdateRoomVideoParam;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Parameters\RoomContentSearchParams;
@@ -211,6 +212,7 @@ class Rooms
                 $link->id,
                 $link->room_id,
                 $link->link_id,
+                $link->url,
                 $link->title,
                 $link->description,
                 $link->created_at,
@@ -506,6 +508,22 @@ class Rooms
         }
         $filtered = array_filter($param->tag_ids, fn (string $id) => isset($validIds[$id]));
         $roomAnnotationTagRepo->setTagsForRoomAnnotation($room_annotation_id, array_values($filtered));
+        return new SuccessResponse();
+    }
+
+    public function updateAnnotation(
+        RoomAnnotationRepo $roomAnnotationRepo,
+        JsonInput $jsonInput,
+        string $room_id,
+        string $room_annotation_id
+    ): SuccessResponse {
+        $param = UpdateRoomAnnotationParam::createFromArray($jsonInput->getData());
+        $roomAnnotationRepo->updateTitleAndText(
+            $room_id,
+            $room_annotation_id,
+            $param->title,
+            $param->text
+        );
         return new SuccessResponse();
     }
 

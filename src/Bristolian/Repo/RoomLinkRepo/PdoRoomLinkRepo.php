@@ -5,6 +5,7 @@ namespace Bristolian\Repo\RoomLinkRepo;
 use Bristolian\Database\room_link;
 use Bristolian\Exception\BristolianException;
 use Bristolian\Model\Generated\RoomLink;
+use Bristolian\Model\Types\RoomLinkWithUrl;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\PdoSimple\PdoSimple;
@@ -67,43 +68,43 @@ class PdoRoomLinkRepo implements RoomLinkRepo
 
     /**
      * @param string $room_id
-     * @return RoomLink[]
+     * @return RoomLinkWithUrl[]
      * @throws \ReflectionException
      */
     public function getLinksForRoom(string $room_id, RoomContentSearchParams $search): array
     {
-        $where = ['room_id = :room_id'];
+        $where = ['room_link.room_id = :room_id'];
         $params = [
             'room_id' => $room_id,
             'limit' => $search->getLimit(),
         ];
 
         if ($search->title !== null && $search->title !== '') {
-            $where[] = 'title LIKE :title_pattern';
+            $where[] = 'room_link.title LIKE :title_pattern';
             $params['title_pattern'] = '%' . str_replace(['%', '_'], ['\%', '\_'], $search->title) . '%';
         }
         if ($search->description !== null && $search->description !== '') {
-            $where[] = 'description LIKE :description_pattern';
+            $where[] = 'room_link.description LIKE :description_pattern';
             $params['description_pattern'] = '%' . str_replace(['%', '_'], ['\%', '\_'], $search->description) . '%';
         }
         $createdAtAfter = $search->getCreatedAtAfterForSql();
         if ($createdAtAfter !== null) {
-            $where[] = 'created_at >= :created_at_after';
+            $where[] = 'room_link.created_at >= :created_at_after';
             $params['created_at_after'] = $createdAtAfter;
         }
         $createdAtBefore = $search->getCreatedAtBeforeForSql();
         if ($createdAtBefore !== null) {
-            $where[] = 'created_at <= :created_at_before';
+            $where[] = 'room_link.created_at <= :created_at_before';
             $params['created_at_before'] = $createdAtBefore;
         }
         $documentTimestampAfter = $search->getDocumentTimestampAfterForSql();
         if ($documentTimestampAfter !== null) {
-            $where[] = 'document_timestamp >= :document_timestamp_after';
+            $where[] = 'room_link.document_timestamp >= :document_timestamp_after';
             $params['document_timestamp_after'] = $documentTimestampAfter;
         }
         $documentTimestampBefore = $search->getDocumentTimestampBeforeForSql();
         if ($documentTimestampBefore !== null) {
-            $where[] = 'document_timestamp <= :document_timestamp_before';
+            $where[] = 'room_link.document_timestamp <= :document_timestamp_before';
             $params['document_timestamp_before'] = $documentTimestampBefore;
         }
 
@@ -116,16 +117,32 @@ class PdoRoomLinkRepo implements RoomLinkRepo
                 $params[$key] = $tagId;
             }
             $params[':tag_count'] = count($tagIds);
-            $where[] = 'id IN (SELECT room_link_id FROM room_link_tag WHERE tag_id IN (' . implode(', ', $placeholders) . ') GROUP BY room_link_id HAVING COUNT(DISTINCT tag_id) = :tag_count)';
+            $where[] = 'room_link.id IN (SELECT room_link_id FROM room_link_tag WHERE tag_id IN (' . implode(', ', $placeholders) . ') GROUP BY room_link_id HAVING COUNT(DISTINCT tag_id) = :tag_count)';
         }
 
         $whereClause = implode(' and ', $where);
-        $sql = room_link::SELECT . " where {$whereClause} order by created_at desc limit :limit";
+        $sql = <<< SQL
+select
+    room_link.id,
+    room_link.room_id,
+    room_link.link_id,
+    link.url,
+    room_link.title,
+    room_link.description,
+    room_link.created_at,
+    room_link.document_timestamp
+from
+  room_link
+  join link on room_link.link_id = link.id
+where {$whereClause}
+order by room_link.created_at desc
+limit :limit
+SQL;
 
         return $this->pdoSimple->fetchAllAsObjectConstructor(
             $sql,
             $params,
-            RoomLink::class
+            RoomLinkWithUrl::class
         );
     }
 }

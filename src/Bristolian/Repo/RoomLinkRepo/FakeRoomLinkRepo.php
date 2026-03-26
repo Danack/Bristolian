@@ -3,6 +3,7 @@
 namespace Bristolian\Repo\RoomLinkRepo;
 
 use Bristolian\Model\Generated\RoomLink;
+use Bristolian\Model\Types\RoomLinkWithUrl;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Repo\LinkRepo\LinkRepo;
@@ -14,6 +15,10 @@ class FakeRoomLinkRepo implements RoomLinkRepo
      * @var RoomLink[]
      */
     private $roomLinks = [];
+    /**
+     * @var array<string, string>
+     */
+    private array $urlByLinkId = [];
 
     public function __construct(private LinkRepo $linkRepo)
     {
@@ -21,21 +26,38 @@ class FakeRoomLinkRepo implements RoomLinkRepo
 
     /**
      * @param string $room_id
-     * @return RoomLink[]
+     * @return RoomLinkWithUrl[]
      */
     public function getLinksForRoom(string $room_id, RoomContentSearchParams $search): array
     {
-        $linksForRoom = [];
+        $roomLinks = [];
 
         foreach ($this->roomLinks as $roomLink) {
             if ($room_id === $roomLink->room_id) {
-                $linksForRoom[] = $roomLink;
+                $roomLinks[] = $roomLink;
             }
         }
 
-        $linksForRoom = $this->filterLinksBySearch($linksForRoom, $search);
-        usort($linksForRoom, fn ($a, $b) => $b->created_at <=> $a->created_at);
-        return array_slice($linksForRoom, 0, $search->getLimit());
+        $roomLinks = $this->filterLinksBySearch($roomLinks, $search);
+        usort($roomLinks, fn ($a, $b) => $b->created_at <=> $a->created_at);
+        $roomLinks = array_slice($roomLinks, 0, $search->getLimit());
+
+        $linksForRoom = [];
+        foreach ($roomLinks as $roomLink) {
+            $url = $this->urlByLinkId[$roomLink->link_id] ?? '';
+            $linksForRoom[] = new RoomLinkWithUrl(
+                $roomLink->id,
+                $roomLink->room_id,
+                $roomLink->link_id,
+                $url,
+                $roomLink->title,
+                $roomLink->description,
+                $roomLink->created_at,
+                $roomLink->document_timestamp
+            );
+        }
+
+        return $linksForRoom;
     }
 
 //    public function getFileDetails(string $room_id, string $file_id): StoredFile|null
@@ -50,6 +72,7 @@ class FakeRoomLinkRepo implements RoomLinkRepo
         LinkParam $linkParam
     ): string {
         $link_id = $this->linkRepo->store_link($user_id, $linkParam->url);
+        $this->urlByLinkId[$link_id] = $linkParam->url;
 
         $time = new \DateTimeImmutable("2010-01-28T15:00:00+02:00");
 

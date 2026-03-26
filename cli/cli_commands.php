@@ -308,6 +308,23 @@ function addRoomCommands(Application $console)
     $command->addArgument('description', InputArgument::OPTIONAL, 'Video description (optional). Omit or use empty string when skipping.', null);
     $console->add($command);
 
+    $command = new Command('room:add_tag', 'Bristolian\CliController\Rooms::addRoomTagFromCli');
+    $command->setDescription('Create a room tag for a room identified by unique name.');
+    $command->addArgument('room_name', InputArgument::REQUIRED, 'The name of the room (must be unique among rooms).');
+    $command->addArgument('tag_text', InputArgument::REQUIRED, 'Tag label text.');
+    $command->addArgument('description', InputArgument::OPTIONAL, 'Tag description (optional).', null);
+    $console->add($command);
+
+    $command = new Command('room:add_annotation_tag', 'Bristolian\CliController\Rooms::addAnnotationTagFromCli');
+    $command->setDescription(
+        'Attach a room tag to an annotation. Matches an existing tag by exact text, or creates the tag if missing.'
+    );
+    $command->addArgument('room_name', InputArgument::REQUIRED, 'The name of the room (must be unique among rooms).');
+    $command->addArgument('annotation_title', InputArgument::REQUIRED, 'Annotation title (must be unique within the room).');
+    $command->addArgument('tag_text', InputArgument::REQUIRED, 'Tag label text (must match an existing room tag or will create one).');
+    $command->addArgument('description', InputArgument::OPTIONAL, 'When creating a new tag, optional description.', null);
+    $console->add($command);
+
     $command = new Command('room:add_video_clip', 'Bristolian\CliController\Rooms::addVideoClipFromCli');
     $command->setDescription(
         'Add a YouTube clip (start/end) to a room. Times: seconds, M:SS, or H:MM:SS. Use room:add_video for a full video without trim.'

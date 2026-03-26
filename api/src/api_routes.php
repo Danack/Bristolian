@@ -434,6 +434,14 @@ function getAllApiRoutes()
             ],
         ],
 
+        // Update an annotation's title and description text (body: title, text).
+        [
+            '/api/rooms/{room_id:.*}/annotations/{room_annotation_id:.*}',
+            'PATCH',
+            'Bristolian\AppController\Rooms::updateAnnotation',
+            null,
+        ],
+
         [
             '/api/rooms/{room_id:.*}/files/{file_id:.*}/tags',
             'PUT',

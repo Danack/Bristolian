@@ -6,11 +6,14 @@ use Bristolian\Parameters\AddVideoClipParam;
 use Bristolian\Parameters\AddVideoParam;
 use Bristolian\Parameters\AnnotationParam;
 use Bristolian\Parameters\LinkParam;
+use Bristolian\Parameters\TagParams;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo;
+use Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
+use Bristolian\Repo\RoomTagRepo\RoomTagRepo;
 use Bristolian\Repo\RoomVideoRepo\RoomVideoRepo;
 use Bristolian\Repo\VideoRepo\VideoRepo;
 use Bristolian\Service\CliOutput\CliOutput;
@@ -19,6 +22,8 @@ use Bristolian\Service\RoomFileStorage\UploadError;
 use Bristolian\UploadedFiles\UploadedFile;
 use DataType\Exception\JsonDecodeException;
 use DataType\Exception\ValidationException;
+use Bristolian\Exception\TooManyRoomTagsException;
+use VarMap\ArrayVarMap;
 
 /**
  * Code for managing rooms from the command line.
@@ -321,5 +326,136 @@ class Rooms
         );
 
         $this->cliOutput->write("Video clip added to room with room_video id: " . $room_video->id . "\n");
+    }
+
+    public function addRoomTagFromCli(
+        AdminRepo $adminRepo,
+        RoomRepo $roomRepo,
+        RoomTagRepo $roomTagRepo,
+        string $room_name,
+        string $tag_text,
+        ?string $description
+    ): void {
+        if ($adminRepo->getAdminUserId(getAdminEmailAddress()) === null) {
+            $this->cliOutput->write("Failed to find admin user\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        $matching_rooms = $roomRepo->getRoomByName($room_name);
+
+        if (count($matching_rooms) === 0) {
+            $this->cliOutput->write("No room found with name: " . $room_name . "\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        if (count($matching_rooms) > 1) {
+            $this->cliOutput->write(
+                "Multiple rooms have the name \"" . $room_name . "\"; names must be unique for this command.\n"
+            );
+            $this->cliOutput->exit(-1);
+        }
+
+        $room = $matching_rooms[0];
+
+        try {
+            $tag_param = TagParams::createFromVarMap(new ArrayVarMap([
+                'text' => $tag_text,
+                'description' => $description ?? '',
+            ]));
+        } catch (ValidationException $e) {
+            $this->cliOutput->write("Invalid tag parameters: " . $e->getMessage() . "\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        try {
+            $room_tag = $roomTagRepo->createTag($room->id, $tag_param);
+        } catch (TooManyRoomTagsException $e) {
+            $this->cliOutput->write($e->getMessage() . "\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        $this->cliOutput->write("Tag created with tag_id: " . $room_tag->tag_id . "\n");
+    }
+
+    public function addAnnotationTagFromCli(
+        AdminRepo $adminRepo,
+        RoomRepo $roomRepo,
+        RoomAnnotationRepo $roomAnnotationRepo,
+        RoomAnnotationTagRepo $roomAnnotationTagRepo,
+        RoomTagRepo $roomTagRepo,
+        string $room_name,
+        string $annotation_title,
+        string $tag_text,
+        ?string $description
+    ): void {
+        if ($adminRepo->getAdminUserId(getAdminEmailAddress()) === null) {
+            $this->cliOutput->write("Failed to find admin user\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        $matching_rooms = $roomRepo->getRoomByName($room_name);
+
+        if (count($matching_rooms) === 0) {
+            $this->cliOutput->write("No room found with name: " . $room_name . "\n");
+            $this->cliOutput->exit(-1);
+        }
+
+        if (count($matching_rooms) > 1) {
+            $this->cliOutput->write(
+                "Multiple rooms have the name \"" . $room_name . "\"; names must be unique for this command.\n"
+            );
+            $this->cliOutput->exit(-1);
+        }
+
+        $room = $matching_rooms[0];
+
+        $matchingAnnotations = $roomAnnotationRepo->getAnnotationsForRoomAndTitle($room->id, $annotation_title);
+        if (count($matchingAnnotations) === 0) {
+            $this->cliOutput->write("No annotation with that title in this room.\n");
+            $this->cliOutput->exit(-1);
+        }
+        if (count($matchingAnnotations) > 1) {
+            $this->cliOutput->write("Multiple annotations in this room have that title. Use a unique title.\n");
+            $this->cliOutput->exit(-1);
+        }
+        $room_annotation_id = $matchingAnnotations[0]->room_annotation_id;
+
+        $room_tag = null;
+        foreach ($roomTagRepo->getTagsForRoom($room->id) as $tag) {
+            if ($tag->text === $tag_text) {
+                $room_tag = $tag;
+                break;
+            }
+        }
+
+        if ($room_tag === null) {
+            try {
+                $tag_param = TagParams::createFromVarMap(new ArrayVarMap([
+                    'text' => $tag_text,
+                    'description' => $description ?? '',
+                ]));
+            } catch (ValidationException $e) {
+                $this->cliOutput->write("Invalid tag parameters: " . $e->getMessage() . "\n");
+                $this->cliOutput->exit(-1);
+            }
+
+            try {
+                $room_tag = $roomTagRepo->createTag($room->id, $tag_param);
+            } catch (TooManyRoomTagsException $e) {
+                $this->cliOutput->write($e->getMessage() . "\n");
+                $this->cliOutput->exit(-1);
+            }
+        }
+
+        $existing_ids = $roomAnnotationTagRepo->getTagIdsForRoomAnnotation($room_annotation_id);
+        if (in_array($room_tag->tag_id, $existing_ids, true)) {
+            $this->cliOutput->write("Annotation already has this tag (tag_id: " . $room_tag->tag_id . ").\n");
+            return;
+        }
+
+        $merged = array_merge($existing_ids, [$room_tag->tag_id]);
+        $roomAnnotationTagRepo->setTagsForRoomAnnotation($room_annotation_id, $merged);
+
+        $this->cliOutput->write("Tag attached to annotation. tag_id: " . $room_tag->tag_id . "\n");
     }
 }

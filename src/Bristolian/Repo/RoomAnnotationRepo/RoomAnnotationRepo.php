@@ -30,4 +30,27 @@ interface RoomAnnotationRepo
         string $room_id,
         string $file_id,
     ): array;
+
+    /**
+     * @param string $room_id
+     * @param string $title
+     * @return RoomAnnotationView[]
+     */
+    public function getAnnotationsForRoomAndTitle(
+        string $room_id,
+        string $title
+    ): array;
+
+    /**
+     * Update room-specific title and canonical annotation text. Throws if the room annotation
+     * is not in the room.
+     *
+     * @throws \Bristolian\Exception\ContentNotFoundException
+     */
+    public function updateTitleAndText(
+        string $room_id,
+        string $room_annotation_id,
+        string $title,
+        string $text
+    ): void;
 }

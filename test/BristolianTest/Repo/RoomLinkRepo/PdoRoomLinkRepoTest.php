@@ -16,6 +16,7 @@ use Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
 use Bristolian\Model\Generated\RoomLink;
+use Bristolian\Model\Types\RoomLinkWithUrl;
 use VarMap\ArrayVarMap;
 
 /**
@@ -160,18 +161,18 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $roomLinks = $roomLinkRepo->getLinksForRoom($room->id, \Bristolian\Parameters\RoomContentSearchParams::default());
 
         $this->assertCount(2, $roomLinks);
-        $this->assertContainsOnlyInstancesOf(RoomLink::class, $roomLinks);
+        $this->assertContainsOnlyInstancesOf(RoomLinkWithUrl::class, $roomLinks);
 
         // Verify first link
         $link1 = array_filter($roomLinks, fn($link) => $link->id === $room_link_id_1);
         $link1 = array_values($link1)[0];
-        // url is in Link table, not RoomLink
+        $this->assertSame($url1, $link1->url);
         $this->assertSame($title1, $link1->title);
 
         // Verify second link
         $link2 = array_filter($roomLinks, fn($link) => $link->id === $room_link_id_2);
         $link2 = array_values($link2)[0];
-        // url is in Link table, not RoomLink
+        $this->assertSame($url2, $link2->url);
         $this->assertSame($title2, $link2->title);
     }
 

@@ -4,6 +4,7 @@ namespace Bristolian\Repo\RoomAnnotationRepo;
 
 use Bristolian\Database\annotation;
 use Bristolian\Database\room_annotation;
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Types\RoomAnnotationView;
 use Bristolian\Parameters\AnnotationParam;
 use Bristolian\PdoSimple\PdoSimple;
@@ -127,5 +128,70 @@ SQL;
             $params,
             RoomAnnotationView::class
         );
+    }
+
+    public function getAnnotationsForRoomAndTitle(
+        string $room_id,
+        string $title
+    ): array {
+        $sql = <<< SQL
+select  
+    a.id,
+    a.user_id,
+    a.file_id,
+    a.highlights_json,
+    a.text,
+    ra.title,
+    ra.id as room_annotation_id
+from
+  annotation a
+left join
+  room_annotation ra
+on 
+ a.id = ra.annotation_id
+where
+  ra.room_id = :room_id
+and
+  ra.title = :title
+SQL;
+
+        return $this->pdoSimple->fetchAllAsObjectConstructor(
+            $sql,
+            [
+                ':room_id' => $room_id,
+                ':title' => $title,
+            ],
+            RoomAnnotationView::class
+        );
+    }
+
+    public function updateTitleAndText(
+        string $room_id,
+        string $room_annotation_id,
+        string $title,
+        string $text
+    ): void {
+        $sql = <<< SQL
+update
+  room_annotation AS ra
+inner join
+  annotation AS a ON a.id = ra.annotation_id
+set
+  ra.title = :title,
+  a.text = :text
+where
+  ra.id = :room_annotation_id
+and
+  ra.room_id = :room_id
+SQL;
+        $rowsAffected = $this->pdoSimple->execute($sql, [
+            'title' => $title,
+            'text' => $text,
+            'room_annotation_id' => $room_annotation_id,
+            'room_id' => $room_id,
+        ]);
+        if ($rowsAffected === 0) {
+            throw new ContentNotFoundException('Annotation not found in room');
+        }
     }
 }

@@ -35,3 +35,39 @@ export function setAnnotationTags(room_id: string, room_annotation_id: string, b
 export function setVideoTags(room_id: string, room_video_id: string, body: SetEntityTagsBody): Promise<void> {
     return putTags(`/api/rooms/${room_id}/videos/${room_video_id}/tags`, body);
 }
+
+export interface PatchRoomAnnotationBody {
+    title: string;
+    text: string;
+}
+
+/**
+ * PATCH title + description text on a room annotation (not generated in api_routes).
+ */
+export function patchRoomAnnotation(
+    room_id: string,
+    room_annotation_id: string,
+    body: PatchRoomAnnotationBody
+): Promise<void> {
+    return fetch(`/api/rooms/${room_id}/annotations/${room_annotation_id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+    }).then((response: Response) => {
+        if (response.status === 404) {
+            throw new Error('Annotation not found.');
+        }
+        if (response.status === 400) {
+            return response.json().then((data: { data?: Record<string, string> }) => {
+                const message = data.data && data.data['/title']
+                    ? data.data['/title']
+                    : (data.data && data.data['/text'] ? data.data['/text'] : 'Validation failed.');
+                throw new Error(message);
+            });
+        }
+        if (response.status !== 200) {
+            throw new Error('Server failed to return an expected response.');
+        }
+        return response.json().then(() => undefined);
+    });
+}
