@@ -2,6 +2,7 @@
 
 namespace Bristolian\Repo\RoomFileRepo;
 
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\RoomFileObjectInfo;
 use Bristolian\Model\Types\RoomFileInRoom;
 use Bristolian\Parameters\RoomContentSearchParams;
@@ -23,6 +24,16 @@ class FakeRoomFileRepo implements RoomFileRepo
      * @var array<string, array<string, \DateTimeInterface>>
      */
     private array $documentTimestamps = [];
+
+    /**
+     * @var array<string, array<string, string|null>>
+     */
+    private array $roomFileDescriptions = [];
+
+    /**
+     * @var array<string, array<string, string|null>>
+     */
+    private array $roomFileNotes = [];
 
     public function addFileToRoom(string $fileStorageId, string $room_id): void
     {
@@ -61,6 +72,8 @@ class FakeRoomFileRepo implements RoomFileRepo
             if (isset($this->files[$fileStorageId])) {
                 $file = $this->files[$fileStorageId];
                 $documentTimestamp = $this->documentTimestamps[$room_id][$fileStorageId] ?? null;
+                $description = $this->roomFileDescriptions[$room_id][$fileStorageId] ?? null;
+                $note = $this->roomFileNotes[$room_id][$fileStorageId] ?? null;
                 $filesForRoom[] = new RoomFileInRoom(
                     $file->id,
                     $file->normalized_name,
@@ -69,7 +82,9 @@ class FakeRoomFileRepo implements RoomFileRepo
                     $file->size,
                     $file->user_id,
                     $file->created_at,
-                    $documentTimestamp
+                    $documentTimestamp,
+                    $description,
+                    $note
                 );
             }
         }
@@ -122,6 +137,8 @@ class FakeRoomFileRepo implements RoomFileRepo
                 continue;
             }
             $documentTimestamp = $this->documentTimestamps[$room_id][$fileStorageId] ?? null;
+            $description = $this->roomFileDescriptions[$room_id][$fileStorageId] ?? null;
+            $note = $this->roomFileNotes[$room_id][$fileStorageId] ?? null;
             $matching[] = new RoomFileInRoom(
                 $file->id,
                 $file->normalized_name,
@@ -130,7 +147,9 @@ class FakeRoomFileRepo implements RoomFileRepo
                 $file->size,
                 $file->user_id,
                 $file->created_at,
-                $documentTimestamp
+                $documentTimestamp,
+                $description,
+                $note
             );
         }
 
@@ -149,6 +168,32 @@ class FakeRoomFileRepo implements RoomFileRepo
             $this->documentTimestamps[$room_id] = [];
         }
         $this->documentTimestamps[$room_id][$fileStorageId] = $documentTimestamp;
+    }
+
+    public function updateRoomFileDetails(
+        string $room_id,
+        string $stored_file_id,
+        ?string $description,
+        ?string $note,
+        ?\DateTimeInterface $document_timestamp
+    ): void {
+        if (!isset($this->roomFiles[$room_id]) || !in_array($stored_file_id, $this->roomFiles[$room_id], true)) {
+            throw new ContentNotFoundException('File not found in room');
+        }
+
+        if (!isset($this->roomFileDescriptions[$room_id])) {
+            $this->roomFileDescriptions[$room_id] = [];
+        }
+        if (!isset($this->roomFileNotes[$room_id])) {
+            $this->roomFileNotes[$room_id] = [];
+        }
+        $this->roomFileDescriptions[$room_id][$stored_file_id] = $description;
+        $this->roomFileNotes[$room_id][$stored_file_id] = $note;
+
+        if (!isset($this->documentTimestamps[$room_id])) {
+            $this->documentTimestamps[$room_id] = [];
+        }
+        $this->documentTimestamps[$room_id][$stored_file_id] = $document_timestamp;
     }
 
     /**

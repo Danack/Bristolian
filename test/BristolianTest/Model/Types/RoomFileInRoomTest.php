@@ -34,7 +34,9 @@ class RoomFileInRoomTest extends BaseTestCase
             $size,
             $userId,
             $createdAt,
-            $documentTimestamp
+            $documentTimestamp,
+            'List description',
+            'A longer note.'
         );
 
         $this->assertSame($id, $roomFile->id);
@@ -45,6 +47,8 @@ class RoomFileInRoomTest extends BaseTestCase
         $this->assertSame($userId, $roomFile->user_id);
         $this->assertSame($createdAt, $roomFile->created_at);
         $this->assertSame($documentTimestamp, $roomFile->document_timestamp);
+        $this->assertSame('List description', $roomFile->description);
+        $this->assertSame('A longer note.', $roomFile->note);
     }
 
     /**
@@ -60,9 +64,13 @@ class RoomFileInRoomTest extends BaseTestCase
             1024,
             'user-1',
             new \DateTimeImmutable(),
+            null,
+            null,
             null
         );
 
         $this->assertNull($roomFile->document_timestamp);
+        $this->assertNull($roomFile->description);
+        $this->assertNull($roomFile->note);
     }
 }

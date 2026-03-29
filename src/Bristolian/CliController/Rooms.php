@@ -153,6 +153,10 @@ class Rooms
         try {
             $annotation_param = AnnotationParam::createFromJson($annotation_json);
         }
+        catch (JsonDecodeException $e) {
+            $this->cliOutput->write("Invalid JSON: " . $e->getMessage() . "\n");
+            $this->cliOutput->exit(-1);
+        }
         catch (ValidationException $e) {
             $this->cliOutput->write("Invalid annotation parameters: " . $e->getMessage() . "\n");
             $this->cliOutput->exit(-1);
@@ -362,10 +366,14 @@ class Rooms
                 'text' => $tag_text,
                 'description' => $description ?? '',
             ]));
+        // @codeCoverageIgnoreStart
         } catch (ValidationException $e) {
+
+            // Not reached from typed CLI args: TagParams uses BasicString without extra constraints.
             $this->cliOutput->write("Invalid tag parameters: " . $e->getMessage() . "\n");
             $this->cliOutput->exit(-1);
         }
+        // @codeCoverageIgnoreEnd
 
         try {
             $room_tag = $roomTagRepo->createTag($room->id, $tag_param);
@@ -434,10 +442,14 @@ class Rooms
                     'text' => $tag_text,
                     'description' => $description ?? '',
                 ]));
+            // @codeCoverageIgnoreStart
             } catch (ValidationException $e) {
+
+                // Not reached from typed CLI args: TagParams uses BasicString without extra constraints.
                 $this->cliOutput->write("Invalid tag parameters: " . $e->getMessage() . "\n");
                 $this->cliOutput->exit(-1);
             }
+            // @codeCoverageIgnoreEnd
 
             try {
                 $room_tag = $roomTagRepo->createTag($room->id, $tag_param);

@@ -22,6 +22,8 @@ app/public/js/app.bundle.map.gz
 data
 app.bundle.js.gz
 davidshimjs-qrcodejs-04f46c6
+callmap.json
+composer-callmap.lock
 ignore
 tmp
 delete_this_to_update_npm_modules.txt

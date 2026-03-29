@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\RoomFileRepo;
 
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\RoomFileObjectInfo;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo;
@@ -523,5 +524,45 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $matching = $roomFileRepo->getFilesInRoomByOriginalFilename($room_id, 'original_file_a.txt');
 
         $this->assertSame([], $matching);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::updateRoomFileDetails
+     */
+    public function test_updateRoomFileDetails_updates_description_note_and_document_timestamp(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_123';
+        $file_id = 'file_1';
+        $roomFileRepo->addFileToRoom($file_id, $room_id);
+        $description = 'Desc ' . create_test_uniqid();
+        $note = 'Note ' . create_test_uniqid();
+        $documentTimestamp = new \DateTimeImmutable('2022-03-15 10:30:00');
+
+        $roomFileRepo->updateRoomFileDetails($room_id, $file_id, $description, $note, $documentTimestamp);
+
+        $files = $roomFileRepo->getFilesForRoom($room_id, RoomContentSearchParams::default());
+        $this->assertCount(1, $files);
+        $this->assertSame($description, $files[0]->description);
+        $this->assertSame($note, $files[0]->note);
+        $this->assertNotNull($files[0]->document_timestamp);
+        $this->assertSame($documentTimestamp->getTimestamp(), $files[0]->document_timestamp->getTimestamp());
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::updateRoomFileDetails
+     */
+    public function test_updateRoomFileDetails_throws_when_file_not_in_room(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $this->expectException(ContentNotFoundException::class);
+        $this->expectExceptionMessage('File not found in room');
+        $roomFileRepo->updateRoomFileDetails(
+            'room_missing',
+            'file_missing',
+            'd',
+            'n',
+            new \DateTimeImmutable()
+        );
     }
 }

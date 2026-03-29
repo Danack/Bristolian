@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\RoomLinkRepo;
 
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\RoomLink;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Parameters\RoomContentSearchParams;
@@ -252,5 +253,43 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $links = $repo->getLinksForRoom($roomId, $search);
 
         $this->assertCount(0, $links);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::updateTitleAndDescription
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::addLinkToRoomFromParam
+     */
+    public function test_updateTitleAndDescription_throws_when_room_mismatches(): void
+    {
+        $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
+        $repo = new FakeRoomLinkRepo($linkRepo);
+        $roomLinkId = $repo->addLinkToRoomFromParam('user-1', 'room-a', LinkParam::createFromVarMap(new ArrayVarMap([
+            'url' => 'https://example.com/' . create_test_uniqid(),
+        ])));
+        $this->expectException(ContentNotFoundException::class);
+        $this->expectExceptionMessage('Link not found in room');
+        $repo->updateTitleAndDescription('room-b', $roomLinkId, 'Title', 'Description');
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::updateTitleAndDescription
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::addLinkToRoomFromParam
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getRoomLink
+     */
+    public function test_updateTitleAndDescription_iterates_past_other_link_ids(): void
+    {
+        $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
+        $repo = new FakeRoomLinkRepo($linkRepo);
+        $roomId = 'room-shared';
+        $firstId = $repo->addLinkToRoomFromParam('user-1', $roomId, LinkParam::createFromVarMap(new ArrayVarMap([
+            'url' => 'https://example.com/first-' . create_test_uniqid(),
+        ])));
+        $secondId = $repo->addLinkToRoomFromParam('user-1', $roomId, LinkParam::createFromVarMap(new ArrayVarMap([
+            'url' => 'https://example.com/second-' . create_test_uniqid(),
+        ])));
+        $newTitle = 'Updated second ' . create_test_uniqid();
+        $repo->updateTitleAndDescription($roomId, $secondId, $newTitle, null);
+        $this->assertNull($repo->getRoomLink($firstId)->title);
+        $this->assertSame($newTitle, $repo->getRoomLink($secondId)->title);
     }
 }

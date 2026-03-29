@@ -495,12 +495,24 @@ TEXT;
         yield 'too many seconds' => ['36001', null];
         yield 'invalid minute seconds' => ['1:60', null];
         yield 'empty' => ['', null];
-        yield 'non numeric' => ['1:x', null];
+        yield 'non numeric seconds' => ['1:x', null];
+        yield 'non numeric minutes' => ['x:1', null];
+        yield 'negative seconds' => ['-1', null];
+        yield 'non numeric seconds only' => ['x', null];
+
+
+        yield 'non-numeric minutes with hour' => ['1:xx:10', null];
+        yield 'invalid minutes with hour' => ['1:75:10', null];
+        yield 'invalid seconds with hour' => ['1:1:75', null];
+
+        yield 'too many sections' => ['1:1:1:75', null];
+
     }
 
     /**
      * @dataProvider provides_parse_clip_timestamp_to_seconds
      * @covers ::parse_clip_timestamp_to_seconds
+     * @group wip
      */
     public function test_parse_clip_timestamp_to_seconds(string $input, ?int $expected): void
     {

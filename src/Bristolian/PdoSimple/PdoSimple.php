@@ -23,6 +23,7 @@ function convertRowToDatetime(array $row): array
         'start_time',
         'end_time',
         'revoked_at',
+        'document_timestamp',
     ];
 
     $data = [];

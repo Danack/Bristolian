@@ -27,11 +27,6 @@ php cli.php room:add_tag "Housing" "tag from cli 2" "tag description"
 php cli.php room:add_annotation_tag "Housing" "Nulla consequat quam ut nisl - annotation." "tag from cli"
 
 
-
-
-
-
-
 php cli.php debug:add_meme test/fixtures/memes/came-to-laugh-not-feel.jpg "sad,wojak,feel"  "I came here to laugh not to feel"
 php cli.php debug:add_meme test/fixtures/memes/one_yikes.jpeg "yikes,reaction" "You have been awarded on yike from the national committee of yikes"
 php cli.php debug:add_meme test/fixtures/memes/sipping_tea_yikes.jpeg "USA,tea" "alex morgan celebrates scoring against england by pretending to sip tea, I'm English and I laughed she pretended to sip some tea it was funny people need to chill out. It's what we're known for. It's like if the English pretended  to eat a big mac or shoot up a school."

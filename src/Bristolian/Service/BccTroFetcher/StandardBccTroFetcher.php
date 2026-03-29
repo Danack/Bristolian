@@ -7,7 +7,6 @@ use Bristolian\Service\HttpFetcher\HttpFetcher;
 
 class StandardBccTroFetcher implements BccTroFetcher
 {
-
     private const SOURCE_URL = 'https://www.bristol.gov.uk/residents/streets-travel/make-a-comment-on-traffic-regulation-orders-tros';
 
     public function __construct(

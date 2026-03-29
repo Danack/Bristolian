@@ -35,4 +35,17 @@ interface RoomFileRepo
      * @return RoomFileInRoom[]
      */
     public function getFilesInRoomByOriginalFilename(string $room_id, string $original_filename): array;
+
+    /**
+     * Update room-specific metadata for a file. {@see room_file} row must exist for (room_id, stored_file_id).
+     *
+     * @throws \Bristolian\Exception\ContentNotFoundException when no row is updated
+     */
+    public function updateRoomFileDetails(
+        string $room_id,
+        string $stored_file_id,
+        ?string $description,
+        ?string $note,
+        ?\DateTimeInterface $document_timestamp
+    ): void;
 }

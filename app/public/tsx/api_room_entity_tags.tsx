@@ -71,3 +71,44 @@ export function patchRoomAnnotation(
         return response.json().then(() => undefined);
     });
 }
+
+export interface PatchRoomFileBody {
+    description: string|null;
+    note: string|null;
+    /** Empty string clears the document date on the server. */
+    document_timestamp: string;
+}
+
+/**
+ * PATCH room file metadata (description, note, document date). Not generated in api_routes.
+ */
+export function patchRoomFile(
+    room_id: string,
+    file_id: string,
+    body: PatchRoomFileBody
+): Promise<void> {
+    return fetch(`/api/rooms/${room_id}/files/${file_id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+    }).then((response: Response) => {
+        if (response.status === 404) {
+            throw new Error('File not found in room.');
+        }
+        if (response.status === 400) {
+            return response.json().then((data: { data?: Record<string, string> }) => {
+                const dataBlock = data.data;
+                const message =
+                    (dataBlock && dataBlock['/description']) ||
+                    (dataBlock && dataBlock['/note']) ||
+                    (dataBlock && dataBlock['/document_timestamp']) ||
+                    'Validation failed.';
+                throw new Error(message);
+            });
+        }
+        if (response.status !== 200) {
+            throw new Error('Server failed to return an expected response.');
+        }
+        return response.json().then(() => undefined);
+    });
+}

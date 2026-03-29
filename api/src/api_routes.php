@@ -282,6 +282,13 @@ function getAllApiRoutes()
         ],
 
         [
+            '/api/rooms/{room_id:.*}/files/{file_id:.*}',
+            'PATCH',
+            '\Bristolian\AppController\Rooms::updateRoomFile',
+            null,
+        ],
+
+        [
             '/api/chat/message',
             'GET',
             'Bristolian\AppController\Chat::send_message_get',
@@ -341,6 +348,13 @@ function getAllApiRoutes()
             [
                 ['links', \Bristolian\Model\Types\RoomLinkWithTags::class, true]
             ],
+        ],
+
+        [
+            '/api/rooms/{room_id:.*}/links/{room_link_id:.*}',
+            'PATCH',
+            '\Bristolian\AppController\Rooms::updateLink',
+            null,
         ],
 
         // List YouTube videos and clips for the room.

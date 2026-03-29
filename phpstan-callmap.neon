@@ -1,0 +1,19 @@
+parameters:
+    errorFormat: callmap
+    paths:
+        - src
+
+    # Makes PHPStan not require a `--level` for `analyse` command.
+    # Our rule will be the only one that runs
+    customRulesetUsed: true
+
+rules:
+    - PHPDepend\Callmap\Rule
+
+services:
+    errorFormatter.callmap:
+        class: PHPDepend\Callmap\CallmapFormatter
+    -
+        class: PHPDepend\Callmap\MethodCallCollector
+        tags:
+            - phpstan.collector

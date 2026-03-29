@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo\RoomLinkRepo;
 
 use Bristolian\Exception\BristolianException;
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\RoomLink;
 use Bristolian\Model\Types\RoomLinkWithUrl;
 use Bristolian\Parameters\LinkParam;
@@ -127,5 +128,55 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
         $this->assertNotNull($roomLink);
         $this->assertInstanceOf(RoomLink::class, $roomLink);
         $this->assertSame($room_id, $roomLink->room_id);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::updateTitleAndDescription
+     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::addLinkToRoomFromParam
+     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::getRoomLink
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::updateTitleAndDescription
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::addLinkToRoomFromParam
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getRoomLink
+     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::updateTitleAndDescription
+     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::addLinkToRoomFromParam
+     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getRoomLink
+     */
+    public function test_updateTitleAndDescription_updates_fields(): void
+    {
+        $repo = $this->getTestInstance($this->getLinkRepo());
+        $user_id = $this->getValidUserId();
+        $room_id = $this->getValidRoomId();
+        $roomLinkId = $repo->addLinkToRoomFromParam($user_id, $room_id, LinkParam::createFromArray([
+            'url' => 'https://example.com/' . create_test_uniqid(),
+            'title' => 'Old title here',
+            'description' => 'Old description',
+        ]));
+        $newTitle = 'New title ' . create_test_uniqid();
+        $newDescription = 'New description ' . create_test_uniqid();
+
+        $repo->updateTitleAndDescription($room_id, $roomLinkId, $newTitle, $newDescription);
+
+        $updated = $repo->getRoomLink($roomLinkId);
+        $this->assertNotNull($updated);
+        $this->assertSame($newTitle, $updated->title);
+        $this->assertSame($newDescription, $updated->description);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::updateTitleAndDescription
+     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::updateTitleAndDescription
+     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::updateTitleAndDescription
+     */
+    public function test_updateTitleAndDescription_throws_when_link_id_unknown(): void
+    {
+        $repo = $this->getTestInstance($this->getLinkRepo());
+        $this->expectException(ContentNotFoundException::class);
+        $this->expectExceptionMessage('Link not found in room');
+        $repo->updateTitleAndDescription(
+            $this->getValidRoomId(),
+            '00000000-0000-7000-8000-000000000000',
+            'Title',
+            'Description'
+        );
     }
 }

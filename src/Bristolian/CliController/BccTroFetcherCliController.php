@@ -51,40 +51,33 @@ class BccTroFetcherCliController
     public function fetchTros(
         BccTroFetcher $bccTroFetcher,
         BccTroRepo $bccTroRepo,
-        CliOutput $cliOutput,
-        string $output
+        CliOutput $cliOutput
     ): void {
         $cliOutput->write("Fetching TRO data from Bristol City Council...\n");
-
-        try {
-            $tros = $bccTroFetcher->fetchTros();
-        }
-        catch (\Exception $exception) {
-            $cliOutput->write("Error fetching TRO data: " . $exception->getMessage() . "\n");
-            $cliOutput->exit(1);
-        }
-
+        $tros = $bccTroFetcher->fetchTros();
         $bccTroRepo->saveData($tros);
     }
 
     public function daily_bcc_tro(
         ProcessorRunRecordRepo $processorRunRecordRepo,
         BccTroFetcher $bccTroFetcher,
+        BccTroRepo $bccTroRepo,
         DailyProcessorSchedule $dailyProcessorSchedule,
-        CliOutput $cliOutput,
-        string $output
+        CliOutput $cliOutput
     ): void {
         // @codeCoverageIgnoreStart
         $cliOutput->write("Fetching TRO data from Bristol City Council...\n");
         $callable = function () use (
             $processorRunRecordRepo,
             $bccTroFetcher,
+            $bccTroRepo,
             $dailyProcessorSchedule,
             $cliOutput
         ) {
             $this->runInternal(
                 $processorRunRecordRepo,
                 $bccTroFetcher,
+                $bccTroRepo,
                 $dailyProcessorSchedule,
                 $cliOutput
             );
@@ -102,6 +95,7 @@ class BccTroFetcherCliController
     public function runInternal(
         ProcessorRunRecordRepo $processorRunRecordRepo,
         BccTroFetcher $bccTroFetcher,
+        BccTroRepo $bccTroRepo,
         DailyProcessorSchedule $dailyProcessorSchedule,
         CliOutput $cliOutput,
     ): void {
@@ -127,13 +121,28 @@ class BccTroFetcherCliController
             ProcessType::daily_bcc_tro
         );
 
-        $cliOutput->write("Fetching TROs.\n");
-        $bccTroFetcher->fetchTros();
+        try {
+            $this->fetchTros(
+                $bccTroFetcher,
+                $bccTroRepo,
+                $cliOutput
+            );
 
-        $processorRunRecordRepo->setRunFinished(
-            $run_id,
-            ""
-        );
+            $processorRunRecordRepo->setRunFinished(
+                $run_id,
+                ""
+            );
+
+        }
+        catch (\Exception $exception) {
+            /*$cliOutput->write("Error fetching TRO data: " . $exception->getMessage() . "\n");
+            $cliOutput->exit(1);*/
+
+            $processorRunRecordRepo->setRunFinished(
+                $run_id,
+                "Error fetching TRO data: " . $exception->getMessage()
+            );
+        }
 
         $cliOutput->write("Fin.\n");
     }

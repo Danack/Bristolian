@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\RoomAnnotationRepo;
 
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Types\RoomAnnotationView;
 use Bristolian\Parameters\AnnotationParam;
 use Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo;
@@ -279,5 +280,158 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         $links = $repo->getAnnotationsForRoomAndFile($roomId, 'nonexistent-file-id');
 
         $this->assertEmpty($links);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::getAnnotationsForRoomAndTitle
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoomAndTitle
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::getAnnotationsForRoomAndTitle
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
+     */
+    public function test_getAnnotationsForRoomAndTitle_returns_matching_annotation(): void
+    {
+        $repo = $this->getTestInstance();
+        $title = 'Unique Annotation Title That Is Long Enough ' . create_test_uniqid();
+        $annotationParam = AnnotationParam::createFromVarMap(new ArrayVarMap([
+            'title' => $title,
+            'highlights_json' => '{"highlights": []}',
+            'text' => 'Body text one',
+        ]));
+        $roomId = $this->getValidRoomId();
+        $repo->addAnnotation($this->getValidUserId(), $roomId, $this->getValidFileId(), $annotationParam);
+
+        $matches = $repo->getAnnotationsForRoomAndTitle($roomId, $title);
+
+        $this->assertCount(1, $matches);
+        $this->assertSame($title, $matches[0]->title);
+        $this->assertSame('Body text one', $matches[0]->text);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::getAnnotationsForRoomAndTitle
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoomAndTitle
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::getAnnotationsForRoomAndTitle
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
+     */
+    public function test_getAnnotationsForRoomAndTitle_filters_by_title(): void
+    {
+        $repo = $this->getTestInstance();
+        $roomId = $this->getValidRoomId();
+        $suffix = create_test_uniqid();
+        $titleAlpha = 'Alpha Title That Is Long Enough ' . $suffix;
+        $titleBeta = 'Beta Title That Is Long Enough ' . $suffix;
+        $repo->addAnnotation($this->getValidUserId(), $roomId, $this->getValidFileId(), AnnotationParam::createFromVarMap(new ArrayVarMap([
+            'title' => $titleAlpha,
+            'highlights_json' => '{"highlights": []}',
+            'text' => 'Alpha text',
+        ])));
+        $repo->addAnnotation($this->getValidUserId(), $roomId, $this->getValidFileId(), AnnotationParam::createFromVarMap(new ArrayVarMap([
+            'title' => $titleBeta,
+            'highlights_json' => '{"highlights": []}',
+            'text' => 'Beta text',
+        ])));
+
+        $matches = $repo->getAnnotationsForRoomAndTitle($roomId, $titleAlpha);
+
+        $this->assertCount(1, $matches);
+        $this->assertSame($titleAlpha, $matches[0]->title);
+        $this->assertSame('Alpha text', $matches[0]->text);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::updateTitleAndText
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::getAnnotationsForRoom
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::updateTitleAndText
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoom
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::updateTitleAndText
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::getAnnotationsForRoom
+     */
+    public function test_updateTitleAndText_updates_title_and_text(): void
+    {
+        $repo = $this->getTestInstance();
+        $roomId = $this->getValidRoomId();
+        $initialTitle = 'Initial Title That Is Long Enough ' . create_test_uniqid();
+        $roomAnnotationId = $repo->addAnnotation(
+            $this->getValidUserId(),
+            $roomId,
+            $this->getValidFileId(),
+            AnnotationParam::createFromVarMap(new ArrayVarMap([
+                'title' => $initialTitle,
+                'highlights_json' => '{"highlights": []}',
+                'text' => 'Original body',
+            ]))
+        );
+        $newTitle = 'Updated Title That Is Long Enough ' . create_test_uniqid();
+        $newText = 'Updated body ' . create_test_uniqid();
+
+        $repo->updateTitleAndText($roomId, $roomAnnotationId, $newTitle, $newText);
+
+        $all = $repo->getAnnotationsForRoom($roomId);
+        $found = null;
+        foreach ($all as $view) {
+            if ($view->room_annotation_id === $roomAnnotationId) {
+                $found = $view;
+                break;
+            }
+        }
+        $this->assertNotNull($found);
+        $this->assertSame($newTitle, $found->title);
+        $this->assertSame($newText, $found->text);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::updateTitleAndText
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::updateTitleAndText
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::updateTitleAndText
+     */
+    public function test_updateTitleAndText_throws_when_room_annotation_not_found(): void
+    {
+        $repo = $this->getTestInstance();
+        $this->expectException(ContentNotFoundException::class);
+        $this->expectExceptionMessage('Annotation not found in room');
+        $repo->updateTitleAndText(
+            $this->getValidRoomId(),
+            '00000000-0000-7000-8000-000000000000',
+            'Any Title That Is Long Enough',
+            'Any text'
+        );
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::updateTitleAndText
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::updateTitleAndText
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::updateTitleAndText
+     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
+     */
+    public function test_updateTitleAndText_throws_when_room_mismatches(): void
+    {
+        $repo = $this->getTestInstance();
+        $roomAnnotationId = $repo->addAnnotation(
+            $this->getValidUserId(),
+            $this->getValidRoomId(),
+            $this->getValidFileId(),
+            AnnotationParam::createFromVarMap(new ArrayVarMap([
+                'title' => 'Title For Wrong Room Test That Is Long Enough',
+                'highlights_json' => '{"highlights": []}',
+                'text' => 'Text',
+            ]))
+        );
+        $this->expectException(ContentNotFoundException::class);
+        $this->expectExceptionMessage('Annotation not found in room');
+        $repo->updateTitleAndText(
+            $this->getValidRoomId2(),
+            $roomAnnotationId,
+            'New Title That Is Long Enough',
+            'New text'
+        );
     }
 }

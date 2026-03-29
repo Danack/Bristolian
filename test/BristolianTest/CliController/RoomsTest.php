@@ -18,6 +18,7 @@ use Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo;
 use Bristolian\Repo\RoomRepo\FakeRoomRepo;
 use Bristolian\Repo\RoomAnnotationTagRepo\FakeRoomAnnotationTagRepo;
 use Bristolian\Repo\RoomTagRepo\FakeRoomTagRepo;
+use Bristolian\Repo\RoomTagRepo\RoomTagRepo;
 use Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo;
 use Bristolian\Repo\RoomVideoTagRepo\InMemoryRoomVideoTagRepo;
 use Bristolian\Repo\VideoRepo\InMemoryVideoRepo;
@@ -720,6 +721,17 @@ class RoomsTest extends BaseTestCase
         return [$videoRepo, $roomVideoRepo];
     }
 
+    private function fillRoomTagRepoToMax(FakeRoomTagRepo $roomTagRepo, string $room_id): void
+    {
+        for ($index = 0; $index < RoomTagRepo::MAX_TAGS_PER_ROOM; $index += 1) {
+            $tag_text = 'fill-' . str_pad((string) $index, 3, '0', STR_PAD_LEFT);
+            $roomTagRepo->createTag($room_id, TagParams::createFromVarMap(new ArrayVarMap([
+                'text' => $tag_text,
+                'description' => '',
+            ])));
+        }
+    }
+
     /**
      * @covers \Bristolian\CliController\Rooms::addVideoFromCli
      */
@@ -923,6 +935,96 @@ class RoomsTest extends BaseTestCase
     /**
      * @covers \Bristolian\CliController\Rooms::addVideoClipFromCli
      */
+    public function test_addVideoClipFromCli_when_admin_not_found_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        [$videoRepo, $roomVideoRepo] = $this->inMemoryVideoRepositories();
+
+        try {
+            $rooms->addVideoClipFromCli(
+                new FakeAdminRepo([]),
+                new FakeRoomRepo(),
+                $videoRepo,
+                $roomVideoRepo,
+                'Housing',
+                'https://www.youtube.com/watch?v=q84psZX6MbA',
+                '0',
+                '60',
+                null,
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Failed to find admin user', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addVideoClipFromCli
+     */
+    public function test_addVideoClipFromCli_when_no_room_match_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        [$videoRepo, $roomVideoRepo] = $this->inMemoryVideoRepositories();
+
+        try {
+            $rooms->addVideoClipFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                new FakeRoomRepo(),
+                $videoRepo,
+                $roomVideoRepo,
+                'Housing',
+                'https://www.youtube.com/watch?v=q84psZX6MbA',
+                '0',
+                '60',
+                null,
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('No room found with name: Housing', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addVideoClipFromCli
+     */
+    public function test_addVideoClipFromCli_when_multiple_rooms_share_name_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $roomRepo->createRoom('user-1', 'Housing', 'first');
+        $roomRepo->createRoom('user-1', 'Housing', 'second');
+        [$videoRepo, $roomVideoRepo] = $this->inMemoryVideoRepositories();
+
+        try {
+            $rooms->addVideoClipFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                $roomRepo,
+                $videoRepo,
+                $roomVideoRepo,
+                'Housing',
+                'https://www.youtube.com/watch?v=q84psZX6MbA',
+                '0',
+                '60',
+                null,
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Multiple rooms have the name "Housing"', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addVideoClipFromCli
+     */
     public function test_addVideoClipFromCli_when_end_before_start_writes_and_exits(): void
     {
         $cliOutput = new CapturingCliOutput();
@@ -1041,6 +1143,109 @@ class RoomsTest extends BaseTestCase
         $this->assertCount(1, $tags);
         $this->assertSame('cli-tag', $tags[0]->text);
         $this->assertSame('Tag description', $tags[0]->description);
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addRoomTagFromCli
+     */
+    public function test_addRoomTagFromCli_when_admin_not_found_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+
+        try {
+            $rooms->addRoomTagFromCli(
+                new FakeAdminRepo([]),
+                new FakeRoomRepo(),
+                new FakeRoomTagRepo(),
+                'Housing',
+                'room-tag',
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Failed to find admin user', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addRoomTagFromCli
+     */
+    public function test_addRoomTagFromCli_when_no_room_match_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+
+        try {
+            $rooms->addRoomTagFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                new FakeRoomRepo(),
+                new FakeRoomTagRepo(),
+                'Housing',
+                'room-tag',
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('No room found with name: Housing', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addRoomTagFromCli
+     */
+    public function test_addRoomTagFromCli_when_multiple_rooms_share_name_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $roomRepo->createRoom('user-1', 'Housing', 'first');
+        $roomRepo->createRoom('user-1', 'Housing', 'second');
+
+        try {
+            $rooms->addRoomTagFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                $roomRepo,
+                new FakeRoomTagRepo(),
+                'Housing',
+                'room-tag',
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Multiple rooms have the name "Housing"', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addRoomTagFromCli
+     */
+    public function test_addRoomTagFromCli_when_max_tags_reached_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $room = $roomRepo->createRoom('user-1', 'Housing', 'purpose');
+        $roomTagRepo = new FakeRoomTagRepo();
+        $this->fillRoomTagRepoToMax($roomTagRepo, $room->id);
+
+        try {
+            $rooms->addRoomTagFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                $roomRepo,
+                $roomTagRepo,
+                'Housing',
+                'extra-tag',
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Maximum tags per room', $cliOutput->getCapturedOutput());
+        }
     }
 
     /**
@@ -1169,6 +1374,262 @@ class RoomsTest extends BaseTestCase
                 'Multiple annotations in this room have that title.',
                 $cliOutput->getCapturedOutput()
             );
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addAnnotationTagFromCli
+     */
+    public function test_addAnnotationTagFromCli_when_admin_not_found_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+
+        try {
+            $rooms->addAnnotationTagFromCli(
+                new FakeAdminRepo([]),
+                new FakeRoomRepo(),
+                new FakeRoomAnnotationRepo(),
+                new FakeRoomAnnotationTagRepo(),
+                new FakeRoomTagRepo(),
+                'Housing',
+                'Annotation title for admin test',
+                'some-tag',
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Failed to find admin user', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addAnnotationTagFromCli
+     */
+    public function test_addAnnotationTagFromCli_when_no_room_match_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+
+        try {
+            $rooms->addAnnotationTagFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                new FakeRoomRepo(),
+                new FakeRoomAnnotationRepo(),
+                new FakeRoomAnnotationTagRepo(),
+                new FakeRoomTagRepo(),
+                'Housing',
+                'Annotation title for room test',
+                'some-tag',
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('No room found with name: Housing', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addAnnotationTagFromCli
+     */
+    public function test_addAnnotationTagFromCli_when_multiple_rooms_share_name_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $roomRepo->createRoom('user-1', 'Housing', 'first');
+        $roomRepo->createRoom('user-1', 'Housing', 'second');
+
+        try {
+            $rooms->addAnnotationTagFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                $roomRepo,
+                new FakeRoomAnnotationRepo(),
+                new FakeRoomAnnotationTagRepo(),
+                new FakeRoomTagRepo(),
+                'Housing',
+                'Annotation title for duplicate room test',
+                'some-tag',
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Multiple rooms have the name "Housing"', $cliOutput->getCapturedOutput());
+        }
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addAnnotationTagFromCli
+     */
+    public function test_addAnnotationTagFromCli_success_creates_tag_when_not_yet_in_room(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $room = $roomRepo->createRoom('user-1', 'Housing', 'purpose');
+
+        $roomFileRepo = new FakeRoomFileRepo();
+        $file_id = '019d0f8a-07e5-735e-b2c0-a2fd80ce24d8';
+        $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
+            $file_id,
+            'norm-create-tag.pdf',
+            'create-tag.pdf',
+            'uploaded',
+            100,
+            'user-1',
+            new \DateTimeImmutable()
+        ));
+        $roomFileRepo->addFileToRoom($file_id, $room->id);
+
+        $annotation_title = 'Annotation title used when creating a new room tag from cli';
+        $annotationRepo = new FakeRoomAnnotationRepo();
+        $annotation_param = AnnotationParam::createFromVarMap(new ArrayVarMap([
+            'title' => $annotation_title,
+            'highlights_json' => '{"highlights": []}',
+            'text' => 'Some annotation text',
+        ]));
+        $room_annotation_id = $annotationRepo->addAnnotation('user-1', $room->id, $file_id, $annotation_param);
+
+        $roomTagRepo = new FakeRoomTagRepo();
+        $annotationTagRepo = new FakeRoomAnnotationTagRepo();
+
+        $rooms->addAnnotationTagFromCli(
+            new FakeAdminRepo([$this->adminUserForCli()]),
+            $roomRepo,
+            $annotationRepo,
+            $annotationTagRepo,
+            $roomTagRepo,
+            'Housing',
+            $annotation_title,
+            'brand-new-tag',
+            'Created from CLI'
+        );
+
+        $this->assertStringContainsString('Tag attached to annotation', $cliOutput->getCapturedOutput());
+        $tags = $roomTagRepo->getTagsForRoom($room->id);
+        $this->assertCount(1, $tags);
+        $this->assertSame('brand-new-tag', $tags[0]->text);
+        $this->assertSame('Created from CLI', $tags[0]->description);
+        $ids = $annotationTagRepo->getTagIdsForRoomAnnotation($room_annotation_id);
+        $this->assertSame([$tags[0]->tag_id], $ids);
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addAnnotationTagFromCli
+     */
+    public function test_addAnnotationTagFromCli_when_annotation_already_has_tag_writes_and_returns(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $room = $roomRepo->createRoom('user-1', 'Housing', 'purpose');
+
+        $roomFileRepo = new FakeRoomFileRepo();
+        $file_id = '019d0f8a-07e5-735e-b2c0-a2fd80ce24d9';
+        $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
+            $file_id,
+            'norm-dup-tag.pdf',
+            'dup-tag.pdf',
+            'uploaded',
+            100,
+            'user-1',
+            new \DateTimeImmutable()
+        ));
+        $roomFileRepo->addFileToRoom($file_id, $room->id);
+
+        $annotation_title = 'Annotation title for duplicate tag attachment from cli';
+        $annotationRepo = new FakeRoomAnnotationRepo();
+        $annotation_param = AnnotationParam::createFromVarMap(new ArrayVarMap([
+            'title' => $annotation_title,
+            'highlights_json' => '{"highlights": []}',
+            'text' => 'Some annotation text',
+        ]));
+        $room_annotation_id = $annotationRepo->addAnnotation('user-1', $room->id, $file_id, $annotation_param);
+
+        $roomTagRepo = new FakeRoomTagRepo();
+        $room_tag = $roomTagRepo->createTag($room->id, TagParams::createFromVarMap(new ArrayVarMap([
+            'text' => 'existing-for-dup',
+            'description' => '',
+        ])));
+
+        $annotationTagRepo = new FakeRoomAnnotationTagRepo();
+        $annotationTagRepo->setTagsForRoomAnnotation($room_annotation_id, [$room_tag->tag_id]);
+
+        $adminRepo = new FakeAdminRepo([$this->adminUserForCli()]);
+
+        $rooms->addAnnotationTagFromCli(
+            $adminRepo,
+            $roomRepo,
+            $annotationRepo,
+            $annotationTagRepo,
+            $roomTagRepo,
+            'Housing',
+            $annotation_title,
+            'existing-for-dup',
+            null
+        );
+
+        $this->assertStringContainsString(
+            'Annotation already has this tag (tag_id: ' . $room_tag->tag_id . ')',
+            $cliOutput->getCapturedOutput()
+        );
+        $this->assertSame([$room_tag->tag_id], $annotationTagRepo->getTagIdsForRoomAnnotation($room_annotation_id));
+    }
+
+    /**
+     * @covers \Bristolian\CliController\Rooms::addAnnotationTagFromCli
+     */
+    public function test_addAnnotationTagFromCli_when_new_tag_max_tags_reached_writes_and_exits(): void
+    {
+        $cliOutput = new CapturingCliOutput();
+        $rooms = new Rooms($cliOutput);
+        $roomRepo = new FakeRoomRepo();
+        $room = $roomRepo->createRoom('user-1', 'Housing', 'purpose');
+
+        $roomFileRepo = new FakeRoomFileRepo();
+        $file_id = '019d0f8a-07e5-735e-b2c0-a2fd80ce24db';
+        $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
+            $file_id,
+            'norm-max-tags.pdf',
+            'max-tags.pdf',
+            'uploaded',
+            100,
+            'user-1',
+            new \DateTimeImmutable()
+        ));
+        $roomFileRepo->addFileToRoom($file_id, $room->id);
+
+        $annotation_title = 'Annotation title for max tags from cli';
+        $annotationRepo = new FakeRoomAnnotationRepo();
+        $annotation_param = AnnotationParam::createFromVarMap(new ArrayVarMap([
+            'title' => $annotation_title,
+            'highlights_json' => '{"highlights": []}',
+            'text' => 'Some annotation text',
+        ]));
+        $annotationRepo->addAnnotation('user-1', $room->id, $file_id, $annotation_param);
+
+        $roomTagRepo = new FakeRoomTagRepo();
+        $this->fillRoomTagRepoToMax($roomTagRepo, $room->id);
+
+        try {
+            $rooms->addAnnotationTagFromCli(
+                new FakeAdminRepo([$this->adminUserForCli()]),
+                $roomRepo,
+                $annotationRepo,
+                new FakeRoomAnnotationTagRepo(),
+                $roomTagRepo,
+                'Housing',
+                $annotation_title,
+                'not-in-fill-list',
+                null
+            );
+            $this->fail('Expected CliExitRequestedException');
+        } catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+            $this->assertStringContainsString('Maximum tags per room', $cliOutput->getCapturedOutput());
         }
     }
 }

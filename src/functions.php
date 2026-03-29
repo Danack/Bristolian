@@ -1333,13 +1333,16 @@ function parse_clip_timestamp_to_seconds(string $input): ?int
         if (preg_match('/^\d+$/', $parts[0]) !== 1) {
             return null;
         }
+        // seconds part is only digits.
         $seconds = (int) $parts[0];
-        if ($seconds < 0) {
-            return null;
-        }
         // Same upper bound as Bristolian\Parameters\PropertyType\ClipSeconds::MAX_SECONDS (10 hours).
         $maxSeconds = 36000;
-        return $seconds <= $maxSeconds ? $seconds : null;
+
+        if ($seconds > $maxSeconds) {
+            return null;
+        }
+
+        return $seconds;
     }
 
     if ($partCount === 2) {

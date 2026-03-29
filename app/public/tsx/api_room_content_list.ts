@@ -44,8 +44,24 @@ function buildQueryString(params: RoomContentSearchParams): string {
     return query === "" ? "" : "?" + query;
 }
 
-function fetchWithParams<T>(endpoint: string, params: RoomContentSearchParams): Promise<T> {
-    const url = endpoint + buildQueryString(params);
+export interface FetchRoomContentListOptions {
+    /** Append `_=${Date.now()}` so the browser does not reuse a cached GET after mutations (e.g. tag changes). */
+    cacheBust?: boolean;
+}
+
+function appendCacheBustQuery(url: string): string {
+    return url + (url.includes("?") ? "&" : "?") + "_=" + String(Date.now());
+}
+
+function fetchWithParams<T>(
+    endpoint: string,
+    params: RoomContentSearchParams,
+    options?: FetchRoomContentListOptions
+): Promise<T> {
+    let url = endpoint + buildQueryString(params);
+    if (options?.cacheBust) {
+        url = appendCacheBustQuery(url);
+    }
     return fetch(url).then((response: Response) => {
         if (response.status !== 200) {
             throw new Error("Server failed to return an OK response.");
@@ -66,21 +82,24 @@ export interface GetRoomsVideosResponse {
 
 export function fetchRoomFiles(
     roomId: string,
-    params: RoomContentSearchParams
+    params: RoomContentSearchParams,
+    options?: FetchRoomContentListOptions
 ): Promise<GetRoomsFilesResponse> {
-    return fetchWithParams<GetRoomsFilesResponse>(`/api/rooms/${roomId}/files`, params);
+    return fetchWithParams<GetRoomsFilesResponse>(`/api/rooms/${roomId}/files`, params, options);
 }
 
 export function fetchRoomLinks(
     roomId: string,
-    params: RoomContentSearchParams
+    params: RoomContentSearchParams,
+    options?: FetchRoomContentListOptions
 ): Promise<GetRoomsLinksResponse> {
-    return fetchWithParams<GetRoomsLinksResponse>(`/api/rooms/${roomId}/links`, params);
+    return fetchWithParams<GetRoomsLinksResponse>(`/api/rooms/${roomId}/links`, params, options);
 }
 
 export function fetchRoomVideos(
     roomId: string,
-    params: RoomContentSearchParams
+    params: RoomContentSearchParams,
+    options?: FetchRoomContentListOptions
 ): Promise<GetRoomsVideosResponse> {
-    return fetchWithParams<GetRoomsVideosResponse>(`/api/rooms/${roomId}/videos`, params);
+    return fetchWithParams<GetRoomsVideosResponse>(`/api/rooms/${roomId}/videos`, params, options);
 }

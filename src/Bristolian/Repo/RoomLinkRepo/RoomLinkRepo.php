@@ -27,6 +27,18 @@ interface RoomLinkRepo
     // TODO - maybe this shouldn't return null.
     public function getRoomLink(string $room_link_id): RoomLink|null;
 
+    /**
+     * Update a room link's title and/or description. Null values mean "store NULL".
+     *
+     * @throws \Bristolian\Exception\ContentNotFoundException if the link is not in the given room
+     */
+    public function updateTitleAndDescription(
+        string $room_id,
+        string $room_link_id,
+        ?string $title,
+        ?string $description
+    ): void;
+
 //    /**
 //     * Get the stored file details for _this_ room. Rooms can have different details
 //     * e.g. people might not agree on the proper name of a file

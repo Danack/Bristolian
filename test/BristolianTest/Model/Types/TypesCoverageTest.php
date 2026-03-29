@@ -248,7 +248,7 @@ class TypesCoverageTest extends BaseTestCase
     {
         $tag = new RoomTag('tag-1', 'room-1', 'Tag', '', self::now());
         $file = new RoomFileWithTags(
-            'id-1', 'normalized.pdf', 'original.pdf', 'uploaded', 2048, 'user-1', self::now(), null, [$tag]
+            'id-1', 'normalized.pdf', 'original.pdf', 'uploaded', 2048, 'user-1', self::now(), null, 'Desc', 'Note', [$tag]
         );
 
         $this->assertSame('id-1', $file->id);

@@ -7,6 +7,9 @@ Tags
 
 Interesting things
 
+Design notification system.
+
+
 
 
 ## P2
@@ -72,9 +75,6 @@ Contact your councillor
 
 
 Scoring?
-
-
-Rooms
 
 Moderation
 

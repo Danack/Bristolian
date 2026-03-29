@@ -18,7 +18,9 @@ class RoomFileInRoom
         public readonly int $size,
         public readonly string $user_id,
         public readonly \DateTimeInterface $created_at,
-        public readonly ?\DateTimeInterface $document_timestamp
+        public readonly ?\DateTimeInterface $document_timestamp,
+        public readonly ?string $description,
+        public readonly ?string $note,
     ) {
     }
 }

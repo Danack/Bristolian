@@ -26,6 +26,8 @@ class RoomFileWithTags
         public readonly string $user_id,
         public readonly \DateTimeInterface $created_at,
         public readonly ?\DateTimeInterface $document_timestamp,
+        public readonly ?string $description,
+        public readonly ?string $note,
         public readonly array $tags
     ) {
     }

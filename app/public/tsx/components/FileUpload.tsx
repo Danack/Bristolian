@@ -8,7 +8,7 @@ export interface FileUploadProps {
   extraFormData?: Record<string, string>;
   onUploadSuccess?: (data: any) => void;
   onUploadError?: (error: string) => void;
-  fetchGPS?: boolean; 
+  fetchGPS?: boolean;
 }
 
 interface FileUploadState {
@@ -52,6 +52,10 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
   handleDrop = (event: DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
+
+    if (this.props.disabled) {
+      return;
+    }
 
     if (event.dataTransfer && event.dataTransfer.files.length > 0) {
       const file = event.dataTransfer.files[0];

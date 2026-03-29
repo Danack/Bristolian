@@ -3,6 +3,7 @@
 namespace Bristolian\Repo\RoomLinkRepo;
 
 use Bristolian\Database\room_link;
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Exception\BristolianException;
 use Bristolian\Model\Generated\RoomLink;
 use Bristolian\Model\Types\RoomLinkWithUrl;
@@ -64,6 +65,35 @@ class PdoRoomLinkRepo implements RoomLinkRepo
         }
 
         return $result;
+    }
+
+    public function updateTitleAndDescription(
+        string $room_id,
+        string $room_link_id,
+        ?string $title,
+        ?string $description
+    ): void {
+        $sql = <<< SQL
+update room_link
+set
+  title = :title,
+  description = :description
+where
+  id = :room_link_id
+and
+  room_id = :room_id
+SQL;
+
+        $rowsAffected = $this->pdoSimple->execute($sql, [
+            'title' => $title,
+            'description' => $description,
+            'room_link_id' => $room_link_id,
+            'room_id' => $room_id,
+        ]);
+
+        if ($rowsAffected === 0) {
+            throw new ContentNotFoundException('Link not found in room');
+        }
     }
 
     /**

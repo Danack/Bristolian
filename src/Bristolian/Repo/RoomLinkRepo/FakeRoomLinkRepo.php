@@ -2,6 +2,7 @@
 
 namespace Bristolian\Repo\RoomLinkRepo;
 
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\RoomLink;
 use Bristolian\Model\Types\RoomLinkWithUrl;
 use Bristolian\Parameters\LinkParam;
@@ -102,6 +103,35 @@ class FakeRoomLinkRepo implements RoomLinkRepo
             }
         }
         return null;
+    }
+
+    public function updateTitleAndDescription(
+        string $room_id,
+        string $room_link_id,
+        ?string $title,
+        ?string $description
+    ): void {
+        foreach ($this->roomLinks as $index => $roomLink) {
+            if ($roomLink->id !== $room_link_id) {
+                continue;
+            }
+            if ($roomLink->room_id !== $room_id) {
+                continue;
+            }
+
+            $this->roomLinks[$index] = new RoomLink(
+                $roomLink->id,
+                $roomLink->room_id,
+                $roomLink->link_id,
+                $title,
+                $description,
+                $roomLink->created_at,
+                $roomLink->document_timestamp
+            );
+            return;
+        }
+
+        throw new ContentNotFoundException('Link not found in room');
     }
 
 

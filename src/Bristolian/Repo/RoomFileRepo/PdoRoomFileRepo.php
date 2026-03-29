@@ -2,6 +2,7 @@
 
 namespace Bristolian\Repo\RoomFileRepo;
 
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\RoomFileObjectInfo;
 use Bristolian\Model\Types\RoomFileInRoom;
 use Bristolian\Parameters\RoomContentSearchParams;
@@ -97,7 +98,9 @@ select
     sf.size,
     sf.user_id,
     sf.created_at,
-    rf.document_timestamp
+    rf.document_timestamp,
+    rf.description,
+    rf.note
 from room_file_object_info as sf
 left join room_file as rf on sf.id = rf.stored_file_id
 where {$whereClause}
@@ -112,6 +115,39 @@ SQL;
         );
     }
 
+    public function updateRoomFileDetails(
+        string $room_id,
+        string $stored_file_id,
+        ?string $description,
+        ?string $note,
+        ?\DateTimeInterface $document_timestamp
+    ): void {
+        $sql = <<< SQL
+update room_file
+set
+  description = :description,
+  note = :note,
+  document_timestamp = :document_timestamp
+where
+  room_id = :room_id
+and
+  stored_file_id = :stored_file_id
+SQL;
+
+        $documentTimestampParam = $document_timestamp?->format('Y-m-d H:i:s');
+
+        $rowsAffected = $this->pdoSimple->execute($sql, [
+            'description' => $description,
+            'note' => $note,
+            'document_timestamp' => $documentTimestampParam,
+            'room_id' => $room_id,
+            'stored_file_id' => $stored_file_id,
+        ]);
+
+        if ($rowsAffected === 0) {
+            throw new ContentNotFoundException('File not found in room');
+        }
+    }
 
     public function getFileDetails(string $room_id, string $file_id): RoomFileObjectInfo|null
     {
@@ -162,7 +198,9 @@ select
     sf.size,
     sf.user_id,
     sf.created_at,
-    rf.document_timestamp
+    rf.document_timestamp,
+    rf.description,
+    rf.note
 from
     room_file_object_info as sf
 inner join

@@ -2,6 +2,7 @@
 
 namespace BristolianTest\Repo\RoomFileRepo;
 
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Parameters\TagParams;
 use Bristolian\PdoSimple\PdoSimple;
@@ -413,6 +414,42 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertCount(1, $byName);
         $this->assertSame($fileId, $byName[0]->id);
         $this->assertSame($uniqueOriginal, $byName[0]->original_filename);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::updateRoomFileDetails
+     */
+    public function test_updateRoomFileDetails_updates_description_note_and_document_timestamp(): void
+    {
+        [$room, $user] = $this->createTestUserAndRoom();
+        $fileId = $this->createTestFile($user);
+        $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
+        $roomFileRepo->addFileToRoom($fileId, $room->id);
+        $description = 'Desc ' . create_test_uniqid();
+        $note = 'Note ' . create_test_uniqid();
+        $documentTimestamp = new \DateTimeImmutable('2021-11-20 14:00:00');
+
+        $roomFileRepo->updateRoomFileDetails($room->id, $fileId, $description, $note, $documentTimestamp);
+
+        $files = $roomFileRepo->getFilesForRoom($room->id, RoomContentSearchParams::default());
+        $this->assertCount(1, $files);
+        $this->assertSame($description, $files[0]->description);
+        $this->assertSame($note, $files[0]->note);
+        $this->assertNotNull($files[0]->document_timestamp);
+        $this->assertSame($documentTimestamp->format('Y-m-d H:i'), $files[0]->document_timestamp->format('Y-m-d H:i'));
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::updateRoomFileDetails
+     */
+    public function test_updateRoomFileDetails_throws_when_file_not_in_room(): void
+    {
+        [$room, $user] = $this->createTestUserAndRoom();
+        $fileId = $this->createTestFile($user);
+        $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
+        $this->expectException(ContentNotFoundException::class);
+        $this->expectExceptionMessage('File not found in room');
+        $roomFileRepo->updateRoomFileDetails($room->id, $fileId, 'x', 'y', null);
     }
 
 }

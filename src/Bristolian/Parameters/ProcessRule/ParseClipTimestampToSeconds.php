@@ -17,6 +17,8 @@ class ParseClipTimestampToSeconds implements ProcessRule
 {
     public const ERROR_INVALID_TIMESTAMP = 'Invalid clip timestamp';
 
+    public const DESCRIPTION_TEXT = 'Clip time: seconds, M:SS, or H:MM:SS (max 10 hours)';
+
     public function process(
         mixed $value,
         ProcessedValues $processedValues,
@@ -32,6 +34,6 @@ class ParseClipTimestampToSeconds implements ProcessRule
 
     public function updateParamDescription(ParamDescription $paramDescription): void
     {
-        $paramDescription->setDescription('Clip time: seconds, M:SS, or H:MM:SS (max 10 hours)');
+        $paramDescription->setDescription(self::DESCRIPTION_TEXT);
     }
 }

@@ -20,8 +20,11 @@ interface RoomLinksPanelState {
     linkBeingEdited: RoomLinkWithTags | null;
     error: string | null;
     logged_in: boolean;
-    editingLinkId: string | null;
+    linkSaveInProgress: boolean;
+    linkEditError: string | null;
+    linkEditorTagsLoading: boolean;
     roomTags: RoomTag[];
+    /** Tag membership for the link inline editor (when linkBeingEdited is set). */
     selectedTagIds: Set<string>;
     tagsSaveInProgress: boolean;
     searchTitle: string;
@@ -43,7 +46,9 @@ function getDefaultState(): RoomLinksPanelState {
         linkBeingEdited: null,
         error: null,
         logged_in: get_logged_in(),
-        editingLinkId: null,
+        linkSaveInProgress: false,
+        linkEditError: null,
+        linkEditorTagsLoading: false,
         roomTags: [],
         selectedTagIds: new Set(),
         tagsSaveInProgress: false,
@@ -119,9 +124,12 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         };
     }
 
-    refreshLinks() {
+    /**
+     * @param cacheBust - use after tag (or other) mutations so GET /links is not served from browser cache.
+     */
+    refreshLinks(cacheBust = false) {
         this.setState({ searchInFlight: true, searchWaiting: false });
-        fetchRoomLinks(this.props.room_id, this.buildSearchParams())
+        fetchRoomLinks(this.props.room_id, this.buildSearchParams(), cacheBust ? { cacheBust: true } : undefined)
             .then((data: GetRoomsLinksResponse) => this.processData(data))
             .catch((data: unknown) => this.processError(data));
     }
@@ -163,7 +171,25 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         const roomLinks: RoomLinkWithTags[] = data.data.links.map((link) =>
             createRoomLinkWithTags(link)
         );
-        this.setState({ roomLinks, searchInFlight: false });
+        this.setState((previousState) => {
+            let nextLinkBeingEdited = previousState.linkBeingEdited;
+            if (nextLinkBeingEdited !== null) {
+                const updated = roomLinks.find((l) => l.id === nextLinkBeingEdited.id);
+                if (updated !== undefined) {
+                    nextLinkBeingEdited = updated;
+                }
+            }
+            let nextSelectedTagIds = previousState.selectedTagIds;
+            if (nextLinkBeingEdited !== null) {
+                nextSelectedTagIds = new Set(nextLinkBeingEdited.tags.map((t) => t.tag_id));
+            }
+            return {
+                roomLinks,
+                searchInFlight: false,
+                linkBeingEdited: nextLinkBeingEdited,
+                selectedTagIds: nextSelectedTagIds,
+            };
+        });
     }
     processError(data: unknown) {
         this.setState({ error: data instanceof Error ? data.message : "Request failed.", searchInFlight: false });
@@ -173,11 +199,124 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
     }
 
     startEditingRoomLink(roomLink: RoomLinkWithTags) {
-        this.setState({linkBeingEdited: roomLink})
+        const selectedTagIds = new Set(roomLink.tags.map((t) => t.tag_id));
+        const needsRoomTagList = this.state.roomTags.length === 0;
+        this.setState({
+            linkBeingEdited: roomLink,
+            linkEditError: null,
+            linkSaveInProgress: false,
+            selectedTagIds,
+            linkEditorTagsLoading: needsRoomTagList,
+        });
+        if (needsRoomTagList) {
+            api.rooms.tags(this.props.room_id)
+                .then((data) => {
+                    const roomTags = data.data.tags.map((t) => createRoomTag(t));
+                    this.setState({ roomTags });
+                })
+                .catch(() => this.setState({ roomTags: [] }))
+                .finally(() => this.setState({ linkEditorTagsLoading: false }));
+        }
     }
 
     cancelEditingRoomLink() {
-        this.setState({linkBeingEdited: null})
+        this.setState({
+            linkBeingEdited: null,
+            linkEditError: null,
+            linkSaveInProgress: false,
+            selectedTagIds: new Set(),
+            linkEditorTagsLoading: false,
+        });
+    }
+
+    persistLinkTagToggle(tag_id: string) {
+        const { linkBeingEdited, selectedTagIds, tagsSaveInProgress } = this.state;
+        if (!linkBeingEdited || tagsSaveInProgress) {
+            return;
+        }
+        const previous = new Set(selectedTagIds);
+        const next = new Set(selectedTagIds);
+        if (next.has(tag_id)) {
+            next.delete(tag_id);
+        } else {
+            next.add(tag_id);
+        }
+        this.setState({ selectedTagIds: next, tagsSaveInProgress: true });
+        setLinkTags(this.props.room_id, linkBeingEdited.id, { tag_ids: Array.from(next) })
+            .then(() => this.refreshLinks(true))
+            .catch(() => this.setState({ selectedTagIds: previous }))
+            .finally(() => this.setState({ tagsSaveInProgress: false }));
+    }
+
+    removeSelectedLinkTag(tag_id: string) {
+        const { linkBeingEdited, selectedTagIds, tagsSaveInProgress } = this.state;
+        if (!linkBeingEdited || tagsSaveInProgress) {
+            return;
+        }
+        const previous = new Set(selectedTagIds);
+        const next = new Set(selectedTagIds);
+        next.delete(tag_id);
+        this.setState({ selectedTagIds: next, tagsSaveInProgress: true });
+        setLinkTags(this.props.room_id, linkBeingEdited.id, { tag_ids: Array.from(next) })
+            .then(() => this.refreshLinks(true))
+            .catch(() => this.setState({ selectedTagIds: previous }))
+            .finally(() => this.setState({ tagsSaveInProgress: false }));
+    }
+
+    saveEditedRoomLink() {
+        const { linkBeingEdited, linkSaveInProgress } = this.state;
+        if (!linkBeingEdited || linkSaveInProgress) {
+            return;
+        }
+
+        this.setState({ linkSaveInProgress: true, linkEditError: null });
+
+        const url = `/api/rooms/${this.props.room_id}/links/${linkBeingEdited.id}`;
+        const body = {
+            // Backend params use DataType rules that treat empty strings as NULL.
+            title: linkBeingEdited.title ?? '',
+            description: linkBeingEdited.description ?? '',
+        };
+
+        fetch(url, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+        })
+            .then(async (response) => {
+                if (response.status === 200) {
+                    // SuccessResponse body is not needed; still consume to complete.
+                    await response.json().catch((): undefined => undefined);
+                    return;
+                }
+
+                if (response.status === 400) {
+                    const data = await response.json().catch(() => ({}));
+                    const titleError = data?.data?.['/title'];
+                    const descriptionError = data?.data?.['/description'];
+                    throw new Error(titleError || descriptionError || 'Validation failed.');
+                }
+
+                if (response.status === 404) {
+                    throw new Error('Link not found in room.');
+                }
+
+                throw new Error('Server failed to update link.');
+            })
+            .then(() => {
+                this.setState(
+                    {
+                        linkBeingEdited: null,
+                        linkSaveInProgress: false,
+                        selectedTagIds: new Set(),
+                        linkEditorTagsLoading: false,
+                    },
+                    () => this.refreshLinks()
+                );
+            })
+            .catch((error: Error) => {
+                this.setState({ linkSaveInProgress: false, linkEditError: error.message });
+            });
     }
 
     shareLink(link: RoomLinkWithTags) {
@@ -185,42 +324,6 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         const markdown_link = `[${resolved_title}](${link.url})`;
         sendMessage(PdfSelectionType.APPEND_TO_MESSAGE_INPUT, { text: markdown_link });
     }
-
-    openEditTags(link: RoomLinkWithTags) {
-        const selectedTagIds = new Set(link.tags.map((t) => t.tag_id));
-        this.setState({ editingLinkId: link.id, selectedTagIds });
-        api.rooms.tags(this.props.room_id)
-            .then((data) => {
-                const roomTags = data.data.tags.map((t) => createRoomTag(t));
-                this.setState({ roomTags });
-            })
-            .catch(() => this.setState({ roomTags: [] }));
-    }
-
-    closeEditTags() {
-        this.setState({ editingLinkId: null, roomTags: [], selectedTagIds: new Set() });
-    }
-
-    toggleTagForEdit(tag_id: string) {
-        const next = new Set(this.state.selectedTagIds);
-        if (next.has(tag_id)) next.delete(tag_id);
-        else next.add(tag_id);
-        this.setState({ selectedTagIds: next });
-    }
-
-    saveLinkTags() {
-        const { editingLinkId, selectedTagIds, tagsSaveInProgress } = this.state;
-        if (!editingLinkId || tagsSaveInProgress) return;
-        this.setState({ tagsSaveInProgress: true });
-        setLinkTags(this.props.room_id, editingLinkId, { tag_ids: Array.from(selectedTagIds) })
-            .then(() => {
-                this.closeEditTags();
-                this.setState({ tagsSaveInProgress: false });
-                this.refreshLinks();
-            })
-            .catch(() => this.setState({ tagsSaveInProgress: false }));
-    }
-
 
     renderRoomLink(link: RoomLinkWithTags, logged_in: boolean) {
         const resolved_title = link.title || link.url;
@@ -241,7 +344,6 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
                 {logged_in && (
                     <td>
                         <button className="button_standard button_chat" onClick={() => this.startEditingRoomLink(link)}>Edit</button>
-                        <button className="button_standard button_chat" onClick={() => this.openEditTags(link)}>Edit tags</button>
                         <button className="button_standard button_chat" onClick={() => this.shareLink(link)} title="Share link to chat">Post&nbsp;to&nbsp;chat</button>
                     </td>
                 )}
@@ -272,131 +374,162 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
         );
     }
 
-    renderEditTagsModal() {
-        const { editingLinkId, roomTags, selectedTagIds, tagsSaveInProgress } = this.state;
-        if (!editingLinkId) return null;
+    renderLinkBeingEdited() {
+        const {
+            linkBeingEdited,
+            linkSaveInProgress,
+            linkEditError,
+            roomTags,
+            selectedTagIds,
+            tagsSaveInProgress,
+            linkEditorTagsLoading,
+        } = this.state;
+        if (linkBeingEdited === null) {
+            return <span></span>;
+        }
+
+        const selectedTagsForDisplay = roomTags.filter((tag) => selectedTagIds.has(tag.tag_id));
+
         return (
-            <div className="room_edit_tags_modal_overlay" onClick={() => !tagsSaveInProgress && this.closeEditTags()}>
-                <div className="room_edit_tags_modal" onClick={(e) => e.stopPropagation()}>
-                    <h3>Edit tags</h3>
-                    {roomTags.length === 0 ? (
+            <div className="room_links_add_panel_react">
+                <h3>Edit link</h3>
+                <div className="annotation_edit_title_text_form">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <label>URL</label>
+                                </td>
+                                <td>
+                                    <span>{linkBeingEdited.url}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Title</label>
+                                </td>
+                                <td>
+                                    <input
+                                        name="title"
+                                        size={100}
+                                        value={linkBeingEdited.title ?? ''}
+                                        disabled={linkSaveInProgress}
+                                        onChange={(event) =>
+                                            this.setState({
+                                                linkBeingEdited: {
+                                                    ...linkBeingEdited,
+                                                    title: (event.currentTarget as HTMLInputElement).value,
+                                                },
+                                                linkEditError: null,
+                                            })
+                                        }
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label htmlFor="link_edit_description">Description</label>
+                                </td>
+                                <td>
+                                    <textarea
+                                        id="link_edit_description"
+                                        name="description"
+                                        rows={4}
+                                        cols={80}
+                                        value={linkBeingEdited.description ?? ''}
+                                        disabled={linkSaveInProgress}
+                                        onChange={(event) =>
+                                            this.setState({
+                                                linkBeingEdited: {
+                                                    ...linkBeingEdited,
+                                                    description: (event.currentTarget as HTMLTextAreaElement).value,
+                                                },
+                                                linkEditError: null,
+                                            })
+                                        }
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button
+                                        type="button"
+                                        className="button_standard"
+                                        disabled={linkSaveInProgress}
+                                        onClick={() => this.saveEditedRoomLink()}
+                                    >
+                                        Save
+                                    </button>
+                                    {linkEditError ? <span className="error">{linkEditError}</span> : null}
+                                    <button
+                                        type="button"
+                                        className="button_standard"
+                                        onClick={() => this.cancelEditingRoomLink()}
+                                    >
+                                        Cancel
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="annotation_edit_tags_section">
+                    <h4>Tags</h4>
+                    {linkEditorTagsLoading ? (
                         <p>Loading room tags…</p>
                     ) : (
-                        <div className="room_edit_tags_checkboxes">
-                            {roomTags.map((tag) => (
-                                <label key={tag.tag_id}>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedTagIds.has(tag.tag_id)}
-                                        onChange={() => this.toggleTagForEdit(tag.tag_id)}
-                                    />
-                                    {tag.text}
-                                </label>
-                            ))}
+                        <div className="annotation_edit_tag_boxes">
+                            <div className="selected_tags_box">
+                                <div className="selected_tags_heading">Selected tags</div>
+                                {selectedTagsForDisplay.length === 0 ? (
+                                    <p className="annotation_edit_tags_empty">No tags selected.</p>
+                                ) : (
+                                    <div className="tag_list">
+                                        {selectedTagsForDisplay.map((tag) => (
+                                            <span
+                                                key={tag.tag_id}
+                                                className="tag selected_tag"
+                                                title="Click to remove"
+                                                onClick={() =>
+                                                    !tagsSaveInProgress && this.removeSelectedLinkTag(tag.tag_id)
+                                                }
+                                            >
+                                                {tag.text} ×
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                            <div className="suggested_tags_box">
+                                <div className="suggested_tags_heading">Room tags</div>
+                                {roomTags.length === 0 ? (
+                                    <p className="annotation_edit_tags_empty">No tags defined for this room.</p>
+                                ) : (
+                                    <div className="tag_list">
+                                        {roomTags.map((tag) => (
+                                            <span
+                                                key={tag.tag_id}
+                                                className={`tag suggested_tag ${
+                                                    selectedTagIds.has(tag.tag_id) ? 'tag_selected' : ''
+                                                }`}
+                                                title={`${tag.text} (Click to add/remove)`}
+                                                onClick={() =>
+                                                    !tagsSaveInProgress && this.persistLinkTagToggle(tag.tag_id)
+                                                }
+                                            >
+                                                {tag.text}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     )}
-                    <div className="room_edit_tags_actions">
-                        <button className="button_standard" onClick={() => this.saveLinkTags()} disabled={tagsSaveInProgress}>Save</button>
-                        <button className="button_standard" onClick={() => this.closeEditTags()} disabled={tagsSaveInProgress}>Cancel</button>
-                    </div>
                 </div>
             </div>
         );
-    }
-
-    renderLinkBeingEdited() {
-
-
-
-        let error_url = <span></span>
-        let error_title = <span></span>
-        let error_description = <span></span>
-
-        // if (this.state.error_url !== null) {
-        //     error_url = <span class="error">{this.state.error_url}</span>
-        // }
-        //
-        // if (this.state.error_title !== null) {
-        //     error_title = <span class="error">{this.state.error_title}</span>
-        // }
-        //
-        // if (this.state.error_description !== null) {
-        //     error_description = <span class="error">{this.state.error_description}</span>
-        // }
-
-        // Note: RoomLink doesn't have a url property, only link_id
-        // The URL editing functionality is not currently implemented
-        let add_button = <span><button className="button_standard" disabled={true}>Save</button>Editing not fully implemented.</span>
-
-        // @ts-ignore
-        return <div class='room_links_add_panel_react'>
-            <table>
-                <tbody>
-                <tr>
-                    <td>
-                        <label>
-                            URL
-                        </label>
-                    </td>
-                    <td>
-                        <span>{this.state.linkBeingEdited.url}</span>
-                        {error_url}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>
-                            Title
-                        </label>
-                    </td>
-                    <td>
-                        <input name="title"
-                               size={100}
-                               value={this.state.linkBeingEdited.title}
-                               onChange={
-                                   // @ts-ignore
-                                   e => this.setState({title: e.target.value})
-                               }/>
-                        {error_title}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for={"description"}>Description</label>
-                    </td>
-
-                    <td>
-              <textarea
-                name="description"
-                rows={4}
-                cols={80}
-                value={this.state.linkBeingEdited.description}
-                onChange={
-                    // @ts-ignore
-                    e => this.setState({description: e.target.value})
-                }/>
-
-                        {error_description}
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        {add_button}
-                        <button type="submit" className="button_standard" onClick={() => this.cancelEditingRoomLink()}>Cancel</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-
-                </tbody>
-            </table>
-        </div>;
-
-
-
     }
 
     renderTableOfLinks() {
@@ -513,7 +646,6 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
             <div className="room_links_panel_react">
                 <h2>Links</h2>
                 <div>{content}</div>
-                {this.renderEditTagsModal()}
             </div>
         );
     }

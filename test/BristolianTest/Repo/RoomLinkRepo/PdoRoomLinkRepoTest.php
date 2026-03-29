@@ -3,6 +3,7 @@
 namespace BristolianTest\Repo\RoomLinkRepo;
 
 use Bristolian\Exception\BristolianException;
+use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Parameters\TagParams;
@@ -387,5 +388,24 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
 
         $this->assertCount(1, $links);
         $this->assertSame($roomLinkId, $links[0]->id);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::updateTitleAndDescription
+     */
+    public function test_updateTitleAndDescription_throws_when_room_mismatches(): void
+    {
+        $this->initPdoTestObjects();
+        [$room1, $user] = $this->createTestUserAndRoom();
+        [$room2] = $this->createTestUserAndRoom();
+        $roomLinkRepo = $this->injector->make(PdoRoomLinkRepo::class);
+        $roomLinkId = $roomLinkRepo->addLinkToRoomFromParam(
+            $user->getUserId(),
+            $room1->id,
+            LinkParam::createFromArray(['url' => $this->getTestLink()])
+        );
+        $this->expectException(ContentNotFoundException::class);
+        $this->expectExceptionMessage('Link not found in room');
+        $roomLinkRepo->updateTitleAndDescription($room2->id, $roomLinkId, 'Title', 'Description');
     }
 }

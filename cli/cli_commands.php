@@ -388,20 +388,34 @@ function addOpenApiCommands(Application $console)
 function addBccTroCommands(Application $console)
 {
     $command = new Command(
-        'service:bcc_tro_fetch',
+        'service:bcc_tro_fetch:continual',
         'Bristolian\CliController\BccTroFetcherCliController::fetchTros'
     );
-
     $command->addArgument(
         'output',
         InputArgument::OPTIONAL,
         "One of 'CLI' or 'room'", 'CLI'
     );
-
     $command->setDescription("Fetch and display Bristol City Council Traffic Regulation Orders");
     $console->add($command);
 
-//    $command = new Command(
+
+    $command = new Command(
+        'service:bcc_tro_fetch:once',
+        'Bristolian\CliController\BccTroFetcherCliController::fetchTros'
+    );
+    $command->addArgument(
+        'output',
+        InputArgument::OPTIONAL,
+        "One of 'CLI' or 'room'", 'CLI'
+    );
+    $command->setDescription("Fetch and display Bristol City Council Traffic Regulation Orders");
+    $console->add($command);
+
+
+
+
+    //    $command = new Command(
 //        'process:generate:daily_bcc_tro',
 //        'Bristolian\CliController\BccTroFetcherCliController::daily_bcc_tro'
 //    );

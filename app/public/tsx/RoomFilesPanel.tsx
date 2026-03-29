@@ -5,20 +5,39 @@ import { PdfSelectionType } from "./constants";
 import { api, GetRoomsFilesResponse } from "./generated/api_routes";
 import { RoomFileWithTags, createRoomFileWithTags, createRoomTag, RoomTag } from "./generated/types";
 import { get_logged_in, subscribe_logged_in } from "./store";
-import { setFileTags } from "./api_room_entity_tags";
+import { patchRoomFile, setFileTags } from "./api_room_entity_tags";
 import { fetchRoomFiles, RoomContentSearchParams } from "./api_room_content_list";
 import { ROOM_CONTENT_LIST_DEFAULT_LIMIT } from "./generated/constants";
 import { RoomContentSearchForm } from "./RoomContentSearchForm";
+import { setRoomFileEditingActive } from "./room_file_editing";
 
 export interface RoomFilesPanelProps {
     room_id: string;
+}
+
+function pad2(value: number): string {
+    return String(value).padStart(2, "0");
+}
+
+/** Value for HTML datetime-local from a Date (local wall time). */
+function dateToDatetimeLocalValue(value: Date | null): string {
+    if (value === null) {
+        return "";
+    }
+    return (
+        `${value.getFullYear()}-${pad2(value.getMonth() + 1)}-${pad2(value.getDate())}` +
+        `T${pad2(value.getHours())}:${pad2(value.getMinutes())}`
+    );
 }
 
 interface RoomFilesPanelState {
     files: RoomFileWithTags[];
     error: string | null;
     logged_in: boolean;
-    editingFileId: string | null;
+    fileBeingEdited: RoomFileWithTags | null;
+    fileSaveInProgress: boolean;
+    fileEditError: string | null;
+    fileEditorTagsLoading: boolean;
     roomTags: RoomTag[];
     selectedTagIds: Set<string>;
     tagsSaveInProgress: boolean;
@@ -40,7 +59,10 @@ function getDefaultState(): RoomFilesPanelState {
         files: [],
         error: null,
         logged_in: get_logged_in(),
-        editingFileId: null,
+        fileBeingEdited: null,
+        fileSaveInProgress: false,
+        fileEditError: null,
+        fileEditorTagsLoading: false,
         roomTags: [],
         selectedTagIds: new Set(),
         tagsSaveInProgress: false,
@@ -73,7 +95,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         this.refreshFiles();
         this.loadRoomTags();
         this.message_listener = registerMessageListener(PdfSelectionType.ROOM_FILES_CHANGED, () => this.refreshFiles());
-        
+
         this.unsubscribe_logged_in = subscribe_logged_in((logged_in: boolean) => {
             this.setState({logged_in: logged_in});
         });
@@ -89,9 +111,13 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
     }
 
     componentWillUnmount() {
+        if (this.state.fileBeingEdited !== null) {
+            setRoomFileEditingActive(false);
+            sendMessage(PdfSelectionType.ROOM_FILE_EDITING_ACTIVE, { active: false });
+        }
         unregisterListener(this.message_listener);
         this.message_listener = null;
-        
+
         if (this.unsubscribe_logged_in) {
             this.unsubscribe_logged_in();
             this.unsubscribe_logged_in = null;
@@ -117,9 +143,12 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         };
     }
 
-    refreshFiles() {
+    /**
+     * @param cacheBust - use after tag mutations so GET /files is not served from browser cache.
+     */
+    refreshFiles(cacheBust = false) {
         this.setState({ searchInFlight: true, searchWaiting: false });
-        fetchRoomFiles(this.props.room_id, this.buildSearchParams())
+        fetchRoomFiles(this.props.room_id, this.buildSearchParams(), cacheBust ? { cacheBust: true } : undefined)
             .then((data: GetRoomsFilesResponse) => this.processData(data))
             .catch((data: unknown) => this.processError(data));
     }
@@ -136,6 +165,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
     onClearSearch = () => {
         this.setState({
             searchTitle: "",
+            searchDescription: "",
             searchCreatedAfter: "",
             searchCreatedBefore: "",
             searchDocAfter: "",
@@ -161,7 +191,25 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         const files: RoomFileWithTags[] = data.data.files.map((file) =>
             createRoomFileWithTags(file)
         );
-        this.setState({ files, searchInFlight: false });
+        this.setState((previousState) => {
+            let nextFileBeingEdited = previousState.fileBeingEdited;
+            if (nextFileBeingEdited !== null) {
+                const updated = files.find((f) => f.id === nextFileBeingEdited.id);
+                if (updated !== undefined) {
+                    nextFileBeingEdited = updated;
+                }
+            }
+            let nextSelectedTagIds = previousState.selectedTagIds;
+            if (nextFileBeingEdited !== null) {
+                nextSelectedTagIds = new Set(nextFileBeingEdited.tags.map((t) => t.tag_id));
+            }
+            return {
+                files,
+                searchInFlight: false,
+                fileBeingEdited: nextFileBeingEdited,
+                selectedTagIds: nextSelectedTagIds,
+            };
+        });
     }
 
     processError(data: unknown) {
@@ -169,45 +217,110 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
     }
 
     shareFile(file: RoomFileWithTags, file_url: string) {
-        // Build the full URL including the origin
         const full_url = window.location.origin + file_url;
         const markdown_link = `[${file.original_filename}](${full_url})`;
         sendMessage(PdfSelectionType.APPEND_TO_MESSAGE_INPUT, {text: markdown_link});
     }
 
-    openEditTags(file: RoomFileWithTags) {
+    startEditingFile(file: RoomFileWithTags) {
+        setRoomFileEditingActive(true);
+        sendMessage(PdfSelectionType.ROOM_FILE_EDITING_ACTIVE, { active: true });
         const selectedTagIds = new Set(file.tags.map((t) => t.tag_id));
-        this.setState({ editingFileId: file.id, selectedTagIds });
-        api.rooms.tags(this.props.room_id)
-            .then((data) => {
-                const roomTags = data.data.tags.map((t) => createRoomTag(t));
-                this.setState({ roomTags });
-            })
-            .catch(() => this.setState({ roomTags: [] }));
+        const needsRoomTagList = this.state.roomTags.length === 0;
+        this.setState({
+            fileBeingEdited: file,
+            fileEditError: null,
+            fileSaveInProgress: false,
+            selectedTagIds,
+            fileEditorTagsLoading: needsRoomTagList,
+        });
+        if (needsRoomTagList) {
+            api.rooms.tags(this.props.room_id)
+                .then((data) => {
+                    const roomTags = data.data.tags.map((t) => createRoomTag(t));
+                    this.setState({ roomTags });
+                })
+                .catch(() => this.setState({ roomTags: [] }))
+                .finally(() => this.setState({ fileEditorTagsLoading: false }));
+        }
     }
 
-    closeEditTags() {
-        this.setState({ editingFileId: null, roomTags: [], selectedTagIds: new Set() });
+    cancelEditingFile() {
+        setRoomFileEditingActive(false);
+        sendMessage(PdfSelectionType.ROOM_FILE_EDITING_ACTIVE, { active: false });
+        this.setState({
+            fileBeingEdited: null,
+            fileEditError: null,
+            fileSaveInProgress: false,
+            selectedTagIds: new Set(),
+            fileEditorTagsLoading: false,
+        });
     }
 
-    toggleTagForEdit(tag_id: string) {
-        const next = new Set(this.state.selectedTagIds);
-        if (next.has(tag_id)) next.delete(tag_id);
-        else next.add(tag_id);
-        this.setState({ selectedTagIds: next });
+    persistFileTagToggle(tag_id: string) {
+        const { fileBeingEdited, selectedTagIds, tagsSaveInProgress } = this.state;
+        if (!fileBeingEdited || tagsSaveInProgress) {
+            return;
+        }
+        const previous = new Set(selectedTagIds);
+        const next = new Set(selectedTagIds);
+        if (next.has(tag_id)) {
+            next.delete(tag_id);
+        } else {
+            next.add(tag_id);
+        }
+        this.setState({ selectedTagIds: next, tagsSaveInProgress: true });
+        setFileTags(this.props.room_id, fileBeingEdited.id, { tag_ids: Array.from(next) })
+            .then(() => this.refreshFiles(true))
+            .catch(() => this.setState({ selectedTagIds: previous }))
+            .finally(() => this.setState({ tagsSaveInProgress: false }));
     }
 
-    saveFileTags() {
-        const { editingFileId, selectedTagIds, tagsSaveInProgress } = this.state;
-        if (!editingFileId || tagsSaveInProgress) return;
-        this.setState({ tagsSaveInProgress: true });
-        setFileTags(this.props.room_id, editingFileId, { tag_ids: Array.from(selectedTagIds) })
+    removeSelectedFileTag(tag_id: string) {
+        const { fileBeingEdited, selectedTagIds, tagsSaveInProgress } = this.state;
+        if (!fileBeingEdited || tagsSaveInProgress) {
+            return;
+        }
+        const previous = new Set(selectedTagIds);
+        const next = new Set(selectedTagIds);
+        next.delete(tag_id);
+        this.setState({ selectedTagIds: next, tagsSaveInProgress: true });
+        setFileTags(this.props.room_id, fileBeingEdited.id, { tag_ids: Array.from(next) })
+            .then(() => this.refreshFiles(true))
+            .catch(() => this.setState({ selectedTagIds: previous }))
+            .finally(() => this.setState({ tagsSaveInProgress: false }));
+    }
+
+    saveEditedFile() {
+        const { fileBeingEdited, fileSaveInProgress } = this.state;
+        if (!fileBeingEdited || fileSaveInProgress) {
+            return;
+        }
+
+        this.setState({ fileSaveInProgress: true, fileEditError: null });
+
+        const documentTimestampLocal = dateToDatetimeLocalValue(fileBeingEdited.document_timestamp);
+        patchRoomFile(this.props.room_id, fileBeingEdited.id, {
+            description: fileBeingEdited.description,
+            note: fileBeingEdited.note,
+            document_timestamp: documentTimestampLocal,
+        })
             .then(() => {
-                this.closeEditTags();
-                this.setState({ tagsSaveInProgress: false });
-                this.refreshFiles();
+                setRoomFileEditingActive(false);
+                sendMessage(PdfSelectionType.ROOM_FILE_EDITING_ACTIVE, { active: false });
+                this.setState(
+                    {
+                        fileBeingEdited: null,
+                        fileSaveInProgress: false,
+                        selectedTagIds: new Set(),
+                        fileEditorTagsLoading: false,
+                    },
+                    () => this.refreshFiles()
+                );
             })
-            .catch(() => this.setState({ tagsSaveInProgress: false }));
+            .catch((error: Error) => {
+                this.setState({ fileSaveInProgress: false, fileEditError: error.message });
+            });
     }
 
     renderRoomFile(file: RoomFileWithTags, logged_in: boolean) {
@@ -238,7 +351,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                 )}
                 {logged_in && (
                     <td>
-                        <button className="button_standard button_chat" onClick={() => this.openEditTags(file)}>Edit tags</button>
+                        <button type="button" className="button_standard button_chat" onClick={() => this.startEditingFile(file)}>Edit</button>
                         <button className="button_standard button_chat" onClick={() => this.shareFile(file, file_url)} title="Share file link to chat">Post&nbsp;to&nbsp;chat</button>
                     </td>
                 )}
@@ -274,33 +387,193 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         );
     }
 
-    renderEditTagsModal() {
-        const { editingFileId, roomTags, selectedTagIds, tagsSaveInProgress } = this.state;
-        if (!editingFileId) return null;
+    renderFileBeingEdited() {
+        const {
+            fileBeingEdited,
+            fileSaveInProgress,
+            fileEditError,
+            roomTags,
+            selectedTagIds,
+            tagsSaveInProgress,
+            fileEditorTagsLoading,
+        } = this.state;
+        if (fileBeingEdited === null) {
+            return <span></span>;
+        }
+
+        const selectedTagsForDisplay = roomTags.filter((tag) => selectedTagIds.has(tag.tag_id));
+
         return (
-            <div className="room_edit_tags_modal_overlay" onClick={() => !tagsSaveInProgress && this.closeEditTags()}>
-                <div className="room_edit_tags_modal" onClick={(e) => e.stopPropagation()}>
-                    <h3>Edit tags</h3>
-                    {roomTags.length === 0 ? (
+            <div className="room_links_add_panel_react">
+                <h3>Edit file</h3>
+                <p className="room_file_edit_filename">
+                    <strong>{fileBeingEdited.original_filename}</strong>
+                </p>
+                <div className="annotation_edit_title_text_form">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <label htmlFor="room_file_edit_description">Description</label>
+                                </td>
+                                <td>
+                                    <input
+                                        id="room_file_edit_description"
+                                        name="description"
+                                        type="text"
+                                        size={80}
+                                        value={fileBeingEdited.description ?? ""}
+                                        disabled={fileSaveInProgress}
+                                        onChange={(event) =>
+                                            this.setState({
+                                                fileBeingEdited: {
+                                                    ...fileBeingEdited,
+                                                    description: (event.currentTarget as HTMLInputElement).value,
+                                                },
+                                                fileEditError: null,
+                                            })
+                                        }
+                                    />
+                                    <span className="room_file_edit_hint">Short label shown in lists instead of the raw file name.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label htmlFor="room_file_edit_note">Note</label>
+                                </td>
+                                <td>
+                                    <textarea
+                                        id="room_file_edit_note"
+                                        name="note"
+                                        rows={6}
+                                        cols={80}
+                                        value={fileBeingEdited.note ?? ""}
+                                        disabled={fileSaveInProgress}
+                                        onChange={(event) =>
+                                            this.setState({
+                                                fileBeingEdited: {
+                                                    ...fileBeingEdited,
+                                                    note: (event.currentTarget as HTMLTextAreaElement).value,
+                                                },
+                                                fileEditError: null,
+                                            })
+                                        }
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label htmlFor="room_file_edit_document_timestamp">Date</label>
+                                </td>
+                                <td>
+                                    <input
+                                        id="room_file_edit_document_timestamp"
+                                        name="document_timestamp"
+                                        type="datetime-local"
+                                        value={dateToDatetimeLocalValue(fileBeingEdited.document_timestamp)}
+                                        disabled={fileSaveInProgress}
+                                        onChange={(event) => {
+                                            const raw = (event.currentTarget as HTMLInputElement).value;
+                                            if (raw === "") {
+                                                this.setState({
+                                                    fileBeingEdited: {
+                                                        ...fileBeingEdited,
+                                                        document_timestamp: null,
+                                                    },
+                                                    fileEditError: null,
+                                                });
+                                                return;
+                                            }
+                                            const parsed = new Date(raw);
+                                            this.setState({
+                                                fileBeingEdited: {
+                                                    ...fileBeingEdited,
+                                                    document_timestamp: Number.isNaN(parsed.getTime()) ? null : parsed,
+                                                },
+                                                fileEditError: null,
+                                            });
+                                        }}
+                                    />
+                                    <span className="room_file_edit_hint">Document or publication date (optional).</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button
+                                        type="button"
+                                        className="button_standard"
+                                        disabled={fileSaveInProgress}
+                                        onClick={() => this.saveEditedFile()}
+                                    >
+                                        Save
+                                    </button>
+                                    {fileEditError ? <span className="error">{fileEditError}</span> : null}
+                                    <button
+                                        type="button"
+                                        className="button_standard"
+                                        onClick={() => this.cancelEditingFile()}
+                                    >
+                                        Cancel
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="annotation_edit_tags_section">
+                    <h4>Tags</h4>
+                    {fileEditorTagsLoading ? (
                         <p>Loading room tags…</p>
                     ) : (
-                        <div className="room_edit_tags_checkboxes">
-                            {roomTags.map((tag) => (
-                                <label key={tag.tag_id}>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedTagIds.has(tag.tag_id)}
-                                        onChange={() => this.toggleTagForEdit(tag.tag_id)}
-                                    />
-                                    {tag.text}
-                                </label>
-                            ))}
+                        <div className="annotation_edit_tag_boxes">
+                            <div className="selected_tags_box">
+                                <div className="selected_tags_heading">Selected tags</div>
+                                {selectedTagsForDisplay.length === 0 ? (
+                                    <p className="annotation_edit_tags_empty">No tags selected.</p>
+                                ) : (
+                                    <div className="tag_list">
+                                        {selectedTagsForDisplay.map((tag) => (
+                                            <span
+                                                key={tag.tag_id}
+                                                className="tag selected_tag"
+                                                title="Click to remove"
+                                                onClick={() =>
+                                                    !tagsSaveInProgress && this.removeSelectedFileTag(tag.tag_id)
+                                                }
+                                            >
+                                                {tag.text} ×
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                            <div className="suggested_tags_box">
+                                <div className="suggested_tags_heading">Room tags</div>
+                                {roomTags.length === 0 ? (
+                                    <p className="annotation_edit_tags_empty">No tags defined for this room.</p>
+                                ) : (
+                                    <div className="tag_list">
+                                        {roomTags.map((tag) => (
+                                            <span
+                                                key={tag.tag_id}
+                                                className={`tag suggested_tag ${
+                                                    selectedTagIds.has(tag.tag_id) ? "tag_selected" : ""
+                                                }`}
+                                                title={`${tag.text} (Click to add/remove)`}
+                                                onClick={() =>
+                                                    !tagsSaveInProgress && this.persistFileTagToggle(tag.tag_id)
+                                                }
+                                            >
+                                                {tag.text}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     )}
-                    <div className="room_edit_tags_actions">
-                        <button className="button_standard" onClick={() => this.saveFileTags()} disabled={tagsSaveInProgress}>Save</button>
-                        <button className="button_standard" onClick={() => this.closeEditTags()} disabled={tagsSaveInProgress}>Cancel</button>
-                    </div>
                 </div>
             </div>
         );
@@ -321,8 +594,9 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         else {
             body = this.renderFiles();
         }
-        return (
-            <div className="room_files_panel_react">
+
+        let main = (
+            <div>
                 {error_block}
                 {this.state.searchVisible ? (
                     <div className="room_content_search_container">
@@ -402,7 +676,16 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                 {body}
                 <div>Showing {length} files</div>
                 <button className="button_standard" onClick={() => this.refreshFiles()}>Refresh</button>
-                {this.renderEditTagsModal()}
+            </div>
+        );
+
+        if (this.state.fileBeingEdited !== null) {
+            main = <div>{this.renderFileBeingEdited()}</div>;
+        }
+
+        return (
+            <div className="room_files_panel_react">
+                {main}
             </div>
         );
     }

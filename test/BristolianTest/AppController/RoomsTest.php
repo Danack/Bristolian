@@ -747,6 +747,59 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\AppController\Rooms::updateRoomFile
+     */
+    public function test_updateRoomFile(): void
+    {
+        $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
+        $roomFileRepo->addFileToRoom('file-for-metadata', $this->roomId);
+        $files = $roomFileRepo->getFilesForRoom($this->roomId, RoomContentSearchParams::default());
+        $fileId = $files[0]->id;
+
+        $documentTimestamp = new \DateTimeImmutable('2024-06-15 14:30:00');
+        $jsonInput = new FakeJsonInput([
+            'description' => 'Short list label for the file',
+            'note' => 'Longer explanation of what this file contains.',
+            'document_timestamp' => $documentTimestamp->format('Y-m-d H:i:s'),
+        ]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+        $this->injector->defineParam('file_id', $fileId);
+
+        $result = $this->injector->execute([Rooms::class, 'updateRoomFile']);
+        $this->assertInstanceOf(SuccessResponse::class, $result);
+
+        $filesAfter = $roomFileRepo->getFilesForRoom($this->roomId, RoomContentSearchParams::default());
+        $updated = $filesAfter[0];
+        $this->assertSame('Short list label for the file', $updated->description);
+        $this->assertSame('Longer explanation of what this file contains.', $updated->note);
+        $this->assertNotNull($updated->document_timestamp);
+        $this->assertSame(
+            $documentTimestamp->format('Y-m-d H:i:s'),
+            $updated->document_timestamp->format('Y-m-d H:i:s')
+        );
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::updateRoomFile
+     */
+    public function test_updateRoomFile_throws_when_file_not_in_room(): void
+    {
+        $jsonInput = new FakeJsonInput([
+            'description' => null,
+            'note' => null,
+        ]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+        $this->injector->defineParam('file_id', 'nonexistent-file-id');
+
+        $this->expectException(ContentNotFoundException::class);
+        $this->expectExceptionMessage('File not found in room');
+
+        $this->injector->execute([Rooms::class, 'updateRoomFile']);
+    }
+
+    /**
      * @covers \Bristolian\AppController\Rooms::setLinkTags
      */
     public function test_setLinkTags_throws_when_link_not_found(): void
@@ -788,6 +841,56 @@ class RoomsTest extends BaseTestCase
 
         $result = $this->injector->execute([Rooms::class, 'setLinkTags']);
         $this->assertInstanceOf(SuccessResponse::class, $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::updateLink
+     */
+    public function test_updateLink(): void
+    {
+        $linkParam = LinkParam::createFromVarMap(new ArrayVarMap([
+            'url' => 'https://example.com',
+            'title' => 'Original link title',
+            'description' => 'Original link description',
+        ]));
+
+        $roomLinkRepo = $this->injector->make(FakeRoomLinkRepo::class);
+        $roomLinkId = $roomLinkRepo->addLinkToRoomFromParam('test-user-id-001', $this->roomId, $linkParam);
+
+        $jsonInput = new FakeJsonInput([
+            'title' => 'Updated link title that is long enough',
+            'description' => 'Updated link description that is also long enough',
+        ]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+        $this->injector->defineParam('room_link_id', $roomLinkId);
+
+        $result = $this->injector->execute([Rooms::class, 'updateLink']);
+        $this->assertInstanceOf(SuccessResponse::class, $result);
+
+        $updated = $roomLinkRepo->getRoomLink($roomLinkId);
+        $this->assertNotNull($updated);
+        $this->assertSame('Updated link title that is long enough', $updated->title);
+        $this->assertSame('Updated link description that is also long enough', $updated->description);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::updateLink
+     */
+    public function test_updateLink_throws_when_link_not_found(): void
+    {
+        $jsonInput = new FakeJsonInput([
+            'title' => 'Updated link title that is long enough',
+            'description' => 'Updated link description that is also long enough',
+        ]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+        $this->injector->defineParam('room_link_id', 'nonexistent-room-link-id');
+
+        $this->expectException(ContentNotFoundException::class);
+        $this->expectExceptionMessage('Link not found in room');
+
+        $this->injector->execute([Rooms::class, 'updateLink']);
     }
 
     /**

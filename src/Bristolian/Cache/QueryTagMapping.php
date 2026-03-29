@@ -595,6 +595,41 @@ and
   a.file_id = :file_id
 SQL) => ['read' => ['annotation', 'room_annotation'], 'write' => []],
 
+            trim(<<<SQL
+select  
+    a.id,
+    a.user_id,
+    a.file_id,
+    a.highlights_json,
+    a.text,
+    ra.title,
+    ra.id as room_annotation_id
+from
+  annotation a
+left join
+  room_annotation ra
+on 
+ a.id = ra.annotation_id
+where
+  ra.room_id = :room_id
+and
+  ra.title = :title
+SQL) => ['read' => ['annotation', 'room_annotation'], 'write' => []],
+
+            trim(<<<SQL
+update
+  room_annotation AS ra
+inner join
+  annotation AS a ON a.id = ra.annotation_id
+set
+  ra.title = :title,
+  a.text = :text
+where
+  ra.id = :room_annotation_id
+and
+  ra.room_id = :room_id
+SQL) => ['read' => [], 'write' => ['room_annotation', 'annotation']],
+
             // ===== RoomAnnotationTagRepo =====
             trim("SELECT tag_id FROM room_annotation_tag WHERE room_annotation_id = :room_annotation_id")
                 => ['read' => ['room_annotation_tag'], 'write' => []],
@@ -633,6 +668,18 @@ SQL) => ['read' => [], 'write' => ['room_file']],
             trim('UPDATE room_file SET document_timestamp = :ts WHERE room_id = :room_id AND stored_file_id = :stored_file_id')
                 => ['read' => [], 'write' => ['room_file']],
 
+            trim(<<<SQL
+update room_file
+set
+  description = :description,
+  note = :note,
+  document_timestamp = :document_timestamp
+where
+  room_id = :room_id
+and
+  stored_file_id = :stored_file_id
+SQL) => ['read' => [], 'write' => ['room_file']],
+
             // RoomFileRepo::getFilesForRoom - see getPatternMappings() (dynamic WHERE)
 
             trim(<<<SQL
@@ -659,7 +706,9 @@ select
     sf.size,
     sf.user_id,
     sf.created_at,
-    rf.document_timestamp
+    rf.document_timestamp,
+    rf.description,
+    rf.note
 from
     room_file_object_info as sf
 inner join
@@ -691,6 +740,18 @@ SQL) => ['read' => ['room_file_object_info', 'room_file'], 'write' => []],
 
             trim('UPDATE room_link SET document_timestamp = :ts WHERE id = :id')
                 => ['read' => [], 'write' => ['room_link']],
+
+            // RoomLinkRepo::updateTitleAndDescription
+            trim(<<<SQL
+update room_link
+set
+  title = :title,
+  description = :description
+where
+  id = :room_link_id
+and
+  room_id = :room_id
+SQL) => ['read' => [], 'write' => ['room_link']],
 
             // RoomLinkRepo::getLinksForRoom - base case (no extra filters)
             trim(room_link::SELECT . " where room_id = :room_id order by created_at desc limit :limit")

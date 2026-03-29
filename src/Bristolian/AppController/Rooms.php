@@ -20,6 +20,8 @@ use Bristolian\Parameters\AddVideoParam;
 use Bristolian\Parameters\CreateClipParam;
 use Bristolian\Parameters\UpdateRoomAnnotationParam;
 use Bristolian\Parameters\UpdateRoomVideoParam;
+use Bristolian\Parameters\UpdateRoomFileParam;
+use Bristolian\Parameters\UpdateRoomLinkParam;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Parameters\SetEntityTagsParam;
@@ -178,6 +180,8 @@ class Rooms
                 $file->user_id,
                 $file->created_at,
                 $file->document_timestamp,
+                $file->description,
+                $file->note,
                 $tags
             );
         }
@@ -458,6 +462,27 @@ class Rooms
         return new SuccessResponse();
     }
 
+    public function updateRoomFile(
+        RoomFileRepo $roomFileRepo,
+        JsonInput $jsonInput,
+        string $room_id,
+        string $file_id
+    ): SuccessResponse {
+        $param = UpdateRoomFileParam::createFromArray($jsonInput->getData());
+        $documentTimestamp = null;
+        if ($param->document_timestamp !== null && trim($param->document_timestamp) !== '') {
+            $documentTimestamp = new \DateTimeImmutable($param->document_timestamp);
+        }
+        $roomFileRepo->updateRoomFileDetails(
+            $room_id,
+            $file_id,
+            $param->description,
+            $param->note,
+            $documentTimestamp
+        );
+        return new SuccessResponse();
+    }
+
     public function setLinkTags(
         RoomLinkRepo $roomLinkRepo,
         RoomLinkTagRepo $roomLinkTagRepo,
@@ -478,6 +503,22 @@ class Rooms
         }
         $filtered = array_filter($param->tag_ids, fn (string $id) => isset($validIds[$id]));
         $roomLinkTagRepo->setTagsForRoomLink($room_link_id, array_values($filtered));
+        return new SuccessResponse();
+    }
+
+    public function updateLink(
+        RoomLinkRepo $roomLinkRepo,
+        JsonInput $jsonInput,
+        string $room_id,
+        string $room_link_id
+    ): SuccessResponse {
+        $param = UpdateRoomLinkParam::createFromArray($jsonInput->getData());
+        $roomLinkRepo->updateTitleAndDescription(
+            $room_id,
+            $room_link_id,
+            $param->title,
+            $param->description
+        );
         return new SuccessResponse();
     }
 

@@ -14,6 +14,9 @@ export enum PdfSelectionType {
 
   ROOM_FILES_CHANGED = "room_files_changed",
 
+  /** Broadcast when room file inline edit mode starts or ends (params: { active: boolean }). */
+  ROOM_FILE_EDITING_ACTIVE = "room_file_editing_active",
+
   ROOM_LINKS_CHANGED = "room_links_changed",
 
   APPEND_TO_MESSAGE_INPUT = "append_to_message_input",
