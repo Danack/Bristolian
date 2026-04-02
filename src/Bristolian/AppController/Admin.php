@@ -23,6 +23,7 @@ class Admin
      */
     protected static $processors = [
         ProcessType::daily_system_info->value => "Daily system info",
+        ProcessType::daily_bcc_tro->value => "Daily BCC TRO fetch",
         ProcessType::email_send->value => "Email send",
         ProcessType::moon_alert->value => "Moon generate alert",
         ProcessType::meme_ocr->value => "Meme OCR",
