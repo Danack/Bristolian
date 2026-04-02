@@ -14,9 +14,8 @@ class PdoBccTroRepo implements BccTroRepo
 
     /**
      * @param BccTro[] $tros
-     * @return void
      */
-    public function saveData(array $tros): void
+    public function saveData(array $tros): int
     {
         [$error, $data] = convertToValue($tros);
 
@@ -26,7 +25,7 @@ class PdoBccTroRepo implements BccTroRepo
 
         $json = json_encode_safe($data);
 
-        $this->pdo_simple->insert(
+        return $this->pdo_simple->insert(
             bcc_tro_information::INSERT,
             [':tro_data' => $json]
         );

@@ -3,47 +3,51 @@
 namespace Bristolian\CliController;
 
 use Bristolian\Model\Types\BccTro;
+use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\Repo\BccTroRepo\BccTroRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
+use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Service\BccTroFetcher\BccTroFetcher;
 use Bristolian\Service\CliOutput\CliOutput;
 use Bristolian\Service\DailyProcessorSchedule\DailyProcessorSchedule;
+use Bristolian\Service\RoomMessageService\RoomMessageService;
 
 /**
  * @param BccTro[] $tros
- * @return void
+ * @return string
  */
-function output_tro_list_to_output($tros)
+function output_tro_list_to_output($tros): string
 {
     if (empty($tros)) {
-        echo "No TROs found.\n";
-        return;
+        return "No TROs found.\n";
     }
 
-    echo "Found " . count($tros) . " TRO(s):\n\n";
+    $output = "Found " . count($tros) . " TRO(s):\n\n";
 
     foreach ($tros as $tro) {
-        echo "Title: " . $tro->title . "\n";
-        echo "Reference: " . $tro->reference_code . "\n";
+        $output .= "Title: " . $tro->title . "\n";
+        $output .= "Reference: " . $tro->reference_code . "\n";
 
         if (!empty($tro->statement_of_reasons->title)) {
-            echo "Statement of Reasons: " . $tro->statement_of_reasons->title . "\n";
-            echo "  Link: " . $tro->statement_of_reasons->href . "\n";
+            $output .= "Statement of Reasons: " . $tro->statement_of_reasons->title . "\n";
+            $output .= "  Link: " . $tro->statement_of_reasons->href . "\n";
         }
 
         if (!empty($tro->notice_of_proposal->title)) {
-            echo "Notice of Proposal: " . $tro->notice_of_proposal->title . "\n";
-            echo "  Link: " . $tro->notice_of_proposal->href . "\n";
+            $output .= "Notice of Proposal: " . $tro->notice_of_proposal->title . "\n";
+            $output .= "  Link: " . $tro->notice_of_proposal->href . "\n";
         }
 
         if (!empty($tro->proposed_plan->title)) {
-            echo "Proposed Plan: " . $tro->proposed_plan->title . "\n";
-            echo "  Link: " . $tro->proposed_plan->href . "\n";
+            $output .= "Proposed Plan: " . $tro->proposed_plan->title . "\n";
+            $output .= "  Link: " . $tro->proposed_plan->href . "\n";
         }
 
-        echo "---\n";
+        $output .= "---\n";
     }
+
+    return $output;
 }
 
 class BccTroFetcherCliController
@@ -51,17 +55,44 @@ class BccTroFetcherCliController
     public function fetchTros(
         BccTroFetcher $bccTroFetcher,
         BccTroRepo $bccTroRepo,
+        RoomRepo $roomRepo,
+        RoomMessageService $roomMessageService,
         CliOutput $cliOutput
     ): void {
         $cliOutput->write("Fetching TRO data from Bristol City Council...\n");
         $tros = $bccTroFetcher->fetchTros();
-        $bccTroRepo->saveData($tros);
+
+        $tro_info = "There were no TROs found.";
+
+        if (count($tros) !== 0) {
+            $id = $bccTroRepo->saveData($tros);
+            $tro_info = "There were " . count($tros) . " TROs found. The saved data has ID " . $id;
+            $tro_info .= output_tro_list_to_output($tros);
+        }
+
+        $transport_room_name = "Transport";
+        $rooms = $roomRepo->getRoomByName($transport_room_name);
+
+        if (count($rooms) === 0) {
+            $cliOutput->write("Failed to find '$transport_room_name'.");
+            return;
+        }
+
+        $params = [
+            'text' => "BCC TRO has been updated: " . $tro_info,
+            'room_id' => ($rooms[0])->id,
+        ];
+
+        $messageParams = ChatMessageParam::createFromArray($params);
+        $chat_message = $roomMessageService->sendRoomMessage($messageParams);
     }
 
     public function daily_bcc_tro(
         ProcessorRunRecordRepo $processorRunRecordRepo,
         BccTroFetcher $bccTroFetcher,
         BccTroRepo $bccTroRepo,
+        RoomRepo $roomRepo,
+        RoomMessageService $roomMessageService,
         DailyProcessorSchedule $dailyProcessorSchedule,
         CliOutput $cliOutput
     ): void {
@@ -72,6 +103,8 @@ class BccTroFetcherCliController
             $bccTroFetcher,
             $bccTroRepo,
             $dailyProcessorSchedule,
+            $roomRepo,
+            $roomMessageService,
             $cliOutput
         ) {
             $this->runInternal(
@@ -79,6 +112,8 @@ class BccTroFetcherCliController
                 $bccTroFetcher,
                 $bccTroRepo,
                 $dailyProcessorSchedule,
+                $roomRepo,
+                $roomMessageService,
                 $cliOutput
             );
         };
@@ -97,6 +132,8 @@ class BccTroFetcherCliController
         BccTroFetcher $bccTroFetcher,
         BccTroRepo $bccTroRepo,
         DailyProcessorSchedule $dailyProcessorSchedule,
+        RoomRepo $roomRepo,
+        RoomMessageService $roomMessageService,
         CliOutput $cliOutput,
     ): void {
         $cliOutput->write("I am the daily_bcc_tro processor\n");
@@ -125,6 +162,8 @@ class BccTroFetcherCliController
             $this->fetchTros(
                 $bccTroFetcher,
                 $bccTroRepo,
+                $roomRepo,
+                $roomMessageService,
                 $cliOutput
             );
 
@@ -132,7 +171,6 @@ class BccTroFetcherCliController
                 $run_id,
                 ""
             );
-
         }
         catch (\Exception $exception) {
             /*$cliOutput->write("Error fetching TRO data: " . $exception->getMessage() . "\n");

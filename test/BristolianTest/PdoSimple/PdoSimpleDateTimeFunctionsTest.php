@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace BristolianTest\PdoSimple;
 
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Service\UuidGenerator\RamseyUuidGenerator;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 
@@ -24,7 +25,7 @@ class PdoSimpleDateTimeFunctionsTest extends BaseTestCase
         $this->injector->delegate(
             PdoSimple::class,
             function (\PDO $pdo) {
-                return new PdoSimple($pdo);
+                return new PdoSimple($pdo, new RamseyUuidGenerator());
             }
         );
     }

@@ -8,7 +8,7 @@ interface BccTroRepo
 {
     /**
      * @param BccTro[] $tros
-     * @return void
+     * @return int
      */
-    public function saveData(array $tros): void;
+    public function saveData(array $tros): int;
 }

@@ -13,6 +13,7 @@ declare(strict_types = 1);
 use Aws\S3\S3Client;
 use Bristolian\Config\Config;
 use Bristolian\Service\DeployLogRenderer\DeployLogRenderer;
+use Bristolian\Service\UuidGenerator\UuidGenerator;
 use DI\Injector;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use League\Flysystem\AwsS3V3\PortableVisibilityConverter;
@@ -489,6 +490,7 @@ function createUnknownCacheQueriesProvider(\Redis $redis): \Bristolian\Service\U
 
 function createPdoSimpleWithTableTracking(
     \PDO $pdo,
+    UuidGenerator $uuidGenerator,
     \Bristolian\Cache\TableAccessRecorder $recorder,
     \Bristolian\Cache\UnknownQueryHandler $unknownQueryHandler
 ): \Bristolian\PdoSimple\PdoSimpleWithTableTracking {
@@ -497,6 +499,7 @@ function createPdoSimpleWithTableTracking(
 
     return new \Bristolian\PdoSimple\PdoSimpleWithTableTracking(
         $pdo,
+        $uuidGenerator,
         $recorder,
         $exactMappings,
         $patternMappings,

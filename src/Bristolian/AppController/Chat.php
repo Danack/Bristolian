@@ -4,6 +4,7 @@ namespace Bristolian\AppController;
 
 use Bristolian\App;
 use Bristolian\Parameters\ChatMessageParam;
+//use Bristolian\Repo\ChatMessageRepo\ChatMessageRepo;
 use Bristolian\Repo\ChatMessageRepo\ChatMessageRepo;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
 use Bristolian\Response\GetChatRoomMessagesResponse;
@@ -52,14 +53,14 @@ HTML;
 
 
     public function send_message(
-        RoomMessageService $roomMessageService,
+        ChatMessageRepo $chatMessageRepo,
         AppSession $appSession,
         VarMap $varMap
     ): SendChatMessageResponse {
 
         $messageParams = ChatMessageParam::createFromVarMap($varMap);
 
-        $chat_message = $roomMessageService->sendMessage(
+        $chat_message = $chatMessageRepo->storeChatMessageForUser(
             $appSession->getUserId(),
             $messageParams
         );

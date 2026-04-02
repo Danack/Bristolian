@@ -7,7 +7,11 @@ use Bristolian\Parameters\ChatMessageParam;
 
 interface ChatMessageRepo
 {
+
     public function storeChatMessageForUser(string $user_id, ChatMessageParam $chatMessage): UserChatMessage;
+
+    public function storeChatMessageForSystem(ChatMessageParam $chatMessage): UserChatMessage;
+
 
     /**
      * @return UserChatMessage[]

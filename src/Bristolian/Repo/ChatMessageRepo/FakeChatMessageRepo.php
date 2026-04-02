@@ -19,6 +19,12 @@ class FakeChatMessageRepo implements ChatMessageRepo
      */
     private array $messages = [];
 
+    public function storeChatMessageForSystem(ChatMessageParam $chatMessage): UserChatMessage
+    {
+        return $this->storeChatMessageForUser('system_user_fixture', $chatMessage);
+    }
+
+
     public function storeChatMessageForUser(string $user_id, ChatMessageParam $chatMessage): UserChatMessage
     {
         $messageId = $this->messageIdCounter++;

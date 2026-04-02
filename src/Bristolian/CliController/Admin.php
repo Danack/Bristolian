@@ -7,6 +7,9 @@ namespace Bristolian\CliController;
 use Bristolian\Parameters\CreateUserParams;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\AdminRepo\DuplicateEntryException;
+use Bristolian\Repo\RoomRepo\RoomRepo;
+use Bristolian\Repo\UserRepo\UserRepo;
+use Bristolian\Service\CliOutput\CliOutput;
 use VarMap\VarMap;
 
 /**
@@ -17,6 +20,11 @@ use VarMap\VarMap;
  */
 class Admin
 {
+    public function __construct(
+        private CliOutput $cliOutput
+    ) {
+    }
+
     public function createAdminLogin(
         VarMap $varMap,
         AdminRepo $adminUserAddRepo
@@ -35,6 +43,22 @@ class Admin
             "Admin added.\n\tusername: [%s]\n\tpassword: [%s]",
             $createAdminUserParams->getEmailaddress(),
             $createAdminUserParams->getPassword()
+        );
+    }
+
+    public function createSystemUser(UserRepo $userRepo): void
+    {
+        $userRepo->ensureSystemUserExists();
+    }
+
+    public function createRoomUsers(RoomRepo $roomRepo, UserRepo $userRepo): void
+    {
+        $rooms = $roomRepo->getAllRooms();
+        foreach ($rooms as $room) {
+            $userRepo->ensureRoomUserOwnershipExistsForRoom($room->id);
+        }
+        $this->cliOutput->write(
+            'Ensured ROOM_USER ownership records for ' . count($rooms) . " rooms.\n"
         );
     }
 }

@@ -13,18 +13,19 @@ class FakeBccTroRepo implements BccTroRepo
 {
     /**
      * @var array<string, mixed>
-     * @phpstan-ignore-next-line property.onlyWritten
      */
     private array $savedData = [];
 
     /**
      * @param BccTro[] $tros
-     * @return void
+     * @return int
      */
-    public function saveData(array $tros): void
+    public function saveData(array $tros): int
     {
         // For fake implementation, just store the data
         // In real implementation, this converts to JSON and stores in DB
         $this->savedData[] = $tros;
+
+        return (count($this->savedData) - 1);
     }
 }

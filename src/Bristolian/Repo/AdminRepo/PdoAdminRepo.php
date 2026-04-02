@@ -32,10 +32,10 @@ SQL;
         return $uuid->toString();
     }
 
-    public function addUser(CreateUserParams $createUserParams): AdminUser
+    public function addUser(CreateUserParams $createAdminUserParams): AdminUser
     {
         $user_id = $this->createUser();
-        $password_hash = generate_password_hash($createUserParams->getPassword());
+        $password_hash = generate_password_hash($createAdminUserParams->getPassword());
 
         $userAuthSQL = <<< SQL
 insert into user_auth_email_password (
@@ -51,7 +51,7 @@ values (
 SQL;
         $params = [
             ':user_id' => $user_id,
-            ':email_address' => $createUserParams->getEmailAddress(),
+            ':email_address' => $createAdminUserParams->getEmailAddress(),
             ':password_hash' => $password_hash,
         ];
 
@@ -59,7 +59,7 @@ SQL;
 
         return AdminUser::new(
             $user_id,
-            $createUserParams->getEmailAddress(),
+            $createAdminUserParams->getEmailAddress(),
             $password_hash
         );
     }

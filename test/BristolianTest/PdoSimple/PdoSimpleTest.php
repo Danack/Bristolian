@@ -6,6 +6,7 @@ namespace BristolianTest\PdoSimple;
 
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleException;
+use Bristolian\Service\UuidGenerator\RamseyUuidGenerator;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
@@ -29,7 +30,7 @@ class PdoSimpleTest extends BaseTestCase
         $this->injector->delegate(
             PdoSimple::class,
             function (\PDO $pdo) {
-                return new PdoSimple($pdo);
+                return new PdoSimple($pdo, new RamseyUuidGenerator());
             }
         );
     }
@@ -371,7 +372,7 @@ SQL;
     public function test_constructor()
     {
         $pdo = $this->injector->make(\PDO::class);
-        $pdo_simple = new PdoSimple($pdo);
+        $pdo_simple = new PdoSimple($pdo, new RamseyUuidGenerator());
         
         $this->assertInstanceOf(PdoSimple::class, $pdo_simple);
     }

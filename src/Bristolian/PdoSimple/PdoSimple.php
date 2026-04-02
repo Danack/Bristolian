@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Bristolian\PdoSimple;
 
 use Bristolian\App;
+use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
+use Bristolian\Service\UuidGenerator\UuidGenerator;
 use PDO;
 use PDOException;
 
@@ -63,16 +65,14 @@ function convertRowFromDatetime(array $row)
 
 class PdoSimple
 {
-    /** @var \PDO */
-    private $pdo;
 
     /**
      * PdoSimple constructor.
      * @param PDO $pdo
      */
-    public function __construct(PDO $pdo)
-    {
-        $this->pdo = $pdo;
+    public function __construct(
+        private PDO $pdo,
+        private UuidGenerator $uuidGenerator) {
     }
 
     /**
@@ -162,6 +162,48 @@ class PdoSimple
         [$result, $statement] = $this->prepareAndExecute($query, $params);
 
         return intval($this->pdo->lastInsertId());
+    }
+
+
+    /**
+     * @param string $query
+     * @param array<string, string|int|null|float> $params
+     * @return string
+     * @throws PdoSimpleException
+     * @throws PdoSimpleWithPreviousException
+     */
+    public function insertWithUuid(string $query, array $params): string
+    {
+        $retries = 0;
+
+        if (array_key_exists('id', $params) === true) {
+            throw new PdoSimpleException('Cannot call insertWithUuid with a pre-defined id.');
+        }
+
+        do {
+            try {
+                $uuid = $this->uuidGenerator->generate();
+                $paramsWithId = [
+                    ...$params,
+                    'id' => $uuid,
+                ];
+
+                $this->prepareAndExecute($query, $paramsWithId);
+
+                return $uuid;
+            }
+            catch (PdoSimpleWithPreviousException $e) {
+                $pdoException = $e->getPreviousPdoException();
+                if ((int)$pdoException->getCode() !== 23000) {
+                    throw $e;
+                }
+            }
+
+            $retries += 1;
+        }
+        while ($retries < 5);
+
+        throw new PdoSimpleException("Failed to insert query [" . $query . "] as generating a UUID clashed fives times." );
     }
 
 

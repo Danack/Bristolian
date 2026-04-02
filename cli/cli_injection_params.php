@@ -128,13 +128,17 @@ function injectionParams() : InjectionParams
         \Bristolian\Service\MemeFileLocalCache\EnsureMemeFileCached::class =>
             \Bristolian\Service\MemeFileLocalCache\FlysystemEnsureMemeFileCached::class,
 
-
         Bristolian\Repo\RoomTagRepo\RoomTagRepo::class =>
             \Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::class,
 
-
         Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo::class =>
-            Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::class
+            Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::class,
+
+        Bristolian\Repo\UserRepo\UserRepo::class =>
+            \Bristolian\Repo\UserRepo\PdoUserRepo::class,
+
+        Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::class =>
+            Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class,
 
     ];
 

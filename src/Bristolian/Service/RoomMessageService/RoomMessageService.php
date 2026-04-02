@@ -8,4 +8,9 @@ use Bristolian\Parameters\ChatMessageParam;
 interface RoomMessageService
 {
     public function sendMessage(string $user_id, ChatMessageParam $chatMessageParam): UserChatMessage;
+
+    public function sendRoomMessage(ChatMessageParam $chatMessageParam): UserChatMessage;
+
+//    public function sendSystemMessage()
+
 }

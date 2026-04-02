@@ -3,7 +3,9 @@
 namespace Bristolian\Repo\ChatMessageRepo;
 
 use Bristolian\Database\chat_message;
+use Bristolian\Database\user_ownership;
 use Bristolian\Model\Chat\UserChatMessage;
+use Bristolian\Model\Generated\UserOwnership;
 use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\PdoSimple\PdoSimple;
 
@@ -11,6 +13,15 @@ class PdoChatMessageRepo implements ChatMessageRepo
 {
     public function __construct(private PdoSimple $pdo)
     {
+    }
+
+    public function storeChatMessageForSystem(ChatMessageParam $chatMessage): UserChatMessage
+    {
+        $sql = user_ownership::SELECT . " where type = 'SYSTEM'";
+
+        $ownership = $this->pdo->fetchOneAsObject($sql, [], UserOwnership::class);
+
+        return $this->storeChatMessageForUser($ownership->user_id, $chatMessage);
     }
 
     public function storeChatMessageForUser(string $user_id, ChatMessageParam $chatMessage): UserChatMessage

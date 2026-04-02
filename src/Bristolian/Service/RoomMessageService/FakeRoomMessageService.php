@@ -18,6 +18,12 @@ class FakeRoomMessageService implements RoomMessageService
     {
     }
 
+    public function sendRoomMessage(ChatMessageParam $chatMessageParam): UserChatMessage
+    {
+        return $this->sendMessage('room_user_placeholder', $chatMessageParam);
+    }
+
+
     public function sendMessage(string $user_id, ChatMessageParam $chatMessageParam): UserChatMessage
     {
         $message = new UserChatMessage(
@@ -33,11 +39,6 @@ class FakeRoomMessageService implements RoomMessageService
 
         return $message;
     }
-
-//    public function sendMessageChatMessageAkaOld(UserChatMessage $message): void
-//    {
-//        $this->chat_messages[] = $message;
-//    }
 
     /**
      * @return UserChatMessage[]

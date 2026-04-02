@@ -15,26 +15,15 @@ class ExceptionToErrorPageResponseMiddleware implements MiddlewareInterface
     private PageResponseGenerator $pageResponseGenerator;
 
     /**
+     * Maps exception class names to handlers that render an HTML error page.
      *
-     * @var array{0:class-string, 1:callable}
-     * Convert particular exceptions to responses
-     *
-     * Callable should have the signature:
-     *
-     * function (
-     *   SomeException $mappedException,
-     *   Request $request,
-     * )
-     *
-     * Where SomeException and the class-string should be the same.
-     *
+     * @var array<class-string<\Throwable>, callable(\Throwable, Request): array{0:string, 1:int}>
      */
     private array $exceptionToResponseHandlerList;
 
 
     /**
-     * @param PageResponseGenerator $pageResponseGenerator
-     * @param mixed[] $exceptionToResponseHandlerList
+     * @param array<class-string<\Throwable>, callable(\Throwable, Request): array{0:string, 1:int}> $exceptionToResponseHandlerList
      */
     public function __construct(
         PageResponseGenerator $pageResponseGenerator,

@@ -6,6 +6,7 @@ namespace Bristolian\PdoSimple;
 
 use Bristolian\Cache\TableAccessRecorder;
 use Bristolian\Cache\UnknownQueryHandler;
+use Bristolian\Service\UuidGenerator\UuidGenerator;
 
 class PdoSimpleWithTableTracking extends PdoSimple
 {
@@ -28,12 +29,13 @@ class PdoSimpleWithTableTracking extends PdoSimple
      */
     public function __construct(
         \PDO $pdo,
+        UuidGenerator $uuidGenerator,
         TableAccessRecorder $recorder,
         array $exactMappings,
         array $patternMappings,
         UnknownQueryHandler $unknownQueryHandler
     ) {
-        parent::__construct($pdo);
+        parent::__construct($pdo, $uuidGenerator);
         $this->recorder = $recorder;
         $this->patternMappings = $patternMappings;
         $this->unknownQueryHandler = $unknownQueryHandler;

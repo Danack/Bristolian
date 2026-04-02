@@ -250,7 +250,16 @@ function addAdminAccountCommands(Application $console)
     $command->setDescription("Create an user");
     $command->addArgument('email_address', InputArgument::REQUIRED, "The username for the account.");
     $command->addArgument('password', InputArgument::OPTIONAL, "The password for the account. If not set, a random one will be generated.", null);
+    $console->add($command);
 
+    $command = new Command('admin:create_system_user', 'Bristolian\CliController\Admin::createSystemUser');
+    $command->setDescription("Create a system user, if one doesn't already exist");
+    $console->add($command);
+
+    $command = new Command('admin:create_room_users', 'Bristolian\CliController\Admin::createRoomUsers');
+    $command->setDescription(
+        'For each room, ensure user_ownership has type ROOM_USER with that room_id (creates a user per room if missing).'
+    );
     $console->add($command);
 
 //    $command = new Command('admin:reset_password', '\Osf\CliController\Admin::resetPassword');

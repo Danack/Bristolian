@@ -424,15 +424,16 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                                         size={80}
                                         value={fileBeingEdited.description ?? ""}
                                         disabled={fileSaveInProgress}
-                                        onChange={(event) =>
+                                        onInput={(event) => {
+                                            const value = (event.currentTarget as HTMLInputElement).value;
                                             this.setState({
                                                 fileBeingEdited: {
                                                     ...fileBeingEdited,
-                                                    description: (event.currentTarget as HTMLInputElement).value,
+                                                    description: value,
                                                 },
                                                 fileEditError: null,
-                                            })
-                                        }
+                                            });
+                                        }}
                                     />
                                     <span className="room_file_edit_hint">Short label shown in lists instead of the raw file name.</span>
                                 </td>
@@ -449,15 +450,16 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                                         cols={80}
                                         value={fileBeingEdited.note ?? ""}
                                         disabled={fileSaveInProgress}
-                                        onChange={(event) =>
+                                        onInput={(event) => {
+                                            const value = (event.currentTarget as HTMLTextAreaElement).value;
                                             this.setState({
                                                 fileBeingEdited: {
                                                     ...fileBeingEdited,
-                                                    note: (event.currentTarget as HTMLTextAreaElement).value,
+                                                    note: value,
                                                 },
                                                 fileEditError: null,
-                                            })
-                                        }
+                                            });
+                                        }}
                                     />
                                 </td>
                             </tr>

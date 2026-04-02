@@ -10,6 +10,7 @@ use Bristolian\Cache\UnknownQueryHandler;
 use Bristolian\Database\pdo_simple_test;
 use Bristolian\PdoSimple\PdoSimpleWithTableTracking;
 use BristolianTest\BaseTestCase;
+use Bristolian\Service\UuidGenerator\RamseyUuidGenerator;
 
 /**
  * @covers \Bristolian\PdoSimple\PdoSimpleWithTableTracking
@@ -41,6 +42,7 @@ class PdoSimpleWithTableTrackingTest extends BaseTestCase
         $pdo = $this->injector->make(\PDO::class);
         return new PdoSimpleWithTableTracking(
             $pdo,
+            new RamseyUuidGenerator,
             $this->recorder,
             $this->exactMappings,
             $this->patternMappings,

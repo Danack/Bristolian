@@ -31,10 +31,10 @@ class FakeAdminRepo implements AdminRepo
         return $uuid->toString();
     }
 
-    public function addUser(CreateUserParams $createAdminUserParams): AdminUser
+    public function addUser(CreateUserParams $createAdminAdminAdminUserParams): AdminUser
     {
-        $email_address = $createAdminUserParams->getEmailaddress();
-        $password = $createAdminUserParams->getPassword();
+        $email_address = $createAdminAdminAdminUserParams->getEmailaddress();
+        $password = $createAdminAdminAdminUserParams->getPassword();
 
         $user_id = $this->createUser();
         $password_hash = generate_password_hash($password);

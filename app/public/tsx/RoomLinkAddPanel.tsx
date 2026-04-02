@@ -2,7 +2,7 @@ import {h, Component} from "preact";
 import {isUrl} from "./functions";
 import {PdfSelectionType} from "./constants";
 import {sendMessage} from "./message/message";
-import {use_logged_in} from "./store";
+import {get_logged_in, subscribe_logged_in} from "./store";
 
 export interface RoomLinkAddPanelProps {
   room_id: string
@@ -10,6 +10,7 @@ export interface RoomLinkAddPanelProps {
 
 interface RoomLinkAddPanelState {
 
+  logged_in: boolean,
   url: string,
   title: string,
   description: string,
@@ -22,6 +23,7 @@ interface RoomLinkAddPanelState {
 
 function getDefaultState(): RoomLinkAddPanelState {
   return {
+    logged_in: get_logged_in(),
     url: '',
     title: '',
     description: '',
@@ -34,6 +36,7 @@ function getDefaultState(): RoomLinkAddPanelState {
 
 
 export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkAddPanelState> {
+  private unsubscribe_logged_in: (() => void) | null = null;
 
   constructor(props: RoomLinkAddPanelProps) {
     super(props);
@@ -41,10 +44,17 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
   }
 
   componentDidMount() {
+    this.unsubscribe_logged_in = subscribe_logged_in((logged_in: boolean) => {
+      this.setState({logged_in});
+    });
     // this.refreshLinks();
   }
 
   componentWillUnmount() {
+    if (this.unsubscribe_logged_in) {
+      this.unsubscribe_logged_in();
+      this.unsubscribe_logged_in = null;
+    }
   }
 
   addLink() {
@@ -96,9 +106,7 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
 
   render(props: RoomLinkAddPanelProps, state: RoomLinkAddPanelState) {
 
-    const logged_in = use_logged_in();
-
-    if (logged_in !== true) {
+    if (state.logged_in !== true) {
       return <span></span>
     }
 
@@ -152,7 +160,11 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
                    size={100}
                    value={this.state.url}
                    // @ts-ignore
-                   onChange={ e => this.setState({url: e.target.value})}/>
+                   onInput={ e => {
+                     const value = (e.currentTarget as HTMLInputElement).value;
+                     this.setState({url: value})
+                   }}
+                   />
             {error_url}
           </td>
         </tr>
@@ -167,10 +179,12 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
                    name="title"
                    size={100}
                    value={this.state.title}
-                   onChange={
-              // @ts-ignore
-              e => this.setState({title: e.target.value})
-            }/>
+                   // @ts-ignore
+                   onInput={e => {
+                     const value = (e.currentTarget as HTMLInputElement).value;
+                     this.setState({title: value})
+                   }}
+                   />
             {error_title}
           </td>
         </tr>
@@ -186,7 +200,7 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
               rows={4}
               cols={80}
               value={this.state.description}
-              onChange={
+              onInput={
                 // @ts-ignore
                 e => this.setState({description: e.target.value})
               }/>

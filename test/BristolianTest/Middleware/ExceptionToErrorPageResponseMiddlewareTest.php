@@ -48,11 +48,14 @@ class ExceptionToErrorPageResponseMiddlewareTest extends BaseTestCase
         $html = "<div>This is an error page. %s</div>";
 
         $exception_handler = function (
-            BristolianException $be,
+            \Throwable $throwable,
             ServerRequestInterface $request
         ) use ($html) {
+            if ($throwable instanceof BristolianException === false) {
+                throw $throwable;
+            }
 
-            $html_rendered = sprintf($html, $be->getMessage());
+            $html_rendered = sprintf($html, $throwable->getMessage());
 
             return [$html_rendered, 505];
         };
