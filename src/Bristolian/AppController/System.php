@@ -34,7 +34,7 @@ class System
 <ul>
   <li><a href="/system/csp/reports">CSP reports</a></li>
   <li><a href="/system/database_tables">Database tables</a></li>
-  <li><a href="/system/deploy_log">Deploy log</a></li>
+<!--  <li><a href="/system/deploy_log">Deploy log</a></li>-->
   <li><a href="/system/route_explorer">Route explorer</a></li>
   <li><a href="/system/tinned_fish_products">Tinned fish products</a></li>
   <li><a href="/system/debugging">Debugging</a></li>
