@@ -114,7 +114,10 @@ export class ProcessorRunRecordPanel extends Component<
 
     renderRoomLink(run_record: ProcessorRunRecord) {
         const start_time_formatted = formatDateTimeForDB(run_record.start_time);
-        const end_time_formatted = formatDateTimeForDB(run_record.end_time);
+        const end_time_formatted =
+          run_record.end_time === null
+            ? "—"
+            : formatDateTimeForDB(run_record.end_time);
 
         return (
           <tr key={run_record.id}>
