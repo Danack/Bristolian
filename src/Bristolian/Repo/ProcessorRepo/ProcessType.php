@@ -8,7 +8,7 @@ namespace Bristolian\Repo\ProcessorRepo;
 enum ProcessType: string
 {
     // Worker task that generates the daily system info email
-    case daily_bcc_tro = "daily_bcc_tri";
+    case daily_bcc_tro = "daily_bcc_tro";
 
     // Worker task that generates the daily system info email
     case daily_system_info = "daily_system_info";

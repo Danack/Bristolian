@@ -53,9 +53,9 @@ export class FileUpload extends Component<FileUploadProps, FileUploadState> {
     event.preventDefault();
     event.stopPropagation();
 
-    if (this.props.disabled) {
-      return;
-    }
+    // if (this.props.disabled) {
+    //   return;
+    // }
 
     if (event.dataTransfer && event.dataTransfer.files.length > 0) {
       const file = event.dataTransfer.files[0];
