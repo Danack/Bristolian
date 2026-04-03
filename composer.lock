@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79885e05c9cd913f1b744501dad44608",
+    "content-hash": "9d8c7539b7615a4d23eeebbc6a1105a5",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.376.1",
+            "version": "3.376.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "475b367bb518fdfafd44b0848534f6636e0886e9"
+                "reference": "ff2f61f280fc46081a1fbb7ae201a09f431d436d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/475b367bb518fdfafd44b0848534f6636e0886e9",
-                "reference": "475b367bb518fdfafd44b0848534f6636e0886e9",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ff2f61f280fc46081a1fbb7ae201a09f431d436d",
+                "reference": "ff2f61f280fc46081a1fbb7ae201a09f431d436d",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.376.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.376.2"
             },
-            "time": "2026-04-01T18:11:20+00:00"
+            "time": "2026-04-02T18:09:03+00:00"
         },
         {
             "name": "brick/math",
@@ -558,16 +558,16 @@
         },
         {
             "name": "danack/datatype",
-            "version": "0.9.0",
+            "version": "0.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Danack/DataType.git",
-                "reference": "72ee1fec2ffca440402f5bac212b09ec37b8d24d"
+                "reference": "b652e69ee6895266affdb9c3823f9349966bd630"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Danack/DataType/zipball/72ee1fec2ffca440402f5bac212b09ec37b8d24d",
-                "reference": "72ee1fec2ffca440402f5bac212b09ec37b8d24d",
+                "url": "https://api.github.com/repos/Danack/DataType/zipball/b652e69ee6895266affdb9c3823f9349966bd630",
+                "reference": "b652e69ee6895266affdb9c3823f9349966bd630",
                 "shasum": ""
             },
             "require": {
@@ -580,8 +580,9 @@
                 "danack/coding-standard": "0.3.0",
                 "danack/php-unit-helper": "dev-master#7e50284d762b816acde56919f82f3431a6bad4c5 as 0.5.0",
                 "laminas/laminas-diactoros": ">2.6",
+                "phpstan/phpstan": "2.1.45",
                 "phpstan/phpstan-strict-rules": "^2.0.7",
-                "phpunit/phpunit": "9.5.6",
+                "phpunit/phpunit": ">=9.5.6",
                 "psr/http-message": "^1.0",
                 "respect/validation": "^1.1.31",
                 "slevomat/coding-standard": "^7.0.9",
@@ -605,9 +606,9 @@
             "description": "A library that makes using data types easier",
             "support": {
                 "issues": "https://github.com/Danack/DataType/issues",
-                "source": "https://github.com/Danack/DataType/tree/0.9.0"
+                "source": "https://github.com/Danack/DataType/tree/0.9.1"
             },
-            "time": "2026-03-23T20:15:37+00:00"
+            "time": "2026-04-01T23:50:30+00:00"
         },
         {
             "name": "danack/esprintf",
