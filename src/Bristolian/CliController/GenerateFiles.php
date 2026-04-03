@@ -610,6 +610,7 @@ class GenerateFiles
             \Bristolian\Model\Generated\RoomLink::class,
             \Bristolian\Model\Generated\RoomAnnotation::class,
             \Bristolian\Model\Generated\RoomTag::class,
+            \Bristolian\Model\Generated\Room::class,
             \Bristolian\Model\Generated\RoomFileObjectInfo::class,
             \Bristolian\Model\Types\RoomAnnotationView::class,
             \Bristolian\Model\Types\RoomFileWithTags::class,

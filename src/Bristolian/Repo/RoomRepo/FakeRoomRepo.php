@@ -41,6 +41,21 @@ class FakeRoomRepo implements RoomRepo
         return $this->rooms[$id] ?? null;
     }
 
+    public function updateRoomNameAndPurpose(string $room_id, string $name, string $purpose): void
+    {
+        $existing = $this->rooms[$room_id] ?? null;
+        if ($existing === null) {
+            return;
+        }
+        $this->rooms[$room_id] = new Room(
+            id: $existing->id,
+            owner_user_id: $existing->owner_user_id,
+            name: $name,
+            purpose: $purpose,
+            created_at: $existing->created_at
+        );
+    }
+
     /**
      * @return Room[]
      */

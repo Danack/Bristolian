@@ -21,6 +21,7 @@ use Bristolian\Parameters\CreateClipParam;
 use Bristolian\Parameters\UpdateRoomAnnotationParam;
 use Bristolian\Parameters\UpdateRoomVideoParam;
 use Bristolian\Parameters\UpdateRoomFileParam;
+use Bristolian\Parameters\UpdateRoomDetailsParam;
 use Bristolian\Parameters\UpdateRoomLinkParam;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Parameters\RoomContentSearchParams;
@@ -54,6 +55,7 @@ use Bristolian\Response\Typed\GetRoomsFileAnnotationsResponse;
 use Bristolian\Response\Typed\GetRoomsFilesResponse;
 use Bristolian\Response\Typed\GetRoomsLinksResponse;
 use Bristolian\Response\Typed\GetRoomsAnnotationsResponse;
+use Bristolian\Response\Typed\GetRoomsDetailsResponse;
 use Bristolian\Response\Typed\GetRoomsTagsResponse;
 use Bristolian\Response\Typed\GetRoomsVideosResponse;
 use Bristolian\Service\RequestNonce;
@@ -430,6 +432,34 @@ class Rooms
         return new GetRoomsTagsResponse($tags);
     }
 
+    public function getRoomDetails(
+        RoomRepo $roomRepo,
+        string $room_id
+    ): GetRoomsDetailsResponse {
+        $room = $roomRepo->getRoomById($room_id);
+        if ($room === null) {
+            throw new ContentNotFoundException('Room not found.');
+        }
+
+        return new GetRoomsDetailsResponse($room);
+    }
+
+    public function updateRoomDetails(
+        RoomRepo $roomRepo,
+        JsonInput $jsonInput,
+        string $room_id
+    ): SuccessResponse {
+        $room = $roomRepo->getRoomById($room_id);
+        if ($room === null) {
+            throw new ContentNotFoundException('Room not found.');
+        }
+
+        $param = UpdateRoomDetailsParam::createFromArray($jsonInput->getData());
+        $roomRepo->updateRoomNameAndPurpose($room_id, $param->name, $param->purpose);
+
+        return new SuccessResponse();
+    }
+
     public function addTag(
         RoomTagRepo $roomTagRepo,
         TagParams $tagParam,
@@ -667,6 +697,8 @@ class Rooms
 
         $widget_data = encodeWidgetyData([
             'room_id' => $room_id,
+            'room_name' => $room->name,
+            'room_purpose' => $room->purpose,
             'accepted_file_extensions' => get_supported_room_file_extensions()
         ]);
 

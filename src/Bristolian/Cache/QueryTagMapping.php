@@ -19,6 +19,7 @@ use Bristolian\Database\meme_text;
 use Bristolian\Database\migrations;
 use Bristolian\Database\processor;
 use Bristolian\Database\processor_run_record;
+use Bristolian\Database\room;
 use Bristolian\Database\room_annotation;
 use Bristolian\Database\room_file_object_info;
 use Bristolian\Database\room_link;
@@ -818,6 +819,9 @@ from
 where
     name = :name
 SQL) => ['read' => ['room'], 'write' => []],
+
+            trim(room::UPDATE)
+                => ['read' => [], 'write' => ['room']],
 
             // ===== RoomTagRepo =====
             trim(room_tag::INSERT)

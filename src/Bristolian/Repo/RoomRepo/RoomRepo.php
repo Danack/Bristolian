@@ -10,6 +10,8 @@ interface RoomRepo
 
     public function getRoomById(string $id): Room|null;
 
+    public function updateRoomNameAndPurpose(string $room_id, string $name, string $purpose): void;
+
     /**
      * @return Room[] All rooms with this exact name (may be empty).
      */

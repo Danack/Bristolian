@@ -90,6 +90,27 @@ abstract class RoomRepoFixture extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::updateRoomNameAndPurpose
+     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::updateRoomNameAndPurpose
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::updateRoomNameAndPurpose
+     */
+    public function test_updateRoomNameAndPurpose_updates_stored_room(): void
+    {
+        $repo = $this->getTestInstance();
+
+        $user_id = $this->getValidUserId();
+        $createdRoom = $repo->createRoom($user_id, 'Original Name', 'Original purpose');
+
+        $repo->updateRoomNameAndPurpose($createdRoom->id, 'New Name', 'New purpose');
+
+        $updated = $repo->getRoomById($createdRoom->id);
+        $this->assertNotNull($updated);
+        $this->assertSame('New Name', $updated->name);
+        $this->assertSame('New purpose', $updated->purpose);
+        $this->assertSame($createdRoom->owner_user_id, $updated->owner_user_id);
+    }
+
+    /**
      * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getAllRooms
      * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getAllRooms
      * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getAllRooms

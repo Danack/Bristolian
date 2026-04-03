@@ -3,6 +3,7 @@
 namespace Bristolian\Repo\RoomRepo;
 
 use Bristolian\Exception\BristolianException;
+use Bristolian\Database\room as room_table;
 use Bristolian\Model\Generated\Room;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
@@ -77,6 +78,15 @@ SQL;
             $params,
             Room::class
         );
+    }
+
+    public function updateRoomNameAndPurpose(string $room_id, string $name, string $purpose): void
+    {
+        $this->pdoSimple->execute(room_table::UPDATE, [
+            ':id' => $room_id,
+            ':name' => $name,
+            ':purpose' => $purpose,
+        ]);
     }
 
     /**

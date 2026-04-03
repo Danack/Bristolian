@@ -51,6 +51,7 @@ use Bristolian\Response\StoredFileErrorResponse;
 use Bristolian\Response\StreamingResponse;
 use Bristolian\Response\SuccessResponse;
 use Bristolian\Response\Typed\GetRoomsAnnotationsResponse;
+use Bristolian\Response\Typed\GetRoomsDetailsResponse;
 use Bristolian\Response\Typed\GetRoomsFileAnnotationsResponse;
 use Bristolian\Response\Typed\GetRoomsFilesResponse;
 use Bristolian\Response\Typed\GetRoomsLinksResponse;
@@ -380,6 +381,66 @@ class RoomsTest extends BaseTestCase
     {
         $result = $this->injector->execute([Rooms::class, 'getTags']);
         $this->assertInstanceOf(GetRoomsTagsResponse::class, $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::getRoomDetails
+     */
+    public function test_getRoomDetails(): void
+    {
+        $result = $this->injector->execute([Rooms::class, 'getRoomDetails']);
+        $this->assertInstanceOf(GetRoomsDetailsResponse::class, $result);
+        $data = json_decode($result->getBody(), true);
+        $this->assertSame('Test Room', $data['data']['room']['name']);
+        $this->assertSame('A room for testing', $data['data']['room']['purpose']);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::getRoomDetails
+     */
+    public function test_getRoomDetails_throws_when_room_missing(): void
+    {
+        $this->injector->defineParam('room_id', '00000000-0000-0000-0000-000000000000');
+        $this->expectException(ContentNotFoundException::class);
+        $this->injector->execute([Rooms::class, 'getRoomDetails']);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::updateRoomDetails
+     */
+    public function test_updateRoomDetails(): void
+    {
+        $jsonInput = new FakeJsonInput([
+            'name' => 'Updated Room Name',
+            'purpose' => 'Updated purpose text',
+        ]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+
+        $result = $this->injector->execute([Rooms::class, 'updateRoomDetails']);
+        $this->assertInstanceOf(SuccessResponse::class, $result);
+
+        $roomRepo = $this->injector->make(FakeRoomRepo::class);
+        $room = $roomRepo->getRoomById($this->roomId);
+        $this->assertNotNull($room);
+        $this->assertSame('Updated Room Name', $room->name);
+        $this->assertSame('Updated purpose text', $room->purpose);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::updateRoomDetails
+     */
+    public function test_updateRoomDetails_throws_when_room_missing(): void
+    {
+        $jsonInput = new FakeJsonInput([
+            'name' => 'Updated Room Name',
+            'purpose' => 'Updated purpose text',
+        ]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+        $this->injector->defineParam('room_id', '00000000-0000-0000-0000-000000000000');
+        $this->expectException(ContentNotFoundException::class);
+        $this->injector->execute([Rooms::class, 'updateRoomDetails']);
     }
 
     /**

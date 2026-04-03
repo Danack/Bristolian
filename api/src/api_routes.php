@@ -282,6 +282,22 @@ function getAllApiRoutes()
         ],
 
         [
+            '/api/rooms/{room_id:.*}/details',
+            'GET',
+            'Bristolian\AppController\Rooms::getRoomDetails',
+            [
+                ['room', \Bristolian\Model\Generated\Room::class, false]
+            ],
+        ],
+
+        [
+            '/api/rooms/{room_id:.*}/details',
+            'PATCH',
+            '\Bristolian\AppController\Rooms::updateRoomDetails',
+            null,
+        ],
+
+        [
             '/api/rooms/{room_id:.*}/files/{file_id:.*}',
             'PATCH',
             '\Bristolian\AppController\Rooms::updateRoomFile',

@@ -112,3 +112,49 @@ export function patchRoomFile(
         return response.json().then(() => undefined);
     });
 }
+
+export interface PatchRoomDetailsBody {
+    name: string;
+    purpose: string;
+}
+
+function validationMessageFromJson(data: unknown): string {
+    if (data !== null && typeof data === 'object') {
+        const record = data as Record<string, unknown>;
+        if (Array.isArray(record.errors) && record.errors.length > 0) {
+            return String(record.errors[0]);
+        }
+        const inner = record.data;
+        if (inner !== null && typeof inner === 'object') {
+            const dataBlock = inner as Record<string, string>;
+            const fromPath = dataBlock['/name'] ?? dataBlock['/purpose'];
+            if (fromPath !== undefined && fromPath !== '') {
+                return fromPath;
+            }
+        }
+    }
+    return 'Validation failed.';
+}
+
+/**
+ * PATCH room display name and purpose (description). Not generated in api_routes.
+ */
+export function patchRoomDetails(room_id: string, body: PatchRoomDetailsBody): Promise<void> {
+    return fetch(`/api/rooms/${room_id}/details`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+    }).then(async (response: Response): Promise<void> => {
+        if (response.status === 404) {
+            throw new Error('Room not found.');
+        }
+        if (response.status === 400) {
+            const data: unknown = await response.json();
+            throw new Error(validationMessageFromJson(data));
+        }
+        if (response.status !== 200) {
+            throw new Error('Server failed to return an expected response.');
+        }
+        await response.json();
+    });
+}
