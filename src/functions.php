@@ -7,6 +7,7 @@ declare(strict_types = 1);
  * Put new functions here unless they are chat-specific (use the appropriate chat functions file in that case).
  */
 
+use Bristolian\App;
 use Bristolian\Types\DocumentType;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 
@@ -1379,4 +1380,31 @@ function parse_clip_timestamp_to_seconds(string $input): ?int
     }
 
     return null;
+}
+
+/**
+ * Convert an underscore-separated datetime string (same shape as {@see App::DATE_TIME_FORMAT},
+ * e.g. 2026_04_02_23_56_14) to a human-readable English string (e.g. "2 April 2026, 23:56:14").
+ *
+ * @throws \Bristolian\Exception\BristolianException If the value is empty, malformed, or not a valid calendar datetime.
+ */
+function underscore_separated_datetime_to_human_readable(string $value): string
+{
+    $trimmed = trim($value);
+    if ($trimmed === '') {
+        throw new \Bristolian\Exception\BristolianException('Underscore-separated datetime is not parseable.');
+    }
+
+    $format = '!' . App::DATE_TIME_FORMAT;
+    $parsed = \DateTimeImmutable::createFromFormat($format, $trimmed);
+    if ($parsed === false) {
+        throw new \Bristolian\Exception\BristolianException('Underscore-separated datetime is not parseable.');
+    }
+
+    $errors = \DateTimeImmutable::getLastErrors();
+    if ($errors !== false && ($errors['error_count'] > 0 || $errors['warning_count'] > 0)) {
+        throw new \Bristolian\Exception\BristolianException('Underscore-separated datetime is not parseable.');
+    }
+
+    return $parsed->format('j F Y, H:i:s');
 }

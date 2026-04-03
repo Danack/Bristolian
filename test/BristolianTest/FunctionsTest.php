@@ -1048,6 +1048,49 @@ TEXT;
         $this->assertSame(\Safe\file_get_contents($filepath), $body);
     }
 
+    /**
+     * @return \Generator<string, array{string, string}>
+     */
+    public static function provides_underscore_separated_datetime_to_human_readable(): \Generator
+    {
+        yield 'example from filenames' => ['2026_04_02_23_56_14', '2 April 2026, 23:56:14'];
+        yield 'trimmed input' => ['  2026_04_02_23_56_14  ', '2 April 2026, 23:56:14'];
+        yield 'midnight new year' => ['2026_01_01_00_00_00', '1 January 2026, 00:00:00'];
+    }
+
+    /**
+     * @dataProvider provides_underscore_separated_datetime_to_human_readable
+     * @covers ::underscore_separated_datetime_to_human_readable
+     */
+    public function test_underscore_separated_datetime_to_human_readable(string $input, string $expected): void
+    {
+        $this->assertSame($expected, underscore_separated_datetime_to_human_readable($input));
+    }
+
+    /**
+     * @return \Generator<string, array{string}>
+     */
+    public static function provides_underscore_separated_datetime_to_human_readable_invalid(): \Generator
+    {
+        yield 'empty string' => [''];
+        yield 'whitespace only' => ['   '];
+        yield 'too few parts' => ['2026_04_02'];
+        yield 'too many parts' => ['2026_04_02_23_56_14_00'];
+        yield 'non-numeric segment' => ['2026_ab_02_23_56_14'];
+        yield 'invalid calendar date' => ['2026_02_30_00_00_00'];
+    }
+
+    /**
+     * @dataProvider provides_underscore_separated_datetime_to_human_readable_invalid
+     * @covers ::underscore_separated_datetime_to_human_readable
+     */
+    public function test_underscore_separated_datetime_to_human_readable_throws_when_not_parseable(string $input): void
+    {
+        $this->expectException(BristolianException::class);
+        $this->expectExceptionMessage('Underscore-separated datetime is not parseable.');
+        underscore_separated_datetime_to_human_readable($input);
+    }
+
     private function rrmdir(string $dir): void
     {
         if (!is_dir($dir)) {

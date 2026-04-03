@@ -42,7 +42,7 @@ class System
 HTML;
 
         $deploy_template = <<< HTML
-    <p>Deployed at :html_deploy_time</p>
+    <p>Deployed at :html_deploy_time aka :html_deploy_time_human</p>
     <p>Version is :html_version</p>
 
     <p>Error log: :html_error_log</p>
@@ -65,6 +65,7 @@ HTML;
 
         $params = [
             ':html_deploy_time' => $config->getDeployTime(),
+            ':html_deploy_time_human' => underscore_separated_datetime_to_human_readable($config->getDeployTime()),
             ':html_version' => $config->getVersion(),
             ':html_error_log' => $error_log,
         ];
