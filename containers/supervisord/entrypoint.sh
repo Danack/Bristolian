@@ -8,4 +8,6 @@ set -x
 # to be available prevents annoyance.
 php cli.php db:wait_for_db
 
-/usr/bin/supervisord -n -c /var/app/containers/supervisord/supervisord.conf
+# /usr/bin/supervisord -n -c /var/app/containers/supervisord/supervisord.conf
+
+tail -f /var/app/containers/supervisord/README.md

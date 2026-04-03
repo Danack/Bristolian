@@ -396,9 +396,10 @@ function addOpenApiCommands(Application $console)
 
 function addBccTroCommands(Application $console)
 {
+
     $command = new Command(
         'service:bcc_tro_fetch:continual',
-        'Bristolian\CliController\BccTroFetcherCliController::fetchTros'
+        'Bristolian\CliController\BccTroFetcherCliController::daily_bcc_tro'
     );
     $command->addArgument(
         'output',

@@ -59,8 +59,11 @@ class BccTroFetcherCliController
         RoomMessageService $roomMessageService,
         CliOutput $cliOutput
     ): void {
-        $cliOutput->write("Fetching TRO data from Bristol City Council...\n");
+        $cliOutput->write("Fetching TRO data from Bristol City Council.\n");
+
         $tros = $bccTroFetcher->fetchTros();
+
+        $cliOutput->write("got here");
 
         $tro_info = "There were no TROs found.";
 
@@ -97,7 +100,9 @@ class BccTroFetcherCliController
         CliOutput $cliOutput
     ): void {
         // @codeCoverageIgnoreStart
-        $cliOutput->write("Fetching TRO data from Bristol City Council...\n");
+
+        $cliOutput->write("Running daily_bcc_tro\n");
+
         $callable = function () use (
             $processorRunRecordRepo,
             $bccTroFetcher,
