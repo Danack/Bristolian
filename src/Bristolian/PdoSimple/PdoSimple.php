@@ -26,6 +26,7 @@ function convertRowToDatetime(array $row): array
         'end_time',
         'revoked_at',
         'document_timestamp',
+        'wdt_event_occurred_at',
     ];
 
     $data = [];
@@ -153,7 +154,7 @@ class PdoSimple
 
     /**
      * @param string $query
-     * @param array<string, string|int|null|float> $params
+     * @param array<string, string|int|null|float|\DateTimeInterface> $params
      * @return int
      * @throws \Exception
      */

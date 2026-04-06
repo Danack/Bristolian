@@ -17,7 +17,6 @@ use Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime;
 
 /**
  * @coversNothing
- * @group wip
  */
 class ClipEndTimeAfterStartTimeTest extends BaseTestCase
 {

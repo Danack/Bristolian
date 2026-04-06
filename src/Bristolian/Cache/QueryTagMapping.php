@@ -31,8 +31,10 @@ use Bristolian\Database\stair_image_object_info;
 use Bristolian\Database\stored_meme;
 use Bristolian\Database\tinned_fish_product;
 use Bristolian\Database\user_display_name;
+use Bristolian\Database\user_ownership;
 use Bristolian\Database\user_profile;
 use Bristolian\Database\video;
+use Bristolian\Database\whatdotheyknow_request_event;
 
 /**
  * Maps each SQL query (trimmed) to the tables it reads from or writes to.
@@ -147,6 +149,10 @@ SQL) => ['read' => [], 'write' => ['avatar_image_object_info']],
             // ===== BccTroRepo =====
             trim(bcc_tro_information::INSERT)
                 => ['read' => [], 'write' => ['bcc_tro_information']],
+
+            // ===== WhatDoTheyKnowRequestEventRepo =====
+            trim(whatdotheyknow_request_event::INSERT)
+                => ['read' => [], 'write' => ['whatdotheyknow_request_event']],
 
             // ===== BristolStairImageStorageInfoRepo =====
             trim(stair_image_object_info::SELECT . " WHERE normalized_name = :normalized_name")
@@ -946,6 +952,16 @@ VALUES
 ON DUPLICATE KEY UPDATE
   avatar_image_id = VALUES(avatar_image_id)
 SQL) => ['read' => [], 'write' => ['user_profile']],
+
+            // ===== PdoUserRepo (user_ownership) =====
+            trim(user_ownership::SELECT . " where type = 'SYSTEM'")
+                => ['read' => ['user_ownership'], 'write' => []],
+
+            trim(user_ownership::SELECT . " where type = :type and room_id = :room_id")
+                => ['read' => ['user_ownership'], 'write' => []],
+
+            trim(user_ownership::INSERT)
+                => ['read' => [], 'write' => ['user_ownership']],
 
             // ===== UserSearch =====
             trim(<<<SQL

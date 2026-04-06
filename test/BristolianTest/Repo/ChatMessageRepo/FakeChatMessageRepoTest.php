@@ -41,6 +41,25 @@ class FakeChatMessageRepoTest extends ChatMessageRepoFixture
     }
 
     /**
+     * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::storeChatMessageForSystem
+     * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::storeChatMessageForSystem
+     */
+    public function test_fake_storeChatMessageForSystem_uses_fixture_system_user_id(): void
+    {
+        $repo = new FakeChatMessageRepo();
+        $param = ChatMessageParam::createFromVarMap(new ArrayVarMap([
+            'text' => 'System feed line',
+            'room_id' => 'room-system',
+        ]));
+
+        $message = $repo->storeChatMessageForSystem($param);
+
+        $this->assertSame('system_user_fixture', $message->user_id);
+        $this->assertSame('System feed line', $message->text);
+        $this->assertSame('room-system', $message->room_id);
+    }
+
+    /**
      * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::getMessagesForRoom
      */
     public function test_fake_getMessagesForRoom_returns_only_room_messages_sorted_newest_first(): void

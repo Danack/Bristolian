@@ -167,6 +167,9 @@ function apiInjectionParams() : InjectionParams
 
         \Bristolian\Cache\TableAccessRecorder::class =>
             \Bristolian\Cache\RequestTableAccessRecorder::class,
+
+        Bristolian\MarkdownRenderer\MarkdownRenderer::class =>
+            \Bristolian\MarkdownRenderer\CommonMarkRenderer::class,
     ];
 
     // Delegate the creation of types to callables.

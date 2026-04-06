@@ -175,6 +175,7 @@ class BristolStairsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\BristolStairs::create
      */
     public function test_create_success_does_not_exit(): void
@@ -223,6 +224,7 @@ class BristolStairsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\BristolStairs::create
      */
     public function test_create_when_storage_returns_UploadError_writes_message_and_exits(): void

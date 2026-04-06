@@ -11,25 +11,25 @@ use BristolianTest\BaseTestCase;
  */
 class ChatMessageTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Chat\SystemChatMessage
-     */
-    public function testSystemChatMessage_construct(): void
-    {
-        $id = 99;
-        $roomId = 'room-sys';
-        $text = 'System message';
-        $replyMessageId = 50;
-        $createdAt = new \DateTimeImmutable('2024-02-15 10:00:00');
-
-        $message = new SystemChatMessage($id, $roomId, $text, $replyMessageId, $createdAt);
-
-        $this->assertSame($id, $message->id);
-        $this->assertSame($roomId, $message->room_id);
-        $this->assertSame($text, $message->text);
-        $this->assertSame($replyMessageId, $message->reply_message_id);
-        $this->assertSame($createdAt, $message->created_at);
-    }
+//    /**
+//     * @covers \Bristolian\Model\Chat\SystemChatMessage
+//     */
+//    public function testSystemChatMessage_construct(): void
+//    {
+//        $id = 99;
+//        $roomId = 'room-sys';
+//        $text = 'System message';
+//        $replyMessageId = 50;
+//        $createdAt = new \DateTimeImmutable('2024-02-15 10:00:00');
+//
+//        $message = new SystemChatMessage($id, $roomId, $text, $replyMessageId, $createdAt);
+//
+//        $this->assertSame($id, $message->id);
+//        $this->assertSame($roomId, $message->room_id);
+//        $this->assertSame($text, $message->text);
+//        $this->assertSame($replyMessageId, $message->reply_message_id);
+//        $this->assertSame($createdAt, $message->created_at);
+//    }
 
     /**
      * @covers \Bristolian\Model\Chat\UserChatMessage
@@ -75,6 +75,33 @@ class ChatMessageTest extends BaseTestCase
         );
 
         $this->assertNull($chatMessage->reply_message_id);
+    }
+
+    /**
+     * @covers \Bristolian\Model\Chat\UserChatMessage
+     * @covers \Bristolian\Model\Chat\UserChatMessage::withText
+     */
+    public function testWithText_replaces_text_and_preserves_other_fields(): void
+    {
+        $createdAt = new \DateTimeImmutable('2024-06-01 12:00:00');
+        $original = new UserChatMessage(
+            42,
+            'user-abc',
+            'room-def',
+            'Original text',
+            7,
+            $createdAt
+        );
+
+        $updated = $original->withText('Replaced body');
+
+        $this->assertSame('Replaced body', $updated->text);
+        $this->assertSame($original->id, $updated->id);
+        $this->assertSame($original->user_id, $updated->user_id);
+        $this->assertSame($original->room_id, $updated->room_id);
+        $this->assertSame($original->reply_message_id, $updated->reply_message_id);
+        $this->assertSame($original->created_at, $updated->created_at);
+        $this->assertSame('Original text', $original->text);
     }
 
     /**

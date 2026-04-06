@@ -4,7 +4,7 @@ namespace BristolianTest\Parameters;
 
 use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use BristolianTest\BaseTestCase;
-use Safe\DateTimeImmutable;
+//use Safe\DateTimeImmutable;
 
 /**
  * @covers \Bristolian\Model\Types\MigrationThatHasBeenRun
@@ -16,7 +16,7 @@ class MigrationTest extends BaseTestCase
         $id = 123;
         $description = 'This is some description.';
         $queries = 'This is meant to be some queries';
-        $datetime = new DateTimeImmutable();
+        $datetime = new \DateTimeImmutable();
 
         $migration = new MigrationThatHasBeenRun(
             $id,

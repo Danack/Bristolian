@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianChatTest\RoomMessagesWatcher;
 
-use Bristolian\Model\Generated\ChatMessage;
+use Bristolian\Model\Chat\UserChatMessage;
 use BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher;
 use BristolianTest\BaseTestCase;
 
@@ -45,12 +45,12 @@ class FakeRoomMessagesWatcherTest extends BaseTestCase
         $fetcher = new FakeRoomMessagesWatcher(0, [$row1, $row2]);
 
         $msg1 = $fetcher->getNextChatMessageAfter(0);
-        $this->assertInstanceOf(ChatMessage::class, $msg1);
+        $this->assertInstanceOf(UserChatMessage::class, $msg1);
         $this->assertSame(1, $msg1->id);
         $this->assertSame('a', $msg1->text);
 
         $msg2 = $fetcher->getNextChatMessageAfter(1);
-        $this->assertInstanceOf(ChatMessage::class, $msg2);
+        $this->assertInstanceOf(UserChatMessage::class, $msg2);
         $this->assertSame(2, $msg2->id);
         $this->assertSame('b', $msg2->text);
 

@@ -26,6 +26,7 @@ function add_console_commands(Application $console)
 
     addMoonCommands($console);
     addBccTroCommands($console);
+    addWhatDoTheyKnowCommands($console);
 }
 
 function addEmailCommands(Application $console)
@@ -438,4 +439,21 @@ function addBccTroCommands(Application $console)
 //
 //    $command->setDescription("Fetch and send Bristol City Council Traffic Regulation Orders to rooms.");
 //    $console->add($command);
+}
+
+function addWhatDoTheyKnowCommands(Application $console): void
+{
+    $command = new Command(
+        'service:whatdotheyknow_requested:once',
+        'Bristolian\CliController\WhatDoTheyKnowFeedCliController::syncRequestedFromBristolOnce'
+    );
+    $command->setDescription('Fetch WhatDoTheyKnow Bristol feed, store new events, notify FOI advice room');
+    $console->add($command);
+
+    $command = new Command(
+        'service:whatdotheyknow_requested:continual',
+        'Bristolian\CliController\WhatDoTheyKnowFeedCliController::syncRequestedFromBristolContinual'
+    );
+    $command->setDescription('Poll WhatDoTheyKnow Bristol feed on an interval (supervisord)');
+    $console->add($command);
 }

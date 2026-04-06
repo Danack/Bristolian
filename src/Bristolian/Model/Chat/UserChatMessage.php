@@ -22,4 +22,16 @@ class UserChatMessage
         public readonly \DateTimeInterface $created_at,
     ) {
     }
+
+    public function withText(string $text): self
+    {
+        return new self(
+            $this->id,
+            $this->user_id,
+            $this->room_id,
+            $text,
+            $this->reply_message_id,
+            $this->created_at
+        );
+    }
 }

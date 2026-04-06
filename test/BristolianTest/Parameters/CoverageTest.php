@@ -6,7 +6,7 @@ namespace BristolianTest\Parameters;
 
 use Bristolian\Parameters\PropertyType\EmailAddress;
 use Bristolian\Parameters\FoiRequestParams;
-use Safe\DateTimeImmutable;
+//use Safe\DateTimeImmutable;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
 
@@ -33,7 +33,6 @@ class CoverageTest extends BaseTestCase
      * @covers \Bristolian\Parameters\PropertyType\PasswordOrRandom
      *
      *
-     *
      */
     public function testWorks()
     {
@@ -41,7 +40,7 @@ class CoverageTest extends BaseTestCase
         $string = 'short text';
         $url = "http://www.example.com";
         $username = "John_the_username";
-        $datetime = new DateTimeImmutable();
+        $datetime = new \DateTimeImmutable();
         $email_address = 'John@example.com';
         $link_title = "some link";
         $link_description = "A description of a link.";

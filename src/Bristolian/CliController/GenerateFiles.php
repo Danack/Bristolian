@@ -143,6 +143,154 @@ function map_column_to_php_type(array $column): string
 }
 
 /**
+ * Tables for which `Bristolian\Model\Generated\{TableClass}` is not written. The mapped class must
+ * expose the same constructor promoted properties as the generator would (names and compatible types).
+ *
+ * Key: database table name (e.g. chat_message).
+ * Value: FQCN of the hand-written model (e.g. Bristolian\Model\Chat\UserChatMessage).
+ *
+ * The omitted generated class would be `Bristolian\Model\Generated\` . table_name_to_class_name($table).
+ *
+ * @return array<string, class-string>
+ */
+function hand_written_model_classes_by_table(): array
+{
+    return [
+        'chat_message' => \Bristolian\Model\Chat\UserChatMessage::class,
+    ];
+}
+
+/**
+ * Column order matches ORDINAL_POSITION from information_schema (same as generate_model_class).
+ *
+ * @param array<array<string, mixed>> $columns_info
+ * @return array<int, array{name: string, type: string}>
+ */
+function expected_model_constructor_params_from_columns(array $columns_info): array
+{
+    $constructorParams = [];
+    foreach ($columns_info as $column) {
+        $constructorParams[] = [
+            'name' => $column['COLUMN_NAME'],
+            'type' => map_column_to_php_type($column),
+        ];
+    }
+
+    return $constructorParams;
+}
+
+/**
+ * Normalize generator output from map_column_to_php_type() for comparison with reflection.
+ *
+ * @codeCoverageIgnore
+ */
+function normalize_generator_model_type_string(string $type): string
+{
+    $t = str_replace(' ', '', $type);
+    $t = ltrim($t, '\\');
+    if (str_starts_with($t, '?')) {
+        return ltrim(substr($t, 1), '\\') . '|null';
+    }
+
+    return $t;
+}
+
+/**
+ * @codeCoverageIgnore
+ */
+function normalize_reflected_constructor_param_type(\ReflectionParameter $param): string
+{
+    $type = $param->getType();
+    if ($type === null) {
+        return 'mixed';
+    }
+    if ($type instanceof \ReflectionIntersectionType) {
+        throw new BristolianException(
+            'Intersection types are not supported for hand-written model constructor parameters.'
+        );
+    }
+    if ($type instanceof \ReflectionUnionType) {
+        $parts = [];
+        foreach ($type->getTypes() as $inner) {
+            if (!$inner instanceof \ReflectionNamedType) {
+                throw new BristolianException('Unsupported union member type in hand-written model.');
+            }
+            $parts[] = ltrim($inner->getName(), '\\');
+        }
+        sort($parts);
+
+        return implode('|', $parts);
+    }
+    assert($type instanceof \ReflectionNamedType);
+    $name = ltrim($type->getName(), '\\');
+    if ($type->allowsNull() && $name !== 'null') {
+        return $name . '|null';
+    }
+
+    return $name;
+}
+
+/**
+ * @param class-string $className
+ * @param array<array<string, mixed>> $columns_info
+ *
+ * @throws BristolianException
+ */
+function assert_hand_written_model_matches_table_schema(
+    string $tableName,
+    string $className,
+    array $columns_info
+): void {
+    $expectedParams = expected_model_constructor_params_from_columns($columns_info);
+    $expectedByName = [];
+    foreach ($expectedParams as $param) {
+        $expectedByName[$param['name']] = $param['type'];
+    }
+
+    $reflection = new \ReflectionClass($className);
+    $constructor = $reflection->getConstructor();
+    if ($constructor === null) {
+        throw new BristolianException("Hand-written model {$className} must have a constructor.");
+    }
+
+    $generatedFqcn = 'Bristolian\\Model\\Generated\\' . table_name_to_class_name($tableName);
+
+    foreach ($constructor->getParameters() as $param) {
+        $name = $param->getName();
+        if (!isset($expectedByName[$name])) {
+            throw new BristolianException(
+                "Hand-written model {$className} has unexpected constructor parameter '\${$name}' " .
+                "that is not a column on table '{$tableName}' (omitted generated class {$generatedFqcn})."
+            );
+        }
+    }
+
+    $paramsByName = [];
+    foreach ($constructor->getParameters() as $param) {
+        $paramsByName[$param->getName()] = $param;
+    }
+
+    foreach ($expectedByName as $columnName => $expectedType) {
+        if (!isset($paramsByName[$columnName])) {
+            throw new BristolianException(
+                "Hand-written model {$className} is missing constructor parameter '\${$columnName}' " .
+                "required for table '{$tableName}' (omitted generated class {$generatedFqcn})."
+            );
+        }
+        $param = $paramsByName[$columnName];
+        $expectedNorm = normalize_generator_model_type_string($expectedType);
+        $actualNorm = normalize_reflected_constructor_param_type($param);
+        if ($expectedNorm !== $actualNorm) {
+            throw new BristolianException(
+                "Hand-written model {$className} parameter '\${$columnName}' type does not match schema for " .
+                "table '{$tableName}': expected normalized '{$expectedNorm}' (from {$expectedType}), " .
+                "got '{$actualNorm}' (omitted generated class {$generatedFqcn})."
+            );
+        }
+    }
+}
+
+/**
  * Generate a model class from database table schema
  *
  * @codeCoverageIgnore
@@ -169,18 +317,8 @@ function generate_model_class(string $tableName, array $columns_info, string $ou
     $contents .= "    use FromArray;\n";
     $contents .= "    use ToString;\n\n";
 
-    // Generate constructor parameters
-    $constructorParams = [];
-    foreach ($columns_info as $column) {
-        $columnName = $column['COLUMN_NAME'];
-        $phpType = map_column_to_php_type($column);
-        $constructorParams[] = [
-            'type' => $phpType,
-            'name' => $columnName,
-        ];
-    }
+    $constructorParams = expected_model_constructor_params_from_columns($columns_info);
 
-    // Generate constructor
     $contents .= "    public function __construct(\n";
     $paramCount = count($constructorParams);
     foreach ($constructorParams as $index => $param) {
@@ -193,12 +331,6 @@ function generate_model_class(string $tableName, array $columns_info, string $ou
 
     \Safe\file_put_contents($output_filename, $contents);
 }
-
-
-
-
-
-
 
 /**
  *
@@ -484,8 +616,7 @@ function generateConversionFunctionForClass(string $type, array $dateFields): st
         return '';
     }
 
-    $rc = new \ReflectionClass($type);
-    $name = $rc->getShortName();
+    $name = (new \ReflectionClass($type))->getShortName();
 
     $content = "// Conversion function for $type\n";
     $content .= "export function create$name(data: DateToString<$name>): $name {\n";
@@ -583,6 +714,7 @@ class GenerateFiles
     {
         $this->generateJavaScriptConstants();
         $this->generateJavaScriptTypes();
+        $this->generateTypeScriptApiRoutes();
     }
 
 
@@ -602,7 +734,7 @@ class GenerateFiles
 
         $types = [
             \Bristolian\Model\Generated\BristolStairInfo::class,
-            \Bristolian\Model\Generated\ChatMessage::class,
+            \Bristolian\Model\Chat\UserChatMessage::class,
             \Bristolian\Model\Generated\EmailIncoming::class,
             \Bristolian\Model\Generated\StoredMeme::class,
             \Bristolian\Model\Generated\MemeTag::class,
@@ -1369,15 +1501,11 @@ SQL;
     }
     
     /**
-     * Return the TypeScript type name to use for a PHP model class in generated api_routes.tsx.
-     * Some PHP types (e.g. UserChatMessage) are not exported from types.tsx; they map to an equivalent that is (e.g. ChatMessage).
+     * Return the TypeScript type name for a PHP model class in generated api_routes.tsx (same as types.tsx interface name).
      */
     private function getTypeScriptTypeNameForPhpClass(string $phpClass): string
     {
-        $phpToTs = [
-            \Bristolian\Model\Chat\UserChatMessage::class => 'ChatMessage',
-        ];
-        return $phpToTs[$phpClass] ?? (new \ReflectionClass($phpClass))->getShortName();
+        return (new \ReflectionClass($phpClass))->getShortName();
     }
 
     /**
@@ -1760,11 +1888,22 @@ SQL;
             mkdir($output_directory, 0755, true);
         }
 
+        $handWrittenByTable = hand_written_model_classes_by_table();
+
         foreach ($rows as $row) {
             $tableName = $row['TABLE_NAME'];
             $query = sprintf($column_query, $tableName);
             $columns_statement = $pdo->query($query);
             $columns_info = $columns_statement->fetchAll();
+
+            if (isset($handWrittenByTable[$tableName])) {
+                assert_hand_written_model_matches_table_schema(
+                    $tableName,
+                    $handWrittenByTable[$tableName],
+                    $columns_info
+                );
+                continue;
+            }
 
             generate_model_class($tableName, $columns_info, $output_directory);
         }

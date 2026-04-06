@@ -98,6 +98,7 @@ class LoginTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\AppController\Login::processLoginPage
      */
     public function test_processLoginPage_success_redirects_to_tools(): void
@@ -174,6 +175,7 @@ class LoginTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\AppController\Login::processLoginPage
      */
     public function test_processLoginPage_wrong_credentials_redirects_to_login(): void

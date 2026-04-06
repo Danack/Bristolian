@@ -1408,3 +1408,13 @@ function underscore_separated_datetime_to_human_readable(string $value): string
 
     return $parsed->format('j F Y, H:i:s');
 }
+
+
+function renderChatMessageMarkdown(
+    \Bristolian\Model\Chat\UserChatMessage $chat_message,
+    \Bristolian\MarkdownRenderer\MarkdownRenderer $markdownRenderer
+): \Bristolian\Model\Chat\UserChatMessage {
+
+    $new_text = $markdownRenderer->render($chat_message->text);
+    return $chat_message->withText($new_text);
+}

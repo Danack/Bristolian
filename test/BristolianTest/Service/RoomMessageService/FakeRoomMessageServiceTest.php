@@ -57,4 +57,23 @@ class FakeRoomMessageServiceTest extends BaseTestCase
         $this->assertSame('First', $messages[0]->text);
         $this->assertSame('Second', $messages[1]->text);
     }
+
+    /**
+     * @covers \Bristolian\Service\RoomMessageService\FakeRoomMessageService::sendRoomMessage
+     * @covers \Bristolian\Service\RoomMessageService\FakeRoomMessageService::sendMessage
+     */
+    public function test_sendRoomMessage_delegates_with_placeholder_room_user_id(): void
+    {
+        $service = new FakeRoomMessageService();
+        $param = ChatMessageParam::createFromVarMap(new ArrayVarMap([
+            'text' => 'Through sendRoomMessage',
+            'room_id' => 'room_delegate',
+        ]));
+
+        $message = $service->sendRoomMessage($param);
+
+        $this->assertSame('room_user_placeholder', $message->user_id);
+        $this->assertSame('Through sendRoomMessage', $message->text);
+        $this->assertSame('room_delegate', $message->room_id);
+    }
 }

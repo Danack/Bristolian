@@ -43,10 +43,21 @@ HTML;
 
 
     public function get_room_messages(
+        \Bristolian\MarkdownRenderer\MarkdownRenderer $markdownRenderer,
         ChatMessageRepo $chatMessageRepo,
         string $room_id
     ): GetChatRoomMessagesResponse {
         $messages = $chatMessageRepo->getMessagesForRoom($room_id);
+
+        $rendered_messages = [];
+        foreach ($messages as $message) {
+
+            $rendered_messages[] = renderChatMessageMarkdown($message, $markdownRenderer);
+        }
+
+
+
+
 
         return new GetChatRoomMessagesResponse($messages);
     }

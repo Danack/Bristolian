@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace BristolianTest\AppController;
 
 use Bristolian\AppController\Chat;
+use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\Repo\ChatMessageRepo\ChatMessageRepo;
 use Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
@@ -52,10 +53,19 @@ class ChatTest extends BaseTestCase
      */
     public function test_get_room_messages(): void
     {
-        $this->injector->defineParam('room_id', 'test-room-123');
+        $roomId = 'test-room-123';
+        $this->injector->defineParam('room_id', $roomId);
+
+        $chatMessageRepo = $this->injector->make(FakeChatMessageRepo::class);
+        $storeParam = ChatMessageParam::createFromVarMap(new ArrayVarMap([
+            'text' => 'Plain **markdown** line',
+            'room_id' => $roomId,
+        ]));
+        $chatMessageRepo->storeChatMessageForUser('seed-user', $storeParam);
 
         $result = $this->injector->execute([Chat::class, 'get_room_messages']);
         $this->assertInstanceOf(GetChatRoomMessagesResponse::class, $result);
+        $this->assertStringContainsString('Plain', $result->getBody());
     }
 
     /**

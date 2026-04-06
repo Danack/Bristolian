@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianChat\RoomMessagesWatcher;
 
-use Bristolian\Model\Generated\ChatMessage;
+use Bristolian\Model\Chat\UserChatMessage;
 
 /**
  * Fetches chat messages for RoomMessageFetcher. In production the messages come from the
@@ -20,5 +20,5 @@ interface RoomMessagesWatcher
     /**
      * Get the next chat message after the given id.
      */
-    public function getNextChatMessageAfter(int $previousId): ChatMessage|null;
+    public function getNextChatMessageAfter(int $previousId): UserChatMessage|null;
 }

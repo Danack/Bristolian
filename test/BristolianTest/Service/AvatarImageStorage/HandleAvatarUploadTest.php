@@ -14,7 +14,7 @@ use Bristolian\Session\FakeUserSession;
 use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\UploadedFiles\FakeUploadedFiles;
 use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
-use BristolianTest\AppController\FakeAvatarImageStorageForUsersTest;
+use Bristolian\Service\AvatarImageStorage\FakeAvatarImageStorage;
 use BristolianTest\BaseTestCase;
 use SlimDispatcher\Response\StubResponse;
 
@@ -33,7 +33,7 @@ class HandleAvatarUploadTest extends BaseTestCase
         $uploadedFiles = new FakeUploadedFiles([]);
         $uploadHandler = new UserSessionFileUploadHandler($userSession, $uploadedFiles);
 
-        $storage = new FakeAvatarImageStorageForUsersTest('ignored');
+        $storage = new FakeAvatarImageStorage('ignored');
         $userProfileRepo = new FakeUserProfileRepo();
 
         $handler = new HandleAvatarUpload($storage, $uploadHandler, $userProfileRepo);

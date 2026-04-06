@@ -92,8 +92,11 @@ function injectionParams() : InjectionParams
         \Bristolian\Service\BccTroFetcher\BccTroFetcher::class =>
           \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::class,
 
-//        Bristolian\Repo\MemeTextRepo\MemeTextRepo::class =>
-//            \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class,
+        \Bristolian\Service\WhatDoTheyKnowFeedFetcher\WhatDoTheyKnowFeedFetcher::class =>
+            \Bristolian\Service\WhatDoTheyKnowFeedFetcher\StandardWhatDoTheyKnowFeedFetcher::class,
+
+        \Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\WhatDoTheyKnowRequestEventRepo::class =>
+            \Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\PdoWhatDoTheyKnowRequestEventRepo::class,
 
         \Bristolian\Service\UuidGenerator\UuidGenerator::class =>
             \Bristolian\Service\UuidGenerator\RamseyUuidGenerator::class,
@@ -139,6 +142,9 @@ function injectionParams() : InjectionParams
 
         Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::class =>
             Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class,
+
+        Bristolian\MarkdownRenderer\MarkdownRenderer::class =>
+            \Bristolian\MarkdownRenderer\CommonMarkRenderer::class,
 
     ];
 

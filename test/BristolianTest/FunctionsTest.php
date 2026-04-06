@@ -403,6 +403,7 @@ TEXT;
 
     /**
      * @covers ::generate_password_hash
+     * @group slow
      */
     public function test_generate_password_hash_returns_bcrypt_hash_verifiable_with_password(): void
     {
@@ -512,7 +513,6 @@ TEXT;
     /**
      * @dataProvider provides_parse_clip_timestamp_to_seconds
      * @covers ::parse_clip_timestamp_to_seconds
-     * @group wip
      */
     public function test_parse_clip_timestamp_to_seconds(string $input, ?int $expected): void
     {

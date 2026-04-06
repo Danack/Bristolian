@@ -42,7 +42,11 @@ class PdoUserRepo implements UserRepo
         $sql = user_ownership::SELECT;
         $sql .= " where type = '" . UserRepo::TYPE_SYSTEM . "'";
 
-        $result = $this->pdo_simple->fetchOneAsObjectOrNull($sql, [], UserOwnership::class);
+        $result = $this->pdo_simple->fetchOneAsObjectOrNullConstructor(
+            $sql,
+            [],
+            UserOwnership::class
+        );
 
         if ($result !== null) {
             return $result;
@@ -69,7 +73,11 @@ class PdoUserRepo implements UserRepo
             ':room_id' => $room_id,
         ];
 
-        $result = $this->pdo_simple->fetchOneAsObjectOrNull($sql, $params, UserOwnership::class);
+        $result = $this->pdo_simple->fetchOneAsObjectOrNullConstructor(
+            $sql,
+            $params,
+            UserOwnership::class
+        );
 
         if ($result !== null) {
             return $result;

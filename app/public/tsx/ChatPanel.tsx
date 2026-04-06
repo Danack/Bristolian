@@ -2,14 +2,14 @@ import { h, Component } from "preact";
 import { registerMessageListener, sendMessage, unregisterListener } from "./message/message";
 import { EventType } from "./events";
 import {ChatBottomPanel} from "./chat/ChatBottomPanel";
-import {ChatMessage, ChatType, createChatMessage} from "./generated/types";
+import {UserChatMessage, ChatType, createUserChatMessage} from "./generated/types";
 import {formatDateTimeForChat} from "./functions";
 
 
 export interface ConnectionPanelProps {
     username: string;
     room_id: string;
-    replyingToMessage?: ChatMessage | null;
+    replyingToMessage?: UserChatMessage | null;
     onCancelReply?: () => void;
 }
 
@@ -21,7 +21,7 @@ interface UserProfile {
 
 export interface MessageEncapsulated {
     type: ChatType;
-    message: ChatMessage;
+    message: UserChatMessage;
 }
 
 
@@ -31,10 +31,10 @@ interface ConnectionPanelState {
     lastMessageReceived: string;  // last message from websocket
 
     // TODO - Messages needs to be changed to an array of MessageEncapsulated
-    messages: ChatMessage[];
+    messages: UserChatMessage[];
     userProfiles: Map<string, UserProfile>;
     messageHeights: Map<number, number>;
-    replyingToMessage: ChatMessage | null;  // message being replied to
+    replyingToMessage: UserChatMessage | null;  // message being replied to
 }
 
 export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelState> {
@@ -81,9 +81,9 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
             .then((data: any) => {
                 const messages = data?.data?.messages ?? data?.messages;
                 if (messages) {
-                    // Convert API response format to ChatMessage objects
-                    const existingMessages: ChatMessage[] = messages.map((msgData: any) => {
-                        return createChatMessage({
+                    // Convert API response format to UserChatMessage objects
+                    const existingMessages: UserChatMessage[] = messages.map((msgData: any) => {
+                        return createUserChatMessage({
                             id: msgData.id,
                             user_id: msgData.user_id,
                             room_id: msgData.room_id,
@@ -142,7 +142,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         let data = JSON.parse(messageEvent.data);
 
         if (data.type === ChatType.USER_MESSAGE) {
-            const message = createChatMessage(data.chat_message);
+            const message = createUserChatMessage(data.chat_message);
             if (message.room_id !== this.props.room_id) {
                 return; // Ignore messages for other rooms
             }
@@ -231,7 +231,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         return parts[parts.length - 1];
     }
 
-    startReply = (message: ChatMessage) => {
+    startReply = (message: UserChatMessage) => {
         this.setState({ replyingToMessage: message });
     }
 
@@ -240,9 +240,9 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
     }
 
     // Group messages from the same user within 600 seconds
-    groupMessages(): ChatMessage[][] {
-        const groups: ChatMessage[][] = [];
-        let currentGroup: ChatMessage[] = [];
+    groupMessages(): UserChatMessage[][] {
+        const groups: UserChatMessage[][] = [];
+        let currentGroup: UserChatMessage[] = [];
 
         for (let i = 0; i < this.state.messages.length; i++) {
             const message = this.state.messages[i];
@@ -273,7 +273,7 @@ export class ChatPanel extends Component<ConnectionPanelProps, ConnectionPanelSt
         return groups;
     }
 
-    renderChatMessage(message: ChatMessage, index: number, isFirstInGroup: boolean) {
+    renderChatMessage(message: UserChatMessage, index: number, isFirstInGroup: boolean) {
         const userProfile = this.state.userProfiles.get(message.user_id);
         const shortUserId = this.getShortUserId(message.user_id);
         const displayName = userProfile?.display_name || shortUserId;

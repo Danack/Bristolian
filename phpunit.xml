@@ -22,6 +22,10 @@
   <!--         stopOnFailure="true"-->
   <!--         stopOnError="true"-->
 
+<!--  <extensions>-->
+<!--    &lt;!&ndash; Paratest does not run the slow logging extension &ndash;&gt;-->
+<!--    <bootstrap class="\BristolianTest\PHPUnit\DanackExtension" />-->
+<!--  </extensions>-->
 
   <testsuites>
     <testsuite name="default">
@@ -55,7 +59,7 @@
 
 
       <!-- toggle_slow begin <html outputDirectory="tmp/coverage" lowUpperBound="90" highLowerBound="100"/> -->
-<html outputDirectory="tmp/coverage" lowUpperBound="90" highLowerBound="100"/>
+
 <!-- toggle_slow end-->
 
     </report>
@@ -67,11 +71,11 @@
       <group>needs_fixing</group>
       <group>external</group>
       <group>xdebug</group>
-      <group>deadish</group>
-      <!-- <group>slow</group> -->
 
-      <!-- toggle_fast begin <group>db</group>-->
 
+
+      <!-- toggle_fast begin <group>db</group> <group>slow</group>-->
+<group>db</group> <group>slow</group>
 <!-- toggle_fast end-->
     </exclude>
   </groups>

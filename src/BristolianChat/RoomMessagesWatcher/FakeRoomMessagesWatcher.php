@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianChat\RoomMessagesWatcher;
 
-use Bristolian\Model\Generated\ChatMessage;
+use Bristolian\Model\Chat\UserChatMessage;
 
 /**
  * Fake implementation for tests. Configure initial max id and a queue of rows
@@ -33,7 +33,7 @@ class FakeRoomMessagesWatcher implements RoomMessagesWatcher
         return $this->maxId ?? 0;
     }
 
-    public function getNextChatMessageAfter(int $previousId): ChatMessage|null
+    public function getNextChatMessageAfter(int $previousId): UserChatMessage|null
     {
         $row = array_shift($this->nextRowsQueue);
         if ($row === null) {
@@ -45,17 +45,17 @@ class FakeRoomMessagesWatcher implements RoomMessagesWatcher
     /**
      * @param array{id: int|string, text: string, user_id: string, room_id: string, reply_message_id: int|null|string, created_at: string|\DateTimeInterface} $row
      */
-    private static function rowToChatMessage(array $row): ChatMessage
+    private static function rowToChatMessage(array $row): UserChatMessage
     {
         $created_at = $row['created_at'];
         if (is_string($created_at)) {
             $created_at = new \DateTimeImmutable($created_at);
         }
-        return new ChatMessage(
+        return new UserChatMessage(
             (int) $row['id'],
-            (string) $row['text'],
             (string) $row['user_id'],
             (string) $row['room_id'],
+            (string) $row['text'],
             isset($row['reply_message_id']) ? (int) $row['reply_message_id'] : null,
             $created_at,
         );

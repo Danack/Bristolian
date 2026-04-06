@@ -48,6 +48,10 @@ function testInjectionParams() : InjectionParams
 
         \Bristolian\Service\TooMuchMemoryNotifier\TooMuchMemoryNotifier::class =>
             \Bristolian\Service\TooMuchMemoryNotifier\NullTooMuchMemoryNotifier::class,
+
+        Bristolian\MarkdownRenderer\MarkdownRenderer::class =>
+            \Bristolian\MarkdownRenderer\CommonMarkRenderer::class,
+
     ];
 
     // Delegate the creation of types to callables.

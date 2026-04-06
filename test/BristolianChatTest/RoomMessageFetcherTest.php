@@ -32,7 +32,14 @@ class RoomMessageFetcherTest extends BaseTestCase
         $fetcher = new FakeRoomMessagesWatcher(null, []);
         $clientHandler = new FakeClientHandler();
 
-        $watcher = new RoomMessageFetcher($fetcher, $clientHandler, $logger);
+        $markdownRenderer = new \Bristolian\MarkdownRenderer\CommonMarkRenderer();
+
+        $watcher = new RoomMessageFetcher(
+            $markdownRenderer,
+            $fetcher,
+            $clientHandler,
+            $logger
+        );
 
         $watcher->runOneIteration();
 
@@ -54,7 +61,14 @@ class RoomMessageFetcherTest extends BaseTestCase
         $fetcher = new FakeRoomMessagesWatcher(100, []);
         $clientHandler = new FakeClientHandler();
 
-        $watcher = new RoomMessageFetcher($fetcher, $clientHandler, $logger);
+        $markdownRenderer = new \Bristolian\MarkdownRenderer\CommonMarkRenderer();
+
+        $watcher = new RoomMessageFetcher(
+            $markdownRenderer,
+            $fetcher,
+            $clientHandler,
+            $logger
+        );
 
         $watcher->runOneIteration();
 
@@ -84,7 +98,9 @@ class RoomMessageFetcherTest extends BaseTestCase
         $fetcher = new FakeRoomMessagesWatcher(4, [$row]);
         $clientHandler = new FakeClientHandler();
 
-        $watcher = new RoomMessageFetcher($fetcher, $clientHandler, $logger);
+        $markdownRenderer = new \Bristolian\MarkdownRenderer\CommonMarkRenderer();
+
+        $watcher = new RoomMessageFetcher($markdownRenderer, $fetcher, $clientHandler, $logger);
 
         $watcher->runOneIteration();
 
@@ -114,7 +130,8 @@ class RoomMessageFetcherTest extends BaseTestCase
         );
         $clientHandler = new FakeClientHandler();
 
-        $watcher = new RoomMessageFetcher($fetcher, $clientHandler, $logger);
+        $markdownRenderer = new \Bristolian\MarkdownRenderer\CommonMarkRenderer();
+        $watcher = new RoomMessageFetcher($markdownRenderer, $fetcher, $clientHandler, $logger);
 
         $watcher->runOneIteration();
 

@@ -12,6 +12,7 @@ class FetchUriHttpFetcherTest extends BaseTestCase
 {
     /**
      * @covers \Bristolian\Service\HttpFetcher\FetchUriHttpFetcher::fetch
+     * @group slow
      */
     public function testFetchReturnsThreeElementArray(): void
     {

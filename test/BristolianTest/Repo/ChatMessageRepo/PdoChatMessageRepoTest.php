@@ -7,8 +7,10 @@ namespace BristolianTest\Repo\ChatMessageRepo;
 use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\PdoSimple\PdoSimple;
+use PDO;
 use Bristolian\Repo\ChatMessageRepo\ChatMessageRepo;
 use Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo;
+use Bristolian\Repo\UserRepo\PdoUserRepo;
 use BristolianTest\Repo\DbTransactionIsolation;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
@@ -115,5 +117,37 @@ class PdoChatMessageRepoTest extends ChatMessageRepoFixture
         $this->assertCount(2, $messages);
         $this->assertContainsOnlyInstancesOf(UserChatMessage::class, $messages);
         $this->assertGreaterThanOrEqual($messages[1]->id, $messages[0]->id);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::storeChatMessageForSystem
+     */
+    public function test_pdo_storeChatMessageForSystem_uses_system_ownership_user_id(): void
+    {
+        $this->ensureStandardSetup();
+        $userRepo = $this->injector->make(PdoUserRepo::class);
+        $userRepo->ensureSystemUserExists();
+        $systemOwnership = $userRepo->getSystemUser();
+
+        $repo = $this->injector->make(PdoChatMessageRepo::class);
+        $roomId = $this->standardTestData()->getHousingRoom()->id;
+        $param = ChatMessageParam::createFromVarMap(new ArrayVarMap([
+            'text' => 'Pdo system message ' . create_test_uniqid(),
+            'room_id' => $roomId,
+        ]));
+
+        $message = null;
+        try {
+            $message = $repo->storeChatMessageForSystem($param);
+            $this->assertInstanceOf(UserChatMessage::class, $message);
+            $this->assertSame($systemOwnership->user_id, $message->user_id);
+            $this->assertSame($roomId, $message->room_id);
+        } finally {
+            if ($message !== null) {
+                $pdo = $this->injector->make(PDO::class);
+                $statement = $pdo->prepare('DELETE FROM chat_message WHERE id = :id');
+                $statement->execute([':id' => $message->id]);
+            }
+        }
     }
 }

@@ -5,30 +5,15 @@ declare(strict_types = 1);
 use Bristolian\ChatMessage\ChatMessagePayload;
 use BristolianChat\ClientHandler\ClientHandler;
 use Bristolian\Model\Chat\SystemChatMessage;
-use Bristolian\Model\Generated\ChatMessage;
+use Bristolian\Model\Chat\UserChatMessage;
 use Monolog\Logger;
 
 function send_user_message_to_clients(
-    ChatMessage $chat_message,
+    UserChatMessage $chat_message,
     Logger      $logger,
     ClientHandler $clientHandler
 ): void {
     $data = ChatMessagePayload::create_from_user_message($chat_message);
-
-    send_data_to_clients(
-        $data,
-        $logger,
-        $clientHandler
-    );
-}
-
-
-function send_system_message_to_clients(
-    SystemChatMessage $system_chat_message,
-    Logger            $logger,
-    ClientHandler $clientHandler
-): void {
-    $data = ChatMessagePayload::create_from_system_message($system_chat_message);
 
     send_data_to_clients(
         $data,
@@ -77,7 +62,7 @@ function send_data_to_clients(
  * IDs start at 1000 and increment with each call.
  * Every 5th message has message_reply_id set to one of the previous 10 messages.
  */
-function generateFakeChatMessage(): ChatMessage
+function generateFakeChatMessage(): UserChatMessage
 {
     static $currentId = 1000;
     static $callCount = 0;
@@ -139,11 +124,11 @@ function generateFakeChatMessage(): ChatMessage
     // Keep only the last 10 message IDs
     $recentMessageIds = array_slice($recentMessageIds, -10);
 
-    return new ChatMessage(
+    return new UserChatMessage(
         $id,
-        $text,
         $user_id,
         $room_id,
+        $text,
         $message_reply_id,
         $created_at
     );

@@ -99,7 +99,6 @@ class AnnotationParamTest extends BaseTestCase
     }
 
     /**
-     * @group wip
      */
     public function test_parses_valid_json_input_to_expected_output(): void {
 

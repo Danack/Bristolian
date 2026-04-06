@@ -12,7 +12,7 @@ class StandardRoomMessageService implements RoomMessageService
 {
     public function __construct(
         private UserRepo $userRepo,
-        private ChatMessageRepo $chatMessageRepo,
+        private ChatMessageRepo $chatMessageRepo
     ) {
     }
 
@@ -40,11 +40,6 @@ class StandardRoomMessageService implements RoomMessageService
             $user_id,
             $chatMessageParam
         );
-
-//        $this->redis->rPush(
-//            RoomMessageKey::getAbsoluteKeyName(),
-//            $chat_message->toString()
-//        );
 
         return $chat_message;
     }

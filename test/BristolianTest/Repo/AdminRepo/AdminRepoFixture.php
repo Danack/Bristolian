@@ -28,6 +28,7 @@ abstract class AdminRepoFixture extends BaseTestCase
 
 
     /**
+     * @group slow
      * @covers \Bristolian\Repo\AdminRepo\AdminRepo::addUser
      * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::addUser
      * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo::__construct
@@ -55,6 +56,7 @@ abstract class AdminRepoFixture extends BaseTestCase
 
 
     /**
+     * @group slow
      * @covers \Bristolian\Repo\AdminRepo\AdminRepo::getAdminUser
      * @covers \Bristolian\Repo\AdminRepo\AdminRepo::addUser
      * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::getAdminUser
@@ -100,6 +102,7 @@ abstract class AdminRepoFixture extends BaseTestCase
 
 
     /**
+     * @group slow
      * @covers \Bristolian\Repo\AdminRepo\AdminRepo::getAdminUser
      * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::getAdminUser
      * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::addUser
@@ -126,6 +129,7 @@ abstract class AdminRepoFixture extends BaseTestCase
 
 
     /**
+     * @group slow
      * @covers \Bristolian\Repo\AdminRepo\AdminRepo::getAdminUserId
      * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::getAdminUserId
      * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::addUser

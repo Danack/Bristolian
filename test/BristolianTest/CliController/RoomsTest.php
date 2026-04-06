@@ -69,6 +69,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addFileFromCli
      */
     public function test_addFileFromCli_when_no_room_match_writes_and_exits(): void
@@ -94,6 +95,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addFileFromCli
      */
     public function test_addFileFromCli_when_multiple_rooms_share_name_writes_and_exits(): void
@@ -121,6 +123,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addFileFromCli
      */
     public function test_addFileFromCli_when_file_missing_writes_and_exits(): void
@@ -149,6 +152,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addFileFromCli
      */
     public function test_addFileFromCli_when_storage_returns_error_writes_and_exits(): void
@@ -177,6 +181,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addFileFromCli
      */
     public function test_addFileFromCli_success_writes_stored_file_id(): void
@@ -223,6 +228,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::createFromCli
      */
     public function test_createFromCli_success_creates_room(): void
@@ -276,6 +282,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addFileAnnotationFromCli
      */
     public function test_addFileAnnotationFromCli_when_no_room_match_writes_and_exits(): void
@@ -301,6 +308,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addFileAnnotationFromCli
      */
     public function test_addFileAnnotationFromCli_when_multiple_rooms_share_name_writes_and_exits(): void
@@ -329,6 +337,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addFileAnnotationFromCli
      */
     public function test_addFileAnnotationFromCli_when_no_file_in_room_writes_and_exits(): void
@@ -359,6 +368,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addFileAnnotationFromCli
      */
     public function test_addFileAnnotationFromCli_when_multiple_files_same_original_name_writes_and_exits(): void
@@ -411,6 +421,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addFileAnnotationFromCli
      */
     public function test_addFileAnnotationFromCli_when_annotation_json_invalid_writes_and_exits(): void
@@ -451,6 +462,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addFileAnnotationFromCli
      */
     public function test_addFileAnnotationFromCli_when_annotation_validation_fails_writes_and_exits(): void
@@ -497,6 +509,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addFileAnnotationFromCli
      */
     public function test_addFileAnnotationFromCli_success_writes_room_annotation_id(): void
@@ -563,6 +576,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addLinkFromCli
      */
     public function test_addLinkFromCli_when_no_room_match_writes_and_exits(): void
@@ -590,6 +604,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addLinkFromCli
      */
     public function test_addLinkFromCli_when_multiple_rooms_share_name_writes_and_exits(): void
@@ -620,6 +635,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addLinkFromCli
      */
     public function test_addLinkFromCli_when_validation_fails_writes_and_exits(): void
@@ -649,6 +665,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addLinkFromCli
      */
     public function test_addLinkFromCli_success_url_only_writes_room_link_id(): void
@@ -678,6 +695,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addLinkFromCli
      */
     public function test_addLinkFromCli_success_with_title_and_description_writes_room_link_id(): void
@@ -760,6 +778,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addVideoFromCli
      */
     public function test_addVideoFromCli_when_no_room_match_writes_and_exits(): void
@@ -787,6 +806,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addVideoFromCli
      */
     public function test_addVideoFromCli_when_multiple_rooms_share_name_writes_and_exits(): void
@@ -817,6 +837,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addVideoFromCli
      */
     public function test_addVideoFromCli_when_validation_fails_writes_and_exits(): void
@@ -846,6 +867,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addVideoFromCli
      */
     public function test_addVideoFromCli_when_url_invalid_writes_and_exits(): void
@@ -875,6 +897,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addVideoFromCli
      */
     public function test_addVideoFromCli_success_url_only_writes_room_video_id(): void
@@ -904,6 +927,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addVideoFromCli
      */
     public function test_addVideoFromCli_success_with_title_and_description_writes_room_video_id(): void
@@ -962,6 +986,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addVideoClipFromCli
      */
     public function test_addVideoClipFromCli_when_no_room_match_writes_and_exits(): void
@@ -991,6 +1016,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addVideoClipFromCli
      */
     public function test_addVideoClipFromCli_when_multiple_rooms_share_name_writes_and_exits(): void
@@ -1023,6 +1049,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addVideoClipFromCli
      */
     public function test_addVideoClipFromCli_when_end_before_start_writes_and_exits(): void
@@ -1055,6 +1082,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addVideoClipFromCli
      */
     public function test_addVideoClipFromCli_success_times_only_writes_room_video_id(): void
@@ -1088,6 +1116,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addVideoClipFromCli
      */
     public function test_addVideoClipFromCli_success_with_title_and_description(): void
@@ -1119,6 +1148,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addRoomTagFromCli
      */
     public function test_addRoomTagFromCli_success(): void
@@ -1170,6 +1200,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addRoomTagFromCli
      */
     public function test_addRoomTagFromCli_when_no_room_match_writes_and_exits(): void
@@ -1194,6 +1225,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addRoomTagFromCli
      */
     public function test_addRoomTagFromCli_when_multiple_rooms_share_name_writes_and_exits(): void
@@ -1221,6 +1253,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addRoomTagFromCli
      */
     public function test_addRoomTagFromCli_when_max_tags_reached_writes_and_exits(): void
@@ -1249,6 +1282,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addAnnotationTagFromCli
      */
     public function test_addAnnotationTagFromCli_success_attaches_tag(): void
@@ -1305,6 +1339,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addAnnotationTagFromCli
      */
     public function test_addAnnotationTagFromCli_when_annotation_not_in_room_writes_and_exits(): void
@@ -1337,6 +1372,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addAnnotationTagFromCli
      */
     public function test_addAnnotationTagFromCli_when_multiple_annotations_have_same_title_writes_and_exits(): void
@@ -1405,6 +1441,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addAnnotationTagFromCli
      */
     public function test_addAnnotationTagFromCli_when_no_room_match_writes_and_exits(): void
@@ -1432,6 +1469,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addAnnotationTagFromCli
      */
     public function test_addAnnotationTagFromCli_when_multiple_rooms_share_name_writes_and_exits(): void
@@ -1462,6 +1500,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addAnnotationTagFromCli
      */
     public function test_addAnnotationTagFromCli_success_creates_tag_when_not_yet_in_room(): void
@@ -1518,6 +1557,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addAnnotationTagFromCli
      */
     public function test_addAnnotationTagFromCli_when_annotation_already_has_tag_writes_and_returns(): void
@@ -1580,6 +1620,7 @@ class RoomsTest extends BaseTestCase
     }
 
     /**
+     * @group slow
      * @covers \Bristolian\CliController\Rooms::addAnnotationTagFromCli
      */
     public function test_addAnnotationTagFromCli_when_new_tag_max_tags_reached_writes_and_exits(): void

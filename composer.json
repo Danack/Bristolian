@@ -61,7 +61,8 @@
         "slevomat/coding-standard": "^7.2.1",
         "squizlabs/php_codesniffer": "^3.7.0",
         "yoast/yoastcs": "1.0",
-        "genesis/behat-fail-aid": "^3.7"
+        "genesis/behat-fail-aid": "^3.7",
+        "brianium/paratest": "^7.4"
     },
     "autoload": {
         "psr-0": {
@@ -79,7 +80,8 @@
             "src/functions.php",
             "src/functions_common.php",
             "src/functions_exif.php",
-            "src/functions_tinned_fish.php"
+            "src/functions_tinned_fish.php",
+            "src/functions_whatdotheyknow.php"
         ]
     },
     "autoload-dev": {

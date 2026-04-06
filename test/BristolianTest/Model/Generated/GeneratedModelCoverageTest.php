@@ -7,7 +7,6 @@ namespace BristolianTest\Model\Generated;
 use Bristolian\Model\Generated\ApiToken;
 use Bristolian\Model\Generated\AvatarImageObjectInfo;
 use Bristolian\Model\Generated\BccTroInformation;
-use Bristolian\Model\Generated\ChatMessage;
 use Bristolian\Model\Generated\EmailIncoming;
 use Bristolian\Model\Generated\EmailSendQueue;
 use Bristolian\Model\Generated\FoiRequests;
@@ -31,9 +30,11 @@ use Bristolian\Model\Generated\StoredMeme;
 use Bristolian\Model\Generated\TinnedFishProduct;
 use Bristolian\Model\Generated\UserAuthEmailPassword;
 use Bristolian\Model\Generated\UserDisplayName;
+use Bristolian\Model\Generated\UserOwnership;
 use Bristolian\Model\Generated\UserProfile;
 use Bristolian\Model\Generated\UserWebpushSubscription;
 use Bristolian\Model\Generated\Video;
+use Bristolian\Model\Generated\WhatdotheyknowRequestEvent;
 use Bristolian\Model\Generated\BristolStairInfo;
 use Bristolian\Model\Generated\Link;
 use Bristolian\Model\Generated\ProcessorRunRecord;
@@ -76,13 +77,6 @@ class GeneratedModelCoverageTest extends BaseTestCase
     public function test_BccTroInformation(): void
     {
         $o = new BccTroInformation(1, 'data', self::now());
-        $this->assertSame(1, $o->id);
-    }
-
-    /** @covers \Bristolian\Model\Generated\ChatMessage */
-    public function test_ChatMessage(): void
-    {
-        $o = new ChatMessage(1, 'text', 'uid', 'rid', null, self::now());
         $this->assertSame(1, $o->id);
     }
 
@@ -209,6 +203,16 @@ class GeneratedModelCoverageTest extends BaseTestCase
         $this->assertSame(1, $o->id);
     }
 
+    /**
+     * @covers \Bristolian\Model\Generated\UserOwnership::__construct
+     */
+    public function test_UserOwnership(): void
+    {
+        $o = new UserOwnership(1, 'user-id', 'ROOM_USER', 'room-id');
+        $this->assertSame(1, $o->id);
+        $this->assertSame('user-id', $o->user_id);
+    }
+
     /** @covers \Bristolian\Model\Generated\UserProfile */
     public function test_UserProfile(): void
     {
@@ -286,6 +290,30 @@ class GeneratedModelCoverageTest extends BaseTestCase
         $o = new Video('id', 'uid', 'yt_id', self::now());
         $this->assertSame('id', $o->id);
         $this->assertSame('yt_id', $o->youtube_video_id);
+    }
+
+    /**
+     * @covers \Bristolian\Model\Generated\WhatdotheyknowRequestEvent::__construct
+     */
+    public function test_WhatdotheyknowRequestEvent(): void
+    {
+        $occurred = self::now();
+        $created = self::now();
+        $o = new WhatdotheyknowRequestEvent(
+            1,
+            100,
+            '{}',
+            200,
+            'title',
+            300,
+            'url_name',
+            'Display',
+            400,
+            $occurred,
+            $created
+        );
+        $this->assertSame(1, $o->id);
+        $this->assertSame(100, $o->wdt_event_id);
     }
 
     /** @covers \Bristolian\Model\Generated\BristolStairInfo */

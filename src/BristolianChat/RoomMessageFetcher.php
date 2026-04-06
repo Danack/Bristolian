@@ -2,16 +2,18 @@
 
 namespace BristolianChat;
 
-use Bristolian\Model\Generated\ChatMessage;
+use Bristolian\Model\Chat\UserChatMessage;
 use BristolianChat\ClientHandler\ClientHandler;
 use BristolianChat\RoomMessagesWatcher\RoomMessagesWatcher;
 use Monolog\Logger;
+use Bristolian\MarkdownRenderer\MarkdownRenderer;
 
 class RoomMessageFetcher
 {
     private int|null $previous_id = null;
 
     public function __construct(
+        private readonly MarkdownRenderer    $markdownRenderer,
         private readonly RoomMessagesWatcher $roomMessagesWatcher,
         private readonly ClientHandler       $clientHandler,
         private readonly Logger              $logger
@@ -26,7 +28,7 @@ class RoomMessageFetcher
 
 
 
-    private function getMessage(): ChatMessage|null
+    private function getMessage(): UserChatMessage|null
     {
         return $this->roomMessagesWatcher->getNextChatMessageAfter($this->previous_id);
     }
@@ -50,9 +52,10 @@ class RoomMessageFetcher
                 $this->previous_id = $chat_message->id;
 
                 $this->logger->info("Pulled chat message from MySQL: ");
+                $rendered_chat_message = renderChatMessageMarkdown($chat_message, $this->markdownRenderer);
 
                 send_user_message_to_clients(
-                    $chat_message,
+                    $rendered_chat_message,
                     $this->logger,
                     $this->clientHandler
                 );

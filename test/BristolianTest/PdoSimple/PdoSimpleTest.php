@@ -4,9 +4,13 @@ declare(strict_types = 1);
 
 namespace BristolianTest\PdoSimple;
 
+use Bristolian\Database\user;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleException;
+use Bristolian\Service\UuidGenerator\FixedUuidGenerator;
 use Bristolian\Service\UuidGenerator\RamseyUuidGenerator;
+use Bristolian\Service\UuidGenerator\UuidGenerator;
+use BristolianTest\Service\UuidGenerator\QueueUuidGenerator;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
@@ -953,5 +957,100 @@ SQL;
         $result = $pdo_simple->fetchOneAsDataOrNull($fetch_sql, [':id' => $insert_id]);
         $this->assertNotNull($result);
         $this->assertSame($test_string, $result['test_string']);
+    }
+
+    public function test_insertWithUuid_inserts_user_row_and_returns_uuid(): void
+    {
+        $pdo = $this->injector->make(\PDO::class);
+        $pdoSimple = new PdoSimple($pdo, new RamseyUuidGenerator());
+
+        $uuid = $pdoSimple->insertWithUuid(user::INSERT, []);
+
+        $this->assertMatchesRegularExpression(
+            '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i',
+            $uuid
+        );
+
+        $statement = $pdo->prepare('SELECT id FROM user WHERE id = :id LIMIT 1');
+        $statement->execute(['id' => $uuid]);
+        $row = $statement->fetch(\PDO::FETCH_ASSOC);
+        $this->assertIsArray($row);
+        $this->assertSame($uuid, $row['id']);
+
+        $delete = $pdo->prepare('DELETE FROM user WHERE id = :id');
+        $delete->execute(['id' => $uuid]);
+    }
+
+    public function test_insertWithUuid_throws_when_params_contain_id(): void
+    {
+        $pdo = $this->injector->make(\PDO::class);
+        $pdoSimple = new PdoSimple($pdo, new RamseyUuidGenerator());
+
+        $this->expectException(PdoSimpleException::class);
+        $this->expectExceptionMessage('Cannot call insertWithUuid with a pre-defined id.');
+
+        $pdoSimple->insertWithUuid(user::INSERT, [
+            'id' => '00000000-0000-0000-0000-000000000099',
+        ]);
+    }
+
+    public function test_insertWithUuid_retries_after_duplicate_key_then_succeeds(): void
+    {
+        $pdo = $this->injector->make(\PDO::class);
+        $ramsey = new RamseyUuidGenerator();
+        $collisionUuid = $ramsey->generate();
+        $successUuid = $ramsey->generate();
+
+        $seedPdoSimple = new PdoSimple($pdo, $ramsey);
+        $seedPdoSimple->insert(user::INSERT, ['id' => $collisionUuid]);
+
+        $pdoSimple = new PdoSimple($pdo, new QueueUuidGenerator([$collisionUuid, $successUuid]));
+        $returnedUuid = $pdoSimple->insertWithUuid(user::INSERT, []);
+
+        $this->assertSame($successUuid, $returnedUuid);
+
+        $delete = $pdo->prepare('DELETE FROM user WHERE id = :id');
+        $delete->execute(['id' => $collisionUuid]);
+        $delete->execute(['id' => $successUuid]);
+    }
+
+    public function test_insertWithUuid_throws_after_five_uuid_collisions(): void
+    {
+        $pdo = $this->injector->make(\PDO::class);
+        $collisionUuid = (new RamseyUuidGenerator())->generate();
+
+        $seedPdoSimple = new PdoSimple($pdo, new RamseyUuidGenerator());
+        $seedPdoSimple->insert(user::INSERT, ['id' => $collisionUuid]);
+
+        $pdoSimple = new PdoSimple($pdo, new FixedUuidGenerator($collisionUuid));
+
+        $this->expectException(PdoSimpleException::class);
+        $this->expectExceptionMessage('Failed to insert query');
+
+        try {
+            $pdoSimple->insertWithUuid(user::INSERT, []);
+        } finally {
+            $delete = $pdo->prepare('DELETE FROM user WHERE id = :id');
+            $delete->execute(['id' => $collisionUuid]);
+        }
+    }
+
+    public function test_insertWithUuid_rethrows_when_execute_error_is_not_duplicate_key(): void
+    {
+        $pdo = $this->injector->make(\PDO::class);
+        $oversizedIdGenerator = new class implements UuidGenerator {
+            public function generate(): string
+            {
+                return str_repeat('z', 500);
+            }
+        };
+        $pdoSimple = new PdoSimple($pdo, $oversizedIdGenerator);
+
+        $this->expectException(PdoSimpleWithPreviousException::class);
+        $this->expectExceptionMessageMatchesTemplateString(
+            PdoSimpleWithPreviousException::ERROR_EXECUTING_STATEMENT
+        );
+
+        $pdoSimple->insertWithUuid(user::INSERT, []);
     }
 }

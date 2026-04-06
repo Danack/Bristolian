@@ -21,6 +21,7 @@ use Bristolian\Session\AppSession;
 use Bristolian\Session\AppSessionManager;
 use Bristolian\Session\FakeAsmDriver;
 use Bristolian\Service\AvatarImageStorage\AvatarImageStorage;
+use Bristolian\Service\AvatarImageStorage\FakeAvatarImageStorage;
 use Bristolian\Service\AvatarImageStorage\UploadError;
 use Bristolian\UploadedFiles\FakeUploadedFiles;
 use Bristolian\UploadedFiles\UploadedFiles;
@@ -32,23 +33,6 @@ use Laminas\Diactoros\ServerRequest;
 use SlimDispatcher\Response\HtmlResponse;
 use SlimDispatcher\Response\JsonResponse;
 use VarMap\ArrayVarMap;
-
-/**
- * Fake AvatarImageStorage for UsersTest uploadAvatar tests.
- * @coversNothing
- */
-final class FakeAvatarImageStorageForUsersTest implements AvatarImageStorage
-{
-    public function __construct(
-        private string|UploadError $storeResult
-    ) {
-    }
-
-    public function storeAvatarForUser(string $user_id, \Bristolian\UploadedFiles\UploadedFile $uploadedFile, array $allowedExtensions): string|UploadError
-    {
-        return $this->storeResult;
-    }
-}
 
 /**
  * @coversNothing
@@ -326,8 +310,8 @@ class UsersTest extends BaseTestCase
         $this->injector->share($uploadedFiles);
         $uploadHandler = new UserSessionFileUploadHandler($this->injector->make(\Bristolian\Session\UserSession::class), $uploadedFiles);
         $this->injector->share($uploadHandler);
-        $storage = new FakeAvatarImageStorageForUsersTest('avatar-id-123');
-        $this->injector->alias(AvatarImageStorage::class, FakeAvatarImageStorageForUsersTest::class);
+        $storage = new FakeAvatarImageStorage('avatar-id-123');
+        $this->injector->alias(AvatarImageStorage::class, FakeAvatarImageStorage::class);
         $this->injector->share($storage);
 
         $result = $this->injector->execute([Users::class, 'uploadAvatar']);
@@ -346,8 +330,8 @@ class UsersTest extends BaseTestCase
         $this->injector->share($uploadedFiles);
         $uploadHandler = new UserSessionFileUploadHandler($this->injector->make(\Bristolian\Session\UserSession::class), $uploadedFiles);
         $this->injector->share($uploadHandler);
-        $storage = new FakeAvatarImageStorageForUsersTest(UploadError::uploadedFileUnreadable());
-        $this->injector->alias(AvatarImageStorage::class, FakeAvatarImageStorageForUsersTest::class);
+        $storage = new FakeAvatarImageStorage(UploadError::uploadedFileUnreadable());
+        $this->injector->alias(AvatarImageStorage::class, FakeAvatarImageStorage::class);
         $this->injector->share($storage);
 
         $result = $this->injector->execute([Users::class, 'uploadAvatar']);
@@ -367,8 +351,8 @@ class UsersTest extends BaseTestCase
         $this->injector->share($uploadedFiles);
         $uploadHandler = new UserSessionFileUploadHandler($this->injector->make(\Bristolian\Session\UserSession::class), $uploadedFiles);
         $this->injector->share($uploadHandler);
-        $storage = new FakeAvatarImageStorageForUsersTest('new-avatar-id-456');
-        $this->injector->alias(AvatarImageStorage::class, FakeAvatarImageStorageForUsersTest::class);
+        $storage = new FakeAvatarImageStorage('new-avatar-id-456');
+        $this->injector->alias(AvatarImageStorage::class, FakeAvatarImageStorage::class);
         $this->injector->share($storage);
 
         $result = $this->injector->execute([Users::class, 'uploadAvatar']);

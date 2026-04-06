@@ -13,7 +13,6 @@ use Bristolian\Parameters\ProcessRule\ParseClipTimestampToSeconds;
 
 /**
  * @coversNothing
- * @group wip
  */
 class ParseClipTimestampToSecondsTest extends BaseTestCase
 {

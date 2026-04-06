@@ -69,7 +69,10 @@ $roomMessageFetcher = new SqlRoomMessagesWatcher(
     $logger
 );
 
+$markdownRenderer = new \Bristolian\MarkdownRenderer\CommonMarkRenderer();
+
 $roomMessageWatcher = new RoomMessageFetcher(
+    $markdownRenderer,
     $roomMessageFetcher,
     $clientHandler,
     $logger
