@@ -115,7 +115,6 @@ class Users
         // @codeCoverageIgnoreStart
         // Hard to test: requires forcing Flysystem to throw UnableToReadFile (e.g. missing file in object store or I/O failure).
         catch (\League\Flysystem\UnableToReadFile $unableToReadFile) {
-
             return new \Bristolian\Response\StoredFileErrorResponse($normalized_name);
         }
         // @codeCoverageIgnoreEnd

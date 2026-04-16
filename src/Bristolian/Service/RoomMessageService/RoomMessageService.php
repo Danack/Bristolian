@@ -12,5 +12,4 @@ interface RoomMessageService
     public function sendRoomMessage(ChatMessageParam $chatMessageParam): UserChatMessage;
 
 //    public function sendSystemMessage()
-
 }

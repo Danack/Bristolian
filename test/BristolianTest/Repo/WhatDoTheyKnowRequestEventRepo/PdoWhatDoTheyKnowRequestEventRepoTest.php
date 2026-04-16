@@ -72,8 +72,7 @@ final class PdoWhatDoTheyKnowRequestEventRepoTest extends BaseTestCase
                 \PDO $pdo,
                 UuidGenerator $uuidGenerator,
                 private PdoSimpleWithPreviousException $expectedException
-            )
-            {
+            ) {
                 parent::__construct($pdo, $uuidGenerator);
             }
 

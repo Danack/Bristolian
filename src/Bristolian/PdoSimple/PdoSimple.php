@@ -73,7 +73,8 @@ class PdoSimple
      */
     public function __construct(
         private PDO $pdo,
-        private UuidGenerator $uuidGenerator) {
+        private UuidGenerator $uuidGenerator
+    ) {
     }
 
     /**
@@ -204,7 +205,7 @@ class PdoSimple
         }
         while ($retries < 5);
 
-        throw new PdoSimpleException("Failed to insert query [" . $query . "] as generating a UUID clashed fives times." );
+        throw new PdoSimpleException("Failed to insert query [" . $query . "] as generating a UUID clashed fives times.");
     }
 
 

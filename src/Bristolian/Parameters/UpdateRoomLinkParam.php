@@ -31,4 +31,3 @@ class UpdateRoomLinkParam implements DataType, StaticFactory
     ) {
     }
 }
-

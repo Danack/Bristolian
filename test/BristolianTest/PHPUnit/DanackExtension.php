@@ -10,7 +10,6 @@ use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Configuration;
 
-
 class DanackExtension implements Extension
 {
     public function bootstrap(

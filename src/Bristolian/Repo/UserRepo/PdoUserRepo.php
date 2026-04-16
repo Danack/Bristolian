@@ -12,7 +12,6 @@ class PdoUserRepo implements UserRepo
 {
     public function __construct(private PdoSimple $pdo_simple)
     {
-
     }
 
 

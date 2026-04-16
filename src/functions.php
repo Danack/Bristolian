@@ -1361,8 +1361,7 @@ function parse_clip_timestamp_to_seconds(string $input): ?int
     }
 
     if ($partCount === 3) {
-        if (
-            preg_match('/^\d+$/', $parts[0]) !== 1
+        if (preg_match('/^\d+$/', $parts[0]) !== 1
             || preg_match('/^\d+$/', $parts[1]) !== 1
             || preg_match('/^\d+$/', $parts[2]) !== 1
         ) {

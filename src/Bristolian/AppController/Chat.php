@@ -51,7 +51,6 @@ HTML;
 
         $rendered_messages = [];
         foreach ($messages as $message) {
-
             $rendered_messages[] = renderChatMessageMarkdown($message, $markdownRenderer);
         }
 

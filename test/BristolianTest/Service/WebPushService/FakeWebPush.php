@@ -43,7 +43,8 @@ class FakeWebPush extends WebPush
 
         if ($this->nextResults !== []) {
             [$success, $reason] = array_shift($this->nextResults);
-        } else {
+        }
+        else {
             $success = true;
             $reason = 'OK';
         }

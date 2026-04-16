@@ -509,7 +509,6 @@ TEXT;
         yield 'invalid seconds with hour' => ['1:1:75', null];
 
         yield 'too many sections' => ['1:1:1:75', null];
-
     }
 
     /**

@@ -368,7 +368,6 @@ class Rooms
             ]));
         // @codeCoverageIgnoreStart
         } catch (ValidationException $e) {
-
             // Not reached from typed CLI args: TagParams uses BasicString without extra constraints.
             $this->cliOutput->write("Invalid tag parameters: " . $e->getMessage() . "\n");
             $this->cliOutput->exit(-1);
@@ -444,7 +443,6 @@ class Rooms
                 ]));
             // @codeCoverageIgnoreStart
             } catch (ValidationException $e) {
-
                 // Not reached from typed CLI args: TagParams uses BasicString without extra constraints.
                 $this->cliOutput->write("Invalid tag parameters: " . $e->getMessage() . "\n");
                 $this->cliOutput->exit(-1);

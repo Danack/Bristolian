@@ -161,5 +161,4 @@ final class WhatDoTheyKnowFeedCliControllerTest extends BaseTestCase
             $cliOutput
         );
     }
-
 }

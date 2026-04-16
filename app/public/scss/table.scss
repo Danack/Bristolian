@@ -84,6 +84,22 @@ table.large_table {
     gap: 0.5rem;
     justify-content: flex-start;
   }
+
+  .room_content_search_sort_row {
+    display: contents;
+  }
+
+  .room_content_search_sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    min-width: 0;
+
+    select {
+      min-width: 10rem;
+    }
+  }
 }
 
 .room_content_search_toggle,
@@ -91,4 +107,47 @@ table.large_table {
   background-color: transparent;
   border: none;
   padding: 0;
+}
+
+table.room_files_table {
+  th.room_files_sortable_header {
+    white-space: nowrap;
+  }
+
+  .room_files_sort_header_button {
+    appearance: none;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.2em;
+
+    &:hover {
+      border-bottom-color: var(--content_links_link_hover_color);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--header_link_hover_color);
+      outline-offset: 2px;
+    }
+  }
+
+  th[aria-sort="ascending"] .room_files_sort_header_button,
+  th[aria-sort="descending"] .room_files_sort_header_button {
+    border-bottom-color: var(--content_links_link_color);
+  }
+
+  .room_files_sort_indicator {
+    font-size: 0.75em;
+    font-weight: 500;
+    color: var(--content_links_link_hover_color);
+    min-width: 0.65em;
+  }
 }

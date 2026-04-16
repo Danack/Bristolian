@@ -16,7 +16,7 @@ class ThrowingTranscriptFetcherTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\YouTube\ThrowingTranscriptFetcher
      */
-    function testWorks(): void
+    public function testWorks(): void
     {
         $id = "abcdef12345";
         $thrower = new ThrowingTranscriptFetcher();

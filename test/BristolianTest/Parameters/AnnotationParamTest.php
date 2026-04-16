@@ -100,7 +100,8 @@ class AnnotationParamTest extends BaseTestCase
 
     /**
      */
-    public function test_parses_valid_json_input_to_expected_output(): void {
+    public function test_parses_valid_json_input_to_expected_output(): void
+    {
 
         $json = <<< JSON
 {"title":"Nulla consequat quam ut nisl - annotation.","highlights_json":"[{\"page\":0,\"left\":101,\"top\":392,\"right\":264,\"bottom\":407}]","text":""}

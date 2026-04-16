@@ -43,5 +43,4 @@ class RoomLinkTest extends BaseTestCase
 //        $this->assertSame($userId, $roomLink->user_id);
         $this->assertSame($createdAt, $roomLink->created_at);
     }
-
 }

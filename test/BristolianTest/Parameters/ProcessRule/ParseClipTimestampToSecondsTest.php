@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace BristolianTest\Parameters\ProcessRule;
 
-
 use BristolianTest\BaseTestCase;
 use DataType\DataStorage\TestArrayDataStorage;
 use DataType\ProcessedValues;
 use Bristolian\Parameters\ProcessRule\ParseClipTimestampToSeconds;
-
 
 /**
  * @coversNothing

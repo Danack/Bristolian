@@ -504,5 +504,4 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->expectExceptionMessage('File not found in room');
         $roomFileRepo->updateRoomFileDetails($room->id, $fileId, 'x', 'y', null);
     }
-
 }

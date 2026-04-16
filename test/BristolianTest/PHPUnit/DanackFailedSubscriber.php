@@ -5,7 +5,6 @@ namespace BristolianTest\PHPUnit;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\FailedSubscriber;
 
-
 final class DanackFailedSubscriber implements FailedSubscriber
 {
     public function notify(Failed $event): void

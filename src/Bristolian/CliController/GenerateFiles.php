@@ -152,6 +152,8 @@ function map_column_to_php_type(array $column): string
  * The omitted generated class would be `Bristolian\Model\Generated\` . table_name_to_class_name($table).
  *
  * @return array<string, class-string>
+ *
+ * @codeCoverageIgnore
  */
 function hand_written_model_classes_by_table(): array
 {
@@ -163,8 +165,11 @@ function hand_written_model_classes_by_table(): array
 /**
  * Column order matches ORDINAL_POSITION from information_schema (same as generate_model_class).
  *
+ *
  * @param array<array<string, mixed>> $columns_info
  * @return array<int, array{name: string, type: string}>
+ *
+ * @codeCoverageIgnore
  */
 function expected_model_constructor_params_from_columns(array $columns_info): array
 {

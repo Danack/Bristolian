@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace BristolianTest\Parameters\ProcessRule;
 
-
 use BristolianTest\BaseTestCase;
 use DataType\DataStorage\TestArrayDataStorage;
 use DataType\Exception\DataTypeLogicException;
@@ -13,7 +12,6 @@ use DataType\InputType;
 use DataType\ProcessedValue;
 use DataType\ProcessedValues;
 use Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime;
-
 
 /**
  * @coversNothing
@@ -155,7 +153,6 @@ class ClipEndTimeAfterStartTimeTest extends BaseTestCase
 
         $this->expectException(DataTypeLogicException::class);
         $result = $rule->process("foo", $processedValues, $dataStorage);
-
     }
 
 
