@@ -3,21 +3,28 @@
 
 /**
  * Usage:
- *   php list_uncovered_lines.php clover.xml
+ *   php list_uncovered_lines.php clover.xml [mode]
  *
  * Output:
- *   path/to/file.php:LINE
+ *   default: path/to/file.php:LINE
+ *   improve_test_coverage: /improve_test_coverage path/to/file.php
  */
 
 if ($argc < 2) {
-    fwrite(STDERR, "Usage: php list_uncovered_lines.php clover.xml\n");
+    fwrite(STDERR, "Usage: php list_uncovered_lines.php clover.xml [mode]\n");
     exit(1);
 }
 
 $cloverFile = $argv[1];
+$mode = $argv[2] ?? 'default';
 
 if (!file_exists($cloverFile)) {
     fwrite(STDERR, "File not found: $cloverFile\n");
+    exit(1);
+}
+
+if ($mode !== 'default' && $mode !== 'improve_test_coverage') {
+    fwrite(STDERR, "Unknown mode: $mode\n");
     exit(1);
 }
 
@@ -36,6 +43,7 @@ if ($xml === false) {
  */
 
 $containerPrefix = '/var/app/';
+$filesWithUncoveredLines = [];
 
 foreach ($xml->project->file as $file) {
     $fileName = (string) $file['name'];
@@ -55,7 +63,18 @@ foreach ($xml->project->file as $file) {
         }
 
         if ($count === 0) {
+            if ($mode === 'improve_test_coverage') {
+                $filesWithUncoveredLines[$fileName] = true;
+                continue;
+            }
+
             echo $fileName . ':' . $num . PHP_EOL;
         }
+    }
+}
+
+if ($mode === 'improve_test_coverage') {
+    foreach (array_keys($filesWithUncoveredLines) as $fileName) {
+        echo '/improve_test_coverage ' . $fileName . PHP_EOL;
     }
 }

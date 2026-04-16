@@ -1031,9 +1031,15 @@ SQL) => ['read' => [], 'write' => ['user_webpush_subscription']],
                 'read' => ['meme_tag', 'stored_meme'],
                 'write' => [],
             ],
-            // RoomFileRepo::getFilesForRoom - dynamic WHERE (title, date filters)
+            // RoomFileRepo::getFilesForRoom - tag filter (subquery reads room_file_tag); must be before the general pattern
             [
-                'pattern' => '#select sf\.id.*from room_file_object_info as sf left join room_file as rf on sf\.id = rf\.stored_file_id where .* order by sf\.created_at desc limit :limit#s',
+                'pattern' => '#^select\s+sf\.id,.*from\s+room_file_object_info\s+as\s+sf\s+left\s+join\s+room_file\s+as\s+rf\s+on\s+sf\.id\s*=\s*rf\.stored_file_id\s+where.+room_file_tag.+order\s+by\s+.+\s+limit\s+:limit$#s',
+                'read' => ['room_file_object_info', 'room_file', 'room_file_tag'],
+                'write' => [],
+            ],
+            // RoomFileRepo::getFilesForRoom - other dynamic WHERE (title, dates, sort order)
+            [
+                'pattern' => '#^select\s+sf\.id,.*from\s+room_file_object_info\s+as\s+sf\s+left\s+join\s+room_file\s+as\s+rf\s+on\s+sf\.id\s*=\s*rf\.stored_file_id\s+where\s+.+\s+order\s+by\s+.+\s+limit\s+:limit$#s',
                 'read' => ['room_file_object_info', 'room_file'],
                 'write' => [],
             ],

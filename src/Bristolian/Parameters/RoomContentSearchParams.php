@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Bristolian\Parameters;
 
 use Bristolian\Parameters\PropertyType\OptionalBasicString;
+use Bristolian\Parameters\PropertyType\OptionalRoomContentListOrder;
 use Bristolian\Parameters\PropertyType\RoomContentSearchTagIds;
+use DataType\Value\Ordering;
 use Bristolian\StaticFactory;
 use DataType\Basic\OptionalDateTime;
 use DataType\Create\CreateFromRequest;
@@ -45,6 +47,8 @@ class RoomContentSearchParams implements DataType, StaticFactory
         public readonly ?\DateTimeInterface $document_timestamp_before,
         #[RoomContentSearchTagIds('tag_ids')]
         public readonly array $tag_ids,
+        #[OptionalRoomContentListOrder('order')]
+        public readonly ?Ordering $list_ordering,
     ) {
     }
 
@@ -53,7 +57,7 @@ class RoomContentSearchParams implements DataType, StaticFactory
      */
     public static function default(): self
     {
-        return new self(null, null, null, null, null, null, null, []);
+        return new self(null, null, null, null, null, null, null, [], null);
     }
 
     /** SQL-safe string for created_at_after (Y-m-d H:i:s) or null. */

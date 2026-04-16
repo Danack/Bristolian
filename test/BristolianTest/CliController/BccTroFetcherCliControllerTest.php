@@ -170,6 +170,30 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
     /**
      * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
      */
+    public function test_fetchTros_writes_error_and_returns_when_transport_room_is_missing(): void
+    {
+        $doc = new BccTroDocument('', '', '');
+        $tro = new BccTro('Fetched TRO', 'REF-42', $doc, $doc, $doc);
+        $fetcher = new BccTroFetcherReturningFixedTros([$tro]);
+        $repo = new BccTroFetcherTestBccTroRepo();
+        $cliOutput = new CapturingCliOutput();
+        $controller = new BccTroFetcherCliController();
+        $roomRepo = new FakeRoomRepo();
+        $roomMessageService = new \Bristolian\Service\RoomMessageService\FakeRoomMessageService();
+
+        $controller->fetchTros($fetcher, $repo, $roomRepo, $roomMessageService, $cliOutput);
+
+        $this->assertStringContainsString(
+            "Failed to find 'Transport'.",
+            $cliOutput->getCapturedOutput()
+        );
+        $this->assertNotNull($repo->lastSavedTros);
+        $this->assertCount(0, $roomMessageService->getChatMessages());
+    }
+
+    /**
+     * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
+     */
     public function test_fetchTros_writes_error_and_requests_exit_when_fetch_throws(): void
     {
         $repo = new BccTroFetcherTestBccTroRepo();
@@ -265,5 +289,40 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
         $records = $repo->getRunRecords(\Bristolian\Repo\ProcessorRepo\ProcessType::daily_bcc_tro);
         $this->assertNotEmpty($records);
         $this->assertSame(\Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::STATE_FINISHED, $records[0]->status);
+    }
+
+    /**
+     * @covers \Bristolian\CliController\BccTroFetcherCliController::runInternal
+     * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
+     */
+    public function test_runInternal_records_error_and_finishes_when_fetch_throws(): void
+    {
+        $schedule = new FakeDailyProcessorSchedule();
+        $schedule->isWithinDailyWindow = true;
+        $schedule->lastRunIsOverCooldownHoursAgo = true;
+        $repo = new FakeProcessorRunRecordRepo();
+        $cliOutput = new CapturingCliOutput();
+        $controller = new BccTroFetcherCliController();
+        $roomRepo = new FakeRoomRepo();
+        $roomRepo->createRoom('owner_user_id', 'Transport', 'Discuss transport');
+
+        $controller->runInternal(
+            $repo,
+            new BccTroFetcherThatThrows(new \RuntimeException('network down')),
+            new BccTroFetcherTestBccTroRepo(),
+            $schedule,
+            $roomRepo,
+            new \Bristolian\Service\RoomMessageService\FakeRoomMessageService(),
+            $cliOutput
+        );
+
+        $records = $repo->getRunRecords(\Bristolian\Repo\ProcessorRepo\ProcessType::daily_bcc_tro);
+        $this->assertCount(1, $records);
+        $this->assertSame(
+            \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::STATE_FINISHED,
+            $records[0]->status
+        );
+        $this->assertSame('Error fetching TRO data: network down', $records[0]->debug_info);
+        $this->assertStringContainsString('Fin.', $cliOutput->getCapturedOutput());
     }
 }

@@ -78,6 +78,7 @@
         },
         "files": [
             "src/functions.php",
+            "src/functions_searching.php",
             "src/functions_common.php",
             "src/functions_exif.php",
             "src/functions_tinned_fish.php",

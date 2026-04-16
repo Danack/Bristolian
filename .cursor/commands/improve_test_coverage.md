@@ -1,12 +1,13 @@
 # Improve Test Coverage
 
-Improves test coverage for a specified directory or namespace by identifying uncovered lines and creating tests for them.
+Improves test coverage for a specified directory or namespace by identifying uncovered lines and creating tests for them. It can also be used to get the whole project back to 100% coverage when we have drifted slightly below it.
 
 ## Usage
 
 You can either:
 1. **Provide a directory or namespace** - I will improve test coverage for that specific area
 2. **Ask me to suggest a namespace** - I will analyze coverage and suggest which namespace needs the most improvement
+3. **Ask me to get the project back to 100% coverage** - I will run the full suite, inspect the clover report and uncovered-line output, and then cover the remaining gaps directly
 
 ## How It Works
 
@@ -24,7 +25,7 @@ docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh --no-progress"
 
 ### Step 3: Find Uncovered Lines
 
-Identify uncovered lines for the specified directory/namespace:
+Identify uncovered lines for the specified directory/namespace, or inspect the whole project if the goal is to get back to 100% coverage:
 
 ```bash
 # For a namespace (e.g., Bristolian/Response)
@@ -32,6 +33,9 @@ docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xm
 
 # For a directory (e.g., src/Bristolian/Response)
 docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml | grep src/Bristolian/Response"
+
+# For the whole project when aiming for 100% coverage
+docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml"
 ```
 
 ### Step 4: Analyze Existing Tests
@@ -99,13 +103,25 @@ After creating tests, run the tests again to verify:
 5. Create tests for uncovered Model classes
 6. Run tests to verify improvement
 
+### Example 4: Get Back to 100% Coverage
+
+**User:** `@improve_test_coverage get everything back to 100%`
+
+**What I do:**
+1. Read testing guidelines
+2. Run the full test suite to generate a fresh coverage report
+3. Inspect uncovered lines across the whole project from `clover.xml` and `list_uncovered_lines.php`
+4. Review the affected code and nearby tests
+5. Add the missing tests needed to cover the remaining gaps
+6. Run the relevant tests during development, then rerun the full suite to confirm we are back at 100%
+
 ## Notes
 
 - **Test structure**: I follow the patterns established in existing test files, using the same naming conventions, structure, and testing approaches.
 
 - **No mocks**: Per project guidelines, I use real objects and Fake implementations instead of mock objects.
 
-- **Coverage goal**: 100% coverage is the goal. It's okay to take our time. If something is difficult to test, ask for guidance. If a small refactor would make the code easier to test, that may be a better path than leaving it uncovered.
+- **Coverage goal**: 100% coverage is the goal. In this project that usually means a small number of missing lines, not a huge campaign, so just run the suite, inspect the uncovered lines, and cover them. Do not faff about worrying about "large refactors" unless the code genuinely proves that one is required. If a small refactor is truly needed to make a line testable, keep it minimal and explain why.
 
 - **Error-handling paths**: Some uncovered lines may be defensive error-handling code that's difficult to trigger. These are acceptable to leave uncovered if they represent edge cases that are difficult to test for.
 

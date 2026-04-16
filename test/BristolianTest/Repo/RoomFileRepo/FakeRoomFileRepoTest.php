@@ -14,7 +14,7 @@ use VarMap\ArrayVarMap;
 /**
  * Tests for FakeRoomFileRepo
  *
- * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
+ * @coversNothing
  * @group standard_repo
  */
 class FakeRoomFileRepoTest extends RoomFileRepoFixture
@@ -46,7 +46,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
      */
     public function test_getFilesForRoom_returns_empty_initially(): void
     {
@@ -58,7 +58,9 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
      */
     public function test_addFileToRoom_and_getFilesForRoom(): void
     {
@@ -84,7 +86,9 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
      */
     public function test_getFilesForRoom_returns_stored_files(): void
     {
@@ -102,7 +106,9 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
      */
     public function test_files_in_different_rooms_are_independent(): void
     {
@@ -126,7 +132,8 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFileDetails
      */
     public function test_getFileDetails_returns_file(): void
     {
@@ -144,7 +151,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFileDetails
      */
     public function test_getFileDetails_returns_null_for_nonexistent_file(): void
     {
@@ -166,7 +173,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFileDetails
      */
     public function test_getFileDetails_returns_null_for_nonexistent_room(): void
     {
@@ -178,7 +185,8 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFileDetails
      */
     public function test_getFileDetails_returns_null_for_file_in_different_room(): void
     {
@@ -198,7 +206,9 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
      */
     public function test_same_file_in_multiple_rooms(): void
     {
@@ -223,7 +233,9 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
      */
     public function test_stored_file_properties(): void
     {
@@ -240,7 +252,9 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
      */
     public function test_multiple_files_in_room(): void
     {
@@ -259,7 +273,10 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFileDetails
      */
     public function test_getFileDetails_matches_getFilesForRoom(): void
     {
@@ -371,6 +388,127 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $files = $roomFileRepo->getFilesForRoom($room_id, $search);
 
         $this->assertCount(0, $files);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     */
+    public function test_getFilesForRoom_orders_by_name_asc_when_order_param_plus_name(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_123';
+        $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
+            'file_b',
+            'b.pdf',
+            'zebra.pdf',
+            'uploaded',
+            100,
+            'user_1',
+            new \DateTimeImmutable('2024-01-02 12:00:00')
+        ));
+        $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
+            'file_a',
+            'a.pdf',
+            'apple.pdf',
+            'uploaded',
+            100,
+            'user_1',
+            new \DateTimeImmutable('2024-01-01 12:00:00')
+        ));
+        $roomFileRepo->addFileToRoom('file_b', $room_id);
+        $roomFileRepo->addFileToRoom('file_a', $room_id);
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['order' => '+name']));
+        $files = $roomFileRepo->getFilesForRoom($room_id, $search);
+
+        $this->assertSame(['file_a', 'file_b'], array_map(static fn ($file) => $file->id, $files));
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     */
+    public function test_getFilesForRoom_orders_by_size_desc_when_order_param_minus_size(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_123';
+        $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
+            'file_small',
+            's.pdf',
+            's.pdf',
+            'uploaded',
+            10,
+            'user_1',
+            new \DateTimeImmutable('2024-01-01 12:00:00')
+        ));
+        $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
+            'file_big',
+            'b.pdf',
+            'b.pdf',
+            'uploaded',
+            9999,
+            'user_1',
+            new \DateTimeImmutable('2024-01-02 12:00:00')
+        ));
+        $roomFileRepo->addFileToRoom('file_small', $room_id);
+        $roomFileRepo->addFileToRoom('file_big', $room_id);
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['order' => '-size']));
+        $files = $roomFileRepo->getFilesForRoom($room_id, $search);
+
+        $this->assertSame(['file_big', 'file_small'], array_map(static fn ($file) => $file->id, $files));
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::setDocumentTimestampForFileInRoom
+     */
+    public function test_getFilesForRoom_orders_document_date_asc_puts_null_timestamp_last(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_123';
+        $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
+            'file_no_doc_date',
+            'n.pdf',
+            'n.pdf',
+            'uploaded',
+            100,
+            'user_1',
+            new \DateTimeImmutable('2024-01-01 12:00:00')
+        ));
+        $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
+            'file_with_doc_date',
+            'w.pdf',
+            'w.pdf',
+            'uploaded',
+            100,
+            'user_1',
+            new \DateTimeImmutable('2024-01-02 12:00:00')
+        ));
+        $roomFileRepo->addFileToRoom('file_no_doc_date', $room_id);
+        $roomFileRepo->addFileToRoom('file_with_doc_date', $room_id);
+        $roomFileRepo->setDocumentTimestampForFileInRoom($room_id, 'file_with_doc_date', new \DateTimeImmutable('2020-06-01 00:00:00'));
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['order' => '+document_date']));
+        $files = $roomFileRepo->getFilesForRoom($room_id, $search);
+
+        $this->assertSame(['file_with_doc_date', 'file_no_doc_date'], array_map(static fn ($file) => $file->id, $files));
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
+     */
+    public function test_getFilesForRoom_honors_limit(): void
+    {
+        $roomFileRepo = new FakeRoomFileRepo();
+        $room_id = 'room_limit';
+        $roomFileRepo->addFileToRoom('file_1', $room_id);
+        $roomFileRepo->addFileToRoom('file_2', $room_id);
+        $roomFileRepo->addFileToRoom('file_3', $room_id);
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['limit' => '2']));
+        $files = $roomFileRepo->getFilesForRoom($room_id, $search);
+
+        $this->assertCount(2, $files);
     }
 
     /**

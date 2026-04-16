@@ -234,6 +234,8 @@ function normalize_reflected_constructor_param_type(\ReflectionParameter $param)
  * @param class-string $className
  * @param array<array<string, mixed>> $columns_info
  *
+ * @codeCoverageIgnore
+ *
  * @throws BristolianException
  */
 function assert_hand_written_model_matches_table_schema(

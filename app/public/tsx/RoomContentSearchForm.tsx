@@ -2,6 +2,9 @@ import { h } from "preact";
 import { RoomTag } from "./generated/types";
 import { ROOM_CONTENT_LIST_DEFAULT_LIMIT } from "./generated/constants";
 
+/** Matches backend {@see OptionalRoomContentListOrder} known names. */
+export type RoomFilesListSortColumn = "name" | "size" | "added" | "document_date";
+
 export interface RoomContentSearchFormProps {
     title: string;
     description: string;
@@ -25,6 +28,14 @@ export interface RoomContentSearchFormProps {
     onLimitChange: (value: number) => void;
     onToggleTag: (tagId: string) => void;
     onClear: () => void;
+
+    /** When set, show file list sort controls (room files panel only). */
+    sortColumn?: RoomFilesListSortColumn | null;
+    sortDirection?: "asc" | "desc" | null;
+    onSortChange?: (
+        column: RoomFilesListSortColumn | null,
+        direction: "asc" | "desc" | null
+    ) => void;
 }
 
 export function RoomContentSearchForm(props: RoomContentSearchFormProps) {
@@ -48,7 +59,54 @@ export function RoomContentSearchForm(props: RoomContentSearchFormProps) {
         onLimitChange,
         onToggleTag,
         onClear,
+        sortColumn = null,
+        sortDirection = null,
+        onSortChange,
     } = props;
+
+    const sortControls =
+        onSortChange !== undefined ? (
+            <div className="room_content_search_sort_row">
+                <label className="room_content_search_sort">
+                    Sort by{" "}
+                    <select
+                        value={sortColumn ?? ""}
+                        onChange={(event) => {
+                            const value = (event.target as HTMLSelectElement).value;
+                            if (value === "") {
+                                onSortChange(null, null);
+                                return;
+                            }
+                            const column = value as RoomFilesListSortColumn;
+                            onSortChange(column, sortDirection ?? "asc");
+                        }}
+                    >
+                        <option value="">Default (added, newest first)</option>
+                        <option value="name">Name</option>
+                        <option value="size">Size</option>
+                        <option value="added">Added</option>
+                        <option value="document_date">Document date</option>
+                    </select>
+                </label>
+                <label className="room_content_search_sort">
+                    Direction{" "}
+                    <select
+                        disabled={sortColumn === null}
+                        value={sortDirection ?? "asc"}
+                        onChange={(event) => {
+                            const value = (event.target as HTMLSelectElement).value as "asc" | "desc";
+                            if (sortColumn !== null) {
+                                onSortChange(sortColumn, value);
+                            }
+                        }}
+                    >
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </label>
+                <div />
+            </div>
+        ) : null;
 
     return (
         <div className="room_content_search_form">
@@ -143,6 +201,7 @@ export function RoomContentSearchForm(props: RoomContentSearchFormProps) {
                 </button>
             </div>
             <div />
+            {sortControls}
         </div>
     );
 }

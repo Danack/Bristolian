@@ -12,6 +12,8 @@ export interface RoomContentSearchParams {
     document_timestamp_after?: string;
     document_timestamp_before?: string;
     tag_ids?: string[];
+    /** DataType Order format, e.g. `+name` or `-document_date`. */
+    order?: string;
 }
 
 function buildQueryString(params: RoomContentSearchParams): string {
@@ -39,6 +41,9 @@ function buildQueryString(params: RoomContentSearchParams): string {
     }
     if (params.tag_ids != null && params.tag_ids.length > 0) {
         searchParams.set("tag_ids", params.tag_ids.join(","));
+    }
+    if (params.order != null && params.order !== "") {
+        searchParams.set("order", params.order);
     }
     const query = searchParams.toString();
     return query === "" ? "" : "?" + query;

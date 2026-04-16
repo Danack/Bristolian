@@ -59,7 +59,7 @@
 
 
       <!-- toggle_slow begin <html outputDirectory="tmp/coverage" lowUpperBound="90" highLowerBound="100"/> -->
-
+<html outputDirectory="tmp/coverage" lowUpperBound="90" highLowerBound="100"/>
 <!-- toggle_slow end-->
 
     </report>
@@ -75,7 +75,7 @@
 
 
       <!-- toggle_fast begin <group>db</group> <group>slow</group>-->
-<group>db</group> <group>slow</group>
+
 <!-- toggle_fast end-->
     </exclude>
   </groups>

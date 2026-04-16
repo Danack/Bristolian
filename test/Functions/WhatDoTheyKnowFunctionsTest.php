@@ -436,4 +436,32 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
             whatDoTheyKnowRequestUrlFromUrlTitle('provide_the_reports_for_the_hous')
         );
     }
+
+    /**
+     * @covers \buildNewEventRoomMessageText
+     * @covers \parseWhatDoTheyKnowRequestEventFromArray
+     * @covers \whatdotheyknowRequestEventFromArray
+     * @covers \whatdotheyknowInfoRequestFromArray
+     * @covers \whatdotheyknowPublicBodyFromArray
+     * @covers \whatdotheyknowPublicBodyRequestCountsFromArray
+     * @covers \whatdotheyknowRequestEventUserFromArray
+     * @covers \whatdotheyknowRequireArray
+     * @covers \whatdotheyknowRequireString
+     * @covers \whatdotheyknowOptionalString
+     * @covers \whatdotheyknowRequireInt
+     * @covers \whatdotheyknowOptionalInt
+     * @covers \whatdotheyknowRequireBool
+     */
+    public function test_buildNewEventRoomMessageText_formats_summary_lines(): void
+    {
+        $event = parseWhatDoTheyKnowRequestEventFromArray(self::minimalValidRequestEventArray());
+        $requestUrl = 'https://www.whatdotheyknow.com/request/test_request_slug';
+
+        $messageText = buildNewEventRoomMessageText($event, $requestUrl);
+
+        self::assertSame(
+            "WhatDoTheyKnow update (response, Successful)\nRequest: [Test title](https://www.whatdotheyknow.com/request/test_request_slug)",
+            $messageText
+        );
+    }
 }

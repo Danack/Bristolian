@@ -131,17 +131,33 @@ class AdminTest extends BaseTestCase
      */
     public function test_updateProcessors_invalid_processor(): void
     {
-        // ProcessType::daily_bcc_tro is a valid enum but not listed in Admin::$processors
-        $varMap = new ArrayVarMap([
-            'processor' => ProcessType::daily_bcc_tro->value,
-            'action' => 'enable',
-        ]);
-        $this->injector->alias(VarMap::class, ArrayVarMap::class);
-        $this->injector->share($varMap);
-        $this->setupFakeUserSession();
+        $reflectionClass = new \ReflectionClass(Admin::class);
+        $processorsProperty = $reflectionClass->getProperty('processors');
+        /** @var array<string, string> $originalProcessors */
+        $originalProcessors = $processorsProperty->getValue();
+        $updatedProcessors = $originalProcessors;
+        unset($updatedProcessors[ProcessType::daily_bcc_tro->value]);
+        $processorsProperty->setValue(null, $updatedProcessors);
 
-        $result = $this->injector->execute([Admin::class, 'updateProcessors']);
-        $this->assertInstanceOf(RedirectResponse::class, $result);
+        try {
+            $varMap = new ArrayVarMap([
+                'processor' => ProcessType::daily_bcc_tro->value,
+                'action' => 'enable',
+            ]);
+            $this->injector->alias(VarMap::class, ArrayVarMap::class);
+            $this->injector->share($varMap);
+            $this->setupFakeUserSession();
+
+            $result = $this->injector->execute([Admin::class, 'updateProcessors']);
+            $this->assertInstanceOf(RedirectResponse::class, $result);
+            $this->assertSame(
+                '/admin/control_processors?message=Invalid processor specified',
+                $result->getRedirectUri()
+            );
+        }
+        finally {
+            $processorsProperty->setValue(null, $originalProcessors);
+        }
     }
 
     /**

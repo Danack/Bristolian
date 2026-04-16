@@ -89,6 +89,7 @@ SQL;
         }
 
         $whereClause = implode(' and ', $where);
+        $order_by = room_files_sql_order_by_clause($search->list_ordering);
         $sql = <<< SQL
 select
     sf.id,
@@ -104,7 +105,7 @@ select
 from room_file_object_info as sf
 left join room_file as rf on sf.id = rf.stored_file_id
 where {$whereClause}
-order by sf.created_at desc
+order by {$order_by}
 limit :limit
 SQL;
 

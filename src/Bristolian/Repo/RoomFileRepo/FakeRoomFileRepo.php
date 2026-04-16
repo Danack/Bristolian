@@ -90,7 +90,14 @@ class FakeRoomFileRepo implements RoomFileRepo
         }
 
         $filesForRoom = $this->filterFilesBySearch($filesForRoom, $search);
-        usort($filesForRoom, fn ($a, $b) => $b->created_at <=> $a->created_at);
+        usort(
+            $filesForRoom,
+            fn (RoomFileInRoom $left, RoomFileInRoom $right): int => compare_room_files_for_list_sort(
+                $left,
+                $right,
+                $search->list_ordering
+            )
+        );
         return array_slice($filesForRoom, 0, $search->getLimit());
     }
 

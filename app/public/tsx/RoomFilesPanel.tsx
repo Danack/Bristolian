@@ -8,7 +8,7 @@ import { get_logged_in, subscribe_logged_in } from "./store";
 import { patchRoomFile, setFileTags } from "./api_room_entity_tags";
 import { fetchRoomFiles, RoomContentSearchParams } from "./api_room_content_list";
 import { ROOM_CONTENT_LIST_DEFAULT_LIMIT } from "./generated/constants";
-import { RoomContentSearchForm } from "./RoomContentSearchForm";
+import { RoomContentSearchForm, RoomFilesListSortColumn } from "./RoomContentSearchForm";
 import { setRoomFileEditingActive } from "./room_file_editing";
 
 export interface RoomFilesPanelProps {
@@ -20,6 +20,17 @@ function pad2(value: number): string {
 }
 
 /** Value for HTML datetime-local from a Date (local wall time). */
+function orderQueryFromSort(
+    column: RoomFilesListSortColumn | null,
+    direction: "asc" | "desc" | null,
+): string | undefined {
+    if (column === null || direction === null) {
+        return undefined;
+    }
+    const prefix = direction === "asc" ? "+" : "-";
+    return prefix + column;
+}
+
 function dateToDatetimeLocalValue(value: Date | null): string {
     if (value === null) {
         return "";
@@ -52,6 +63,8 @@ interface RoomFilesPanelState {
     searchWaiting: boolean;
     searchInFlight: boolean;
     searchVisible: boolean;
+    searchSortColumn: RoomFilesListSortColumn | null;
+    searchSortDirection: "asc" | "desc" | null;
 }
 
 function getDefaultState(): RoomFilesPanelState {
@@ -77,6 +90,8 @@ function getDefaultState(): RoomFilesPanelState {
         searchWaiting: false,
         searchInFlight: false,
         searchVisible: false,
+        searchSortColumn: null,
+        searchSortDirection: null,
     };
 }
 
@@ -140,6 +155,7 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             document_timestamp_after: s.searchDocAfter.trim() || undefined,
             document_timestamp_before: s.searchDocBefore.trim() || undefined,
             tag_ids: s.searchTagIds.size > 0 ? Array.from(s.searchTagIds) : undefined,
+            order: orderQueryFromSort(s.searchSortColumn, s.searchSortDirection),
         };
     }
 
@@ -173,6 +189,8 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
             searchTagIds: new Set(),
             searchLimit: ROOM_CONTENT_LIST_DEFAULT_LIMIT,
             searchWaiting: false,
+            searchSortColumn: null,
+            searchSortDirection: null,
         }, () => this.refreshFiles());
     };
 
@@ -181,6 +199,77 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         if (next.has(tagId)) next.delete(tagId);
         else next.add(tagId);
         this.setState({ searchTagIds: next, searchWaiting: true, searchInFlight: false }, () => this.scheduleSearch());
+    }
+
+    cycleSortColumn(column: RoomFilesListSortColumn) {
+        this.setState(
+            (previousState) => {
+                if (previousState.searchSortColumn !== column) {
+                    return {
+                        searchSortColumn: column,
+                        searchSortDirection: "asc" as const,
+                    };
+                }
+                if (previousState.searchSortDirection === "asc") {
+                    return { searchSortDirection: "desc" as const };
+                }
+                return {
+                    searchSortColumn: null,
+                    searchSortDirection: null,
+                };
+            },
+            () => this.refreshFiles(),
+        );
+    }
+
+    sortAriaSort(column: RoomFilesListSortColumn): "none" | "ascending" | "descending" {
+        if (this.state.searchSortColumn !== column) {
+            return "none";
+        }
+        if (this.state.searchSortDirection === "asc") {
+            return "ascending";
+        }
+        if (this.state.searchSortDirection === "desc") {
+            return "descending";
+        }
+        return "none";
+    }
+
+    renderSortIndicator(column: RoomFilesListSortColumn) {
+        if (this.state.searchSortColumn !== column) {
+            return null;
+        }
+        if (this.state.searchSortDirection === "asc") {
+            return (
+                <span className="room_files_sort_indicator" title="Ascending" aria-hidden>
+                    ↑
+                </span>
+            );
+        }
+        if (this.state.searchSortDirection === "desc") {
+            return (
+                <span className="room_files_sort_indicator" title="Descending" aria-hidden>
+                    ↓
+                </span>
+            );
+        }
+        return null;
+    }
+
+    renderSortableColumnHeader(column: RoomFilesListSortColumn, label: string) {
+        return (
+            <th className="room_files_sortable_header" aria-sort={this.sortAriaSort(column)} scope="col">
+                <button
+                    type="button"
+                    className="room_files_sort_header_button"
+                    title="Sort: ascending, then descending, then default order"
+                    onClick={() => this.cycleSortColumn(column)}
+                >
+                    {label}
+                    {this.renderSortIndicator(column)}
+                </button>
+            </th>
+        );
     }
 
     processData(data: GetRoomsFilesResponse) {
@@ -367,14 +456,14 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
         return (
             <span>
                 <span className="section-heading">Files</span>
-                <table className="large_table">
+                <table className="large_table room_files_table">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Size</th>
-                            <th>Added</th>
-                            <th>Date</th>
-                            <th>Tags</th>
+                            {this.renderSortableColumnHeader("name", "Name")}
+                            {this.renderSortableColumnHeader("size", "Size")}
+                            {this.renderSortableColumnHeader("added", "Added")}
+                            {this.renderSortableColumnHeader("document_date", "Date")}
+                            <th scope="col">Tags</th>
                             {logged_in && <th />}
                             {logged_in && <th />}
                         </tr>
@@ -664,6 +753,20 @@ export class RoomFilesPanel extends Component<RoomFilesPanelProps, RoomFilesPane
                             }
                             onToggleTag={(tagId: string) => this.toggleSearchTag(tagId)}
                             onClear={this.onClearSearch}
+                            sortColumn={this.state.searchSortColumn}
+                            sortDirection={this.state.searchSortDirection}
+                            onSortChange={(
+                                column: RoomFilesListSortColumn | null,
+                                direction: "asc" | "desc" | null,
+                            ) => {
+                                this.setState(
+                                    {
+                                        searchSortColumn: column,
+                                        searchSortDirection: direction,
+                                    },
+                                    () => this.refreshFiles(),
+                                );
+                            }}
                         />
                     </div>
                 ) : (

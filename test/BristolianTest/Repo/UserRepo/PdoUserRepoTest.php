@@ -49,31 +49,28 @@ final class PdoUserRepoTest extends BaseTestCase
         self::assertSame($room->id, $fromGet->room_id);
     }
 
-//    /**
-//     * Uses raw PDO for deletes so test DBs that already have a SYSTEM row still exercise the insert path.
-//     *
-//     * @covers \Bristolian\Repo\UserRepo\PdoUserRepo::ensureSystemUserExists
-//     */
-//    public function test_ensureSystemUserExists_inserts_after_system_row_removed(): void
-//    {
-//        $pdo = $this->injector->make(PDO::class);
-//        $repo = $this->injector->make(PdoUserRepo::class);
-//
-//        $before = $repo->ensureSystemUserExists();
-//        $previousUserId = $before->user_id;
-//
-//        $statement = $pdo->prepare('DELETE FROM user_ownership WHERE type = :type');
-//        $statement->execute([':type' => UserRepo::TYPE_SYSTEM]);
-//
-//        $statement = $pdo->prepare('DELETE FROM user WHERE id = :id');
-//        $statement->execute([':id' => $previousUserId]);
-//
-//        $after = $repo->ensureSystemUserExists();
-//
-//        self::assertNotSame($previousUserId, $after->user_id);
-//        self::assertSame(UserRepo::TYPE_SYSTEM, $after->type);
-//        self::assertNull($after->room_id);
-//    }
+    /**
+     * Uses raw PDO deletes so test DBs that already have a SYSTEM row still exercise the insert path.
+     *
+     * @covers \Bristolian\Repo\UserRepo\PdoUserRepo::ensureSystemUserExists
+     */
+    public function test_ensureSystemUserExists_inserts_after_system_row_removed(): void
+    {
+        $pdo = $this->injector->make(PDO::class);
+        $repo = $this->injector->make(PdoUserRepo::class);
+
+        $before = $repo->ensureSystemUserExists();
+        $previousUserId = $before->user_id;
+
+        $statement = $pdo->prepare('DELETE FROM user_ownership WHERE type = :type');
+        $statement->execute([':type' => UserRepo::TYPE_SYSTEM]);
+
+        $after = $repo->ensureSystemUserExists();
+
+        self::assertNotSame($previousUserId, $after->user_id);
+        self::assertSame(UserRepo::TYPE_SYSTEM, $after->type);
+        self::assertNull($after->room_id);
+    }
 
     /**
      * @covers \Bristolian\Repo\UserRepo\PdoUserRepo::ensureSystemUserExists

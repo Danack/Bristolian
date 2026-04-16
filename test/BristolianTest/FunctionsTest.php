@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace BristolianTest;
 
 use Bristolian\Exception\BristolianException;
+use Bristolian\MarkdownRenderer\MarkdownRenderer;
+use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\Types\DocumentType;
 use BristolianTest\TestFixtures\ToArrayClass;
 use DataType\DataStorage\TestArrayDataStorage;
@@ -1089,6 +1091,42 @@ TEXT;
         $this->expectException(BristolianException::class);
         $this->expectExceptionMessage('Underscore-separated datetime is not parseable.');
         underscore_separated_datetime_to_human_readable($input);
+    }
+
+    /**
+     * @covers ::renderChatMessageMarkdown
+     */
+    public function test_renderChatMessageMarkdown_returns_chat_message_with_rendered_text(): void
+    {
+        $chatMessage = new UserChatMessage(
+            123,
+            'user-456',
+            'room-789',
+            'Hello **world**',
+            null,
+            new \DateTimeImmutable('2026-04-16 14:00:00')
+        );
+        $markdownRenderer = new class implements MarkdownRenderer {
+            public function render(string $markdown): string
+            {
+                return '<p>Rendered markdown</p>';
+            }
+
+            public function renderFile(string $filepath): string
+            {
+                return '<p>Unused in this test</p>';
+            }
+        };
+
+        $renderedChatMessage = renderChatMessageMarkdown($chatMessage, $markdownRenderer);
+
+        $this->assertSame('<p>Rendered markdown</p>', $renderedChatMessage->text);
+        $this->assertSame($chatMessage->id, $renderedChatMessage->id);
+        $this->assertSame($chatMessage->user_id, $renderedChatMessage->user_id);
+        $this->assertSame($chatMessage->room_id, $renderedChatMessage->room_id);
+        $this->assertSame($chatMessage->reply_message_id, $renderedChatMessage->reply_message_id);
+        $this->assertSame($chatMessage->created_at, $renderedChatMessage->created_at);
+        $this->assertSame('Hello **world**', $chatMessage->text);
     }
 
     private function rrmdir(string $dir): void

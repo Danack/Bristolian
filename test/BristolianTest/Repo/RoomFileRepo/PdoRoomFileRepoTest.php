@@ -53,7 +53,9 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
      */
     public function test_addFileToRoom_and_getFilesForRoom(): void
     {
@@ -77,7 +79,8 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
      */
     public function test_getFilesForRoom_returns_empty_for_nonexistent_room(): void
     {
@@ -90,7 +93,9 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
      */
     public function test_addFileToRoom_multiple_files(): void
     {
@@ -112,7 +117,9 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
      */
     public function test_files_in_different_rooms(): void
     {
@@ -138,7 +145,9 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
      */
     public function test_stored_file_properties(): void
     {
@@ -155,7 +164,9 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFileDetails
      */
     public function test_getFileDetails_returns_file(): void
     {
@@ -172,7 +183,8 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFileDetails
      */
     public function test_getFileDetails_returns_null_for_nonexistent_file(): void
     {
@@ -185,7 +197,9 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFileDetails
      */
     public function test_getFileDetails_returns_null_for_file_in_different_room(): void
     {
@@ -205,7 +219,10 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFileDetails
      */
     public function test_getFileDetails_properties_match_getFilesForRoom(): void
     {
@@ -230,7 +247,9 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
      */
     public function test_same_file_can_be_in_multiple_rooms(): void
     {
@@ -390,6 +409,40 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
 
         $this->assertCount(1, $files);
         $this->assertSame($fileId, $files[0]->id);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
+     */
+    public function test_getFilesForRoom_orders_by_original_filename_asc_when_order_plus_name(): void
+    {
+        [$room, $user] = $this->createTestUserAndRoom();
+        $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
+        $path = __DIR__ . '/../../../fixtures/pdfs/sample.pdf';
+        $suffix = create_test_uniqid();
+        $uploadedZ = new UploadedFile($path, (int) filesize($path), 'z_order_' . $suffix . '.pdf', 0);
+        $uploadedA = new UploadedFile($path, (int) filesize($path), 'a_order_' . $suffix . '.pdf', 0);
+        $z_id = $this->world()->roomFileObjectInfoRepo()->createRoomFileObjectInfo(
+            $user->getUserId(),
+            'norm_z_' . $suffix . '.pdf',
+            $uploadedZ
+        );
+        $a_id = $this->world()->roomFileObjectInfoRepo()->createRoomFileObjectInfo(
+            $user->getUserId(),
+            'norm_a_' . $suffix . '.pdf',
+            $uploadedA
+        );
+        $this->world()->roomFileObjectInfoRepo()->setRoomFileObjectUploaded($z_id);
+        $this->world()->roomFileObjectInfoRepo()->setRoomFileObjectUploaded($a_id);
+        $roomFileRepo->addFileToRoom($z_id, $room->id);
+        $roomFileRepo->addFileToRoom($a_id, $room->id);
+
+        $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['order' => '+name']));
+        $files = $roomFileRepo->getFilesForRoom($room->id, $search);
+
+        $this->assertCount(2, $files);
+        $this->assertStringStartsWith('a_order_', $files[0]->original_filename);
+        $this->assertStringStartsWith('z_order_', $files[1]->original_filename);
     }
 
     /**
