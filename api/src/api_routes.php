@@ -9,9 +9,13 @@ function getAllApiRoutes()
 // Each row of this array should return an array of:
 // - The path to match
 // - The method to match
-// - The route info
-// - (optional) Return type information for TypeScript generation
-// - (optional) A setup callable to add middleware/DI info specific to that route
+// - The route info (controller callable)
+// - (optional) Return type information for TypeScript response generation
+// - (optional) FQCN of Bristolian\Parameters\* DataType: JSON request body is parsed with
+//   *::createFromArray($jsonInput->getData()) or fromArray() in the controller. Drives
+//   API_JSON_REQUEST_BODY_PARAM_CLASS in app/public/tsx/generated/api_routes.tsx (rg the class
+//   name to find validation rules). Omit when there is no JSON body or the route uses another
+//   mechanism (e.g. form upload).
 //
 // This allows use to configure data per endpoint e.g. the endpoints that should be secured by
 // an api key, should call an appropriate callable.
@@ -27,7 +31,8 @@ function getAllApiRoutes()
         [
             '/api/save-subscription/',
             'POST', 'Bristolian\AppController\Notifications::save_subscription',
-            null
+            null,
+            \Bristolian\Parameters\WebPushSubscriptionParams::class,
         ], // SuccessResponse|ValidationErrorResponse
 
         [
@@ -295,6 +300,7 @@ function getAllApiRoutes()
             'PATCH',
             '\Bristolian\AppController\Rooms::updateRoomDetails',
             null,
+            \Bristolian\Parameters\UpdateRoomDetailsParam::class,
         ],
 
         [
@@ -302,6 +308,7 @@ function getAllApiRoutes()
             'PATCH',
             '\Bristolian\AppController\Rooms::updateRoomFile',
             null,
+            \Bristolian\Parameters\UpdateRoomFileParam::class,
         ],
 
         [
@@ -355,6 +362,7 @@ function getAllApiRoutes()
             'POST',
             'Bristolian\AppController\Rooms::addLink',
             null,
+            \Bristolian\Parameters\LinkParam::class,
         ], // SuccessResponse
 
         [
@@ -371,6 +379,7 @@ function getAllApiRoutes()
             'PATCH',
             '\Bristolian\AppController\Rooms::updateLink',
             null,
+            \Bristolian\Parameters\UpdateRoomLinkParam::class,
         ],
 
         // List YouTube videos and clips for the room.
@@ -389,6 +398,7 @@ function getAllApiRoutes()
             'POST',
             'Bristolian\AppController\Rooms::addVideo',
             null,
+            \Bristolian\Parameters\AddVideoParam::class,
         ],
 
         // Create a clip (time range) from an existing room video (body: room_video_id, start_seconds, end_seconds, title?, description?).
@@ -397,6 +407,7 @@ function getAllApiRoutes()
             'POST',
             'Bristolian\AppController\Rooms::createClip',
             null,
+            \Bristolian\Parameters\CreateClipParam::class,
         ],
 
         // Update a room video's title and/or description (body: title?, description?).
@@ -405,6 +416,7 @@ function getAllApiRoutes()
             'PATCH',
             'Bristolian\AppController\Rooms::updateVideo',
             null,
+            \Bristolian\Parameters\UpdateRoomVideoParam::class,
         ],
 
         // List stored transcripts for a room video (no room_id in path; transcripts are not secret).
@@ -437,6 +449,7 @@ function getAllApiRoutes()
             'PUT',
             'Bristolian\AppController\Rooms::setVideoTags',
             null,
+            \Bristolian\Parameters\SetEntityTagsParam::class,
         ],
 
         [
@@ -444,6 +457,7 @@ function getAllApiRoutes()
             'POST',
             '\Bristolian\AppController\Rooms::handleAddAnnotation',
             null,
+            \Bristolian\Parameters\AnnotationParam::class,
         ], // Change to a SuccessResponse.
 
         [
@@ -470,6 +484,7 @@ function getAllApiRoutes()
             'PATCH',
             'Bristolian\AppController\Rooms::updateAnnotation',
             null,
+            \Bristolian\Parameters\UpdateRoomAnnotationParam::class,
         ],
 
         [
@@ -477,6 +492,7 @@ function getAllApiRoutes()
             'PUT',
             'Bristolian\AppController\Rooms::setFileTags',
             null,
+            \Bristolian\Parameters\SetEntityTagsParam::class,
         ],
 
         [
@@ -484,6 +500,7 @@ function getAllApiRoutes()
             'PUT',
             'Bristolian\AppController\Rooms::setLinkTags',
             null,
+            \Bristolian\Parameters\SetEntityTagsParam::class,
         ],
 
         [
@@ -491,6 +508,7 @@ function getAllApiRoutes()
             'PUT',
             'Bristolian\AppController\Rooms::setAnnotationTags',
             null,
+            \Bristolian\Parameters\SetEntityTagsParam::class,
         ],
 
         [
@@ -507,6 +525,7 @@ function getAllApiRoutes()
             'POST',
             '\Bristolian\AppController\Rooms::addTag',
             null,
+            \Bristolian\Parameters\TagParams::class,
         ], // SuccessResponse
 
         [
@@ -572,7 +591,8 @@ function getAllApiRoutes()
             '/api/tfd/v1/products/{barcode:.*}/validation_status',
             'POST',
             'Bristolian\AppController\System::updateProductValidationStatus',
-            null
+            null,
+            \Bristolian\Parameters\TinnedFish\UpdateProductValidationStatusParams::class,
         ], // JsonResponse with success status
 
         [

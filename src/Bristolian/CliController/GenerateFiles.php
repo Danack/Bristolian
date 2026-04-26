@@ -1283,6 +1283,61 @@ SQL;
      *
      * @codeCoverageIgnore
      */
+    /**
+     * Emit `API_JSON_REQUEST_BODY_PARAM_CLASS` in api_routes.tsx: maps "METHOD path" to the PHP
+     * DataType FQCN for the JSON body (api_routes row index 4).
+     *
+     * @param array<int, array<int, mixed>> $routes
+     */
+    private function generateJsonRequestBodyParamBreadcrumbBlock(array $routes): string
+    {
+        $map = [];
+        foreach ($routes as $route) {
+            if (count($route) < 5) {
+                continue;
+            }
+            $candidate = $route[4];
+            if (is_string($candidate) === false) {
+                continue;
+            }
+            if (class_exists($candidate) === false) {
+                $path = is_string($route[0] ?? null) ? $route[0] : '?';
+                $method = is_string($route[1] ?? null) ? $route[1] : '?';
+                throw new BristolianException(
+                    "api_routes: index 4 must be an existing class FQCN, got: {$candidate} (route {$method} {$path})"
+                );
+            }
+            $path = $route[0];
+            $method = $route[1];
+            if (is_string($path) === false || is_string($method) === false) {
+                continue;
+            }
+            $key = $method . ' ' . $path;
+            if (array_key_exists($key, $map) === true) {
+                throw new BristolianException("api_routes: duplicate request-body breadcrumb key: {$key}");
+            }
+            $map[$key] = $candidate;
+        }
+        if (count($map) === 0) {
+            return '';
+        }
+        ksort($map, SORT_STRING);
+
+        $out = "/**\n";
+        $out .= " * Breadcrumb: JSON request body is parsed in PHP with the FQCN value (createFromArray / fromArray on JsonInput).\n";
+        $out .= " * Search the repo for the short class name under src/Bristolian/Parameters/ to see field rules.\n";
+        $out .= " * Declared in api/src/api_routes.php (optional index 4 per route), emitted by GenerateFiles::generateJsonRequestBodyParamBreadcrumbBlock().\n";
+        $out .= " */\n";
+        $out .= "export const API_JSON_REQUEST_BODY_PARAM_CLASS: Record<string, string> = {\n";
+        foreach ($map as $key => $fqcn) {
+            $escapedKey = str_replace(['\\', '"'], ['\\\\', '\\"'], $key);
+            $escapedClass = str_replace(['\\', '"'], ['\\\\', '\\"'], $fqcn);
+            $out .= "    \"" . $escapedKey . "\": \"" . $escapedClass . "\",\n";
+        }
+        $out .= "};\n\n";
+        return $out;
+    }
+
     public function generateTypeScriptApiRoutes(): void
     {
         require_once __DIR__ . "/../../../api/src/api_routes.php";
@@ -1302,7 +1357,7 @@ SQL;
         $routeData = [];
         
         foreach ($routes as $route) {
-            // Route format: [path, method, controller, type_info, setup_callable]
+            // Route format: [path, method, controller, type_info, json_request_body_param_class?]
             if (count($route) < 4 || $route[3] === null) {
                 continue; // Skip routes without type information
             }
@@ -1385,6 +1440,8 @@ SQL;
         else if ($needsDateToString) {
             $content .= "\n";
         }
+        
+        $content .= $this->generateJsonRequestBodyParamBreadcrumbBlock($routes);
         
         // Add helper function for API calls
         $content .= "// Helper function for API calls\n";
