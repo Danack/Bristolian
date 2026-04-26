@@ -88,6 +88,38 @@ function parseYoutubeVideoId(input: string): string | null {
     return null;
 }
 
+/**
+ * AddVideoParam optional `title` / `description` use GetStringOrDefault, which does not accept
+ * JSON `null`. Do not put those keys in the object when there is no value (empty after trim is
+ * treated as absent—same as null for the server).
+ */
+function buildAddVideoPostBody(
+    url: string,
+    title: string,
+    description: string
+): { url: string; title?: string; description?: string } {
+    const titleTrimmed = title.trim();
+    const descriptionTrimmed = description.trim();
+    return {
+        url,
+        ...(titleTrimmed !== "" ? { title: titleTrimmed } : {}),
+        ...(descriptionTrimmed !== "" ? { description: descriptionTrimmed } : {}),
+    };
+}
+
+function fetchPostAddVideoToRoom(
+    roomId: string,
+    videoUrl: string,
+    title: string,
+    description: string
+): Promise<Response> {
+    return fetch(`/api/rooms/${roomId}/videos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(buildAddVideoPostBody(videoUrl, title, description)),
+    });
+}
+
 function parseVttToCues(vtt: string): VttCue[] {
     const cues: VttCue[] = [];
     const lines = vtt.split(/\r?\n/);
@@ -412,11 +444,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         const { addVideoPreview, addTitle, addDescription } = this.state;
         if (!addVideoPreview) return;
         this.setState({ addError: null });
-        fetch(`/api/rooms/${this.props.room_id}/videos`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url: addVideoPreview.url, title: addTitle || null, description: addDescription || null }),
-        })
+        fetchPostAddVideoToRoom(this.props.room_id, addVideoPreview.url, addTitle, addDescription)
             .then((response) => response.json().then((data) => ({ response, data })))
             .then(({ response, data }) => {
                 this.handleAddVideoResponse(response, data);
@@ -435,11 +463,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
         const endSeconds = parseTimestampToSeconds(clipEndInput);
         if (startSeconds === null || endSeconds === null) return;
         this.setState({ addError: null });
-        fetch(`/api/rooms/${this.props.room_id}/videos`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url: addVideoPreview.url, title: addTitle || null, description: addDescription || null }),
-        })
+        fetchPostAddVideoToRoom(this.props.room_id, addVideoPreview.url, addTitle, addDescription)
             .then((response) => response.json().then((data) => ({ response, data })))
             .then(({ response, data }) => {
                 if (!response.ok || data.result === "error") {
@@ -572,11 +596,7 @@ export class RoomVideosPanel extends Component<RoomVideosPanelProps, RoomVideosP
     addVideo() {
         const { addUrl, addTitle, addDescription } = this.state;
         this.setState({ addError: null, addSuccess: null });
-        fetch(`/api/rooms/${this.props.room_id}/videos`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url: addUrl, title: addTitle || null, description: addDescription || null }),
-        })
+        fetchPostAddVideoToRoom(this.props.room_id, addUrl, addTitle, addDescription)
             .then((response) => {
                 return response.json().then((data) => ({ response, data }));
             })
