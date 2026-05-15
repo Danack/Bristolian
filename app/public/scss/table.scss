@@ -46,7 +46,7 @@ table.large_table {
   }
 
   tr:nth-child(even) {
-    background: rgba(230, 230, 230, 0.5)
+    background: var(--table_row_stripe_background);
   }
 }
 
