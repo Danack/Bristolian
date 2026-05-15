@@ -62,8 +62,8 @@ export class QrCodeGeneratorPanel extends Component<QrCodeGeneratorPanelProps, Q
     let qr_code_link = <span></span>
     let trimmed_address = this.state.address.trim();
 
-    if (trimmed_address.length > 0) {
-      let qr_code_url = `/qr/code?url=${trimmed_address}`;
+    if (trimmed_address.length > 0 && this.state.is_valid) {
+      let qr_code_url = `/qr/code?url=${encodeURIComponent(trimmed_address)}`;
       qr_code_link = <img src={qr_code_url} alt='a qr code'/>
     }
 

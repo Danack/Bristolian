@@ -8,8 +8,15 @@ use Bristolian\Response\SVGResponse;
 use chillerlan\QRCode\QRCode as QRCodeGenerator;
 use chillerlan\QRCode\QROptions;
 
+/**
+ * Serves QR codes as SVG images: {@see get} encodes a URL from request parameters;
+ * {@see getToken} encodes a plain API token string. Both use the same SVG styling (rainbow dark modules).
+ */
 class QRCode
 {
+    /**
+     * Render an SVG QR code for the requested URL (ecc Q, quiet zone, connected paths, gradient fill).
+     */
     public function get(
         QRParams $qrData,
         //        VarMap $varMap
