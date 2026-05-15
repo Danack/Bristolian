@@ -3,8 +3,8 @@ cd /var/app/app
 
 echo "Updating/installing npm modules"
 
-
-npm update
+echo "lets not update for a while"
+# npm update
 
 # CMD sh /var/app/containers/js_build/entrypoint.sh
 

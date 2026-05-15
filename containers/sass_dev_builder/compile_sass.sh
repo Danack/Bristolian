@@ -1,5 +1,6 @@
 cd /var/app
 
-npm update
+echo "skipping npm update"
+# npm update
 
 npm run sass:build

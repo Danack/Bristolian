@@ -22,7 +22,7 @@ then
   exit $INSTALLER_EXIT_CODE
 fi
 
-docker-compose up --build installer_npm
+# docker-compose up --build installer_npm
 
 docker-compose build php_fpm
 

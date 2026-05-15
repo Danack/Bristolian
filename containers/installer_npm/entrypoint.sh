@@ -17,6 +17,7 @@ echo "Deleting it will cause 'npm update' the next time the 'installer_npm' cont
 
 echo "Updating/installing npm modules"
 
-npm update
+echo "skipping NPM update for now."
+# npm update
 
 echo "npm modules should be updated"
