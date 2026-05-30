@@ -26,7 +26,13 @@ const COUNCIL_SETUP_SUBSTEP_ENTER_COUNCIL_TOTALS = "enter_council_totals";
 const COUNCIL_SETUP_SUBSTEP_ENTER_POLITICAL_GROUPS = "enter_political_groups";
 const COUNCIL_SETUP_SUBSTEP_CHOOSE_INDEPENDENT_ALLOCATION = "choose_independent_allocation";
 
+const WIZARD_STEP_SEAT_DISTRIBUTION_EXPERIMENTAL = 4;
+
 export function getWizardDisplayStepNumber(state: WizardDisplayStepState): WizardDisplayStep {
+    if (state.wizard_step === WIZARD_STEP_SEAT_DISTRIBUTION_EXPERIMENTAL) {
+        return WizardDisplayStep.NextSteps;
+    }
+
     if (state.wizard_step === WIZARD_STEP_NEXT_STEPS) {
         return WizardDisplayStep.NextSteps;
     }

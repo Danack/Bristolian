@@ -1,12 +1,13 @@
-import {h} from "preact";
+import {Component, h} from "preact";
 import {COMMITTEE_SEATS_PAGE} from "./page_config";
 import type {PoliticalGroup} from "./types";
 import {
-    ADDITIONAL_POLITICAL_GROUP_SLOT_COUNT,
     clampGroupCouncillorCountAfterAdjustment,
     clampGroupCouncillorCountValue,
-    getVisibleAdditionalPoliticalGroupSlotCount,
+    getListedAdditionalPoliticalGroups,
+    getNextEmptyAdditionalPoliticalGroupSlotIndex,
     GROUP_COUNCILLOR_COUNT_ADJUSTMENTS,
+    hasReachedMaximumAdditionalPoliticalGroupSlots,
     isGroupCouncillorCountAdjustmentDisabled,
     mergePoliticalGroupsIntoCouncilSetupForm,
     STANDARD_POLITICAL_GROUP_NAMES,
@@ -86,10 +87,84 @@ function PoliticalGroupCountField(props: {
     );
 }
 
+interface AddPoliticalGroupRowProps {
+    slotIndex: number;
+    onAddGroup: (groupIndex: number, name: string) => void;
+}
+
+interface AddPoliticalGroupRowState {
+    draftGroupName: string;
+}
+
+class AddPoliticalGroupRow extends Component<AddPoliticalGroupRowProps, AddPoliticalGroupRowState> {
+    constructor(props: AddPoliticalGroupRowProps) {
+        super(props);
+        this.state = {
+            draftGroupName: "",
+        };
+    }
+
+    handleDraftGroupNameChange(event: h.JSX.TargetedEvent<HTMLInputElement, Event>): void {
+        this.setState({
+            draftGroupName: event.currentTarget.value,
+        });
+    }
+
+    handleAddGroup(): void {
+        const trimmedGroupName = this.state.draftGroupName.trim();
+        if (trimmedGroupName === "") {
+            return;
+        }
+
+        this.props.onAddGroup(this.props.slotIndex, trimmedGroupName);
+        this.setState({
+            draftGroupName: "",
+        });
+    }
+
+    handleDraftGroupNameKeyDown(event: KeyboardEvent): void {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            this.handleAddGroup();
+        }
+    }
+
+    render() {
+        const addGroupDisabled = this.state.draftGroupName.trim() === "";
+
+        return (
+            <tr className="committee_seats_groups_table_add_group_row">
+                <td className="committee_seats_additional_group_name_cell" colSpan={3}>
+                    <div className="committee_seats_add_political_group_controls">
+                        <input
+                            id="committee_seats_add_political_group_name"
+                            type="text"
+                            className="committee_seats_additional_group_name_input committee_seats_add_political_group_name_input"
+                            value={this.state.draftGroupName}
+                            placeholder={COMMITTEE_SEATS_PAGE.additional_political_group_name_placeholder}
+                            onInput={(event: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+                                this.handleDraftGroupNameChange(event)
+                            }
+                            onKeyDown={(event: KeyboardEvent) => this.handleDraftGroupNameKeyDown(event)}
+                        />
+                        <button
+                            className="button_standard committee_seats_add_political_group_button"
+                            type="button"
+                            disabled={addGroupDisabled}
+                            onClick={() => this.handleAddGroup()}
+                        >
+                            {COMMITTEE_SEATS_PAGE.add_political_group_button_label}
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        );
+    }
+}
+
 export interface PoliticalGroupsEditorProps {
     politicalGroups: PoliticalGroup[];
     expectedTotalCouncillors: number;
-    additionalGroupNamesEditable: boolean;
     groupTotalStatusMessage: string;
     groupTotalStatusMatches: boolean;
     canContinueFromPoliticalGroups: boolean;
@@ -101,29 +176,28 @@ export interface PoliticalGroupsEditorProps {
 
 export function PoliticalGroupsEditor(props: PoliticalGroupsEditorProps) {
     const partyCouncillorCountsEditable = true;
-    const additionalNamesEditable = props.additionalGroupNamesEditable;
     const formGroups =
         props.politicalGroups.length >= STANDARD_POLITICAL_GROUP_NAMES.length
             ? props.politicalGroups
             : mergePoliticalGroupsIntoCouncilSetupForm(props.politicalGroups);
     const standardGroups = formGroups.slice(0, STANDARD_POLITICAL_GROUP_NAMES.length);
-    const additionalGroups = formGroups.slice(STANDARD_POLITICAL_GROUP_NAMES.length);
-    const visibleAdditionalGroupCount = getVisibleAdditionalPoliticalGroupSlotCount(formGroups);
-    const visibleAdditionalGroups = additionalGroups.slice(0, visibleAdditionalGroupCount);
+    const maximumAdditionalGroupsReached = hasReachedMaximumAdditionalPoliticalGroupSlots(formGroups);
+    const nextEmptyAdditionalGroupSlotIndex = getNextEmptyAdditionalPoliticalGroupSlotIndex(formGroups);
+    const listedAdditionalGroups = getListedAdditionalPoliticalGroups(formGroups);
 
     return (
         <div className="committee_seats_section committee_seats_section_fit">
+            <h3
+                id="committee_seats_political_groups_panel_title"
+                className="committee_seats_section_title committee_seats_political_groups_section_title"
+            >
+                {COMMITTEE_SEATS_PAGE.council_setup_political_groups_section_title}
+            </h3>
             <fieldset
                 className="committee_seats_political_groups_fieldset"
                 aria-labelledby="committee_seats_political_groups_panel_title"
             >
                 <div className="committee_seats_political_groups_panel">
-                    <h3
-                        id="committee_seats_political_groups_panel_title"
-                        className="committee_seats_section_title committee_seats_political_groups_panel_title"
-                    >
-                        {COMMITTEE_SEATS_PAGE.council_setup_political_groups_section_title}
-                    </h3>
                     <div className="committee_seats_political_groups_body">
                         <div className="committee_seats_table_scroll committee_seats_table_scroll_fit committee_seats_political_groups_table">
                             <table className="committee_seats_groups_table">
@@ -164,39 +238,21 @@ export function PoliticalGroupsEditor(props: PoliticalGroupsEditorProps) {
                                             </tr>
                                         );
                                     })}
-                                </tbody>
-                                <tbody>
-                                    <tr className="committee_seats_groups_table_additional_heading">
-                                        <th colSpan={3} scope="colgroup">
-                                            Other groups
-                                        </th>
-                                    </tr>
-                                    {visibleAdditionalGroups.map((politicalGroup, additionalIndex) => {
-                                        const groupIndex =
-                                            STANDARD_POLITICAL_GROUP_NAMES.length + additionalIndex;
-                                        const nameInputId = "political_group_name_" + groupIndex;
+                                    {listedAdditionalGroups.map(({groupIndex, politicalGroup}, listedIndex) => {
                                         const countInputId = "political_group_count_" + groupIndex;
+                                        const firstAdditionalGroupRow = listedIndex === 0;
 
                                         return (
-                                            <tr key={"additional_" + additionalIndex}>
-                                                <td>
-                                                    {additionalNamesEditable ? (
-                                                        <input
-                                                            id={nameInputId}
-                                                            type="text"
-                                                            value={politicalGroup.name}
-                                                            onInput={(
-                                                                event: h.JSX.TargetedEvent<HTMLInputElement, Event>
-                                                            ) =>
-                                                                props.onGroupNameChange(
-                                                                    groupIndex,
-                                                                    event.currentTarget.value
-                                                                )
-                                                            }
-                                                        />
-                                                    ) : (
-                                                        politicalGroup.name
-                                                    )}
+                                            <tr
+                                                key={"additional_" + groupIndex}
+                                                className={
+                                                    firstAdditionalGroupRow
+                                                        ? "committee_seats_groups_table_first_additional_group_row"
+                                                        : undefined
+                                                }
+                                            >
+                                                <td className="committee_seats_group_name_fixed">
+                                                    {politicalGroup.name}
                                                 </td>
                                                 <td className="committee_seats_group_count_cell">
                                                     <PoliticalGroupCountField
@@ -217,6 +273,37 @@ export function PoliticalGroupsEditor(props: PoliticalGroupsEditorProps) {
                                             </tr>
                                         );
                                     })}
+                                    {maximumAdditionalGroupsReached ? (
+                                        <tr className="committee_seats_groups_table_add_group_row">
+                                            <td
+                                                className="committee_seats_additional_group_name_cell"
+                                                colSpan={3}
+                                            >
+                                                <input
+                                                    type="text"
+                                                    className="committee_seats_additional_group_name_input"
+                                                    value=""
+                                                    disabled
+                                                    aria-disabled="true"
+                                                    aria-label={
+                                                        COMMITTEE_SEATS_PAGE.maximum_additional_political_groups_reached
+                                                    }
+                                                    placeholder={
+                                                        COMMITTEE_SEATS_PAGE.maximum_additional_political_groups_reached
+                                                    }
+                                                />
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        nextEmptyAdditionalGroupSlotIndex !== null && (
+                                            <AddPoliticalGroupRow
+                                                slotIndex={nextEmptyAdditionalGroupSlotIndex}
+                                                onAddGroup={(groupIndex, name) =>
+                                                    props.onGroupNameChange(groupIndex, name)
+                                                }
+                                            />
+                                        )
+                                    )}
                                 </tbody>
                             </table>
                         </div>
@@ -240,21 +327,14 @@ export function PoliticalGroupsEditor(props: PoliticalGroupsEditorProps) {
                             </button>
                         </div>
                     </div>
-                    {(additionalNamesEditable || councilFormHasVacancies(formGroups)) && (
+                    {councilFormHasVacancies(formGroups) && (
                         <div className="committee_seats_political_groups_panel_notes">
-                            {additionalNamesEditable && (
-                                <p className="committee_seats_note">
-                                    You can add up to {ADDITIONAL_POLITICAL_GROUP_SLOT_COUNT} other groups.
-                                </p>
-                            )}
-                            {councilFormHasVacancies(formGroups) && (
-                                <p className="committee_seats_note">
-                                    {formatVacancyCouncillorCountEnteredMessage(
-                                        getVacancyCouncillorCountFromForm(formGroups)
-                                    )}{" "}
-                                    {VACANCY_ALLOCATION_NOTE}
-                                </p>
-                            )}
+                            <p className="committee_seats_note">
+                                {formatVacancyCouncillorCountEnteredMessage(
+                                    getVacancyCouncillorCountFromForm(formGroups)
+                                )}{" "}
+                                {VACANCY_ALLOCATION_NOTE}
+                            </p>
                         </div>
                     )}
                 </div>

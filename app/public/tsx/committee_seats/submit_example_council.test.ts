@@ -1,5 +1,5 @@
 import {describe, expect, test} from "@jest/globals";
-import {getExampleCouncilById} from "./example_councils";
+import {applyExampleCouncilToFormState, getExampleCouncilById} from "./example_councils";
 import {mergePoliticalGroupsIntoCouncilSetupForm} from "./political_groups_form";
 import {
     buildExampleCouncilSubmission,
@@ -31,15 +31,15 @@ describe("submit_example_council", () => {
         const bristol = getExampleCouncilById("bristol");
         expect(bristol).toBeDefined();
 
-        const applied = mergePoliticalGroupsIntoCouncilSetupForm(bristol!.political_groups);
+        const applied = applyExampleCouncilToFormState(bristol!);
 
         expect(
             shouldOfferSendCouncilData({
                 data_source_mode: "example",
                 selected_example_council_id: "bristol",
-                political_groups: applied,
-                committees: [],
-                total_committee_seats: 144,
+                political_groups: applied.political_groups,
+                committees: applied.committees,
+                total_committee_seats: applied.total_committee_seats,
             })
         ).toBe(false);
     });
@@ -48,16 +48,16 @@ describe("submit_example_council", () => {
         const bristol = getExampleCouncilById("bristol");
         expect(bristol).toBeDefined();
 
-        const modifiedGroups = mergePoliticalGroupsIntoCouncilSetupForm(bristol!.political_groups);
-        modifiedGroups[0].councillor_count = 33;
+        const applied = applyExampleCouncilToFormState(bristol!);
+        applied.political_groups[0].councillor_count = 33;
 
         expect(
             shouldOfferSendCouncilData({
                 data_source_mode: "example",
                 selected_example_council_id: "bristol",
-                political_groups: modifiedGroups,
-                committees: [],
-                total_committee_seats: 144,
+                political_groups: applied.political_groups,
+                committees: applied.committees,
+                total_committee_seats: applied.total_committee_seats,
             })
         ).toBe(true);
     });

@@ -1,4 +1,5 @@
 import {applyExampleCouncilToFormState, getExampleCouncilById} from "./example_councils";
+import {committeesForSetup} from "./committees_form";
 import {politicalGroupsForCouncilSetup} from "./political_groups_form";
 import type {Committee, ExampleCouncil, PoliticalGroup} from "./types";
 
@@ -87,7 +88,7 @@ export function buildExampleCouncilExportData(
             name: politicalGroup.name,
             councillor_count: politicalGroup.councillor_count,
         })),
-        committees: committees.map((committee) => ({
+        committees: committeesForSetup(committees).map((committee) => ({
             name: committee.name,
             seat_count: committee.seat_count,
         })),

@@ -2,7 +2,7 @@ import type {ExampleCouncilJsonCopyStatus} from "./submit_example_council";
 import {politicalGroupsForSeatAllocation} from "./independent_allocation";
 import {politicalGroupsForCouncilSetup} from "./political_groups_form";
 import {NO_EXAMPLE_COUNCIL_SELECTED} from "./page_config";
-import type {Committee, PartyAllocationResult, PoliticalGroup} from "./types";
+import type {Committee, CommitteeDistributionState, PartyAllocationResult, PoliticalGroup} from "./types";
 import {restoreCommitteeSeatsStateFromUrl} from "./url_state";
 import type {CouncilSetupInput, CouncilSetupValidationInput} from "./types";
 
@@ -19,6 +19,12 @@ export enum WizardStep {
     CouncilSetup = 1,
     PartyAllocation = 2,
     NextSteps = 3,
+    SeatDistributionExperimental = 4,
+}
+
+export enum ExperimentalSubstep {
+    Committees = "committees",
+    Distribution = "distribution",
 }
 
 export enum CouncilSetupSubstep {
@@ -43,6 +49,9 @@ export interface CommitteeSeatsPanelState {
     allocation_result: PartyAllocationResult | null;
     proposed_example_council_name: string;
     example_council_json_copy_status: ExampleCouncilJsonCopyStatus;
+    experimental_substep: ExperimentalSubstep;
+    committee_distribution_state: CommitteeDistributionState | null;
+    distribution_pending_committee_by_step: number[];
 }
 
 export function getDefaultPanelState(): CommitteeSeatsPanelState {
@@ -61,6 +70,9 @@ export function getDefaultPanelState(): CommitteeSeatsPanelState {
         allocation_result: null,
         proposed_example_council_name: "",
         example_council_json_copy_status: "idle",
+        experimental_substep: ExperimentalSubstep.Committees,
+        committee_distribution_state: null,
+        distribution_pending_committee_by_step: [],
     };
 }
 
@@ -149,5 +161,8 @@ export function panelStateFromUrlRestore(
         data_source_mode: urlState.data_source_mode as DataSourceMode,
         proposed_example_council_name: "",
         example_council_json_copy_status: "idle",
+        experimental_substep: ExperimentalSubstep.Committees,
+        committee_distribution_state: null,
+        distribution_pending_committee_by_step: [],
     };
 }

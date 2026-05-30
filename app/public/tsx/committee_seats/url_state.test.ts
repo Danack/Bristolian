@@ -82,6 +82,16 @@ describe("committee_seats url_state", () => {
         expect(restored?.political_groups).toHaveLength(0);
     });
 
+    test("totals step for example council restores political group counts when groups omitted from URL", () => {
+        const restored = restoreCommitteeSeatsStateFromUrl(
+            "?step=totals&source=example&example=bristol&seats=144&councillors=70"
+        );
+
+        expect(restored?.council_setup_substep).toBe("enter_council_totals");
+        expect(restored?.political_groups.find((group) => group.name === "Green")?.councillor_count).toBe(34);
+        expect(restored?.political_groups.find((group) => group.name === "Labour")?.councillor_count).toBe(19);
+    });
+
     test("independents step pre-selects bristol example default", () => {
         const restored = restoreCommitteeSeatsStateFromUrl(
             "?step=independents&source=example&example=bristol&seats=144&councillors=70&groups=" +
@@ -110,12 +120,10 @@ describe("committee_seats url_state", () => {
 
     test("independents step leaves choice unset when example has no default", () => {
         const restored = restoreCommitteeSeatsStateFromUrl(
-            "?step=independents&source=example&example=test_council&seats=80&councillors=49&groups=" +
-                encodeURIComponent("Labour|20") +
+            "?step=independents&source=example&example=bcp&seats=111&councillors=76&groups=" +
+                encodeURIComponent("Liberal Democrat|28") +
                 "," +
-                encodeURIComponent("Conservative|15") +
-                "," +
-                encodeURIComponent("Green|10") +
+                encodeURIComponent("Labour|8") +
                 "," +
                 encodeURIComponent("Independent|4")
         );

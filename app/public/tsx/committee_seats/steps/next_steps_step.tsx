@@ -1,4 +1,5 @@
 import {h} from "preact";
+import {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY} from "../experimental_seat_distribution";
 import {NEXT_STEPS_COPY, getNextStepsAllocationRows} from "../next_steps";
 import {
     SEND_COUNCIL_DATA_COPY,
@@ -17,6 +18,7 @@ export interface NextStepsStepProps {
     onRegisterExampleCouncilJsonTextarea: (element: HTMLTextAreaElement | null) => void;
     onBackFromNextSteps: () => void;
     onStartOver: () => void;
+    onStartExperimentalSeatDistribution: () => void;
 }
 
 export function NextStepsStep(props: NextStepsStepProps) {
@@ -68,6 +70,26 @@ export function NextStepsStep(props: NextStepsStepProps) {
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            <div className="committee_seats_actions committee_seats_next_steps_primary_actions">
+                <button
+                    className="button_standard"
+                    type="button"
+                    onClick={() => props.onBackFromNextSteps()}
+                >
+                    Back
+                </button>
+                <button
+                    className="button_standard"
+                    type="button"
+                    onClick={() => props.onStartExperimentalSeatDistribution()}
+                >
+                    {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.results_experimental_button_label}
+                </button>
+                <button className="button_standard" type="button" onClick={() => props.onStartOver()}>
+                    {NEXT_STEPS_COPY.start_over_button_label}
+                </button>
             </div>
 
             {showSendCouncilDataSection && (
@@ -137,19 +159,6 @@ export function NextStepsStep(props: NextStepsStepProps) {
                 <p>{NEXT_STEPS_COPY.monitoring_officer_body}</p>
 
                 <p className="committee_seats_note">{NEXT_STEPS_COPY.out_of_scope_note}</p>
-            </div>
-
-            <div className="committee_seats_actions">
-                <button
-                    className="button_standard"
-                    type="button"
-                    onClick={() => props.onBackFromNextSteps()}
-                >
-                    Back
-                </button>
-                <button className="button_standard" type="button" onClick={() => props.onStartOver()}>
-                    {NEXT_STEPS_COPY.start_over_button_label}
-                </button>
             </div>
         </div>
     );

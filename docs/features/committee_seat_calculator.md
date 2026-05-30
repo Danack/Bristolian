@@ -2,7 +2,7 @@
 
 Public tool at **`/tools/committee_seats`**. It helps calculate how committee seats should be allocated to political groups on a council, using LGA proportional allocation (largest-remainder rounding).
 
-The tool is designed to walk users through the method step by step, not only to output totals. Negotiation over how party totals are distributed across individual committees is **out of scope**.
+The tool is designed to walk users through the method step by step, not only to output totals. Overall party totals are calculated on the main wizard. **Splitting those totals across named committees** is available as an **experimental** branch from Next steps (not in the six-step trail).
 
 **For developers:** [`docs/committee_seats/agent-handoff-notes.md`](../committee_seats/agent-handoff-notes.md) — architecture, workbook structure, URL parameters, conventions. [`docs/committee_seats/improvement-suggestions.md`](../committee_seats/improvement-suggestions.md) — planned enhancements.
 
@@ -55,7 +55,17 @@ Two workbook sections:
 - **Final allocation by group** table (numeric columns right-aligned).
 - **Send us your data** — shown for custom data or when an example was edited; generates JSON and **Copy JSON**.
 - Guidance on negotiation and the monitoring officer.
+- **Experimental — seat distribution** — optional branch to edit committee names and seat counts, then work through a proportional floor matrix and assign each group's remaining seats to committees one at a time (in-memory only in v1; not encoded in the URL).
 - **Back** returns to the calculation; **Start over** resets the wizard and clears the URL.
+
+### Experimental seat distribution
+
+From **Next steps**, **Experimental — seat distribution** opens a two-part flow (hidden from the main step trail; labelled as experimental in the UI):
+
+1. **Committees** — edit committee names and seat counts (prefilled from example councils; custom councils add committees one at a time, same pattern as **Add group**). The sum of committee seats must match the total from step 2 before continuing.
+2. **Distribution** — table of minimum seats per group per committee (proportional to committee size), then interactive sub-steps to place each extra seat (user picks the committee; suggestion defaults to the largest remaining entitlement).
+
+**Back to results** returns to Next steps without changing the main wizard allocation.
 
 ## URL state
 
@@ -77,7 +87,8 @@ Data lives in [`app/public/tsx/committee_seats/example_councils.ts`](../../app/p
 | Id | Display name | Councillors | Committee seats | Independents in calculation |
 |----|--------------|-------------|-----------------|----------------------------|
 | `barnet` | Barnet Council | 63 (incl. 1 Independent) | 56 (sum of committees) | Default **excluded** |
-| `bristol` | Bristol | 70 (incl. 1 Independent) | 144 | Default **excluded** |
+| `bristol` | Bristol | 70 (incl. 1 Independent) | 144 (sum of 16 committees) | Default **excluded** |
+| `bcp` | Bournemouth, Christchurch and Poole | 76 (12 groups; 2 on standard Independent row) | 111 (sum of 11 committees) | User chooses |
 | `lambeth` | Lambeth | 63 (incl. 2 Vacancy) | 35 (sum of 7 committees) | N/A (no independents) |
 | `sheffield` | Sheffield | 84 (incl. 4 Independent) | 168 | Default **included** |
 
@@ -86,6 +97,8 @@ Data lives in [`app/public/tsx/committee_seats/example_councils.ts`](../../app/p
 **Vacancy** is a fixed row on the councillors-by-group step. Vacant seats count toward the council total but are always excluded from the proportional committee seat calculation (see `vacancy_allocation.ts`).
 
 Human-readable reference: keep example figures documented when adding councils (optional markdown under `docs/committee_seats/`).
+
+Optional `seat_assignment_source_url` on each example points at the council document that records political balance and committee seat allocation; on the council totals step, a note with a “here” link appears below the political-committees guidance when that example is selected.
 
 ## Architecture
 

@@ -1,5 +1,6 @@
 import {calculatePartyAllocation, calculateTotalCouncillors, validateCouncilSetup} from "./calculate_party_allocation";
 import {
+    applyExampleCouncilPoliticalGroupsIfMissing,
     applyExampleCouncilToFormState,
     EXAMPLE_COUNCILS,
     getExampleCouncilById,
@@ -426,7 +427,7 @@ export function restoreCommitteeSeatsStateFromUrl(search: string): CommitteeSeat
             };
         }
 
-        return state;
+        return applyExampleCouncilPoliticalGroupsIfMissing(state);
     }
 
     const seatsParameter = parameters.get(URL_PARAM_SEATS);
@@ -473,17 +474,17 @@ export function restoreCommitteeSeatsStateFromUrl(search: string): CommitteeSeat
 
     if (urlStep === URL_STEP_GROUPS || urlStep === URL_STEP_SETUP || urlStep === URL_STEP_INDEPENDENTS) {
         if (urlStep === URL_STEP_INDEPENDENTS) {
-            return {
+            return applyExampleCouncilPoliticalGroupsIfMissing({
                 ...state,
                 allocate_seats_to_independents: getInitialIndependentAllocationChoice(
                     state.data_source_mode,
                     state.selected_example_council_id,
                     state.allocate_seats_to_independents
                 ),
-            };
+            });
         }
 
-        return state;
+        return applyExampleCouncilPoliticalGroupsIfMissing(state);
     }
 
     const independentsParameter = parameters.get(URL_PARAM_INDEPENDENTS);
@@ -507,5 +508,5 @@ export function restoreCommitteeSeatsStateFromUrl(search: string): CommitteeSeat
     const wizardStep =
         urlStep === URL_STEP_NEXT_STEPS ? WIZARD_STEP_NEXT_STEPS : WIZARD_STEP_PARTY_ALLOCATION;
 
-    return buildAllocationState(state, wizardStep);
+    return buildAllocationState(applyExampleCouncilPoliticalGroupsIfMissing(state), wizardStep);
 }

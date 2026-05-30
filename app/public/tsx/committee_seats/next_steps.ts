@@ -21,8 +21,8 @@ export const NEXT_STEPS_COPY = {
         "correctly. If your group's entitlement does not match what the council proposes, ask to see how the " +
         "calculation was done and insist on your fair share.",
     out_of_scope_note:
-        "This calculator does not allocate party totals to individual committees. That distribution is for " +
-        "groups to agree through political negotiation.",
+        "Splitting seats across committees is usually negotiated between groups. You can try the " +
+        "experimental seat distribution tool below to work through a proportional split by committee.",
     start_over_button_label: "Start over",
 } as const;
 

@@ -1,15 +1,21 @@
 import {describe, expect, test} from "@jest/globals";
 import {getExampleCouncilById} from "./example_councils";
 import {
+    additionalPoliticalGroupRowHasEnteredName,
     clampGroupCouncillorCountAfterAdjustment,
     clampGroupCouncillorCountValue,
+    countUsedAdditionalPoliticalGroupSlots,
+    hasReachedMaximumAdditionalPoliticalGroupSlots,
     isGroupCouncillorCountAdjustmentDisabled,
     createEmptyCouncilSetupPoliticalGroups,
     COUNCIL_SETUP_POLITICAL_GROUP_ROW_COUNT,
+    getListedAdditionalPoliticalGroups,
+    getNextEmptyAdditionalPoliticalGroupSlotIndex,
     getVisibleAdditionalPoliticalGroupSlotCount,
     mergePoliticalGroupsIntoCouncilSetupForm,
     politicalGroupsForCouncilSetup,
     STANDARD_POLITICAL_GROUP_NAMES,
+    ADDITIONAL_POLITICAL_GROUP_SLOT_COUNT,
 } from "./political_groups_form";
 
 describe("political_groups_form", () => {
@@ -53,6 +59,14 @@ describe("political_groups_form", () => {
         expect(formGroups.find((group) => group.name === "Independent")?.councillor_count).toBe(1);
     });
 
+    test("additionalPoliticalGroupRowHasEnteredName is true only when the name field is non-empty", () => {
+        expect(additionalPoliticalGroupRowHasEnteredName({name: "", councillor_count: 0})).toBe(false);
+        expect(additionalPoliticalGroupRowHasEnteredName({name: "  ", councillor_count: 5})).toBe(false);
+        expect(additionalPoliticalGroupRowHasEnteredName({name: "Poole People", councillor_count: 4})).toBe(
+            true
+        );
+    });
+
     test("visible additional group rows start at one and grow when a row is used", () => {
         const formGroups = createEmptyCouncilSetupPoliticalGroups();
         expect(getVisibleAdditionalPoliticalGroupSlotCount(formGroups)).toBe(1);
@@ -62,6 +76,37 @@ describe("political_groups_form", () => {
 
         formGroups[8] = {name: "Other", councillor_count: 2};
         expect(getVisibleAdditionalPoliticalGroupSlotCount(formGroups)).toBe(3);
+    });
+
+    test("getNextEmptyAdditionalPoliticalGroupSlotIndex finds the first unused slot", () => {
+        const formGroups = createEmptyCouncilSetupPoliticalGroups();
+        expect(getNextEmptyAdditionalPoliticalGroupSlotIndex(formGroups)).toBe(
+            STANDARD_POLITICAL_GROUP_NAMES.length
+        );
+
+        formGroups[7].name = "Ungrouped";
+        expect(getNextEmptyAdditionalPoliticalGroupSlotIndex(formGroups)).toBe(
+            STANDARD_POLITICAL_GROUP_NAMES.length + 1
+        );
+        expect(getListedAdditionalPoliticalGroups(formGroups)).toEqual([
+            {groupIndex: STANDARD_POLITICAL_GROUP_NAMES.length, politicalGroup: formGroups[7]},
+        ]);
+    });
+
+    test("hasReachedMaximumAdditionalPoliticalGroupSlots is true when all additional slots are used", () => {
+        const formGroups = createEmptyCouncilSetupPoliticalGroups();
+        expect(countUsedAdditionalPoliticalGroupSlots(formGroups)).toBe(0);
+        expect(hasReachedMaximumAdditionalPoliticalGroupSlots(formGroups)).toBe(false);
+
+        for (let additionalIndex = 0; additionalIndex < ADDITIONAL_POLITICAL_GROUP_SLOT_COUNT; additionalIndex += 1) {
+            formGroups[STANDARD_POLITICAL_GROUP_NAMES.length + additionalIndex] = {
+                name: "Group " + (additionalIndex + 1),
+                councillor_count: 1,
+            };
+        }
+
+        expect(countUsedAdditionalPoliticalGroupSlots(formGroups)).toBe(ADDITIONAL_POLITICAL_GROUP_SLOT_COUNT);
+        expect(hasReachedMaximumAdditionalPoliticalGroupSlots(formGroups)).toBe(true);
     });
 
     test("clampGroupCouncillorCountValue prevents negative counts and exceeding council total", () => {

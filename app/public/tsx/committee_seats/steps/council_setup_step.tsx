@@ -78,7 +78,6 @@ export function CouncilSetupStep(props: CouncilSetupStepProps) {
 
     const councilSetupValidationInput = getCouncilSetupValidationInput(props.state);
     const validation = validateCouncilSetup(councilSetupValidationInput);
-    const additionalGroupNamesEditable = props.state.data_source_mode === DataSourceMode.Custom;
     const councillorTotalMatches =
         validation.total_councillors === props.state.expected_total_councillors &&
         props.state.expected_total_councillors > 0;
@@ -87,7 +86,6 @@ export function CouncilSetupStep(props: CouncilSetupStepProps) {
         <PoliticalGroupsStep
             politicalGroups={props.state.political_groups}
             expectedTotalCouncillors={props.state.expected_total_councillors}
-            additionalGroupNamesEditable={additionalGroupNamesEditable}
             groupTotalStatusMessage={formatGroupCouncillorTotalMessage(
                 validation.total_councillors,
                 props.state.expected_total_councillors

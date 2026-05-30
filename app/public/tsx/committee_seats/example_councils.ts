@@ -1,6 +1,8 @@
 import {calculateTotalCouncillors} from "./calculate_party_allocation";
+import {NO_EXAMPLE_COUNCIL_SELECTED} from "./page_config";
+import {committeesForSetup, mergeCommitteesIntoForm, resolveFormCommittees} from "./committees_form";
 import {mergePoliticalGroupsIntoCouncilSetupForm} from "./political_groups_form";
-import type {Committee, ExampleCouncil} from "./types";
+import type {Committee, ExampleCouncil, PoliticalGroup} from "./types";
 
 export const EXAMPLE_COUNCILS: ExampleCouncil[] = [
     {
@@ -32,9 +34,60 @@ export const EXAMPLE_COUNCILS: ExampleCouncil[] = [
             {name: "Conservative", councillor_count: 7},
             {name: "Independent", councillor_count: 1},
         ],
-        committees: [],
-        total_committee_seats: 144,
+        committees: [
+            {name: "Adult Social Care Committee", seat_count: 9},
+            {name: "Homes and Housing Delivery Committee", seat_count: 9},
+            {name: "Public Health and Communities Committee", seat_count: 9},
+            {name: "Economy and Skills Committee", seat_count: 9},
+            {name: "Strategy and Resources Committee", seat_count: 9},
+            {name: "Children and Young people Committee", seat_count: 9},
+            {name: "Transport and Connectivity Committee", seat_count: 9},
+            {name: "Environment and Sustainability Committee", seat_count: 9},
+            {name: "Planning Committee A", seat_count: 9},
+            {name: "Planning Committee B", seat_count: 9},
+            {name: "Public Safety and Protection Committee", seat_count: 9},
+            {name: "Public Rights of Way and Greens Committee", seat_count: 9},
+            {name: "Audit Committee", seat_count: 9},
+            {name: "Human Resources Committee", seat_count: 9},
+            {name: "Health Scrutiny Sub Committee", seat_count: 9},
+            {name: "Finance Sub Committee", seat_count: 9},
+        ],
         allocate_seats_to_independents: false,
+        seat_assignment_source_url:
+            "https://democracy.bristol.gov.uk/documents/s126155/Allocation%20of%20committee%20seats%202026-27.pdf",
+    },
+    {
+        id: "bcp",
+        display_name: "Bournemouth, Christchurch and Poole",
+        political_groups: [
+            {name: "Liberal Democrat", councillor_count: 28},
+            {name: "Conservative", councillor_count: 9},
+            {name: "Christchurch Independents", councillor_count: 8},
+            {name: "Labour", councillor_count: 8},
+            {name: "Green", councillor_count: 5},
+            {name: "BCP Independents", councillor_count: 4},
+            {name: "Poole People", councillor_count: 4},
+            {name: "BCP Reform UK", councillor_count: 3},
+            {name: "Independents", councillor_count: 2},
+            {name: "Moordown Independents", councillor_count: 2},
+            {name: "Poole Engage", councillor_count: 2},
+            {name: "Other", councillor_count: 1},
+        ],
+        committees: [
+            {name: "Western BCP Planning Committee", seat_count: 11},
+            {name: "Eastern BCP Planning Committee", seat_count: 11},
+            {name: "Licensing Committee", seat_count: 14},
+            {name: "Standards Committee", seat_count: 7},
+            {name: "Appeals Committee", seat_count: 7},
+            {name: "Audit & Governance Committee", seat_count: 9},
+            {name: "Overview and Scrutiny Board", seat_count: 13},
+            {name: "Health & Adult Social Care O&S Committee", seat_count: 10},
+            {name: "Children's Services O&S Committee", seat_count: 11},
+            {name: "Environment and Place O&S Committee", seat_count: 11},
+            {name: "Investigation and Disciplinary Committee", seat_count: 7},
+        ],
+        seat_assignment_source_url:
+            "https://democracy.bcpcouncil.gov.uk/documents/s66265/Supplementary%20Update%20on%20the%20Calculation%20of%20Political%20Balance%20and%20the%20Allocation%20of%20Seats.pdf",
     },
     {
         id: "lambeth",
@@ -54,6 +107,8 @@ export const EXAMPLE_COUNCILS: ExampleCouncil[] = [
             {name: "Pensions Committee", seat_count: 5},
             {name: "Investigating Committee", seat_count: 3},
         ],
+        seat_assignment_source_url:
+            "https://moderngov.lambeth.gov.uk/documents/s176894/Review%20of%20allocation%20of%20seats%20report.pdf",
     },
     {
         id: "sheffield",
@@ -69,21 +124,23 @@ export const EXAMPLE_COUNCILS: ExampleCouncil[] = [
         committees: [],
         total_committee_seats: 168,
         allocate_seats_to_independents: true,
+        seat_assignment_source_url:
+            "https://democracy.sheffield.gov.uk/documents/b32757/Motion%20-%20Item%2013%20-%20Establishment%20Membership%20of%20Council%20Committees%20in%202026-27%20Thursday%2021-May-2026.pdf?T=9",
     },
-    // Dev-only example: political group counts only (no committee total). Omitted from the
-    // public dropdown; tests use an inline ExampleCouncil with the same shape.
-    {
-        id: "test_council",
-        display_name: "Test council",
-        political_groups: [
-            {name: "Labour", councillor_count: 20},
-            {name: "Conservative", councillor_count: 15},
-            {name: "Green", councillor_count: 10},
-            {name: "Independent", councillor_count: 4},
-        ],
-        committees: [],
-        total_committee_seats: 80,
-    },
+    // // Dev-only example: political group counts only (no committee total). Omitted from the
+    // // public dropdown; tests use an inline ExampleCouncil with the same shape.
+    // {
+    //     id: "test_council",
+    //     display_name: "Test council",
+    //     political_groups: [
+    //         {name: "Labour", councillor_count: 20},
+    //         {name: "Conservative", councillor_count: 15},
+    //         {name: "Green", councillor_count: 10},
+    //         {name: "Independent", councillor_count: 4},
+    //     ],
+    //     committees: [],
+    //     total_committee_seats: 80,
+    // },
 ];
 
 export function getExampleCouncilById(exampleCouncilId: string): ExampleCouncil | undefined {
@@ -112,6 +169,85 @@ export function getPrefilledTotalCommitteeSeats(exampleCouncil: ExampleCouncil):
 /** Total councillors documented for an example council (sum of its example group counts). */
 export function getExampleCouncilTotalCouncillors(exampleCouncil: ExampleCouncil): number {
     return calculateTotalCouncillors(exampleCouncil.political_groups);
+}
+
+export function panelFormHasNoPoliticalGroupCounts(politicalGroups: PoliticalGroup[]): boolean {
+    return !politicalGroups.some((politicalGroup) => politicalGroup.councillor_count > 0);
+}
+
+/**
+ * When an example council is selected but group counts are missing (e.g. URL at the totals
+ * step omits the groups parameter), restore figures from the built-in example data.
+ */
+export function panelFormHasNoCommittees(committees: Committee[]): boolean {
+    return committeesForSetup(resolveFormCommittees(committees)).length === 0;
+}
+
+/**
+ * When an example council is selected but committee rows are missing, restore from example data.
+ */
+export function applyExampleCouncilCommitteesIfMissing<
+    T extends {
+        data_source_mode: string;
+        selected_example_council_id: string;
+        committees: Committee[];
+    },
+>(state: T): T {
+    if (state.data_source_mode !== "example") {
+        return state;
+    }
+
+    if (state.selected_example_council_id === NO_EXAMPLE_COUNCIL_SELECTED) {
+        return state;
+    }
+
+    if (!panelFormHasNoCommittees(state.committees)) {
+        return state;
+    }
+
+    const exampleCouncil = getExampleCouncilById(state.selected_example_council_id);
+    if (exampleCouncil === undefined) {
+        return state;
+    }
+
+    const applied = applyExampleCouncilToFormState(exampleCouncil);
+
+    return {
+        ...state,
+        committees: applied.committees,
+    };
+}
+
+export function applyExampleCouncilPoliticalGroupsIfMissing<
+    T extends {
+        data_source_mode: string;
+        selected_example_council_id: string;
+        political_groups: PoliticalGroup[];
+    },
+>(state: T): T {
+    if (state.data_source_mode !== "example") {
+        return state;
+    }
+
+    if (state.selected_example_council_id === NO_EXAMPLE_COUNCIL_SELECTED) {
+        return state;
+    }
+
+    if (!panelFormHasNoPoliticalGroupCounts(state.political_groups)) {
+        return state;
+    }
+
+    const exampleCouncil = getExampleCouncilById(state.selected_example_council_id);
+    if (exampleCouncil === undefined) {
+        return state;
+    }
+
+    const applied = applyExampleCouncilToFormState(exampleCouncil);
+
+    return {
+        ...state,
+        political_groups: applied.political_groups,
+    };
 }
 
 export function applyExampleCouncilToFormState(exampleCouncil: ExampleCouncil): {

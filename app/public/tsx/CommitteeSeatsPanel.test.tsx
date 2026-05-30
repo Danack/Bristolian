@@ -33,12 +33,13 @@ describe("example_councils", () => {
         expect(calculateTotalCouncillors(barnet!.political_groups)).toBe(63);
     });
 
-    test("bristol prefills political groups and total committee seats", () => {
+    test("bristol prefills political groups and 144 committee seats from 16 committees", () => {
         const bristol = getExampleCouncilById("bristol");
         expect(bristol).toBeDefined();
-        expect(bristol?.committees.length).toBe(0);
-        expect(bristol?.total_committee_seats).toBe(144);
+        expect(bristol?.committees.length).toBe(16);
+        expect(bristol?.committees.every((committee) => committee.seat_count === 9)).toBe(true);
         expect(getPrefilledTotalCommitteeSeats(bristol!)).toBe(144);
+        expect(bristol?.seat_assignment_source_url).toContain("democracy.bristol.gov.uk");
         expect(calculateTotalCouncillors(bristol!.political_groups)).toBe(70);
 
         const applied = applyExampleCouncilToFormState(bristol!);
@@ -47,12 +48,42 @@ describe("example_councils", () => {
         expect(applied.political_groups.find((group) => group.name === "Green")?.councillor_count).toBe(34);
     });
 
+    test("bcp prefills political groups and 111 committee seats", () => {
+        const bcp = getExampleCouncilById("bcp");
+        expect(bcp).toBeDefined();
+        expect(bcp?.display_name).toBe("Bournemouth, Christchurch and Poole");
+        expect(getPrefilledTotalCommitteeSeats(bcp!)).toBe(111);
+        expect(bcp?.committees.length).toBe(11);
+        expect(calculateTotalCouncillors(bcp!.political_groups)).toBe(76);
+        expect(bcp?.seat_assignment_source_url).toContain("democracy.bcpcouncil.gov.uk");
+
+        const applied = applyExampleCouncilToFormState(bcp!);
+        expect(applied.total_committee_seats).toBe(111);
+        expect(applied.expected_total_councillors).toBe(76);
+        expect(applied.political_groups.find((group) => group.name === "Liberal Democrat")?.councillor_count).toBe(
+            28
+        );
+        expect(
+            applied.political_groups.find((group) => group.name === "Christchurch Independents")?.councillor_count
+        ).toBe(8);
+        expect(applied.political_groups.find((group) => group.name === "Independents")?.councillor_count).toBe(2);
+
+        expect(
+            validateCouncilSetup({
+                political_groups: bcp!.political_groups,
+                total_committee_seats: 111,
+                expected_total_councillors: 76,
+            }).valid
+        ).toBe(true);
+    });
+
     test("lambeth prefills political groups, vacancies, and 35 committee seats", () => {
         const lambeth = getExampleCouncilById("lambeth");
         expect(lambeth).toBeDefined();
         expect(getPrefilledTotalCommitteeSeats(lambeth!)).toBe(35);
         expect(lambeth?.committees.length).toBe(7);
         expect(calculateTotalCouncillors(lambeth!.political_groups)).toBe(63);
+        expect(lambeth?.seat_assignment_source_url).toContain("moderngov.lambeth.gov.uk");
 
         const applied = applyExampleCouncilToFormState(lambeth!);
         expect(applied.total_committee_seats).toBe(35);
@@ -75,6 +106,7 @@ describe("example_councils", () => {
         expect(getPrefilledTotalCommitteeSeats(sheffield!)).toBe(168);
         expect(calculateTotalCouncillors(sheffield!.political_groups)).toBe(84);
         expect(sheffield?.allocate_seats_to_independents).toBe(true);
+        expect(sheffield?.seat_assignment_source_url).toContain("democracy.sheffield.gov.uk");
 
         const applied = applyExampleCouncilToFormState(sheffield!);
         expect(applied.total_committee_seats).toBe(168);

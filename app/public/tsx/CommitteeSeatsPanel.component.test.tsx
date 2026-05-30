@@ -4,7 +4,9 @@ import {CommitteeSeatsPanel} from "./CommitteeSeatsPanel";
 import type {CommitteeSeatsPanelProps} from "./committee_seats/panel_state";
 import {applyExampleCouncilToFormState, getExampleCouncilById} from "./committee_seats/example_councils";
 import {INDEPENDENT_ALLOCATION_STEP_COPY} from "./committee_seats/independent_allocation";
+import {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY} from "./committee_seats/experimental_seat_distribution";
 import {COMMITTEE_SEATS_PAGE, formatCouncilSetupExampleIntro} from "./committee_seats/page_config";
+import {ExperimentalSubstep} from "./committee_seats/panel_state";
 import {
     CouncilSetupSubstep,
     DataSourceMode,
@@ -66,6 +68,14 @@ function getNumberInputValue(container: HTMLElement, inputId: string): number {
     return parseInt(input.value, 10);
 }
 
+function getTextInputValue(container: HTMLElement, inputId: string): string {
+    const input = container.querySelector("#" + inputId);
+    if (input === null || !(input instanceof HTMLInputElement)) {
+        throw new Error("Input #" + inputId + " not found");
+    }
+    return input.value;
+}
+
 describe("CommitteeSeatsPanel component", () => {
     let mounted: MountedCommitteeSeatsPanel;
     let previousDebounceRendering: typeof options.debounceRendering;
@@ -83,7 +93,9 @@ describe("CommitteeSeatsPanel component", () => {
     });
 
     test("mounts on choose data source with example button disabled", () => {
-        expect(mounted.container.querySelector("h1")?.textContent).toBe(COMMITTEE_SEATS_PAGE.title);
+        const titleLink = mounted.container.querySelector("h1 a");
+        expect(titleLink?.textContent).toBe(COMMITTEE_SEATS_PAGE.title);
+        expect(titleLink?.getAttribute("href")).toBe(COMMITTEE_SEATS_PAGE.base_path);
         expect(mounted.container.textContent).toContain(COMMITTEE_SEATS_PAGE.choose_source_lead);
         expect(getExampleUseDataButton(mounted.container).disabled).toBe(true);
         expect(mounted.panel.state.council_setup_substep).toBe(CouncilSetupSubstep.ChooseDataSource);
@@ -150,6 +162,35 @@ describe("CommitteeSeatsPanel component", () => {
         expect(mounted.container.textContent).toContain(
             "All Councillors are allocated to a political group."
         );
+        expect(getNumberInputValue(mounted.container, "political_group_count_0")).toBe(19);
+        expect(getNumberInputValue(mounted.container, "political_group_count_3")).toBe(34);
+
+        const firstAdditionalGroupNameInput = mounted.container.querySelector(
+            "#committee_seats_add_political_group_name"
+        );
+        expect(firstAdditionalGroupNameInput).not.toBeNull();
+        expect(firstAdditionalGroupNameInput?.getAttribute("placeholder")).toBe(
+            COMMITTEE_SEATS_PAGE.additional_political_group_name_placeholder
+        );
+        expect(mounted.container.querySelector("#political_group_name_7")).toBeNull();
+
+        (firstAdditionalGroupNameInput as HTMLInputElement).value = "Poole People";
+        firstAdditionalGroupNameInput?.dispatchEvent(new Event("input", {bubbles: true}));
+        expect(mounted.container.querySelector("#political_group_name_7")).toBeNull();
+
+        const addGroupButton = Array.from(mounted.container.querySelectorAll("button")).find(
+            (button) => button.textContent?.trim() === COMMITTEE_SEATS_PAGE.add_political_group_button_label
+        );
+        expect(addGroupButton).toBeDefined();
+        expect((addGroupButton as HTMLButtonElement).disabled).toBe(false);
+        addGroupButton?.click();
+
+        expect(mounted.container.querySelector("#political_group_name_7")).toBeNull();
+        expect(
+            mounted.container.querySelector(".committee_seats_groups_table_first_additional_group_row")
+                ?.textContent
+        ).toContain("Poole People");
+        expect(mounted.container.querySelector("#political_group_count_7")).not.toBeNull();
     });
 
     test("bristol political groups step continues to independent allocation", () => {
@@ -178,5 +219,50 @@ describe("CommitteeSeatsPanel component", () => {
             COMMITTEE_SEATS_PAGE.allocation_proportional_share_section_title
         );
         expect(mounted.container.textContent).toContain("Final allocation");
+    });
+
+    test("experimental seat distribution prefills bristol committees", () => {
+        mounted.panel.handleSelectedExampleCouncilChange("bristol");
+        mounted.panel.handleChooseExampleCouncil();
+        mounted.panel.handleContinueFromCouncilTotals();
+        mounted.panel.handleContinueFromPoliticalGroups();
+        mounted.panel.handleIndependentAllocationChoiceChange(false);
+        mounted.panel.handleContinueFromIndependentAllocation();
+        mounted.panel.handleContinueFromPartyAllocation();
+
+        mounted.panel.handleStartExperimentalSeatDistribution();
+
+        expect(mounted.panel.state.wizard_step).toBe(WizardStep.SeatDistributionExperimental);
+        expect(mounted.panel.state.experimental_substep).toBe(ExperimentalSubstep.Committees);
+        expect(getTextInputValue(mounted.container, "committee_name_0")).toBe("Adult Social Care Committee");
+        expect(getNumberInputValue(mounted.container, "committee_seat_count_0")).toBe(9);
+        expect(getTextInputValue(mounted.container, "committee_name_8")).toBe("Planning Committee A");
+    });
+
+    test("experimental distribution assigns one remainder seat", () => {
+        mounted.panel.handleSelectedExampleCouncilChange("bristol");
+        mounted.panel.handleChooseExampleCouncil();
+        mounted.panel.handleContinueFromCouncilTotals();
+        mounted.panel.handleContinueFromPoliticalGroups();
+        mounted.panel.handleIndependentAllocationChoiceChange(false);
+        mounted.panel.handleContinueFromIndependentAllocation();
+        mounted.panel.handleContinueFromPartyAllocation();
+        mounted.panel.handleStartExperimentalSeatDistribution();
+        mounted.panel.handleContinueFromExperimentalCommittees();
+
+        expect(mounted.panel.state.experimental_substep).toBe(ExperimentalSubstep.Distribution);
+        expect(mounted.panel.state.committee_distribution_state).not.toBeNull();
+
+        const assignButton = Array.from(mounted.container.querySelectorAll("button")).find(
+            (button) =>
+                button.textContent?.trim() === EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.assign_button_label
+        );
+        expect(assignButton).toBeDefined();
+        assignButton?.click();
+
+        expect(mounted.panel.state.committee_distribution_state?.assignment_choices[0]).not.toBeNull();
+        expect(mounted.container.textContent).toContain(
+            EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.assignment_chosen_label
+        );
     });
 });

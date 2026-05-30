@@ -1,10 +1,10 @@
 import {h} from "preact";
-import {getExampleCouncilById} from "./example_councils";
 import {
     COMMITTEE_SEATS_PAGE,
     formatCouncilSetupExampleIntro,
     formatCouncilSetupExampleIntroForPoliticalGroups,
 } from "./page_config";
+import {getExampleCouncilById} from "./example_councils";
 import {
     DataSourceMode,
     type CommitteeSeatsPanelState,
@@ -21,7 +21,11 @@ import {
 export function CommitteeSeatsAppHeader() {
     return (
         <header className="committee_seats_app_header">
-            <h1>{COMMITTEE_SEATS_PAGE.title}</h1>
+            <h1>
+                <a className="committee_seats_app_title_link" href={COMMITTEE_SEATS_PAGE.base_path}>
+                    {COMMITTEE_SEATS_PAGE.title}
+                </a>
+            </h1>
             <p className="committee_seats_app_tagline">{COMMITTEE_SEATS_PAGE.tagline}</p>
         </header>
     );
@@ -46,6 +50,18 @@ export function getPoliticalGroupsStepIntroMessage(state: CommitteeSeatsPanelSta
 
     return formatCouncilSetupExampleIntroForPoliticalGroups(
         exampleCouncil?.display_name ?? "an example council"
+    );
+}
+
+export function ExampleCouncilSeatAssignmentSourceLink(props: {url: string}) {
+    return (
+        <p className="committee_seats_note committee_seats_example_seat_assignment_source">
+            {COMMITTEE_SEATS_PAGE.example_seat_assignment_source_note}{" "}
+            <a href={props.url} target="_blank" rel="noopener noreferrer">
+                {COMMITTEE_SEATS_PAGE.example_seat_assignment_source_link_text}
+            </a>
+            . {COMMITTEE_SEATS_PAGE.example_seat_assignment_source_opens_in_new_tab}
+        </p>
     );
 }
 

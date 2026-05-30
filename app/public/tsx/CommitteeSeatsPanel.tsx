@@ -1,6 +1,30 @@
 import {h, Component} from "preact";
 import {calculatePartyAllocation, validateCouncilSetup} from "./committee_seats/calculate_party_allocation";
 import {
+    assignCommitteeDistributionStep,
+    buildInitialDistributionPendingCommitteeSelections,
+    getDefaultCommitteeIndexForAssignmentStep,
+    getFirstUnassignedAssignmentStepIndex,
+    initializeCommitteeDistribution,
+    undoCommitteeDistributionStep,
+} from "./committee_seats/calculate_committee_distribution";
+import {CommitteeDistributionWorkbook} from "./committee_seats/committee_distribution_workbook";
+import {
+    clampCommitteeSeatCountForPanel,
+    updateFormCommitteesAtIndex,
+} from "./committee_seats/committees_editor";
+import {
+    calculateTotalCommitteeSeatsFromForm,
+    committeesForSetup,
+    createEmptyCommitteesForm,
+    formatCommitteeSeatsTotalMessage,
+    mergeCommitteesIntoForm,
+    resolveFormCommittees,
+    validateCommitteesSetup,
+} from "./committee_seats/committees_form";
+import {
+    applyExampleCouncilCommitteesIfMissing,
+    applyExampleCouncilPoliticalGroupsIfMissing,
     applyExampleCouncilToFormState,
     getExampleCouncilById,
 } from "./committee_seats/example_councils";
@@ -21,6 +45,7 @@ import {
 import {
     CouncilSetupSubstep,
     DataSourceMode,
+    ExperimentalSubstep,
     getCouncilSetupInputForAllocation,
     getCouncilSetupValidationInput,
     getDefaultPanelState,
@@ -30,6 +55,7 @@ import {
     type CommitteeSeatsPanelProps,
     type CommitteeSeatsPanelState,
 } from "./committee_seats/panel_state";
+import {ExperimentalCommitteesStep} from "./committee_seats/steps/experimental_committees_step";
 import {
     CommitteeSeatsAppHeader,
     CommitteeSeatsStepIndicator,
@@ -110,7 +136,7 @@ export class CommitteeSeatsPanel extends Component<CommitteeSeatsPanelProps, Com
             council_setup_substep: CouncilSetupSubstep.EnterCouncilTotals,
             data_source_mode: DataSourceMode.Custom,
             political_groups: createEmptyCouncilSetupPoliticalGroups(),
-            committees: [],
+            committees: createEmptyCommitteesForm(),
             total_committee_seats: 0,
             expected_total_councillors: 0,
             allocate_seats_to_independents: null,
@@ -131,7 +157,7 @@ export class CommitteeSeatsPanel extends Component<CommitteeSeatsPanelProps, Com
             council_setup_substep: CouncilSetupSubstep.EnterCouncilTotals,
             data_source_mode: DataSourceMode.Example,
             political_groups: applied.political_groups,
-            committees: applied.committees,
+            committees: mergeCommitteesIntoForm(applied.committees),
             total_committee_seats: applied.total_committee_seats,
             expected_total_councillors: applied.expected_total_councillors,
             allocate_seats_to_independents: null,
@@ -224,6 +250,7 @@ export class CommitteeSeatsPanel extends Component<CommitteeSeatsPanelProps, Com
         }
 
         this.setState({
+            ...applyExampleCouncilPoliticalGroupsIfMissing(this.state),
             council_setup_substep: CouncilSetupSubstep.EnterPoliticalGroups,
             error: null,
             warning: null,
@@ -447,6 +474,189 @@ export class CommitteeSeatsPanel extends Component<CommitteeSeatsPanelProps, Com
         this.setState(getDefaultPanelState());
     }
 
+    handleStartExperimentalSeatDistribution(): void {
+        if (this.state.allocation_result === null) {
+            return;
+        }
+
+        const stateWithCommittees = applyExampleCouncilCommitteesIfMissing(this.state);
+        let committeesForm = resolveFormCommittees(stateWithCommittees.committees);
+
+        if (committeesForSetup(committeesForm).length === 0) {
+            committeesForm = createEmptyCommitteesForm();
+        }
+
+        this.setState({
+            committees: committeesForm,
+            wizard_step: WizardStep.SeatDistributionExperimental,
+            experimental_substep: ExperimentalSubstep.Committees,
+            committee_distribution_state: null,
+            distribution_pending_committee_by_step: [],
+            error: null,
+            warning: null,
+        });
+    }
+
+    handleCommitteeNameChange(committeeIndex: number, name: string): void {
+        this.setState({
+            committees: updateFormCommitteesAtIndex(this.state.committees, committeeIndex, {name}),
+            error: null,
+            warning: null,
+        });
+    }
+
+    handleCommitteeSeatCountChange(committeeIndex: number, seatCount: number): void {
+        const clampedSeatCount = clampCommitteeSeatCountForPanel(
+            this.state.committees,
+            committeeIndex,
+            seatCount
+        );
+
+        this.setState({
+            committees: updateFormCommitteesAtIndex(this.state.committees, committeeIndex, {
+                seat_count: clampedSeatCount,
+            }),
+            error: null,
+            warning: null,
+        });
+    }
+
+    handleAddCommittee(committeeIndex: number, name: string): void {
+        this.setState({
+            committees: updateFormCommitteesAtIndex(this.state.committees, committeeIndex, {
+                name,
+                seat_count: 0,
+            }),
+            error: null,
+            warning: null,
+        });
+    }
+
+    handleContinueFromExperimentalCommittees(): void {
+        const formCommittees = resolveFormCommittees(this.state.committees);
+        const validation = validateCommitteesSetup(
+            formCommittees,
+            this.state.total_committee_seats
+        );
+
+        if (!validation.valid) {
+            this.setState({
+                error: validation.error,
+                warning: null,
+            });
+            return;
+        }
+
+        if (this.state.allocation_result === null) {
+            return;
+        }
+
+        const distributionState = initializeCommitteeDistribution(
+            committeesForSetup(formCommittees),
+            this.state.allocation_result
+        );
+
+        this.setState({
+            committees: formCommittees,
+            committee_distribution_state: distributionState,
+            experimental_substep: ExperimentalSubstep.Distribution,
+            distribution_pending_committee_by_step:
+                buildInitialDistributionPendingCommitteeSelections(distributionState),
+            error: null,
+            warning: null,
+        });
+    }
+
+    handleDistributionPendingCommitteeChange(stepIndex: number, committeeIndex: number): void {
+        const pendingCommitteeByStep = [...this.state.distribution_pending_committee_by_step];
+        pendingCommitteeByStep[stepIndex] = committeeIndex;
+
+        this.setState({
+            distribution_pending_committee_by_step: pendingCommitteeByStep,
+        });
+    }
+
+    handleAssignDistributionStep(stepIndex: number): void {
+        if (this.state.committee_distribution_state === null) {
+            return;
+        }
+
+        const pendingCommitteeIndex = getDefaultCommitteeIndexForAssignmentStep(
+            this.state.committee_distribution_state,
+            stepIndex,
+            this.state.distribution_pending_committee_by_step[stepIndex]
+        );
+        const updatedDistributionState = assignCommitteeDistributionStep(
+            this.state.committee_distribution_state,
+            stepIndex,
+            pendingCommitteeIndex
+        );
+        const pendingCommitteeByStep = [...this.state.distribution_pending_committee_by_step];
+        pendingCommitteeByStep[stepIndex] = pendingCommitteeIndex;
+
+        const nextStepIndex = getFirstUnassignedAssignmentStepIndex(updatedDistributionState);
+        if (nextStepIndex !== null) {
+            pendingCommitteeByStep[nextStepIndex] = getDefaultCommitteeIndexForAssignmentStep(
+                updatedDistributionState,
+                nextStepIndex
+            );
+        }
+
+        this.setState({
+            committee_distribution_state: updatedDistributionState,
+            distribution_pending_committee_by_step: pendingCommitteeByStep,
+        });
+    }
+
+    handleUndoDistributionStep(stepIndex: number): void {
+        if (this.state.committee_distribution_state === null) {
+            return;
+        }
+
+        const updatedDistributionState = undoCommitteeDistributionStep(
+            this.state.committee_distribution_state,
+            stepIndex
+        );
+        const pendingCommitteeByStep = [...this.state.distribution_pending_committee_by_step];
+
+        for (
+            let pendingStepIndex = stepIndex;
+            pendingStepIndex < updatedDistributionState.assignment_steps.length;
+            pendingStepIndex += 1
+        ) {
+            pendingCommitteeByStep[pendingStepIndex] = getDefaultCommitteeIndexForAssignmentStep(
+                updatedDistributionState,
+                pendingStepIndex
+            );
+        }
+
+        this.setState({
+            committee_distribution_state: updatedDistributionState,
+            distribution_pending_committee_by_step: pendingCommitteeByStep,
+        });
+    }
+
+    handleBackFromExperimentalDistribution(): void {
+        this.setState({
+            experimental_substep: ExperimentalSubstep.Committees,
+            committee_distribution_state: null,
+            distribution_pending_committee_by_step: [],
+            error: null,
+            warning: null,
+        });
+    }
+
+    handleBackToResultsFromExperimental(): void {
+        this.setState({
+            wizard_step: WizardStep.NextSteps,
+            experimental_substep: ExperimentalSubstep.Committees,
+            committee_distribution_state: null,
+            distribution_pending_committee_by_step: [],
+            error: null,
+            warning: null,
+        });
+    }
+
     handleProposedExampleCouncilNameChange(councilDisplayName: string): void {
         this.setState({
             proposed_example_council_name: councilDisplayName,
@@ -556,10 +766,76 @@ export class CommitteeSeatsPanel extends Component<CommitteeSeatsPanelProps, Com
                             }}
                             onBackFromNextSteps={() => this.handleBackFromNextSteps()}
                             onStartOver={() => this.handleStartOver()}
+                            onStartExperimentalSeatDistribution={() =>
+                                this.handleStartExperimentalSeatDistribution()
+                            }
                         />
                     )}
+                    {state.wizard_step === WizardStep.SeatDistributionExperimental &&
+                        state.allocation_result !== null &&
+                        state.experimental_substep === ExperimentalSubstep.Committees && (
+                            <ExperimentalCommitteesStep
+                                committees={state.committees}
+                                expectedTotalCommitteeSeats={state.total_committee_seats}
+                                committeeSeatsStatusMessage={formatCommitteeSeatsTotalMessage(
+                                    calculateTotalCommitteeSeatsFromForm(
+                                        resolveFormCommittees(state.committees)
+                                    ),
+                                    state.total_committee_seats
+                                )}
+                                committeeSeatsStatusMatches={
+                                    validateCommitteesSetup(
+                                        resolveFormCommittees(state.committees),
+                                        state.total_committee_seats
+                                    ).valid
+                                }
+                                canContinueFromCommittees={
+                                    validateCommitteesSetup(
+                                        resolveFormCommittees(state.committees),
+                                        state.total_committee_seats
+                                    ).valid
+                                }
+                                onCommitteeNameChange={(committeeIndex, name) =>
+                                    this.handleCommitteeNameChange(committeeIndex, name)
+                                }
+                                onCommitteeSeatCountChange={(committeeIndex, seatCount) =>
+                                    this.handleCommitteeSeatCountChange(committeeIndex, seatCount)
+                                }
+                                onAddCommittee={(committeeIndex, name) =>
+                                    this.handleAddCommittee(committeeIndex, name)
+                                }
+                                onContinueFromCommittees={() =>
+                                    this.handleContinueFromExperimentalCommittees()
+                                }
+                                onBackToResults={() => this.handleBackToResultsFromExperimental()}
+                            />
+                        )}
+                    {state.wizard_step === WizardStep.SeatDistributionExperimental &&
+                        state.allocation_result !== null &&
+                        state.experimental_substep === ExperimentalSubstep.Distribution &&
+                        state.committee_distribution_state !== null && (
+                            <CommitteeDistributionWorkbook
+                                distributionState={state.committee_distribution_state}
+                                pendingCommitteeByStepIndex={state.distribution_pending_committee_by_step}
+                                onPendingCommitteeChange={(stepIndex, committeeIndex) =>
+                                    this.handleDistributionPendingCommitteeChange(
+                                        stepIndex,
+                                        committeeIndex
+                                    )
+                                }
+                                onAssignStep={(stepIndex) => this.handleAssignDistributionStep(stepIndex)}
+                                onUndoStep={(stepIndex) => this.handleUndoDistributionStep(stepIndex)}
+                                onBackToCommittees={() => this.handleBackFromExperimentalDistribution()}
+                                onBackToResults={() => this.handleBackToResultsFromExperimental()}
+                            />
+                        )}
+                    {state.wizard_step === WizardStep.SeatDistributionExperimental && state.error && (
+                        <div className="error">{state.error}</div>
+                    )}
                 </div>
-                <CommitteeSeatsStepIndicator state={state} />
+                {state.wizard_step !== WizardStep.SeatDistributionExperimental && (
+                    <CommitteeSeatsStepIndicator state={state} />
+                )}
             </div>
         );
     }

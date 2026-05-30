@@ -1,10 +1,12 @@
 import {h} from "preact";
+import {ExampleCouncilSeatAssignmentSourceLink} from "./panel_wizard_chrome";
 import {COMMITTEE_SEATS_PAGE} from "./page_config";
 
 export interface CouncilTotalsEditorProps {
     expectedTotalCouncillors: number;
     totalCommitteeSeats: number;
     showExampleCommitteeSeatsNote: boolean;
+    seatAssignmentSourceUrl?: string;
     onExpectedTotalCouncillorsChange: (expectedTotalCouncillors: number) => void;
     onTotalCommitteeSeatsChange: (totalCommitteeSeats: number) => void;
 }
@@ -69,6 +71,9 @@ export function CouncilTotalsEditor(props: CouncilTotalsEditorProps) {
                 </table>
             </div>
             <p className="committee_seats_note">{COMMITTEE_SEATS_PAGE.council_setup_political_committees_note}</p>
+            {props.seatAssignmentSourceUrl !== undefined && (
+                <ExampleCouncilSeatAssignmentSourceLink url={props.seatAssignmentSourceUrl} />
+            )}
             {props.showExampleCommitteeSeatsNote && (
                 <p className="committee_seats_note">
                     This example only includes political group counts. Enter the total committee seats for your

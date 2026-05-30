@@ -6,7 +6,6 @@ import type {PoliticalGroup} from "../types";
 export interface PoliticalGroupsStepProps {
     politicalGroups: PoliticalGroup[];
     expectedTotalCouncillors: number;
-    additionalGroupNamesEditable: boolean;
     groupTotalStatusMessage: string;
     groupTotalStatusMatches: boolean;
     canContinueFromPoliticalGroups: boolean;
@@ -28,7 +27,6 @@ export function PoliticalGroupsStep(props: PoliticalGroupsStepProps) {
             <PoliticalGroupsEditor
                 politicalGroups={props.politicalGroups}
                 expectedTotalCouncillors={props.expectedTotalCouncillors}
-                additionalGroupNamesEditable={props.additionalGroupNamesEditable}
                 groupTotalStatusMessage={props.groupTotalStatusMessage}
                 groupTotalStatusMatches={props.groupTotalStatusMatches}
                 canContinueFromPoliticalGroups={props.canContinueFromPoliticalGroups}

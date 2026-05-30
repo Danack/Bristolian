@@ -57,9 +57,11 @@ Document how to add a council from submitted JSON (edit `example_councils.ts`, r
 
 Extend the feature doc’s “Important files” table to list the panel split (`steps/*`, `allocation_workbook.tsx`, etc.) — same structure as `agent-handoff-notes.md`.
 
-## Probably out of scope (but often asked)
+## Experimental (shipped)
 
-- **Per-committee allocation** — explicitly out of scope; keep saying so, maybe with a FAQ line.
+- **Per-committee seat distribution** — available from Next steps as **Experimental — seat distribution** (`committees_form.ts`, `calculate_committee_distribution.ts`, `committee_distribution_workbook.tsx`). v1 is in-memory only (no URL encoding). Auto-solving remainders without user input remains out of scope.
+
+## Probably out of scope (but often asked)
 
 ## Suggested priorities
 

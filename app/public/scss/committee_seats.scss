@@ -55,6 +55,16 @@
             color: var(--content_panel_text_color);
         }
 
+        .committee_seats_app_title_link {
+            color: inherit;
+            text-decoration: none;
+
+            &:hover,
+            &:focus-visible {
+                text-decoration: underline;
+            }
+        }
+
         .committee_seats_app_tagline {
             margin: 0.35rem 0 0;
             font-size: 0.95rem;
@@ -257,23 +267,22 @@
         box-sizing: border-box;
     }
 
-    .committee_seats_political_groups_panel_title {
+    .committee_seats_political_groups_section_title {
         margin: 0;
-        padding: 0.75rem 1rem 0.5rem;
     }
 
     .committee_seats_political_groups_body {
         display: flex;
         flex-wrap: nowrap;
-        align-items: center;
-        gap: 1rem;
+        align-items: stretch;
+        gap: 0;
         min-width: 42rem;
-        padding: 0 1rem 0.75rem;
+        padding: 0;
         box-sizing: border-box;
     }
 
     .committee_seats_political_groups_table.committee_seats_table_scroll {
-        flex: 0 0 auto;
+        flex: 1 1 auto;
         min-width: 28rem;
         border: none;
         border-radius: 0;
@@ -281,6 +290,25 @@
 
         .committee_seats_groups_table {
             min-width: 28rem;
+
+            thead th {
+                border-top: none;
+            }
+
+            th:first-child,
+            td:first-child {
+                border-left: none;
+            }
+
+            tr th:last-child,
+            tr td:last-child {
+                border-right: none;
+            }
+
+            tbody:last-of-type tr:last-child th,
+            tbody:last-of-type tr:last-child td {
+                border-bottom: none;
+            }
         }
     }
 
@@ -290,9 +318,12 @@
         flex-direction: column;
         gap: 0.75rem;
         align-items: flex-start;
+        justify-content: center;
         min-width: 12rem;
         max-width: 16rem;
-        padding-right: 0.25rem;
+        padding: 0.75rem 1rem;
+        border-left: 1px solid var(--standard_border_color);
+        box-sizing: border-box;
 
         .committee_seats_total_councillors {
             max-width: 100%;
@@ -441,6 +472,11 @@
             border-radius: 4px;
             padding: 0.75rem;
             resize: vertical;
+        }
+
+        .committee_seats_next_steps_primary_actions {
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .committee_seats_next_steps_summary_table {
@@ -596,6 +632,194 @@
         padding-top: 0.5rem;
     }
 
+    .committee_seats_experimental_step {
+        .committee_seats_experimental_heading {
+            margin: 0 0 0.75rem;
+            font-family: Cabin, Arial, x-locale-body, sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--content_panel_text_color);
+        }
+    }
+
+    .committee_seats_distribution_assignment_intro {
+        margin-top: 1rem;
+        max-width: 42rem;
+    }
+
+    .committee_seats_distribution_assignment_steps {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin: 1rem 0 0;
+        padding: 0;
+        list-style: none;
+        width: 100%;
+        max-width: none;
+    }
+
+    .committee_seats_distribution_assignment_step {
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+        padding: 0.85rem 1rem;
+        border: 1px solid var(--standard_border_color);
+        border-radius: 4px;
+        background: var(--background_color);
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .committee_seats_distribution_assignment_step_completed {
+        padding: 0.15rem 0;
+        border: none;
+        border-radius: 0;
+        background: transparent;
+    }
+
+    .committee_seats_distribution_assignment_step_completed_line {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 0.35rem 0.5rem;
+        width: 100%;
+        max-width: none;
+        font-size: 0.9rem;
+        line-height: 1.35;
+        color: #000;
+    }
+
+    .committee_seats_distribution_assignment_step_completed_assignment {
+        flex: 0 1 auto;
+        min-width: 0;
+    }
+
+    .committee_seats_distribution_assignment_step_completed_title {
+        font-weight: 600;
+        color: var(--content_panel_text_color);
+    }
+
+    .committee_seats_distribution_assignment_step_completed_separator {
+        color: var(--content_panel_text_color);
+    }
+
+    .committee_seats_distribution_assignment_undo_button {
+        flex-shrink: 0;
+        margin-left: 0.5rem;
+        padding: 0.15rem 0.5rem;
+        font-size: 0.85rem;
+        line-height: 1.2;
+    }
+
+    .committee_seats_distribution_assignment_step_active,
+    .committee_seats_distribution_assignment_step_locked {
+        margin-top: 0.75rem;
+    }
+
+    .committee_seats_distribution_assignment_step_completed:first-child {
+        padding-top: 0;
+    }
+
+    .committee_seats_distribution_assignment_step_heading {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--content_panel_text_color);
+    }
+
+    .committee_seats_distribution_assignment_step_data {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        font-variant-numeric: tabular-nums;
+        color: #000;
+        white-space: pre-line;
+    }
+
+    .committee_seats_distribution_assignment_step_active {
+        border-color: var(--content_panel_text_color);
+    }
+
+    .committee_seats_distribution_assignment_step_locked {
+        opacity: 0.85;
+    }
+
+    .committee_seats_distribution_assignment_step_controls {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.65rem;
+    }
+
+    .committee_seats_distribution_assignment_committee_row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem;
+
+        select {
+            flex: 1 1 18rem;
+            min-width: 12rem;
+            max-width: 100%;
+        }
+
+        .button_standard {
+            flex: 0 0 auto;
+        }
+    }
+
+    .committee_seats_distribution_assignment_panel {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+        margin-top: 1rem;
+        max-width: 42rem;
+
+        select {
+            min-width: 18rem;
+            max-width: 100%;
+        }
+    }
+
+    .committee_seats_distribution_assignment_label {
+        font-weight: 500;
+    }
+
+    .committee_seats_distribution_complete {
+        margin-top: 1rem;
+    }
+
+    .committee_seats_floor_section_explanation {
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+        max-width: 42rem;
+        margin-bottom: 1rem;
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .committee_seats_floor_example_heading {
+        margin: 0.25rem 0 0;
+        font-size: 0.95rem;
+        font-weight: 600;
+        line-height: 1.45;
+        color: var(--content_panel_text_color);
+    }
+
+    .committee_seats_floor_example_calculation {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.45;
+        font-variant-numeric: tabular-nums;
+        color: #000;
+    }
+
+
     .committee_seats_note {
         font-size: 0.9rem;
         line-height: 1.45;
@@ -615,6 +839,13 @@
         line-height: 1.5;
         max-width: 42rem;
         color: var(--content_panel_text_color);
+    }
+
+    .committee_seats_example_seat_assignment_source {
+        margin: 0.5rem 0 0;
+        font-size: 0.9rem;
+        line-height: 1.45;
+        max-width: 42rem;
     }
 
     .committee_seats_warning {
@@ -721,15 +952,34 @@
             line-height: 1.2;
         }
 
-        .committee_seats_groups_table_additional_heading th {
-            text-align: left;
-            font-family: Manrope, Arial, x-locale-body, sans-serif;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--content_panel_text_color);
-            padding-top: 1rem;
-            padding-bottom: 0.35rem;
+        .committee_seats_groups_table_first_additional_group_row td,
+        .committee_seats_groups_table_add_group_row td {
             border-top: 1px solid var(--standard_border_color);
+            padding-top: 0.75rem;
+        }
+
+        .committee_seats_add_political_group_controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .committee_seats_add_political_group_name_input {
+            flex: 1 1 16rem;
+            min-width: 16rem;
+        }
+
+        .committee_seats_add_political_group_button {
+            flex: 0 0 auto;
+        }
+
+        .committee_seats_additional_group_name_cell {
+            min-width: 24rem;
+        }
+
+        .committee_seats_additional_group_name_input {
+            min-width: 24rem;
         }
     }
 
@@ -904,6 +1154,68 @@
                 padding-top: 0.75rem;
                 padding-bottom: 0.75rem;
             }
+        }
+    }
+
+    .committee_seats_allocation_workbook.committee_seats_distribution_matrix {
+        width: max-content;
+        max-width: 100%;
+        font-size: 0.875rem;
+        line-height: 1.35;
+
+        th,
+        td {
+            padding: 0.15rem 0.2rem;
+        }
+
+        thead .committee_seats_allocation_workbook_party {
+            vertical-align: bottom;
+            text-align: center;
+            padding: 0.2rem 0.1rem 0.35rem;
+            width: 2rem;
+            min-width: 2rem;
+            max-width: 2.25rem;
+            line-height: 1.35;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+
+        .committee_seats_distribution_committee_heading {
+            display: inline-block;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+        }
+
+        .committee_seats_allocation_workbook_corner {
+            width: 0.25rem;
+            min-width: 0.25rem;
+            padding: 0.1rem;
+        }
+
+        .committee_seats_allocation_workbook_label {
+            min-width: 6.5rem;
+            max-width: 9rem;
+            padding: 0.15rem 0.25rem;
+            font-size: 0.875rem;
+            line-height: 1.35;
+        }
+
+        .committee_seats_allocation_workbook_value {
+            min-width: 1.75rem;
+            padding: 0.1rem 0.15rem;
+            font-size: 0.9rem;
+        }
+
+        .committee_seats_allocation_workbook_total {
+            min-width: 3.25rem;
+            padding: 0.15rem 0.2rem;
+            font-size: 0.875rem;
+        }
+
+        .committee_seats_distribution_column_totals th,
+        .committee_seats_distribution_column_totals td {
+            font-weight: 600;
         }
     }
 }

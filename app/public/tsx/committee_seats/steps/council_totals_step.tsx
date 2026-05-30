@@ -34,6 +34,7 @@ export function CouncilTotalsStep(props: CouncilTotalsStepProps) {
             <CouncilTotalsEditor
                 expectedTotalCouncillors={props.expectedTotalCouncillors}
                 totalCommitteeSeats={props.totalCommitteeSeats}
+                seatAssignmentSourceUrl={exampleCouncil?.seat_assignment_source_url}
                 showExampleCommitteeSeatsNote={
                     props.dataSourceMode === DataSourceMode.Example &&
                     prefilledTotalCommitteeSeats === null

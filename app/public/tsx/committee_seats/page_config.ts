@@ -3,6 +3,8 @@ export const NO_EXAMPLE_COUNCIL_SELECTED = "";
 
 /** Page copy and wizard constants for the committee seats tool (client-only; PHP only mounts the widget). */
 export const COMMITTEE_SEATS_PAGE = {
+    /** Canonical URL for the tool (no query parameters). */
+    base_path: "/tools/committee_seats",
     title: "Committee seat allocation calculator",
     tagline:
         "A tool to help people calculate committee seat allocations for each political group, based on " +
@@ -16,6 +18,10 @@ export const COMMITTEE_SEATS_PAGE = {
         "change any number before continuing.",
     choose_source_council_placeholder: "Choose a Council",
     choose_source_example_button_label: "Use this council's data",
+    example_seat_assignment_source_note:
+        "These numbers were taken from what we believe to be the correct Council Paper, which is",
+    example_seat_assignment_source_link_text: "here",
+    example_seat_assignment_source_opens_in_new_tab: "(opens in a new tab)",
     choose_source_or_label: "OR",
     council_setup_custom_intro: "You have chosen to enter data for a council.",
     council_setup_how_many_councillors_question: "How many councillors are on the council?",
@@ -25,6 +31,13 @@ export const COMMITTEE_SEATS_PAGE = {
         "between political groups under the political allocation rules. Add together the seats on each of those " +
         "committees to get this total.",
     council_setup_political_groups_section_title: "How many councillors does each group have?",
+    additional_political_group_name_placeholder: "Type a group name to add another group",
+    add_political_group_button_label: "Add group",
+    maximum_additional_political_groups_reached: "Maximum groups reached",
+    experimental_committees_section_title: "Committees and seat counts",
+    add_committee_name_placeholder: "Type a committee name to add another committee",
+    add_committee_button_label: "Add committee",
+    maximum_committees_reached: "Maximum committees reached",
     allocation_proportional_share_section_title: "Calculate each group's proportional share",
     allocation_rounding_section_title: "Round each share down, then allocate the remaining seats",
     allocation_workbook_total_seats_allocated_heading: "Total seats allocated",
@@ -47,7 +60,7 @@ export const WIZARD_DISPLAY_STEPS = [
 export const TOTAL_WIZARD_DISPLAY_STEPS = WIZARD_DISPLAY_STEPS.length;
 
 export function formatCouncilSetupExampleIntro(councilDisplayName: string): string {
-    return "You are using data for " + councilDisplayName + ". Adjust the figures if needed.";
+    return "You are using data for " + councilDisplayName + ". Adjust the figures if needed, or press continue.";
 }
 
 /** Example intro on the councillors-by-group step (Continue is in the groups panel aside). */

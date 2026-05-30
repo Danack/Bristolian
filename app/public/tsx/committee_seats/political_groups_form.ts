@@ -37,7 +37,7 @@ const STANDARD_GROUP_NAME_ALIAS_TO_INDEX: Record<string, number> = {
     noparty: 5,
 };
 
-function findStandardGroupIndex(groupName: string): number {
+export function findStandardGroupIndex(groupName: string): number {
     const normalized = normalizeGroupNameForMatching(groupName);
 
     const directIndex = STANDARD_POLITICAL_GROUP_NAMES.findIndex(
@@ -90,6 +90,65 @@ export function getVisibleAdditionalPoliticalGroupSlotCount(formGroups: Politica
     }
 
     return visibleCount;
+}
+
+/** Index of the first unused "other group" slot, or null when every slot is taken. */
+export function getNextEmptyAdditionalPoliticalGroupSlotIndex(formGroups: PoliticalGroup[]): number | null {
+    const additionalGroups = formGroups.slice(STANDARD_POLITICAL_GROUP_NAMES.length);
+
+    for (let additionalIndex = 0; additionalIndex < additionalGroups.length; additionalIndex += 1) {
+        const additionalGroup = additionalGroups[additionalIndex];
+        if (additionalGroup.name.trim() === "" && additionalGroup.councillor_count <= 0) {
+            return STANDARD_POLITICAL_GROUP_NAMES.length + additionalIndex;
+        }
+    }
+
+    return null;
+}
+
+export function getListedAdditionalPoliticalGroups(
+    formGroups: PoliticalGroup[]
+): {groupIndex: number; politicalGroup: PoliticalGroup}[] {
+    const additionalGroups = formGroups.slice(STANDARD_POLITICAL_GROUP_NAMES.length);
+    const listedGroups: {groupIndex: number; politicalGroup: PoliticalGroup}[] = [];
+
+    for (let additionalIndex = 0; additionalIndex < additionalGroups.length; additionalIndex += 1) {
+        const politicalGroup = additionalGroups[additionalIndex];
+        if (additionalPoliticalGroupRowHasEnteredName(politicalGroup)) {
+            listedGroups.push({
+                groupIndex: STANDARD_POLITICAL_GROUP_NAMES.length + additionalIndex,
+                politicalGroup,
+            });
+        }
+    }
+
+    return listedGroups;
+}
+
+export function additionalPoliticalGroupRowHasEnteredName(politicalGroup: PoliticalGroup): boolean {
+    return politicalGroup.name.trim() !== "";
+}
+
+function isAdditionalPoliticalGroupSlotUsed(politicalGroup: PoliticalGroup): boolean {
+    return politicalGroup.name.trim() !== "" || politicalGroup.councillor_count > 0;
+}
+
+/** How many of the fixed "other group" slots have a name or councillor count. */
+export function countUsedAdditionalPoliticalGroupSlots(formGroups: PoliticalGroup[]): number {
+    const additionalGroups = formGroups.slice(STANDARD_POLITICAL_GROUP_NAMES.length);
+    let usedSlotCount = 0;
+
+    for (const additionalGroup of additionalGroups) {
+        if (isAdditionalPoliticalGroupSlotUsed(additionalGroup)) {
+            usedSlotCount += 1;
+        }
+    }
+
+    return usedSlotCount;
+}
+
+export function hasReachedMaximumAdditionalPoliticalGroupSlots(formGroups: PoliticalGroup[]): boolean {
+    return countUsedAdditionalPoliticalGroupSlots(formGroups) >= ADDITIONAL_POLITICAL_GROUP_SLOT_COUNT;
 }
 
 /** Map example or URL party rows onto the fixed council setup form layout. */
