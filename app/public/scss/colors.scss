@@ -67,6 +67,7 @@
 
   --table_row_border_hover_color: rgba(32, 32, 32, 0.333);
   --table_row_stripe_background: rgba(230, 230, 230, 0.5);
+  --room_entity_tag_chip_background: rgb(210, 210, 210);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -128,6 +129,7 @@
 
     --table_row_border_hover_color: rgba(32, 32, 32, 0.333);
     --table_row_stripe_background: rgba(70, 70, 70, 0.5);
+    --room_entity_tag_chip_background: rgb(58, 58, 58);
 
   }
 }

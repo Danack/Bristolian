@@ -128,6 +128,17 @@ class PagesTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\AppController\Pages::committee_seats_page
+     */
+    public function test_committee_seats_page(): void
+    {
+        $result = $this->injector->execute([Pages::class, 'committee_seats_page']);
+        $this->assertIsString($result);
+        $this->assertStringContainsString('committee_seats_app', $result);
+        $this->assertStringContainsString('committee_seats_panel', $result);
+    }
+
+    /**
      * @covers \Bristolian\AppController\Pages::homepage
      */
     public function test_homepage(): void

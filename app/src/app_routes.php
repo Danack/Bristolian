@@ -111,6 +111,8 @@ function getAllAppRoutes()
         ['/tools/notes', 'GET', '\Bristolian\AppController\Pages::notes_page'],
         // Twitter splitter tool
         ['/tools/twitter_splitter', 'GET', '\Bristolian\AppController\Pages::twitter_splitter_page'],
+        // Committee seat allocation calculator
+        ['/tools/committee_seats', 'GET', '\Bristolian\AppController\Pages::committee_seats_page'],
         // Teleprompter tool
         ['/tools/teleprompter', 'GET', '\Bristolian\AppController\Pages::teleprompter_page'],
         // Email link generator

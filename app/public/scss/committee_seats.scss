@@ -1,0 +1,902 @@
+@use "variables.scss";
+
+// Full-viewport tool shell: PHP mounts committee_seats_app and passes config via data-widgety_json.
+.committee_seats_app {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100dvh - 7.5rem);
+    width: calc(100% + var(--page_padding_left) + var(--page_padding_right));
+    margin-left: calc(-1 * var(--page_padding_left));
+    margin-right: calc(-1 * var(--page_padding_right));
+    box-sizing: border-box;
+
+    @media (max-width: variables.$screen_break_medium) {
+        min-height: calc(100dvh - 6.5rem);
+    }
+
+    .committee_seats_panel {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        min-height: 0;
+    }
+}
+
+.committee_seats_panel_react {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1.25rem var(--page_padding_left) 1rem var(--page_padding_right);
+    background: var(--background_color);
+    color: var(--content_panel_text_color);
+
+    h1,
+    h2,
+    h3 {
+        text-decoration: none;
+        font-weight: 600;
+        line-height: 1.25;
+        margin: 0;
+    }
+
+    .committee_seats_app_header {
+        flex-shrink: 0;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid var(--standard_border_color);
+        margin-bottom: 0.25rem;
+
+        h1 {
+            font-family: Cabin, Arial, x-locale-body, sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--content_panel_text_color);
+        }
+
+        .committee_seats_app_tagline {
+            margin: 0.35rem 0 0;
+            font-size: 0.95rem;
+            line-height: 1.45;
+            color: #000;
+            max-width: 42rem;
+        }
+    }
+
+    .committee_seats_main {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        gap: 1.25rem;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .committee_seats_step_indicator {
+        flex-shrink: 0;
+        align-self: flex-end;
+        margin-top: auto;
+        padding-top: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.15rem;
+        font-family: Manrope, Arial, x-locale-body, sans-serif;
+        font-size: 0.8125rem;
+        font-weight: 400;
+        letter-spacing: 0.02em;
+        line-height: 1.4;
+        color: var(--content_panel_text_color_semi_transparent);
+
+        .committee_seats_step_indicator_primary {
+            font-weight: 500;
+            color: var(--content_panel_text_color);
+            opacity: 0.55;
+        }
+
+        .committee_seats_step_indicator_secondary {
+            font-weight: 400;
+            font-style: italic;
+            opacity: 0.85;
+        }
+    }
+
+    .committee_seats_step {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        flex: 1;
+        min-height: 0;
+    }
+
+    .committee_seats_wizard_trail {
+        flex-shrink: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .committee_seats_wizard_trail_list {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.35rem 0.5rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .committee_seats_wizard_trail_item {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+    }
+
+    .committee_seats_wizard_trail_separator {
+        font-family: Manrope, Arial, x-locale-body, sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--content_panel_text_color);
+        opacity: 0.45;
+        user-select: none;
+    }
+
+    .committee_seats_wizard_trail_step {
+        font-family: Cabin, Arial, x-locale-body, sans-serif;
+        line-height: 1.2;
+        white-space: nowrap;
+        text-decoration: none;
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+    }
+
+    .committee_seats_wizard_trail_step_active {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--content_panel_text_color);
+        cursor: default;
+    }
+
+    .committee_seats_wizard_trail_step_past {
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--standard_link_color);
+        text-decoration: underline;
+        text-underline-offset: 0.15em;
+    }
+
+    .committee_seats_wizard_trail_step_inactive {
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--content_panel_text_color);
+        opacity: 0.5;
+    }
+
+    .committee_seats_wizard_trail_step_button {
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        text-align: inherit;
+        font: inherit;
+        color: inherit;
+        opacity: inherit;
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+
+        &:hover,
+        &:focus-visible {
+            color: var(--standard_link_hover_color);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--standard_link_color);
+            outline-offset: 2px;
+        }
+    }
+
+    .committee_seats_section_title {
+        font-family: Manrope, Arial, x-locale-body, sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .committee_seats_section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .committee_seats_section_fit {
+        width: fit-content;
+        max-width: 100%;
+        align-items: flex-start;
+
+        .committee_seats_political_groups_fieldset {
+            align-items: flex-start;
+            width: fit-content;
+            max-width: 100%;
+        }
+    }
+
+    .committee_seats_political_groups_fieldset {
+        border: none;
+        margin: 0;
+        padding: 0;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        &:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+
+            input,
+            button {
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    .committee_seats_political_groups_panel {
+        width: fit-content;
+        min-width: 44rem;
+        max-width: 100%;
+        overflow-x: auto;
+        border: 1px solid var(--standard_border_color);
+        border-radius: 4px;
+        background: var(--background_color);
+        box-sizing: border-box;
+    }
+
+    .committee_seats_political_groups_panel_title {
+        margin: 0;
+        padding: 0.75rem 1rem 0.5rem;
+    }
+
+    .committee_seats_political_groups_body {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 1rem;
+        min-width: 42rem;
+        padding: 0 1rem 0.75rem;
+        box-sizing: border-box;
+    }
+
+    .committee_seats_political_groups_table.committee_seats_table_scroll {
+        flex: 0 0 auto;
+        min-width: 28rem;
+        border: none;
+        border-radius: 0;
+        background: transparent;
+
+        .committee_seats_groups_table {
+            min-width: 28rem;
+        }
+    }
+
+    .committee_seats_political_groups_aside {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: flex-start;
+        min-width: 12rem;
+        max-width: 16rem;
+        padding-right: 0.25rem;
+
+        .committee_seats_total_councillors {
+            max-width: 100%;
+        }
+    }
+
+    .committee_seats_political_groups_panel_notes {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0 1rem 0.75rem;
+        border-top: 1px solid var(--standard_border_color);
+    }
+
+    .committee_seats_political_groups_aside_continue {
+        align-self: flex-start;
+    }
+
+    .committee_seats_council_totals_screen {
+        align-items: center;
+        text-align: center;
+
+        .committee_seats_council_setup_intro {
+            max-width: 34rem;
+            text-align: center;
+        }
+
+        .committee_seats_section_fit {
+            align-items: center;
+        }
+
+        .committee_seats_section_title {
+            text-align: center;
+        }
+
+        .committee_seats_note {
+            text-align: center;
+            max-width: 34rem;
+        }
+
+        .committee_seats_actions {
+            justify-content: center;
+        }
+    }
+
+    .committee_seats_next_steps_screen {
+        .committee_seats_next_steps_major_heading {
+            margin: 0 0 0.75rem;
+            font-family: Cabin, Arial, x-locale-body, sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            line-height: 1.25;
+            color: var(--content_panel_text_color);
+            max-width: 42rem;
+        }
+
+        .committee_seats_lead {
+            max-width: 42rem;
+        }
+
+        .committee_seats_next_steps_advice {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-width: 42rem;
+
+            p {
+                margin: 0;
+                font-size: 0.95rem;
+                line-height: 1.5;
+                color: #000;
+            }
+
+            .committee_seats_section_title {
+                margin: 1rem 0 0;
+
+                &:first-child {
+                    margin-top: 0;
+                }
+            }
+        }
+
+        .committee_seats_send_council_data {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-width: 42rem;
+
+            .committee_seats_section_title {
+                margin: 0;
+            }
+        }
+
+        .committee_seats_send_council_data_intro {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+
+            p {
+                margin: 0;
+                font-size: 0.95rem;
+                line-height: 1.5;
+                color: #000;
+            }
+        }
+
+        .committee_seats_send_council_data_label {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #000;
+        }
+
+        .committee_seats_send_council_data_name_input {
+            width: 100%;
+            max-width: 24rem;
+            box-sizing: border-box;
+        }
+
+        .committee_seats_send_council_data_placeholder {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            color: #000;
+            font-style: italic;
+        }
+
+        .committee_seats_send_council_data_json_block {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .committee_seats_send_council_data_json {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+                "Courier New", monospace;
+            font-size: 0.85rem;
+            line-height: 1.45;
+            color: #000;
+            background: var(--background_color);
+            border: 1px solid var(--standard_border_color);
+            border-radius: 4px;
+            padding: 0.75rem;
+            resize: vertical;
+        }
+
+        .committee_seats_next_steps_summary_table {
+            thead th:nth-child(2),
+            thead th:nth-child(3),
+            tbody td:nth-child(2),
+            tbody td:nth-child(3) {
+                text-align: right;
+                font-variant-numeric: tabular-nums;
+            }
+
+            .committee_seats_next_steps_summary_total th {
+                font-weight: 600;
+                text-align: left;
+            }
+        }
+    }
+
+    .committee_seats_choose_source_screen {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+        gap: 1.5rem;
+        max-width: 34rem;
+        margin: 0 auto;
+        width: 100%;
+        min-height: min(24rem, 100%);
+        text-align: center;
+
+        .committee_seats_choose_source_lead {
+            margin: 0;
+            font-family: Manrope, Arial, x-locale-body, sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--content_panel_text_color);
+        }
+
+        .committee_seats_actions {
+            justify-content: center;
+        }
+    }
+
+    .committee_seats_choose_source {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        align-items: center;
+        width: 100%;
+
+        .button_standard {
+            width: auto;
+            max-width: 100%;
+            justify-content: center;
+        }
+    }
+
+    .committee_seats_choose_source_option {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+        align-items: center;
+        width: 100%;
+    }
+
+    .committee_seats_choose_source_option_description {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: #000;
+        text-align: center;
+    }
+
+    .committee_seats_independent_allocation_fieldset {
+        border: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .committee_seats_independent_allocation_option {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        text-align: left;
+        cursor: pointer;
+        color: #000;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .committee_seats_independent_allocation_count {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: #000;
+        text-align: center;
+    }
+
+    .committee_seats_independent_allocation_consequence_note {
+        margin: 0;
+        max-width: 34rem;
+        text-align: center;
+    }
+
+    .committee_seats_choose_source_or {
+        margin: 0.15rem 0;
+        font-family: Manrope, Arial, x-locale-body, sans-serif;
+        font-size: 1.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        line-height: 1;
+        color: var(--content_panel_text_color);
+        opacity: 0.55;
+    }
+
+    .committee_seats_example_choice {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+        width: 100%;
+
+        select {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+    }
+
+    .committee_seats_visually_hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .committee_seats_actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        padding-top: 0.5rem;
+    }
+
+    .committee_seats_note {
+        font-size: 0.9rem;
+        line-height: 1.45;
+        color: #000;
+    }
+
+    .committee_seats_lead {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        max-width: 52rem;
+    }
+
+    .committee_seats_council_setup_intro {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        max-width: 42rem;
+        color: var(--content_panel_text_color);
+    }
+
+    .committee_seats_warning {
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        border: 1px solid #c9a227;
+        background: #fff8e1;
+        font-size: 0.9rem;
+        line-height: 1.45;
+    }
+
+    .committee_seats_total_councillors {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
+
+    .committee_seats_total_councillors_mismatch {
+        color: var(--content_panel_text_color);
+        font-weight: 600;
+    }
+
+    .committee_seats_number_field {
+        max-width: 12rem;
+
+        input[type="number"] {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    }
+
+    .committee_seats_table_scroll {
+        overflow-x: auto;
+        width: 100%;
+        border: 1px solid var(--standard_border_color);
+        border-radius: 4px;
+        background: var(--background_color);
+    }
+
+    .committee_seats_table_scroll.committee_seats_table_scroll_fit {
+        width: fit-content;
+        max-width: 100%;
+
+        .committee_seats_groups_table,
+        .committee_seats_council_totals_table {
+            width: max-content;
+            max-width: 100%;
+            min-width: 24rem;
+        }
+    }
+
+    .committee_seats_allocation_workbook_tables {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .committee_seats_allocation_workbook_compact_wrap {
+        width: fit-content;
+        max-width: 100%;
+    }
+
+    .committee_seats_allocation_workbook_compact {
+        width: max-content;
+        max-width: 100%;
+        min-width: 24rem;
+
+        .committee_seats_allocation_workbook_party,
+        .committee_seats_allocation_workbook_value {
+            white-space: nowrap;
+        }
+
+        .committee_seats_allocation_workbook_label {
+            max-width: none;
+            white-space: normal;
+        }
+    }
+
+    .committee_seats_groups_table {
+        .committee_seats_group_name_fixed {
+            font-weight: 500;
+            color: var(--content_panel_text_color);
+        }
+
+        .committee_seats_group_count_adjust_cell {
+            width: 1%;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        .committee_seats_group_count_adjust {
+            display: inline-flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            gap: 0.25rem;
+            vertical-align: middle;
+        }
+
+        .committee_seats_group_count_adjust_button {
+            flex: 0 0 auto;
+            min-width: 2.25rem;
+            padding: 0.2rem 0.35rem;
+            font-size: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .committee_seats_groups_table_additional_heading th {
+            text-align: left;
+            font-family: Manrope, Arial, x-locale-body, sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--content_panel_text_color);
+            padding-top: 1rem;
+            padding-bottom: 0.35rem;
+            border-top: 1px solid var(--standard_border_color);
+        }
+    }
+
+    .committee_seats_groups_table,
+    .committee_seats_council_totals_table,
+    .committee_seats_committees_table,
+    .committee_seats_allocation_table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+
+        th,
+        td {
+            border: 1px solid var(--standard_border_color);
+            padding: 0.6rem 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        thead th {
+            background: var(--table_row_stripe_background);
+            font-family: Manrope, Arial, x-locale-body, sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--table_row_stripe_background);
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    }
+
+    .committee_seats_council_totals_table {
+        th:last-child,
+        td:last-child {
+            width: 9rem;
+            min-width: 9rem;
+        }
+
+        input[type="number"] {
+            width: 7ch;
+            min-width: 7ch;
+            max-width: 100%;
+            font-variant-numeric: tabular-nums;
+            box-sizing: border-box;
+        }
+    }
+
+    .committee_seats_groups_table:not(.committee_seats_council_totals_table) {
+        .committee_seats_group_count_cell {
+            width: 1%;
+            white-space: nowrap;
+
+            input[type="number"] {
+                width: 7ch;
+                min-width: 7ch;
+                max-width: 100%;
+                font-variant-numeric: tabular-nums;
+                box-sizing: border-box;
+            }
+        }
+    }
+
+    .committee_seats_allocation_workbook {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+        line-height: 1.35;
+
+        th,
+        td {
+            border: 1px solid var(--standard_border_color);
+            padding: 0.5rem 0.65rem;
+            text-align: right;
+            vertical-align: middle;
+        }
+
+        .committee_seats_allocation_workbook_corner,
+        .committee_seats_allocation_workbook_label,
+        .committee_seats_allocation_workbook_section_heading {
+            text-align: left;
+            font-weight: 500;
+            color: var(--content_panel_text_color);
+        }
+
+        .committee_seats_allocation_workbook_step_description td {
+            text-align: left;
+            font-size: 0.85rem;
+            line-height: 1.45;
+            color: var(--content_panel_text_color);
+            background: var(--table_row_stripe_background);
+            border-top: none;
+            padding-top: 0.65rem;
+            padding-bottom: 0.65rem;
+        }
+
+        .committee_seats_allocation_workbook_party {
+            text-align: center;
+            font-family: Manrope, Arial, x-locale-body, sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: var(--table_row_stripe_background);
+        }
+
+        .committee_seats_allocation_workbook_total {
+            text-align: center;
+            font-weight: 600;
+            min-width: 5.5rem;
+            background: var(--table_row_stripe_background);
+        }
+
+        .committee_seats_allocation_workbook_label {
+            min-width: 14rem;
+            max-width: 22rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--content_panel_text_color);
+        }
+
+        .committee_seats_allocation_workbook_value {
+            min-width: 3.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--content_panel_text_color);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .committee_seats_allocation_workbook_label_tooltip_only {
+            cursor: help;
+        }
+
+        .committee_seats_allocation_workbook_value[title] {
+            cursor: help;
+        }
+
+        .committee_seats_allocation_workbook_section_heading {
+            font-family: Manrope, Arial, x-locale-body, sans-serif;
+            font-weight: 600;
+            font-size: 0.875rem;
+            padding-top: 0.65rem;
+            padding-bottom: 0.65rem;
+            background: var(--table_row_stripe_background);
+        }
+
+        .committee_seats_allocation_workbook_spacer td {
+            border-left: none;
+            border-right: none;
+            padding: 0.35rem;
+            background: transparent;
+        }
+
+        .committee_seats_allocation_workbook_row_final {
+            .committee_seats_allocation_workbook_label,
+            .committee_seats_allocation_workbook_value,
+            .committee_seats_allocation_workbook_total {
+                font-family: Cabin, Arial, x-locale-body, sans-serif;
+                font-size: 1.35rem;
+                font-weight: 600;
+                color: var(--content_panel_text_color);
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+            }
+        }
+    }
+}

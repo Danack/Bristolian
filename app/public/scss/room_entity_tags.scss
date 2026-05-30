@@ -15,7 +15,7 @@
   display: inline-block;
   padding: 0.15em 0.5em;
   font-size: 0.85em;
-  background: #e8e8e8;
+  background: var(--room_entity_tag_chip_background);
   border-radius: 4px;
   white-space: nowrap;
 }

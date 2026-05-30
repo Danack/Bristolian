@@ -416,6 +416,10 @@ export class MyPanel extends Component<MyPanelProps, MyPanelState> {
 }
 ```
 
+`initByClass` in `app/public/tsx/bootstrap.tsx` wires each PHP `class` to a component; see the comment above the `panels` array there and **Optional initial data from PHP (widgety)** in [front_end_design_rules.md](front_end_design_rules.md).
+
+Use `data-widgety_json` when PHP must supply server-side values (e.g. `selected_stair_info` from the database). Client-only tools may omit it entirely and keep copy and reference data in TypeScript (e.g. `committee_seats/page_config.ts` with an empty PHP mount in `Pages::committee_seats_page()`).
+
 ### TypeScript to PHP (API Calls)
 
 For dynamic updates, TypeScript components call PHP API endpoints:

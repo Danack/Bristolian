@@ -264,6 +264,15 @@ HTML;
         return $content;
     }
 
+    public function committee_seats_page(): string
+    {
+        return <<< HTML
+<div class="committee_seats_app">
+  <div class="committee_seats_panel"></div>
+</div>
+HTML;
+    }
+
     public function homepage(): string
     {
         return "Hello there";

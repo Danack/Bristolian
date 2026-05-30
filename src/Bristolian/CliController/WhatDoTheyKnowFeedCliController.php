@@ -111,6 +111,17 @@ class WhatDoTheyKnowFeedCliController
             $roomMessageService,
             $cliOutput
         ): void {
+
+            try {
+
+
+            }
+            catch (\Throwable $throwable) {
+                $cliOutput->write(
+                    'WhatDoTheyKnow sync error: ' . $throwable->getMessage() . "\n"
+                );
+            }
+
             try {
                 $this->syncRequestedFromBristolOnce(
                     $feedFetcher,
@@ -119,7 +130,8 @@ class WhatDoTheyKnowFeedCliController
                     $roomMessageService,
                     $cliOutput
                 );
-            } catch (\Throwable $throwable) {
+            }
+            catch (\Throwable $throwable) {
                 $cliOutput->write(
                     'WhatDoTheyKnow sync error: ' . $throwable->getMessage() . "\n"
                 );

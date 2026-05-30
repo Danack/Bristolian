@@ -1,5 +1,10 @@
 import { h, render } from "preact";
 
+// Preact panels: do not annotate render() or render helpers with h.JSX.Element — that is
+// React's JSX namespace. Prefer no return type (Component already types render), or
+// import type { VNode } from "preact" when an explicit type is needed. See
+// docs/developing/front_end_design_rules.md ("Preact render return types").
+
 import initByClass from "./widgety/widgety";
 import { registerMessageListener, sendMessage, startMessageProcessing } from "./message/message";
 import type { WidgetClassBinding } from "./widgety/widgety";
@@ -31,9 +36,13 @@ import { TeleprompterPanel } from "./TeleprompterPanel";
 import { TimeLinePanel } from "./TimeLinePanel";
 import { TinnedFishProductsAdminPanel } from "./TinnedFishProductsAdminPanel";
 import { TwitterSplitterPanel } from "./TwitterSplitterPanel";
+import { CommitteeSeatsPanel } from "./CommitteeSeatsPanel";
 import { receiveSelectionMessage } from "./AnnotationPanel";
 
-
+// Widget registration: each `class` must match a PHP-rendered element class. When the server has
+// data for the panel, PHP may set `data-widgety_json` (parsed in widgety/widgety.tsx and passed as
+// constructor props). Many tools only mount an empty div and keep all data in TypeScript instead.
+// See docs/developing/front_end_design_rules.md ("Optional initial data from PHP").
 
 let panels: WidgetClassBinding[] = [
     {
@@ -132,6 +141,10 @@ let panels: WidgetClassBinding[] = [
     {
         class: 'twitter_splitter_panel',
         component: TwitterSplitterPanel
+    },
+    {
+        class: 'committee_seats_panel',
+        component: CommitteeSeatsPanel
     },
     {
         class: 'user_profile_panel',
