@@ -1,6 +1,10 @@
 import {h} from "preact";
 import {getExampleCouncilById} from "./example_councils";
-import {COMMITTEE_SEATS_PAGE, formatCouncilSetupExampleIntro} from "./page_config";
+import {
+    COMMITTEE_SEATS_PAGE,
+    formatCouncilSetupExampleIntro,
+    formatCouncilSetupExampleIntroForPoliticalGroups,
+} from "./page_config";
 import {
     DataSourceMode,
     type CommitteeSeatsPanelState,
@@ -31,6 +35,18 @@ export function getCouncilSetupIntroMessage(state: CommitteeSeatsPanelState): st
     const exampleCouncil = getExampleCouncilById(state.selected_example_council_id);
 
     return formatCouncilSetupExampleIntro(exampleCouncil?.display_name ?? "an example council");
+}
+
+export function getPoliticalGroupsStepIntroMessage(state: CommitteeSeatsPanelState): string {
+    if (state.data_source_mode === DataSourceMode.Custom) {
+        return COMMITTEE_SEATS_PAGE.council_setup_custom_intro;
+    }
+
+    const exampleCouncil = getExampleCouncilById(state.selected_example_council_id);
+
+    return formatCouncilSetupExampleIntroForPoliticalGroups(
+        exampleCouncil?.display_name ?? "an example council"
+    );
 }
 
 export function CommitteeSeatsCouncilSetupIntro(props: {introMessage: string}) {

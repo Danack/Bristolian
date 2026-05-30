@@ -157,7 +157,7 @@ Mapped in `wizard_display_step.ts`. Labels in `page_config.ts` → `WIZARD_DISPL
 | `enter_political_groups` | `PoliticalGroupsStep` + `PoliticalGroupsEditor` |
 | `choose_independent_allocation` | `IndependentAllocationStep` |
 
-Shared intro on totals / groups / independents (`getCouncilSetupIntroMessage()`): custom vs `formatCouncilSetupExampleIntro(display_name)` for examples.
+Shared intro on totals (`getCouncilSetupIntroMessage()`): custom vs `formatCouncilSetupExampleIntro(display_name)` for examples. Councillors-by-group step uses `getPoliticalGroupsStepIntroMessage()` — same example wording plus “, or press continue.”
 
 **Council totals:** note on which **political committees** count toward the seat total (`council_setup_political_committees_note`). No section title above the two inputs (removed).
 

@@ -49,3 +49,8 @@ export const TOTAL_WIZARD_DISPLAY_STEPS = WIZARD_DISPLAY_STEPS.length;
 export function formatCouncilSetupExampleIntro(councilDisplayName: string): string {
     return "You are using data for " + councilDisplayName + ". Adjust the figures if needed.";
 }
+
+/** Example intro on the councillors-by-group step (Continue is in the groups panel aside). */
+export function formatCouncilSetupExampleIntroForPoliticalGroups(councilDisplayName: string): string {
+    return formatCouncilSetupExampleIntro(councilDisplayName) + ", or press continue.";
+}

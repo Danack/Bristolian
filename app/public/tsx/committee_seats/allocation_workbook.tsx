@@ -39,6 +39,21 @@ function PartyAllocationWorkbookDescriptionRow(props: {
     );
 }
 
+function workbookCellValueChanged(
+    currentValue: number | undefined,
+    previousValue: number | undefined
+): boolean {
+    return currentValue !== previousValue;
+}
+
+function workbookValueCellClassName(baseClassName: string, highlightAsChanged: boolean): string {
+    if (!highlightAsChanged) {
+        return baseClassName;
+    }
+
+    return baseClassName + " committee_seats_allocation_workbook_value_cell_changed";
+}
+
 function PartyAllocationWorkbookRow(props: {
     rowLabel: string;
     partyNames: string[];
@@ -47,23 +62,56 @@ function PartyAllocationWorkbookRow(props: {
     valueCellClassName?: string;
     rowKey?: string;
     totalSeatsAllocated?: number;
+    /** When set, party cells whose seat count differs from the previous step are highlighted. */
+    previousSeatsByGroupName?: Record<string, number>;
+    previousTotalSeatsAllocated?: number;
+    highlightCellChanges?: boolean;
 }) {
     const rowClassName = props.rowClassName ?? "committee_seats_allocation_workbook_row";
     const valueCellClassName =
         props.valueCellClassName ?? "committee_seats_allocation_workbook_value";
+    const highlightCellChanges = props.highlightCellChanges === true;
+    const totalHighlightAsChanged =
+        highlightCellChanges &&
+        props.totalSeatsAllocated !== undefined &&
+        workbookCellValueChanged(
+            props.totalSeatsAllocated,
+            props.previousTotalSeatsAllocated
+        );
 
     return (
         <tr key={props.rowKey} className={rowClassName}>
             <th scope="row" className="committee_seats_allocation_workbook_label">
                 {props.rowLabel}
             </th>
-            {props.partyNames.map((partyName) => (
-                <td key={partyName} className={valueCellClassName}>
-                    {props.cellValues[partyName]}
-                </td>
-            ))}
+            {props.partyNames.map((partyName) => {
+                const currentSeats = props.cellValues[partyName];
+                const highlightAsChanged =
+                    highlightCellChanges &&
+                    workbookCellValueChanged(
+                        typeof currentSeats === "number" ? currentSeats : undefined,
+                        props.previousSeatsByGroupName?.[partyName]
+                    );
+
+                return (
+                    <td
+                        key={partyName}
+                        className={workbookValueCellClassName(
+                            valueCellClassName,
+                            highlightAsChanged
+                        )}
+                    >
+                        {currentSeats}
+                    </td>
+                );
+            })}
             {props.totalSeatsAllocated !== undefined && (
-                <td className={valueCellClassName + " committee_seats_allocation_workbook_total"}>
+                <td
+                    className={workbookValueCellClassName(
+                        valueCellClassName + " committee_seats_allocation_workbook_total",
+                        totalHighlightAsChanged
+                    )}
+                >
                     {props.totalSeatsAllocated}
                 </td>
             )}
@@ -200,8 +248,13 @@ export function PartyAllocationStepView(props: PartyAllocationStepViewProps) {
                                 />
                             </thead>
                             <tbody>
-                                {allocationResult.workbook_steps.flatMap((workbookStep) => {
+                                {allocationResult.workbook_steps.flatMap((workbookStep, stepIndex) => {
                                     const stepKey = String(workbookStep.step_number);
+                                    const previousWorkbookStep =
+                                        stepIndex > 0
+                                            ? allocationResult.workbook_steps[stepIndex - 1]
+                                            : undefined;
+                                    const isExtraSeatRoundingStep = stepIndex > 0;
                                     const rows = [];
 
                                     if (workbookStep.description !== null) {
@@ -225,6 +278,13 @@ export function PartyAllocationStepView(props: PartyAllocationStepViewProps) {
                                             cellValues={workbookStep.seats_by_group_name}
                                             rowKey={stepKey + "_values"}
                                             totalSeatsAllocated={workbookStep.total_seats_allocated}
+                                            highlightCellChanges={isExtraSeatRoundingStep}
+                                            previousSeatsByGroupName={
+                                                previousWorkbookStep?.seats_by_group_name
+                                            }
+                                            previousTotalSeatsAllocated={
+                                                previousWorkbookStep?.total_seats_allocated
+                                            }
                                         />
                                     );
 

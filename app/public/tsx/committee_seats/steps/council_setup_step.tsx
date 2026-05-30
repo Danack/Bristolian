@@ -8,7 +8,7 @@ import {
     isCouncilTotalsCompleteForPoliticalGroups,
     type CommitteeSeatsPanelState,
 } from "../panel_state";
-import {getCouncilSetupIntroMessage} from "../panel_wizard_chrome";
+import {getCouncilSetupIntroMessage, getPoliticalGroupsStepIntroMessage} from "../panel_wizard_chrome";
 import {ChooseDataSourceStep} from "./choose_data_source_step";
 import {CouncilTotalsStep} from "./council_totals_step";
 import {IndependentAllocationStep} from "./independent_allocation_step";
@@ -96,7 +96,7 @@ export function CouncilSetupStep(props: CouncilSetupStepProps) {
             canContinueFromPoliticalGroups={validation.valid}
             error={props.state.error}
             warning={props.state.warning}
-            councilSetupIntroMessage={councilSetupIntroMessage}
+            councilSetupIntroMessage={getPoliticalGroupsStepIntroMessage(props.state)}
             onGroupNameChange={props.onGroupNameChange}
             onGroupCountChange={props.onGroupCountChange}
             onGroupCountAdjust={props.onGroupCountAdjust}

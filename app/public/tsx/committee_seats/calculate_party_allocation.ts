@@ -45,6 +45,19 @@ export function calculateTotalCouncillors(politicalGroups: PoliticalGroup[]): nu
     );
 }
 
+/** Largest group first; ties broken alphabetically by group name. */
+export function sortGroupAllocationRowsByCouncillorCountDescending(
+    rows: GroupAllocationRow[]
+): GroupAllocationRow[] {
+    return [...rows].sort((left, right) => {
+        if (right.councillor_count !== left.councillor_count) {
+            return right.councillor_count - left.councillor_count;
+        }
+
+        return left.group_name.localeCompare(right.group_name);
+    });
+}
+
 export function calculatePartyAllocation(input: CouncilSetupInput): PartyAllocationResult {
     const politicalGroupsWithCouncillors = input.political_groups.filter(
         (politicalGroup) => politicalGroup.councillor_count > 0
@@ -174,11 +187,12 @@ export function calculatePartyAllocation(input: CouncilSetupInput): PartyAllocat
     }));
 
     const totalAllocatedSeats = rows.reduce((total, row) => total + row.final_seats, 0);
+    const sortedRows = sortGroupAllocationRowsByCouncillorCountDescending(rows);
 
     return {
         total_councillors: totalCouncillors,
         total_committee_seats: input.total_committee_seats,
-        rows,
+        rows: sortedRows,
         total_allocated_seats: totalAllocatedSeats,
         workbook_steps: workbookSteps,
         all_committee_seats_allocated_message: allCommitteeSeatsAllocatedMessage,

@@ -862,6 +862,13 @@
             font-variant-numeric: tabular-nums;
         }
 
+        .committee_seats_allocation_workbook_value_cell_changed {
+            background: #fff8e1;
+            box-shadow: inset 0 0 0 2px #c9a227;
+            font-weight: 700;
+            color: #000;
+        }
+
         .committee_seats_allocation_workbook_label_tooltip_only {
             cursor: help;
         }

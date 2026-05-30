@@ -208,6 +208,13 @@ describe("calculatePartyAllocation", () => {
         });
 
         expect(result.total_allocated_seats).toBe(144);
+        expect(result.rows.map((row) => row.group_name)).toEqual([
+            "Green",
+            "Labour",
+            "Liberal Democrat",
+            "Conservative",
+            "Independent",
+        ]);
 
         const green = result.rows.find((row) => row.group_name === "Green");
         const labour = result.rows.find((row) => row.group_name === "Labour");
