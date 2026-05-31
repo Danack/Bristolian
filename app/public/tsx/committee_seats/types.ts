@@ -70,16 +70,9 @@ export interface PartyAllocationResult {
     all_committee_seats_allocated_message: string | null;
 }
 
-/** One extra seat to assign: user picks which committee receives it for a group. */
+/** One slot in the internal remainder-seat queue; records which party owns the step. */
 export interface CommitteeDistributionAssignmentStep {
-    step_number: number;
     group_name: string;
-    /** 0-based index of this extra seat within the group's remainder seats. */
-    extra_seat_index_within_group: number;
-    /** How many extra seats this group needs after rounding committee shares down. */
-    remainder_seats_for_group: number;
-    group_final_seats: number;
-    floored_total_for_group: number;
 }
 
 export interface CommitteeDistributionState {
@@ -94,5 +87,10 @@ export interface CommitteeDistributionState {
     assignment_steps: CommitteeDistributionAssignmentStep[];
     /** Committee index chosen for each step, or null if not yet assigned. */
     assignment_choices: Array<number | null>;
+    /**
+     * Turn order for placing remainder seats: smallest political group (by councillors) first,
+     * then the next smallest, so the largest group chooses last.
+     */
+    established_assignment_turn_order: string[];
     total_committee_seats: number;
 }

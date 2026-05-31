@@ -55,6 +55,9 @@ All Node.js, npm, and JavaScript-related commands must run inside the `js_builde
 # Run Jest tests
 docker exec bristolian-js_builder-1 bash -c "npm run test"
 
+# Run all Jest tests including slow Bristol assignment fixtures (JEST_RUN_SLOW_TESTS=1)
+docker exec bristolian-js_builder-1 bash -c "npm run test:all"
+
 # Run npm commands
 docker exec bristolian-js_builder-1 bash -c "npm install"
 docker exec bristolian-js_builder-1 bash -c "npm run build"

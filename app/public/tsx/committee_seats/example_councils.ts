@@ -127,20 +127,25 @@ export const EXAMPLE_COUNCILS: ExampleCouncil[] = [
         seat_assignment_source_url:
             "https://democracy.sheffield.gov.uk/documents/b32757/Motion%20-%20Item%2013%20-%20Establishment%20Membership%20of%20Council%20Committees%20in%202026-27%20Thursday%2021-May-2026.pdf?T=9",
     },
-    // // Dev-only example: political group counts only (no committee total). Omitted from the
-    // // public dropdown; tests use an inline ExampleCouncil with the same shape.
-    // {
-    //     id: "test_council",
-    //     display_name: "Test council",
-    //     political_groups: [
-    //         {name: "Labour", councillor_count: 20},
-    //         {name: "Conservative", councillor_count: 15},
-    //         {name: "Green", councillor_count: 10},
-    //         {name: "Independent", councillor_count: 4},
-    //     ],
-    //     committees: [],
-    //     total_committee_seats: 80,
-    // },
+    // Dev-only example: political group counts only (no committee total). Omitted from the
+    // public dropdown; tests use an inline ExampleCouncil with the same shape.
+    {
+        id: "test_council",
+        display_name: "Test council",
+        political_groups: [
+            {name: "Labour", councillor_count: 8},
+            {name: "Conservative", councillor_count: 6},
+            {name: "Green", councillor_count: 12},
+            {name: "Libdem", councillor_count: 3},
+        ],
+        committees: [
+            {name: "Adult Social Care Committee", seat_count: 9},
+            {name: "Homes and Housing Delivery Committee", seat_count: 9},
+            {name: "Public Health and Communities Committee", seat_count: 9},
+            {name: "Economy and Skills Committee", seat_count: 9},
+        ],
+        total_committee_seats: 36,
+    },
 ];
 
 export function getExampleCouncilById(exampleCouncilId: string): ExampleCouncil | undefined {

@@ -11,7 +11,7 @@ export interface ExperimentalCommitteesStepProps {
     canContinueFromCommittees: boolean;
     onCommitteeNameChange: (committeeIndex: number, name: string) => void;
     onCommitteeSeatCountChange: (committeeIndex: number, seatCount: number) => void;
-    onAddCommittee: (committeeIndex: number, name: string) => void;
+    onAddCommittee: (committeeIndex: number, name: string, seatCount: number) => void;
     onContinueFromCommittees: () => void;
     onBackToResults: () => void;
 }

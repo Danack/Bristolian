@@ -1,12 +1,14 @@
 import {h, Component} from "preact";
 import {calculatePartyAllocation, validateCouncilSetup} from "./committee_seats/calculate_party_allocation";
 import {
-    assignCommitteeDistributionStep,
-    buildInitialDistributionPendingCommitteeSelections,
-    getDefaultCommitteeIndexForAssignmentStep,
+    assignPartyAssignmentBatch,
+    canAddPendingCommitteeSelectionOnCommittee,
+    countPendingSelectionsForCommittee,
     getFirstUnassignedAssignmentStepIndex,
+    getPartyAssignmentBatch,
     initializeCommitteeDistribution,
-    undoCommitteeDistributionStep,
+    goBackToLastAssignmentGroupWhenComplete,
+    goBackToPreviousAssignmentGroup,
 } from "./committee_seats/calculate_committee_distribution";
 import {CommitteeDistributionWorkbook} from "./committee_seats/committee_distribution_workbook";
 import {
@@ -56,6 +58,7 @@ import {
     type CommitteeSeatsPanelState,
 } from "./committee_seats/panel_state";
 import {ExperimentalCommitteesStep} from "./committee_seats/steps/experimental_committees_step";
+import {FinalSummaryStep} from "./committee_seats/steps/final_summary_step";
 import {
     CommitteeSeatsAppHeader,
     CommitteeSeatsStepIndicator,
@@ -491,7 +494,7 @@ export class CommitteeSeatsPanel extends Component<CommitteeSeatsPanelProps, Com
             wizard_step: WizardStep.SeatDistributionExperimental,
             experimental_substep: ExperimentalSubstep.Committees,
             committee_distribution_state: null,
-            distribution_pending_committee_by_step: [],
+            distribution_pending_committee_selections: [],
             error: null,
             warning: null,
         });
@@ -521,11 +524,17 @@ export class CommitteeSeatsPanel extends Component<CommitteeSeatsPanelProps, Com
         });
     }
 
-    handleAddCommittee(committeeIndex: number, name: string): void {
+    handleAddCommittee(committeeIndex: number, name: string, seatCount: number): void {
+        const clampedSeatCount = clampCommitteeSeatCountForPanel(
+            this.state.committees,
+            committeeIndex,
+            seatCount
+        );
+
         this.setState({
             committees: updateFormCommitteesAtIndex(this.state.committees, committeeIndex, {
                 name,
-                seat_count: 0,
+                seat_count: clampedSeatCount,
             }),
             error: null,
             warning: null,
@@ -560,79 +569,125 @@ export class CommitteeSeatsPanel extends Component<CommitteeSeatsPanelProps, Com
             committees: formCommittees,
             committee_distribution_state: distributionState,
             experimental_substep: ExperimentalSubstep.Distribution,
-            distribution_pending_committee_by_step:
-                buildInitialDistributionPendingCommitteeSelections(distributionState),
+            distribution_pending_committee_selections: [],
             error: null,
             warning: null,
         });
     }
 
-    handleDistributionPendingCommitteeChange(stepIndex: number, committeeIndex: number): void {
-        const pendingCommitteeByStep = [...this.state.distribution_pending_committee_by_step];
-        pendingCommitteeByStep[stepIndex] = committeeIndex;
-
-        this.setState({
-            distribution_pending_committee_by_step: pendingCommitteeByStep,
-        });
-    }
-
-    handleAssignDistributionStep(stepIndex: number): void {
+    handleDistributionCommitteeChoiceClick(committeeIndex: number): void {
         if (this.state.committee_distribution_state === null) {
             return;
         }
 
-        const pendingCommitteeIndex = getDefaultCommitteeIndexForAssignmentStep(
-            this.state.committee_distribution_state,
-            stepIndex,
-            this.state.distribution_pending_committee_by_step[stepIndex]
+        const firstUnassignedStepIndex = getFirstUnassignedAssignmentStepIndex(
+            this.state.committee_distribution_state
         );
-        const updatedDistributionState = assignCommitteeDistributionStep(
-            this.state.committee_distribution_state,
-            stepIndex,
-            pendingCommitteeIndex
-        );
-        const pendingCommitteeByStep = [...this.state.distribution_pending_committee_by_step];
-        pendingCommitteeByStep[stepIndex] = pendingCommitteeIndex;
-
-        const nextStepIndex = getFirstUnassignedAssignmentStepIndex(updatedDistributionState);
-        if (nextStepIndex !== null) {
-            pendingCommitteeByStep[nextStepIndex] = getDefaultCommitteeIndexForAssignmentStep(
-                updatedDistributionState,
-                nextStepIndex
-            );
-        }
-
-        this.setState({
-            committee_distribution_state: updatedDistributionState,
-            distribution_pending_committee_by_step: pendingCommitteeByStep,
-        });
-    }
-
-    handleUndoDistributionStep(stepIndex: number): void {
-        if (this.state.committee_distribution_state === null) {
+        if (firstUnassignedStepIndex === null) {
             return;
         }
 
-        const updatedDistributionState = undoCommitteeDistributionStep(
+        const batch = getPartyAssignmentBatch(
             this.state.committee_distribution_state,
-            stepIndex
+            firstUnassignedStepIndex
         );
-        const pendingCommitteeByStep = [...this.state.distribution_pending_committee_by_step];
+        if (batch === null) {
+            return;
+        }
 
-        for (
-            let pendingStepIndex = stepIndex;
-            pendingStepIndex < updatedDistributionState.assignment_steps.length;
-            pendingStepIndex += 1
+        const pendingCommitteeSelections = [
+            ...this.state.distribution_pending_committee_selections,
+        ];
+        const selectionCount = countPendingSelectionsForCommittee(
+            pendingCommitteeSelections,
+            committeeIndex
+        );
+
+        if (selectionCount > 0) {
+            const removeIndex = pendingCommitteeSelections.lastIndexOf(committeeIndex);
+            if (removeIndex >= 0) {
+                pendingCommitteeSelections.splice(removeIndex, 1);
+            }
+        } else if (
+            canAddPendingCommitteeSelectionOnCommittee(
+                this.state.committee_distribution_state,
+                batch,
+                pendingCommitteeSelections,
+                committeeIndex
+            )
         ) {
-            pendingCommitteeByStep[pendingStepIndex] = getDefaultCommitteeIndexForAssignmentStep(
-                updatedDistributionState,
-                pendingStepIndex
-            );
+            pendingCommitteeSelections.push(committeeIndex);
         }
 
         this.setState({
+            distribution_pending_committee_selections: pendingCommitteeSelections,
+        });
+    }
+
+    handleClearDistributionPendingSelections(): void {
+        this.setState({
+            distribution_pending_committee_selections: [],
+        });
+    }
+
+    handleConfirmDistributionAssignmentBatch(): void {
+        if (this.state.committee_distribution_state === null) {
+            return;
+        }
+
+        const firstUnassignedStepIndex = getFirstUnassignedAssignmentStepIndex(
+            this.state.committee_distribution_state
+        );
+        if (firstUnassignedStepIndex === null) {
+            return;
+        }
+
+        const updatedDistributionState = assignPartyAssignmentBatch(
+            this.state.committee_distribution_state,
+            firstUnassignedStepIndex,
+            this.state.distribution_pending_committee_selections
+        );
+
+        this.setState({
             committee_distribution_state: updatedDistributionState,
-            distribution_pending_committee_by_step: pendingCommitteeByStep,
+            distribution_pending_committee_selections: [],
+        });
+    }
+
+    handleGoBackToPreviousAssignmentGroup(): void {
+        if (this.state.committee_distribution_state === null) {
+            return;
+        }
+
+        const firstUnassignedStepIndex = getFirstUnassignedAssignmentStepIndex(
+            this.state.committee_distribution_state
+        );
+        if (firstUnassignedStepIndex === null) {
+            return;
+        }
+
+        const goBackResult = goBackToPreviousAssignmentGroup(
+            this.state.committee_distribution_state,
+            firstUnassignedStepIndex
+        );
+        this.setState({
+            committee_distribution_state: goBackResult.distributionState,
+            distribution_pending_committee_selections: goBackResult.pendingCommitteeSelections,
+        });
+    }
+
+    handleGoBackToLastAssignmentGroupWhenComplete(): void {
+        if (this.state.committee_distribution_state === null) {
+            return;
+        }
+
+        const goBackResult = goBackToLastAssignmentGroupWhenComplete(
+            this.state.committee_distribution_state
+        );
+
+        this.setState({
+            committee_distribution_state: goBackResult.distributionState,
+            distribution_pending_committee_selections: goBackResult.pendingCommitteeSelections,
         });
     }
 
@@ -640,7 +695,7 @@ export class CommitteeSeatsPanel extends Component<CommitteeSeatsPanelProps, Com
         this.setState({
             experimental_substep: ExperimentalSubstep.Committees,
             committee_distribution_state: null,
-            distribution_pending_committee_by_step: [],
+            distribution_pending_committee_selections: [],
             error: null,
             warning: null,
         });
@@ -651,7 +706,32 @@ export class CommitteeSeatsPanel extends Component<CommitteeSeatsPanelProps, Com
             wizard_step: WizardStep.NextSteps,
             experimental_substep: ExperimentalSubstep.Committees,
             committee_distribution_state: null,
-            distribution_pending_committee_by_step: [],
+            distribution_pending_committee_selections: [],
+            error: null,
+            warning: null,
+        });
+    }
+
+    handleGoToFinalSummaryFromExperimental(): void {
+        if (
+            this.state.committee_distribution_state === null ||
+            this.state.allocation_result === null
+        ) {
+            return;
+        }
+
+        this.setState({
+            experimental_substep: ExperimentalSubstep.FinalSummary,
+            distribution_pending_committee_selections: [],
+            error: null,
+            warning: null,
+        });
+    }
+
+    handleBackFromFinalSummary(): void {
+        this.setState({
+            experimental_substep: ExperimentalSubstep.Distribution,
+            distribution_pending_committee_selections: [],
             error: null,
             warning: null,
         });
@@ -801,8 +881,8 @@ export class CommitteeSeatsPanel extends Component<CommitteeSeatsPanelProps, Com
                                 onCommitteeSeatCountChange={(committeeIndex, seatCount) =>
                                     this.handleCommitteeSeatCountChange(committeeIndex, seatCount)
                                 }
-                                onAddCommittee={(committeeIndex, name) =>
-                                    this.handleAddCommittee(committeeIndex, name)
+                                onAddCommittee={(committeeIndex, name, seatCount) =>
+                                    this.handleAddCommittee(committeeIndex, name, seatCount)
                                 }
                                 onContinueFromCommittees={() =>
                                     this.handleContinueFromExperimentalCommittees()
@@ -816,16 +896,37 @@ export class CommitteeSeatsPanel extends Component<CommitteeSeatsPanelProps, Com
                         state.committee_distribution_state !== null && (
                             <CommitteeDistributionWorkbook
                                 distributionState={state.committee_distribution_state}
-                                pendingCommitteeByStepIndex={state.distribution_pending_committee_by_step}
-                                onPendingCommitteeChange={(stepIndex, committeeIndex) =>
-                                    this.handleDistributionPendingCommitteeChange(
-                                        stepIndex,
-                                        committeeIndex
-                                    )
+                                pendingCommitteeSelections={
+                                    state.distribution_pending_committee_selections
                                 }
-                                onAssignStep={(stepIndex) => this.handleAssignDistributionStep(stepIndex)}
-                                onUndoStep={(stepIndex) => this.handleUndoDistributionStep(stepIndex)}
+                                onCommitteeChoiceClick={(committeeIndex) =>
+                                    this.handleDistributionCommitteeChoiceClick(committeeIndex)
+                                }
+                                onClearPendingSelections={() =>
+                                    this.handleClearDistributionPendingSelections()
+                                }
+                                onConfirmAssignmentBatch={() =>
+                                    this.handleConfirmDistributionAssignmentBatch()
+                                }
+                                onGoBackToPreviousGroup={() =>
+                                    this.handleGoBackToPreviousAssignmentGroup()
+                                }
+                                onGoBackToLastGroupWhenComplete={() =>
+                                    this.handleGoBackToLastAssignmentGroupWhenComplete()
+                                }
+                                onGoToFinalSummary={() => this.handleGoToFinalSummaryFromExperimental()}
                                 onBackToCommittees={() => this.handleBackFromExperimentalDistribution()}
+                                onBackToResults={() => this.handleBackToResultsFromExperimental()}
+                            />
+                        )}
+                    {state.wizard_step === WizardStep.SeatDistributionExperimental &&
+                        state.allocation_result !== null &&
+                        state.experimental_substep === ExperimentalSubstep.FinalSummary &&
+                        state.committee_distribution_state !== null && (
+                            <FinalSummaryStep
+                                allocationResult={state.allocation_result}
+                                distributionState={state.committee_distribution_state}
+                                onBackToDistribution={() => this.handleBackFromFinalSummary()}
                                 onBackToResults={() => this.handleBackToResultsFromExperimental()}
                             />
                         )}

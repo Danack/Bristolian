@@ -1,5 +1,15 @@
 import {h} from "preact";
-import {isCommitteeDistributionComplete, rowTotalForGroup} from "./calculate_committee_distribution";
+import {
+    buildMatrixWithPendingPartySelections,
+    columnTotalForMatrix,
+    getFirstUnassignedAssignmentStepIndex,
+    getLastGroupInAssignmentTurnOrder,
+    isCommitteeDistributionComplete,
+    matrixSeatCount,
+    resolveAssignmentStepGroupName,
+    rowTotalForGroup,
+} from "./calculate_committee_distribution";
+import {AssignmentSectionIntro} from "./assignment_section_intro";
 import {DistributionAssignmentSteps} from "./distribution_assignment_steps";
 import {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY} from "./experimental_seat_distribution";
 import {FloorSectionExplanation} from "./floor_section_explanation";
@@ -8,10 +18,13 @@ import type {CommitteeDistributionState} from "./types";
 
 export interface CommitteeDistributionWorkbookProps {
     distributionState: CommitteeDistributionState;
-    pendingCommitteeByStepIndex: number[];
-    onPendingCommitteeChange: (stepIndex: number, committeeIndex: number) => void;
-    onAssignStep: (stepIndex: number) => void;
-    onUndoStep: (stepIndex: number) => void;
+    pendingCommitteeSelections: number[];
+    onCommitteeChoiceClick: (committeeIndex: number) => void;
+    onClearPendingSelections: () => void;
+    onConfirmAssignmentBatch: () => void;
+    onGoBackToPreviousGroup: () => void;
+    onGoBackToLastGroupWhenComplete: () => void;
+    onGoToFinalSummary: () => void;
     onBackToCommittees: () => void;
     onBackToResults: () => void;
 }
@@ -20,6 +33,8 @@ function DistributionMatrixTable(props: {
     distributionState: CommitteeDistributionState;
     matrix: Record<string, Record<string, number>>;
     highlightChangesFromFloor: boolean;
+    showSeatsRemainingColumn: boolean;
+    currentTurnGroupName: string | null;
 }) {
     const committeeNames = props.distributionState.committees.map((committee) => committee.name);
     const matrixGrandTotal = props.distributionState.group_names.reduce(
@@ -46,20 +61,42 @@ function DistributionMatrixTable(props: {
                     <th scope="col" className="committee_seats_allocation_workbook_total">
                         Row total
                     </th>
+                    {props.showSeatsRemainingColumn && (
+                        <th
+                            scope="col"
+                            className="committee_seats_allocation_workbook_total committee_seats_distribution_matrix_seats_remaining_heading"
+                        >
+                            {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.assignment_remainder_table_seats_left_column}
+                        </th>
+                    )}
                 </tr>
             </thead>
             <tbody>
                 {props.distributionState.group_names.map((groupName) => {
                     const targetFinalSeats =
                         props.distributionState.group_final_seats_by_name[groupName] ?? 0;
+                    const rowTotal = rowTotalForGroup(props.matrix, groupName);
+                    const seatsRemainingToAssign = Math.max(0, targetFinalSeats - rowTotal);
+                    const isCurrentTurn =
+                        props.showSeatsRemainingColumn &&
+                        groupName === props.currentTurnGroupName;
+                    const rowClass =
+                        "committee_seats_allocation_workbook_row" +
+                        (isCurrentTurn ? " committee_seats_distribution_matrix_row_current" : "");
 
                     return (
-                        <tr key={groupName} className="committee_seats_allocation_workbook_row">
+                        <tr key={groupName} className={rowClass}>
                             <th scope="row" className="committee_seats_allocation_workbook_label">
                                 {groupName}
+                                {isCurrentTurn
+                                    ? " " +
+                                      EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.assignment_current_turn_row_suffix
+                                    : ""}
                             </th>
                             {committeeNames.map((committeeName) => {
-                                const currentSeats = props.matrix[groupName]?.[committeeName] ?? 0;
+                                const currentSeats = matrixSeatCount(
+                                    props.matrix[groupName]?.[committeeName]
+                                );
                                 const floorSeats =
                                     props.distributionState.floor_matrix[groupName]?.[committeeName] ?? 0;
                                 const highlightAsChanged =
@@ -83,10 +120,15 @@ function DistributionMatrixTable(props: {
                                 );
                             })}
                             <td className="committee_seats_allocation_workbook_value committee_seats_allocation_workbook_total">
-                                {rowTotalForGroup(props.matrix, groupName)}
+                                {rowTotal}
                                 {" / "}
                                 {targetFinalSeats}
                             </td>
+                            {props.showSeatsRemainingColumn && (
+                                <td className="committee_seats_allocation_workbook_value committee_seats_allocation_workbook_total committee_seats_distribution_matrix_seats_remaining">
+                                    {seatsRemainingToAssign}
+                                </td>
+                            )}
                         </tr>
                     );
                 })}
@@ -95,10 +137,7 @@ function DistributionMatrixTable(props: {
                         Column total
                     </th>
                     {props.distributionState.committees.map((committee) => {
-                        let columnTotal = 0;
-                        for (const groupName of props.distributionState.group_names) {
-                            columnTotal += props.matrix[groupName]?.[committee.name] ?? 0;
-                        }
+                        const columnTotal = columnTotalForMatrix(props.matrix, committee.name);
 
                         return (
                             <td
@@ -116,6 +155,7 @@ function DistributionMatrixTable(props: {
                         {" / "}
                         {props.distributionState.total_committee_seats}
                     </td>
+                    {props.showSeatsRemainingColumn && <td className="committee_seats_allocation_workbook_total" />}
                 </tr>
             </tbody>
         </table>
@@ -125,6 +165,20 @@ function DistributionMatrixTable(props: {
 export function CommitteeDistributionWorkbook(props: CommitteeDistributionWorkbookProps) {
     const distributionState = props.distributionState;
     const distributionComplete = isCommitteeDistributionComplete(distributionState);
+    const lastGroupInTurnOrder = getLastGroupInAssignmentTurnOrder(distributionState);
+    const activeStepIndex = getFirstUnassignedAssignmentStepIndex(distributionState);
+    const assignmentMatrixForDisplay =
+        activeStepIndex === null
+            ? distributionState.seats_matrix
+            : buildMatrixWithPendingPartySelections(
+                  distributionState,
+                  activeStepIndex,
+                  props.pendingCommitteeSelections
+              );
+    const currentTurnGroupName =
+        distributionComplete || activeStepIndex === null
+            ? null
+            : resolveAssignmentStepGroupName(distributionState, activeStepIndex);
 
     return (
         <div className="committee_seats_step committee_seats_experimental_step">
@@ -143,6 +197,8 @@ export function CommitteeDistributionWorkbook(props: CommitteeDistributionWorkbo
                         distributionState={distributionState}
                         matrix={distributionState.floor_matrix}
                         highlightChangesFromFloor={false}
+                        showSeatsRemainingColumn={false}
+                        currentTurnGroupName={null}
                     />
                 </div>
             </div>
@@ -156,26 +212,51 @@ export function CommitteeDistributionWorkbook(props: CommitteeDistributionWorkbo
                 <div className="committee_seats_table_scroll">
                     <DistributionMatrixTable
                         distributionState={distributionState}
-                        matrix={distributionState.seats_matrix}
+                        matrix={assignmentMatrixForDisplay}
                         highlightChangesFromFloor={true}
+                        showSeatsRemainingColumn={!distributionComplete}
+                        currentTurnGroupName={currentTurnGroupName}
                     />
                 </div>
 
-                <p className="committee_seats_note committee_seats_distribution_assignment_intro">
-                    {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.assignment_section_intro}
-                </p>
-                <DistributionAssignmentSteps
-                    distributionState={distributionState}
-                    pendingCommitteeByStepIndex={props.pendingCommitteeByStepIndex}
-                    onPendingCommitteeChange={props.onPendingCommitteeChange}
-                    onAssignStep={props.onAssignStep}
-                    onUndoStep={props.onUndoStep}
-                />
+                {!distributionComplete && (
+                    <span>
+                        <AssignmentSectionIntro />
+                        <DistributionAssignmentSteps
+                            distributionState={distributionState}
+                            pendingCommitteeSelections={props.pendingCommitteeSelections}
+                            onCommitteeChoiceClick={props.onCommitteeChoiceClick}
+                            onClearPendingSelections={props.onClearPendingSelections}
+                            onConfirmAssignmentBatch={props.onConfirmAssignmentBatch}
+                            onGoBackToPreviousGroup={props.onGoBackToPreviousGroup}
+                        />
+                    </span>
+                )}
 
                 {distributionComplete && (
-                    <p className="committee_seats_note committee_seats_distribution_complete">
-                        {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.assignment_complete_message}
-                    </p>
+                    <div className="committee_seats_distribution_complete_block">
+                        <p className="committee_seats_note committee_seats_distribution_complete">
+                            {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.assignment_complete_message}
+                        </p>
+                        {lastGroupInTurnOrder !== null && (
+                            <button
+                                className="button_standard committee_seats_distribution_go_back_to_last_group_button"
+                                type="button"
+                                onClick={() => props.onGoBackToLastGroupWhenComplete()}
+                            >
+                                {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.assignment_go_back_to_group_button_label(
+                                    lastGroupInTurnOrder
+                                ) + " choices"}
+                            </button>
+                        )}
+                        <button
+                            className="button_standard committee_seats_distribution_go_to_final_summary_button"
+                            type="button"
+                            onClick={() => props.onGoToFinalSummary()}
+                        >
+                            {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.go_to_final_summary_button_label}
+                        </button>
+                    </div>
                 )}
             </div>
 

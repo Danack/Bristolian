@@ -11,11 +11,12 @@ import {
 
 interface AddCommitteeRowProps {
     slotIndex: number;
-    onAddCommittee: (committeeIndex: number, name: string) => void;
+    onAddCommittee: (committeeIndex: number, name: string, seatCount: number) => void;
 }
 
 interface AddCommitteeRowState {
     draftCommitteeName: string;
+    draftSeatCount: number;
 }
 
 class AddCommitteeRow extends Component<AddCommitteeRowProps, AddCommitteeRowState> {
@@ -23,6 +24,7 @@ class AddCommitteeRow extends Component<AddCommitteeRowProps, AddCommitteeRowSta
         super(props);
         this.state = {
             draftCommitteeName: "",
+            draftSeatCount: 0,
         };
     }
 
@@ -32,15 +34,26 @@ class AddCommitteeRow extends Component<AddCommitteeRowProps, AddCommitteeRowSta
         });
     }
 
+    handleDraftSeatCountChange(event: h.JSX.TargetedEvent<HTMLInputElement, Event>): void {
+        this.setState({
+            draftSeatCount: parseInt(event.currentTarget.value, 10) || 0,
+        });
+    }
+
     handleAddCommittee(): void {
         const trimmedCommitteeName = this.state.draftCommitteeName.trim();
-        if (trimmedCommitteeName === "") {
+        if (trimmedCommitteeName === "" || this.state.draftSeatCount <= 0) {
             return;
         }
 
-        this.props.onAddCommittee(this.props.slotIndex, trimmedCommitteeName);
+        this.props.onAddCommittee(
+            this.props.slotIndex,
+            trimmedCommitteeName,
+            this.state.draftSeatCount
+        );
         this.setState({
             draftCommitteeName: "",
+            draftSeatCount: 0,
         });
     }
 
@@ -51,26 +64,60 @@ class AddCommitteeRow extends Component<AddCommitteeRowProps, AddCommitteeRowSta
         }
     }
 
+    handleDraftSeatCountKeyDown(event: KeyboardEvent): void {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            this.handleAddCommittee();
+        }
+    }
+
     render() {
-        const addCommitteeDisabled = this.state.draftCommitteeName.trim() === "";
+        const addCommitteeDisabled =
+            this.state.draftCommitteeName.trim() === "" || this.state.draftSeatCount <= 0;
 
         return (
             <tr className="committee_seats_groups_table_add_group_row">
-                <td className="committee_seats_additional_group_name_cell" colSpan={2}>
-                    <div className="committee_seats_add_political_group_controls">
+                <td>
+                    <label
+                        className="committee_seats_visually_hidden"
+                        htmlFor="committee_seats_add_committee_name"
+                    >
+                        Committee name
+                    </label>
+                    <input
+                        id="committee_seats_add_committee_name"
+                        type="text"
+                        className="committee_seats_additional_group_name_input"
+                        value={this.state.draftCommitteeName}
+                        placeholder={COMMITTEE_SEATS_PAGE.add_committee_name_placeholder}
+                        onInput={(event: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+                            this.handleDraftCommitteeNameChange(event)
+                        }
+                        onKeyDown={(event: KeyboardEvent) => this.handleDraftCommitteeNameKeyDown(event)}
+                    />
+                </td>
+                <td className="committee_seats_group_count_cell">
+                    <div className="committee_seats_add_committee_controls">
+                        <label
+                            className="committee_seats_visually_hidden"
+                            htmlFor="committee_seats_add_committee_seat_count"
+                        >
+                            Number of seats
+                        </label>
                         <input
-                            id="committee_seats_add_committee_name"
-                            type="text"
-                            className="committee_seats_additional_group_name_input committee_seats_add_political_group_name_input"
-                            value={this.state.draftCommitteeName}
-                            placeholder={COMMITTEE_SEATS_PAGE.add_committee_name_placeholder}
+                            id="committee_seats_add_committee_seat_count"
+                            type="number"
+                            min="0"
+                            step="1"
+                            className="committee_seats_add_committee_seat_count_input"
+                            value={this.state.draftSeatCount}
                             onInput={(event: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
-                                this.handleDraftCommitteeNameChange(event)
+                                this.handleDraftSeatCountChange(event)
                             }
-                            onKeyDown={(event: KeyboardEvent) => this.handleDraftCommitteeNameKeyDown(event)}
+                            onKeyDown={(event: KeyboardEvent) => this.handleDraftSeatCountKeyDown(event)}
                         />
                         <button
-                            className="button_standard committee_seats_add_political_group_button"
+                            className="button_standard committee_seats_add_committee_button"
                             type="button"
                             disabled={addCommitteeDisabled}
                             onClick={() => this.handleAddCommittee()}
@@ -92,7 +139,7 @@ export interface CommitteesEditorProps {
     canContinueFromCommittees: boolean;
     onCommitteeNameChange: (committeeIndex: number, name: string) => void;
     onCommitteeSeatCountChange: (committeeIndex: number, seatCount: number) => void;
-    onAddCommittee: (committeeIndex: number, name: string) => void;
+    onAddCommittee: (committeeIndex: number, name: string, seatCount: number) => void;
     onContinueFromCommittees: () => void;
 }
 

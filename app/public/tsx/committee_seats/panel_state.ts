@@ -25,6 +25,7 @@ export enum WizardStep {
 export enum ExperimentalSubstep {
     Committees = "committees",
     Distribution = "distribution",
+    FinalSummary = "final_summary",
 }
 
 export enum CouncilSetupSubstep {
@@ -51,7 +52,8 @@ export interface CommitteeSeatsPanelState {
     example_council_json_copy_status: ExampleCouncilJsonCopyStatus;
     experimental_substep: ExperimentalSubstep;
     committee_distribution_state: CommitteeDistributionState | null;
-    distribution_pending_committee_by_step: number[];
+    /** Committee indices chosen for the current party's batch (not yet confirmed). */
+    distribution_pending_committee_selections: number[];
 }
 
 export function getDefaultPanelState(): CommitteeSeatsPanelState {
@@ -72,7 +74,7 @@ export function getDefaultPanelState(): CommitteeSeatsPanelState {
         example_council_json_copy_status: "idle",
         experimental_substep: ExperimentalSubstep.Committees,
         committee_distribution_state: null,
-        distribution_pending_committee_by_step: [],
+        distribution_pending_committee_selections: [],
     };
 }
 
@@ -163,6 +165,6 @@ export function panelStateFromUrlRestore(
         example_council_json_copy_status: "idle",
         experimental_substep: ExperimentalSubstep.Committees,
         committee_distribution_state: null,
-        distribution_pending_committee_by_step: [],
+        distribution_pending_committee_selections: [],
     };
 }

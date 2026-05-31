@@ -1,10 +1,18 @@
 import {describe, expect, test, beforeEach, afterEach} from "@jest/globals";
 import {createRef, h, options, render} from "preact";
+import {testSlow} from "./test/jest_slow_tests";
 import {CommitteeSeatsPanel} from "./CommitteeSeatsPanel";
 import type {CommitteeSeatsPanelProps} from "./committee_seats/panel_state";
 import {applyExampleCouncilToFormState, getExampleCouncilById} from "./committee_seats/example_councils";
 import {INDEPENDENT_ALLOCATION_STEP_COPY} from "./committee_seats/independent_allocation";
+import {
+    canAddPendingCommitteeSelectionOnCommittee,
+    getPartyAssignmentBatch,
+    isPendingPartyAssignmentBatchReadyToConfirm,
+    type PartyAssignmentBatch,
+} from "./committee_seats/calculate_committee_distribution";
 import {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY} from "./committee_seats/experimental_seat_distribution";
+import {getTestCouncilCompleteDistributionState} from "./committee_seats/test_council_distribution_test_fixtures";
 import {COMMITTEE_SEATS_PAGE, formatCouncilSetupExampleIntro} from "./committee_seats/page_config";
 import {ExperimentalSubstep} from "./committee_seats/panel_state";
 import {
@@ -66,6 +74,61 @@ function getNumberInputValue(container: HTMLElement, inputId: string): number {
         throw new Error("Input #" + inputId + " not found");
     }
     return parseInt(input.value, 10);
+}
+
+function getConfirmAssignmentBatchButton(container: HTMLElement): HTMLButtonElement {
+    const confirmButton = container.querySelector(
+        ".committee_seats_distribution_assignment_confirm_button"
+    );
+    if (confirmButton === null || !(confirmButton instanceof HTMLButtonElement)) {
+        throw new Error("Confirm assignment batch button not found");
+    }
+    return confirmButton;
+}
+
+function selectValidCommitteesForBatch(
+    panel: CommitteeSeatsPanel,
+    batch: PartyAssignmentBatch
+): void {
+    const distributionState = panel.state.committee_distribution_state;
+    if (distributionState === null) {
+        throw new Error("committee_distribution_state is null");
+    }
+
+    while (panel.state.distribution_pending_committee_selections.length < batch.seats_to_choose) {
+        let addedSelection = false;
+
+        for (
+            let committeeIndex = 0;
+            committeeIndex < distributionState.committees.length;
+            committeeIndex += 1
+        ) {
+            if (
+                !canAddPendingCommitteeSelectionOnCommittee(
+                    distributionState,
+                    batch,
+                    panel.state.distribution_pending_committee_selections,
+                    committeeIndex
+                )
+            ) {
+                continue;
+            }
+
+            panel.handleDistributionCommitteeChoiceClick(committeeIndex);
+            addedSelection = true;
+            break;
+        }
+
+        expect(addedSelection).toBe(true);
+    }
+
+    expect(
+        isPendingPartyAssignmentBatchReadyToConfirm(
+            distributionState,
+            batch,
+            panel.state.distribution_pending_committee_selections
+        )
+    ).toBe(true);
 }
 
 function getTextInputValue(container: HTMLElement, inputId: string): string {
@@ -221,7 +284,7 @@ describe("CommitteeSeatsPanel component", () => {
         expect(mounted.container.textContent).toContain("Final allocation");
     });
 
-    test("experimental seat distribution prefills bristol committees", () => {
+    test("advanced seat distribution prefills bristol committees", () => {
         mounted.panel.handleSelectedExampleCouncilChange("bristol");
         mounted.panel.handleChooseExampleCouncil();
         mounted.panel.handleContinueFromCouncilTotals();
@@ -239,7 +302,45 @@ describe("CommitteeSeatsPanel component", () => {
         expect(getTextInputValue(mounted.container, "committee_name_8")).toBe("Planning Committee A");
     });
 
-    test("experimental distribution assigns one remainder seat", () => {
+    test("experimental committees add row requires name and seat count before listing committee", () => {
+        mounted.panel.handleChooseCustomData();
+        mounted.panel.handleExpectedTotalCouncillorsChange(10);
+        mounted.panel.handleTotalCommitteeSeatsChange(16);
+        mounted.panel.handleContinueFromCouncilTotals();
+        mounted.panel.handleGroupCountChange(0, 6);
+        mounted.panel.handleGroupCountChange(1, 4);
+        mounted.panel.handleContinueFromPoliticalGroups();
+        mounted.panel.handleContinueFromPartyAllocation();
+        mounted.panel.handleStartExperimentalSeatDistribution();
+
+        expect(mounted.container.querySelector("#committee_name_0")).toBeNull();
+
+        const addCommitteeButton = Array.from(mounted.container.querySelectorAll("button")).find(
+            (button) => button.textContent?.trim() === COMMITTEE_SEATS_PAGE.add_committee_button_label
+        );
+        expect(addCommitteeButton).toBeDefined();
+        expect((addCommitteeButton as HTMLButtonElement).disabled).toBe(true);
+
+        const addNameInput = mounted.container.querySelector("#committee_seats_add_committee_name");
+        const addSeatInput = mounted.container.querySelector("#committee_seats_add_committee_seat_count");
+        expect(addNameInput).not.toBeNull();
+        expect(addSeatInput).not.toBeNull();
+
+        (addNameInput as HTMLInputElement).value = "Planning Committee";
+        addNameInput?.dispatchEvent(new Event("input", {bubbles: true}));
+        expect((addCommitteeButton as HTMLButtonElement).disabled).toBe(true);
+
+        (addSeatInput as HTMLInputElement).value = "9";
+        addSeatInput?.dispatchEvent(new Event("input", {bubbles: true}));
+        expect((addCommitteeButton as HTMLButtonElement).disabled).toBe(false);
+
+        addCommitteeButton?.click();
+
+        expect(getTextInputValue(mounted.container, "committee_name_0")).toBe("Planning Committee");
+        expect(getNumberInputValue(mounted.container, "committee_seat_count_0")).toBe(9);
+    });
+
+    testSlow("experimental distribution assigns one remainder seat", () => {
         mounted.panel.handleSelectedExampleCouncilChange("bristol");
         mounted.panel.handleChooseExampleCouncil();
         mounted.panel.handleContinueFromCouncilTotals();
@@ -253,16 +354,58 @@ describe("CommitteeSeatsPanel component", () => {
         expect(mounted.panel.state.experimental_substep).toBe(ExperimentalSubstep.Distribution);
         expect(mounted.panel.state.committee_distribution_state).not.toBeNull();
 
-        const assignButton = Array.from(mounted.container.querySelectorAll("button")).find(
-            (button) =>
-                button.textContent?.trim() === EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.assign_button_label
-        );
-        expect(assignButton).toBeDefined();
-        assignButton?.click();
+        const distributionState = mounted.panel.state.committee_distribution_state!;
+        const batch = getPartyAssignmentBatch(distributionState, 0);
+        expect(batch).not.toBeNull();
+        expect(batch!.seats_to_choose).toBeGreaterThan(0);
+
+        const confirmButton = getConfirmAssignmentBatchButton(mounted.container);
+        expect(confirmButton.disabled).toBe(true);
+
+        selectValidCommitteesForBatch(mounted.panel, batch!);
+
+        const confirmButtonAfterSelection = getConfirmAssignmentBatchButton(mounted.container);
+        expect(confirmButtonAfterSelection.disabled).toBe(false);
+        confirmButtonAfterSelection.click();
 
         expect(mounted.panel.state.committee_distribution_state?.assignment_choices[0]).not.toBeNull();
-        expect(mounted.container.textContent).toContain(
-            EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.assignment_chosen_label
+        expect(mounted.panel.state.distribution_pending_committee_selections).toEqual([]);
+    });
+
+    test("completed experimental distribution offers final summary with both allocation tables", () => {
+        mounted.panel.handleSelectedExampleCouncilChange("bristol");
+        mounted.panel.handleChooseExampleCouncil();
+        mounted.panel.handleContinueFromCouncilTotals();
+        mounted.panel.handleContinueFromPoliticalGroups();
+        mounted.panel.handleIndependentAllocationChoiceChange(false);
+        mounted.panel.handleContinueFromIndependentAllocation();
+        mounted.panel.handleContinueFromPartyAllocation();
+        mounted.panel.handleStartExperimentalSeatDistribution();
+        mounted.panel.handleContinueFromExperimentalCommittees();
+
+        mounted.panel.setState({
+            committee_distribution_state: getTestCouncilCompleteDistributionState(),
+        });
+
+        const goToFinalSummaryButton = Array.from(mounted.container.querySelectorAll("button")).find(
+            (button) =>
+                button.textContent?.trim() ===
+                EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.go_to_final_summary_button_label
         );
+        expect(goToFinalSummaryButton).toBeDefined();
+        goToFinalSummaryButton?.click();
+
+        expect(mounted.panel.state.experimental_substep).toBe(ExperimentalSubstep.FinalSummary);
+        expect(mounted.container.textContent).toContain(
+            EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.final_summary_page_heading
+        );
+        expect(mounted.container.textContent).toContain(
+            EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.final_summary_proportional_section_title
+        );
+        expect(mounted.container.textContent).toContain(
+            EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.final_summary_committee_allocation_section_title
+        );
+        expect(mounted.container.textContent).toContain("Conservative");
+        expect(mounted.container.textContent).toContain("Adult Social Care Committee");
     });
 });

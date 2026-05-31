@@ -22,7 +22,7 @@ export const NEXT_STEPS_COPY = {
         "calculation was done and insist on your fair share.",
     out_of_scope_note:
         "Splitting seats across committees is usually negotiated between groups. You can try the " +
-        "experimental seat distribution tool below to work through a proportional split by committee.",
+        "advanced seat distribution tool below to work through a proportional split by committee.",
     start_over_button_label: "Start over",
 } as const;
 

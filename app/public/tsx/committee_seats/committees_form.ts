@@ -94,7 +94,7 @@ export function committeesForSetup(formCommittees: Committee[]): Committee[] {
 
         committeesForSetupList.push({
             name: trimmedName,
-            seat_count: committee.seat_count,
+            seat_count: Number(committee.seat_count) || 0,
         });
     }
 
@@ -103,7 +103,7 @@ export function committeesForSetup(formCommittees: Committee[]): Committee[] {
 
 export function calculateTotalCommitteeSeatsFromForm(formCommittees: Committee[]): number {
     return committeesForSetup(formCommittees).reduce(
-        (total, committee) => total + committee.seat_count,
+        (total, committee) => total + Number(committee.seat_count),
         0
     );
 }
