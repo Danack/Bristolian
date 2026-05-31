@@ -640,6 +640,14 @@
             font-weight: 600;
             color: var(--content_panel_text_color);
         }
+
+        .committee_seats_experimental_page_intro {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            max-width: 52rem;
+            margin-bottom: 0.75rem;
+        }
     }
 
     .committee_seats_distribution_assignment_intro_block {
@@ -1140,6 +1148,15 @@
             border-top: none;
             padding-top: 0.65rem;
             padding-bottom: 0.65rem;
+        }
+
+        tbody.committee_seats_allocation_workbook_rounding_step_group {
+            outline: 1px solid var(--standard_border_color);
+            outline-offset: -1px;
+
+            &:not(:first-of-type) .committee_seats_allocation_workbook_step_description td {
+                padding-top: calc(0.65rem + 0.75rem);
+            }
         }
 
         .committee_seats_allocation_workbook_party {

@@ -22,6 +22,13 @@ export function ExperimentalCommitteesStep(props: ExperimentalCommitteesStepProp
             <h2 className="committee_seats_experimental_heading">
                 {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.page_heading}
             </h2>
+            <div className="committee_seats_experimental_page_intro">
+                {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.page_intro_paragraphs.map((paragraph) => (
+                    <p key={paragraph} className="committee_seats_lead">
+                        {paragraph}
+                    </p>
+                ))}
+            </div>
             <p className="committee_seats_lead">{EXPERIMENTAL_SEAT_DISTRIBUTION_COPY.committees_intro}</p>
 
             <CommitteesEditor

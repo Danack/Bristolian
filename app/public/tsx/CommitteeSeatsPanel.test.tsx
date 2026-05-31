@@ -267,13 +267,13 @@ describe("calculatePartyAllocation", () => {
         expect(independent?.final_seats).toBe(2);
 
         expect(result.workbook_steps.length).toBe(3);
-        expect(result.workbook_steps[0].label).toBe("i. Round each share down to whole seats");
+        expect(result.workbook_steps[0].label).toBe("Round each share down to whole seats");
         expect(result.workbook_steps[0].seats_by_group_name.Green).toBe(green!.floored_seats);
         expect(result.workbook_steps[0].total_seats_allocated).toBe(142);
-        expect(result.workbook_steps[1].label).toBe("ii. One extra seat to Green");
+        expect(result.workbook_steps[1].label).toBe("One extra seat to Green");
         expect(result.workbook_steps[1].seats_by_group_name.Green).toBe(70);
         expect(result.workbook_steps[1].total_seats_allocated).toBe(143);
-        expect(result.workbook_steps[2].label).toBe("iii. One extra seat to Liberal Democrat");
+        expect(result.workbook_steps[2].label).toBe("One extra seat to Liberal Democrat");
         expect(result.workbook_steps[2].seats_by_group_name["Liberal Democrat"]).toBe(19);
         expect(result.workbook_steps[2].total_seats_allocated).toBe(144);
 
@@ -288,9 +288,7 @@ describe("calculatePartyAllocation", () => {
         );
         expect(result.workbook_steps[1].description).toContain("Green has the largest (0.94)");
         expect(result.workbook_steps[1].description).not.toContain("Sub-step");
-        expect(result.workbook_steps[1].description).toContain(
-            "Liberal Democrat has the next largest fractional part (0.51)"
-        );
+        expect(result.workbook_steps[1].description).not.toContain("next largest fractional part");
 
         expect(result.workbook_steps[2].description).toContain("We have allocated 143/144 seats");
         expect(result.workbook_steps[2].description).toContain("Liberal Democrat has the largest (0.51)");

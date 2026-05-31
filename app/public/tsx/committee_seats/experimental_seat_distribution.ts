@@ -1,6 +1,11 @@
 /** Copy for the advanced seat distribution branch (not in the main six-step trail). */
 export const EXPERIMENTAL_SEAT_DISTRIBUTION_COPY = {
     page_heading: "Advanced — seat distribution",
+    page_intro_paragraphs: [
+        "The previous section, the allocation of committee seats, is based in law.",
+        "This section, the distribution of committee seats, to individual committees is probably best practice; it is much more of a guideline than what you'd call actual rules.",
+        "Follow the instructions to allow each group in turn to choose which committees their remaining seats are on.",
+    ],
     committees_intro:
         "List each political committee and how many seats it has. Example councils are prefilled where we " +
         "have that data. The seat counts here must add up to the total committee seats you entered earlier.",

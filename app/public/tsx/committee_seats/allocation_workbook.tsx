@@ -1,7 +1,18 @@
 import {h} from "preact";
-import {formatNumber, formatPercentage} from "./calculate_party_allocation";
+import {formatLowerRomanNumeral, formatNumber, formatPercentage} from "./calculate_party_allocation";
 import {COMMITTEE_SEATS_PAGE} from "./page_config";
 import type {PartyAllocationResult} from "./types";
+
+function formatRoundingWorkbookStepInstruction(
+    stepNumber: number,
+    description: string | null
+): string | null {
+    if (description === null) {
+        return null;
+    }
+
+    return "Step " + formatLowerRomanNumeral(stepNumber) + ". " + description;
+}
 
 function AllocationWorkbookColumnHeader(props: {
     partyNames: string[];
@@ -247,32 +258,31 @@ export function PartyAllocationStepView(props: PartyAllocationStepViewProps) {
                                     includeTotalSeatsAllocatedColumn={true}
                                 />
                             </thead>
-                            <tbody>
-                                {allocationResult.workbook_steps.flatMap((workbookStep, stepIndex) => {
-                                    const stepKey = String(workbookStep.step_number);
-                                    const previousWorkbookStep =
-                                        stepIndex > 0
-                                            ? allocationResult.workbook_steps[stepIndex - 1]
-                                            : undefined;
-                                    const isExtraSeatRoundingStep = stepIndex > 0;
-                                    const rows = [];
+                            {allocationResult.workbook_steps.map((workbookStep, stepIndex) => {
+                                const stepKey = String(workbookStep.step_number);
+                                const previousWorkbookStep =
+                                    stepIndex > 0
+                                        ? allocationResult.workbook_steps[stepIndex - 1]
+                                        : undefined;
+                                const isExtraSeatRoundingStep = stepIndex > 0;
+                                const stepInstruction = formatRoundingWorkbookStepInstruction(
+                                    workbookStep.step_number,
+                                    workbookStep.description
+                                );
 
-                                    if (workbookStep.description !== null) {
-                                        rows.push(
-                                            <tr
-                                                key={stepKey + "_description"}
-                                                className="committee_seats_allocation_workbook_step_description"
-                                            >
+                                return (
+                                    <tbody
+                                        key={stepKey}
+                                        className="committee_seats_allocation_workbook_rounding_step_group"
+                                    >
+                                        {stepInstruction !== null && (
+                                            <tr className="committee_seats_allocation_workbook_step_description">
                                                 <td colSpan={partyNames.length + 2}>
-                                                    {workbookStep.description}
+                                                    {stepInstruction}
                                                 </td>
                                             </tr>
-                                        );
-                                    }
-
-                                    rows.push(
+                                        )}
                                         <PartyAllocationWorkbookRow
-                                            key={stepKey + "_values"}
                                             rowLabel={workbookStep.label}
                                             partyNames={partyNames}
                                             cellValues={workbookStep.seats_by_group_name}
@@ -286,10 +296,10 @@ export function PartyAllocationStepView(props: PartyAllocationStepViewProps) {
                                                 previousWorkbookStep?.total_seats_allocated
                                             }
                                         />
-                                    );
-
-                                    return rows;
-                                })}
+                                    </tbody>
+                                );
+                            })}
+                            <tbody>
                                 {allocationResult.all_committee_seats_allocated_message !== null && (
                                     <PartyAllocationWorkbookDescriptionRow
                                         description={allocationResult.all_committee_seats_allocated_message}

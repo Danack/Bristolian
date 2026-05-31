@@ -16,10 +16,6 @@ interface GroupCalculation {
     final_seats: number;
 }
 
-function formatWorkbookRoundingSubstepLabel(romanNumeral: string, stepTitle: string): string {
-    return romanNumeral + ". " + stepTitle;
-}
-
 /** Lowercase roman numerals for workbook sub-steps under section B (i, ii, iii, …). */
 export function formatLowerRomanNumeral(value: number): string {
     if (value <= 0 || value > 39 || !Number.isInteger(value)) {
@@ -96,15 +92,11 @@ export function calculatePartyAllocation(input: CouncilSetupInput): PartyAllocat
     );
 
     let roundingSubstepIndex = 1;
-    const firstRoundingRomanNumeral = formatLowerRomanNumeral(roundingSubstepIndex);
 
     const workbookSteps: PartyAllocationWorkbookStep[] = [
         {
             step_number: roundingSubstepIndex,
-            label: formatWorkbookRoundingSubstepLabel(
-                firstRoundingRomanNumeral,
-                "Round each share down to whole seats"
-            ),
+            label: "Round each share down to whole seats",
             seats_by_group_name: seatsByGroupNameFromCalculations(
                 groupCalculations,
                 (groupCalculation) => groupCalculation.floored_seats
@@ -135,21 +127,14 @@ export function calculatePartyAllocation(input: CouncilSetupInput): PartyAllocat
         seatsAfterEachStep.set(groupCalculation.group.name, updatedSeats);
 
         const seatsRemainingAfterThisStep = seatsRemaining - 1;
-        const nextRoundIndex = roundIndex + 1;
-        const nextRoundingGroup = getNextRoundingGroup(
-            sortedByFraction,
-            nextRoundIndex,
-            seatsRemainingAfterThisStep
-        );
 
-        const roundingRomanNumeral = formatLowerRomanNumeral(roundingSubstepIndex);
         const roundingStepTitle = "One extra seat to " + groupCalculation.group.name;
 
         const seatsAllocatedBeforeThisStep = input.total_committee_seats - seatsRemaining;
 
         workbookSteps.push({
             step_number: roundingSubstepIndex,
-            label: formatWorkbookRoundingSubstepLabel(roundingRomanNumeral, roundingStepTitle),
+            label: roundingStepTitle,
             seats_by_group_name: Object.fromEntries(seatsAfterEachStep.entries()),
             total_seats_allocated: sumSeatsByGroupName(
                 Object.fromEntries(seatsAfterEachStep.entries())
@@ -159,8 +144,7 @@ export function calculatePartyAllocation(input: CouncilSetupInput): PartyAllocat
                 input.total_committee_seats,
                 groupCalculation.group.name,
                 groupCalculation.fractional_part,
-                seatsRemainingAfterThisStep,
-                nextRoundingGroup
+                seatsRemainingAfterThisStep
             ),
         });
 
@@ -210,32 +194,6 @@ function seatsByGroupNameFromCalculations(
     return seatsByGroupName;
 }
 
-interface NextRoundingGroup {
-    group_name: string;
-    fractional_part: number;
-}
-
-function getNextRoundingGroup(
-    sortedByFraction: GroupCalculation[],
-    roundIndex: number,
-    seatsRemaining: number
-): NextRoundingGroup | null {
-    if (seatsRemaining <= 0 || sortedByFraction.length === 0) {
-        return null;
-    }
-
-    let index = roundIndex;
-    if (index >= sortedByFraction.length) {
-        index = 0;
-    }
-
-    const groupCalculation = sortedByFraction[index];
-    return {
-        group_name: groupCalculation.group.name,
-        fractional_part: groupCalculation.fractional_part,
-    };
-}
-
 function buildIntegerStepDescription(
     integerSeatsAllocated: number,
     seatsRemaining: number,
@@ -267,8 +225,7 @@ function buildRoundingStepDescription(
     totalCommitteeSeats: number,
     groupName: string,
     fractionalPart: number,
-    seatsRemainingAfterThisStep: number,
-    nextRoundingGroup: NextRoundingGroup | null
+    seatsRemainingAfterThisStep: number
 ): string {
     let description =
         "We have allocated " +
@@ -294,15 +251,6 @@ function buildRoundingStepDescription(
         " " +
         seatWord +
         " still to allocate.";
-
-    if (nextRoundingGroup !== null) {
-        description +=
-            " " +
-            nextRoundingGroup.group_name +
-            " has the next largest fractional part (" +
-            formatNumber(nextRoundingGroup.fractional_part) +
-            ").";
-    }
 
     return description;
 }
