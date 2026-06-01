@@ -35,6 +35,43 @@ function AllocationWorkbookColumnHeader(props: {
     );
 }
 
+function RepeatedAllocationWorkbookColumnHeader(props: {
+    headerKey: string;
+    partyNames: string[];
+    includeTotalSeatsAllocatedColumn?: boolean;
+}) {
+    return (
+        <tbody
+            key={props.headerKey}
+            className="committee_seats_allocation_workbook_repeated_header"
+        >
+            <AllocationWorkbookColumnHeader
+                partyNames={props.partyNames}
+                includeTotalSeatsAllocatedColumn={props.includeTotalSeatsAllocatedColumn}
+            />
+        </tbody>
+    );
+}
+
+function shouldRepeatPartyColumnHeadersAfterRoundingStep(
+    roundingStepCount: number,
+    stepIndex: number
+): boolean {
+    if (roundingStepCount <= 3) {
+        return false;
+    }
+
+    if (stepIndex >= roundingStepCount - 1) {
+        return false;
+    }
+
+    return (stepIndex + 1) % 3 === 0;
+}
+
+function shouldRepeatPartyColumnHeadersBeforeFinalAllocation(roundingStepCount: number): boolean {
+    return roundingStepCount > 3;
+}
+
 function PartyAllocationWorkbookDescriptionRow(props: {
     description: string;
     partyColumnCount: number;
@@ -202,6 +239,8 @@ export function PartyAllocationStepView(props: PartyAllocationStepViewProps) {
         finalAllocationValues[row.group_name] = row.final_seats;
     }
 
+    const roundingStepCount = allocationResult.workbook_steps.length;
+
     return (
         <div className="committee_seats_step">
             <p className="committee_seats_lead">{COMMITTEE_SEATS_PAGE.allocation_step_intro}</p>
@@ -258,7 +297,7 @@ export function PartyAllocationStepView(props: PartyAllocationStepViewProps) {
                                     includeTotalSeatsAllocatedColumn={true}
                                 />
                             </thead>
-                            {allocationResult.workbook_steps.map((workbookStep, stepIndex) => {
+                            {allocationResult.workbook_steps.flatMap((workbookStep, stepIndex) => {
                                 const stepKey = String(workbookStep.step_number);
                                 const previousWorkbookStep =
                                     stepIndex > 0
@@ -270,7 +309,7 @@ export function PartyAllocationStepView(props: PartyAllocationStepViewProps) {
                                     workbookStep.description
                                 );
 
-                                return (
+                                const stepGroup = (
                                     <tbody
                                         key={stepKey}
                                         className="committee_seats_allocation_workbook_rounding_step_group"
@@ -298,6 +337,24 @@ export function PartyAllocationStepView(props: PartyAllocationStepViewProps) {
                                         />
                                     </tbody>
                                 );
+
+                                if (
+                                    shouldRepeatPartyColumnHeadersAfterRoundingStep(
+                                        roundingStepCount,
+                                        stepIndex
+                                    )
+                                ) {
+                                    return [
+                                        stepGroup,
+                                        <RepeatedAllocationWorkbookColumnHeader
+                                            headerKey={stepKey + "_party_headers"}
+                                            partyNames={partyNames}
+                                            includeTotalSeatsAllocatedColumn={true}
+                                        />,
+                                    ];
+                                }
+
+                                return [stepGroup];
                             })}
                             <tbody>
                                 {allocationResult.all_committee_seats_allocated_message !== null && (
@@ -310,6 +367,12 @@ export function PartyAllocationStepView(props: PartyAllocationStepViewProps) {
                                 <tr className="committee_seats_allocation_workbook_spacer">
                                     <td colSpan={partyNames.length + 2} />
                                 </tr>
+                                {shouldRepeatPartyColumnHeadersBeforeFinalAllocation(roundingStepCount) && (
+                                    <AllocationWorkbookColumnHeader
+                                        partyNames={partyNames}
+                                        includeTotalSeatsAllocatedColumn={true}
+                                    />
+                                )}
                                 <PartyAllocationWorkbookRow
                                     rowLabel="Final allocation"
                                     partyNames={partyNames}

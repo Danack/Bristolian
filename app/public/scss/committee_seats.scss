@@ -1159,6 +1159,14 @@
             }
         }
 
+        tbody.committee_seats_allocation_workbook_repeated_header {
+            .committee_seats_allocation_workbook_corner,
+            .committee_seats_allocation_workbook_party,
+            .committee_seats_allocation_workbook_total {
+                background: var(--table_row_stripe_background);
+            }
+        }
+
         .committee_seats_allocation_workbook_party {
             text-align: center;
             font-family: Manrope, Arial, x-locale-body, sans-serif;
