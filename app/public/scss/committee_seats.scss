@@ -342,6 +342,40 @@
         align-self: flex-start;
     }
 
+    // On narrow screens the side-by-side panel is wider than the viewport, which
+    // pushed the status message and Continue button off the right edge behind the
+    // horizontal scroll. Stack the aside below the (still independently scrolling)
+    // table so both stay visible without horizontal scrolling of the whole panel.
+    @media (max-width: variables.$screen_break_medium) {
+        .committee_seats_section_fit,
+        .committee_seats_section_fit .committee_seats_political_groups_fieldset {
+            width: 100%;
+        }
+
+        .committee_seats_political_groups_panel {
+            min-width: 0;
+            overflow-x: visible;
+        }
+
+        .committee_seats_political_groups_body {
+            flex-direction: column;
+            flex-wrap: nowrap;
+            min-width: 0;
+        }
+
+        .committee_seats_political_groups_table.committee_seats_table_scroll {
+            min-width: 0;
+        }
+
+        .committee_seats_political_groups_aside {
+            min-width: 0;
+            max-width: none;
+            width: 100%;
+            border-left: none;
+            border-top: 1px solid var(--standard_border_color);
+        }
+    }
+
     .committee_seats_council_totals_screen {
         align-items: center;
         text-align: center;
@@ -1156,14 +1190,6 @@
 
             &:not(:first-of-type) .committee_seats_allocation_workbook_step_description td {
                 padding-top: calc(0.65rem + 0.75rem);
-            }
-        }
-
-        tbody.committee_seats_allocation_workbook_repeated_header {
-            .committee_seats_allocation_workbook_corner,
-            .committee_seats_allocation_workbook_party,
-            .committee_seats_allocation_workbook_total {
-                background: var(--table_row_stripe_background);
             }
         }
 

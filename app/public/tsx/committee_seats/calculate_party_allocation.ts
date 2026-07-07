@@ -104,8 +104,7 @@ export function calculatePartyAllocation(input: CouncilSetupInput): PartyAllocat
             total_seats_allocated: integerSeatsAllocated,
             description: buildIntegerStepDescription(
                 integerSeatsAllocated,
-                seatsRemaining,
-                input.total_committee_seats
+                seatsRemaining
             ),
         },
     ];
@@ -143,8 +142,7 @@ export function calculatePartyAllocation(input: CouncilSetupInput): PartyAllocat
                 seatsAllocatedBeforeThisStep,
                 input.total_committee_seats,
                 groupCalculation.group.name,
-                groupCalculation.fractional_part,
-                seatsRemainingAfterThisStep
+                groupCalculation.fractional_part
             ),
         });
 
@@ -196,27 +194,28 @@ function seatsByGroupNameFromCalculations(
 
 function buildIntegerStepDescription(
     integerSeatsAllocated: number,
-    seatsRemaining: number,
-    totalCommitteeSeats: number
+    seatsRemaining: number
 ): string | null {
     if (seatsRemaining <= 0) {
         return null;
     }
 
-    const seatWord = seatsRemaining === 1 ? "seat" : "seats";
-    const remainWord = seatsRemaining === 1 ? "remains" : "remain";
+    const assignedSeatWord = integerSeatsAllocated === 1 ? "seat" : "seats";
+    const remainingSeatWord = seatsRemaining === 1 ? "seat" : "seats";
+    const remainVerb = seatsRemaining === 1 ? "remains" : "remain";
+
     return (
-        "Round each group's exact entitlement down to whole seats (" +
+        "Round each group's exact entitlement down to whole seats. " +
         integerSeatsAllocated +
-        " seats assigned in total). " +
+        " " +
+        assignedSeatWord +
+        " assigned, " +
         seatsRemaining +
         " " +
-        seatWord +
+        remainingSeatWord +
         " " +
-        remainWord +
-        " out of " +
-        totalCommitteeSeats +
-        "; each following step gives one extra seat to whichever group has the largest amount left after rounding down."
+        remainVerb +
+        "."
     );
 }
 
@@ -224,10 +223,9 @@ function buildRoundingStepDescription(
     seatsAllocatedBeforeThisStep: number,
     totalCommitteeSeats: number,
     groupName: string,
-    fractionalPart: number,
-    seatsRemainingAfterThisStep: number
+    fractionalPart: number
 ): string {
-    let description =
+    return (
         "We have allocated " +
         seatsAllocatedBeforeThisStep +
         "/" +
@@ -238,21 +236,8 @@ function buildRoundingStepDescription(
         formatNumber(fractionalPart) +
         "), so one extra seat is allocated to " +
         groupName +
-        ".";
-
-    if (seatsRemainingAfterThisStep <= 0) {
-        return description;
-    }
-
-    const seatWord = seatsRemainingAfterThisStep === 1 ? "seat" : "seats";
-    description +=
-        " " +
-        seatsRemainingAfterThisStep +
-        " " +
-        seatWord +
-        " still to allocate.";
-
-    return description;
+        "."
+    );
 }
 
 interface CouncilSetupValidationResult {

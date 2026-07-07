@@ -35,39 +35,6 @@ function AllocationWorkbookColumnHeader(props: {
     );
 }
 
-function RepeatedAllocationWorkbookColumnHeader(props: {
-    headerKey: string;
-    partyNames: string[];
-    includeTotalSeatsAllocatedColumn?: boolean;
-}) {
-    return (
-        <tbody
-            key={props.headerKey}
-            className="committee_seats_allocation_workbook_repeated_header"
-        >
-            <AllocationWorkbookColumnHeader
-                partyNames={props.partyNames}
-                includeTotalSeatsAllocatedColumn={props.includeTotalSeatsAllocatedColumn}
-            />
-        </tbody>
-    );
-}
-
-function shouldRepeatPartyColumnHeadersAfterRoundingStep(
-    roundingStepCount: number,
-    stepIndex: number
-): boolean {
-    if (roundingStepCount <= 3) {
-        return false;
-    }
-
-    if (stepIndex >= roundingStepCount - 1) {
-        return false;
-    }
-
-    return (stepIndex + 1) % 3 === 0;
-}
-
 function shouldRepeatPartyColumnHeadersBeforeFinalAllocation(roundingStepCount: number): boolean {
     return roundingStepCount > 3;
 }
@@ -297,7 +264,7 @@ export function PartyAllocationStepView(props: PartyAllocationStepViewProps) {
                                     includeTotalSeatsAllocatedColumn={true}
                                 />
                             </thead>
-                            {allocationResult.workbook_steps.flatMap((workbookStep, stepIndex) => {
+                            {allocationResult.workbook_steps.map((workbookStep, stepIndex) => {
                                 const stepKey = String(workbookStep.step_number);
                                 const previousWorkbookStep =
                                     stepIndex > 0
@@ -309,7 +276,7 @@ export function PartyAllocationStepView(props: PartyAllocationStepViewProps) {
                                     workbookStep.description
                                 );
 
-                                const stepGroup = (
+                                return (
                                     <tbody
                                         key={stepKey}
                                         className="committee_seats_allocation_workbook_rounding_step_group"
@@ -337,24 +304,6 @@ export function PartyAllocationStepView(props: PartyAllocationStepViewProps) {
                                         />
                                     </tbody>
                                 );
-
-                                if (
-                                    shouldRepeatPartyColumnHeadersAfterRoundingStep(
-                                        roundingStepCount,
-                                        stepIndex
-                                    )
-                                ) {
-                                    return [
-                                        stepGroup,
-                                        <RepeatedAllocationWorkbookColumnHeader
-                                            headerKey={stepKey + "_party_headers"}
-                                            partyNames={partyNames}
-                                            includeTotalSeatsAllocatedColumn={true}
-                                        />,
-                                    ];
-                                }
-
-                                return [stepGroup];
                             })}
                             <tbody>
                                 {allocationResult.all_committee_seats_allocated_message !== null && (

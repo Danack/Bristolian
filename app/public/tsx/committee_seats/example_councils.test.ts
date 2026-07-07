@@ -1,6 +1,7 @@
 import {describe, expect, test} from "@jest/globals";
 import {
     applyExampleCouncilPoliticalGroupsIfMissing,
+    applyExampleCouncilToFormState,
     getExampleCouncilById,
 } from "./example_councils";
 
@@ -16,6 +17,14 @@ describe("applyExampleCouncilPoliticalGroupsIfMissing", () => {
         });
 
         expect(restored.political_groups.find((group) => group.name === "Green")?.councillor_count).toBe(34);
+    });
+
+    test("bristol example has 140 committee seats from committee list", () => {
+        const bristol = getExampleCouncilById("bristol");
+        expect(bristol).toBeDefined();
+
+        const applied = applyExampleCouncilToFormState(bristol!);
+        expect(applied.total_committee_seats).toBe(140);
     });
 
     test("does not overwrite custom council empty groups", () => {

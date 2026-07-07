@@ -11,7 +11,7 @@ function createBristolAllocationState(): CommitteeSeatsUrlPanelState {
     expect(bristol).toBeDefined();
 
     const restored = restoreCommitteeSeatsStateFromUrl(
-        "?step=allocation&source=example&example=bristol&seats=144&councillors=70&independents=excluded&groups=" +
+        "?step=allocation&source=example&example=bristol&seats=140&councillors=70&independents=excluded&groups=" +
             encodeURIComponent("Green|34") +
             "," +
             encodeURIComponent("Labour|19") +
@@ -58,7 +58,7 @@ describe("committee_seats url_state", () => {
 
     test("legacy setup step round-trips to political groups substep", () => {
         const restored = restoreCommitteeSeatsStateFromUrl(
-            "?step=setup&source=example&example=bristol&seats=144&councillors=70&groups=" +
+            "?step=setup&source=example&example=bristol&seats=140&councillors=70&groups=" +
                 encodeURIComponent("Libdems|9") +
                 "," +
                 encodeURIComponent("Conservatives|7")
@@ -84,7 +84,7 @@ describe("committee_seats url_state", () => {
 
     test("totals step for example council restores political group counts when groups omitted from URL", () => {
         const restored = restoreCommitteeSeatsStateFromUrl(
-            "?step=totals&source=example&example=bristol&seats=144&councillors=70"
+            "?step=totals&source=example&example=bristol&seats=140&councillors=70"
         );
 
         expect(restored?.council_setup_substep).toBe("enter_council_totals");
@@ -94,7 +94,7 @@ describe("committee_seats url_state", () => {
 
     test("independents step pre-selects bristol example default", () => {
         const restored = restoreCommitteeSeatsStateFromUrl(
-            "?step=independents&source=example&example=bristol&seats=144&councillors=70&groups=" +
+            "?step=independents&source=example&example=bristol&seats=140&councillors=70&groups=" +
                 encodeURIComponent("Green|34") +
                 "," +
                 encodeURIComponent("Independent|1")
@@ -134,7 +134,7 @@ describe("committee_seats url_state", () => {
 
     test("allocation URL can exclude independents from seat calculation", () => {
         const restored = restoreCommitteeSeatsStateFromUrl(
-            "?step=allocation&source=example&example=bristol&seats=144&councillors=70&independents=excluded&groups=" +
+            "?step=allocation&source=example&example=bristol&seats=140&councillors=70&independents=excluded&groups=" +
                 encodeURIComponent("Green|34") +
                 "," +
                 encodeURIComponent("Labour|19") +
@@ -150,7 +150,7 @@ describe("committee_seats url_state", () => {
         expect(
             restored?.allocation_result?.rows.find((row) => row.group_name === "Independent")
         ).toBeUndefined();
-        expect(restored?.allocation_result?.total_allocated_seats).toBe(144);
+        expect(restored?.allocation_result?.total_allocated_seats).toBe(140);
     });
 
     test("custom allocation URL with independents restores without error state", () => {
@@ -175,7 +175,7 @@ describe("committee_seats url_state", () => {
 
     test("bristol allocation URL without independents param excludes independents by default", () => {
         const restored = restoreCommitteeSeatsStateFromUrl(
-            "?step=allocation&source=example&example=bristol&seats=144&councillors=70&groups=" +
+            "?step=allocation&source=example&example=bristol&seats=140&councillors=70&groups=" +
                 encodeURIComponent("Green|34") +
                 "," +
                 encodeURIComponent("Labour|19") +
@@ -189,7 +189,7 @@ describe("committee_seats url_state", () => {
 
         expect(restored?.allocate_seats_to_independents).toBe(false);
         expect(restored?.allocation_result?.rows.find((row) => row.group_name === "Independent")).toBeUndefined();
-        expect(restored?.allocation_result?.rows.find((row) => row.group_name === "Green")?.final_seats).toBe(71);
+        expect(restored?.allocation_result?.rows.find((row) => row.group_name === "Green")?.final_seats).toBe(69);
     });
 
     test("allocation step restores workbook result", () => {
@@ -197,9 +197,9 @@ describe("committee_seats url_state", () => {
 
         expect(restored.wizard_step).toBe(2);
         expect(restored.allocation_result).not.toBeNull();
-        expect(restored.allocation_result?.total_allocated_seats).toBe(144);
+        expect(restored.allocation_result?.total_allocated_seats).toBe(140);
         expect(restored.allocation_result?.rows.find((row) => row.group_name === "Green")?.final_seats).toBe(
-            71
+            69
         );
     });
 
@@ -209,7 +209,7 @@ describe("committee_seats url_state", () => {
         expect(search).toContain("step=allocation");
 
         const again = restoreCommitteeSeatsStateFromUrl(search);
-        expect(again?.allocation_result?.total_allocated_seats).toBe(144);
+        expect(again?.allocation_result?.total_allocated_seats).toBe(140);
     });
 
     test("next steps URL round-trips through format", () => {
@@ -222,7 +222,7 @@ describe("committee_seats url_state", () => {
 
         const again = restoreCommitteeSeatsStateFromUrl(search);
         expect(again?.wizard_step).toBe(3);
-        expect(again?.allocation_result?.total_allocated_seats).toBe(144);
+        expect(again?.allocation_result?.total_allocated_seats).toBe(140);
     });
 
     test("invalid allocation URL falls back to setup with error", () => {

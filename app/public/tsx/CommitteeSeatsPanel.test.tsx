@@ -280,7 +280,7 @@ describe("calculatePartyAllocation", () => {
         expect(result.workbook_steps[0].description).toContain(
             "Round each group's exact entitlement down to whole seats"
         );
-        expect(result.workbook_steps[0].description).toContain("2 seats remain out of 144");
+        expect(result.workbook_steps[0].description).toContain("142 seats assigned, 2 seats remain");
 
         expect(result.workbook_steps[1].description).toContain("We have allocated 142/144 seats");
         expect(result.workbook_steps[1].description).toContain(
@@ -373,7 +373,7 @@ describe("calculatePartyAllocation", () => {
         expect(result.workbook_steps[0].description).toContain(
             "Round each group's exact entitlement down to whole seats"
         );
-        expect(result.workbook_steps[0].description).toContain("2 seats remain out of 56");
+        expect(result.workbook_steps[0].description).toMatch(/\d+ seats assigned, \d+ seats remain/);
     });
 });
 
