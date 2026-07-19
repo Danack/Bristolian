@@ -36,9 +36,9 @@ class GenerateExplorerDataTest extends BaseTestCase
         $decoded = json_decode(file_get_contents($outputPath), true);
         $this->assertIsArray($decoded);
         $this->assertArrayHasKey('root', $decoded);
-        $this->assertCount(6, $decoded['root']);
-        $this->assertSame('Data Sources', $decoded['root'][5]['name']);
-        $this->assertSame('/datasources', $decoded['root'][5]['path']);
+        $this->assertCount(9, $decoded['root']);
+        $this->assertSame('Data Sources', $decoded['root'][7]['name']);
+        $this->assertSame('/datasources', $decoded['root'][7]['path']);
         $this->assertArrayHasKey('cli_commands', $decoded);
         $this->assertArrayHasKey('code-map', $decoded);
         $this->assertArrayHasKey('controllers', $decoded);
@@ -47,6 +47,7 @@ class GenerateExplorerDataTest extends BaseTestCase
         $this->assertArrayHasKey('http_endpoints', $decoded);
         $this->assertArrayHasKey('api_endpoints', $decoded);
         $this->assertArrayHasKey('supervisord_tasks', $decoded);
+        $this->assertArrayHasKey('quality_tools', $decoded);
         $this->assertNotEmpty($decoded['cli_commands']);
         $this->assertNotEmpty($decoded['code-map']);
         $this->assertNotEmpty($decoded['controllers']);
@@ -55,6 +56,9 @@ class GenerateExplorerDataTest extends BaseTestCase
         $this->assertNotEmpty($decoded['http_endpoints']);
         $this->assertNotEmpty($decoded['api_endpoints']);
         $this->assertCount(5, $decoded['supervisord_tasks']);
+        $this->assertNotEmpty($decoded['quality_tools']);
+        $this->assertSame('phpstan', $decoded['quality_tools'][0]['id']);
+        $this->assertStringContainsString('docker exec', $decoded['quality_tools'][0]['command']);
 
         $roomDatasource = null;
         foreach ($decoded['datasources'] as $datasource) {

@@ -134,6 +134,98 @@ class ExplorerDataBuilder
             'item_shape' => 'name, file, line-start, line-end, optional dependencies',
             'drill_down' => 'Navigation aid only; deps primarily come from controllers',
         ],
+        [
+            'path' => 'quality_tools',
+            'role' => 'workflow',
+            'description' => 'Glob rules mapping dirty workspace paths to quality/test commands for the CodeView Tweak selection → Quality control step. Matching (not a fixed PHP-first ladder) decides which tools matter; optional stage orders matched tools so cheaper gates run before slower suites. Commands are host-copy-pastable (docker exec for Bristolian). Not a Categories button.',
+            'item_shape' => 'id, label, command, globs[], optional exclude_globs[], optional stage',
+            'drill_down' => 'git dirty paths × globs → planned commands sorted by stage (listed in extension; execution/agent inject is extension-side and should be staged/interruptible)',
+        ],
+    ];
+
+    /**
+     * Glob-driven QC commands for CodeView Tweak selection. Not a navigable category.
+     * Commands are host-copy-pastable (tools run inside Docker containers).
+     *
+     * @var list<array{
+     *   id: string,
+     *   label: string,
+     *   command: string,
+     *   globs: list<string>,
+     *   exclude_globs?: list<string>,
+     *   stage?: int
+     * }>
+     */
+    private const QUALITY_TOOLS = [
+        [
+            'id' => 'phpstan',
+            'label' => 'PHPStan',
+            'command' => 'docker exec bristolian-php_fpm-1 bash -c "sh runPhpStan.sh"',
+            'globs' => [
+                'src/**/*.php',
+                'test/**/*.php',
+            ],
+            'exclude_globs' => [
+                '**/Generated/**',
+                'src/Bristolian/Model/Generated/**',
+            ],
+            'stage' => 1,
+        ],
+        [
+            'id' => 'phpunit',
+            'label' => 'PHPUnit',
+            'command' => 'docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh"',
+            'globs' => [
+                'src/**/*.php',
+                'app/src/**/*.php',
+                'api/**/*.php',
+                'cli/**/*.php',
+                'test/**/*.php',
+            ],
+            'exclude_globs' => [
+                '**/Generated/**',
+                'src/Bristolian/Model/Generated/**',
+                'test/BristolianChatTest/**',
+            ],
+            'stage' => 2,
+        ],
+        [
+            'id' => 'phpunit-chat',
+            'label' => 'PHPUnit (chat)',
+            'command' => 'docker exec bristolian-php_fpm-1 bash -c "sh runChatUnitTests.sh"',
+            'globs' => [
+                'src/BristolianChat/**/*.php',
+                'src/functions_chat.php',
+                'test/BristolianChatTest/**/*.php',
+                'chat/**/*.php',
+            ],
+            'exclude_globs' => [],
+            'stage' => 3,
+        ],
+        [
+            'id' => 'jest',
+            'label' => 'Jest',
+            'command' => 'docker exec bristolian-js_builder-1 bash -c "npm run test"',
+            'globs' => [
+                'app/public/tsx/**/*.ts',
+                'app/public/tsx/**/*.tsx',
+            ],
+            'exclude_globs' => [
+                'app/public/tsx/generated/**',
+            ],
+            'stage' => 2,
+        ],
+        [
+            'id' => 'behat',
+            'label' => 'Behat',
+            'command' => 'docker exec bristolian-php_fpm-1 bash -c "sh runBehat.sh"',
+            'globs' => [
+                'features/**/*.feature',
+                'src/BristolianBehat/**/*.php',
+            ],
+            'exclude_globs' => [],
+            'stage' => 4,
+        ],
     ];
 
     /**
@@ -180,6 +272,8 @@ class ExplorerDataBuilder
             'root' => self::ROOT_ENTRIES,
             // Metadata for the CodeView extension / agents — not a navigable category.
             'root_explanations' => self::ROOT_EXPLANATIONS,
+            // Workflow metadata for Tweak selection QC — not a navigable category.
+            'quality_tools' => self::QUALITY_TOOLS,
         ];
 
         foreach ($this->explorerData as $key => $value) {

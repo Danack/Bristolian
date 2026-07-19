@@ -17,6 +17,7 @@ class CodegenProvenance
     public const END_MARKER = 'CODEVIEW_GENERATED_END';
 
     /**
+     * @param array{file: string, line-start: int, line-end: int}|null $detailSource
      * @return array{
      *     generator: string,
      *     generator_callable: string,
@@ -82,24 +83,10 @@ class CodegenProvenance
 
         /** @var list<array{type: 'soft'|'hard', lines: list<string>}> $blocks */
         $blocks = [];
+        /** @var 'soft'|'hard'|null $currentType */
         $currentType = null;
         /** @var list<string> $currentLines */
         $currentLines = [];
-
-        $flush = static function () use (&$blocks, &$currentType, &$currentLines): void {
-            if ($currentType === null || $currentLines === []) {
-                $currentType = null;
-                $currentLines = [];
-                return;
-            }
-
-            $blocks[] = [
-                'type' => $currentType,
-                'lines' => $currentLines,
-            ];
-            $currentType = null;
-            $currentLines = [];
-        };
 
         foreach (explode("\n", $docComment) as $line) {
             $line = preg_replace('#\s*\*/\s*$#', '', $line) ?? $line;
@@ -119,7 +106,7 @@ class CodegenProvenance
             }
 
             if ($content === '') {
-                $flush();
+                self::flushDescriptionBlock($blocks, $currentType, $currentLines);
                 continue;
             }
 
@@ -128,14 +115,14 @@ class CodegenProvenance
             $lineText = $isStructural ? $content : $contentTrimmedLeft;
 
             if ($currentType !== null && $currentType !== $blockType) {
-                $flush();
+                self::flushDescriptionBlock($blocks, $currentType, $currentLines);
             }
 
             $currentType = $blockType;
             $currentLines[] = $lineText;
         }
 
-        $flush();
+        self::flushDescriptionBlock($blocks, $currentType, $currentLines);
 
         $paragraphs = [];
         foreach ($blocks as $block) {
@@ -453,6 +440,30 @@ class CodegenProvenance
         }
 
         return $payload;
+    }
+
+    /**
+     * @param list<array{type: 'soft'|'hard', lines: list<string>}> $blocks
+     * @param 'soft'|'hard'|null $currentType
+     * @param list<string> $currentLines
+     * @param-out list<array{type: 'soft'|'hard', lines: list<string>}> $blocks
+     * @param-out null $currentType
+     * @param-out list<string> $currentLines
+     */
+    private static function flushDescriptionBlock(
+        array &$blocks,
+        ?string &$currentType,
+        array &$currentLines
+    ): void {
+        if ($currentType !== null && $currentLines !== []) {
+            $blocks[] = [
+                'type' => $currentType,
+                'lines' => $currentLines,
+            ];
+        }
+
+        $currentType = null;
+        $currentLines = [];
     }
 
     /**

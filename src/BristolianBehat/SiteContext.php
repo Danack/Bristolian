@@ -2317,6 +2317,29 @@ JS
     }
 
     /**
+     * @When /^I wait for the room tabs panel to load$/
+     */
+    public function iWaitForTheRoomTabsPanelToLoad(): void
+    {
+        $session = $this->getSession();
+        $maxAttempts = 50;
+        $attempt = 0;
+
+        while ($attempt < $maxAttempts) {
+            $page = $session->getPage();
+            $tabStrip = $page->find('css', '.room_tab_strip');
+            $tabButton = $page->find('css', 'button.room_tab_label');
+            if ($tabStrip !== null && $tabButton !== null) {
+                return;
+            }
+            usleep(100 * 1000);
+            $attempt++;
+        }
+
+        throw new \Exception('Room tabs panel did not load within timeout.');
+    }
+
+    /**
      * @When /^I click the "([^"]*)" room tab$/
      */
     public function iClickTheRoomTab(string $tabLabel): void
@@ -2333,6 +2356,48 @@ JS
         }
         $tab->click();
         usleep(200 * 1000);
+    }
+
+    /**
+     * @Then /^the URL hash should be "([^"]*)"$/
+     */
+    public function theUrlHashShouldBe(string $expectedHash): void
+    {
+        $session = $this->getSession();
+        $actualHash = $session->evaluateScript('return window.location.hash;');
+        if ($actualHash !== $expectedHash) {
+            throw new \Exception(
+                "Expected URL hash '$expectedHash', got '$actualHash'."
+            );
+        }
+    }
+
+    /**
+     * @Then /^the "([^"]*)" room tab should be selected$/
+     */
+    public function theRoomTabShouldBeSelected(string $tabLabel): void
+    {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $escaped = str_replace('"', '""', $tabLabel);
+        $tab = $page->find(
+            'xpath',
+            '//button[contains(@class, "room_tab_label") and normalize-space(text()) = "' . $escaped . '"]'
+        );
+        if ($tab === null) {
+            throw new \Exception("Room tab not found: " . $tabLabel);
+        }
+
+        $ariaSelected = $tab->getAttribute('aria-selected');
+        if ($ariaSelected !== 'true') {
+            throw new \Exception(
+                "Room tab '$tabLabel' is not selected (aria-selected='$ariaSelected')."
+            );
+        }
+
+        if ($tab->hasClass('active') !== true) {
+            throw new \Exception("Room tab '$tabLabel' does not have the active class.");
+        }
     }
 
     /**

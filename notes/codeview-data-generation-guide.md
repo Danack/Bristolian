@@ -92,6 +92,8 @@ It is OK to hard-code Bristolian paths (e.g. `src/Bristolian/...`, supervisord c
 ```json
 {
   "root": [ { "name": "…", "path": "/…" } ],
+  "root_explanations": [ … ],
+  "quality_tools": [ … ],
   "cli_commands": [ … ],
   "supervisord_tasks": [ … ],
   "features": [ … ],
@@ -108,7 +110,7 @@ Rules:
 
 - Every `root[].path` of the form `/foo` expects a top-level key `foo` (path without leading `/`).
 - Categories that are only listed in `root` but have no array (or an empty array) show as empty in the UI.
-- Keys not referenced by `root` can still exist (e.g. `controllers`, `dependencies`, `code-map`) — they are **indexes / graphs**, not category lists.
+- Keys not referenced by `root` can still exist (e.g. `controllers`, `dependencies`, `code-map`, `quality_tools`, `root_explanations`) — they are **indexes / graphs / workflow metadata**, not category lists.
 
 ---
 
@@ -279,6 +281,31 @@ Jump-to-source index:
 | `dependencies` | Optional; class-level `controllers` is the primary source for the UI |
 
 Missing files are highlighted pastel-red in the panel.
+
+### `quality_tools`
+
+Workflow metadata for CodeView “Tweak selection” → Quality control. **Not** a category button. Maps dirty git paths to host-copy-pastable QC commands via globs.
+
+Contract details: [`extension-cursor-user/handoff-quality-tools-globs.md`](./extension-cursor-user/handoff-quality-tools-globs.md).
+
+```json
+{
+  "id": "phpstan",
+  "label": "PHPStan",
+  "command": "docker exec bristolian-php_fpm-1 bash -c \"sh runPhpStan.sh\"",
+  "globs": ["src/**/*.php", "test/**/*.php"],
+  "exclude_globs": ["**/Generated/**"],
+  "stage": 1
+}
+```
+
+| Field | Notes |
+|-------|--------|
+| `command` | Run from app workspace **host** root. Bristolian uses `docker exec …` (tools do not run on the host toolchain). |
+| `globs` / `exclude_globs` | Dirty path matching; tool is planned only if a dirty path matches. |
+| `stage` | Optional order **among matched tools** (lower first). Selection is path-driven — frontend+Behat edits do not force PHP tools. |
+
+Emitted by `ExplorerDataBuilder` / `php cli.php generate:codeview-data`.
 
 ### `features`
 

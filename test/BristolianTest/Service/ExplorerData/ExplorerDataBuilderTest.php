@@ -52,9 +52,18 @@ class ExplorerDataBuilderTest extends BaseTestCase
         $this->assertIsArray($decoded['root_explanations']);
         $this->assertNotEmpty($decoded['root_explanations']);
 
+        $this->assertArrayHasKey('quality_tools', $decoded);
+        $this->assertIsArray($decoded['quality_tools']);
+        $this->assertNotEmpty($decoded['quality_tools']);
+        $this->assertSame('phpstan', $decoded['quality_tools'][0]['id']);
+        $this->assertStringContainsString('docker exec', $decoded['quality_tools'][0]['command']);
+        $this->assertArrayHasKey('stage', $decoded['quality_tools'][0]);
+        $this->assertNotEmpty($decoded['quality_tools'][0]['globs']);
+
         $widgetsExplanation = null;
         $dependenciesExplanation = null;
         $generatedArtifactsExplanation = null;
+        $qualityToolsExplanation = null;
         foreach ($decoded['root_explanations'] as $explanation) {
             if ($explanation['path'] === '/widgets') {
                 $widgetsExplanation = $explanation;
@@ -64,6 +73,9 @@ class ExplorerDataBuilderTest extends BaseTestCase
             }
             if ($explanation['path'] === '/generated_artifacts') {
                 $generatedArtifactsExplanation = $explanation;
+            }
+            if ($explanation['path'] === 'quality_tools') {
+                $qualityToolsExplanation = $explanation;
             }
         }
 
@@ -80,6 +92,11 @@ class ExplorerDataBuilderTest extends BaseTestCase
         $this->assertSame('codegen', $generatedArtifactsExplanation['role']);
         $this->assertStringContainsString('one entry per auto-generation process', strtolower($generatedArtifactsExplanation['description']));
         $this->assertStringContainsString('generator_callable', $generatedArtifactsExplanation['description']);
+
+        $this->assertIsArray($qualityToolsExplanation);
+        $this->assertSame('workflow', $qualityToolsExplanation['role']);
+        $this->assertStringContainsString('Glob rules', $qualityToolsExplanation['description']);
+        $this->assertStringContainsString('stage', $qualityToolsExplanation['item_shape']);
 
         unlink($outputPath);
     }

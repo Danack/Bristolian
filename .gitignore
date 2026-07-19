@@ -73,3 +73,4 @@ tmp/behat-js-coverage-report
 purchases/notice_progress.json
 purchases/exported/
 /purchases/
+/notes/extension-cursor-user

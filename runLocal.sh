@@ -29,7 +29,6 @@ docker-compose build php_fpm
 docker-compose up --build \
  varnish \
  caddy \
- chrome_headless \
  db \
  php_fpm \
  php_fpm_debug \
@@ -38,6 +37,8 @@ docker-compose up --build \
  js_builder \
  redis \
   --remove-orphans
+
+# chrome_headless \
 
 # mediawiki \
 

@@ -14,7 +14,7 @@ export interface RoomTabsPanelProps {
     accepted_file_extensions: string[];
 }
 
-type RoomTabId = "chat" | "links" | "files" | "annotations" | "video" | "management";
+export type RoomTabId = "chat" | "links" | "files" | "annotations" | "video" | "management";
 
 interface RoomTabsPanelState {
     activeTab: RoomTabId;
@@ -29,21 +29,66 @@ const TAB_LABELS: ReadonlyArray<{ id: RoomTabId; label: string }> = [
     { id: "management", label: "Room Management" },
 ];
 
-function getDefaultState(): RoomTabsPanelState {
+const VALID_ROOM_TAB_IDS: ReadonlyArray<RoomTabId> = TAB_LABELS.map((tab) => tab.id);
+
+export function isRoomTabId(value: string): value is RoomTabId {
+    return (VALID_ROOM_TAB_IDS as ReadonlyArray<string>).includes(value);
+}
+
+/**
+ * Resolve the active room tab from a URL hash (e.g. "#links").
+ * Empty or unknown hashes fall back to the chat tab.
+ */
+export function roomTabIdFromHash(hash: string): RoomTabId {
+    const withoutHash = hash.startsWith("#") ? hash.slice(1) : hash;
+    if (isRoomTabId(withoutHash)) {
+        return withoutHash;
+    }
+    return "chat";
+}
+
+export function hashForRoomTab(tabId: RoomTabId): string {
+    return "#" + tabId;
+}
+
+function getInitialState(): RoomTabsPanelState {
     return {
-        activeTab: "chat",
+        activeTab: roomTabIdFromHash(window.location.hash),
     };
 }
 
 export class RoomTabsPanel extends Component<RoomTabsPanelProps, RoomTabsPanelState> {
 
+    private hashChangeListener: (() => void) | null = null;
+
     constructor(props: RoomTabsPanelProps) {
         super(props);
-        this.state = getDefaultState();
+        this.state = getInitialState();
+    }
+
+    componentDidMount() {
+        this.hashChangeListener = () => {
+            const tabId = roomTabIdFromHash(window.location.hash);
+            if (tabId !== this.state.activeTab) {
+                this.setState({ activeTab: tabId });
+            }
+        };
+        window.addEventListener("hashchange", this.hashChangeListener);
+    }
+
+    componentWillUnmount() {
+        if (this.hashChangeListener !== null) {
+            window.removeEventListener("hashchange", this.hashChangeListener);
+            this.hashChangeListener = null;
+        }
     }
 
     selectTab = (tabId: RoomTabId) => {
         this.setState({ activeTab: tabId });
+        const desiredHash = hashForRoomTab(tabId);
+        if (window.location.hash !== desiredHash) {
+            window.location.hash = tabId;
+        }
     }
 
     private panelClass(tabId: RoomTabId): string {

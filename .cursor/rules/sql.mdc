@@ -1,6 +1,8 @@
 ---
 alwaysApply: true
-globs: ["*.sql", "*.php"]
+globs:
+  - "**/*.php"
+  - "**/*.sql"
 ---
 
 When writing SQL requests: rely on foreign key constraints instead of first

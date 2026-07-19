@@ -47,6 +47,16 @@ class CodegenProvenanceTest extends BaseTestCase
             "shared\nbetween",
             $payload['description']
         );
+
+        $parsed = CodegenProvenance::parseFromFileContents($fileContents);
+        $this->assertIsArray($parsed);
+        $this->assertSame($payload['generator'], $parsed['generator']);
+        $this->assertSame($payload['generator_callable'], $parsed['generator_callable']);
+        $this->assertSame($payload['output_file'], $parsed['output_file']);
+        $this->assertSame($payload['description'], $parsed['description']);
+        $this->assertSame($payload['detail'], $parsed['detail']);
+        $this->assertArrayNotHasKey('sources', $parsed);
+        $this->assertArrayNotHasKey('mappings', $parsed);
     }
 
     /**
@@ -72,16 +82,6 @@ class CodegenProvenanceTest extends BaseTestCase
             "[0] path string, e.g. '/api/rooms/{room_id:.*}/files' [1] HTTP method",
             $description
         );
-
-        $parsed = CodegenProvenance::parseFromFileContents($fileContents);
-        $this->assertIsArray($parsed);
-        $this->assertSame($payload['generator'], $parsed['generator']);
-        $this->assertSame($payload['generator_callable'], $parsed['generator_callable']);
-        $this->assertSame($payload['output_file'], $parsed['output_file']);
-        $this->assertSame($payload['description'], $parsed['description']);
-        $this->assertSame($payload['detail'], $parsed['detail']);
-        $this->assertArrayNotHasKey('sources', $parsed);
-        $this->assertArrayNotHasKey('mappings', $parsed);
     }
 
     /**

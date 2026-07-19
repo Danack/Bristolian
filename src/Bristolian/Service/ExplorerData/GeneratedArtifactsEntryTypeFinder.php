@@ -73,10 +73,7 @@ class GeneratedArtifactsEntryTypeFinder implements EntryTypeFinder
             $detail = null;
             $detailSource = null;
 
-            if (
-                array_key_exists('detail_variables', $process) === true
-                && is_array($process['detail_variables']) === true
-            ) {
+            if (array_key_exists('detail_variables', $process) === true) {
                 $extracted = CodegenProvenance::extractAssignments(
                     $process['generator_callable'],
                     $process['detail_variables']
