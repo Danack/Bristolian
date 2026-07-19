@@ -14,7 +14,7 @@ use BristolianTest\BaseTestCase;
  *
  * Scenario data (room id, file id) is provided by concrete tests via getValidRoomId()
  * and getValidFileId() so the fixture stays schema-agnostic. See
- * docs/refactoring/default_test_scenarios_and_worlds.md § Abstract repo fixtures.
+ * notes/refactoring/default_test_scenarios_and_worlds.md § Abstract repo fixtures.
  *
  * @coversNothing
  */

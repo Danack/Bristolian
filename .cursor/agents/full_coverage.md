@@ -7,7 +7,7 @@ You are a security expert auditing code for vulnerabilities.
 
 When invoked:
 
-First, read @docs/developing/test_guidelines.md
+First, read @notes/developing/testing_guidelines.md
 
 Second, run the command:
 

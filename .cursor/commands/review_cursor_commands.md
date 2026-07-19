@@ -32,7 +32,7 @@ When this command is called, read all commands in the `.cursor` directory and no
 ## Scope
 
 - **In scope**: All command-related content under `.cursor/` (typically `.cursor/commands/`).
-- **Out of scope**: Source code, `docs/`, and other non-command docs unless a command explicitly references them.
+- **Out of scope**: Source code, `notes/`, and other non-command docs unless a command explicitly references them.
 
 ## Output
 

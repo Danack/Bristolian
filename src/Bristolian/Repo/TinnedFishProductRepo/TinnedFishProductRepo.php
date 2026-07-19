@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Bristolian\Repo\TinnedFishProductRepo;
 
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\tinned_fish_product;
 use Bristolian\Model\TinnedFish\Product;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 
@@ -18,6 +21,7 @@ interface TinnedFishProductRepo
      * @param string $barcode The EAN/UPC/GTIN barcode
      * @return Product|null The product if found, null otherwise
      */
+    #[ReadsTable(tinned_fish_product::class)]
     public function getByBarcode(string $barcode): ?Product;
 
     /**
@@ -25,6 +29,7 @@ interface TinnedFishProductRepo
      *
      * @return Product[]
      */
+    #[ReadsTable(tinned_fish_product::class)]
     public function getAll(): array;
 
     /**
@@ -33,6 +38,7 @@ interface TinnedFishProductRepo
      *
      * @param Product $product The product to save
      */
+    #[WritesTable(tinned_fish_product::class)]
     public function save(Product $product): void;
 
     /**
@@ -41,5 +47,6 @@ interface TinnedFishProductRepo
      * @param string $barcode The product barcode
      * @param ValidationStatus $validationStatus The new validation status
      */
+    #[WritesTable(tinned_fish_product::class)]
     public function updateValidationStatus(string $barcode, ValidationStatus $validationStatus): void;
 }

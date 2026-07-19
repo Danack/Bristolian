@@ -777,54 +777,17 @@ SQL) => ['read' => [], 'write' => ['room_link']],
                 => ['read' => [], 'write' => ['room_link_tag']],
 
             // ===== RoomRepo =====
-            trim(<<<SQL
-insert into room (
-    id,
-    owner_user_id,
-    name,
-    purpose
-)
-values (
-    :id,
-    :owner_user_id,
-    :name,
-    :purpose
-)
-SQL) => ['read' => [], 'write' => ['room']],
+            trim(room::INSERT)
+                => ['read' => [], 'write' => ['room']],
 
-            trim(<<<SQL
-select
-    id,
-    owner_user_id,
-    name,
-    purpose,
-    created_at
-from room
-where id = :room_id
-SQL) => ['read' => ['room'], 'write' => []],
+            trim(room::SELECT . " where id = :room_id")
+                => ['read' => ['room'], 'write' => []],
 
-            trim(<<<SQL
-select
-    id,
-    owner_user_id,
-    name,
-    purpose,
-    created_at
-from room
-SQL) => ['read' => ['room'], 'write' => []],
+            trim(room::SELECT)
+                => ['read' => ['room'], 'write' => []],
 
-            trim(<<<SQL
-select
-    id,
-    owner_user_id,
-    name,
-    purpose,
-    created_at
-from
-    room
-where
-    name = :name
-SQL) => ['read' => ['room'], 'write' => []],
+            trim(room::SELECT . " where name = :name")
+                => ['read' => ['room'], 'write' => []],
 
             trim(room::UPDATE)
                 => ['read' => [], 'write' => ['room']],

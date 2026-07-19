@@ -7,6 +7,7 @@ use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use Bristolian\Parameters\Table;
 use Bristolian\PdoSimple\PdoSimple;
 use PDO;
+use Bristolian\Attribute\ReadsTable;
 
 class PdoDbInfo implements DbInfo
 {
@@ -37,6 +38,7 @@ SQL;
     /**
      * @return MigrationThatHasBeenRun[]
      */
+    #[ReadsTable(migrations::class)]
     public function getMigrations(): array
     {
         $sql = migrations::SELECT . " order by created_at ASC, ID ASC";

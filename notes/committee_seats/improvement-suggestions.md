@@ -93,4 +93,4 @@ If picking three items first:
 2. **Behat smoke test** — protects the integrated page without a large testing investment.
 3. **Link to LGA guidance** on the calculation step — helps users trust and cite the method.
 
-Project-wide (not committee-seats-specific): Preact automatic JSX runtime — see [`docs/todo.md`](../todo.md).
+Project-wide (not committee-seats-specific): Preact automatic JSX runtime — see [`notes/todo.md`](../todo.md).

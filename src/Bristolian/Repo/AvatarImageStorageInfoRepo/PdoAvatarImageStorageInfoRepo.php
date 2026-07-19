@@ -9,6 +9,8 @@ use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoAvatarImageStorageInfoRepo implements AvatarImageStorageInfoRepo
 {
@@ -16,6 +18,7 @@ class PdoAvatarImageStorageInfoRepo implements AvatarImageStorageInfoRepo
     {
     }
 
+    #[ReadsTable(avatar_image_object_info::class)]
     public function getByNormalizedName(string $normalized_name): AvatarImageFile|null
     {
         $sql = avatar_image_object_info::SELECT;
@@ -28,6 +31,7 @@ class PdoAvatarImageStorageInfoRepo implements AvatarImageStorageInfoRepo
         );
     }
 
+    #[ReadsTable(avatar_image_object_info::class)]
     public function getById(string $avatar_image_id): AvatarImageFile|null
     {
         $sql = avatar_image_object_info::SELECT;
@@ -40,6 +44,7 @@ class PdoAvatarImageStorageInfoRepo implements AvatarImageStorageInfoRepo
         );
     }
 
+    #[WritesTable(avatar_image_object_info::class)]
     public function storeFileInfo(
         string $user_id,
         string $normalized_filename,
@@ -79,6 +84,7 @@ class PdoAvatarImageStorageInfoRepo implements AvatarImageStorageInfoRepo
         return $id;
     }
 
+    #[WritesTable(avatar_image_object_info::class)]
     public function setUploaded(string $file_storage_id): void
     {
         $sql = <<< SQL

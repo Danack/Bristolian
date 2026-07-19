@@ -1,0 +1,8 @@
+---
+alwaysApply: true
+globs: ["*.sql", "*.php"]
+---
+
+When writing SQL requests: rely on foreign key constraints instead of first
+checking that a referenced row exists. Perform multi-column updates in a
+single UPDATE statement rather than one request per column.

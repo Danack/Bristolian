@@ -7,6 +7,7 @@ use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\Service\UuidGenerator\UuidGenerator;
+use Bristolian\Attribute\WritesTable;
 
 class PdoLinkRepo implements LinkRepo
 {
@@ -16,6 +17,7 @@ class PdoLinkRepo implements LinkRepo
     ) {
     }
 
+    #[WritesTable(link::class)]
     public function store_link(string $user_id, string $url): string
     {
         $sql = link::INSERT;

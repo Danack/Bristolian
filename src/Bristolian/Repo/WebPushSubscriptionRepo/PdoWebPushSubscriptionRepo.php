@@ -6,6 +6,9 @@ use Bristolian\Model\Types\UserWebPushSubscription;
 use Bristolian\Parameters\WebPushSubscriptionParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\user_webpush_subscription;
 
 //use Bristolian\Model\User;
 
@@ -15,6 +18,7 @@ class PdoWebPushSubscriptionRepo implements WebPushSubscriptionRepo
     {
     }
 
+    #[ReadsTable(user_webpush_subscription::class)]
     public function getUserSubscriptions(string $username): array
     {
 
@@ -54,6 +58,7 @@ SQL;
     /**
      * @throws UserConstraintFailedException
      */
+    #[WritesTable(user_webpush_subscription::class)]
     public function save(
         string                    $user_id,
         WebPushSubscriptionParams $webPushSubscriptionParam,

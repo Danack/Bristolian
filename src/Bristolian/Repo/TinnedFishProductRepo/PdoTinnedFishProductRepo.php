@@ -9,6 +9,8 @@ use Bristolian\Model\TinnedFish\Product;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 /**
  * PDO-based implementation of TinnedFishProductRepo.
@@ -21,6 +23,7 @@ class PdoTinnedFishProductRepo implements TinnedFishProductRepo
     ) {
     }
 
+    #[ReadsTable(tinned_fish_product::class)]
     public function getByBarcode(string $barcode): ?Product
     {
         $sql = tinned_fish_product::SELECT;
@@ -41,6 +44,7 @@ class PdoTinnedFishProductRepo implements TinnedFishProductRepo
     /**
      * @return Product[]
      */
+    #[ReadsTable(tinned_fish_product::class)]
     public function getAll(): array
     {
         $sql = tinned_fish_product::SELECT;
@@ -56,6 +60,7 @@ class PdoTinnedFishProductRepo implements TinnedFishProductRepo
         return $products;
     }
 
+    #[WritesTable(tinned_fish_product::class)]
     public function save(Product $product): void
     {
         $sql = tinned_fish_product::INSERT;
@@ -97,6 +102,7 @@ class PdoTinnedFishProductRepo implements TinnedFishProductRepo
         $this->pdo_simple->execute($sql, $params);
     }
 
+    #[WritesTable(tinned_fish_product::class)]
     public function updateValidationStatus(string $barcode, ValidationStatus $validationStatus): void
     {
         $sql = "UPDATE tinned_fish_product 

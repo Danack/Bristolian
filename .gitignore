@@ -16,6 +16,7 @@ trc/
 *.DS_store
 .phpunit.result.cache
 this_is_local.txt
+app/public/ikh/
 app/public/js/app.bundle.js
 app/public/js/app.bundle.map
 app/public/js/app.bundle.map.gz
@@ -59,8 +60,8 @@ api_routes.tsx
 /app/public/js/stats.json
 /app/public/js/report.html
 /app/public/js/app.bundle.js.map.gz
-/docs/api-specification-for-tinfish.md
-/docs/refactoring/refactoring_controllers_removing_union_returns_without_ceremony.md
+/notes/api-specification-for-tinfish.md
+/notes/refactoring/refactoring_controllers_removing_union_returns_without_ceremony.md
 /easyocr_has_run.txt
 /chat_layout_big_scrreen.png
 /chat_ooh_replying_that's_new.png

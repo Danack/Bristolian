@@ -4,6 +4,8 @@ namespace Bristolian\Repo\RoomVideoTagRepo;
 
 use Bristolian\Database\room_video_tag;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoRoomVideoTagRepo implements RoomVideoTagRepo
 {
@@ -14,6 +16,7 @@ class PdoRoomVideoTagRepo implements RoomVideoTagRepo
     /**
      * @return string[]
      */
+    #[ReadsTable(room_video_tag::class)]
     public function getTagIdsForRoomVideo(string $room_video_id): array
     {
         $sql = room_video_tag::SELECT . " where room_video_id = :room_video_id";
@@ -25,6 +28,7 @@ class PdoRoomVideoTagRepo implements RoomVideoTagRepo
     /**
      * @param array<string> $tag_ids
      */
+    #[WritesTable(room_video_tag::class)]
     public function setTagsForRoomVideo(string $room_video_id, array $tag_ids): void
     {
         $this->pdoSimple->execute(

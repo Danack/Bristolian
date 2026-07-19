@@ -5,6 +5,7 @@ namespace Bristolian\Repo\EmailIncoming;
 use Bristolian\Database\email_incoming;
 use Bristolian\Model\Types\IncomingEmailParam;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Attribute\WritesTable;
 
 class PdoEmailIncoming implements EmailIncoming
 {
@@ -12,6 +13,7 @@ class PdoEmailIncoming implements EmailIncoming
     {
     }
 
+    #[WritesTable(email_incoming::class)]
     public function saveEmail(IncomingEmailParam $email): void
     {
         $sql = email_incoming::INSERT;

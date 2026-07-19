@@ -7,6 +7,8 @@ use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\Video;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoVideoRepo implements VideoRepo
 {
@@ -14,6 +16,7 @@ class PdoVideoRepo implements VideoRepo
     {
     }
 
+    #[WritesTable(videoTable::class)]
     public function create(string $user_id, string $youtube_video_id): string
     {
         $uuid = Uuid::uuid7();
@@ -26,6 +29,7 @@ class PdoVideoRepo implements VideoRepo
         return $id;
     }
 
+    #[ReadsTable(videoTable::class)]
     public function getById(string $video_id): Video
     {
         $sql = videoTable::SELECT . " where id = :id";

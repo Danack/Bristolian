@@ -6,7 +6,7 @@ This document describes how tags are **displayed**, **selected**, and **edited**
 **Shared tag “pill” styles:** `app/public/scss/standard_ui_objects.scss` (classes listed below)  
 **Panel-specific layout:** `app/public/scss/meme_upload_panel.scss` (search bar, upload tag panel, bulk panel, meme edit layout)
 
-Related product context for memes: `docs/features/memes.md`.
+Related product context for memes: `notes/features/memes.md`.
 
 ---
 
@@ -189,4 +189,4 @@ Body for all four: `{ "tag_ids": string[] }`.
 6. Provide **tag suggestions** endpoint(s): global + optional “for these ids” for smarter lists.
 7. After mutations, **refresh** the tag list from the server response when the API returns the full list (memes do this for add/delete); edit currently patches local state after PUT.
 
-When instructing an agent, you can say: **read `docs/features/tag_display_and_editing_patterns.md` and mirror the meme tag UX and classes unless the product spec differs.**
+When instructing an agent, you can say: **read `notes/features/tag_display_and_editing_patterns.md` and mirror the meme tag UX and classes unless the product spec differs.**

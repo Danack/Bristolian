@@ -5,6 +5,9 @@ declare(strict_types = 1);
 namespace Bristolian\Repo\RoomFileTagRepo;
 
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\room_file_tag;
 
 class PdoRoomFileTagRepo implements RoomFileTagRepo
 {
@@ -15,6 +18,7 @@ class PdoRoomFileTagRepo implements RoomFileTagRepo
     /**
      * @return string[]
      */
+    #[ReadsTable(room_file_tag::class)]
     public function getTagIdsForRoomFile(string $room_id, string $stored_file_id): array
     {
         $sql = "SELECT tag_id FROM room_file_tag WHERE room_id = :room_id AND stored_file_id = :stored_file_id";
@@ -28,6 +32,7 @@ class PdoRoomFileTagRepo implements RoomFileTagRepo
     /**
      * @param array<string> $tag_ids
      */
+    #[WritesTable(room_file_tag::class)]
     public function setTagsForRoomFile(string $room_id, string $stored_file_id, array $tag_ids): void
     {
         $this->pdoSimple->execute(

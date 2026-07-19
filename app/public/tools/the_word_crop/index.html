@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The word crop tool</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f4f4f5;
+            color: #18181b;
+            line-height: 1.5;
+        }
+
+        .page {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 1.25rem 2rem;
+        }
+
+        h1 {
+            margin: 0 0 0.25rem;
+            font-size: 1.5rem;
+        }
+
+        .intro {
+            margin: 0 0 1rem;
+            color: #52525b;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            background: #fff;
+            border: 1px solid #d4d4d8;
+            border-radius: 8px;
+        }
+
+        .toolbar label.file-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 0.75rem;
+            background: #e4e4e7;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .toolbar label.file-label:hover {
+            background: #d4d4d8;
+        }
+
+        .toolbar input[type="file"] {
+            display: none;
+        }
+
+        .toolbar button {
+            padding: 0.45rem 0.75rem;
+            border: 1px solid #a1a1aa;
+            border-radius: 6px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .toolbar button:hover:not(:disabled) {
+            background: #f4f4f5;
+        }
+
+        .toolbar button:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .toolbar button.primary {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: #fff;
+        }
+
+        .toolbar button.primary:hover:not(:disabled) {
+            background: #1d4ed8;
+        }
+
+        .toolbar .hint {
+            color: #71717a;
+            font-size: 0.9rem;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .canvas-panel {
+            background: #fff;
+            border: 1px solid #d4d4d8;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .canvas-container {
+            position: relative;
+            min-height: 320px;
+            background: repeating-conic-gradient(#e4e4e7 0% 25%, #fafafa 0% 50%) 50% / 20px 20px;
+        }
+
+        .canvas-container.drag-over {
+            outline: 3px dashed #2563eb;
+            outline-offset: -3px;
+        }
+
+        .canvas-container.empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #71717a;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .canvas-container canvas {
+            display: block;
+            max-width: 100%;
+            cursor: crosshair;
+        }
+
+        .side-panel {
+            background: #fff;
+            border: 1px solid #d4d4d8;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+        }
+
+        .side-panel h2 {
+            margin: 0 0 0.75rem;
+            font-size: 1rem;
+        }
+
+        .image-info {
+            margin: 0 0 0.75rem;
+            font-size: 0.85rem;
+            color: #52525b;
+            word-break: break-all;
+        }
+
+        .box-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .box-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding: 0.45rem 0;
+            border-bottom: 1px solid #e4e4e7;
+            font-size: 0.9rem;
+        }
+
+        .box-list li:last-child {
+            border-bottom: none;
+        }
+
+        .box-list .box-label {
+            font-family: ui-monospace, monospace;
+            font-size: 0.82rem;
+        }
+
+        .box-list button.delete-box {
+            flex-shrink: 0;
+            padding: 0.2rem 0.45rem;
+            font-size: 0.8rem;
+            border: 1px solid #fca5a5;
+            background: #fef2f2;
+            color: #b91c1c;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .box-list button.delete-box:hover {
+            background: #fee2e2;
+        }
+
+        .empty-list {
+            color: #71717a;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <h1>The word crop tool</h1>
+        <p class="intro">
+            Drop an image, draw boxes around each instance of the word &ldquo;the&rdquo;,
+            then download a shell script to crop them with ImageMagick.
+        </p>
+
+        <div class="toolbar">
+            <label class="file-label">
+                Choose image
+                <input type="file" id="file-input" accept="image/*">
+            </label>
+            <span class="hint">or drag and drop onto the canvas</span>
+            <button type="button" id="undo-button" disabled>Undo</button>
+            <button type="button" id="clear-button" disabled>Clear all</button>
+            <button type="button" id="download-image-button" disabled>Download source image</button>
+            <button type="button" id="download-script-button" class="primary" disabled>Download script</button>
+        </div>
+
+        <div class="workspace">
+            <div class="canvas-panel">
+                <div class="canvas-container empty" id="canvas-container">
+                    <p>Drop an image here or use &ldquo;Choose image&rdquo; above.</p>
+                    <canvas id="canvas" hidden></canvas>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <h2>Boxes</h2>
+                <p class="image-info" id="image-info">No image loaded.</p>
+                <ul class="box-list" id="box-list">
+                    <li class="empty-list">No boxes yet.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="the_word_crop.js"></script>
+</body>
+</html>

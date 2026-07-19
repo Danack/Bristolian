@@ -7,6 +7,8 @@ use Bristolian\Model\Generated\UserOwnership;
 use Bristolian\Database\user;
 use Bristolian\Database\user_ownership;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoUserRepo implements UserRepo
 {
@@ -15,6 +17,7 @@ class PdoUserRepo implements UserRepo
     }
 
 
+    #[ReadsTable(user_ownership::class)]
     public function getRoomUserForRoom(string $room_id): UserOwnership
     {
         $sql = user_ownership::SELECT;
@@ -28,6 +31,7 @@ class PdoUserRepo implements UserRepo
         return $this->pdo_simple->fetchOneAsObject($sql, $params, UserOwnership::class);
     }
 
+    #[ReadsTable(user_ownership::class)]
     public function getSystemUser(): UserOwnership
     {
         $sql = user_ownership::SELECT;
@@ -36,6 +40,9 @@ class PdoUserRepo implements UserRepo
         return $this->pdo_simple->fetchOneAsObject($sql, [], UserOwnership::class);
     }
 
+    #[ReadsTable(user_ownership::class)]
+    #[WritesTable(user::class)]
+    #[WritesTable(user_ownership::class)]
     public function ensureSystemUserExists(): UserOwnership
     {
         $sql = user_ownership::SELECT;
@@ -62,6 +69,9 @@ class PdoUserRepo implements UserRepo
         return $this->pdo_simple->fetchOneAsObject($sql, [], UserOwnership::class);
     }
 
+    #[ReadsTable(user_ownership::class)]
+    #[WritesTable(user::class)]
+    #[WritesTable(user_ownership::class)]
     public function ensureRoomUserOwnershipExistsForRoom(string $room_id): UserOwnership
     {
         $sql = user_ownership::SELECT;

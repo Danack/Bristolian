@@ -707,51 +707,7 @@ class Rooms
   <h1>:html_room_name</h1>
   <p>:html_room_description</p>
 
-  <div class="roompage_tabs">
-    <input type="radio" id="room_tab_chat" name="room_tab" class="room_tab_radio" checked>
-    <input type="radio" id="room_tab_links" name="room_tab" class="room_tab_radio">
-    <input type="radio" id="room_tab_files" name="room_tab" class="room_tab_radio">
-    <input type="radio" id="room_tab_annotations" name="room_tab" class="room_tab_radio">
-    <input type="radio" id="room_tab_video" name="room_tab" class="room_tab_radio">
-    <input type="radio" id="room_tab_management" name="room_tab" class="room_tab_radio">
-
-    <div class="room_tab_strip">
-      <label for="room_tab_chat" class="room_tab_label">Chat</label>
-      <label for="room_tab_links" class="room_tab_label">Links</label>
-      <label for="room_tab_files" class="room_tab_label">Files</label>
-      <label for="room_tab_annotations" class="room_tab_label">Annotations</label>
-      <label for="room_tab_video" class="room_tab_label">Videos</label>
-      <label for="room_tab_management" class="room_tab_label">Room Management</label>
-    </div>
-
-    <!-- Tab panels -->
-    <div class="room_tabs_panels">
-      <div class="room_tab_panel room_tab_panel_chat">
-        <div class="chat_panel" data-widgety_json="$widget_data"></div>
-      </div>
-
-      <div class="room_tab_panel room_tab_panel_links">
-        <div class='room_links_panel' data-widgety_json='$widget_data'></div>
-      </div>
-
-      <div class="room_tab_panel room_tab_panel_files">
-        <div class='room_files_panel' data-widgety_json='$widget_data'></div>
-        <div class='room_file_upload_panel' data-widgety_json='$widget_data'></div>
-      </div>
-
-      <div class="room_tab_panel room_tab_panel_annotations">
-        <div class='room_annotations_panel' data-widgety_json='$widget_data'></div>
-      </div>
-
-      <div class="room_tab_panel room_tab_panel_video">
-        <div class='room_videos_panel' data-widgety_json='$widget_data'></div>
-      </div>
-
-      <div class="room_tab_panel room_tab_panel_management">
-        <div class='room_management_panel' data-widgety_json='$widget_data'></div>
-      </div>
-    </div>
-  </div>
+  <div class="room_tabs_panel" data-widgety_json="$widget_data"></div>
 
   <div class="roompage_bottom">
     <div class="chat_bottom_panel" data-widgety_json="$widget_data"></div>

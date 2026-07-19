@@ -1,0 +1,424 @@
+{
+  "$schema_comment": "Example shape for a future project explorer. Not authoritative or complete.",
+  "version": "0.1-example",
+  "generated_from": "Code review of FOI + WhatDoTheyKnow areas, 2026-06-04",
+  "bounded_contexts": [
+    {
+      "id": "interesting-foi-requests",
+      "name": "Interesting FOI requests (curated bookmarks)",
+      "summary": "Simple server-rendered list of manually added FOI links (text, URL, description). No WDT integration.",
+      "user_visible_entry_points": [
+        {
+          "kind": "web_page",
+          "url": "/foi_requests",
+          "description": "List all curated requests"
+        },
+        {
+          "kind": "web_page",
+          "url": "/foi_requests/edit",
+          "description": "Form to add a request (GET shows form, POST creates)"
+        },
+        {
+          "kind": "navigation_link",
+          "source_file": "src/Bristolian/AppController/Pages.php",
+          "note": "Homepage tools list links to /foi_requests"
+        }
+      ],
+      "data_sources": [
+        {
+          "id": "mysql-foi_requests",
+          "kind": "mysql_table",
+          "name": "foi_requests",
+          "migration": "db/migrations/3_tags_foi.php",
+          "operations": {
+            "read": ["SELECT all", "SELECT by foi_request_id"],
+            "write": ["INSERT"]
+          },
+          "accessed_via": ["Bristolian\\Repo\\FoiRequestRepo\\PdoFoiRequestRepo"]
+        }
+      ],
+      "controllers": [
+        {
+          "kind": "app",
+          "class": "Bristolian\\AppController\\FoiRequests",
+          "file": "src/Bristolian/AppController/FoiRequests.php",
+          "routes": [
+            {
+              "method": "GET",
+              "path": "/foi_requests",
+              "handler": "view",
+              "registrar": "app/src/app_routes.php"
+            },
+            {
+              "method": "GET",
+              "path": "/foi_requests/edit",
+              "handler": "edit",
+              "registrar": "app/src/app_routes.php"
+            },
+            {
+              "method": "POST",
+              "path": "/foi_requests/edit",
+              "handler": "process_add",
+              "registrar": "app/src/app_routes.php",
+              "response": "RedirectResponse to /foi_requests/edit"
+            }
+          ],
+          "dependencies_injected": [
+            "Bristolian\\Repo\\FoiRequestRepo\\FoiRequestRepo",
+            "VarMap\\VarMap (process_add only)"
+          ]
+        }
+      ],
+      "data_types": [
+        {
+          "category": "parameter",
+          "class": "Bristolian\\Parameters\\FoiRequestParams",
+          "file": "src/Bristolian/Parameters/FoiRequestParams.php",
+          "implements": ["DataType\\DataType", "Bristolian\\StaticFactory"],
+          "factory_traits": ["CreateFromRequest", "CreateFromVarMap"],
+          "fields": [
+            { "name": "text", "input_key": "text", "property_type": "BasicString" },
+            { "name": "url", "input_key": "url", "property_type": "Url" },
+            { "name": "description", "input_key": "description", "property_type": "BasicString" }
+          ],
+          "used_between": [
+            "HTTP form POST (VarMap) → FoiRequests::process_add",
+            "FoiRequestRepo::createFoiRequest"
+          ]
+        },
+        {
+          "category": "domain_model",
+          "class": "Bristolian\\Model\\Types\\FoiRequest",
+          "file": "src/Bristolian/Model/Types/FoiRequest.php",
+          "note": "Returned from repo; not a DataType parameter class",
+          "fields": ["foi_request_id", "text", "url", "description", "created_at"]
+        }
+      ],
+      "repositories": [
+        {
+          "interface": "Bristolian\\Repo\\FoiRequestRepo\\FoiRequestRepo",
+          "file": "src/Bristolian/Repo/FoiRequestRepo/FoiRequestRepo.php",
+          "implementations": [
+            {
+              "class": "Bristolian\\Repo\\FoiRequestRepo\\PdoFoiRequestRepo",
+              "file": "src/Bristolian/Repo/FoiRequestRepo/PdoFoiRequestRepo.php",
+              "di_binding": "app/src/app_injection_params.php → PdoFoiRequestRepo"
+            },
+            {
+              "class": "Bristolian\\Repo\\FoiRequestRepo\\FakeFoiRequestRepo",
+              "file": "src/Bristolian/Repo/FoiRequestRepo/FakeFoiRequestRepo.php",
+              "di_binding": "tests (BaseTestCase)"
+            }
+          ],
+          "api_methods": [
+            {
+              "name": "getAllFoiRequests",
+              "returns": "FoiRequest[]",
+              "on_interface": true
+            },
+            {
+              "name": "createFoiRequest",
+              "parameters": ["FoiRequestParams"],
+              "returns": "FoiRequest",
+              "on_interface": true
+            },
+            {
+              "name": "getById",
+              "parameters": ["string $id"],
+              "returns": "FoiRequest",
+              "on_interface": false,
+              "note": "Exists on PdoFoiRequestRepo only; not used by FoiRequests controller"
+            }
+          ]
+        }
+      ],
+      "not_in_scope_yet": {
+        "frontend_tsx": "None — HTML emitted from PHP controller",
+        "api_routes": "None in api/src/api_routes.php",
+        "cli_commands": "None"
+      }
+    },
+    {
+      "id": "whatdotheyknow-bristol-feed",
+      "name": "WhatDoTheyKnow Bristol feed sync",
+      "summary": "CLI polls WDT JSON feed for requests to Bristol City Council, deduplicates events in MySQL, posts new activity to the 'FOI advice' chat room.",
+      "user_visible_entry_points": [
+        {
+          "kind": "cli_command",
+          "name": "service:whatdotheyknow_requested:once",
+          "handler": "Bristolian\\CliController\\WhatDoTheyKnowFeedCliController::syncRequestedFromBristolOnce",
+          "registrar": "cli/cli_commands.php (addWhatDoTheyKnowCommands)"
+        },
+        {
+          "kind": "cli_command",
+          "name": "service:whatdotheyknow_requested:continual",
+          "handler": "Bristolian\\CliController\\WhatDoTheyKnowFeedCliController::syncRequestedFromBristolContinual",
+          "note": "Polls every 300s via continuallyExecuteCallable; intended for supervisord"
+        }
+      ],
+      "data_sources": [
+        {
+          "id": "external-wdt-feed",
+          "kind": "http_json",
+          "url": "https://www.whatdotheyknow.com/feed/search/requested_from:bristol_city_council.json",
+          "operations": { "read": ["GET feed body"] },
+          "accessed_via": [
+            "Bristolian\\Service\\WhatDoTheyKnowFeedFetcher\\StandardWhatDoTheyKnowFeedFetcher"
+          ],
+          "fixture_for_tests": "test/fixtures/whatdotheyknow/requested_from_bristol_city_council.json"
+        },
+        {
+          "id": "mysql-whatdotheyknow_request_event",
+          "kind": "mysql_table",
+          "name": "whatdotheyknow_request_event",
+          "migration": "db/migrations/41_whatdotheyknow_request_event copy.php",
+          "operations": {
+            "read": [],
+            "write": ["INSERT (dedupe on unique wdt_event_id)"]
+          },
+          "accessed_via": [
+            "Bristolian\\Repo\\WhatDoTheyKnowRequestEventRepo\\PdoWhatDoTheyKnowRequestEventRepo"
+          ]
+        },
+        {
+          "id": "mysql-room",
+          "kind": "mysql_table",
+          "name": "room",
+          "operations": {
+            "read": ["lookup by exact name 'FOI advice'"]
+          },
+          "accessed_via": ["Bristolian\\Repo\\RoomRepo\\PdoRoomRepo::getRoomByName"]
+        },
+        {
+          "id": "mysql-chat_messages",
+          "kind": "mysql_table",
+          "name": "chat_message (via ChatMessageRepo)",
+          "operations": {
+            "write": ["INSERT room message when new WDT event stored"]
+          },
+          "accessed_via": [
+            "Bristolian\\Service\\RoomMessageService\\StandardRoomMessageService::sendRoomMessage",
+            "Bristolian\\Repo\\ChatMessageRepo\\PdoChatMessageRepo::storeChatMessageForUser"
+          ],
+          "note": "Uses room's dedicated room user, not system user"
+        },
+        {
+          "id": "mysql-whatdotheyknow_foi_request",
+          "kind": "mysql_table",
+          "name": "whatdotheyknow_foi_request",
+          "migration": "db/migrations/42_whatdotheyknow_fois.php",
+          "status": "schema_only",
+          "note": "Tables whatdotheyknow_foi_request and whatdotheyknow_room_foi_request exist in migration; no repo or controller wired yet"
+        },
+        {
+          "id": "mysql-whatdotheyknow_room_foi_request",
+          "kind": "mysql_table",
+          "name": "whatdotheyknow_room_foi_request",
+          "migration": "db/migrations/42_whatdotheyknow_fois.php",
+          "status": "schema_only"
+        }
+      ],
+      "controllers": [
+        {
+          "kind": "cli",
+          "class": "Bristolian\\CliController\\WhatDoTheyKnowFeedCliController",
+          "file": "src/Bristolian/CliController/WhatDoTheyKnowFeedCliController.php",
+          "commands": [
+            {
+              "name": "service:whatdotheyknow_requested:once",
+              "method": "syncRequestedFromBristolOnce"
+            },
+            {
+              "name": "service:whatdotheyknow_requested:continual",
+              "method": "syncRequestedFromBristolContinual"
+            }
+          ],
+          "flow_summary": "fetch JSON → decode list → parse each item to RequestEvent → insertNewRequestEvent → on success build ChatMessageParam → sendRoomMessage",
+          "constants": {
+            "FOI_ADVICE_ROOM_NAME": "FOI advice",
+            "SECONDS_BETWEEN_POLL_RUNS": 300
+          },
+          "dependencies_injected": [
+            "WhatDoTheyKnowFeedFetcher",
+            "WhatDoTheyKnowRequestEventRepo",
+            "RoomRepo",
+            "RoomMessageService",
+            "CliOutput"
+          ],
+          "global_functions_used": [
+            "parseWhatDoTheyKnowRequestEventFromArray",
+            "whatDoTheyKnowWdtEventOccurredAtUtc",
+            "whatDoTheyKnowRequestUrlFromUrlTitle",
+            "buildNewEventRoomMessageText",
+            "json_decode_safe",
+            "json_encode_safe"
+          ],
+          "autoload": "src/functions_whatdotheyknow.php (composer autoload files)"
+        }
+      ],
+      "data_types": [
+        {
+          "category": "parameter",
+          "class": "Bristolian\\Parameters\\ChatMessageParam",
+          "file": "src/Bristolian/Parameters/ChatMessageParam.php",
+          "fields": [
+            { "name": "text", "input_key": "text", "property_type": "BasicString" },
+            { "name": "room_id", "input_key": "room_id", "property_type": "BasicString" },
+            {
+              "name": "message_reply_id",
+              "input_key": "message_reply_id",
+              "property_type": "ChatMessageReplyId",
+              "optional": true
+            }
+          ],
+          "used_between": [
+            "WhatDoTheyKnowFeedCliController (CreateFromArray) → RoomMessageService::sendRoomMessage"
+          ]
+        },
+        {
+          "category": "feed_dto",
+          "class": "Bristolian\\WhatDoTheyKnow\\RequestEvent",
+          "file": "src/Bristolian/WhatDoTheyKnow/RequestEvent.php",
+          "note": "Parsed from feed JSON; not a DataType parameter"
+        },
+        {
+          "category": "feed_dto",
+          "class": "Bristolian\\WhatDoTheyKnow\\InfoRequest",
+          "file": "src/Bristolian/WhatDoTheyKnow/InfoRequest.php"
+        },
+        {
+          "category": "feed_dto",
+          "class": "Bristolian\\WhatDoTheyKnow\\PublicBody",
+          "file": "src/Bristolian/WhatDoTheyKnow/PublicBody.php"
+        },
+        {
+          "category": "feed_dto",
+          "class": "Bristolian\\WhatDoTheyKnow\\PublicBodyRequestCounts",
+          "file": "src/Bristolian/WhatDoTheyKnow/PublicBodyRequestCounts.php"
+        },
+        {
+          "category": "feed_dto",
+          "class": "Bristolian\\WhatDoTheyKnow\\PublicBodyTag",
+          "file": "src/Bristolian/WhatDoTheyKnow/PublicBodyTag.php"
+        },
+        {
+          "category": "feed_dto",
+          "class": "Bristolian\\WhatDoTheyKnow\\RequestEventUser",
+          "file": "src/Bristolian/WhatDoTheyKnow/RequestEventUser.php"
+        }
+      ],
+      "parsing_layer": {
+        "file": "src/functions_whatdotheyknow.php",
+        "entry_functions": [
+          "parseWhatDoTheyKnowRequestEventsJson",
+          "parseWhatDoTheyKnowRequestEventFromArray",
+          "whatdotheyknowRequestEventFromArray"
+        ],
+        "note": "Validates feed shape; throws InvalidArgumentException on malformed JSON objects"
+      },
+      "services": [
+        {
+          "interface": "Bristolian\\Service\\WhatDoTheyKnowFeedFetcher\\WhatDoTheyKnowFeedFetcher",
+          "method": "fetchRequestedFromBristolCityCouncilJson",
+          "returns": "string (raw JSON)",
+          "implementations": [
+            {
+              "class": "StandardWhatDoTheyKnowFeedFetcher",
+              "di": "cli/cli_injection_params.php"
+            },
+            {
+              "class": "FakeWhatDoTheyKnowFeedFetcherReturningJson",
+              "use": "unit tests"
+            }
+          ]
+        },
+        {
+          "interface": "Bristolian\\Service\\RoomMessageService\\RoomMessageService",
+          "method_used": "sendRoomMessage",
+          "implementation": "StandardRoomMessageService",
+          "downstream_repos": ["UserRepo::getRoomUserForRoom", "ChatMessageRepo::storeChatMessageForUser"]
+        }
+      ],
+      "repositories": [
+        {
+          "interface": "Bristolian\\Repo\\WhatDoTheyKnowRequestEventRepo\\WhatDoTheyKnowRequestEventRepo",
+          "file": "src/Bristolian/Repo/WhatDoTheyKnowRequestEventRepo/WhatDoTheyKnowRequestEventRepo.php",
+          "implementations": [
+            {
+              "class": "PdoWhatDoTheyKnowRequestEventRepo",
+              "di_binding": "cli/cli_injection_params.php"
+            },
+            {
+              "class": "FakeWhatDoTheyKnowRequestEventRepo",
+              "use": "unit tests"
+            }
+          ],
+          "api_methods": [
+            {
+              "name": "insertNewRequestEvent",
+              "returns": "bool",
+              "semantics": "true if inserted; false if wdt_event_id already exists (unique violation 23000)",
+              "parameters": [
+                "wdtEventId",
+                "wdtEventPayloadJson",
+                "wdtInfoRequestId",
+                "wdtInfoRequestUrlTitle",
+                "wdtUserId",
+                "wdtUserUrlName",
+                "wdtUserDisplayName",
+                "wdtPublicBodyId",
+                "wdtEventOccurredAtUtc"
+              ]
+            }
+          ]
+        },
+        {
+          "interface": "Bristolian\\Repo\\RoomRepo\\RoomRepo",
+          "methods_used_by_this_context": [
+            {
+              "name": "getRoomByName",
+              "returns": "Room[]",
+              "note": "Controller uses first match for 'FOI advice'"
+            }
+          ]
+        },
+        {
+          "interface": "Bristolian\\Repo\\RoomFoiRequestRepo\\RoomFoiRequestRepo",
+          "file": "src/Bristolian/Repo/RoomFoiRequestRepo/RoomFoiRequestRepo.php",
+          "status": "stub",
+          "api_methods": [
+            {
+              "name": "addFoiRequestToRoom",
+              "on_interface": true,
+              "note": "No implementation or callers found"
+            }
+          ]
+        }
+      ],
+      "not_in_scope_yet": {
+        "web_routes": "No app or API routes for WDT data",
+        "frontend_tsx": "Room chat UI elsewhere; no dedicated WDT panel"
+      }
+    }
+  ],
+  "cross_cutting": {
+    "cache_query_tags": "src/Bristolian/Cache/QueryTagMapping.php maps foi_requests and whatdotheyknow_request_event INSERT/SELECT",
+    "tests": [
+      "test/BristolianTest/AppController/FoiRequestsTest.php",
+      "test/BristolianTest/CliController/WhatDoTheyKnowFeedCliControllerTest.php",
+      "test/Functions/WhatDoTheyKnowFunctionsTest.php",
+      "test/BristolianTest/Repo/FoiRequestRepo/",
+      "test/BristolianTest/Repo/WhatDoTheyKnowRequestEventRepo/",
+      "test/BristolianTest/Service/WhatDoTheyKnowFeedFetcher/"
+    ]
+  },
+  "suggested_explorer_keys": {
+    "comment": "Optional normalized keys if this JSON becomes machine-readable later",
+    "bounded_context": "id",
+    "data_source": "id",
+    "controller": "class + kind",
+    "data_type": "class + category",
+    "repository": "interface",
+    "file_link": "repo-relative path string"
+  }
+}

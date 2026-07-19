@@ -13,7 +13,7 @@ You can either:
 
 ### Step 1: Read Testing Guidelines
 
-Read `docs/developing/testing_guidelines.md` before doing any of the steps below. It defines PHPUnit coverage annotations, data providers, the no-mocks rule, use of test fixtures, and other patterns you must follow when writing tests.
+Read `notes/developing/testing_guidelines.md` before doing any of the steps below. It defines PHPUnit coverage annotations, data providers, the no-mocks rule, use of test fixtures, and other patterns you must follow when writing tests.
 
 ### Step 2: Generate Coverage Report
 

@@ -4,7 +4,7 @@ Public tool at **`/tools/committee_seats`**. It helps calculate how committee se
 
 The tool is designed to walk users through the method step by step, not only to output totals. Overall party totals are calculated on the main wizard. **Splitting those totals across named committees** is available as an **advanced** branch from Next steps (not in the six-step trail).
 
-**For developers:** [`docs/committee_seats/agent-handoff-notes.md`](../committee_seats/agent-handoff-notes.md) — architecture, workbook structure, URL parameters, conventions. [`docs/committee_seats/improvement-suggestions.md`](../committee_seats/improvement-suggestions.md) — planned enhancements.
+**For developers:** [`notes/committee_seats/agent-handoff-notes.md`](../committee_seats/agent-handoff-notes.md) — architecture, workbook structure, URL parameters, conventions. [`notes/committee_seats/improvement-suggestions.md`](../committee_seats/improvement-suggestions.md) — planned enhancements.
 
 ## Process flow (six steps)
 
@@ -103,7 +103,7 @@ Data lives in [`app/public/tsx/committee_seats/example_councils.ts`](../../app/p
 
 **Vacancy** is a fixed row on the councillors-by-group step. Vacant seats count toward the council total but are always excluded from the proportional committee seat calculation (see `vacancy_allocation.ts`).
 
-Human-readable reference: keep example figures documented when adding councils (optional markdown under `docs/committee_seats/`).
+Human-readable reference: keep example figures documented when adding councils (optional markdown under `notes/committee_seats/`).
 
 Optional `seat_assignment_source_url` on each example points at the council document that records political balance and committee seat allocation; on the council totals step, a note with a “here” link appears below the political-committees guidance when that example is selected.
 
@@ -219,4 +219,4 @@ docker exec bristolian-js_builder-1 bash -c "npm run test:all -- --testPathPatte
 
 ### Reference data
 
-- [`docs/committee_seats/LGA guidance - Political Make Up of the Council Appendix B.pdf`](../committee_seats/LGA%20guidance%20-%20Political%20Make%20Up%20of%20the%20Council%20Appendix%20B.pdf) — LGA guidance
+- [`notes/committee_seats/LGA guidance - Political Make Up of the Council Appendix B.pdf`](../committee_seats/LGA%20guidance%20-%20Political%20Make%20Up%20of%20the%20Council%20Appendix%20B.pdf) — LGA guidance

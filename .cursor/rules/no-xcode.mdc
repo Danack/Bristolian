@@ -1,0 +1,17 @@
+---
+description: Never invoke Xcode or host Apple toolchains; compile in containers
+alwaysApply: true
+---
+
+# No Xcode on the host
+
+Xcode is not installed on this machine and must not be installed or suggested.
+
+Do not run, invoke, or rely on any of the following on the host:
+
+- `xcodebuild`, `xcrun`, `xcode-select`
+- `swift`, `swiftc`, or other Apple SDK compilers from a host path
+- Opening `.xcodeproj` / `.xcworkspace` or launching the Xcode app
+- Installing Xcode, Command Line Tools, or CocoaPods for host use
+
+If something needs compiling or a native toolchain, do it inside a Docker container (`docker exec` into the appropriate project container, or an image that already has the toolchain). Follow the project's container-based development rules — never fall back to Xcode on the Mac.

@@ -14,6 +14,8 @@ use Bristolian\Model\Types\RoomVideoWithTags;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoRoomVideoRepo implements RoomVideoRepo
 {
@@ -26,6 +28,8 @@ class PdoRoomVideoRepo implements RoomVideoRepo
      *
      * @return RoomVideo[]
      */
+    #[ReadsTable(room_video::class)]
+    #[ReadsTable(room_video_tag::class)]
     public function getVideosForRoom(string $room_id, RoomContentSearchParams $search): array
     {
         $where = ['room_id = :room_id'];
@@ -89,6 +93,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
      *
      * @return RoomVideoWithTags[]
      */
+    #[ReadsTable(room_tag::class)]
     public function getVideosForRoomWithTags(string $room_id, RoomContentSearchParams $search): array
     {
         $videos = $this->getVideosForRoom($room_id, $search);
@@ -180,6 +185,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
      *
      * @throws ContentNotFoundException
      */
+    #[ReadsTable(room_video::class)]
     public function getRoomVideo(string $room_video_id): RoomVideo
     {
         $sql = room_video::SELECT . " where id = :id";
@@ -211,6 +217,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
     /**
      * Add a full video (not a clip) to a room.
      */
+    #[WritesTable(room_video::class)]
     public function addVideo(
         string $room_id,
         string $video_id,
@@ -235,6 +242,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
     /**
      * Add a clip (time-bounded segment) of an existing room video to the room.
      */
+    #[WritesTable(room_video::class)]
     public function addClip(
         string $room_id,
         string $video_id,
@@ -261,6 +269,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
     /**
      * Update a room video's title and/or description. Null means leave unchanged.
      */
+    #[WritesTable(room_video::class)]
     public function updateTitleAndDescription(
         string $room_id,
         string $room_video_id,

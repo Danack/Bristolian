@@ -7,6 +7,11 @@ use Bristolian\Model\Generated\RoomFileObjectInfo;
 use Bristolian\Model\Types\RoomFileInRoom;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\room_file;
+use Bristolian\Database\room_file_object_info;
+use Bristolian\Database\room_file_tag;
 
 class PdoRoomFileRepo implements RoomFileRepo
 {
@@ -16,6 +21,7 @@ class PdoRoomFileRepo implements RoomFileRepo
     }
 
     // TODO - why are we passing IDs around and not objects?
+    #[WritesTable(room_file::class)]
     public function addFileToRoom(string $fileStorageId, string $room_id): void
     {
         $sql = <<< SQL
@@ -42,6 +48,9 @@ SQL;
      * @return RoomFileInRoom[]
      * @throws \ReflectionException
      */
+    #[ReadsTable(room_file::class)]
+    #[ReadsTable(room_file_object_info::class)]
+    #[ReadsTable(room_file_tag::class)]
     public function getFilesForRoom(string $room_id, RoomContentSearchParams $search): array
     {
         $where = ['rf.room_id = :room_id'];
@@ -116,6 +125,7 @@ SQL;
         );
     }
 
+    #[WritesTable(room_file::class)]
     public function updateRoomFileDetails(
         string $room_id,
         string $stored_file_id,
@@ -150,6 +160,8 @@ SQL;
         }
     }
 
+    #[ReadsTable(room_file_object_info::class)]
+    #[ReadsTable(room_file::class)]
     public function getFileDetails(string $room_id, string $file_id): RoomFileObjectInfo|null
     {
         $sql = <<< SQL
@@ -188,6 +200,8 @@ SQL;
      * @return RoomFileInRoom[]
      * @throws \ReflectionException
      */
+    #[ReadsTable(room_file_object_info::class)]
+    #[ReadsTable(room_file::class)]
     public function getFilesInRoomByOriginalFilename(string $room_id, string $original_filename): array
     {
         $sql = <<< SQL

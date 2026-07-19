@@ -8,6 +8,8 @@ use Bristolian\Model\Generated\RoomVideoTranscript;
 use Bristolian\Model\Types\RoomVideoTranscriptList;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoRoomVideoTranscriptRepo implements RoomVideoTranscriptRepo
 {
@@ -15,6 +17,7 @@ class PdoRoomVideoTranscriptRepo implements RoomVideoTranscriptRepo
     {
     }
 
+    #[ReadsTable(room_video_transcript::class)]
     public function getTranscriptsForRoomVideo(string $room_video_id): RoomVideoTranscriptList
     {
         $sql = room_video_transcript::SELECT . " where room_video_id = :room_video_id order by transcript_number asc";
@@ -26,6 +29,8 @@ class PdoRoomVideoTranscriptRepo implements RoomVideoTranscriptRepo
         return new RoomVideoTranscriptList($transcripts);
     }
 
+    #[WritesTable(room_video_transcript::class)]
+    #[ReadsTable(room_video_transcript::class)]
     public function addTranscript(
         string $room_video_id,
         ?string $language,
@@ -52,6 +57,7 @@ SQL;
         return $id;
     }
 
+    #[ReadsTable(room_video_transcript::class)]
     public function getTranscriptById(string $transcript_id): RoomVideoTranscript
     {
         $sql = room_video_transcript::SELECT . " where id = :id";

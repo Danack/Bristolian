@@ -7,6 +7,7 @@ namespace Bristolian\Repo\WhatDoTheyKnowRequestEventRepo;
 use Bristolian\Database\whatdotheyknow_request_event;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
+use Bristolian\Attribute\WritesTable;
 
 class PdoWhatDoTheyKnowRequestEventRepo implements WhatDoTheyKnowRequestEventRepo
 {
@@ -15,6 +16,7 @@ class PdoWhatDoTheyKnowRequestEventRepo implements WhatDoTheyKnowRequestEventRep
     ) {
     }
 
+    #[WritesTable(whatdotheyknow_request_event::class)]
     public function insertNewRequestEvent(
         int $wdtEventId,
         string $wdtEventPayloadJson,

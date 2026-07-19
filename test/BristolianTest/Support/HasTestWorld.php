@@ -11,7 +11,7 @@ use Bristolian\Session\FakeUserSession;
  *
  * Tests that use this trait can access shared test data through standardTestData(),
  * and configure session state via useLoggedInUser() / useAnonymousUser().
- * See docs/refactoring/default_test_scenarios_and_worlds.md.
+ * See notes/refactoring/default_test_scenarios_and_worlds.md.
  */
 trait HasTestWorld
 {

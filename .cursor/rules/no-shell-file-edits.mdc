@@ -1,0 +1,12 @@
+---
+description: Prefer Cursor file tools for edits; ask before bulk shell rewrites
+alwaysApply: true
+---
+
+# Prefer file tools for source edits
+
+When changing project source files, prefer Cursor file tools (`Write`, `StrReplace`, `EditNotebook`) so edits show up in the edited-files list and are easy to review.
+
+Do not create or run shell/PHP/Python scripts that write or rewrite source files with `file_put_contents`, `sed`, `awk`, `perl -i`, or similar — unless there are a huge number of files to change (about 100+). In that case, ask permission first before using a bulk script.
+
+Shell is fine for reading, git, tests, and builds without asking.

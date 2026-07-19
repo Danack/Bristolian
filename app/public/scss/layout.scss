@@ -128,10 +128,6 @@
   margin-right: calc(var(--page_padding_right) * -1);
 }
 
-.room_tab_radio {
-  display: none;
-}
-
 .room_tab_strip {
   display: flex;
   flex-direction: row;
@@ -146,6 +142,7 @@
   display: inline-block;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  font: inherit;
   font-weight: 600;
   border: 1px solid transparent;
   border-top-color: var(--room_tab_border_subtle_color);
@@ -153,6 +150,8 @@
   margin: -1px 0 0 -1px;
   background: #e8e8e8;
   color: #555;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .room_tab_strip .room_tab_label:first-child {
@@ -167,13 +166,8 @@
   background: #e0e0e0;
 }
 
-/* Selected tab: input is a preceding sibling of .room_tab_strip, so use ~ to get strip then the label */
-#room_tab_chat:checked ~ .room_tab_strip .room_tab_label[for="room_tab_chat"],
-#room_tab_links:checked ~ .room_tab_strip .room_tab_label[for="room_tab_links"],
-#room_tab_files:checked ~ .room_tab_strip .room_tab_label[for="room_tab_files"],
-#room_tab_annotations:checked ~ .room_tab_strip .room_tab_label[for="room_tab_annotations"],
-#room_tab_video:checked ~ .room_tab_strip .room_tab_label[for="room_tab_video"],
-#room_tab_management:checked ~ .room_tab_strip .room_tab_label[for="room_tab_management"] {
+/* Selected tab: driven by RoomTabsPanel component state via the `active` class. */
+.room_tab_strip .room_tab_label.active {
   position: relative;
   z-index: 1;
   background: #fff;
@@ -195,27 +189,7 @@
   display: none;
 }
 
-#room_tab_chat:checked ~ .room_tabs_panels .room_tab_panel_chat {
-  display: block;
-}
-
-#room_tab_links:checked ~ .room_tabs_panels .room_tab_panel_links {
-  display: block;
-}
-
-#room_tab_files:checked ~ .room_tabs_panels .room_tab_panel_files {
-  display: block;
-}
-
-#room_tab_annotations:checked ~ .room_tabs_panels .room_tab_panel_annotations {
-  display: block;
-}
-
-#room_tab_video:checked ~ .room_tabs_panels .room_tab_panel_video {
-  display: block;
-}
-
-#room_tab_management:checked ~ .room_tabs_panels .room_tab_panel_management {
+.room_tab_panel.active {
   display: block;
 }
 

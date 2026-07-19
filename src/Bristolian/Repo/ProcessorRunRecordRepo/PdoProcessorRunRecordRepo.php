@@ -6,6 +6,8 @@ use Bristolian\Database\processor_run_record;
 use Bristolian\Model\Generated\ProcessorRunRecord;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoProcessorRunRecordRepo implements ProcessorRunRecordRepo
 {
@@ -13,6 +15,7 @@ class PdoProcessorRunRecordRepo implements ProcessorRunRecordRepo
     {
     }
 
+    #[ReadsTable(processor_run_record::class)]
     public function getLastRunDateTime(ProcessType $process_type): \DateTimeInterface|null
     {
         $query = processor_run_record::SELECT;
@@ -38,6 +41,7 @@ class PdoProcessorRunRecordRepo implements ProcessorRunRecordRepo
         return $objectOrNull->start_time;
     }
 
+    #[WritesTable(processor_run_record::class)]
     public function startRun(ProcessType $process_type): string
     {
         $sql = processor_run_record::INSERT;
@@ -56,6 +60,7 @@ class PdoProcessorRunRecordRepo implements ProcessorRunRecordRepo
 
     private const DEBUG_INFO_MAX_BYTES = 1024;
 
+    #[WritesTable(processor_run_record::class)]
     public function setRunFinished(string $id, string $debug_info): void
     {
         $truncated = mb_strcut($debug_info, 0, self::DEBUG_INFO_MAX_BYTES, 'UTF-8');
@@ -84,6 +89,7 @@ SQL;
      * @param ProcessType|null $processType
      * @return \Bristolian\Model\Generated\ProcessorRunRecord[]
      */
+    #[ReadsTable(processor_run_record::class)]
     public function getRunRecords(ProcessType|null $processType): array
     {
         $params = [];

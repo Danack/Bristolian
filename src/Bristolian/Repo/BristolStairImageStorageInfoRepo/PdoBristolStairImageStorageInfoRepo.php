@@ -9,6 +9,8 @@ use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\Service\UuidGenerator\UuidGenerator;
 use Bristolian\UploadedFiles\UploadedFile;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInfoRepo
 {
@@ -18,6 +20,7 @@ class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInf
     ) {
     }
 
+    #[ReadsTable(stair_image_object_info::class)]
     public function getByNormalizedName(string $normalized_name): BristolStairImageFile|null
     {
         $sql = stair_image_object_info::SELECT;
@@ -30,6 +33,7 @@ class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInf
         );
     }
 
+    #[ReadsTable(stair_image_object_info::class)]
     public function getById(string $bristol_stairs_image_id): BristolStairImageFile|null
     {
         $sql = stair_image_object_info::SELECT;
@@ -42,6 +46,7 @@ class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInf
         );
     }
 
+    #[WritesTable(stair_image_object_info::class)]
     public function storeFileInfo(
         string $user_id,
         string $normalized_filename,
@@ -80,6 +85,7 @@ class PdoBristolStairImageStorageInfoRepo implements BristolStairImageStorageInf
         return $id;
     }
 
+    #[WritesTable(stair_image_object_info::class)]
     public function setUploaded(string $file_storage_id): void
     {
         $sql = <<< SQL

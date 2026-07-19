@@ -8,6 +8,8 @@ use Bristolian\Model\Generated\UserDisplayName;
 use Bristolian\Model\Generated\UserProfile;
 use Bristolian\Model\Types\UserProfileWithDisplayName;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoUserProfileRepo implements UserProfileRepo
 {
@@ -15,6 +17,8 @@ class PdoUserProfileRepo implements UserProfileRepo
     {
     }
 
+    #[ReadsTable(user_display_name::class)]
+    #[ReadsTable(user_profile::class)]
     public function getUserProfile(string $user_id): UserProfileWithDisplayName
     {
         // Get the latest display name
@@ -48,6 +52,7 @@ class PdoUserProfileRepo implements UserProfileRepo
         );
     }
 
+    #[ReadsTable(user_display_name::class)]
     public function getDisplayNameHistory(string $user_id): array
     {
         $sql = user_display_name::SELECT;
@@ -62,6 +67,9 @@ class PdoUserProfileRepo implements UserProfileRepo
         );
     }
 
+    #[WritesTable(user_display_name::class)]
+    #[WritesTable(user_profile::class)]
+    #[ReadsTable(user_display_name::class)]
     public function updateProfile(string $user_id, \Bristolian\Parameters\UserProfileUpdateParams $params): UserProfileWithDisplayName
     {
         // 1. Insert new display name version
@@ -107,6 +115,7 @@ SQL;
         return $this->getUserProfile($user_id);
     }
 
+    #[WritesTable(user_profile::class)]
     public function updateAvatarImage(string $user_id, string $avatar_image_id): void
     {
         // Upsert the avatar image ID

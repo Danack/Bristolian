@@ -10,6 +10,8 @@ use Bristolian\Model\Generated\RoomTag;
 use Bristolian\Parameters\TagParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoRoomTagRepo implements RoomTagRepo
 {
@@ -17,6 +19,8 @@ class PdoRoomTagRepo implements RoomTagRepo
     {
     }
 
+    #[WritesTable(room_tag::class)]
+    #[ReadsTable(room_tag::class)]
     public function createTag(string $room_id, TagParams $params): RoomTag
     {
         $existingTags = $this->getTagsForRoom($room_id);
@@ -42,6 +46,7 @@ class PdoRoomTagRepo implements RoomTagRepo
     /**
      * @return RoomTag[]
      */
+    #[ReadsTable(room_tag::class)]
     public function getTagsForRoom(string $room_id): array
     {
         return $this->pdo_simple->fetchAllAsObjectConstructor(

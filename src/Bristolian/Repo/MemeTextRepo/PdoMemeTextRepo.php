@@ -6,6 +6,9 @@ use Bristolian\Database\meme_text;
 use Bristolian\Model\Generated\MemeText;
 use Bristolian\Model\Generated\StoredMeme;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\stored_meme;
 
 class PdoMemeTextRepo implements MemeTextRepo
 {
@@ -21,6 +24,7 @@ class PdoMemeTextRepo implements MemeTextRepo
      * @param string $found_text
      * @return void
      */
+    #[WritesTable(meme_text::class)]
     public function saveMemeText(
         StoredMeme $storedMeme,
         string $found_text
@@ -41,6 +45,8 @@ class PdoMemeTextRepo implements MemeTextRepo
      *
      * @return StoredMeme|null
      */
+    #[ReadsTable(stored_meme::class)]
+    #[ReadsTable(meme_text::class)]
     public function getNextMemeToOCR(): StoredMeme|null
     {
         $sql = <<< SQL
@@ -81,6 +87,8 @@ SQL;
      * @param string $search_text
      * @return array<string> Array of meme IDs
      */
+    #[ReadsTable(stored_meme::class)]
+    #[ReadsTable(meme_text::class)]
     public function searchMemeIdsByText(
         string $user_id,
         string $search_text
@@ -114,6 +122,7 @@ SQL;
      * @param string $meme_id
      * @return MemeText|null
      */
+    #[ReadsTable(meme_text::class)]
     public function getMemeText(string $meme_id): MemeText|null
     {
         $sql = meme_text::SELECT . <<< SQL
@@ -142,6 +151,7 @@ SQL;
      * @param string $text
      * @return void
      */
+    #[WritesTable(meme_text::class)]
     public function updateMemeText(string $meme_id, string $text): void
     {
         // Check if text exists for this meme

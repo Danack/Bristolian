@@ -2,6 +2,8 @@
 
 namespace Bristolian\Repo\RoomFileObjectInfoRepo;
 
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\room_file_object_info;
 use Bristolian\UploadedFiles\UploadedFile;
 
 /**
@@ -18,6 +20,7 @@ interface RoomFileObjectInfoRepo
      * @param UploadedFile $uploadedFile
      * @return string The 'file_storage_id'
      */
+    #[WritesTable(room_file_object_info::class)]
     public function createRoomFileObjectInfo(
         string $user_id,
         string $normalized_filename,
@@ -29,5 +32,6 @@ interface RoomFileObjectInfoRepo
      * @param string $file_storage_id
      * @return void
      */
+    #[WritesTable(room_file_object_info::class)]
     public function setRoomFileObjectUploaded(string $file_storage_id): void;
 }

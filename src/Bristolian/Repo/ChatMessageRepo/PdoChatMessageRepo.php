@@ -8,6 +8,8 @@ use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\Model\Generated\UserOwnership;
 use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoChatMessageRepo implements ChatMessageRepo
 {
@@ -15,6 +17,7 @@ class PdoChatMessageRepo implements ChatMessageRepo
     {
     }
 
+    #[ReadsTable(user_ownership::class)]
     public function storeChatMessageForSystem(ChatMessageParam $chatMessage): UserChatMessage
     {
         $sql = user_ownership::SELECT . " where type = 'SYSTEM'";
@@ -24,6 +27,8 @@ class PdoChatMessageRepo implements ChatMessageRepo
         return $this->storeChatMessageForUser($ownership->user_id, $chatMessage);
     }
 
+    #[WritesTable(chat_message::class)]
+    #[ReadsTable(chat_message::class)]
     public function storeChatMessageForUser(string $user_id, ChatMessageParam $chatMessage): UserChatMessage
     {
         $sql_insert = chat_message::INSERT;
@@ -47,6 +52,7 @@ class PdoChatMessageRepo implements ChatMessageRepo
         );
     }
 
+    #[ReadsTable(chat_message::class)]
     public function getMessagesForRoom(string $room_id): array
     {
         $sql = chat_message::SELECT;

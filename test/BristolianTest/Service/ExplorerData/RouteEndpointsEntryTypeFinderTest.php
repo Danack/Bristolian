@@ -1,0 +1,117 @@
+<?php
+
+declare(strict_types=1);
+
+namespace BristolianTest\Service\ExplorerData;
+
+use Bristolian\Service\ExplorerData\ApiEndpointsEntryTypeFinder;
+use Bristolian\Service\ExplorerData\HttpEndpointsEntryTypeFinder;
+use Bristolian\Service\ExplorerData\RouteEndpointEntryBuilder;
+use BristolianTest\BaseTestCase;
+use SlimDispatcher\Response\RedirectResponse;
+
+/**
+ * @coversNothing
+ */
+class RouteEndpointsEntryTypeFinderTest extends BaseTestCase
+{
+    /**
+     * @covers \Bristolian\Service\ExplorerData\HttpEndpointsEntryTypeFinder::getEntryTypeKey
+     * @covers \Bristolian\Service\ExplorerData\HttpEndpointsEntryTypeFinder::findEntries
+     */
+    public function test_http_endpoints_include_homepage_with_string_mapper(): void
+    {
+        $finder = new HttpEndpointsEntryTypeFinder();
+
+        $this->assertSame('http_endpoints', $finder->getEntryTypeKey());
+
+        $entries = $finder->findEntries();
+        $this->assertGreaterThan(20, count($entries));
+
+        $homepage = null;
+        foreach ($entries as $entry) {
+            if ($entry['path'] === '/' && $entry['method'] === 'GET') {
+                $homepage = $entry;
+                break;
+            }
+        }
+
+        $this->assertIsArray($homepage);
+        $this->assertSame('Bristolian\\AppController\\Pages::index', $homepage['controller']);
+        $this->assertSame(['string'], $homepage['return_types']);
+        $this->assertSame(
+            [
+                [
+                    'return_type' => 'string',
+                    'mapper' => 'Bristolian\\StringToHtmlPageConverter::convertStringToHtmlResponse',
+                ],
+            ],
+            $homepage['response_mappers']
+        );
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\HttpEndpointsEntryTypeFinder::findEntries
+     */
+    public function test_http_endpoints_map_union_return_types(): void
+    {
+        $finder = new HttpEndpointsEntryTypeFinder();
+        $entries = $finder->findEntries();
+
+        $loginGet = null;
+        foreach ($entries as $entry) {
+            if ($entry['path'] === '/login' && $entry['method'] === 'GET') {
+                $loginGet = $entry;
+                break;
+            }
+        }
+
+        $this->assertIsArray($loginGet);
+        $this->assertContains('string', $loginGet['return_types']);
+        $this->assertContains(RedirectResponse::class, $loginGet['return_types']);
+        $this->assertGreaterThanOrEqual(2, count($loginGet['response_mappers']));
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\ApiEndpointsEntryTypeFinder::getEntryTypeKey
+     * @covers \Bristolian\Service\ExplorerData\ApiEndpointsEntryTypeFinder::findEntries
+     */
+    public function test_api_endpoints_include_bristol_stairs_get_data(): void
+    {
+        $finder = new ApiEndpointsEntryTypeFinder();
+
+        $this->assertSame('api_endpoints', $finder->getEntryTypeKey());
+
+        $entries = $finder->findEntries();
+        $this->assertGreaterThan(20, count($entries));
+
+        $stairsData = null;
+        foreach ($entries as $entry) {
+            if ($entry['path'] === '/api/bristol_stairs' && $entry['method'] === 'GET') {
+                $stairsData = $entry;
+                break;
+            }
+        }
+
+        $this->assertIsArray($stairsData);
+        $this->assertSame(
+            'Bristolian\\AppController\\BristolStairs::getData',
+            $stairsData['controller']
+        );
+        $this->assertNotEmpty($stairsData['return_types']);
+        $this->assertNotEmpty($stairsData['response_mappers']);
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\RouteEndpointEntryBuilder::resolveResultMapper
+     */
+    public function test_resolveResultMapper_matches_stub_response_subclasses(): void
+    {
+        $mapper = RouteEndpointEntryBuilder::resolveResultMapper(
+            RedirectResponse::class,
+            RouteEndpointEntryBuilder::getAppResultMappers()
+        );
+
+        $this->assertSame('SlimDispatcher\\mapStubResponseToPsr7', $mapper);
+    }
+}

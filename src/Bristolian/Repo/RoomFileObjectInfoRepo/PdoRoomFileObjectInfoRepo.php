@@ -8,6 +8,7 @@ use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\Service\UuidGenerator\UuidGenerator;
 use Bristolian\UploadedFiles\UploadedFile;
+use Bristolian\Attribute\WritesTable;
 
 /**
  * Stores information about a file in the local database.
@@ -21,6 +22,7 @@ class PdoRoomFileObjectInfoRepo implements RoomFileObjectInfoRepo
     ) {
     }
 
+    #[WritesTable(room_file_object_info::class)]
     public function createRoomFileObjectInfo(
         string $user_id,
         string $normalized_filename,
@@ -60,6 +62,7 @@ class PdoRoomFileObjectInfoRepo implements RoomFileObjectInfoRepo
         return $id;
     }
 
+    #[WritesTable(room_file_object_info::class)]
     public function setRoomFileObjectUploaded(string $file_storage_id): void
     {
         $sql = <<< SQL

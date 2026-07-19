@@ -7,6 +7,8 @@ use Bristolian\Model\Types\FoiRequest;
 use Bristolian\Parameters\FoiRequestParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoFoiRequestRepo implements FoiRequestRepo
 {
@@ -26,6 +28,7 @@ class PdoFoiRequestRepo implements FoiRequestRepo
         );
     }
 
+    #[WritesTable(foi_requests::class)]
     public function createFoiRequest(FoiRequestParams $foiRequestParam): FoiRequest
     {
         $uuid = Uuid::uuid7();
@@ -46,6 +49,7 @@ class PdoFoiRequestRepo implements FoiRequestRepo
     /**
      * @return \Bristolian\Model\Types\FoiRequest[]
      */
+    #[ReadsTable(foi_requests::class)]
     public function getAllFoiRequests(): array
     {
         $sql = foi_requests::SELECT;

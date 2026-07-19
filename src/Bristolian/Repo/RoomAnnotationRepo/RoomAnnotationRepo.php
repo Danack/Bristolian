@@ -2,11 +2,17 @@
 
 namespace Bristolian\Repo\RoomAnnotationRepo;
 
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\annotation;
+use Bristolian\Database\room_annotation;
 use Bristolian\Model\Types\RoomAnnotationView;
 use Bristolian\Parameters\AnnotationParam;
 
 interface RoomAnnotationRepo
 {
+    #[WritesTable(annotation::class)]
+    #[WritesTable(room_annotation::class)]
     public function addAnnotation(
         string $user_id,
         string $room_id,
@@ -19,6 +25,8 @@ interface RoomAnnotationRepo
      * @param string $room_id
      * @return RoomAnnotationView[]
      */
+    #[ReadsTable(annotation::class)]
+    #[ReadsTable(room_annotation::class)]
     public function getAnnotationsForRoom(string $room_id): array;
 
     /**
@@ -26,6 +34,8 @@ interface RoomAnnotationRepo
      * @param string $file_id
      * @return RoomAnnotationView[]
      */
+    #[ReadsTable(annotation::class)]
+    #[ReadsTable(room_annotation::class)]
     public function getAnnotationsForRoomAndFile(
         string $room_id,
         string $file_id,
@@ -36,6 +46,8 @@ interface RoomAnnotationRepo
      * @param string $title
      * @return RoomAnnotationView[]
      */
+    #[ReadsTable(annotation::class)]
+    #[ReadsTable(room_annotation::class)]
     public function getAnnotationsForRoomAndTitle(
         string $room_id,
         string $title
@@ -47,6 +59,8 @@ interface RoomAnnotationRepo
      *
      * @throws \Bristolian\Exception\ContentNotFoundException
      */
+    #[WritesTable(room_annotation::class)]
+    #[ReadsTable(annotation::class)]
     public function updateTitleAndText(
         string $room_id,
         string $room_annotation_id,

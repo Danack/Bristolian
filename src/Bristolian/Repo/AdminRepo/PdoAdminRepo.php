@@ -8,6 +8,9 @@ use Bristolian\Model\Types\AdminUser;
 use Bristolian\Parameters\CreateUserParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\user_auth_email_password;
 
 class PdoAdminRepo implements AdminRepo
 {
@@ -32,6 +35,7 @@ SQL;
         return $uuid->toString();
     }
 
+    #[WritesTable(user_auth_email_password::class)]
     public function addUser(CreateUserParams $createAdminUserParams): AdminUser
     {
         $user_id = $this->createUser();
@@ -71,6 +75,7 @@ SQL;
      * @return string|null
      * @throws \Exception
      */
+    #[ReadsTable(user_auth_email_password::class)]
     public function getAdminUserId(string $username): ?string
     {
         $sql = <<< SQL
@@ -98,6 +103,7 @@ SQL;
     /**
      * Gets the user and validates their password
      */
+    #[ReadsTable(user_auth_email_password::class)]
     public function getAdminUser(string $username, string $password): ?AdminUser
     {
         $sql = <<< SQL

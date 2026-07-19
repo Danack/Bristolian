@@ -14,7 +14,7 @@ You can either:
 
 ### Step 1: Read Behat and Frontend Coverage Notes
 
-Read `docs/developing/behat_testing_notes.md` before doing any of the steps below. It describes how to run Behat, how frontend coverage is collected, and where reports (including the Clover file) are produced.
+Read `notes/developing/behat_testing_notes.md` before doing any of the steps below. It describes how to run Behat, how frontend coverage is collected, and where reports (including the Clover file) are produced.
 
 ### Step 2: Generate Frontend Coverage Report
 

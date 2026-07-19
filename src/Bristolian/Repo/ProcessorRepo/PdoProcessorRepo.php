@@ -5,6 +5,8 @@ namespace Bristolian\Repo\ProcessorRepo;
 use Bristolian\Database\processor;
 use Bristolian\Model\Types\ProcessorState;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoProcessorRepo implements ProcessorRepo
 {
@@ -12,6 +14,7 @@ class PdoProcessorRepo implements ProcessorRepo
     {
     }
 
+    #[ReadsTable(processor::class)]
     public function getProcessorsStates(): array
     {
         $sql = processor::SELECT;
@@ -31,6 +34,7 @@ class PdoProcessorRepo implements ProcessorRepo
         return $keyed_states;
     }
 
+    #[WritesTable(processor::class)]
     public function setProcessorEnabled(ProcessType $processor, bool $enabled): void
     {
         $enabled_int = (int)$enabled;
@@ -54,6 +58,7 @@ values (
         $rows_affected = $this->pdoSimple->execute($sql, $params);
     }
 
+    #[ReadsTable(processor::class)]
     public function getProcessorEnabled(ProcessType $processor): bool
     {
         $sql = "select enabled from processor where type = :type";

@@ -6,12 +6,17 @@ parameters:
     paths:
         - src
         - test
+    bristolian:
+        tableAttributes:
+            enforcedDirectories:
+                - src/Bristolian/Repo
     excludePaths:
         - src/Bristolian/FromString.php
         - src/Bristolian/ToString.php
         - src/ModernGov/generate_types.php (?)
         - src/OpenApi/OpenApiGenerator.php
         - src/Bristolian/CliController/GenerateFiles.php
+        - test/BristolianTest/PHPStan/Fixtures/*
     bootstrapFiles:
         - config.generated.php
         - credentials.php
@@ -40,3 +45,21 @@ parameters:
         -
           message: '#Argument of an invalid type .* supplied for foreach, only iterables are supported.#'
           path: *src/Bristolian/ToArray.php
+
+parametersSchema:
+    bristolian: structure([
+        tableAttributes: structure([
+            enforcedDirectories: listOf(string())
+        ])
+    ])
+
+services:
+    errorFormatter.llm:
+        class: NickSdot\PhpStanPhpStormErrorIdentifiers\LlmErrorFormatter
+    -
+        class: Bristolian\PHPStan\Rules\RepoTableAttributesRule
+        arguments:
+            enforcedDirectories: %bristolian.tableAttributes.enforcedDirectories%
+        tags:
+            - phpstan.rules.rule
+

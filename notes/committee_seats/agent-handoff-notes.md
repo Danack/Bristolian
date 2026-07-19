@@ -2,7 +2,7 @@
 
 Public tool at **`/tools/committee_seats`**. This file is for agents continuing work on the feature.
 
-- **User-facing overview:** [`docs/features/committee_seat_calculator.md`](../features/committee_seat_calculator.md)
+- **User-facing overview:** [`notes/features/committee_seat_calculator.md`](../features/committee_seat_calculator.md)
 - **Backlog / ideas:** [`improvement-suggestions.md`](improvement-suggestions.md)
 
 ## What the tool does
@@ -30,11 +30,11 @@ If a change makes the numbers correct but harder to follow, it is the wrong chan
 
 ## Architecture choices (read before changing)
 
-- **PHP is a thin shell only.** `Pages::committee_seats_page()` renders `<div class="committee_seats_app"><div class="committee_seats_panel"></div></div>` with **no** `data-widgety_json`. All copy, example data, and wizard config live in TypeScript under `app/public/tsx/committee_seats/`. See `bootstrap.tsx` and **Optional initial data from PHP (widgety)** in `docs/developing/front_end_design_rules.md`.
+- **PHP is a thin shell only.** `Pages::committee_seats_page()` renders `<div class="committee_seats_app"><div class="committee_seats_panel"></div></div>` with **no** `data-widgety_json`. All copy, example data, and wizard config live in TypeScript under `app/public/tsx/committee_seats/`. See `bootstrap.tsx` and **Optional initial data from PHP (widgety)** in `notes/developing/front_end_design_rules.md`.
 - **SPA-style layout.** Full-width app shell via `.committee_seats_app` (negative margins against page padding), not by styling `.bristolian_content` with `:has()`.
 - **Panel split.** `CommitteeSeatsPanel.tsx` owns handlers, URL sync, wizard routing, and experimental distribution state. Step UI lives under `committee_seats/steps/`, shared editors, `allocation_workbook.tsx`, and the experimental distribution components. Distribution **logic** is split under `committee_distribution_*.ts` with a barrel at `calculate_committee_distribution.ts` (existing imports unchanged).
 - **URL state.** Wizard progress and form data are serialised in `url_state.ts` (`step`, `source`, `example`, `seats`, `councillors`, `groups`, `independents`). Legacy `step=setup` round-trips to the political-groups substep. Example councils at the totals step do not put `groups` in the URL; see `applyExampleCouncilPoliticalGroupsIfMissing`.
-- **Preact:** do not type `render()` with `h.JSX.Element`; see `docs/developing/front_end_design_rules.md`.
+- **Preact:** do not type `render()` with `h.JSX.Element`; see `notes/developing/front_end_design_rules.md`.
 - **Tests:** Jest in `js_builder`, PHPUnit for page shell. Run:
   ```bash
   docker exec bristolian-js_builder-1 bash -c "npm run test -- --testPathPattern=committee_seats"
@@ -147,11 +147,11 @@ Split from the former monolithic `calculate_committee_distribution.ts` (March 20
 
 | File | Role |
 |------|------|
-| `docs/features/committee_seat_calculator.md` | Feature index (user-facing overview) |
-| `docs/committee_seats/improvement-suggestions.md` | Backlog and improvement ideas |
-| `docs/committee_seats/LGA guidance - Political Make Up of the Council Appendix B.pdf` | LGA guidance (Next steps copy) |
-| `docs/committee_seats/example-councils.md` | Human-readable figures when adding councils |
-| `docs/developing/front_end_design_rules.md` | Widgety optional-data note |
+| `notes/features/committee_seat_calculator.md` | Feature index (user-facing overview) |
+| `notes/committee_seats/improvement-suggestions.md` | Backlog and improvement ideas |
+| `notes/committee_seats/LGA guidance - Political Make Up of the Council Appendix B.pdf` | LGA guidance (Next steps copy) |
+| `notes/committee_seats/example-councils.md` | Human-readable figures when adding councils |
+| `notes/developing/front_end_design_rules.md` | Widgety optional-data note |
 
 ## Wizard UX (current)
 

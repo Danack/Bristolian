@@ -5,6 +5,9 @@ declare(strict_types = 1);
 namespace Bristolian\Repo\RoomLinkTagRepo;
 
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\room_link_tag;
 
 class PdoRoomLinkTagRepo implements RoomLinkTagRepo
 {
@@ -15,6 +18,7 @@ class PdoRoomLinkTagRepo implements RoomLinkTagRepo
     /**
      * @return string[]
      */
+    #[ReadsTable(room_link_tag::class)]
     public function getTagIdsForRoomLink(string $room_link_id): array
     {
         $sql = "SELECT tag_id FROM room_link_tag WHERE room_link_id = :room_link_id";
@@ -25,6 +29,7 @@ class PdoRoomLinkTagRepo implements RoomLinkTagRepo
     /**
      * @param array<string> $tag_ids
      */
+    #[WritesTable(room_link_tag::class)]
     public function setTagsForRoomLink(string $room_link_id, array $tag_ids): void
     {
         $this->pdoSimple->execute(

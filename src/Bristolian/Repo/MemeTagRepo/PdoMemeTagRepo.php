@@ -2,7 +2,10 @@
 
 namespace Bristolian\Repo\MemeTagRepo;
 
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 use Bristolian\Database\meme_tag;
+use Bristolian\Database\stored_meme;
 use Bristolian\Model\Generated\MemeTag;
 use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\MemeTagUpdateParams;
@@ -16,6 +19,7 @@ class PdoMemeTagRepo implements MemeTagRepo
     ) {
     }
 
+    #[WritesTable(meme_tag::class)]
     public function addTagForMeme(
         string        $user_id,
         MemeTagParams $memeTagParam,
@@ -41,6 +45,8 @@ class PdoMemeTagRepo implements MemeTagRepo
      * @param string $meme_id
      * @return MemeTag[]
      */
+    #[ReadsTable(meme_tag::class)]
+    #[ReadsTable(stored_meme::class)]
     public function getUserTagsForMeme(
         string $user_id,
         string $meme_id
@@ -71,6 +77,8 @@ SQL;
         return $this->pdoSimple->fetchAllAsObjectConstructor($sql, $params, MemeTag::class);
     }
 
+    #[WritesTable(meme_tag::class)]
+    #[ReadsTable(stored_meme::class)]
     public function updateTagForUser(
         string $user_id,
         MemeTagUpdateParams $memeTagUpdateParams,
@@ -101,6 +109,8 @@ SQL;
         return $this->pdoSimple->execute($sql, $params);
     }
 
+    #[WritesTable(meme_tag::class)]
+    #[ReadsTable(stored_meme::class)]
     public function deleteTagForUser(
         string $user_id,
         string $meme_tag_id
@@ -128,6 +138,8 @@ SQL;
     /**
      * @return array<array{text: string, count: int}>
      */
+    #[ReadsTable(meme_tag::class)]
+    #[ReadsTable(stored_meme::class)]
     public function getMostCommonTags(
         string $user_id,
         int $limit
@@ -175,6 +187,8 @@ SQL;
     /**
      * @return array<array{text: string, count: int}>
      */
+    #[ReadsTable(meme_tag::class)]
+    #[ReadsTable(stored_meme::class)]
     public function getMostCommonTagsForMemes(
         string $user_id,
         array $meme_ids,

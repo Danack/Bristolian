@@ -13,12 +13,12 @@ use Ramsey\Uuid\Uuid;
 /**
  * StandardTestData provides idempotent methods to ensure standard test data exists.
  *
- * Default room world (see docs/refactoring/default_test_scenarios_and_worlds.md):
+ * Default room world (see notes/refactoring/default_test_scenarios_and_worlds.md):
  * - Standard users (testing@example.com, danack@example.com)
  * - Two rooms: "Housing" and "Off-topic"
  * - Documents in each room; some documents have highlights (annotations with highlights_json)
  *
- * Following the pattern from docs/refactoring/testing_scenarios.md:
+ * Following the pattern from notes/refactoring/testing_scenarios.md:
  * - Methods describe facts about the world, not how the world got there
  * - Each method is idempotent - safe to call multiple times
  * - Methods hide implementation details from tests
@@ -86,7 +86,7 @@ final class StandardTestData
      * - "Housing" and "Off-topic" rooms
      * - Documents in each room; some with highlights
      *
-     * See docs/refactoring/default_test_scenarios_and_worlds.md.
+     * See notes/refactoring/default_test_scenarios_and_worlds.md.
      */
     public function ensureStandardSetup(): void
     {

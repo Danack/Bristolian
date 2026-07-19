@@ -3,6 +3,8 @@
 namespace Bristolian\Repo\UserSearch;
 
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Database\user_auth_email_password;
 
 class PdoUserSearch implements UserSearch
 {
@@ -15,6 +17,7 @@ class PdoUserSearch implements UserSearch
      * @return array<string>|array<int>
      * @throws \Bristolian\PdoSimple\PdoSimpleException
      */
+    #[ReadsTable(user_auth_email_password::class)]
     public function searchUsernamesByPrefix(string $username_prefix): array
     {
         $sql = <<< SQL

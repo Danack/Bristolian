@@ -6,6 +6,8 @@ use Bristolian\CliController\Email as EmailController;
 use Bristolian\Database\email_send_queue;
 use Bristolian\Model\Types\Email;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoEmailQueue implements EmailQueue
 {
@@ -20,6 +22,7 @@ class PdoEmailQueue implements EmailQueue
      * @param string $body
      * @return void
      */
+    #[WritesTable(email_send_queue::class)]
     public function queueEmailToUsers(array $users, string $subject, string $body): void
     {
         $sql = <<< SQL
@@ -55,6 +58,8 @@ SQL;
         $this->pdo->commit();
     }
 
+    #[WritesTable(email_send_queue::class)]
+    #[ReadsTable(email_send_queue::class)]
     public function getEmailToSendAndUpdateState(): Email|null
     {
         $this->pdo->beginTransaction();
@@ -98,6 +103,7 @@ SQL;
         return $emailOrNull;
     }
 
+    #[WritesTable(email_send_queue::class)]
     public function setEmailSent(Email $email): void
     {
         $sql = <<< SQL
@@ -117,6 +123,7 @@ SQL;
         $this->pdo->execute($sql, $params);
     }
 
+    #[WritesTable(email_send_queue::class)]
     public function setEmailFailed(Email $email): void
     {
         $sql = <<< SQL
@@ -136,6 +143,7 @@ SQL;
         $this->pdo->execute($sql, $params);
     }
 
+    #[WritesTable(email_send_queue::class)]
     public function setEmailToRetry(Email $email): void
     {
         $sql = <<< SQL
@@ -156,6 +164,7 @@ SQL;
     }
 
 
+    #[WritesTable(email_send_queue::class)]
     public function clearQueue(): int
     {
         $sql = <<< SQL

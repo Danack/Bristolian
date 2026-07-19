@@ -9,6 +9,8 @@ use Bristolian\Model\Types\RoomAnnotationView;
 use Bristolian\Parameters\AnnotationParam;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
 
 class PdoRoomAnnotationRepo implements RoomAnnotationRepo
 {
@@ -16,6 +18,8 @@ class PdoRoomAnnotationRepo implements RoomAnnotationRepo
     {
     }
 
+    #[WritesTable(annotation::class)]
+    #[WritesTable(room_annotation::class)]
     public function addAnnotation(
         string $user_id,
         string $room_id,
@@ -54,6 +58,8 @@ class PdoRoomAnnotationRepo implements RoomAnnotationRepo
      * @param string $room_id
      * @return RoomAnnotationView[]
      */
+    #[ReadsTable(annotation::class)]
+    #[ReadsTable(room_annotation::class)]
     public function getAnnotationsForRoom(string $room_id): array
     {
         $sql = <<< SQL
@@ -92,6 +98,8 @@ SQL;
      * @param string $file_id
      * @return RoomAnnotationView[]
      */
+    #[ReadsTable(annotation::class)]
+    #[ReadsTable(room_annotation::class)]
     public function getAnnotationsForRoomAndFile(
         string $room_id,
         string $file_id
@@ -130,6 +138,8 @@ SQL;
         );
     }
 
+    #[ReadsTable(annotation::class)]
+    #[ReadsTable(room_annotation::class)]
     public function getAnnotationsForRoomAndTitle(
         string $room_id,
         string $title
@@ -165,6 +175,8 @@ SQL;
         );
     }
 
+    #[WritesTable(room_annotation::class)]
+    #[ReadsTable(annotation::class)]
     public function updateTitleAndText(
         string $room_id,
         string $room_annotation_id,

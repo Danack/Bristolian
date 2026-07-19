@@ -13,7 +13,7 @@ use BristolianTest\BaseTestCase;
  * Abstract test class for MemeStorageRepo implementations.
  *
  * Scenario data (user id) is provided by concrete tests via getValidUserId().
- * See docs/refactoring/default_test_scenarios_and_worlds.md § Abstract repo fixtures.
+ * See notes/refactoring/default_test_scenarios_and_worlds.md § Abstract repo fixtures.
  *
  * @coversNothing
  */

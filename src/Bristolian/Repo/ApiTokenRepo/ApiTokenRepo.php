@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Bristolian\Repo\ApiTokenRepo;
 
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\api_token;
 use Bristolian\Model\Types\ApiToken;
 
 /**
@@ -18,6 +21,7 @@ interface ApiTokenRepo
      * @param string $name Name/identifier for the token
      * @return ApiToken The created token (includes the generated token value)
      */
+    #[WritesTable(api_token::class)]
     public function createToken(string $name): ApiToken;
 
     /**
@@ -26,6 +30,7 @@ interface ApiTokenRepo
      * @param string $token The token value
      * @return ApiToken|null The token if found and not revoked, null otherwise
      */
+    #[ReadsTable(api_token::class)]
     public function getByToken(string $token): ?ApiToken;
 
     /**
@@ -33,5 +38,6 @@ interface ApiTokenRepo
      *
      * @param string $tokenId The token ID
      */
+    #[WritesTable(api_token::class)]
     public function revokeToken(string $tokenId): void;
 }

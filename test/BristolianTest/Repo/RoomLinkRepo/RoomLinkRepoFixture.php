@@ -17,7 +17,7 @@ use Bristolian\Repo\LinkRepo\LinkRepo;
  * Abstract test class for RoomLinkRepo implementations.
  *
  * Scenario data (user id, room id) is provided by concrete tests via getValidUserId()
- * and getValidRoomId(). See docs/refactoring/default_test_scenarios_and_worlds.md.
+ * and getValidRoomId(). See notes/refactoring/default_test_scenarios_and_worlds.md.
  *
  * @coversNothing
  */

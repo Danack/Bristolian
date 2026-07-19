@@ -12,6 +12,10 @@ use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\LinkRepo\LinkRepo;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\link;
+use Bristolian\Database\room_link_tag;
 
 class PdoRoomLinkRepo implements RoomLinkRepo
 {
@@ -21,6 +25,7 @@ class PdoRoomLinkRepo implements RoomLinkRepo
     ) {
     }
 
+    #[WritesTable(room_link::class)]
     public function addLinkToRoomFromParam(
         string $user_id,
         string $room_id,
@@ -47,6 +52,7 @@ class PdoRoomLinkRepo implements RoomLinkRepo
         return $id;
     }
 
+    #[ReadsTable(room_link::class)]
     public function getRoomLink(string $room_link_id): RoomLink|null
     {
         $sql = room_link::SELECT;
@@ -67,6 +73,7 @@ class PdoRoomLinkRepo implements RoomLinkRepo
         return $result;
     }
 
+    #[WritesTable(room_link::class)]
     public function updateTitleAndDescription(
         string $room_id,
         string $room_link_id,
@@ -101,6 +108,9 @@ SQL;
      * @return RoomLinkWithUrl[]
      * @throws \ReflectionException
      */
+    #[ReadsTable(link::class)]
+    #[ReadsTable(room_link::class)]
+    #[ReadsTable(room_link_tag::class)]
     public function getLinksForRoom(string $room_id, RoomContentSearchParams $search): array
     {
         $where = ['room_link.room_id = :room_id'];

@@ -5,6 +5,9 @@ declare(strict_types = 1);
 namespace Bristolian\Repo\RoomAnnotationTagRepo;
 
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\room_annotation_tag;
 
 class PdoRoomAnnotationTagRepo implements RoomAnnotationTagRepo
 {
@@ -15,6 +18,7 @@ class PdoRoomAnnotationTagRepo implements RoomAnnotationTagRepo
     /**
      * @return string[]
      */
+    #[ReadsTable(room_annotation_tag::class)]
     public function getTagIdsForRoomAnnotation(string $room_annotation_id): array
     {
         $sql = "SELECT tag_id FROM room_annotation_tag WHERE room_annotation_id = :room_annotation_id";
@@ -25,6 +29,7 @@ class PdoRoomAnnotationTagRepo implements RoomAnnotationTagRepo
     /**
      * @param array<string> $tag_ids
      */
+    #[WritesTable(room_annotation_tag::class)]
     public function setTagsForRoomAnnotation(string $room_annotation_id, array $tag_ids): void
     {
         $this->pdoSimple->execute(

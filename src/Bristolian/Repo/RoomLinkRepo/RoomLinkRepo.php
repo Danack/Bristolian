@@ -2,6 +2,11 @@
 
 namespace Bristolian\Repo\RoomLinkRepo;
 
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\link;
+use Bristolian\Database\room_link;
+use Bristolian\Database\room_link_tag;
 use Bristolian\Model\Generated\RoomLink;
 use Bristolian\Model\Types\RoomLinkWithUrl;
 use Bristolian\Parameters\LinkParam;
@@ -16,8 +21,12 @@ interface RoomLinkRepo
      * @param string $room_id
      * @return RoomLinkWithUrl[]
      */
+    #[ReadsTable(link::class)]
+    #[ReadsTable(room_link::class)]
+    #[ReadsTable(room_link_tag::class)]
     public function getLinksForRoom(string $room_id, RoomContentSearchParams $search): array;
 
+    #[WritesTable(room_link::class)]
     public function addLinkToRoomFromParam(
         string $user_id,
         string $room_id,
@@ -25,6 +34,7 @@ interface RoomLinkRepo
     ): string;
 
     // TODO - maybe this shouldn't return null.
+    #[ReadsTable(room_link::class)]
     public function getRoomLink(string $room_link_id): RoomLink|null;
 
     /**
@@ -32,6 +42,7 @@ interface RoomLinkRepo
      *
      * @throws \Bristolian\Exception\ContentNotFoundException if the link is not in the given room
      */
+    #[WritesTable(room_link::class)]
     public function updateTitleAndDescription(
         string $room_id,
         string $room_link_id,

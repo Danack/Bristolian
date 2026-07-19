@@ -11,6 +11,9 @@ use Bristolian\Repo\RoomFileObjectInfoRepo\FileState;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\Service\UuidGenerator\UuidGenerator;
 use Bristolian\UploadedFiles\UploadedFile;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\meme_tag;
 
 class PdoMemeStorageRepo implements MemeStorageRepo
 {
@@ -21,6 +24,7 @@ class PdoMemeStorageRepo implements MemeStorageRepo
     }
 
 
+    #[ReadsTable(stored_meme::class)]
     public function getMeme(string $id): Meme|null
     {
         $sql = stored_meme::SELECT;
@@ -35,6 +39,7 @@ class PdoMemeStorageRepo implements MemeStorageRepo
         );
     }
 
+    #[ReadsTable(stored_meme::class)]
     public function getByNormalizedName(string $normalized_name): Meme|null
     {
         $sql = stored_meme::SELECT;
@@ -50,6 +55,7 @@ class PdoMemeStorageRepo implements MemeStorageRepo
     /**
      * @return Meme[]
      */
+    #[ReadsTable(stored_meme::class)]
     public function listMemesForUser(string $user_id): array
     {
         $sql = stored_meme::SELECT . <<< SQL
@@ -75,6 +81,7 @@ SQL;
     /**
      * @return Meme[]
      */
+    #[ReadsTable(stored_meme::class)]
     public function listAllMemes(): array
     {
         $sql = stored_meme::SELECT . <<< SQL
@@ -89,6 +96,8 @@ SQL;
     /**
      * @return Meme[]
      */
+    #[ReadsTable(stored_meme::class)]
+    #[ReadsTable(meme_tag::class)]
     public function listMemesForUserWithNoTags(string $user_id): array
     {
         $sql = stored_meme::SELECT . <<< SQL
@@ -112,6 +121,8 @@ SQL;
     /**
      * @return Meme[]
      */
+    #[ReadsTable(stored_meme::class)]
+    #[ReadsTable(meme_tag::class)]
     public function searchMemesForUser(
         string $user_id,
         ?string $query,
@@ -165,6 +176,8 @@ SQL;
     /**
      * @return Meme[]
      */
+    #[ReadsTable(meme_tag::class)]
+    #[ReadsTable(stored_meme::class)]
     public function searchMemesByExactTags(
         string $user_id,
         array $tagTexts
@@ -225,6 +238,7 @@ SQL;
         return $memes;
     }
 
+    #[WritesTable(stored_meme::class)]
     public function storeMeme(
         string $user_id,
         string $normalized_filename,
@@ -264,6 +278,7 @@ SQL;
         return $id;
     }
 
+    #[WritesTable(stored_meme::class)]
     public function setUploaded(string $file_storage_id): void
     {
         $sql = <<< SQL
@@ -285,6 +300,7 @@ SQL;
         }
     }
 
+    #[WritesTable(stored_meme::class)]
     public function markAsDeleted(string $meme_id): void
     {
         $sql = <<< SQL
@@ -302,6 +318,7 @@ SQL;
         $this->pdo_simple->execute($sql, $params);
     }
 
+    #[ReadsTable(stored_meme::class)]
     public function getMemeByOriginalFilename(string $user_id, string $original_filename): Meme|null
     {
         $sql = stored_meme::SELECT;

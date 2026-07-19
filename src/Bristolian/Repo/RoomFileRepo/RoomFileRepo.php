@@ -2,6 +2,11 @@
 
 namespace Bristolian\Repo\RoomFileRepo;
 
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\room_file;
+use Bristolian\Database\room_file_object_info;
+use Bristolian\Database\room_file_tag;
 use Bristolian\Model\Generated\RoomFileObjectInfo;
 use Bristolian\Model\Types\RoomFileInRoom;
 use Bristolian\Parameters\RoomContentSearchParams;
@@ -11,12 +16,16 @@ use Bristolian\Parameters\RoomContentSearchParams;
  */
 interface RoomFileRepo
 {
+    #[WritesTable(room_file::class)]
     public function addFileToRoom(string $fileStorageId, string $room_id): void;
 
     /**
      * @param string $room_id
      * @return RoomFileInRoom[]
      */
+    #[ReadsTable(room_file::class)]
+    #[ReadsTable(room_file_object_info::class)]
+    #[ReadsTable(room_file_tag::class)]
     public function getFilesForRoom(string $room_id, RoomContentSearchParams $search): array;
 
     /**
@@ -27,6 +36,8 @@ interface RoomFileRepo
      * @param string $file_id
      * @return RoomFileObjectInfo|null
      */
+    #[ReadsTable(room_file_object_info::class)]
+    #[ReadsTable(room_file::class)]
     public function getFileDetails(string $room_id, string $file_id): RoomFileObjectInfo|null;
 
     /**
@@ -34,6 +45,8 @@ interface RoomFileRepo
      *
      * @return RoomFileInRoom[]
      */
+    #[ReadsTable(room_file_object_info::class)]
+    #[ReadsTable(room_file::class)]
     public function getFilesInRoomByOriginalFilename(string $room_id, string $original_filename): array;
 
     /**
@@ -41,6 +54,7 @@ interface RoomFileRepo
      *
      * @throws \Bristolian\Exception\ContentNotFoundException when no row is updated
      */
+    #[WritesTable(room_file::class)]
     public function updateRoomFileDetails(
         string $room_id,
         string $stored_file_id,

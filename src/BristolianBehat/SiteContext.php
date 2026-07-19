@@ -2157,7 +2157,7 @@ JS
         $page = $session->getPage();
         $filesTabLabel = $page->find(
             'xpath',
-            '//label[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
+            '//button[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
         );
 
         if ($filesTabLabel !== null) {
@@ -2196,7 +2196,7 @@ JS
         // Ensure Files tab is active
         $filesTabLabel = $page->find(
             'xpath',
-            '//label[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
+            '//button[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
         );
         if ($filesTabLabel !== null) {
             $filesTabLabel->click();
@@ -2275,7 +2275,7 @@ JS
         // Ensure Files tab is active
         $filesTabLabel = $page->find(
             'xpath',
-            '//label[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
+            '//button[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
         );
         if ($filesTabLabel !== null) {
             $filesTabLabel->click();
@@ -2326,7 +2326,7 @@ JS
         $escaped = str_replace('"', '""', $tabLabel);
         $tab = $page->find(
             'xpath',
-            '//label[contains(@class, "room_tab_label") and normalize-space(text()) = "' . $escaped . '"]'
+            '//button[contains(@class, "room_tab_label") and normalize-space(text()) = "' . $escaped . '"]'
         );
         if ($tab === null) {
             throw new \Exception("Room tab not found: " . $tabLabel);
@@ -2344,7 +2344,7 @@ JS
         $page = $session->getPage();
         $videosTab = $page->find(
             'xpath',
-            '//label[contains(@class, "room_tab_label") and normalize-space(text()) = "Videos"]'
+            '//button[contains(@class, "room_tab_label") and normalize-space(text()) = "Videos"]'
         );
         if ($videosTab !== null) {
             $videosTab->click();
@@ -2581,7 +2581,7 @@ JS
         // Make sure the Files tab is active so the files panel (and buttons) are visible
         $filesTabLabel = $page->find(
             'xpath',
-            '//label[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
+            '//button[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
         );
 
         if ($filesTabLabel !== null) {
@@ -2626,7 +2626,7 @@ JS
         // Ensure the Files tab is active so that the files panel (and buttons) are visible
         $filesTabLabel = $page->find(
             'xpath',
-            '//label[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
+            '//button[contains(@class, "room_tab_label") and normalize-space(text()) = "Files"]'
         );
 
         if ($filesTabLabel !== null) {

@@ -14,7 +14,7 @@ use DI\Injector;
 /**
  * TestWorld manages shared test state and provides access to repositories.
  *
- * This follows the pattern described in docs/refactoring/testing_scenarios.md
+ * This follows the pattern described in notes/refactoring/testing_scenarios.md
  * where each bounded context has its own world that provides access to
  * repositories and shared test data.
  *

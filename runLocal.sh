@@ -31,7 +31,6 @@ docker-compose up --build \
  caddy \
  chrome_headless \
  db \
- mediawiki \
  php_fpm \
  php_fpm_debug \
  php_websocket \
@@ -40,6 +39,7 @@ docker-compose up --build \
  redis \
   --remove-orphans
 
+# mediawiki \
 
 docker-compose down
 

@@ -6,6 +6,9 @@ namespace Bristolian\CliController;
 
 use Bristolian\Config\Config;
 use Bristolian\Exception\BristolianException;
+use Bristolian\Service\ExplorerData\CodegenProvenance;
+use Bristolian\Widget\WidgetApiCallValidator;
+use Bristolian\Widget\WidgetRegistry;
 use PDO;
 
 // None of this file is unit tested. If there are bugs, they will stop
@@ -315,7 +318,17 @@ function generate_model_class(string $tableName, array $columns_info, string $ou
     $contents = "<?php\n\n";
     $contents .= "declare(strict_types = 1);\n\n";
     $contents .= "// Auto-generated file do not edit\n\n";
-    $contents .= "// generated with 'php cli.php generate:model_classes'\n\n";
+    $contents .= "// You'll need to bounce the docker boxes to regenerate.\n";
+    $contents .= "//\n";
+    $contents .= "// or run 'php cli.php generate:model_classes'\n\n";
+    $contents .= CodegenProvenance::formatLineComment(
+        CodegenProvenance::buildPayload(
+            'generate:model_classes',
+            'Bristolian\\CliController\\GenerateFiles::generateModelClasses',
+            'src/Bristolian/Model/Generated/'
+        )
+    );
+    $contents .= "\n";
     $contents .= "namespace Bristolian\\Model\\Generated;\n\n";
     $contents .= "use Bristolian\\FromArray;\n";
     $contents .= "use Bristolian\\ToString;\n\n";
@@ -353,9 +366,17 @@ function generate_table_helper_class(string $tableName, array $columns_info): vo
 
     $contents = "<?php\n\n";
     $contents .= "// Auto-generated file do not edit\n\n";
-    $contents .= "// generated with 'php cli.php generate:php_table_helper_classes'\n\n";
-    $contents .= "// Generator: src/Bristolian/CliController/GenerateFiles.php :: generate_table_helper_class()";
-    $contents .= "// invoked from GenerateFiles::generateTableHelperClasses)\n\n";
+    $contents .= "// You'll need to bounce the docker boxes to regenerate.\n";
+    $contents .= "//\n";
+    $contents .= "// or run 'php cli.php generate:php_table_helper_classes'\n\n";
+    $contents .= CodegenProvenance::formatLineComment(
+        CodegenProvenance::buildPayload(
+            'generate:php_table_helper_classes',
+            'Bristolian\\CliController\\GenerateFiles::generateTableHelperClasses',
+            'src/Bristolian/Database/'
+        )
+    );
+    $contents .= "\n";
     $contents .= "namespace Bristolian\\Database;\n\n";
 
     $columns_separated_by_comma_new_line = "";
@@ -722,22 +743,19 @@ class GenerateFiles
         $this->generateJavaScriptConstants();
         $this->generateJavaScriptTypes();
         $this->generateTypeScriptApiRoutes();
+        $this->generateWidgetPanels();
     }
 
 
+    /**
+     * Generate TypeScript interfaces and enums from selected PHP model / enum classes
+     * into app/public/tsx/generated/types.tsx for shared front/backend shapes.
+     */
     public function generateJavaScriptTypes(): void
     {
         $output_filename = __DIR__ . "/../../../app/public/tsx/generated/types.tsx";
-
-        $content = "// This is an auto-generated file\n";
-        $content .= "// DO NOT EDIT\n\n";
-        $content .= "// You'll need to bounce the docker boxes to regenerate.\n";
-        $content .= "//\n";
-        $content .= "// or run 'php cli.php generate:javascript_constants' \n";
-
-        $content .= "// Code for generating this file is in \Bristolian\CliController\GenerateFiles::generateJavaScriptTypes \n\n";
-
-        $content .= "import { DateToString, convertDatesFromStrings } from '../functions';\n\n";
+        $outputFileRelative = 'app/public/tsx/generated/types.tsx';
+        $generatorCallable = 'Bristolian\\CliController\\GenerateFiles::generateJavaScriptTypes';
 
         $types = [
             \Bristolian\Model\Generated\BristolStairInfo::class,
@@ -762,17 +780,6 @@ class GenerateFiles
             \Bristolian\Model\TinnedFish\Product::class,
         ];
 
-        $conversionFunctions = '';
-
-        foreach ($types as $type) {
-            [$interfaceContent, $dateFields] = generateInterfaceForClass($type);
-            $content .= $interfaceContent;
-            $content .= "\n";
-            
-            $conversionFunctions .= generateConversionFunctionForClass($type, $dateFields);
-            $conversionFunctions .= "\n";
-        }
-
         /**
          * @var $enums class-string[]
          */
@@ -782,6 +789,37 @@ class GenerateFiles
             \Bristolian\Model\TinnedFish\ValidationStatus::class,
         ];
 
+        $extracted = CodegenProvenance::extractAssignments(
+            $generatorCallable,
+            ['types', 'enums']
+        );
+
+        $content = CodegenProvenance::typescriptHumanPreamble(
+            'generate:javascript_constants',
+            $generatorCallable
+        );
+        $content .= CodegenProvenance::formatLineComment(
+            CodegenProvenance::buildPayload(
+                'generate:javascript_constants',
+                $generatorCallable,
+                $outputFileRelative,
+                $extracted['detail'],
+                $extracted['detail_source']
+            )
+        );
+        $content .= "\n";
+        $content .= "import { DateToString, convertDatesFromStrings } from '../functions';\n\n";
+
+        $conversionFunctions = '';
+
+        foreach ($types as $type) {
+            [$interfaceContent, $dateFields] = generateInterfaceForClass($type);
+            $content .= $interfaceContent;
+            $content .= "\n";
+
+            $conversionFunctions .= generateConversionFunctionForClass($type, $dateFields);
+            $conversionFunctions .= "\n";
+        }
 
         foreach ($enums as $enum) {
             $content .= generateEnumForClass($enum);
@@ -808,39 +846,95 @@ class GenerateFiles
     public function generateJavaScriptConstants(): void
     {
         $output_filename = __DIR__ . "/../../../app/public/tsx/generated/constants.tsx";
+        $outputFileRelative = 'app/public/tsx/generated/constants.tsx';
+        $generatorCallable = 'Bristolian\\CliController\\GenerateFiles::generateJavaScriptConstants';
 
-        $constants = [
-            'MEME_FILE_UPLOAD_FORM_NAME' => \Bristolian\AppController\MemeUpload::MEME_FILE_UPLOAD_FORM_NAME,
-            'ROOM_FILE_UPLOAD_FORM_NAME' => \Bristolian\AppController\Rooms::ROOM_FILE_UPLOAD_FORM_NAME,
-
-            'BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME' => \Bristolian\AppController\BristolStairs::BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME,
-
-            'ANNOTATION_JSON_MINIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\AnnotationHighlightsJson::MINIMUM_LENGTH,
-            'ANNOTATION_JSON_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\AnnotationHighlightsJson::MAXIMUM_LENGTH,
-
-            'ANNOTATION_TITLE_MINIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\AnnotationTitle::MINIMUM_LENGTH,
-            'ANNOTATION_TITLE_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\AnnotationTitle::MAXIMUM_LENGTH,
-
-            'ANNOTATION_TEXT_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\AnnotationText::MAXIMUM_LENGTH,
-
-            'ANNOTATION_MAX_PAGES' => \Bristolian\Parameters\PropertyType\AnnotationPage::MAX_PAGES,
-
-            'MINIMUM_DISPLAY_NAME_LENGTH' => \Bristolian\Parameters\PropertyType\DisplayName::MINIMUM_DISPLAY_NAME_LENGTH,
-            'MAXIMUM_DISPLAY_NAME_LENGTH' => \Bristolian\Parameters\PropertyType\DisplayName::MAXIMUM_DISPLAY_NAME_LENGTH,
-
-            'MINIMUM_ABOUT_ME_LENGTH' => \Bristolian\Parameters\PropertyType\AboutMeText::MINIMUM_ABOUT_ME_LENGTH,
-            'MAXIMUM_ABOUT_ME_LENGTH' => \Bristolian\Parameters\PropertyType\AboutMeText::MAXIMUM_ABOUT_ME_LENGTH,
-
-            'DUPLICATE_FILENAME' => \Bristolian\Service\MemeStorageProcessor\UploadError::DUPLICATE_FILENAME,
-
-            'MEMES_DISPLAY_LIMIT' => \Bristolian\AppController\User::MEMES_DISPLAY_LIMIT,
-
-            'MAX_TAGS_PER_ROOM' => \Bristolian\Repo\RoomTagRepo\RoomTagRepo::MAX_TAGS_PER_ROOM,
-
-            'CLIP_TITLE_MINIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\ClipTitle::TITLE_MINIMUM_LENGTH,
-            'CLIP_TITLE_MAXIMUM_LENGTH' => \Bristolian\Parameters\PropertyType\ClipTitle::TITLE_MAXIMUM_LENGTH,
-
-            'ROOM_CONTENT_LIST_DEFAULT_LIMIT' => \Bristolian\Parameters\RoomContentSearchParams::DEFAULT_LIMIT,
+        // Each entry maps a TypeScript export name to a PHP constant.
+        //
+        // Key: name written into constants.tsx (export const KEY = ...).
+        //      Often prefixed for clarity in TS (e.g. ANNOTATION_MAX_PAGES), because
+        //      the frontend has no class namespace.
+        // Value: [PHP class, PHP const name] — the real source of the value.
+        //      The PHP const name can be short when the class already scopes it
+        //      (e.g. AnnotationPage::MAX_PAGES → TS ANNOTATION_MAX_PAGES).
+        //      Key and const name need not match; the key is the public TS name.
+        $constantDefinitions = [
+            'MEME_FILE_UPLOAD_FORM_NAME' => [
+                \Bristolian\AppController\MemeUpload::class,
+                'MEME_FILE_UPLOAD_FORM_NAME',
+            ],
+            'ROOM_FILE_UPLOAD_FORM_NAME' => [
+                \Bristolian\AppController\Rooms::class,
+                'ROOM_FILE_UPLOAD_FORM_NAME',
+            ],
+            'BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME' => [
+                \Bristolian\AppController\BristolStairs::class,
+                'BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME',
+            ],
+            'ANNOTATION_JSON_MINIMUM_LENGTH' => [
+                \Bristolian\Parameters\PropertyType\AnnotationHighlightsJson::class,
+                'MINIMUM_LENGTH',
+            ],
+            'ANNOTATION_JSON_MAXIMUM_LENGTH' => [
+                \Bristolian\Parameters\PropertyType\AnnotationHighlightsJson::class,
+                'MAXIMUM_LENGTH',
+            ],
+            'ANNOTATION_TITLE_MINIMUM_LENGTH' => [
+                \Bristolian\Parameters\PropertyType\AnnotationTitle::class,
+                'MINIMUM_LENGTH',
+            ],
+            'ANNOTATION_TITLE_MAXIMUM_LENGTH' => [
+                \Bristolian\Parameters\PropertyType\AnnotationTitle::class,
+                'MAXIMUM_LENGTH',
+            ],
+            'ANNOTATION_TEXT_MAXIMUM_LENGTH' => [
+                \Bristolian\Parameters\PropertyType\AnnotationText::class,
+                'MAXIMUM_LENGTH',
+            ],
+            'ANNOTATION_MAX_PAGES' => [
+                \Bristolian\Parameters\PropertyType\AnnotationPage::class,
+                'MAX_PAGES',
+            ],
+            'MINIMUM_DISPLAY_NAME_LENGTH' => [
+                \Bristolian\Parameters\PropertyType\DisplayName::class,
+                'MINIMUM_DISPLAY_NAME_LENGTH',
+            ],
+            'MAXIMUM_DISPLAY_NAME_LENGTH' => [
+                \Bristolian\Parameters\PropertyType\DisplayName::class,
+                'MAXIMUM_DISPLAY_NAME_LENGTH',
+            ],
+            'MINIMUM_ABOUT_ME_LENGTH' => [
+                \Bristolian\Parameters\PropertyType\AboutMeText::class,
+                'MINIMUM_ABOUT_ME_LENGTH',
+            ],
+            'MAXIMUM_ABOUT_ME_LENGTH' => [
+                \Bristolian\Parameters\PropertyType\AboutMeText::class,
+                'MAXIMUM_ABOUT_ME_LENGTH',
+            ],
+            'DUPLICATE_FILENAME' => [
+                \Bristolian\Service\MemeStorageProcessor\UploadError::class,
+                'DUPLICATE_FILENAME',
+            ],
+            'MEMES_DISPLAY_LIMIT' => [
+                \Bristolian\AppController\User::class,
+                'MEMES_DISPLAY_LIMIT',
+            ],
+            'MAX_TAGS_PER_ROOM' => [
+                \Bristolian\Repo\RoomTagRepo\RoomTagRepo::class,
+                'MAX_TAGS_PER_ROOM',
+            ],
+            'CLIP_TITLE_MINIMUM_LENGTH' => [
+                \Bristolian\Parameters\PropertyType\ClipTitle::class,
+                'TITLE_MINIMUM_LENGTH',
+            ],
+            'CLIP_TITLE_MAXIMUM_LENGTH' => [
+                \Bristolian\Parameters\PropertyType\ClipTitle::class,
+                'TITLE_MAXIMUM_LENGTH',
+            ],
+            'ROOM_CONTENT_LIST_DEFAULT_LIMIT' => [
+                \Bristolian\Parameters\RoomContentSearchParams::class,
+                'DEFAULT_LIMIT',
+            ],
         ];
 
         $string_template = <<< TEMPLATE
@@ -851,28 +945,37 @@ TEMPLATE;
 export const :js_name: number = :js_value;\n
 TEMPLATE;
 
-        $content = "// This is an auto-generated file\n";
-        $content .= "// DO NOT EDIT\n";
-        $content .= "//\n";
-        $content .= "// You'll need to bounce the docker boxes to regenerate.\n";
-        $content .= "//\n";
-        $content .= "// or run 'php cli.php generate:javascript_constants' \n";
+        $extracted = CodegenProvenance::extractAssignments(
+            $generatorCallable,
+            ['constantDefinitions']
+        );
 
-        $content .= "// Code for generating this file is in \Bristolian\CliController\GenerateFiles::generateJavaScriptConstants \n";
+        $content = CodegenProvenance::typescriptHumanPreamble(
+            'generate:javascript_constants',
+            $generatorCallable
+        );
+        $content .= CodegenProvenance::formatLineComment(
+            CodegenProvenance::buildPayload(
+                'generate:javascript_constants',
+                $generatorCallable,
+                $outputFileRelative,
+                $extracted['detail'],
+                $extracted['detail_source']
+            )
+        );
+        $content .= "\n";
 
-
-        // TODO - add command name
-
-        foreach ($constants as $constant_name => $constant_value) {
+        foreach ($constantDefinitions as $exportName => [$phpClass, $phpConstName]) {
+            $constantValue = constant($phpClass . '::' . $phpConstName);
             $params = [
-                ':js_name' => $constant_name,
+                ':js_name' => $exportName,
                 // Technically this is wrong. The escaping needed is
                 // "string escape within JS". But JavaScript escaping is probably
                 // safe.
-                ':js_value' => $constant_value
+                ':js_value' => $constantValue
             ];
             $template = $string_template;
-            if (is_int($constant_value) === true) {
+            if (is_int($constantValue) === true) {
                 $template = $int_template;
             }
             $content .= esprintf($template, $params);
@@ -885,7 +988,8 @@ TEMPLATE;
     }
 
     /**
-     * This generates a
+     * Generate SQL INSERT/SELECT/UPDATE helper classes under src/Bristolian/Database/
+     * from the live database schema (one class per table).
      */
     public function generateTableHelperClasses(
         Config $config,
@@ -922,7 +1026,8 @@ SQL;
     }
 
     /**
-     * Generate PHP response type classes from API routes that have type information.
+     * Generate PHP response type classes under src/Bristolian/Response/Typed/
+     * from API routes that declare type_info in api/src/api_routes.php.
      *
      * @codeCoverageIgnore
      */
@@ -1051,32 +1156,21 @@ SQL;
      */
     private function generateResponseClassContent(string $className, string $namespace, array $type_info, string $path, string $method): string
     {
+        $generatorCallable = 'Bristolian\\CliController\\GenerateFiles::generatePhpResponseTypes';
+
         $content = "<?php\n\n";
         $content .= "// Auto-generated file do not edit\n\n";
-        $content .= "// generated with 'php cli.php generate:php_response_types'\n";
+        $content .= "// You'll need to bounce the docker boxes to regenerate.\n";
         $content .= "//\n";
-
-        $content .= "//\n";
-        $content .= "// Generator: src/Bristolian/CliController/GenerateFiles.php :: generateResponseClassContent()\n";
-        $content .= "// invoked from GenerateFiles::generatePhpResponseTypes)\n";
-
-        $content .= "// The information used to generate this file comes from:\n";
-        $content .= "// api/src/api_routes.php - specifically from routes that have type information\n";
-        $content .= "//\n";
-        $content .= "// In api_routes.php, each route is an array with the format:\n";
-        $content .= "// [path, method, controller, type_info, setup_callable]\n";
-        $content .= "//\n";
-        $content .= "// The type_info (at index 3) is an array of field definitions:\n";
-        $content .= "// [\n";
-        $content .= "//     ['field_name', ClassName::class, is_array],\n";
-        $content .= "//     ...\n";
-        $content .= "// ]\n";
-        $content .= "//\n";
-        $content .= "// Each field definition is: [field_name, fully_qualified_class_name, is_array]\n";
-        $content .= "// - field_name: the name of the field in the JSON response\n";
-        $content .= "// - fully_qualified_class_name: the model class (usually from Bristolian\\Model\\Generated)\n";
-        $content .= "// - is_array: true for arrays of objects, false for single objects\n";
-        $content .= "//\n";
+        $content .= "// or run 'php cli.php generate:php_response_types'\n\n";
+        $content .= CodegenProvenance::formatLineComment(
+            CodegenProvenance::buildPayload(
+                'generate:php_response_types',
+                $generatorCallable,
+                'src/Bristolian/Response/Typed/'
+            )
+        );
+        $content .= "\n";
         $content .= "// This response class is used by the route:\n";
         $content .= "//   Path: $path\n";
         $content .= "//   Method: $method\n";
@@ -1099,7 +1193,7 @@ SQL;
             }
         }
 
-        $content .= "namespace $namespace;\n\n";
+        $content .= "\nnamespace $namespace;\n\n";
         
         // Collect all imports
         $imports = [
@@ -1338,19 +1432,41 @@ SQL;
         return $out;
     }
 
+    /**
+     * Generate TypeScript API route helpers and response types from api/src/api_routes.php
+     * into app/public/tsx/generated/api_routes.tsx.
+     *
+     * Input (getAllApiRoutes()): each route is an array:
+     *   [0] path string, e.g. '/api/rooms/{room_id:.*}/files'
+     *   [1] HTTP method, e.g. 'GET'
+     *   [2] controller callable string (Class::method)
+     *   [3] type_info — null to skip this generator, or a list of field tuples:
+     *         [field_name, PHP_model_FQCN|null, is_array, optional_scalar_type?]
+     *       e.g. ['files', RoomFileWithTags::class, true]
+     *       Drives the generated response interface's `data` shape.
+     *   [4] (optional) FQCN of a Bristolian\Parameters\* DataType for the JSON body;
+     *       emitted into API_JSON_REQUEST_BODY_PARAM_CLASS. Omitted when there is no
+     *       JSON body (or the route uses another mechanism such as form upload).
+     *
+     * Only routes with non-empty type_info at index 3 are processed for `api` helpers
+     * and response interfaces. Index 4 is still scanned for the request-body map.
+     *
+     * Output (api_routes.tsx):
+     *   - API_JSON_REQUEST_BODY_PARAM_CLASS: Record<"METHOD path", PHP FQCN string>
+     *   - api: nested helpers mirroring path segments (Laravel-style), each returning
+     *     Promise<SomeResponse> via fetch; path params become function arguments
+     *   - export interface SomeResponse { result: 'success'; data: { ... } }
+     *     for each typed route (model types imported from ./types; date fields use
+     *     DateToString where needed)
+     */
     public function generateTypeScriptApiRoutes(): void
     {
         require_once __DIR__ . "/../../../api/src/api_routes.php";
         
         $routes = getAllApiRoutes();
         $output_filename = __DIR__ . "/../../../app/public/tsx/generated/api_routes.tsx";
-        
-        $content = "// This is an auto-generated file\n";
-        $content .= "// DO NOT EDIT\n\n";
-        $content .= "// You'll need to bounce the docker boxes to regenerate.\n";
-        $content .= "//\n";
-        $content .= "// or run 'php cli.php generate:typescript_api_routes'\n";
-        $content .= "// Code for generating this file is in \\Bristolian\\CliController\\GenerateFiles::generateTypeScriptApiRoutes\n\n";
+        $outputFileRelative = 'app/public/tsx/generated/api_routes.tsx';
+        $generatorCallable = 'Bristolian\\CliController\\GenerateFiles::generateTypeScriptApiRoutes';
         
         // Collect all unique model types that need to be imported
         $modelTypes = [];
@@ -1401,6 +1517,19 @@ SQL;
                 'cache_bust' => $this->isRoomListEndpoint($path),
             ];
         }
+
+        $content = CodegenProvenance::typescriptHumanPreamble(
+            'generate:typescript_api_routes',
+            $generatorCallable
+        );
+        $content .= CodegenProvenance::formatLineComment(
+            CodegenProvenance::buildPayload(
+                'generate:typescript_api_routes',
+                $generatorCallable,
+                $outputFileRelative
+            )
+        );
+        $content .= "\n";
         
         // Check if any response types use DateToString (i.e., have model types with date fields)
         $needsDateToString = false;
@@ -1916,7 +2045,8 @@ SQL;
     }
 
     /**
-     * Generate model classes from database schema.
+     * Generate model classes under src/Bristolian/Model/Generated/ from the live
+     * database schema (one class per table that is not hand-written).
      *
      * @codeCoverageIgnore
      */
@@ -1971,5 +2101,106 @@ SQL;
 
             generate_model_class($tableName, $columns_info, $output_directory);
         }
+    }
+
+    /**
+     * Generate TypeScript widget panel registration from WidgetRegistry into
+     * app/public/tsx/generated/widget_panels.tsx (panels + WIDGET_API_CALLS).
+     */
+    public function generateWidgetPanels(): void
+    {
+        $definitions = WidgetRegistry::getAllDefinitions();
+
+        require_once __DIR__ . "/../../../api/src/api_routes.php";
+        WidgetApiCallValidator::validateDefinitionsAgainstApiRoutes(
+            $definitions,
+            getAllApiRoutes()
+        );
+
+        $outputFilename = __DIR__ . "/../../../app/public/tsx/generated/widget_panels.tsx";
+        $outputFileRelative = 'app/public/tsx/generated/widget_panels.tsx';
+        $generatorCallable = 'Bristolian\\CliController\\GenerateFiles::generateWidgetPanels';
+
+        $content = CodegenProvenance::typescriptHumanPreamble(
+            'generate:widget_panels',
+            $generatorCallable
+        );
+        $content .= CodegenProvenance::formatLineComment(
+            CodegenProvenance::buildPayload(
+                'generate:widget_panels',
+                $generatorCallable,
+                $outputFileRelative
+            )
+        );
+        $content .= "\n";
+        $content .= "import type { WidgetClassBinding } from \"../widgety/widgety\";\n";
+
+        foreach ($definitions as $definition) {
+            $importPath = self::modulePathRelativeToGeneratedDirectory($definition->modulePath);
+            $content .= "import { {$definition->exportName} } from \"{$importPath}\";\n";
+        }
+
+        $content .= "\nexport const panels: WidgetClassBinding[] = [\n";
+        foreach ($definitions as $definition) {
+            $escapedClass = str_replace(['\\', '"'], ['\\\\', '\\"'], $definition->cssClass);
+            $content .= "    {\n";
+            $content .= "        class: \"{$escapedClass}\",\n";
+            $content .= "        component: {$definition->exportName},\n";
+            $content .= "    },\n";
+        }
+        $content .= "];\n\n";
+
+        $content .= $this->generateWidgetApiCallsBreadcrumbBlock($definitions);
+
+        $bytesWritten = file_put_contents($outputFilename, $content);
+        if ($bytesWritten === false) {
+            throw new BristolianException(
+                "Failed to write widget panels file: {$outputFilename}"
+            );
+        }
+    }
+
+    /**
+     * @param list<\Bristolian\Widget\WidgetDefinition> $definitions
+     */
+    private function generateWidgetApiCallsBreadcrumbBlock(array $definitions): string
+    {
+        $out = "/**\n";
+        $out .= " * Breadcrumb: APIs this widget is declared to call.\n";
+        $out .= " * Declared on WidgetDefinition::\$apiCalls in WidgetRegistry; emitted by GenerateFiles::generateWidgetApiCallsBreadcrumbBlock().\n";
+        $out .= " * Keys are widget CSS class names. Values use the same METHOD + path strings as api_routes.\n";
+        $out .= " */\n";
+        $out .= "export const WIDGET_API_CALLS: Record<string, ReadonlyArray<{ method: string; path: string }>> = {\n";
+
+        foreach ($definitions as $definition) {
+            $escapedClass = str_replace(['\\', '"'], ['\\\\', '\\"'], $definition->cssClass);
+            $out .= "    \"{$escapedClass}\": [\n";
+            foreach ($definition->apiCalls as $apiCall) {
+                $escapedMethod = str_replace(['\\', '"'], ['\\\\', '\\"'], $apiCall->method);
+                $escapedPath = str_replace(['\\', '"'], ['\\\\', '\\"'], $apiCall->path);
+                $out .= "        { method: \"{$escapedMethod}\", path: \"{$escapedPath}\" },\n";
+            }
+            $out .= "    ],\n";
+        }
+
+        $out .= "};\n";
+
+        return $out;
+    }
+
+    /**
+     * Registry module paths are relative to app/public/tsx; generated file is in generated/.
+     */
+    private static function modulePathRelativeToGeneratedDirectory(string $modulePath): string
+    {
+        if (str_starts_with($modulePath, './') === true) {
+            return '../' . substr($modulePath, 2);
+        }
+
+        if (str_starts_with($modulePath, '/') === true) {
+            return $modulePath;
+        }
+
+        return '../' . $modulePath;
     }
 }

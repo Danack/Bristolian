@@ -290,13 +290,13 @@ HTML;
 
     public function about(MarkdownRenderer $markdownRenderer): string
     {
-        $fullPath = __DIR__ . "/../../../docs/site/about_page.md";
+        $fullPath = __DIR__ . "/../../../notes/site/about_page.md";
         return $markdownRenderer->renderFile($fullPath);
     }
 
     public function triangle_road(MarkdownRenderer $markdownRenderer): string
     {
-        $fullPath = __DIR__ . "/../../../docs/complaints/triangle_road.md";
+        $fullPath = __DIR__ . "/../../../notes/complaints/triangle_road.md";
 
         Page::setQrShareMessage("Please share this with anyone you know who would be affected by this road reopening. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
 
@@ -309,7 +309,7 @@ HTML;
 
     public function bristol_rovers(MarkdownRenderer $markdownRenderer): string
     {
-        $fullPath = __DIR__ . "/../../../docs/complaints/bristol_rovers.md";
+        $fullPath = __DIR__ . "/../../../notes/complaints/bristol_rovers.md";
 
         Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
 
@@ -323,7 +323,7 @@ HTML;
 
     public function advice_for_speaking_at_council(MarkdownRenderer $markdownRenderer): string
     {
-        $fullPath = __DIR__ . "/../../../docs/explanations/advice_for_speaking_at_council.md";
+        $fullPath = __DIR__ . "/../../../notes/explanations/advice_for_speaking_at_council.md";
 
         Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
 
@@ -336,7 +336,7 @@ HTML;
 
     public function avon_crescent(MarkdownRenderer $markdownRenderer): string
     {
-        $fullPath = __DIR__ . "/../../../docs/complaints/avon_crescent_spike_island.md";
+        $fullPath = __DIR__ . "/../../../notes/complaints/avon_crescent_spike_island.md";
 
         Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
 
@@ -350,7 +350,7 @@ HTML;
 
     public function shenanigans_planning(MarkdownRenderer $markdownRenderer): string
     {
-        $fullPath = __DIR__ . "/../../../docs/explanations/shenanigans_at_dcb_committee.md";
+        $fullPath = __DIR__ . "/../../../notes/explanations/shenanigans_at_dcb_committee.md";
 
         Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
 
@@ -363,7 +363,7 @@ HTML;
 
     public function monitoring_officer_notes(MarkdownRenderer $markdownRenderer): string
     {
-        $fullPath = __DIR__ . "/../../../docs/explanations/monitoring_officer_problem.md";
+        $fullPath = __DIR__ . "/../../../notes/explanations/monitoring_officer_problem.md";
 
         Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
 
@@ -377,7 +377,7 @@ HTML;
 
     public function development_committee_rules(MarkdownRenderer $markdownRenderer): string
     {
-        $fullPath = __DIR__ . "/../../../docs/explanations/development_committee_rules.md";
+        $fullPath = __DIR__ . "/../../../notes/explanations/development_committee_rules.md";
 
         Page::setQrShareMessage("Feel free to share this page. Show this QR code to someone, and they can scan it with the camera in their device. Or just copy pasta the URL to your socials.");
 
@@ -410,14 +410,14 @@ HTML;
 
     public function weca_question_active_travel(MarkdownRenderer $markdownRenderer): string
     {
-        $fullPath = __DIR__ . "/../../../docs/questions/1_active_travel_weca.md";
+        $fullPath = __DIR__ . "/../../../notes/questions/1_active_travel_weca.md";
 
         return $markdownRenderer->renderFile($fullPath);
     }
 
     public function weca_question_tram(MarkdownRenderer $markdownRenderer): string
     {
-        $fullPath = __DIR__ . "/../../../docs/questions/2_cumberland_basin_weca_road_feasilbity.md";
+        $fullPath = __DIR__ . "/../../../notes/questions/2_cumberland_basin_weca_road_feasilbity.md";
 
         return $markdownRenderer->renderFile($fullPath);
     }

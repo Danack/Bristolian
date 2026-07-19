@@ -9,6 +9,9 @@ use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Service\SecureTokenGenerator\SecureTokenGenerator;
 use Ramsey\Uuid\Uuid;
+use Bristolian\Attribute\ReadsTable;
+use Bristolian\Attribute\WritesTable;
+use Bristolian\Database\api_token;
 
 /**
  * PDO-based implementation of ApiTokenRepo.
@@ -23,6 +26,7 @@ class PdoApiTokenRepo implements ApiTokenRepo
     ) {
     }
 
+    #[WritesTable(api_token::class)]
     public function createToken(string $name): ApiToken
     {
         $lastException = null;
@@ -80,6 +84,7 @@ class PdoApiTokenRepo implements ApiTokenRepo
         throw ApiTokenCreateFailedException::afterMaxRetries(self::MAX_CREATE_RETRIES, $lastException);
     }
 
+    #[ReadsTable(api_token::class)]
     public function getByToken(string $token): ?ApiToken
     {
         $sql = <<< SQL
@@ -112,6 +117,7 @@ SQL;
         return $apiToken;
     }
 
+    #[WritesTable(api_token::class)]
     public function revokeToken(string $tokenId): void
     {
         $sql = <<< SQL

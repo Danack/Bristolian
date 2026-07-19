@@ -15,7 +15,7 @@ use VarMap\ArrayVarMap;
  * Abstract test class for RoomAnnotationRepo implementations.
  *
  * Scenario data (user id, room id, file id) is provided by concrete tests.
- * See docs/refactoring/default_test_scenarios_and_worlds.md § Abstract repo fixtures.
+ * See notes/refactoring/default_test_scenarios_and_worlds.md § Abstract repo fixtures.
  *
  * @coversNothing
  */
