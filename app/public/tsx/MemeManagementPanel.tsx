@@ -1690,7 +1690,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
                     Clear
                 </span>
                 <span 
-                    class="button untagged_button"
+                    class="button_standard untagged_button"
                     onClick={() => this.performSearch(true)}
                     title="Show only memes with no tags (so you can add some)">
                     Show untagged
@@ -1700,7 +1700,7 @@ export class MemeManagementPanel extends Component<MemeManagementPanelProps, Mem
 
         const uploadButtonSection = <div class="meme_upload_button_section">
             <span 
-                class="button meme_upload_button"
+                class="button_standard meme_upload_button"
                 onClick={() => this.handleShowUpload()}>
                 Upload Meme
             </span>

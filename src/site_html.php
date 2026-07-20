@@ -57,7 +57,7 @@ function getPageLayoutHtml(\Bristolian\SiteHtml\ExtraAssets $extraAssets,): stri
     $html = <<< HTML
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-widgety-debug-allowed=":attr_widgety_debug_allowed">
 
 <head>
   <meta charset="utf-8">
@@ -104,6 +104,7 @@ function createPageHtml(
     $pageTitle = "Bristolian";
 
     $assetSuffix = $assetLinkEmitter->getAssetSuffix();
+    $widgetyDebugAllowed = $assetLinkEmitter->isProductionEnv() ? '0' : '1';
 
     $params = [
         ':raw_site_css_link' => '/css/site.css' . $assetSuffix,
@@ -115,6 +116,7 @@ function createPageHtml(
         ':raw_content' => $html, //$page->getContentHtml(),
         ':raw_nav_content' => '', //createContentLinksHtml($prefix, $page->getContentLinks()),
 //        ':raw_footer' => createFooterHtml(),
+        ':attr_widgety_debug_allowed' => $widgetyDebugAllowed,
     ];
 
     return esprintf(getPageLayoutHtml($extraAssets), $params);

@@ -1,0 +1,40 @@
+.widgety_widget_root {
+  position: relative;
+}
+
+.widgety_debug_label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  padding: 0.25rem 0.5rem;
+  background: #111;
+  color: #fff;
+  font-family: monospace;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.widgety_debug_toggle_host {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 10001;
+}
+
+.widgety_debug_toggle {
+  border: 2px solid #888;
+  cursor: pointer;
+  border-radius: 3px;
+  background-color: #444;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+
+  &:hover {
+    border-color: #6af;
+    background-color: #444;
+    color: #fff;
+  }
+}

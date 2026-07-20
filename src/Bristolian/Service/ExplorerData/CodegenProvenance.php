@@ -390,8 +390,7 @@ class CodegenProvenance
             return null;
         }
 
-        if (
-            array_key_exists('generator', $decoded) === false
+        if (array_key_exists('generator', $decoded) === false
             || array_key_exists('generator_callable', $decoded) === false
             || array_key_exists('output_file', $decoded) === false
             || array_key_exists('description', $decoded) === false
@@ -414,16 +413,14 @@ class CodegenProvenance
             'description' => $decoded['description'],
         ];
 
-        if (
-            array_key_exists('detail', $decoded) === true
+        if (array_key_exists('detail', $decoded) === true
             && is_string($decoded['detail']) === true
             && $decoded['detail'] !== ''
         ) {
             $payload['detail'] = $decoded['detail'];
         }
 
-        if (
-            array_key_exists('detail_source', $decoded) === true
+        if (array_key_exists('detail_source', $decoded) === true
             && is_array($decoded['detail_source']) === true
             && array_key_exists('file', $decoded['detail_source']) === true
             && array_key_exists('line-start', $decoded['detail_source']) === true

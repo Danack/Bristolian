@@ -25,6 +25,7 @@ class AssetLinkEmitterTest extends BaseTestCase
             "?version=" . $sha,
             $linkEmitter->getAssetSuffix()
         );
+        $this->assertFalse($linkEmitter->isProductionEnv());
 
         $assetLinkConfig = new HardCodedAssetLinkConfig(true, $sha);
         $linkEmitter = new AssetLinkEmitter($assetLinkConfig);
@@ -33,5 +34,9 @@ class AssetLinkEmitterTest extends BaseTestCase
             "?time=",
             $linkEmitter->getAssetSuffix()
         );
+
+        $productionConfig = new HardCodedAssetLinkConfig(false, $sha, true);
+        $productionEmitter = new AssetLinkEmitter($productionConfig);
+        $this->assertTrue($productionEmitter->isProductionEnv());
     }
 }

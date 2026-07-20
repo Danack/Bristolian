@@ -25,4 +25,9 @@ class AssetLinkEmitter
 
         return "?version=" . $sha;
     }
+
+    public function isProductionEnv(): bool
+    {
+        return $this->config->isProductionEnv();
+    }
 }

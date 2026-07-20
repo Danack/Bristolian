@@ -47,6 +47,22 @@ class SiteHtmlFunctionsTest extends BaseTestCase
         $html = "<div>I am great webpage.</div>";
 
         $result = createPageHtml($assetLinkEmitter, $extraAssets, $html);
+
+        $this->assertStringContainsString('data-widgety-debug-allowed="1"', $result);
+    }
+
+    /**
+     * @covers ::createPageHtml
+     */
+    public function test_createPageHtml_disables_widgety_debug_in_production()
+    {
+        $assetLinkConfig = new \Bristolian\Config\HardCodedAssetLinkConfig(true, "abdefg", true);
+        $assetLinkEmitter = new \Bristolian\SiteHtml\AssetLinkEmitter($assetLinkConfig);
+        $extraAssets = new \Bristolian\SiteHtml\ExtraAssets();
+
+        $result = createPageHtml($assetLinkEmitter, $extraAssets, "<div>content</div>");
+
+        $this->assertStringContainsString('data-widgety-debug-allowed="0"', $result);
     }
 
 

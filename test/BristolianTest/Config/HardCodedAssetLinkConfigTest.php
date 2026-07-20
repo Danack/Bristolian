@@ -22,5 +22,13 @@ class HardCodedAssetLinkConfigTest extends BaseTestCase
 
         $this->assertSame($forceAssetRefresh, $config->getForceAssetRefresh());
         $this->assertSame($commit_sha, $config->getCommitSha());
+        $this->assertFalse($config->isProductionEnv());
+    }
+
+    public function testProductionEnvCanBeSet()
+    {
+        $config = new HardCodedAssetLinkConfig(false, "abcdef", true);
+
+        $this->assertTrue($config->isProductionEnv());
     }
 }

@@ -65,8 +65,7 @@ class ServiceDependencyDiscovery
                 continue;
             }
 
-            if (
-                $reflectionClass->isTrait() === true
+            if ($reflectionClass->isTrait() === true
                 || $reflectionClass->isEnum() === true
                 || $reflectionClass->isAbstract() === true
             ) {
@@ -74,8 +73,7 @@ class ServiceDependencyDiscovery
             }
 
             $shortName = $reflectionClass->getShortName();
-            if (
-                str_starts_with($shortName, 'Fake') === true
+            if (str_starts_with($shortName, 'Fake') === true
                 || str_starts_with($shortName, 'InMemory') === true
             ) {
                 continue;

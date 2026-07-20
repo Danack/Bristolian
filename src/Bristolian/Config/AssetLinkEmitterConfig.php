@@ -2,7 +2,7 @@
 
 namespace Bristolian\Config;
 
-interface AssetLinkEmitterConfig extends GetCommitSha, ForceAssetRefresh
+interface AssetLinkEmitterConfig extends GetCommitSha, ForceAssetRefresh, IsProductionEnv
 {
 
 }
