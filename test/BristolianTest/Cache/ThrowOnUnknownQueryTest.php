@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BristolianTest\Cache;
 
 use Bristolian\Cache\ThrowOnUnknownQuery;
+use Bristolian\Cache\UnknownQueryException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -12,11 +13,11 @@ use PHPUnit\Framework\TestCase;
  */
 class ThrowOnUnknownQueryTest extends TestCase
 {
-    public function testThrowsRuntimeException(): void
+    public function testThrowsUnknownQueryException(): void
     {
         $handler = new ThrowOnUnknownQuery();
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(UnknownQueryException::class);
         $handler->handle('SELECT * FROM users');
     }
 
@@ -24,7 +25,7 @@ class ThrowOnUnknownQueryTest extends TestCase
     {
         $handler = new ThrowOnUnknownQuery();
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(UnknownQueryException::class);
         $this->expectExceptionMessage('SELECT * FROM users');
         $handler->handle('SELECT * FROM users');
     }
@@ -36,8 +37,8 @@ class ThrowOnUnknownQueryTest extends TestCase
 
         try {
             $handler->handle($longQuery);
-            $this->fail('Expected RuntimeException was not thrown');
-        } catch (\RuntimeException $exception) {
+            $this->fail('Expected UnknownQueryException was not thrown');
+        } catch (UnknownQueryException $exception) {
             $message = $exception->getMessage();
             $this->assertStringContainsString(str_repeat('A', 200), $message);
             $this->assertStringNotContainsString(str_repeat('A', 201), $message);
@@ -50,8 +51,8 @@ class ThrowOnUnknownQueryTest extends TestCase
 
         try {
             $handler->handle('SELECT 1');
-            $this->fail('Expected RuntimeException was not thrown');
-        } catch (\RuntimeException $exception) {
+            $this->fail('Expected UnknownQueryException was not thrown');
+        } catch (UnknownQueryException $exception) {
             $message = $exception->getMessage();
             $this->assertStringContainsString('QueryTagMapping.php', $message);
             $this->assertStringContainsString('getExactMappings()', $message);

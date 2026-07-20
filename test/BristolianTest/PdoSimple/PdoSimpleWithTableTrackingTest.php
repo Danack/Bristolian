@@ -6,6 +6,7 @@ namespace BristolianTest\PdoSimple;
 
 use Bristolian\Cache\TestTableAccessRecorder;
 use Bristolian\Cache\ThrowOnUnknownQuery;
+use Bristolian\Cache\UnknownQueryException;
 use Bristolian\Cache\UnknownQueryHandler;
 use Bristolian\Database\pdo_simple_test;
 use Bristolian\PdoSimple\PdoSimpleWithTableTracking;
@@ -156,7 +157,7 @@ class PdoSimpleWithTableTrackingTest extends BaseTestCase
     {
         $tracker = $this->createTracker();
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(UnknownQueryException::class);
         $this->expectExceptionMessage('Unknown query not in cache tag mapping');
 
         $tracker->fetchAllAsData(pdo_simple_test::SELECT, []);
@@ -493,7 +494,7 @@ class PdoSimpleWithTableTrackingTest extends BaseTestCase
 
         $tracker = $this->createTracker();
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(UnknownQueryException::class);
         $tracker->fetchAllAsData(pdo_simple_test::SELECT, []);
     }
 
