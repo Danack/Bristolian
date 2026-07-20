@@ -118,7 +118,7 @@
         {
             "path": "quality_tools",
             "role": "workflow",
-            "description": "Glob rules mapping dirty workspace paths to quality/test commands for the CodeView Work on selection \u2192 Quality control step. Matching (not a fixed PHP-first ladder) decides which tools matter; optional stage orders matched tools so cheaper gates run before slower suites. Commands are host-copy-pastable (docker exec for Bristolian). Not a Categories button.",
+            "description": "Glob rules mapping dirty workspace paths to quality/test commands for the CodeView Tweak selection \u2192 Quality control step. Matching (not a fixed PHP-first ladder) decides which tools matter; optional stage orders matched tools so cheaper gates run before slower suites. Commands are host-copy-pastable (docker exec for Bristolian). Not a Categories button.",
             "item_shape": "id, label, command, globs[], optional exclude_globs[], optional stage",
             "drill_down": "git dirty paths \u00d7 globs \u2192 planned commands sorted by stage (listed in extension; execution/agent inject is extension-side and should be staged/interruptible)"
         }
