@@ -141,6 +141,13 @@ class ExplorerDataBuilder
             'item_shape' => 'id, label, command, globs[], optional exclude_globs[], optional stage',
             'drill_down' => 'git dirty paths × globs → planned commands sorted by stage (listed in extension; execution/agent inject is extension-side and should be staged/interruptible)',
         ],
+        [
+            'path' => 'cursor_commands',
+            'role' => 'workflow',
+            'description' => 'Cursor slash commands from .cursor/commands/*.md. Labels and sort order come from .cursor/commands/command.meta.json (priority ascending; ties keep meta list order). Not a Categories button - used as workflow action buttons in CodeView.',
+            'item_shape' => 'id, label, file, priority',
+            'drill_down' => 'file -> open the command markdown; id is the slash-command name without .md',
+        ],
     ];
 
     /**

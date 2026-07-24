@@ -64,6 +64,7 @@ class ExplorerDataBuilderTest extends BaseTestCase
         $dependenciesExplanation = null;
         $generatedArtifactsExplanation = null;
         $qualityToolsExplanation = null;
+        $cursorCommandsExplanation = null;
         foreach ($decoded['root_explanations'] as $explanation) {
             if ($explanation['path'] === '/widgets') {
                 $widgetsExplanation = $explanation;
@@ -76,6 +77,9 @@ class ExplorerDataBuilderTest extends BaseTestCase
             }
             if ($explanation['path'] === 'quality_tools') {
                 $qualityToolsExplanation = $explanation;
+            }
+            if ($explanation['path'] === 'cursor_commands') {
+                $cursorCommandsExplanation = $explanation;
             }
         }
 
@@ -97,6 +101,11 @@ class ExplorerDataBuilderTest extends BaseTestCase
         $this->assertSame('workflow', $qualityToolsExplanation['role']);
         $this->assertStringContainsString('Glob rules', $qualityToolsExplanation['description']);
         $this->assertStringContainsString('stage', $qualityToolsExplanation['item_shape']);
+
+        $this->assertIsArray($cursorCommandsExplanation);
+        $this->assertSame('workflow', $cursorCommandsExplanation['role']);
+        $this->assertStringContainsString('command.meta.json', $cursorCommandsExplanation['description']);
+        $this->assertStringContainsString('priority', $cursorCommandsExplanation['item_shape']);
 
         unlink($outputPath);
     }

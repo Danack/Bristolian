@@ -94,6 +94,7 @@ It is OK to hard-code Bristolian paths (e.g. `src/Bristolian/...`, supervisord c
   "root": [ { "name": "…", "path": "/…" } ],
   "root_explanations": [ … ],
   "quality_tools": [ … ],
+  "cursor_commands": [ … ],
   "cli_commands": [ … ],
   "supervisord_tasks": [ … ],
   "features": [ … ],
@@ -110,7 +111,7 @@ Rules:
 
 - Every `root[].path` of the form `/foo` expects a top-level key `foo` (path without leading `/`).
 - Categories that are only listed in `root` but have no array (or an empty array) show as empty in the UI.
-- Keys not referenced by `root` can still exist (e.g. `controllers`, `dependencies`, `code-map`, `quality_tools`, `root_explanations`) — they are **indexes / graphs / workflow metadata**, not category lists.
+- Keys not referenced by `root` can still exist (e.g. `controllers`, `dependencies`, `code-map`, `quality_tools`, `cursor_commands`, `root_explanations`) — they are **indexes / graphs / workflow metadata**, not category lists.
 
 ---
 
@@ -306,6 +307,34 @@ Contract details: [`extension-cursor-user/handoff-quality-tools-globs.md`](./ext
 | `stage` | Optional order **among matched tools** (lower first). Selection is path-driven — frontend+Behat edits do not force PHP tools. |
 
 Emitted by `ExplorerDataBuilder` / `php cli.php generate:codeview-data`.
+
+### `cursor_commands`
+
+Workflow metadata for CodeView action buttons that expose Cursor slash commands from `.cursor/commands/*.md`. **Not** a category button.
+
+Source of truth for labels and order: `.cursor/commands/command.meta.json`. Generation **fails** if:
+
+- a meta entry is missing a non-empty `name` or integer `priority`
+- meta lists a markdown file that is not on disk
+- a `.md` file exists in the directory with no meta entry
+
+```json
+{
+  "id": "commit",
+  "label": "Commit",
+  "file": ".cursor/commands/commit.md",
+  "priority": 1
+}
+```
+
+| Field | Notes |
+|-------|--------|
+| `id` | Filename without `.md` (slash-command name) |
+| `label` | Button text from meta `name` |
+| `file` | Repo-relative path to the command markdown |
+| `priority` | Sort key ascending; ties keep `command.meta.json` list order |
+
+Emitted by `CursorCommandsEntryTypeFinder` / `php cli.php generate:codeview-data`.
 
 ### `features`
 

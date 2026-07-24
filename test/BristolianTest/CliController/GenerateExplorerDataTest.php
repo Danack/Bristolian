@@ -48,6 +48,7 @@ class GenerateExplorerDataTest extends BaseTestCase
         $this->assertArrayHasKey('api_endpoints', $decoded);
         $this->assertArrayHasKey('supervisord_tasks', $decoded);
         $this->assertArrayHasKey('quality_tools', $decoded);
+        $this->assertArrayHasKey('cursor_commands', $decoded);
         $this->assertNotEmpty($decoded['cli_commands']);
         $this->assertNotEmpty($decoded['code-map']);
         $this->assertNotEmpty($decoded['controllers']);
@@ -59,6 +60,13 @@ class GenerateExplorerDataTest extends BaseTestCase
         $this->assertNotEmpty($decoded['quality_tools']);
         $this->assertSame('phpstan', $decoded['quality_tools'][0]['id']);
         $this->assertStringContainsString('docker exec', $decoded['quality_tools'][0]['command']);
+        $this->assertNotEmpty($decoded['cursor_commands']);
+        $this->assertSame('improve_test_coverage', $decoded['cursor_commands'][0]['id']);
+        $this->assertSame('Improve test coverage', $decoded['cursor_commands'][0]['label']);
+        $this->assertSame(
+            '.cursor/commands/improve_test_coverage.md',
+            $decoded['cursor_commands'][0]['file']
+        );
 
         $roomDatasource = null;
         foreach ($decoded['datasources'] as $datasource) {

@@ -1,0 +1,54 @@
+{
+    "commands": [
+        {
+            "file": "commit.md",
+            "name": "Commit",
+            "priority": 8
+        },
+        {
+            "file": "finalise_work.md",
+            "name": "Finalise work",
+            "priority": 7
+        },
+        {
+            "file": "improve_test_coverage.md",
+            "name": "Improve test coverage",
+            "priority": 3
+        },
+        {
+            "file": "improve_frontend_test_coverage.md",
+            "name": "Improve frontend test coverage",
+            "priority": 4
+        },
+        {
+            "file": "improve_phpstan_analysis.md",
+            "name": "Improve PHPStan analysis",
+            "priority": 5
+        },
+        {
+            "file": "fix_disappearing_text.md",
+            "name": "Fix disappearing text",
+            "priority": 6
+        },
+        {
+            "file": "review_documents.md",
+            "name": "Review documents",
+            "priority": 7
+        },
+        {
+            "file": "review_cursor_commands.md",
+            "name": "Review Cursor commands",
+            "priority": 8
+        },
+        {
+            "file": "review_search.md",
+            "name": "Review search",
+            "priority": 9
+        },
+        {
+            "file": "lessons_learned.md",
+            "name": "Lessons learned",
+            "priority": 10
+        }
+    ]
+}

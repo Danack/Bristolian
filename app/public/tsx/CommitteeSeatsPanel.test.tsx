@@ -33,17 +33,18 @@ describe("example_councils", () => {
         expect(calculateTotalCouncillors(barnet!.political_groups)).toBe(63);
     });
 
-    test("bristol prefills political groups and 144 committee seats from 16 committees", () => {
+    test("bristol prefills political groups and 140 committee seats from 16 committees", () => {
         const bristol = getExampleCouncilById("bristol");
         expect(bristol).toBeDefined();
         expect(bristol?.committees.length).toBe(16);
-        expect(bristol?.committees.every((committee) => committee.seat_count === 9)).toBe(true);
-        expect(getPrefilledTotalCommitteeSeats(bristol!)).toBe(144);
+        expect(getPrefilledTotalCommitteeSeats(bristol!)).toBe(140);
+        expect(bristol?.committees.find((committee) => committee.name === "Public Rights of Way and Greens Committee")?.seat_count).toBe(7);
+        expect(bristol?.committees.find((committee) => committee.name === "Health Scrutiny Sub Committee")?.seat_count).toBe(7);
         expect(bristol?.seat_assignment_source_url).toContain("democracy.bristol.gov.uk");
         expect(calculateTotalCouncillors(bristol!.political_groups)).toBe(70);
 
         const applied = applyExampleCouncilToFormState(bristol!);
-        expect(applied.total_committee_seats).toBe(144);
+        expect(applied.total_committee_seats).toBe(140);
         expect(applied.political_groups.length).toBe(COUNCIL_SETUP_POLITICAL_GROUP_ROW_COUNT);
         expect(applied.political_groups.find((group) => group.name === "Green")?.councillor_count).toBe(34);
     });
@@ -230,7 +231,7 @@ describe("validateCouncilSetup", () => {
 });
 
 describe("calculatePartyAllocation", () => {
-    test("bristol party counts with 144 committee seats", () => {
+    test("bristol party counts with 140 committee seats", () => {
         const bristol = getExampleCouncilById("bristol");
         expect(bristol).toBeDefined();
 
@@ -239,7 +240,8 @@ describe("calculatePartyAllocation", () => {
             total_committee_seats: getPrefilledTotalCommitteeSeats(bristol!)!,
         });
 
-        expect(result.total_allocated_seats).toBe(144);
+        // 140 seats / 70 councillors → exact doubles; no remainder seats.
+        expect(result.total_allocated_seats).toBe(140);
         expect(result.rows.map((row) => row.group_name)).toEqual([
             "Green",
             "Labour",
@@ -254,49 +256,24 @@ describe("calculatePartyAllocation", () => {
         const conservative = result.rows.find((row) => row.group_name === "Conservative");
         const independent = result.rows.find((row) => row.group_name === "Independent");
 
-        expect(green?.floored_seats).toBe(69);
-        expect(labour?.floored_seats).toBe(39);
+        expect(green?.floored_seats).toBe(68);
+        expect(labour?.floored_seats).toBe(38);
         expect(liberalDemocrat?.floored_seats).toBe(18);
         expect(conservative?.floored_seats).toBe(14);
         expect(independent?.floored_seats).toBe(2);
 
-        expect(green?.final_seats).toBe(70);
-        expect(labour?.final_seats).toBe(39);
-        expect(liberalDemocrat?.final_seats).toBe(19);
+        expect(green?.final_seats).toBe(68);
+        expect(labour?.final_seats).toBe(38);
+        expect(liberalDemocrat?.final_seats).toBe(18);
         expect(conservative?.final_seats).toBe(14);
         expect(independent?.final_seats).toBe(2);
 
-        expect(result.workbook_steps.length).toBe(3);
+        expect(result.workbook_steps.length).toBe(1);
         expect(result.workbook_steps[0].label).toBe("Round each share down to whole seats");
         expect(result.workbook_steps[0].seats_by_group_name.Green).toBe(green!.floored_seats);
-        expect(result.workbook_steps[0].total_seats_allocated).toBe(142);
-        expect(result.workbook_steps[1].label).toBe("One extra seat to Green");
-        expect(result.workbook_steps[1].seats_by_group_name.Green).toBe(70);
-        expect(result.workbook_steps[1].total_seats_allocated).toBe(143);
-        expect(result.workbook_steps[2].label).toBe("One extra seat to Liberal Democrat");
-        expect(result.workbook_steps[2].seats_by_group_name["Liberal Democrat"]).toBe(19);
-        expect(result.workbook_steps[2].total_seats_allocated).toBe(144);
-
-        expect(result.workbook_steps[0].description).toContain(
-            "Round each group's exact entitlement down to whole seats"
-        );
-        expect(result.workbook_steps[0].description).toContain("142 seats assigned, 2 seats remain");
-
-        expect(result.workbook_steps[1].description).toContain("We have allocated 142/144 seats");
-        expect(result.workbook_steps[1].description).toContain(
-            "To allocate the next, we look at which group has the largest fractional part left from their exact entitlement"
-        );
-        expect(result.workbook_steps[1].description).toContain("Green has the largest (0.94)");
-        expect(result.workbook_steps[1].description).not.toContain("Sub-step");
-        expect(result.workbook_steps[1].description).not.toContain("next largest fractional part");
-
-        expect(result.workbook_steps[2].description).toContain("We have allocated 143/144 seats");
-        expect(result.workbook_steps[2].description).toContain("Liberal Democrat has the largest (0.51)");
-        expect(result.workbook_steps[2].description).not.toContain("Sub-step");
-        expect(result.workbook_steps[2].description).not.toContain("Every committee seat has now been assigned");
-        expect(result.all_committee_seats_allocated_message).toBe(
-            "Every committee seat has now been assigned."
-        );
+        expect(result.workbook_steps[0].total_seats_allocated).toBe(140);
+        expect(result.workbook_steps[0].description).toBeNull();
+        expect(result.all_committee_seats_allocated_message).toBeNull();
     });
 
     test("bristol excludes independent councillors from allocation when configured", () => {
@@ -312,7 +289,7 @@ describe("calculatePartyAllocation", () => {
         });
 
         expect(result.rows.find((row) => row.group_name === STANDARD_INDEPENDENT_GROUP_NAME)).toBeUndefined();
-        expect(result.total_allocated_seats).toBe(144);
+        expect(result.total_allocated_seats).toBe(140);
         expect(result.rows).toHaveLength(4);
     });
 

@@ -14,6 +14,7 @@ use Bristolian\Service\ExplorerData\DatasourcesEntryTypeFinder;
 use Bristolian\Service\ExplorerData\DependenciesEntryTypeFinder;
 use Bristolian\Service\ExplorerData\HttpEndpointsEntryTypeFinder;
 use Bristolian\Service\ExplorerData\SupervisordTasksEntryTypeFinder;
+use Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder;
 use Bristolian\Service\ExplorerData\GeneratedArtifactsEntryTypeFinder;
 use Bristolian\Service\ExplorerData\WidgetsEntryTypeFinder;
 
@@ -41,6 +42,7 @@ class GenerateExplorerData
         $builder->addFromEntryTypeFinder(new SupervisordTasksEntryTypeFinder());
         $builder->addFromEntryTypeFinder(new WidgetsEntryTypeFinder());
         $builder->addFromEntryTypeFinder(new GeneratedArtifactsEntryTypeFinder());
+        $builder->addFromEntryTypeFinder(new CursorCommandsEntryTypeFinder());
 
         try {
             $builder->execute();
