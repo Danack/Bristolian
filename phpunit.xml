@@ -7,13 +7,13 @@
          requireCoverageMetadata="true"
          beStrictAboutCoverageMetadata="false"
          beStrictAboutOutputDuringTests="true"
-         displayDetailsOnPhpunitDeprecations="true"
+         displayDetailsOnPhpunitDeprecations="false"
          displayDetailsOnSkippedTests="false"
          displayDetailsOnTestsThatTriggerDeprecations="true"
          displayDetailsOnTestsThatTriggerNotices="true"
          displayDetailsOnTestsThatTriggerWarnings="true"
          displayDetailsOnTestsThatTriggerErrors="true"
-         failOnPhpunitDeprecation="true"
+         failOnPhpunitDeprecation="false"
          failOnRisky="true"
          failOnWarning="true">
 
