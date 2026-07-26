@@ -13,6 +13,9 @@ use Bristolian\Service\RoomMessageService\RoomMessageService;
 use Bristolian\Session\AppSession;
 use VarMap\VarMap;
 
+
+use function Bristolian\createReactWidget;
+
 class Chat
 {
     public function send_message_get(): EndpointAccessedViaGetResponse
@@ -26,18 +29,7 @@ class Chat
             'room_id' => App::ROOM_ID_DEBUG
         ];
 
-        $widget_json = json_encode_safe($props);
-        $widget_data = htmlspecialchars($widget_json);
-
-
-        $html = <<< HTML
-<div>
-    <div class="chat_panel" data-widgety_json="$widget_data">
-    </div>
-</div>
-HTML;
-
-        return $html;
+        return createReactWidget("chat_panel", $props);
     }
 
 

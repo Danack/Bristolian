@@ -12,12 +12,21 @@ use SlimDispatcher\Response\RedirectResponse;
 
 /**
  * @coversNothing
+ *
+ * Note: do not use @covers ...RouteEndpointEntryBuilder::getApiResultMappers (or
+ * ::getAppResultMappers). Those method names collide with global functions in
+ * api/src/api_factories.php and app/src/app_factories.php. sebastian/code-unit
+ * resolves Class::method by checking function_exists(method) first, so coverage
+ * is attributed to the global function file instead of the class. Cover the
+ * whole RouteEndpointEntryBuilder class instead.
  */
 class RouteEndpointsEntryTypeFinderTest extends BaseTestCase
 {
     /**
      * @covers \Bristolian\Service\ExplorerData\HttpEndpointsEntryTypeFinder::getEntryTypeKey
      * @covers \Bristolian\Service\ExplorerData\HttpEndpointsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\RouteEndpointEntryBuilder
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
      */
     public function test_http_endpoints_include_homepage_with_string_mapper(): void
     {
@@ -52,6 +61,8 @@ class RouteEndpointsEntryTypeFinderTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Service\ExplorerData\HttpEndpointsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\RouteEndpointEntryBuilder
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
      */
     public function test_http_endpoints_map_union_return_types(): void
     {
@@ -75,6 +86,8 @@ class RouteEndpointsEntryTypeFinderTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\ExplorerData\ApiEndpointsEntryTypeFinder::getEntryTypeKey
      * @covers \Bristolian\Service\ExplorerData\ApiEndpointsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\RouteEndpointEntryBuilder
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
      */
     public function test_api_endpoints_include_bristol_stairs_get_data(): void
     {
@@ -103,15 +116,63 @@ class RouteEndpointsEntryTypeFinderTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Service\ExplorerData\RouteEndpointEntryBuilder::resolveResultMapper
+     * @covers \Bristolian\Service\ExplorerData\RouteEndpointEntryBuilder
      */
     public function test_resolveResultMapper_matches_stub_response_subclasses(): void
     {
-        $mapper = RouteEndpointEntryBuilder::resolveResultMapper(
-            RedirectResponse::class,
+        $appMappers = RouteEndpointEntryBuilder::getAppResultMappers();
+        $apiMappers = RouteEndpointEntryBuilder::getApiResultMappers();
+
+        $this->assertSame(
+            'SlimDispatcher\\mapStubResponseToPsr7',
+            RouteEndpointEntryBuilder::resolveResultMapper(RedirectResponse::class, $appMappers)
+        );
+        $this->assertSame(
+            'SlimDispatcher\\mapStubResponseToPsr7',
+            RouteEndpointEntryBuilder::resolveResultMapper(RedirectResponse::class, $apiMappers)
+        );
+        $this->assertSame('convertStringToResponse', $apiMappers['string']);
+        $this->assertSame(
+            'SlimDispatcher\\passThroughResponse',
+            $apiMappers[\Psr\Http\Message\ResponseInterface::class]
+        );
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\RouteEndpointEntryBuilder
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::normalizeFqcn
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
+     */
+    public function test_buildEntriesFromRoutes_skips_invalid_rows_and_unknown_return_types(): void
+    {
+        $entries = RouteEndpointEntryBuilder::buildEntriesFromRoutes(
+            [
+                ['/too-short'],
+                [123, 'GET', 'Bristolian\\CliController\\Debug::hello'],
+                ['/ok', 'GET', 'Bristolian\\CliController\\Debug::hello'],
+                ['/missing', 'GET', 'Bristolian\\DoesNotExist\\Nowhere::missing'],
+            ],
             RouteEndpointEntryBuilder::getAppResultMappers()
         );
 
-        $this->assertSame('SlimDispatcher\\mapStubResponseToPsr7', $mapper);
+        $this->assertCount(2, $entries);
+        $this->assertSame('/ok', $entries[0]['path']);
+        $this->assertSame('Bristolian\\CliController\\Debug::hello', $entries[0]['controller']);
+        $this->assertSame('/missing', $entries[1]['path']);
+        $this->assertSame([], $entries[1]['return_types']);
+        $this->assertSame([], $entries[1]['response_mappers']);
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\RouteEndpointEntryBuilder
+     */
+    public function test_resolveResultMapper_returns_null_when_no_mapper_matches(): void
+    {
+        $this->assertNull(
+            RouteEndpointEntryBuilder::resolveResultMapper(
+                'Some\\Unknown\\Type',
+                RouteEndpointEntryBuilder::getAppResultMappers()
+            )
+        );
     }
 }

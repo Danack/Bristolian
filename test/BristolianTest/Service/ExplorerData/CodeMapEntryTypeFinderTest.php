@@ -15,6 +15,21 @@ class CodeMapEntryTypeFinderTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\ExplorerData\CodeMapEntryTypeFinder::getEntryTypeKey
      * @covers \Bristolian\Service\ExplorerData\CodeMapEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CodeMapEntryTypeFinder::collectControllerCallables
+     * @covers \Bristolian\Service\ExplorerData\CodeMapEntryTypeFinder::collectServiceClassNames
+     * @covers \Bristolian\Service\ExplorerData\PhpClassUnderDirectoryDiscovery::findClassNames
+     * @covers \Bristolian\Service\ExplorerData\PhpClassUnderDirectoryDiscovery::filterLoadableTypes
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::findAnnotatedInterfaceEntries
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::findImplementationsForInterface
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::findRepoInterfaceClassNames
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::collectMethodDatasourceEntries
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::tableNameFromHelperClass
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::locate
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::locateClass
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::pathRelativeToProjectRoot
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::collectDependenciesForCallable
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::classTypeNamesFromParameters
      */
     public function test_findEntries_maps_cli_http_and_api_controllers(): void
     {

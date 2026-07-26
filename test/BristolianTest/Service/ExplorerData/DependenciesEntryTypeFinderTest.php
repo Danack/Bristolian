@@ -15,6 +15,19 @@ class DependenciesEntryTypeFinderTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\ExplorerData\DependenciesEntryTypeFinder::getEntryTypeKey
      * @covers \Bristolian\Service\ExplorerData\DependenciesEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::datasourcePathForTableName
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::findAnnotatedInterfaceEntries
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::findImplementationsForInterface
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::findRepoInterfaceClassNames
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::collectMethodDatasourceEntries
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::tableNameFromHelperClass
+     * @covers \Bristolian\Service\ExplorerData\ServiceDependencyDiscovery::findEntries
+     * @covers \Bristolian\Service\ExplorerData\ServiceDependencyDiscovery::shouldSkipNamespace
+     * @covers \Bristolian\Service\ExplorerData\ServiceDependencyDiscovery::implementsListedServiceInterface
+     * @covers \Bristolian\Service\ExplorerData\ServiceDependencyDiscovery::looksLikeValueOrErrorType
+     * @covers \Bristolian\Service\ExplorerData\ServiceDependencyDiscovery::findSubclassesInPackage
+     * @covers \Bristolian\Service\ExplorerData\PhpClassUnderDirectoryDiscovery::findClassNames
+     * @covers \Bristolian\Service\ExplorerData\PhpClassUnderDirectoryDiscovery::filterLoadableTypes
      */
     public function test_findEntries_lists_repo_interfaces_with_method_datasource_paths(): void
     {

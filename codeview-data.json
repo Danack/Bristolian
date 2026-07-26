@@ -559,8 +559,8 @@
         {
             "name": "Bristolian\\AppController\\Admin::search_users",
             "file": "src/Bristolian/AppController/Admin.php",
-            "line-start": 202,
-            "line-end": 215,
+            "line-start": 198,
+            "line-end": 211,
             "dependencies": [
                 "Bristolian\\Repo\\UserSearch\\UserSearch",
                 "VarMap\\VarMap"
@@ -569,29 +569,29 @@
         {
             "name": "Bristolian\\AppController\\Admin::showAdminPage",
             "file": "src/Bristolian/AppController/Admin.php",
-            "line-start": 41,
-            "line-end": 51,
+            "line-start": 42,
+            "line-end": 52,
             "dependencies": []
         },
         {
             "name": "Bristolian\\AppController\\Admin::showEmailPage",
             "file": "src/Bristolian/AppController/Admin.php",
-            "line-start": 53,
-            "line-end": 60,
+            "line-start": 54,
+            "line-end": 61,
             "dependencies": []
         },
         {
             "name": "Bristolian\\AppController\\Admin::showNotificationTestPage",
             "file": "src/Bristolian/AppController/Admin.php",
-            "line-start": 33,
-            "line-end": 39,
+            "line-start": 34,
+            "line-end": 40,
             "dependencies": []
         },
         {
             "name": "Bristolian\\AppController\\Admin::showProcessorsPage",
             "file": "src/Bristolian/AppController/Admin.php",
-            "line-start": 63,
-            "line-end": 118,
+            "line-start": 64,
+            "line-end": 119,
             "dependencies": [
                 "Bristolian\\Repo\\ProcessorRepo\\ProcessorRepo",
                 "Bristolian\\SiteHtml\\AssetLinkEmitter",
@@ -601,8 +601,8 @@
         {
             "name": "Bristolian\\AppController\\Admin::showUnknownCacheQueries",
             "file": "src/Bristolian/AppController/Admin.php",
-            "line-start": 172,
-            "line-end": 200,
+            "line-start": 168,
+            "line-end": 196,
             "dependencies": [
                 "Bristolian\\Service\\UnknownCacheQueries\\UnknownCacheQueriesProvider"
             ]
@@ -610,8 +610,8 @@
         {
             "name": "Bristolian\\AppController\\Admin::updateProcessors",
             "file": "src/Bristolian/AppController/Admin.php",
-            "line-start": 132,
-            "line-end": 170,
+            "line-start": 128,
+            "line-end": 166,
             "dependencies": [
                 "Bristolian\\Repo\\ProcessorRepo\\ProcessorRepo",
                 "Bristolian\\Session\\UserSession",
@@ -712,8 +712,8 @@
         {
             "name": "Bristolian\\AppController\\Chat::get_room_messages",
             "file": "src/Bristolian/AppController/Chat.php",
-            "line-start": 45,
-            "line-end": 62,
+            "line-start": 37,
+            "line-end": 54,
             "dependencies": [
                 "Bristolian\\MarkdownRenderer\\MarkdownRenderer",
                 "Bristolian\\Repo\\ChatMessageRepo\\ChatMessageRepo"
@@ -722,15 +722,15 @@
         {
             "name": "Bristolian\\AppController\\Chat::get_test_page",
             "file": "src/Bristolian/AppController/Chat.php",
-            "line-start": 23,
-            "line-end": 41,
+            "line-start": 26,
+            "line-end": 33,
             "dependencies": []
         },
         {
             "name": "Bristolian\\AppController\\Chat::send_message",
             "file": "src/Bristolian/AppController/Chat.php",
-            "line-start": 65,
-            "line-end": 79,
+            "line-start": 57,
+            "line-end": 71,
             "dependencies": [
                 "Bristolian\\Repo\\ChatMessageRepo\\ChatMessageRepo",
                 "Bristolian\\Session\\AppSession",
@@ -740,8 +740,8 @@
         {
             "name": "Bristolian\\AppController\\Chat::send_message_get",
             "file": "src/Bristolian/AppController/Chat.php",
-            "line-start": 18,
-            "line-end": 21,
+            "line-start": 21,
+            "line-end": 24,
             "dependencies": []
         },
         {

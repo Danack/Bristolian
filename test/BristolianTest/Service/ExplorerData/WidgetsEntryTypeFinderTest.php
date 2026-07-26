@@ -20,6 +20,7 @@ class WidgetsEntryTypeFinderTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\ExplorerData\WidgetsEntryTypeFinder::getEntryTypeKey
      * @covers \Bristolian\Service\ExplorerData\WidgetsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\WidgetsEntryTypeFinder::resolveSourcePath
      */
     public function test_findEntries_lists_registry_widgets_with_api_calls(): void
     {

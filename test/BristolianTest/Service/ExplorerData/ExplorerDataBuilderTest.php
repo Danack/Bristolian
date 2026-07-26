@@ -17,6 +17,7 @@ class ExplorerDataBuilderTest extends BaseTestCase
      * @covers \Bristolian\Service\ExplorerData\ExplorerDataBuilder::__construct
      * @covers \Bristolian\Service\ExplorerData\ExplorerDataBuilder::getOutputPath
      * @covers \Bristolian\Service\ExplorerData\ExplorerDataBuilder::execute
+     * @covers \Bristolian\Service\ExplorerData\ExplorerDataBuilder::buildJsonContent
      */
     public function test_execute_writes_root_entries_when_no_finders_added(): void
     {
@@ -113,6 +114,7 @@ class ExplorerDataBuilderTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\ExplorerData\ExplorerDataBuilder::addFromEntryTypeFinder
      * @covers \Bristolian\Service\ExplorerData\ExplorerDataBuilder::execute
+     * @covers \Bristolian\Service\ExplorerData\ExplorerDataBuilder::buildJsonContent
      */
     public function test_execute_writes_supervisord_tasks_from_finder(): void
     {
@@ -131,5 +133,26 @@ class ExplorerDataBuilderTest extends BaseTestCase
         $this->assertCount(5, $decoded['supervisord_tasks']);
 
         unlink($outputPath);
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\ExplorerDataBuilder::__construct
+     * @covers \Bristolian\Service\ExplorerData\ExplorerDataBuilder::execute
+     * @covers \Bristolian\Service\ExplorerData\ExplorerDataBuilder::buildJsonContent
+     */
+    public function test_execute_creates_missing_output_directory(): void
+    {
+        $outputDirectory = sys_get_temp_dir() . '/explorer-data-dir-' . uniqid('', true);
+        $outputPath = $outputDirectory . '/nested/codeview-data.json';
+
+        $builder = new ExplorerDataBuilder($outputPath);
+        $builder->execute();
+
+        $this->assertDirectoryExists($outputDirectory . '/nested');
+        $this->assertFileExists($outputPath);
+
+        unlink($outputPath);
+        rmdir($outputDirectory . '/nested');
+        rmdir($outputDirectory);
     }
 }

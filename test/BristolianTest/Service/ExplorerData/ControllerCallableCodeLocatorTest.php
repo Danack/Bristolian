@@ -29,6 +29,10 @@ class ControllerCallableCodeLocatorTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::locate
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::pathRelativeToProjectRoot
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::collectDependenciesForCallable
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::classTypeNamesFromParameters
      */
     public function test_locate_resolves_debug_hello_method(): void
     {
@@ -48,7 +52,10 @@ class ControllerCallableCodeLocatorTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::locate
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::pathRelativeToProjectRoot
      * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::collectDependenciesForCallable
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::classTypeNamesFromParameters
      */
     public function test_locate_includes_method_dependencies(): void
     {
@@ -69,6 +76,10 @@ class ControllerCallableCodeLocatorTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::locate
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::pathRelativeToProjectRoot
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::collectDependenciesForCallable
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::classTypeNamesFromParameters
      */
     public function test_locate_accepts_leading_backslash_on_class_name(): void
     {
@@ -88,6 +99,7 @@ class ControllerCallableCodeLocatorTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::locateClass
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::pathRelativeToProjectRoot
      */
     public function test_locateClass_resolves_repo_interface(): void
     {
@@ -103,5 +115,25 @@ class ControllerCallableCodeLocatorTest extends BaseTestCase
         $this->assertGreaterThan(0, $location['line-start']);
         $this->assertGreaterThanOrEqual($location['line-start'], $location['line-end']);
         $this->assertSame([], $location['dependencies']);
+    }
+
+    /**
+     * @return \Generator<string, array{string}>
+     */
+    public static function provides_parseControllerCallable_invalid_forms(): \Generator
+    {
+        yield 'missing separator' => ['Bristolian\\CliController\\Debug'];
+        yield 'empty class' => ['::hello'];
+        yield 'empty method' => ['Bristolian\\CliController\\Debug::'];
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
+     * @dataProvider provides_parseControllerCallable_invalid_forms
+     */
+    public function test_parseControllerCallable_rejects_invalid_forms(string $controllerCallable): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        ControllerCallableCodeLocator::parseControllerCallable($controllerCallable);
     }
 }

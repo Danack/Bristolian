@@ -15,6 +15,14 @@ class DatasourcesEntryTypeFinderTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\ExplorerData\DatasourcesEntryTypeFinder::getEntryTypeKey
      * @covers \Bristolian\Service\ExplorerData\DatasourcesEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::datasourcePathForTableName
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::findDatasourceEntries
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::findAnnotatedInterfaceEntries
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::findImplementationsForInterface
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::findRepoInterfaceClassNames
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::collectMethodDatasourceEntries
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::aggregateDatasourceUsages
+     * @covers \Bristolian\Service\ExplorerData\RepoInterfaceImplementationDiscovery::tableNameFromHelperClass
      */
     public function test_findEntries_lists_unique_database_datasources(): void
     {

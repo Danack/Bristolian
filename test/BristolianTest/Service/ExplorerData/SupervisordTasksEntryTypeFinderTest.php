@@ -15,6 +15,7 @@ class SupervisordTasksEntryTypeFinderTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\ExplorerData\SupervisordTasksEntryTypeFinder::getEntryTypeKey
      * @covers \Bristolian\Service\ExplorerData\SupervisordTasksEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\SupervisordTasksEntryTypeFinder::extractCliCommandNameFromSupervisordCommand
      */
     public function test_findEntries_includes_controller_for_each_task(): void
     {

@@ -15,6 +15,10 @@ class ControllersEntryTypeFinderTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\ExplorerData\ControllersEntryTypeFinder::getEntryTypeKey
      * @covers \Bristolian\Service\ExplorerData\ControllersEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\ControllersEntryTypeFinder::collectControllerCallables
+     * @covers \Bristolian\Service\ExplorerData\ControllersEntryTypeFinder::collectDependenciesForClass
+     * @covers \Bristolian\Service\ExplorerData\ControllersEntryTypeFinder::classTypeNamesFromParameters
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
      */
     public function test_findEntries_lists_controller_classes_with_dependencies(): void
     {

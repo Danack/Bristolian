@@ -18,6 +18,10 @@ class CodegenProvenanceTest extends BaseTestCase
      * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseFromFileContents
      * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::buildPayload
      * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::descriptionForCallable
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::typescriptHumanPreamble
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::flushDescriptionBlock
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::normalizeFqcn
      */
     public function test_format_and_parse_round_trip(): void
     {
@@ -61,6 +65,8 @@ class CodegenProvenanceTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::descriptionForCallable
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::flushDescriptionBlock
      */
     public function test_description_preserves_indented_structure_as_newlines(): void
     {
@@ -86,6 +92,9 @@ class CodegenProvenanceTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignmentSource
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignment
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::projectRelativePath
      */
     public function test_extract_assignment_source_reads_constant_definitions(): void
     {
@@ -112,6 +121,14 @@ class CodegenProvenanceTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\ExplorerData\GeneratedArtifactsEntryTypeFinder::getEntryTypeKey
      * @covers \Bristolian\Service\ExplorerData\GeneratedArtifactsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::buildPayload
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::descriptionForCallable
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignment
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignments
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::projectRelativePath
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::flushDescriptionBlock
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::normalizeFqcn
      */
     public function test_finder_returns_one_entry_per_generation_process(): void
     {
@@ -179,7 +196,8 @@ class CodegenProvenanceTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignment
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignments
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::projectRelativePath
      */
     public function test_extract_assignment_includes_source_map(): void
     {
@@ -210,5 +228,178 @@ class CodegenProvenanceTest extends BaseTestCase
         );
         $this->assertStringContainsString('$constantDefinitions = [', $snippet);
         $this->assertStringContainsString('MEME_FILE_UPLOAD_FORM_NAME', $snippet);
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignments
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignment
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::projectRelativePath
+     */
+    public function test_extract_assignments_joins_multiple_variables(): void
+    {
+        $assignment = CodegenProvenance::extractAssignments(
+            'Bristolian\\CliController\\GenerateFiles::generateJavaScriptTypes',
+            ['types', 'enums']
+        );
+
+        $this->assertStringContainsString('$types = [', $assignment['detail']);
+        $this->assertStringContainsString('$enums = [', $assignment['detail']);
+        $this->assertSame(
+            'src/Bristolian/CliController/GenerateFiles.php',
+            $assignment['detail_source']['file']
+        );
+        $this->assertGreaterThan(0, $assignment['detail_source']['line-start']);
+        $this->assertGreaterThanOrEqual(
+            $assignment['detail_source']['line-start'],
+            $assignment['detail_source']['line-end']
+        );
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::buildPayload
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::descriptionForCallable
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::flushDescriptionBlock
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::normalizeFqcn
+     */
+    public function test_buildPayload_includes_detail_source(): void
+    {
+        $payload = CodegenProvenance::buildPayload(
+            'generate:javascript_constants',
+            'Bristolian\\CliController\\GenerateFiles::generateJavaScriptConstants',
+            'app/public/tsx/generated/constants.tsx',
+            '$constantDefinitions = [];',
+            [
+                'file' => 'src/Bristolian/CliController/GenerateFiles.php',
+                'line-start' => 10,
+                'line-end' => 20,
+            ]
+        );
+
+        $this->assertSame(
+            [
+                'file' => 'src/Bristolian/CliController/GenerateFiles.php',
+                'line-start' => 10,
+                'line-end' => 20,
+            ],
+            $payload['detail_source']
+        );
+        $this->assertSame('$constantDefinitions = [];', $payload['detail']);
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignment
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
+     */
+    public function test_extract_assignment_throws_when_variable_missing(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Could not find assignment');
+        CodegenProvenance::extractAssignment(
+            'Bristolian\\CliController\\GenerateFiles::generateJavaScriptConstants',
+            'thisVariableDoesNotExist'
+        );
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignments
+     */
+    public function test_extract_assignments_throws_when_variable_list_empty(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('at least one variable name');
+        CodegenProvenance::extractAssignments(
+            'Bristolian\\CliController\\GenerateFiles::generateJavaScriptConstants',
+            []
+        );
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::descriptionForCallable
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
+     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::normalizeFqcn
+     */
+    public function test_descriptionForCallable_rejects_invalid_callable(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Invalid generator callable');
+        CodegenProvenance::descriptionForCallable('NotAValidCallable');
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::projectRelativePath
+     */
+    public function test_projectRelativePath_returns_normalized_absolute_when_outside_root(): void
+    {
+        $this->assertSame(
+            '/tmp/outside/file.php',
+            CodegenProvenance::projectRelativePath('/tmp/outside/file.php', '/var/app')
+        );
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseFromFileContents
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::formatLineComment
+     */
+    public function test_parse_reads_star_prefixed_comment_lines_and_detail_source(): void
+    {
+        $payload = [
+            'generator' => 'generate:javascript_constants',
+            'generator_callable' => 'Bristolian\\CliController\\GenerateFiles::generateJavaScriptConstants',
+            'output_file' => 'app/public/tsx/generated/constants.tsx',
+            'description' => 'Constants shared with TypeScript.',
+            'detail' => '$constantDefinitions = [];',
+            'detail_source' => [
+                'file' => 'src/Bristolian/CliController/GenerateFiles.php',
+                'line-start' => 10,
+                'line-end' => 20,
+            ],
+        ];
+
+        $json = json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $this->assertIsString($json);
+
+        $fileContents = "/*\n * " . CodegenProvenance::BEGIN_MARKER . "\n";
+        foreach (explode("\n", $json) as $line) {
+            $fileContents .= ' * ' . $line . "\n";
+        }
+        $fileContents .= ' * ' . CodegenProvenance::END_MARKER . "\n */\n";
+
+        $parsed = CodegenProvenance::parseFromFileContents($fileContents);
+        $this->assertIsArray($parsed);
+        $this->assertSame($payload['generator'], $parsed['generator']);
+        $this->assertSame($payload['detail'], $parsed['detail']);
+        $this->assertSame($payload['detail_source'], $parsed['detail_source']);
+    }
+
+    /**
+     * @return \Generator<string, array{string}>
+     */
+    public static function provides_parseFromFileContents_invalid_payloads(): \Generator
+    {
+        $begin = CodegenProvenance::BEGIN_MARKER;
+        $end = CodegenProvenance::END_MARKER;
+
+        yield 'invalid json' => [
+            "// {$begin}\n// {not-json\n// {$end}\n",
+        ];
+        yield 'missing required keys' => [
+            "// {$begin}\n// {\"generator\": \"x\"}\n// {$end}\n",
+        ];
+        yield 'wrong value types' => [
+            "// {$begin}\n// "
+            . '{"generator":1,"generator_callable":"a","output_file":"b","description":"c"}'
+            . "\n// {$end}\n",
+        ];
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseFromFileContents
+     * @dataProvider provides_parseFromFileContents_invalid_payloads
+     */
+    public function test_parse_returns_null_for_invalid_payloads(string $contents): void
+    {
+        $this->assertNull(CodegenProvenance::parseFromFileContents($contents));
     }
 }

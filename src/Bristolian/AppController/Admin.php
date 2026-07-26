@@ -15,6 +15,7 @@ use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\RedirectResponse;
 use SlimDispatcher\Response\StubResponse;
 use VarMap\VarMap;
+use function Bristolian\createReactWidget;
 
 class Admin
 {
@@ -120,12 +121,7 @@ HTML;
 
     public function renderProcessorLogWidget(): string
     {
-        $data = [];
-
-        $widget_json = json_encode_safe([]);
-        $widget_data = htmlspecialchars($widget_json);
-
-        return "<div class='processor_run_record_panel' data-widgety_json='$widget_data'></div>";
+        return createReactWidget("processor_run_record_panel", []);
     }
 
 

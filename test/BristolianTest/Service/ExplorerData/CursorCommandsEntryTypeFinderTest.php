@@ -16,6 +16,10 @@ class CursorCommandsEntryTypeFinderTest extends BaseTestCase
      * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct
      * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::getEntryTypeKey
      * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::listMarkdownFilenames
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::loadMetaCommands
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::assertMetaCoversDiskExactly
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::commandIdFromFilename
      */
     public function test_findEntries_reads_project_command_meta(): void
     {
@@ -45,7 +49,12 @@ class CursorCommandsEntryTypeFinderTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct
      * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::listMarkdownFilenames
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::loadMetaCommands
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::assertMetaCoversDiskExactly
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::commandIdFromFilename
      */
     public function test_findEntries_sorts_by_priority_then_meta_list_order(): void
     {
@@ -69,7 +78,11 @@ class CursorCommandsEntryTypeFinderTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct
      * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::listMarkdownFilenames
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::loadMetaCommands
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::assertMetaCoversDiskExactly
      */
     public function test_findEntries_throws_when_markdown_file_missing_from_meta(): void
     {
@@ -90,7 +103,11 @@ class CursorCommandsEntryTypeFinderTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct
      * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::listMarkdownFilenames
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::loadMetaCommands
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::assertMetaCoversDiskExactly
      */
     public function test_findEntries_throws_when_meta_lists_unknown_markdown_file(): void
     {
@@ -111,7 +128,10 @@ class CursorCommandsEntryTypeFinderTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct
      * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::listMarkdownFilenames
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::loadMetaCommands
      */
     public function test_findEntries_throws_when_name_missing(): void
     {
@@ -131,7 +151,10 @@ class CursorCommandsEntryTypeFinderTest extends BaseTestCase
     }
 
     /**
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct
      * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::listMarkdownFilenames
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::loadMetaCommands
      */
     public function test_findEntries_throws_when_priority_missing(): void
     {
@@ -147,6 +170,172 @@ class CursorCommandsEntryTypeFinderTest extends BaseTestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('missing an integer "priority"');
+        $finder->findEntries();
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::findEntries
+     */
+    public function test_findEntries_throws_when_commands_directory_missing(): void
+    {
+        $directoryPath = sys_get_temp_dir() . '/cursor-commands-missing-' . uniqid('', true);
+
+        $finder = new CursorCommandsEntryTypeFinder($directoryPath);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cursor commands directory not found');
+        $finder->findEntries();
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::listMarkdownFilenames
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::loadMetaCommands
+     */
+    public function test_findEntries_throws_when_meta_file_missing(): void
+    {
+        $directoryPath = sys_get_temp_dir() . '/cursor-commands-no-meta-' . uniqid('', true);
+        mkdir($directoryPath, 0755, true);
+        file_put_contents($directoryPath . '/known.md', "# Known\n");
+
+        $finder = new CursorCommandsEntryTypeFinder($directoryPath);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('command.meta.json');
+        $finder->findEntries();
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::listMarkdownFilenames
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::loadMetaCommands
+     */
+    public function test_findEntries_throws_when_meta_json_invalid(): void
+    {
+        $directoryPath = sys_get_temp_dir() . '/cursor-commands-bad-json-' . uniqid('', true);
+        mkdir($directoryPath, 0755, true);
+        file_put_contents($directoryPath . '/known.md', "# Known\n");
+        file_put_contents($directoryPath . '/command.meta.json', '{not-json');
+
+        $finder = new CursorCommandsEntryTypeFinder($directoryPath);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('not valid JSON');
+        $finder->findEntries();
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::listMarkdownFilenames
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::loadMetaCommands
+     */
+    public function test_findEntries_throws_when_commands_key_missing(): void
+    {
+        $directoryPath = sys_get_temp_dir() . '/cursor-commands-no-commands-' . uniqid('', true);
+        mkdir($directoryPath, 0755, true);
+        file_put_contents($directoryPath . '/known.md', "# Known\n");
+        file_put_contents($directoryPath . '/command.meta.json', "{}\n");
+
+        $finder = new CursorCommandsEntryTypeFinder($directoryPath);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('must contain a "commands" array');
+        $finder->findEntries();
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::listMarkdownFilenames
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::loadMetaCommands
+     */
+    public function test_findEntries_throws_when_command_entry_is_not_object(): void
+    {
+        $directoryPath = $this->createTemporaryCommandsDirectory([
+            'known.md' => "# Known\n",
+        ], [
+            'commands' => ['not-an-object'],
+        ]);
+
+        $finder = new CursorCommandsEntryTypeFinder($directoryPath);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('must be an object');
+        $finder->findEntries();
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::listMarkdownFilenames
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::loadMetaCommands
+     */
+    public function test_findEntries_throws_when_file_missing_from_entry(): void
+    {
+        $directoryPath = $this->createTemporaryCommandsDirectory([
+            'known.md' => "# Known\n",
+        ], [
+            'commands' => [
+                ['name' => 'Known', 'priority' => 1],
+            ],
+        ]);
+
+        $finder = new CursorCommandsEntryTypeFinder($directoryPath);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('missing a non-empty "file"');
+        $finder->findEntries();
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::listMarkdownFilenames
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::loadMetaCommands
+     */
+    public function test_findEntries_throws_when_file_does_not_end_with_md(): void
+    {
+        $directoryPath = $this->createTemporaryCommandsDirectory([
+            'known.md' => "# Known\n",
+        ], [
+            'commands' => [
+                ['file' => 'known.txt', 'name' => 'Known', 'priority' => 1],
+            ],
+        ]);
+
+        $finder = new CursorCommandsEntryTypeFinder($directoryPath);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('must end with .md');
+        $finder->findEntries();
+    }
+
+    /**
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::findEntries
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::listMarkdownFilenames
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::loadMetaCommands
+     * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::assertMetaCoversDiskExactly
+     */
+    public function test_findEntries_throws_when_meta_lists_duplicate_files(): void
+    {
+        $directoryPath = $this->createTemporaryCommandsDirectory([
+            'known.md' => "# Known\n",
+        ], [
+            'commands' => [
+                ['file' => 'known.md', 'name' => 'Known', 'priority' => 1],
+                ['file' => 'known.md', 'name' => 'Known again', 'priority' => 2],
+            ],
+        ]);
+
+        $finder = new CursorCommandsEntryTypeFinder($directoryPath);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('more than once');
         $finder->findEntries();
     }
 
