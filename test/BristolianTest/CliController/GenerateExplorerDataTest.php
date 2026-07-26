@@ -49,6 +49,7 @@ class GenerateExplorerDataTest extends BaseTestCase
         $this->assertArrayHasKey('supervisord_tasks', $decoded);
         $this->assertArrayHasKey('quality_tools', $decoded);
         $this->assertArrayHasKey('cursor_commands', $decoded);
+        $this->assertArrayHasKey('workflows', $decoded);
         $this->assertNotEmpty($decoded['cli_commands']);
         $this->assertNotEmpty($decoded['code-map']);
         $this->assertNotEmpty($decoded['controllers']);
@@ -60,6 +61,16 @@ class GenerateExplorerDataTest extends BaseTestCase
         $this->assertNotEmpty($decoded['quality_tools']);
         $this->assertSame('phpstan', $decoded['quality_tools'][0]['id']);
         $this->assertStringContainsString('docker exec', $decoded['quality_tools'][0]['command']);
+        $this->assertArrayNotHasKey('globs', $decoded['quality_tools'][0]);
+        $this->assertArrayNotHasKey('stage', $decoded['quality_tools'][0]);
+        $this->assertSame('codesniffer', $decoded['quality_tools'][1]['id']);
+        $this->assertSame('all_tests', $decoded['quality_tools'][4]['id']);
+        $this->assertNotEmpty($decoded['workflows']);
+        $this->assertSame('work-on-selection', $decoded['workflows'][0]['id']);
+        $this->assertSame('boot', $decoded['workflows'][0]['initial']);
+        $this->assertSame(['work', 'qc', 'checkin'], $decoded['workflows'][0]['steps']);
+        $this->assertArrayHasKey('dirtyChoice', $decoded['workflows'][0]['states']);
+        $this->assertCount(2, $decoded['workflows'][0]['states']['dirtyChoice']['ui']['chromeActions']);
         $this->assertNotEmpty($decoded['cursor_commands']);
         $this->assertSame('improve_test_coverage', $decoded['cursor_commands'][0]['id']);
         $this->assertSame('Improve test coverage', $decoded['cursor_commands'][0]['label']);

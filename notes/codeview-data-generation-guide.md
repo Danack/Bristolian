@@ -95,6 +95,7 @@ It is OK to hard-code Bristolian paths (e.g. `src/Bristolian/...`, supervisord c
   "root_explanations": [ … ],
   "quality_tools": [ … ],
   "cursor_commands": [ … ],
+  "workflows": [ … ],
   "cli_commands": [ … ],
   "supervisord_tasks": [ … ],
   "features": [ … ],
@@ -111,7 +112,7 @@ Rules:
 
 - Every `root[].path` of the form `/foo` expects a top-level key `foo` (path without leading `/`).
 - Categories that are only listed in `root` but have no array (or an empty array) show as empty in the UI.
-- Keys not referenced by `root` can still exist (e.g. `controllers`, `dependencies`, `code-map`, `quality_tools`, `cursor_commands`, `root_explanations`) — they are **indexes / graphs / workflow metadata**, not category lists.
+- Keys not referenced by `root` can still exist (e.g. `controllers`, `dependencies`, `code-map`, `quality_tools`, `cursor_commands`, `workflows`, `root_explanations`) — they are **indexes / graphs / workflow metadata**, not category lists.
 
 ---
 
@@ -285,28 +286,26 @@ Missing files are highlighted pastel-red in the panel.
 
 ### `quality_tools`
 
-Workflow metadata for CodeView “Tweak selection” → Quality control. **Not** a category button. Maps dirty git paths to host-copy-pastable QC commands via globs.
+Always-visible QC buttons for CodeView left chrome. **Not** a category button. Flat list — no dirty-file glob matching.
 
-Contract details: [`extension-cursor-user/handoff-quality-tools-globs.md`](./extension-cursor-user/handoff-quality-tools-globs.md).
+Contract: [`extension-cursor-user/handoff-qc-buttons.md`](./extension-cursor-user/handoff-qc-buttons.md). (Older glob plan: [`handoff-quality-tools-globs.md`](./extension-cursor-user/handoff-quality-tools-globs.md) — superseded.)
 
 ```json
 {
   "id": "phpstan",
   "label": "PHPStan",
-  "command": "docker exec bristolian-php_fpm-1 bash -c \"sh runPhpStan.sh\"",
-  "globs": ["src/**/*.php", "test/**/*.php"],
-  "exclude_globs": ["**/Generated/**"],
-  "stage": 1
+  "command": "docker exec bristolian-php_fpm-1 bash -c \"sh runPhpStan.sh\""
 }
 ```
 
 | Field | Notes |
 |-------|--------|
-| `command` | Run from app workspace **host** root. Bristolian uses `docker exec …` (tools do not run on the host toolchain). |
-| `globs` / `exclude_globs` | Dirty path matching; tool is planned only if a dirty path matches. |
-| `stage` | Optional order **among matched tools** (lower first). Selection is path-driven — frontend+Behat edits do not force PHP tools. |
+| `id` | Stable key for status lights |
+| `label` | Button text |
+| `command` | Exact shell string from app workspace **host** root. Bristolian uses `docker exec …`. |
+| `description` | Optional hover/details text |
 
-Emitted by `ExplorerDataBuilder` / `php cli.php generate:codeview-data`.
+Array order = display order. Emitted by `ExplorerDataBuilder` / `php cli.php generate:codeview-data`.
 
 ### `cursor_commands`
 
@@ -335,6 +334,30 @@ Source of truth for labels and order: `.cursor/commands/command.meta.json`. Gene
 | `priority` | Sort key ascending; ties keep `command.meta.json` list order |
 
 Emitted by `CursorCommandsEntryTypeFinder` / `php cli.php generate:codeview-data`.
+
+### `workflows`
+
+Config-driven workflow machines for CodeView (e.g. Work on selection). **Not** a category button.
+
+Bristolian configures steps, copy, templates, and which catalog effects/guards fire. The CodeView extension interprets that config. Unknown effect/guard names need an extension capability — see [`extension-cursor-user/capability-request-template.md`](./extension-cursor-user/capability-request-template.md) and [`request-stateful-boot-chrome.md`](./extension-cursor-user/request-stateful-boot-chrome.md). Do not invent host behaviour in JSON.
+
+Contract: [`extension-cursor-user/handoff-workflow-machine.md`](./extension-cursor-user/handoff-workflow-machine.md).
+
+```json
+{
+  "id": "work-on-selection",
+  "initial": "boot",
+  "ui": { "startLabel": "Work on selection", "title": "Work on selection" },
+  "steps": ["work", "qc", "checkin"],
+  "templates": {
+    "workStart": { "kind": "selectionContext" },
+    "checkin": { "kind": "checkin" }
+  },
+  "states": { }
+}
+```
+
+Emitted by `ExplorerDataBuilder` / `php cli.php generate:codeview-data`.
 
 ### `features`
 

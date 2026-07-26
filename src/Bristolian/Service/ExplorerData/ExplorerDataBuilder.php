@@ -137,9 +137,9 @@ class ExplorerDataBuilder
         [
             'path' => 'quality_tools',
             'role' => 'workflow',
-            'description' => 'Glob rules mapping dirty workspace paths to quality/test commands for the CodeView Tweak selection → Quality control step. Matching (not a fixed PHP-first ladder) decides which tools matter; optional stage orders matched tools so cheaper gates run before slower suites. Commands are host-copy-pastable (docker exec for Bristolian). Not a Categories button.',
-            'item_shape' => 'id, label, command, globs[], optional exclude_globs[], optional stage',
-            'drill_down' => 'git dirty paths × globs → planned commands sorted by stage (listed in extension; execution/agent inject is extension-side and should be staged/interruptible)',
+            'description' => 'Fixed list of quality-control buttons always shown in CodeView left chrome. Each entry is one host-copy-pastable command (docker exec for Bristolian). Click runs the command in a terminal; status lights come from exit code. Not filtered by dirty files. Not a Categories button.',
+            'item_shape' => 'id, label, command, optional description',
+            'drill_down' => 'Click → run command from app workspace root; hover shows command string',
         ],
         [
             'path' => 'cursor_commands',
@@ -148,90 +148,293 @@ class ExplorerDataBuilder
             'item_shape' => 'id, label, file, priority',
             'drill_down' => 'file -> open the command markdown; id is the slash-command name without .md',
         ],
+        [
+            'path' => 'workflows',
+            'role' => 'workflow',
+            'description' => 'Config-driven workflow machines for CodeView (e.g. Work on selection). Bristolian configures steps, copy, templates, and which catalog effects/guards fire; the extension interprets them. Unknown effect/guard names need an extension capability — do not invent host behaviour in JSON. Not a Categories button.',
+            'item_shape' => 'id, initial, steps[], ui?, templates?, states{ui?, on{event → target, guards?, effects?}}',
+            'drill_down' => 'State transitions fire catalog effects (lockSelection, openAgent, …); QC step points at quality_tools / cursor_commands chrome',
+        ],
     ];
 
     /**
-     * Glob-driven QC commands for CodeView Tweak selection. Not a navigable category.
+     * Always-visible QC buttons for CodeView. Not a navigable category.
      * Commands are host-copy-pastable (tools run inside Docker containers).
      *
-     * @var list<array{
-     *   id: string,
-     *   label: string,
-     *   command: string,
-     *   globs: list<string>,
-     *   exclude_globs?: list<string>,
-     *   stage?: int
-     * }>
+     * @var list<array{id: string, label: string, command: string, description?: string}>
      */
     private const QUALITY_TOOLS = [
         [
             'id' => 'phpstan',
             'label' => 'PHPStan',
             'command' => 'docker exec bristolian-php_fpm-1 bash -c "sh runPhpStan.sh"',
-            'globs' => [
-                'src/**/*.php',
-                'test/**/*.php',
-            ],
-            'exclude_globs' => [
-                '**/Generated/**',
-                'src/Bristolian/Model/Generated/**',
-            ],
-            'stage' => 1,
         ],
         [
-            'id' => 'phpunit',
-            'label' => 'PHPUnit',
+            'id' => 'codesniffer',
+            'label' => 'CodeSniffer',
+            'command' => 'docker exec bristolian-php_fpm-1 bash -c "sh runCodeSniffer.sh"',
+        ],
+        [
+            'id' => 'unit_tests',
+            'label' => 'Unit tests',
             'command' => 'docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh"',
-            'globs' => [
-                'src/**/*.php',
-                'app/src/**/*.php',
-                'api/**/*.php',
-                'cli/**/*.php',
-                'test/**/*.php',
-            ],
-            'exclude_globs' => [
-                '**/Generated/**',
-                'src/Bristolian/Model/Generated/**',
-                'test/BristolianChatTest/**',
-            ],
-            'stage' => 2,
-        ],
-        [
-            'id' => 'phpunit-chat',
-            'label' => 'PHPUnit (chat)',
-            'command' => 'docker exec bristolian-php_fpm-1 bash -c "sh runChatUnitTests.sh"',
-            'globs' => [
-                'src/BristolianChat/**/*.php',
-                'src/functions_chat.php',
-                'test/BristolianChatTest/**/*.php',
-                'chat/**/*.php',
-            ],
-            'exclude_globs' => [],
-            'stage' => 3,
-        ],
-        [
-            'id' => 'jest',
-            'label' => 'Jest',
-            'command' => 'docker exec bristolian-js_builder-1 bash -c "npm run test"',
-            'globs' => [
-                'app/public/tsx/**/*.ts',
-                'app/public/tsx/**/*.tsx',
-            ],
-            'exclude_globs' => [
-                'app/public/tsx/generated/**',
-            ],
-            'stage' => 2,
         ],
         [
             'id' => 'behat',
             'label' => 'Behat',
             'command' => 'docker exec bristolian-php_fpm-1 bash -c "sh runBehat.sh"',
-            'globs' => [
-                'features/**/*.feature',
-                'src/BristolianBehat/**/*.php',
+        ],
+        [
+            'id' => 'all_tests',
+            'label' => 'All tests',
+            'command' => 'docker exec bristolian-php_fpm-1 bash -c "sh runAllTests.sh"',
+        ],
+    ];
+
+    /**
+     * Workflow machines for CodeView. Bristolian configures UI/rules; extension interprets.
+     *
+     * @var list<array<string, mixed>>
+     */
+    private const WORKFLOWS = [
+        [
+            'id' => 'work-on-selection',
+            'initial' => 'boot',
+            'ui' => [
+                'startLabel' => 'Work on selection',
+                'title' => 'Work on selection',
             ],
-            'exclude_globs' => [],
-            'stage' => 4,
+            'steps' => ['work', 'qc', 'checkin'],
+            'templates' => [
+                'workStart' => ['kind' => 'selectionContext'],
+                'checkin' => ['kind' => 'checkin'],
+            ],
+            'states' => [
+                'boot' => [
+                    'ui' => [
+                        'stateLabel' => 'Starting',
+                    ],
+                    'on' => [
+                        // Pending extension: LOAD + workingTreeDirty — see request-stateful-boot-chrome.md
+                        'LOAD' => [
+                            [
+                                'target' => 'idle',
+                                'guards' => ['workingTreeClean'],
+                                'effects' => [
+                                    ['type' => 'persistWorkflow'],
+                                ],
+                            ],
+                            [
+                                'target' => 'dirtyChoice',
+                                'guards' => ['workingTreeDirty'],
+                                'effects' => [
+                                    ['type' => 'persistWorkflow'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'idle' => [
+                    'ui' => [
+                        'stateLabel' => 'Ready',
+                        'showStart' => true,
+                        'showQualityTools' => true,
+                        'showCursorCommands' => true,
+                    ],
+                    'on' => [
+                        'START' => [
+                            'target' => 'work',
+                            'guards' => ['hasSelection', 'workingTreeClean', 'notStashedCategory'],
+                            'effects' => [
+                                ['type' => 'snapshotSelection'],
+                                ['type' => 'lockSelection'],
+                                ['type' => 'openAgent', 'mode' => 'new', 'template' => 'workStart'],
+                                ['type' => 'persistWorkflow'],
+                            ],
+                        ],
+                    ],
+                ],
+                'dirtyChoice' => [
+                    'ui' => [
+                        'stateLabel' => 'Dirty working tree',
+                        'body' => 'This repo has modified or untracked files. Clean up the repo, resume work, or start Work on selection.',
+                        'showStart' => true,
+                        'showQualityTools' => true,
+                        'showCursorCommands' => true,
+                        'chromeActions' => [
+                            [
+                                'id' => 'clean-up-repo',
+                                'label' => 'Clean up repo',
+                                'event' => 'CLEAN_UP',
+                            ],
+                            [
+                                'id' => 'resume-work',
+                                'label' => 'Resume work',
+                                'event' => 'RESUME',
+                            ],
+                        ],
+                    ],
+                    'on' => [
+                        'CLEAN_UP' => [
+                            'target' => 'cleaningUp',
+                            'effects' => [
+                                ['type' => 'persistWorkflow'],
+                            ],
+                        ],
+                        'RESUME' => [
+                            'target' => 'resumingWork',
+                            'effects' => [
+                                ['type' => 'persistWorkflow'],
+                            ],
+                        ],
+                        'START' => [
+                            'target' => 'work',
+                            'guards' => ['hasSelection', 'notStashedCategory'],
+                            'effects' => [
+                                ['type' => 'snapshotSelection'],
+                                ['type' => 'lockSelection'],
+                                ['type' => 'openAgent', 'mode' => 'new', 'template' => 'workStart'],
+                                ['type' => 'persistWorkflow'],
+                            ],
+                        ],
+                    ],
+                ],
+                'cleaningUp' => [
+                    'ui' => [
+                        'stateLabel' => 'Cleaning up repo',
+                        'label' => 'Cleaning up repo',
+                        'body' => 'To be defined: clean-up-repo flow.',
+                        'showBack' => false,
+                        'showStart' => false,
+                        'showQualityTools' => true,
+                        'showCursorCommands' => true,
+                    ],
+                    'on' => [
+                        'CANCEL' => [
+                            'target' => 'dirtyChoice',
+                            'effects' => [
+                                ['type' => 'persistWorkflow'],
+                            ],
+                        ],
+                    ],
+                ],
+                'resumingWork' => [
+                    'ui' => [
+                        'stateLabel' => 'Resuming work',
+                        'label' => 'Resuming work',
+                        'body' => 'To be defined: resume-work flow.',
+                        'showBack' => false,
+                        'showStart' => false,
+                        'showQualityTools' => true,
+                        'showCursorCommands' => true,
+                    ],
+                    'on' => [
+                        'CANCEL' => [
+                            'target' => 'dirtyChoice',
+                            'effects' => [
+                                ['type' => 'persistWorkflow'],
+                            ],
+                        ],
+                    ],
+                ],
+                'work' => [
+                    'ui' => [
+                        'stateLabel' => 'Work',
+                        'label' => '1. Work',
+                        'body' => 'Describe the change in the agent chat. Stay there until you finish working.',
+                        'primary' => 'Finish working, move to quality control',
+                        'showBack' => false,
+                        'showStart' => false,
+                        'showQualityTools' => true,
+                        'showCursorCommands' => true,
+                    ],
+                    'on' => [
+                        'PRIMARY' => [
+                            'target' => 'qc',
+                            'effects' => [
+                                ['type' => 'persistWorkflow'],
+                            ],
+                        ],
+                        'CANCEL' => [
+                            'target' => 'boot',
+                            'effects' => [
+                                ['type' => 'unlockSelection'],
+                                ['type' => 'clearWorkflow'],
+                            ],
+                        ],
+                    ],
+                ],
+                'qc' => [
+                    'ui' => [
+                        'stateLabel' => 'Quality control',
+                        'label' => '2. Quality control',
+                        'body' => 'Run the quality control buttons on the left. When you are satisfied, continue to check-in.',
+                        'primary' => 'Finish quality control, move to check-in',
+                        'showBack' => true,
+                        'showStart' => false,
+                        'showQualityTools' => true,
+                        'showCursorCommands' => true,
+                    ],
+                    'on' => [
+                        'PRIMARY' => [
+                            'target' => 'checkin',
+                            'effects' => [
+                                ['type' => 'fetchDirtyFiles'],
+                                ['type' => 'persistWorkflow'],
+                                ['type' => 'openAgent', 'mode' => 'continue', 'template' => 'checkin'],
+                            ],
+                        ],
+                        'BACK' => [
+                            'target' => 'work',
+                            'effects' => [
+                                ['type' => 'clearDirtyFiles'],
+                                ['type' => 'persistWorkflow'],
+                            ],
+                        ],
+                        'CANCEL' => [
+                            'target' => 'boot',
+                            'effects' => [
+                                ['type' => 'unlockSelection'],
+                                ['type' => 'clearWorkflow'],
+                            ],
+                        ],
+                    ],
+                ],
+                'checkin' => [
+                    'ui' => [
+                        'stateLabel' => 'Check-in',
+                        'label' => '3. Check-in',
+                        'body' => 'Check-in prompt was sent to the agent chat. Draft a commit message and commit this single unit of work, then finish here.',
+                        'primary' => 'Finish check-in',
+                        'showBack' => true,
+                        'showStart' => false,
+                        'showQualityTools' => true,
+                        'showCursorCommands' => true,
+                    ],
+                    'on' => [
+                        'PRIMARY' => [
+                            'target' => 'boot',
+                            'effects' => [
+                                ['type' => 'unlockSelection'],
+                                ['type' => 'clearWorkflow'],
+                            ],
+                        ],
+                        'BACK' => [
+                            'target' => 'qc',
+                            'effects' => [
+                                ['type' => 'persistWorkflow'],
+                            ],
+                        ],
+                        'CANCEL' => [
+                            'target' => 'boot',
+                            'effects' => [
+                                ['type' => 'unlockSelection'],
+                                ['type' => 'clearWorkflow'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ],
     ];
 
@@ -279,8 +482,9 @@ class ExplorerDataBuilder
             'root' => self::ROOT_ENTRIES,
             // Metadata for the CodeView extension / agents — not a navigable category.
             'root_explanations' => self::ROOT_EXPLANATIONS,
-            // Workflow metadata for Tweak selection QC — not a navigable category.
+            // Workflow chrome + machines — not navigable categories.
             'quality_tools' => self::QUALITY_TOOLS,
+            'workflows' => self::WORKFLOWS,
         ];
 
         foreach ($this->explorerData as $key => $value) {
