@@ -116,12 +116,9 @@ class CLIFunctionTest extends BaseTestCase
      */
     public function test_setupErrorHandlers_sets_handler_that_throws_on_user_warning(): void
     {
-        $previous = set_error_handler(static function () {
-            return false;
-        });
-        try {
-            CLIFunction::setupErrorHandlers();
+        CLIFunction::setupErrorHandlers();
 
+        try {
             try {
                 trigger_error('test message', E_USER_WARNING);
                 $this->fail('Expected ErrorException');
@@ -131,9 +128,6 @@ class CLIFunctionTest extends BaseTestCase
             }
         } finally {
             restore_error_handler();
-            if ($previous !== null) {
-                set_error_handler($previous);
-            }
         }
     }
 }
