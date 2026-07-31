@@ -221,15 +221,6 @@ class PdoSimple
     {
         [$result, $statement] = $this->prepareAndExecute($query, $params);
 
-//        $statement->setFetchMode(PDO::FETCH_CLASS, $classname);
-//        $object = $statement->fetch();
-//
-//        if ($object === false) {
-//            throw new RowNotFoundException("The query did not result in a row");
-//        }
-//
-//        return $object;
-
 
         $statement->setFetchMode(PDO::FETCH_ASSOC);
         $row = $statement->fetch();
