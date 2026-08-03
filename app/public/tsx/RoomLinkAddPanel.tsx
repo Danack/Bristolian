@@ -15,6 +15,7 @@ interface RoomLinkAddPanelState {
   title: string,
   description: string,
   result: null|string,
+  resultFading: boolean,
 
   error_url: string|null,
   error_title: string|null,
@@ -28,6 +29,7 @@ function getDefaultState(): RoomLinkAddPanelState {
     title: '',
     description: '',
     result: null,
+    resultFading: false,
     error_url: null,
     error_title: null,
     error_description: null,
@@ -37,6 +39,8 @@ function getDefaultState(): RoomLinkAddPanelState {
 
 export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkAddPanelState> {
   private unsubscribe_logged_in: (() => void) | null = null;
+  private resultFadeTimeout: number | null = null;
+  private resultClearTimeout: number | null = null;
 
   constructor(props: RoomLinkAddPanelProps) {
     super(props);
@@ -51,10 +55,34 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
   }
 
   componentWillUnmount() {
+    this.clearResultTimers();
     if (this.unsubscribe_logged_in) {
       this.unsubscribe_logged_in();
       this.unsubscribe_logged_in = null;
     }
+  }
+
+  clearResultTimers() {
+    if (this.resultFadeTimeout !== null) {
+      clearTimeout(this.resultFadeTimeout);
+      this.resultFadeTimeout = null;
+    }
+    if (this.resultClearTimeout !== null) {
+      clearTimeout(this.resultClearTimeout);
+      this.resultClearTimeout = null;
+    }
+  }
+
+  scheduleResultFade() {
+    this.clearResultTimers();
+    this.resultFadeTimeout = window.setTimeout(() => {
+      this.setState({ resultFading: true });
+      this.resultClearTimeout = window.setTimeout(() => {
+        this.setState({ result: null, resultFading: false });
+        this.resultClearTimeout = null;
+      }, 1000);
+      this.resultFadeTimeout = null;
+    }, 5000);
   }
 
   addLink() {
@@ -87,7 +115,8 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
 
       let new_state = getDefaultState();
       new_state.result = "Link added";
-      this.setState(new_state)
+      new_state.resultFading = false;
+      this.setState(new_state, () => this.scheduleResultFade());
       sendMessage(PdfSelectionType.ROOM_LINKS_CHANGED, {});
     }
 
@@ -110,18 +139,24 @@ export class RoomLinkAddPanel extends Component<RoomLinkAddPanelProps, RoomLinkA
       return <span></span>
     }
 
-    let isValidUrl = isUrl(this.state.url);
+    const trimmedUrl = this.state.url.trim();
+    const isValidUrl = isUrl(trimmedUrl);
 
-    let add_button = <span><button className="button_standard" disabled={true}>Add link</button>Url is not valid.</span>
+    let add_button = <button className="button_standard" disabled={true}>Add link</button>;
 
     if (isValidUrl) {
       add_button = <button type="submit" className="button_standard" onClick={() => this.addLink()}>Add link</button>
+    } else if (trimmedUrl.length > 0) {
+      add_button = <span><button className="button_standard" disabled={true}>Add link</button>Url is not valid.</span>
     }
 
     let result = <span></span>;
 
     if (this.state.result !== null) {
-      result = <span>{this.state.result}</span>
+      const resultClassName = this.state.resultFading
+        ? 'room_link_add_success room_link_add_success--fading'
+        : 'room_link_add_success';
+      result = <div className={resultClassName}>{this.state.result}</div>;
     }
 
 
