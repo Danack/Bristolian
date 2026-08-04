@@ -35,17 +35,22 @@ if ($xml === false) {
 }
 
 /*
- * Clover structure:
+ * Clover structure (PHPUnit 10+ may nest namespaced files under <package>):
  *
- * <file name="src/Foo.php">
- *   <line num="123" type="stmt" count="0"/>
- * </file>
+ * <project>
+ *   <package name="Bristolian\Foo">
+ *     <file name="src/Bristolian/Foo.php">
+ *       <line num="123" type="stmt" count="0"/>
+ *     </file>
+ *   </package>
+ *   <file name="src/functions.php">...</file>
+ * </project>
  */
 
 $containerPrefix = '/var/app/';
 $filesWithUncoveredLines = [];
 
-foreach ($xml->project->file as $file) {
+foreach ($xml->xpath('//file') as $file) {
     $fileName = (string) $file['name'];
 
     // Strip container prefix if present

@@ -66,6 +66,16 @@ class ExplorerDataBuilderTest extends BaseTestCase
         $this->assertSame('behat', $decoded['quality_tools'][3]['id']);
         $this->assertSame('all_tests', $decoded['quality_tools'][4]['id']);
 
+        $this->assertArrayHasKey('cached_tools', $decoded);
+        $this->assertIsArray($decoded['cached_tools']);
+        $this->assertNotEmpty($decoded['cached_tools']);
+        $this->assertSame('php_test_coverage', $decoded['cached_tools'][0]['id']);
+        $this->assertSame('Check PHP test coverage', $decoded['cached_tools'][0]['label']);
+        $this->assertSame('report_missing_coverage.php', $decoded['cached_tools'][0]['tool_path']);
+        $this->assertSame('bristolian-php_fpm-1', $decoded['cached_tools'][0]['container_name']);
+        $this->assertIsArray($decoded['cached_tools'][0]['globs']);
+        $this->assertStringContainsString('docker exec', $decoded['cached_tools'][0]['command']);
+
         $this->assertArrayHasKey('workflows', $decoded);
         $this->assertIsArray($decoded['workflows']);
         $this->assertNotEmpty($decoded['workflows']);
@@ -85,11 +95,13 @@ class ExplorerDataBuilderTest extends BaseTestCase
             $decoded['workflows'][0]['states']['dirtyChoice']['ui']['chromeActions'][1]['event']
         );
         $this->assertSame('boot', $decoded['workflows'][0]['states']['checkin']['on']['PRIMARY']['target']);
+        $this->assertFalse($decoded['workflows'][0]['states']['idle']['ui']['showCursorCommands']);
 
         $widgetsExplanation = null;
         $dependenciesExplanation = null;
         $generatedArtifactsExplanation = null;
         $qualityToolsExplanation = null;
+        $cachedToolsExplanation = null;
         $cursorCommandsExplanation = null;
         $workflowsExplanation = null;
         foreach ($decoded['root_explanations'] as $explanation) {
@@ -104,6 +116,9 @@ class ExplorerDataBuilderTest extends BaseTestCase
             }
             if ($explanation['path'] === 'quality_tools') {
                 $qualityToolsExplanation = $explanation;
+            }
+            if ($explanation['path'] === 'cached_tools') {
+                $cachedToolsExplanation = $explanation;
             }
             if ($explanation['path'] === 'cursor_commands') {
                 $cursorCommandsExplanation = $explanation;
@@ -132,6 +147,10 @@ class ExplorerDataBuilderTest extends BaseTestCase
         $this->assertStringContainsString('quality-control buttons', $qualityToolsExplanation['description']);
         $this->assertStringContainsString('id, label, command', $qualityToolsExplanation['item_shape']);
         $this->assertStringNotContainsString('globs', $qualityToolsExplanation['item_shape']);
+
+        $this->assertIsArray($cachedToolsExplanation);
+        $this->assertSame('workflow', $cachedToolsExplanation['role']);
+        $this->assertStringContainsString('.output.json', $cachedToolsExplanation['description']);
 
         $this->assertIsArray($cursorCommandsExplanation);
         $this->assertSame('workflow', $cursorCommandsExplanation['role']);

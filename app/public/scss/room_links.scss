@@ -1,0 +1,20 @@
+// Room links panel: add-link form success feedback
+
+.room_links_add_panel_react {
+  .room_link_add_success {
+    display: inline-block;
+    margin-top: 0.25rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: 4px;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+    font-weight: 600;
+    opacity: 1;
+    transition: opacity 1s ease;
+  }
+
+  .room_link_add_success--fading {
+    opacity: 0;
+  }
+}

@@ -142,6 +142,13 @@ class ExplorerDataBuilder
             'drill_down' => 'Click → run command from app workspace root; hover shows command string',
         ],
         [
+            'path' => 'cached_tools',
+            'role' => 'workflow',
+            'description' => 'CLI tools that write sibling .output.json and .output.llm cache files. CodeView reads cache for status and compares generated_at to globs for staleness. Not a Categories button.',
+            'item_shape' => 'id, label, tool_path, command, container_name, globs[]',
+            'drill_down' => 'Host reads tool_path.output.json; stale when any glob file is newer than generated_at',
+        ],
+        [
             'path' => 'cursor_commands',
             'role' => 'workflow',
             'description' => 'Cursor slash commands from .cursor/commands/*.md. Labels and sort order come from .cursor/commands/command.meta.json (priority ascending; ties keep meta list order). Not a Categories button - used as workflow action buttons in CodeView.',
@@ -188,6 +195,34 @@ class ExplorerDataBuilder
             'id' => 'all_tests',
             'label' => 'All tests',
             'command' => 'docker exec bristolian-php_fpm-1 bash -c "sh runAllTests.sh"',
+        ],
+    ];
+
+    /**
+     * Cached CLI tools for CodeView. Each tool writes sibling .output.json / .output.llm files.
+     *
+     * @var list<array{
+     *   id: string,
+     *   label: string,
+     *   tool_path: string,
+     *   command: string,
+     *   container_name: string,
+     *   globs: list<string>
+     * }>
+     */
+    private const CACHED_TOOLS = [
+        [
+            'id' => 'php_test_coverage',
+            'label' => 'Check PHP test coverage',
+            'tool_path' => 'report_missing_coverage.php',
+            'command' => 'docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh && php report_missing_coverage.php"',
+            'container_name' => 'bristolian-php_fpm-1',
+            'globs' => [
+                'src/**/*.php',
+                'test/**/*.php',
+                'clover.xml',
+                'phpunit.xml',
+            ],
         ],
     ];
 
@@ -239,7 +274,7 @@ class ExplorerDataBuilder
                         'stateLabel' => 'Ready',
                         'showStart' => true,
                         'showQualityTools' => true,
-                        'showCursorCommands' => true,
+                        'showCursorCommands' => false,
                     ],
                     'on' => [
                         'START' => [
@@ -260,7 +295,7 @@ class ExplorerDataBuilder
                         'body' => 'This repo has modified or untracked files. Clean up the repo, resume work, or start Work on selection.',
                         'showStart' => true,
                         'showQualityTools' => true,
-                        'showCursorCommands' => true,
+                        'showCursorCommands' => false,
                         'chromeActions' => [
                             [
                                 'id' => 'clean-up-repo',
@@ -307,7 +342,7 @@ class ExplorerDataBuilder
                         'showBack' => false,
                         'showStart' => false,
                         'showQualityTools' => true,
-                        'showCursorCommands' => true,
+                        'showCursorCommands' => false,
                     ],
                     'on' => [
                         'CANCEL' => [
@@ -326,7 +361,7 @@ class ExplorerDataBuilder
                         'showBack' => false,
                         'showStart' => false,
                         'showQualityTools' => true,
-                        'showCursorCommands' => true,
+                        'showCursorCommands' => false,
                     ],
                     'on' => [
                         'CANCEL' => [
@@ -346,7 +381,7 @@ class ExplorerDataBuilder
                         'showBack' => false,
                         'showStart' => false,
                         'showQualityTools' => true,
-                        'showCursorCommands' => true,
+                        'showCursorCommands' => false,
                     ],
                     'on' => [
                         'PRIMARY' => [
@@ -373,7 +408,7 @@ class ExplorerDataBuilder
                         'showBack' => true,
                         'showStart' => false,
                         'showQualityTools' => true,
-                        'showCursorCommands' => true,
+                        'showCursorCommands' => false,
                     ],
                     'on' => [
                         'PRIMARY' => [
@@ -409,7 +444,7 @@ class ExplorerDataBuilder
                         'showBack' => true,
                         'showStart' => false,
                         'showQualityTools' => true,
-                        'showCursorCommands' => true,
+                        'showCursorCommands' => false,
                     ],
                     'on' => [
                         'PRIMARY' => [
@@ -484,6 +519,7 @@ class ExplorerDataBuilder
             'root_explanations' => self::ROOT_EXPLANATIONS,
             // Workflow chrome + machines — not navigable categories.
             'quality_tools' => self::QUALITY_TOOLS,
+            'cached_tools' => self::CACHED_TOOLS,
             'workflows' => self::WORKFLOWS,
         ];
 

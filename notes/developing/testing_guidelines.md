@@ -341,20 +341,34 @@ To identify which lines of code need test coverage, first run the unit tests to 
 docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh --no-progress"
 ```
 
-Then use the `list_uncovered_lines.php` script to find uncovered lines. You can filter by namespace or directory:
+Then use `report_missing_coverage.php` for a clear summary of overall coverage and which files need more tests:
 
 ```bash
-# Find all uncovered lines in a specific namespace
-docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml | grep Bristolian/Response"
+# Whole project: summary, directories gaps, file gaps
+docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php"
 
-# Find all uncovered lines in a specific directory
-docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml | grep Bristolian/Model"
+# Focus on one area
+docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php --filter=Bristolian/Response"
 
-# Count uncovered lines for a namespace
-docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml | grep Bristolian/Response | wc -l"
+# Top gaps with uncovered line numbers
+docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php --limit=20 --lines"
+
+# Machine-readable JSON (for extensions / tooling)
+docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php --json"
 ```
 
-The output shows the file path and line numbers that are not covered by tests. Use this to identify which methods and code paths need additional test coverage.
+Every successful run also writes cache files beside the script (for CodeView / agents):
+
+- `report_missing_coverage.php.output.json` — machine-readable payload with `generated_at` as ISO-8601 UTC (`Y-m-d\TH:i:s\Z`) and `generated_at_unix` (epoch seconds) for staleness checks
+- `report_missing_coverage.php.output.llm` — same report as text, prefixed with `generated_at`
+
+Exit **0** means the report was produced (whether or not there are gaps). Exit **2** is for usage/file/parse errors. Read the cache or JSON for uncovered files — do not treat a non-zero exit as “gaps found”.
+
+For a raw `path:line` dump (e.g. scripting), use `list_uncovered_lines.php`:
+
+```bash
+docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml | grep Bristolian/Response"
+```
 
 **Note:** Some uncovered lines may be error-handling paths that are difficult to trigger in normal operation. When you have analyzed a path and concluded it is difficult to test, add a comment in the source code above that code explaining why it is difficult to test. Tell the user that these lines are difficult to test, and ask for guidance on how to handle them.
 

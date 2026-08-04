@@ -56,6 +56,8 @@ src/Bristolian/Response/Typed
 api_routes.tsx
 /clover.xml
 /clover_chat.xml
+*.output.json
+*.output.llm
 .phpunit.cache
 /app/public/js/stats.json
 /app/public/js/report.html
@@ -74,3 +76,4 @@ purchases/notice_progress.json
 purchases/exported/
 /purchases/
 /notes/extension-cursor-user
+/notes/ICO-decisions

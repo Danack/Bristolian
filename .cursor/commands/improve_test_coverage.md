@@ -23,20 +23,40 @@ Run the unit tests to generate a coverage report:
 docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh --no-progress"
 ```
 
-### Step 3: Find Uncovered Lines
+### Step 3: Find Coverage Gaps
 
-Identify uncovered lines for the specified directory/namespace, or inspect the whole project if the goal is to get back to 100% coverage:
+Use `report_missing_coverage.php` for a single-step summary of overall coverage and which files need more tests:
 
 ```bash
-# For a namespace (e.g., Bristolian/Response)
-docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml | grep Bristolian/Response"
+# Whole project summary + files/directories with gaps
+docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php"
 
-# For a directory (e.g., src/Bristolian/Response)
-docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml | grep src/Bristolian/Response"
+# Focus on one area
+docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php --filter=Bristolian/Response"
 
-# For the whole project when aiming for 100% coverage
-docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml"
+# Top gaps only, with uncovered line numbers
+docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php --limit=20 --lines"
+
+# Machine-readable JSON
+docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php --json"
 ```
+
+Every successful run also writes cache files beside the script:
+
+- `report_missing_coverage.php.output.json`
+- `report_missing_coverage.php.output.llm`
+
+Exit **0** means the report was produced (gaps are data in those files, not a failure). Exit **2** is for real errors. Read the cache/JSON for gaps; do not infer coverage status from the exit code.
+
+CodeView and agents can read these instead of re-running the tool when inputs have not changed.
+
+For a raw `path:line` dump (e.g. scripting), `list_uncovered_lines.php` is still available:
+
+```bash
+docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml | grep Bristolian/Response"
+```
+
+Prefer `report_missing_coverage.php` when deciding where to work next.
 
 ### Step 4: Analyze Existing Tests
 
