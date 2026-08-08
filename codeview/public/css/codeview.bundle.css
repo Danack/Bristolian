@@ -1,0 +1,80 @@
+/* CodeView workspace UI bundle styles (injected via codeview.bundle.css).
+   Most chrome reuses host media/styles.css class names (qc-*, chrome-*, workflow-*). */
+.cv-cached-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cv-cached-tools-marker {
+  margin: 0;
+  font-size: 0.7rem;
+  opacity: 0.65;
+  letter-spacing: 0.02em;
+}
+
+.cv-cached-tool-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.35rem 0.4rem;
+  border: 1px solid var(--vscode-widget-border, rgba(128, 128, 128, 0.35));
+  border-radius: 3px;
+  outline: none;
+}
+
+.cv-cached-tool-block:focus {
+  border-color: var(--vscode-focusBorder, #007fd4);
+}
+
+.cv-cached-tool-status {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+.cv-cached-tool-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.cv-cached-tool-run-btn,
+.cv-cached-tool-proceed-btn {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.45rem;
+  cursor: pointer;
+  text-align: left;
+  border: 1px solid var(--vscode-button-border, transparent);
+  border-radius: 2px;
+  background: var(--vscode-button-secondaryBackground, rgba(128, 128, 128, 0.2));
+  color: var(--vscode-button-secondaryForeground, inherit);
+}
+
+.cv-cached-tool-run-btn:hover:not(:disabled),
+.cv-cached-tool-proceed-btn:hover {
+  background: var(--vscode-button-secondaryHoverBackground, rgba(128, 128, 128, 0.35));
+}
+
+.cv-cached-tool-run-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.cv-quality-tools,
+.cv-cursor-commands,
+.cv-workflow-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.cv-workflow-panel .workflow-idle,
+.cv-workflow-panel .workflow-active {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/*# sourceMappingURL=codeview.bundle.css.map */

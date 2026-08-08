@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
+    "module": "ES6",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "outDir": "./build/",
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "target": "ES6",
+    "strict": true
+  },
+  "include": [
+    "./public/tsx/**/**/*.tsx",
+    "./public/tsx/**/**/*.ts"
+  ],
+  "exclude": [
+    "./public/tsx/**/*.test.tsx"
+  ]
+}

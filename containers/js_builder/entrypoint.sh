@@ -1,7 +1,7 @@
 
 cd /var/app/app
 
-echo "Updating/installing npm modules"
+# echo "Updating/installing npm modules"
 
 echo "lets not update for a while"
 # npm update

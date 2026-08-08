@@ -23,6 +23,11 @@ services:
     ports:
       - "8000:80"
       - "8001:8001"
+  codeview_js_builder:
+    environment:
+      - BRISTOLIAN_API_BASE_URL=http://local.api.bristolian.org
+   # ports:
+   #   - "8888:8888"
   js_builder:
     environment:
       - BRISTOLIAN_API_BASE_URL=http://local.api.bristolian.org

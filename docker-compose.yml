@@ -90,6 +90,14 @@ services:
     build: containers/sass_dev_builder
     volumes:
       - .:/var/app
+  codeview_js_builder:
+    build: containers/codeview_js_builder
+    volumes:
+      - .:/var/app
+  codeview_sass_dev_builder:
+    build: containers/sass_dev_builder
+    volumes:
+      - .:/var/app
   php_fpm:
    build: containers/php_fpm
    # The image name is so the debug container can be built from it
