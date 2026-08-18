@@ -46,42 +46,38 @@ class Asm
         bool $secure = false,
         bool $httpOnly = true
     ): string {
-        $COOKIE_EXPIRES = "; expires=";
-        $COOKIE_MAX_AGE = "; Max-Age=";
-        $COOKIE_PATH = "; path=";
-        $COOKIE_DOMAIN = "; domain=";
-        $COOKIE_SECURE = "; secure";
-        $COOKIE_HTTPONLY = "; httpOnly";
-
 
         $headerString = "";
         $headerString .= $cookieName.'='.$cookieValue;
 
         $expireTime = $time + $lifetime;
         $expireDate = date("D, d M Y H:i:s T", $expireTime);
-        $headerString .= $COOKIE_EXPIRES;
+        $headerString .= "; expires=";
         $headerString .= $expireDate;
 
-        $headerString .= $COOKIE_MAX_AGE;
+        // eww - this should be single operation?
+        $headerString .= "; Max-Age=";
         $headerString .= $lifetime;
 
         if ($path !== null) {
-            $headerString .= $COOKIE_PATH;
+            $headerString .= "; path=";
             $headerString .= $path;
         }
 
         if ($domain !== null) {
-            $headerString .= $COOKIE_DOMAIN;
+            $headerString .= "; domain=";
             $headerString .= $domain;
         }
 
         if ($secure) {
-            $headerString .= $COOKIE_SECURE;
+            $headerString .= "; secure";
         }
 
         if ($httpOnly) {
-            $headerString .= $COOKIE_HTTPONLY;
+            $headerString .= "; httpOnly";
         }
+
+        $headerString .="; SameSite=Strict";
 
         return $headerString;
     }
