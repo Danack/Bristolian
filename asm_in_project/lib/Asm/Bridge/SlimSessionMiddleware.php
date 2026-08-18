@@ -48,7 +48,7 @@ class SlimSessionMiddleware implements MiddlewareInterface
                 \Asm\SessionManager::CACHE_PRIVATE,
                 '/'
             //        $domain = false,
-            //        $secure = false,
+            //        $secure = false, TODO - this should proabably be true in production.
             //        $httpOnly = true
             );
 
@@ -60,8 +60,6 @@ class SlimSessionMiddleware implements MiddlewareInterface
                 $response = $response->withAddedHeader($name, $value);
             }
         }
-
-        \error_log("headers count is " . count($headersArrays));
 
         return $response;
     }
