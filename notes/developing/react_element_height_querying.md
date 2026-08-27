@@ -9,7 +9,7 @@ In React/Preact, you can query an element's height using **refs** to access the 
 Create a ref and attach it to the element, then query its dimensions after render:
 
 ```typescript
-import { h, Component, createRef } from "preact";
+import { Component, createRef } from "preact";
 
 // In your component class:
 messageRef = createRef<HTMLDivElement>();
@@ -60,7 +60,6 @@ renderChatMessage(message: ChatMessage, index: number) {
 If using functional components instead of class components:
 
 ```typescript
-import { h } from "preact";
 import { useRef, useEffect } from "preact/hooks";
 
 function ChatMessage({ message }) {

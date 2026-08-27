@@ -1,4 +1,4 @@
-import {h, Component} from "preact";
+import {Component} from "preact";
 import {set_logged_in, set_user_info} from "./store";
 
 export interface LoginStatusPanelProps {

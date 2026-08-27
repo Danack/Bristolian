@@ -61,7 +61,7 @@ private renderSection(): VNode | null {
 }
 ```
 
-`h.JSX.TargetedEvent<...>` on event handlers is fine; that is only for DOM events, not for render output.
+Event handlers can use `JSX.TargetedEvent<...>` via `import type { JSX } from "preact"`; that is only for DOM events, not for render output.
 
 ## CSS class naming
 

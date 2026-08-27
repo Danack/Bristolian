@@ -1,4 +1,4 @@
-import {h, Component} from "preact";
+import {Component} from "preact";
 
 import {MEME_FILE_UPLOAD_FORM_NAME, DUPLICATE_FILENAME} from "./generated/constants";
 

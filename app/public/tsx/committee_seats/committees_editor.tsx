@@ -1,4 +1,5 @@
-import {h, Component} from "preact";
+import {Component} from "preact";
+import type { JSX } from "preact";
 import {COMMITTEE_SEATS_PAGE} from "./page_config";
 import type {Committee} from "./types";
 import {
@@ -28,13 +29,13 @@ class AddCommitteeRow extends Component<AddCommitteeRowProps, AddCommitteeRowSta
         };
     }
 
-    handleDraftCommitteeNameChange(event: h.JSX.TargetedEvent<HTMLInputElement, Event>): void {
+    handleDraftCommitteeNameChange(event: JSX.TargetedEvent<HTMLInputElement, Event>): void {
         this.setState({
             draftCommitteeName: event.currentTarget.value,
         });
     }
 
-    handleDraftSeatCountChange(event: h.JSX.TargetedEvent<HTMLInputElement, Event>): void {
+    handleDraftSeatCountChange(event: JSX.TargetedEvent<HTMLInputElement, Event>): void {
         this.setState({
             draftSeatCount: parseInt(event.currentTarget.value, 10) || 0,
         });
@@ -90,7 +91,7 @@ class AddCommitteeRow extends Component<AddCommitteeRowProps, AddCommitteeRowSta
                         className="committee_seats_additional_group_name_input"
                         value={this.state.draftCommitteeName}
                         placeholder={COMMITTEE_SEATS_PAGE.add_committee_name_placeholder}
-                        onInput={(event: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+                        onInput={(event: JSX.TargetedEvent<HTMLInputElement, Event>) =>
                             this.handleDraftCommitteeNameChange(event)
                         }
                         onKeyDown={(event: KeyboardEvent) => this.handleDraftCommitteeNameKeyDown(event)}
@@ -111,7 +112,7 @@ class AddCommitteeRow extends Component<AddCommitteeRowProps, AddCommitteeRowSta
                             step="1"
                             className="committee_seats_add_committee_seat_count_input"
                             value={this.state.draftSeatCount}
-                            onInput={(event: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+                            onInput={(event: JSX.TargetedEvent<HTMLInputElement, Event>) =>
                                 this.handleDraftSeatCountChange(event)
                             }
                             onKeyDown={(event: KeyboardEvent) => this.handleDraftSeatCountKeyDown(event)}
@@ -194,7 +195,7 @@ export function CommitteesEditor(props: CommitteesEditorProps) {
                                                         type="text"
                                                         value={committee.name}
                                                         onInput={(
-                                                            event: h.JSX.TargetedEvent<HTMLInputElement, Event>
+                                                            event: JSX.TargetedEvent<HTMLInputElement, Event>
                                                         ) =>
                                                             props.onCommitteeNameChange(
                                                                 committeeIndex,
@@ -217,7 +218,7 @@ export function CommitteesEditor(props: CommitteesEditorProps) {
                                                         step="1"
                                                         value={committee.seat_count}
                                                         onInput={(
-                                                            event: h.JSX.TargetedEvent<HTMLInputElement, Event>
+                                                            event: JSX.TargetedEvent<HTMLInputElement, Event>
                                                         ) =>
                                                             props.onCommitteeSeatCountChange(
                                                                 committeeIndex,

@@ -1,4 +1,3 @@
-import {h} from "preact";
 import {CommitteesEditor} from "../committees_editor";
 import {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY} from "../experimental_seat_distribution";
 import type {Committee} from "../types";

@@ -1,5 +1,5 @@
 
-import { h, Component } from "preact";
+import { Component } from "preact";
 import { registerMessageListener, sendMessage, unregisterListener } from "./message/message";
 import { RoomAnnotationWithTags, createRoomTag, RoomTag } from "./generated/types";
 import { ANNOTATION_TITLE_MINIMUM_LENGTH } from "./generated/constants";

@@ -1,4 +1,4 @@
-import {h} from "preact";
+import type { JSX } from "preact";
 import {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY} from "../experimental_seat_distribution";
 import {NEXT_STEPS_COPY, getNextStepsAllocationRows} from "../next_steps";
 import {
@@ -109,7 +109,7 @@ export function NextStepsStep(props: NextStepsStepProps) {
                         className="committee_seats_send_council_data_name_input"
                         type="text"
                         value={props.state.proposed_example_council_name}
-                        onInput={(event: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+                        onInput={(event: JSX.TargetedEvent<HTMLInputElement, Event>) =>
                             props.onProposedExampleCouncilNameChange(event.currentTarget.value)
                         }
                     />

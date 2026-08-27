@@ -1,6 +1,4 @@
 
-
-import {h} from "preact";
 import {useState, useEffect, useRef} from "preact/hooks";
 import {use_logged_in, use_user_info} from "../store";
 import {MessageEncapsulated} from "../ChatPanel";

@@ -1,4 +1,4 @@
-import {h, Component} from "preact";
+import {Component} from "preact";
 import {api, GetMemesResponse, GetMemesUntaggedResponse, PostMemetagaddResponse, PostMemetagdeleteResponse} from "./generated/api_routes";
 import {StoredMeme, createStoredMeme} from "./generated/types";
 import {MemeTagType} from "./MemeTagType";

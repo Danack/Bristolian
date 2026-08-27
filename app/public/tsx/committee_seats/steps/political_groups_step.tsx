@@ -1,4 +1,3 @@
-import {h} from "preact";
 import {PoliticalGroupsEditor} from "../political_groups_editor";
 import {CommitteeSeatsCouncilSetupIntro} from "../panel_wizard_chrome";
 import type {PoliticalGroup} from "../types";

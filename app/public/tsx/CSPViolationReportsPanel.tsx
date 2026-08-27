@@ -1,4 +1,4 @@
-import {h, Component} from "preact";
+import {Component} from "preact";
 
 let api_url: string = process.env.BRISTOLIAN_API_BASE_URL;
 let REPORTS_SHOWN_PER_PAGE: number = 10;

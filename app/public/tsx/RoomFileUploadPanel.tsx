@@ -1,4 +1,4 @@
-import {h, Component} from "preact";
+import {Component} from "preact";
 import {FileUpload} from "./components/FileUpload";
 import {PdfSelectionType} from "./constants";
 import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";

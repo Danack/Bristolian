@@ -35,9 +35,11 @@ docker-compose up --build \
  php_websocket \
  sass_dev_builder \
  js_builder \
- codeview_js_builder \
  redis \
   --remove-orphans
+
+
+# codeview_js_builder \
 
 # chrome_headless \
 

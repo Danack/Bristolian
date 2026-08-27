@@ -1,4 +1,3 @@
-import {h} from "preact";
 import {useState} from "preact/hooks";
 import {EXPERIMENTAL_SEAT_DISTRIBUTION_COPY} from "./experimental_seat_distribution";
 

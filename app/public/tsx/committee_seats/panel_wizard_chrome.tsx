@@ -1,4 +1,3 @@
-import {h} from "preact";
 import {
     COMMITTEE_SEATS_PAGE,
     formatCouncilSetupExampleIntro,

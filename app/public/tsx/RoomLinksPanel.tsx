@@ -1,4 +1,4 @@
-import { h, Component } from "preact";
+import { Component } from "preact";
 import { RoomLinkAddPanel } from "./RoomLinkAddPanel";
 import { registerMessageListener, sendMessage } from "./message/message";
 import { PdfSelectionType } from "./constants";

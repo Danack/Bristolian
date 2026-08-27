@@ -1,4 +1,4 @@
-import { h, Component } from "preact";
+import { Component } from "preact";
 import { registerMessageListener, sendMessage, unregisterListener } from "./message/message";
 import { EventType } from "./events";
 import {ChatBottomPanel} from "./chat/ChatBottomPanel";

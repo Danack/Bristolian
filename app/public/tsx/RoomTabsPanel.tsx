@@ -1,4 +1,4 @@
-import { h, Component } from "preact";
+import { Component } from "preact";
 import { ChatPanel } from "./ChatPanel";
 import { RoomLinksPanel } from "./RoomLinksPanel";
 import { RoomFilesPanel } from "./RoomFilesPanel";

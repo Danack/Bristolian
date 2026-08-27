@@ -1,4 +1,4 @@
-import { h, Component } from "preact";
+import { Component } from "preact";
 
 export interface FileUploadProps {
   uploadUrl: string; // endpoint to send files to

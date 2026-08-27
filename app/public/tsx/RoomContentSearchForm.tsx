@@ -1,4 +1,3 @@
-import { h } from "preact";
 import { RoomTag } from "./generated/types";
 import { ROOM_CONTENT_LIST_DEFAULT_LIMIT } from "./generated/constants";
 

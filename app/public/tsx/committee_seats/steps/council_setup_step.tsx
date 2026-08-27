@@ -1,4 +1,3 @@
-import {h} from "preact";
 import {validateCouncilSetup} from "../calculate_party_allocation";
 import {
     CouncilSetupSubstep,

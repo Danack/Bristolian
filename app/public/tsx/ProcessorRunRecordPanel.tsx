@@ -1,4 +1,4 @@
-import { h, Component } from "preact";
+import { Component } from "preact";
 import { formatDateTimeForDB, humanFileSize } from "./functions";
 import { ProcessorRunRecord, ProcessType, createProcessorRunRecord } from "./generated/types";
 import {GetLogProcessorRunRecordsResponse} from "./generated/api_routes";

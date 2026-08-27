@@ -115,7 +115,7 @@ React/Preact components live in `app/public/tsx/`. Each component:
 
 **Example Component Structure:**
 ```typescript
-import {h, Component} from "preact";
+import {Component} from "preact";
 
 // Define the props interface - matches the data from PHP
 export interface BristolStairsPanelProps {
@@ -966,7 +966,7 @@ HTML;
 ### 3. Create the TypeScript component
 ```typescript
 // app/public/tsx/HelloPanel.tsx
-import {h, Component} from "preact";
+import {Component} from "preact";
 
 export interface HelloPanelProps {
     message: string;

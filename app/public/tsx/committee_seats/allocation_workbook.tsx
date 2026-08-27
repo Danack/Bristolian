@@ -1,4 +1,3 @@
-import {h} from "preact";
 import {formatLowerRomanNumeral, formatNumber, formatPercentage} from "./calculate_party_allocation";
 import {COMMITTEE_SEATS_PAGE} from "./page_config";
 import type {PartyAllocationResult} from "./types";

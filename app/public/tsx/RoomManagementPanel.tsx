@@ -1,4 +1,4 @@
-import { h, Component } from "preact";
+import { Component } from "preact";
 import { RoomTag, createRoomTag, createRoom } from "./generated/types";
 import { api, GetRoomsDetailsResponse, GetRoomsTagsResponse } from "./generated/api_routes";
 import { MAX_TAGS_PER_ROOM } from "./generated/constants";

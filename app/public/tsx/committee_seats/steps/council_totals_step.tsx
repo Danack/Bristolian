@@ -1,4 +1,3 @@
-import {h} from "preact";
 import {CouncilTotalsEditor} from "../council_totals_editor";
 import {getExampleCouncilById, getPrefilledTotalCommitteeSeats} from "../example_councils";
 import {

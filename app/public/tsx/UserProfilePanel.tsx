@@ -1,4 +1,5 @@
-import {h, Component} from "preact";
+import {Component} from "preact";
+import type { JSX } from "preact";
 import {call_api} from "./functions";
 import {
     MINIMUM_DISPLAY_NAME_LENGTH,
@@ -145,7 +146,7 @@ export class UserProfilePanel extends Component<UserProfilePanelProps, UserProfi
         );
     }
 
-    handleAvatarUpload = (e: h.JSX.TargetedEvent<HTMLInputElement, Event>) => {
+    handleAvatarUpload = (e: JSX.TargetedEvent<HTMLInputElement, Event>) => {
         const file = e.currentTarget.files?.[0];
         if (!file) return;
 
@@ -209,7 +210,7 @@ export class UserProfilePanel extends Component<UserProfilePanelProps, UserProfi
                             id="display_name"
                             type="text"
                             value={display_name}
-                            onInput={(e: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+                            onInput={(e: JSX.TargetedEvent<HTMLInputElement, Event>) =>
                                 this.handleDisplayNameChange(e.currentTarget.value)
                             }
                             disabled={saving}
@@ -228,7 +229,7 @@ export class UserProfilePanel extends Component<UserProfilePanelProps, UserProfi
                             id="about_me"
                             class="profile-edit-about-me"
                             value={about_me}
-                            onInput={(e: h.JSX.TargetedEvent<HTMLTextAreaElement, Event>) =>
+                            onInput={(e: JSX.TargetedEvent<HTMLTextAreaElement, Event>) =>
                                 this.handleAboutMeChange(e.currentTarget.value)
                             }
                             disabled={saving}

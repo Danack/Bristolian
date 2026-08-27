@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "jsx": "react",
-    "jsxFactory": "h",
-    "jsxFragmentFactory": "Fragment",
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
     "module": "ES6",
     "moduleResolution": "node",
     "esModuleInterop": true,

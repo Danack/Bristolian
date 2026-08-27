@@ -1,4 +1,5 @@
-import {h, Component} from "preact";
+import {Component} from "preact";
+import type { JSX, VNode } from "preact";
 import {registerMessageListener, sendMessage, unregisterListener} from "./message/message";
 import {BristolStairInfo} from "./generated/types";
 import {FileUpload} from "./components/FileUpload";
@@ -356,7 +357,7 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
                 id="desc"
                 type="text"
                 value={description}
-                onInput={(e: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+                onInput={(e: JSX.TargetedEvent<HTMLInputElement, Event>) =>
                   this.handleDescriptionChange(e.currentTarget.value)
                 }
               />
@@ -367,7 +368,7 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
                 id="steps"
                 type="number"
                 value={steps}
-                onInput={(e: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+                onInput={(e: JSX.TargetedEvent<HTMLInputElement, Event>) =>
                   this.handleStepsChange(parseInt(e.currentTarget.value))
                 }
               />
@@ -464,13 +465,13 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
         const logged_in = use_logged_in();
         const map_visible = state.is_landscape || state.selected_stair_info === null;
 
-        let upload_button: h.JSX.Element = <span></span>;
+        let upload_button: VNode = <span></span>;
         if (logged_in === true && map_visible) {
             upload_button = <button className="button_standard" onClick={this.startUploadingImage}>Upload image</button>;
         }
 
         const positionReady = state.position_latitude !== null && state.position_longitude !== null;
-        let openmap_nearby_buttons: h.JSX.Element = <span></span>;
+        let openmap_nearby_buttons: VNode = <span></span>;
         if (logged_in === true && map_visible) {
             if (state.openmap_nearby_visible) {
                 openmap_nearby_buttons = (
@@ -492,7 +493,7 @@ export class BristolStairsPanel extends Component<BristolStairsPanelProps, Brist
             }
         }
 
-        let mainContent: h.JSX.Element;
+        let mainContent: VNode;
         if (this.state.uploading_image === true) {
             mainContent = this.renderUploadPanel();
         } else if (this.state.selected_stair_info !== null) {

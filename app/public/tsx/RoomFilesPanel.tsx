@@ -1,4 +1,4 @@
-import { h, Component } from "preact";
+import { Component } from "preact";
 import { humanFileSize, formatDateTimeForContent, spacesToNbsp } from "./functions";
 import { registerMessageListener, sendMessage, unregisterListener } from "./message/message";
 import { PdfSelectionType } from "./constants";

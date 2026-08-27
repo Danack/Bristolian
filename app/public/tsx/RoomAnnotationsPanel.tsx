@@ -1,4 +1,4 @@
-import { h, Component } from "preact";
+import { Component } from "preact";
 import { RoomAnnotationWithTags, createRoomTag, RoomTag } from "./generated/types";
 import { api, GetRoomsAnnotationsResponse } from "./generated/api_routes";
 import { sendMessage } from "./message/message";

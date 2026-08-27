@@ -1,4 +1,4 @@
-import { h, Component, Fragment } from "preact";
+import { Component } from "preact";
 import { api, GetRoomsVideosResponse } from "./generated/api_routes";
 import { RoomVideoWithTags, createRoomVideoWithTags, createRoomTag, RoomTag } from "./generated/types";
 import { get_logged_in, subscribe_logged_in } from "./store";

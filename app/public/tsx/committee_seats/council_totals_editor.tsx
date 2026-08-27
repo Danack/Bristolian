@@ -1,4 +1,4 @@
-import {h} from "preact";
+import type { JSX } from "preact";
 import {ExampleCouncilSeatAssignmentSourceLink} from "./panel_wizard_chrome";
 import {COMMITTEE_SEATS_PAGE} from "./page_config";
 
@@ -34,7 +34,7 @@ export function CouncilTotalsEditor(props: CouncilTotalsEditorProps) {
                                     min="1"
                                     step="1"
                                     value={props.expectedTotalCouncillors}
-                                    onInput={(event: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+                                    onInput={(event: JSX.TargetedEvent<HTMLInputElement, Event>) =>
                                         props.onExpectedTotalCouncillorsChange(
                                             parseInt(event.currentTarget.value, 10) || 0
                                         )
@@ -59,7 +59,7 @@ export function CouncilTotalsEditor(props: CouncilTotalsEditorProps) {
                                     min="1"
                                     step="1"
                                     value={props.totalCommitteeSeats}
-                                    onInput={(event: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+                                    onInput={(event: JSX.TargetedEvent<HTMLInputElement, Event>) =>
                                         props.onTotalCommitteeSeatsChange(
                                             parseInt(event.currentTarget.value, 10) || 0
                                         )

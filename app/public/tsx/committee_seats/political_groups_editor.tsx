@@ -1,4 +1,5 @@
-import {Component, h} from "preact";
+import {Component} from "preact";
+import type { JSX } from "preact";
 import {COMMITTEE_SEATS_PAGE} from "./page_config";
 import type {PoliticalGroup} from "./types";
 import {
@@ -80,7 +81,7 @@ function PoliticalGroupCountField(props: {
             min="0"
             step="1"
             value={props.councillorCount}
-            onInput={(event: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+            onInput={(event: JSX.TargetedEvent<HTMLInputElement, Event>) =>
                 props.onGroupCountChange(props.groupIndex, parseInt(event.currentTarget.value, 10) || 0)
             }
         />
@@ -104,7 +105,7 @@ class AddPoliticalGroupRow extends Component<AddPoliticalGroupRowProps, AddPolit
         };
     }
 
-    handleDraftGroupNameChange(event: h.JSX.TargetedEvent<HTMLInputElement, Event>): void {
+    handleDraftGroupNameChange(event: JSX.TargetedEvent<HTMLInputElement, Event>): void {
         this.setState({
             draftGroupName: event.currentTarget.value,
         });
@@ -142,7 +143,7 @@ class AddPoliticalGroupRow extends Component<AddPoliticalGroupRowProps, AddPolit
                             className="committee_seats_additional_group_name_input committee_seats_add_political_group_name_input"
                             value={this.state.draftGroupName}
                             placeholder={COMMITTEE_SEATS_PAGE.additional_political_group_name_placeholder}
-                            onInput={(event: h.JSX.TargetedEvent<HTMLInputElement, Event>) =>
+                            onInput={(event: JSX.TargetedEvent<HTMLInputElement, Event>) =>
                                 this.handleDraftGroupNameChange(event)
                             }
                             onKeyDown={(event: KeyboardEvent) => this.handleDraftGroupNameKeyDown(event)}

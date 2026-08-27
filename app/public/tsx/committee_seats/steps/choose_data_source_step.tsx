@@ -1,4 +1,4 @@
-import {h} from "preact";
+import type { JSX } from "preact";
 import {EXAMPLE_COUNCILS, getExampleCouncilById} from "../example_councils";
 import {COMMITTEE_SEATS_PAGE, NO_EXAMPLE_COUNCIL_SELECTED} from "../page_config";
 
@@ -31,7 +31,7 @@ export function ChooseDataSourceStep(props: ChooseDataSourceStepProps) {
                         <select
                             id="example_council"
                             value={props.selectedExampleCouncilId}
-                            onChange={(event: h.JSX.TargetedEvent<HTMLSelectElement, Event>) =>
+                            onChange={(event: JSX.TargetedEvent<HTMLSelectElement, Event>) =>
                                 props.onSelectedExampleCouncilChange(event.currentTarget.value)
                             }
                         >
