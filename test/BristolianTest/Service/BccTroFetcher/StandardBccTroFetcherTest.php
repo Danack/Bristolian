@@ -31,16 +31,52 @@ class StandardBccTroFetcherTest extends BaseTestCase
         $fetcher->fetchTros();
     }
 
+
+    public static function provides_FetchTrosReturnsParsedTrosWhenHttpReturns200WithExampleHtml() {
+
+       $statement_of_reasons = new BccTroDocument(
+           '(1) Statement of Reasons Hengrove Promenade',
+           '/files/documents/10060-1-statement-of-reasons-hengrove-promenade',
+           '10060'
+       );
+       $notice_of_proposal = new BccTroDocument(
+           '(2) Notice Hengrove Promenade Parallel and Zebra crossings',
+           '/files/documents/10061-2-notice-hengrove-promenade-parallel-and-zebra-crossings',
+           '10061'
+       );
+       $proposed_plan = new BccTroDocument(
+           '(3) Plan Hengrove Promenade Parallel and Zebra',
+           '/files/documents/10062-3-plan-hengrove-promenade-parallel-and-zebra',
+           '10062',
+       );
+
+       $bccTro = new BccTro(
+           $title = 'Proposed parallel crossign and zebra crossing: Hengrove Promenade, Hengrove',
+           $reference_code = 'Ref PX-DJR-25-031',
+           $statement_of_reasons,
+           $notice_of_proposal,
+           $proposed_plan
+       );
+
+       yield [__DIR__ . '/example_1.html', $bccTro];
+    }
+
+
     /**
+
+     * @dataProvider provides_FetchTrosReturnsParsedTrosWhenHttpReturns200WithExampleHtml
      * @covers \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::fetchTros
      * @covers \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::fetchHtmlContent
      */
-    public function testFetchTrosReturnsParsedTrosWhenHttpReturns200WithExampleHtml(): void
+    public function testFetchTrosReturnsParsedTrosWhenHttpReturns200WithExampleHtml(
+        string $html_input_file,
+        BccTro $expected_bcc_tro
+    ): void
     {
-        $exampleFile = __DIR__ . '/example_1.html';
-        $htmlContent = file_get_contents($exampleFile);
+
+        $htmlContent = file_get_contents($html_input_file);
         if ($htmlContent === false) {
-            $this->fail("Could not read example file: $exampleFile");
+            $this->fail("Could not read example file: $html_input_file");
         }
 
         $httpFetcher = new FakeHttpFetcherWithFixedResponse(200, $htmlContent);
@@ -51,43 +87,7 @@ class StandardBccTroFetcherTest extends BaseTestCase
         $this->assertCount(1, $tros);
         $tro = $tros[0];
         $this->assertInstanceOf(BccTro::class, $tro);
-        $this->assertSame(
-            'Proposed parallel crossign and zebra crossing: Hengrove Promenade, Hengrove',
-            $tro->title
-        );
-        $this->assertSame('Ref PX-DJR-25-031', $tro->reference_code);
 
-        $this->assertInstanceOf(BccTroDocument::class, $tro->statement_of_reasons);
-        $this->assertSame(
-            '(1) Statement of Reasons Hengrove Promenade',
-            $tro->statement_of_reasons->title
-        );
-        $this->assertSame(
-            '/files/documents/10060-1-statement-of-reasons-hengrove-promenade',
-            $tro->statement_of_reasons->href
-        );
-        $this->assertSame('10060', $tro->statement_of_reasons->id);
-
-        $this->assertInstanceOf(BccTroDocument::class, $tro->notice_of_proposal);
-        $this->assertSame(
-            '(2) Notice Hengrove Promenade Parallel and Zebra crossings',
-            $tro->notice_of_proposal->title
-        );
-        $this->assertSame(
-            '/files/documents/10061-2-notice-hengrove-promenade-parallel-and-zebra-crossings',
-            $tro->notice_of_proposal->href
-        );
-        $this->assertSame('10061', $tro->notice_of_proposal->id);
-
-        $this->assertInstanceOf(BccTroDocument::class, $tro->proposed_plan);
-        $this->assertSame(
-            '(3) Plan Hengrove Promenade Parallel and Zebra',
-            $tro->proposed_plan->title
-        );
-        $this->assertSame(
-            '/files/documents/10062-3-plan-hengrove-promenade-parallel-and-zebra',
-            $tro->proposed_plan->href
-        );
-        $this->assertSame('10062', $tro->proposed_plan->id);
+        $this->assertEquals($expected_bcc_tro, $tro);
     }
 }

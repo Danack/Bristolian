@@ -1,0 +1,16 @@
+
+Make chat be enabled always locally.
+
+Make sure the TRO fetcher is working.
+
+Have something that watches for TRO changes, and writes a message into the appropriate room.
+
+
+
+Notify unread messages in other rooms in front end.
+
+
+
+More TODO
+
+Normalise cli command names to make them easier to debug.

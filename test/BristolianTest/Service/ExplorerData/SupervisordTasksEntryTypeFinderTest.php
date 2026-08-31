@@ -47,7 +47,7 @@ class SupervisordTasksEntryTypeFinderTest extends BaseTestCase
             $dailyBccTro['command']
         );
         $this->assertSame(
-            'Bristolian\\CliController\\BccTroFetcherCliController::daily_bcc_tro',
+            'Bristolian\\CliController\\BccTroFetcherCliController::continual_bcc_tro_process',
             $dailyBccTro['controller']
         );
         $this->assertSame(

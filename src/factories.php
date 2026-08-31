@@ -554,3 +554,15 @@ function createAppSession(
 
     return $app_session;
 }
+
+function createBccTroExecutionCheck(Config $config): \Bristolian\Service\DailyProcessorSchedule\LocalDevBccTroExecutionCheck
+{
+    if ($config->isProductionEnv()) {
+        throw new \Exception("haven't written production version yet.");
+    }
+
+    return new \Bristolian\Service\DailyProcessorSchedule\LocalDevBccTroExecutionCheck();
+}
+
+
+

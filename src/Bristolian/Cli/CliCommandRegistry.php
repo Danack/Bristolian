@@ -504,7 +504,7 @@ final class CliCommandRegistry
         return [
             new CliCommandDefinition(
                 'service:bcc_tro_fetch:continual',
-                'Bristolian\CliController\BccTroFetcherCliController::daily_bcc_tro',
+                'Bristolian\CliController\BccTroFetcherCliController::continual_bcc_tro_process',
                 'Fetch and display Bristol City Council Traffic Regulation Orders',
                 static function (Command $command): void {
                     $command->addArgument('output', InputArgument::OPTIONAL, "One of 'CLI' or 'room'", 'CLI');
@@ -512,7 +512,7 @@ final class CliCommandRegistry
             ),
             new CliCommandDefinition(
                 'service:bcc_tro_fetch:once',
-                'Bristolian\CliController\BccTroFetcherCliController::fetchTros',
+                'Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process',
                 'Fetch and display Bristol City Council Traffic Regulation Orders',
                 static function (Command $command): void {
                     $command->addArgument('output', InputArgument::OPTIONAL, "One of 'CLI' or 'room'", 'CLI');

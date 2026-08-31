@@ -146,6 +146,8 @@ function injectionParams() : InjectionParams
         Bristolian\MarkdownRenderer\MarkdownRenderer::class =>
             \Bristolian\MarkdownRenderer\CommonMarkRenderer::class,
 
+        \Bristolian\Service\BccTroService\BccTroService::class =>
+            \Bristolian\Service\BccTroService\StandardBccTroService::class,
     ];
 
     // Delegate the creation of types to callables.
@@ -164,7 +166,10 @@ function injectionParams() : InjectionParams
             'createUserDocumentsFilesystem',
         \Redis::class =>
             'createRedis',
-        \Bristolian\Filesystem\BristolStairsFilesystem::class => 'createBristolStairsFilesystem'
+        \Bristolian\Filesystem\BristolStairsFilesystem::class =>
+            'createBristolStairsFilesystem',
+        \Bristolian\Service\DailyProcessorSchedule\BccTroExecutionCheck::class =>
+            'createBccTroExecutionCheck',
     ];
 
     // Define some params that can be injected purely by name.

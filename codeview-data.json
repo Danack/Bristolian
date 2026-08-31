@@ -747,12 +747,12 @@
         },
         {
             "command": "service:bcc_tro_fetch:continual",
-            "controller": "Bristolian\\CliController\\BccTroFetcherCliController::daily_bcc_tro",
+            "controller": "Bristolian\\CliController\\BccTroFetcherCliController::continual_bcc_tro_process",
             "description": "Fetch and display Bristol City Council Traffic Regulation Orders"
         },
         {
             "command": "service:bcc_tro_fetch:once",
-            "controller": "Bristolian\\CliController\\BccTroFetcherCliController::fetchTros",
+            "controller": "Bristolian\\CliController\\BccTroFetcherCliController::single_bcc_tro_process",
             "description": "Fetch and display Bristol City Council Traffic Regulation Orders"
         },
         {
@@ -2150,31 +2150,27 @@
             ]
         },
         {
-            "name": "Bristolian\\CliController\\BccTroFetcherCliController::daily_bcc_tro",
+            "name": "Bristolian\\CliController\\BccTroFetcherCliController::continual_bcc_tro_process",
             "file": "src/Bristolian/CliController/BccTroFetcherCliController.php",
-            "line-start": 93,
-            "line-end": 133,
+            "line-start": 23,
+            "line-end": 53,
             "dependencies": [
-                "Bristolian\\Repo\\BccTroRepo\\BccTroRepo",
                 "Bristolian\\Repo\\ProcessorRunRecordRepo\\ProcessorRunRecordRepo",
-                "Bristolian\\Repo\\RoomRepo\\RoomRepo",
-                "Bristolian\\Service\\BccTroFetcher\\BccTroFetcher",
+                "Bristolian\\Service\\BccTroService\\BccTroService",
                 "Bristolian\\Service\\CliOutput\\CliOutput",
-                "Bristolian\\Service\\DailyProcessorSchedule\\DailyProcessorSchedule",
-                "Bristolian\\Service\\RoomMessageService\\RoomMessageService"
+                "Bristolian\\Service\\DailyProcessorSchedule\\BccTroExecutionCheck"
             ]
         },
         {
-            "name": "Bristolian\\CliController\\BccTroFetcherCliController::fetchTros",
+            "name": "Bristolian\\CliController\\BccTroFetcherCliController::single_bcc_tro_process",
             "file": "src/Bristolian/CliController/BccTroFetcherCliController.php",
             "line-start": 55,
-            "line-end": 91,
+            "line-end": 93,
             "dependencies": [
-                "Bristolian\\Repo\\BccTroRepo\\BccTroRepo",
-                "Bristolian\\Repo\\RoomRepo\\RoomRepo",
-                "Bristolian\\Service\\BccTroFetcher\\BccTroFetcher",
+                "Bristolian\\Repo\\ProcessorRunRecordRepo\\ProcessorRunRecordRepo",
+                "Bristolian\\Service\\BccTroService\\BccTroService",
                 "Bristolian\\Service\\CliOutput\\CliOutput",
-                "Bristolian\\Service\\RoomMessageService\\RoomMessageService"
+                "Bristolian\\Service\\DailyProcessorSchedule\\BccTroExecutionCheck"
             ]
         },
         {
@@ -3312,6 +3308,20 @@
             "dependencies": []
         },
         {
+            "name": "Bristolian\\Service\\BccTroService\\BccTroService",
+            "file": "src/Bristolian/Service/BccTroService/BccTroService.php",
+            "line-start": 5,
+            "line-end": 8,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\Service\\BccTroService\\StandardBccTroService",
+            "file": "src/Bristolian/Service/BccTroService/StandardBccTroService.php",
+            "line-start": 15,
+            "line-end": 71,
+            "dependencies": []
+        },
+        {
             "name": "Bristolian\\Service\\BristolStairImageStorage\\BristolStairImageStorage",
             "file": "src/Bristolian/Service/BristolStairImageStorage/BristolStairImageStorage.php",
             "line-start": 14,
@@ -3389,6 +3399,13 @@
             "dependencies": []
         },
         {
+            "name": "Bristolian\\Service\\DailyProcessorSchedule\\BccTroExecutionCheck",
+            "file": "src/Bristolian/Service/DailyProcessorSchedule/BccTroExecutionCheck.php",
+            "line-start": 5,
+            "line-end": 8,
+            "dependencies": []
+        },
+        {
             "name": "Bristolian\\Service\\DailyProcessorSchedule\\DailyProcessorSchedule",
             "file": "src/Bristolian/Service/DailyProcessorSchedule/DailyProcessorSchedule.php",
             "line-start": 10,
@@ -3399,6 +3416,13 @@
             "name": "Bristolian\\Service\\DailyProcessorSchedule\\FakeDailyProcessorSchedule",
             "file": "src/Bristolian/Service/DailyProcessorSchedule/FakeDailyProcessorSchedule.php",
             "line-start": 10,
+            "line-end": 26,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\Service\\DailyProcessorSchedule\\LocalDevBccTroExecutionCheck",
+            "file": "src/Bristolian/Service/DailyProcessorSchedule/LocalDevBccTroExecutionCheck.php",
+            "line-start": 5,
             "line-end": 26,
             "dependencies": []
         },
@@ -4365,13 +4389,10 @@
         {
             "name": "Bristolian\\CliController\\BccTroFetcherCliController",
             "dependencies": [
-                "Bristolian\\Repo\\BccTroRepo\\BccTroRepo",
                 "Bristolian\\Repo\\ProcessorRunRecordRepo\\ProcessorRunRecordRepo",
-                "Bristolian\\Repo\\RoomRepo\\RoomRepo",
-                "Bristolian\\Service\\BccTroFetcher\\BccTroFetcher",
+                "Bristolian\\Service\\BccTroService\\BccTroService",
                 "Bristolian\\Service\\CliOutput\\CliOutput",
-                "Bristolian\\Service\\DailyProcessorSchedule\\DailyProcessorSchedule",
-                "Bristolian\\Service\\RoomMessageService\\RoomMessageService"
+                "Bristolian\\Service\\DailyProcessorSchedule\\BccTroExecutionCheck"
             ]
         },
         {
@@ -6208,6 +6229,13 @@
             "methods": []
         },
         {
+            "name": "Bristolian\\Service\\BccTroService\\BccTroService",
+            "implementations": [
+                "Bristolian\\Service\\BccTroService\\StandardBccTroService"
+            ],
+            "methods": []
+        },
+        {
             "name": "Bristolian\\Service\\BristolStairImageStorage\\BristolStairImageStorage",
             "implementations": [
                 "Bristolian\\Service\\BristolStairImageStorage\\FakeWorksBristolStairImageStorage",
@@ -6227,6 +6255,13 @@
             "implementations": [
                 "Bristolian\\Service\\CliOutput\\CapturingCliOutput",
                 "Bristolian\\Service\\CliOutput\\EchoCliOutput"
+            ],
+            "methods": []
+        },
+        {
+            "name": "Bristolian\\Service\\DailyProcessorSchedule\\BccTroExecutionCheck",
+            "implementations": [
+                "Bristolian\\Service\\DailyProcessorSchedule\\LocalDevBccTroExecutionCheck"
             ],
             "methods": []
         },
@@ -8627,7 +8662,7 @@
     "supervisord_tasks": [
         {
             "command": "php cli.php service:bcc_tro_fetch:continual",
-            "controller": "Bristolian\\CliController\\BccTroFetcherCliController::daily_bcc_tro",
+            "controller": "Bristolian\\CliController\\BccTroFetcherCliController::continual_bcc_tro_process",
             "program_name": "daily_bcc_tro",
             "src_file": "containers/supervisord/tasks/php_daily_bcc_tro.conf"
         },

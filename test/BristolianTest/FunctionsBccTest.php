@@ -31,12 +31,81 @@ class FunctionsBccTest extends BaseTestCase
         $this->assertCount(0, $tros);
     }
 
+
+
+
+    public static function provides_ParseTrosFromHtmlParsesExampleFile() {
+
+        $statement_of_reasons_1 = new BccTroDocument(
+            '(1) Statement of Reasons Hengrove Promenade',
+            '/files/documents/10060-1-statement-of-reasons-hengrove-promenade',
+            '10060'
+        );
+        $notice_of_proposal_1 = new BccTroDocument(
+            '(2) Notice Hengrove Promenade Parallel and Zebra crossings',
+            '/files/documents/10061-2-notice-hengrove-promenade-parallel-and-zebra-crossings',
+            '10061'
+        );
+        $proposed_plan_1 = new BccTroDocument(
+            '(3) Plan Hengrove Promenade Parallel and Zebra',
+            '/files/documents/10062-3-plan-hengrove-promenade-parallel-and-zebra',
+            '10062',
+        );
+
+        $bccTro_1 = new BccTro(
+            $title = 'Proposed parallel crossign and zebra crossing: Hengrove Promenade, Hengrove',
+            $reference_code = 'Ref PX-DJR-25-031',
+            $statement_of_reasons_1,
+            $notice_of_proposal_1,
+            $proposed_plan_1
+        );
+
+        yield [__DIR__ . '/Service/BccTroFetcher/example_1.html', $bccTro_1];
+
+
+
+        $statement_of_reasons_2 = new BccTroDocument(
+            'Statement of Reasons, PX DJR 26 004',
+            'https://www.bristol.gov.uk/files/documents/11286-statement-of-reasons-px-djr-26-004',
+            '11286'
+        );
+        $notice_of_proposal_2 = new BccTroDocument(
+            'Notice of Proposal, PX DJR 26 004',
+            'https://www.bristol.gov.uk/files/documents/11287-notice-of-proposal-px-djr-26-004',
+            '11287'
+        );
+        $proposed_plan_2 = new BccTroDocument(
+            'Proposed Plan   Zebra crossing, PX DJR 26 004',
+            'https://www.bristol.gov.uk/files/documents/11285-proposed-plan-zebra-crossing-px-djr-26-004',
+            '11285'
+        );
+
+
+        $bccTro_2 = new BccTro(
+            $title = 'Proposed Zebra Crossing: Marsh Street, City Centre (Central ward): ref PX-DJR-26-004',
+            $reference_code = 'PX-DJR-26-004',
+            $statement_of_reasons_2,
+            $notice_of_proposal_2,
+            $proposed_plan_2
+        );
+
+        yield [__DIR__ . '/Service/BccTroFetcher/example_2.html', $bccTro_2];
+    }
+
+
+
     /**
      * @covers \parseTrosFromHtml
+     * @group tro_wip
+     * @dataProvider provides_ParseTrosFromHtmlParsesExampleFile
      */
-    public function testParseTrosFromHtmlParsesExampleFile(): void
+    public function testParseTrosFromHtmlParsesExampleFile(
+        string $html_input_file,
+        BccTro $expected_bcc_tro
+
+    ): void
     {
-        $exampleFile = __DIR__ . '/Service/BccTroFetcher/example_1.html';
+        $exampleFile = $html_input_file;
         $htmlContent = file_get_contents($exampleFile);
         if ($htmlContent === false) {
             $this->fail("Could not read example file: $exampleFile");
@@ -45,17 +114,15 @@ class FunctionsBccTest extends BaseTestCase
         $tros = \parseTrosFromHtml($htmlContent);
 
         $this->assertCount(1, $tros);
+
+
+        $this->assertCount(1, $tros);
         $tro = $tros[0];
         $this->assertInstanceOf(BccTro::class, $tro);
-        $this->assertSame(
-            'Proposed parallel crossign and zebra crossing: Hengrove Promenade, Hengrove',
-            $tro->title
-        );
-        $this->assertSame('Ref PX-DJR-25-031', $tro->reference_code);
-        $this->assertSame('(1) Statement of Reasons Hengrove Promenade', $tro->statement_of_reasons->title);
-        $this->assertSame('10060', $tro->statement_of_reasons->id);
-        $this->assertSame('(2) Notice Hengrove Promenade Parallel and Zebra crossings', $tro->notice_of_proposal->title);
-        $this->assertSame('(3) Plan Hengrove Promenade Parallel and Zebra', $tro->proposed_plan->title);
+
+        $this->assertEquals($expected_bcc_tro, $tro);
+
+
     }
 
     /**

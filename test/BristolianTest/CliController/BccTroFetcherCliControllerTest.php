@@ -14,7 +14,6 @@ use Bristolian\Service\BccTroFetcher\BccTroFetcher;
 use Bristolian\Service\CliOutput\CapturingCliOutput;
 use Bristolian\Service\DailyProcessorSchedule\FakeDailyProcessorSchedule;
 use BristolianTest\BaseTestCase;
-use function Bristolian\CliController\output_tro_list_to_output;
 
 /**
  * BccTroRepo that records the last array passed to saveData for assertions.
@@ -182,6 +181,8 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
         $roomMessageService = new \Bristolian\Service\RoomMessageService\FakeRoomMessageService();
 
         $controller->fetchTros($fetcher, $repo, $roomRepo, $roomMessageService, $cliOutput);
+        // single_bcc_tro_process
+
 
         $this->assertStringContainsString(
             "Failed to find 'Transport'.",
@@ -210,7 +211,7 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\CliController\BccTroFetcherCliController::runInternal
+     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
      */
     public function test_runInternal_writes_skip_when_not_in_daily_window(): void
     {
@@ -218,7 +219,7 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
         $schedule->isWithinDailyWindow = false;
         $cliOutput = new CapturingCliOutput();
         $controller = new BccTroFetcherCliController();
-        $controller->runInternal(
+        $controller->single_bcc_tro_process(
             new FakeProcessorRunRecordRepo(),
             new BccTroFetcherReturningFixedTros([]),
             new BccTroFetcherTestBccTroRepo(),
@@ -233,7 +234,7 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\CliController\BccTroFetcherCliController::runInternal
+     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
      */
     public function test_runInternal_writes_skip_when_last_run_within_cooldown(): void
     {
@@ -244,7 +245,7 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
         $repo->startRun(\Bristolian\Repo\ProcessorRepo\ProcessType::daily_bcc_tro);
         $cliOutput = new CapturingCliOutput();
         $controller = new BccTroFetcherCliController();
-        $controller->runInternal(
+        $controller->single_bcc_tro_process(
             $repo,
             new BccTroFetcherReturningFixedTros([]),
             new BccTroFetcherTestBccTroRepo(),
@@ -258,7 +259,7 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\CliController\BccTroFetcherCliController::runInternal
+     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
      */
     public function test_runInternal_fetches_and_finishes_when_allowed(): void
     {
@@ -274,7 +275,7 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
         $controller = new BccTroFetcherCliController();
         $roomRepo = new FakeRoomRepo();
         $roomRepo->createRoom('owner_user_id', 'Transport', 'Discuss transport');
-        $controller->runInternal(
+        $controller->single_bcc_tro_process(
             $repo,
             $fetcher,
             new BccTroFetcherTestBccTroRepo(),
@@ -292,7 +293,7 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\CliController\BccTroFetcherCliController::runInternal
+     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
      * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
      */
     public function test_runInternal_records_error_and_finishes_when_fetch_throws(): void
@@ -306,7 +307,7 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
         $roomRepo = new FakeRoomRepo();
         $roomRepo->createRoom('owner_user_id', 'Transport', 'Discuss transport');
 
-        $controller->runInternal(
+        $controller->single_bcc_tro_process(
             $repo,
             new BccTroFetcherThatThrows(new \RuntimeException('network down')),
             new BccTroFetcherTestBccTroRepo(),
