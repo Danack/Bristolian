@@ -4,6 +4,7 @@ namespace BristolianTest\Middleware;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Middleware\MiddlewareException;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -18,8 +19,8 @@ class MiddlewareExceptionTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Middleware\MiddlewareException
-     * @dataProvider provides_works
      */
+    #[DataProvider('provides_works')]
     public function testWorks(mixed $value, string $expected_contents)
     {
         $e = new \Exception("not used");

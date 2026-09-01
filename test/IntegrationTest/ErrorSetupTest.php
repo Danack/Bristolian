@@ -6,6 +6,8 @@ namespace IntegrationTest;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\App;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @coversNothing
@@ -22,10 +24,8 @@ class ErrorSetupTest extends BaseTestCase
         ];
     }
 
-    /**
-     * @dataProvider providesCaughtExceptionsAreActuallyCaughtForApp
-     * @group slow
-     */
+    #[DataProvider('providesCaughtExceptionsAreActuallyCaughtForApp')]
+    #[Group('slow')]
     public function testCaughtExceptionsAreActuallyCaughtForApp(string $url)
     {
         [$statusCode, $body, $headers] = fetchUri($url, 'GET');
@@ -38,9 +38,7 @@ class ErrorSetupTest extends BaseTestCase
         );
     }
 
-    /**
-     * @group slow
-     */
+    #[Group('slow')]
     public function testCaughtExceptionsAreActuallyCaughtForApi()
     {
         $url = 'http://local.api.opensourcefees.com/test/caught_exception';
@@ -61,9 +59,7 @@ class ErrorSetupTest extends BaseTestCase
         ];
     }
 
-    /**
-     * @dataProvider providesUncaughtExceptionsAreActuallyCaughtBySlimForApp
-     */
+    #[DataProvider('providesUncaughtExceptionsAreActuallyCaughtBySlimForApp')]
     public function testUncaughtExceptionsAreActuallyCaughtBySlimForApp(string $url)
     {
         [$statusCode, $body, $headers] = fetchUri($url, 'GET');
@@ -76,9 +72,7 @@ class ErrorSetupTest extends BaseTestCase
         );
     }
 
-    /**
-     * @group slow
-     */
+    #[Group('slow')]
     public function testUncaughtExceptionsAreActuallyCaughtBySlimForApi()
     {
         $url = 'http://local.api.opensourcefees.com/test/uncaught_exception';

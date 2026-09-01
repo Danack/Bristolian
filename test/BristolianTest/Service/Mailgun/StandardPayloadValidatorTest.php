@@ -7,6 +7,7 @@ namespace BristolianTest\Service\Mailgun;
 use Bristolian\Service\Mailgun\StandardPayloadValidator;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -25,9 +26,9 @@ class StandardPayloadValidatorTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Service\Mailgun\StandardPayloadValidator::validate
-     * @dataProvider provides_validate_returns_false_when_required_key_missing
      * @param array<string, string> $payloadData
      */
+    #[DataProvider('provides_validate_returns_false_when_required_key_missing')]
     public function test_validate_returns_false_when_required_key_missing(array $payloadData): void
     {
         $payload = new ArrayVarMap($payloadData);

@@ -6,6 +6,7 @@ use Bristolian\Parameters\ProcessRule\StringToBoolDefaultTrue;
 use BristolianTest\BaseTestCase;
 use DataType\DataStorage\TestArrayDataStorage;
 use DataType\ProcessedValues;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -60,8 +61,8 @@ class StringToBoolDefaultTrueTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\ProcessRule\StringToBoolDefaultTrue::process
-     * @dataProvider provides_truthy_values_return_true
      */
+    #[DataProvider('provides_truthy_values_return_true')]
     public function test_truthy_values_return_true(string $value): void
     {
         $rule = $this->createProcessRule();
@@ -87,8 +88,8 @@ class StringToBoolDefaultTrueTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\ProcessRule\StringToBoolDefaultTrue::process
-     * @dataProvider provides_falsy_values_return_false
      */
+    #[DataProvider('provides_falsy_values_return_false')]
     public function test_falsy_values_return_false(string $value): void
     {
         $rule = $this->createProcessRule();

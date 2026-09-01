@@ -36,8 +36,8 @@ class FunctionsSearchingTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Repo\RoomFileRepo\room_files_sql_order_by_clause
-     * @dataProvider provides_room_files_sql_order_by_clause_and_expected_sql
      */
+    #[DataProvider('provides_room_files_sql_order_by_clause_and_expected_sql')]
     public function test_room_files_sql_order_by_clause_returns_expected_sql(
         ?Ordering $list_ordering,
         string $expectedSql

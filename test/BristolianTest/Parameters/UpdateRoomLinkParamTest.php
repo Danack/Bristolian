@@ -10,6 +10,7 @@ use Bristolian\Parameters\UpdateRoomLinkParam;
 use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -36,9 +37,9 @@ class UpdateRoomLinkParamTest extends BaseTestCase
     /**
      * @covers \Bristolian\Parameters\UpdateRoomLinkParam
      * @covers \Bristolian\Parameters\UpdateRoomLinkParam::__construct
-     * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_valid_input_and_expected_output')]
     public function test_createFromArray_parses_to_expected_values(
         array $input,
         ?string $expectedTitle,
@@ -52,9 +53,9 @@ class UpdateRoomLinkParamTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\UpdateRoomLinkParam
-     * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_valid_input_and_expected_output')]
     public function test_createFromVarMap_parses_to_expected_values(
         array $input,
         ?string $expectedTitle,
@@ -88,9 +89,9 @@ class UpdateRoomLinkParamTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\UpdateRoomLinkParam
-     * @dataProvider provides_invalid_input_and_expected_error
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_invalid_input_and_expected_error')]
     public function test_createFromArray_rejects_invalid_input(
         array $input,
         string $expectedPath,

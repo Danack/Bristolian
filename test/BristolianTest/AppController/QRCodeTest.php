@@ -10,6 +10,7 @@ use Bristolian\Parameters\QRTokenParams;
 use Bristolian\Response\SVGResponse;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -29,9 +30,9 @@ class QRCodeTest extends BaseTestCase
     }
 
     /**
-     * @dataProvider provides_get
      * @covers \Bristolian\AppController\QRCode::get
      */
+    #[DataProvider('provides_get')]
     public function test_get(string $url): void
     {
         $qrParams = QRParams::createFromVarMap(new ArrayVarMap([

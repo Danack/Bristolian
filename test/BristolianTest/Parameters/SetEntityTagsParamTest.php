@@ -6,6 +6,7 @@ namespace BristolianTest\Parameters;
 
 use Bristolian\Parameters\SetEntityTagsParam;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -36,6 +37,7 @@ class SetEntityTagsParamTest extends BaseTestCase
      * @param array<string, mixed> $input
      * @param string[] $expectedTagIds
      */
+    #[DataProvider('provides_valid_input_and_expected_tag_ids')]
     public function test_fromArray_parses_input_to_expected_tag_ids(array $input, array $expectedTagIds): void
     {
         $params = SetEntityTagsParam::fromArray($input);

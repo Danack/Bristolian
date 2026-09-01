@@ -7,6 +7,7 @@ namespace BristolianTest\Service\ExplorerData;
 use Bristolian\Service\ExplorerData\CodegenProvenance;
 use Bristolian\Service\ExplorerData\GeneratedArtifactsEntryTypeFinder;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -396,8 +397,8 @@ class CodegenProvenanceTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseFromFileContents
-     * @dataProvider provides_parseFromFileContents_invalid_payloads
      */
+    #[DataProvider('provides_parseFromFileContents_invalid_payloads')]
     public function test_parse_returns_null_for_invalid_payloads(string $contents): void
     {
         $this->assertNull(CodegenProvenance::parseFromFileContents($contents));

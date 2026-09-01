@@ -219,7 +219,7 @@ class Database
 {
     public function waitForDBToBeWorking(
         Config $config,
-        int $maxTimeToWait = null
+        int|null $maxTimeToWait = null
     ): void {
         if ($maxTimeToWait === null) {
             $maxTimeToWait = 60;

@@ -13,6 +13,7 @@ use DataType\DataStorage\TestArrayDataStorage;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use SlimDispatcher\Response\JsonResponse;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -254,38 +255,6 @@ TEXT;
         $this->assertSame('1 MB', human_readable_value(1024 * 1024));
     }
 
-    public function test_convertToValue()
-    {
-    }
-
-
-
-
-
-    public function test_convertStringToHtmlResponse()
-    {
-    }
-
-
-    public function test_getMask()
-    {
-    }
-
-
-    public function test_twiddleWithShit()
-    {
-    }
-
-
-    public function test_showTotalErrorPage()
-    {
-    }
-
-
-    public function test_getMemoryLimit()
-    {
-    }
-
     /**
      * @covers ::getPercentMemoryUsed
      */
@@ -445,12 +414,12 @@ TEXT;
     }
 
     /**
-     * @dataProvider provides_slugify
      * @covers slugify
      * @param string $input
      * @param string $expected
      * @return void
      */
+    #[DataProvider('provides_slugify')]
     public function test_slugify(string $input, string $expected)
     {
         $result = slugify($input);
@@ -476,9 +445,9 @@ TEXT;
     }
 
     /**
-     * @dataProvider provides_extract_youtube_video_id
      * @covers ::extract_youtube_video_id
      */
+    #[DataProvider('provides_extract_youtube_video_id')]
     public function test_extract_youtube_video_id(string $url, ?string $expected): void
     {
         $this->assertSame($expected, extract_youtube_video_id($url));
@@ -512,9 +481,9 @@ TEXT;
     }
 
     /**
-     * @dataProvider provides_parse_clip_timestamp_to_seconds
      * @covers ::parse_clip_timestamp_to_seconds
      */
+    #[DataProvider('provides_parse_clip_timestamp_to_seconds')]
     public function test_parse_clip_timestamp_to_seconds(string $input, ?int $expected): void
     {
         $this->assertSame($expected, parse_clip_timestamp_to_seconds($input));
@@ -529,11 +498,11 @@ TEXT;
 
     /**
      * @covers ::sanitise_filename
-     * @dataProvider provides_sanitise_filename
      * @param string $input
      * @param string $expected
      * @return void
      */
+    #[DataProvider('provides_sanitise_filename')]
     public function test_sanitise_filename(string $input, string $expected)
     {
         $result = sanitise_filename($input);
@@ -550,11 +519,11 @@ TEXT;
 
     /**
      * @covers ::standardise_username_to_filename
-     * @dataProvider provides_standardise_username_to_filename
      * @param string $input
      * @param string $expected
      * @return void
      */
+    #[DataProvider('provides_standardise_username_to_filename')]
     public function test_standardise_username_to_filename(string $input, string $expected)
     {
         $result = standardise_username_to_filename($input);
@@ -569,9 +538,9 @@ TEXT;
     }
 
     /**
-     * @dataProvider provides_escapeMySqlLikeString
      * @covers ::escapeMySqlLikeString
      */
+    #[DataProvider('provides_escapeMySqlLikeString')]
     public function test_escapeMySqlLikeString(string $input, string $expected)
     {
         $result = escapeMySqlLikeString($input);
@@ -629,11 +598,11 @@ TEXT;
 
     /**
      * @covers ::normalize_file_extension
-     * @dataProvider provides_normalize_file_extension_works
      * @param string $original_filename
      * @param string[] $allowed_extensions
      * @throws BristolianException
      */
+    #[DataProvider('provides_normalize_file_extension_works')]
     public function test_normalize_file_extension_works(string $original_filename, array $allowed_extensions)
     {
         $result = normalize_file_extension(
@@ -668,11 +637,11 @@ TEXT;
 
     /**
      * @covers ::normalize_file_extension
-     * @dataProvider provides_normalize_file_extension_null
      * @param string $original_filename
      * @param string[] $allowed_extensions
      * @throws BristolianException
      */
+    #[DataProvider('provides_normalize_file_extension_null')]
     public function test_normalize_file_extension_null(string $original_filename, $allowed_extensions)
     {
         $result = normalize_file_extension(
@@ -701,8 +670,8 @@ TEXT;
 
     /**
      * @covers ::convertToValue
-     * @dataProvider provides_convertToValue_works
      */
+    #[DataProvider('provides_convertToValue_works')]
     public function test_convertToValue_works(mixed $input, mixed $expected_value)
     {
         [$error, $value] = convertToValue($input);
@@ -725,8 +694,8 @@ TEXT;
 
     /**
      * @covers ::get_readable_variable_type
-     * @dataProvider provides_get_readable_variable_type_works
      */
+    #[DataProvider('provides_get_readable_variable_type_works')]
     public function test_get_readable_variable_type(mixed $value, string $expected_message)
     {
         $result = get_readable_variable_type($value);
@@ -847,7 +816,7 @@ TEXT;
     public function test_getMimeTypeFromFilename_throws_for_unknown_extension(): void
     {
         $this->expectException(\Bristolian\Exception\BristolianException::class);
-        $this->expectExceptionMessage('Unknown file type');
+        $this->expectExceptionMessageIsOrContains('Unknown file type');
         getMimeTypeFromFilename('file.unknown');
     }
 
@@ -867,7 +836,7 @@ TEXT;
     public function test_getEnumCases_throws_for_non_existent_class(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('does not exist');
+        $this->expectExceptionMessageIsOrContains('does not exist');
         /** @phpstan-ignore argument.type (intentionally invalid to test exception) */
         getEnumCases('NonExistentClass');
     }
@@ -878,7 +847,7 @@ TEXT;
     public function test_getEnumCases_throws_for_non_enum_class(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('is not an enum');
+        $this->expectExceptionMessageIsOrContains('is not an enum');
         /** @phpstan-ignore argument.type (intentionally invalid to test exception) */
         getEnumCases(\StdClass::class);
     }
@@ -908,7 +877,7 @@ TEXT;
     public function test_getEnumCaseValues_throws_for_non_enum_class(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('is not an enum');
+        $this->expectExceptionMessageIsOrContains('is not an enum');
         /** @phpstan-ignore argument.type (intentionally invalid to test exception) */
         getEnumCaseValues(\StdClass::class);
     }
@@ -1060,9 +1029,9 @@ TEXT;
     }
 
     /**
-     * @dataProvider provides_underscore_separated_datetime_to_human_readable
      * @covers ::underscore_separated_datetime_to_human_readable
      */
+    #[DataProvider('provides_underscore_separated_datetime_to_human_readable')]
     public function test_underscore_separated_datetime_to_human_readable(string $input, string $expected): void
     {
         $this->assertSame($expected, underscore_separated_datetime_to_human_readable($input));
@@ -1082,9 +1051,9 @@ TEXT;
     }
 
     /**
-     * @dataProvider provides_underscore_separated_datetime_to_human_readable_invalid
      * @covers ::underscore_separated_datetime_to_human_readable
      */
+    #[DataProvider('provides_underscore_separated_datetime_to_human_readable_invalid')]
     public function test_underscore_separated_datetime_to_human_readable_throws_when_not_parseable(string $input): void
     {
         $this->expectException(BristolianException::class);

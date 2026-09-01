@@ -47,7 +47,7 @@ class UsersTest extends BaseTestCase
         $this->setupFakeUserSession();
     }
 
-    private function createSessionManager(FakeAsmDriver $driver = null): SessionManager
+    private function createSessionManager(FakeAsmDriver|null $driver = null): SessionManager
     {
         $config = new SessionConfig('test_session', 3600);
         $driver = $driver ?? new FakeAsmDriver([

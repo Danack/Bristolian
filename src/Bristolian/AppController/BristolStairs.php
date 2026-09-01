@@ -83,7 +83,7 @@ class BristolStairs
     private function render_stairs_page(
         ExtraAssets $extraAssets,
         BristolStairsRepo $bristolStairsRepo,
-        BristolStairInfo $selected_stair = null
+        BristolStairInfo|null $selected_stair = null
     ): string {
         $extraAssets->addCSS("/css/leaflet/leaflet.1.7.1.css");
         $extraAssets->addCSS("/css/leaflet/MarkerCluster.1.4.1.css");

@@ -5,6 +5,7 @@ namespace BristolianTest;
 use Bristolian\ToString;
 use Bristolian\FromString;
 use Bristolian\Model\Chat\UserChatMessage;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests all Model classes that use the ToString trait
@@ -107,9 +108,9 @@ class ToStringTraitTest extends BaseTestCase
     /**
      * Test that Model classes with null values handle serialization correctly
      *
-     * @dataProvider modelClassWithNullValuesProvider
      * @param class-string $className
      */
+    #[DataProvider('modelClassWithNullValuesProvider')]
     public function testToStringAndFromStringWithNullValues(string $className, object $instance): void
     {
         // Convert to string

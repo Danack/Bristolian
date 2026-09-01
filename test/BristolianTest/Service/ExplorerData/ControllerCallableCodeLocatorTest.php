@@ -6,6 +6,7 @@ namespace BristolianTest\Service\ExplorerData;
 
 use Bristolian\Service\ExplorerData\ControllerCallableCodeLocator;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -129,8 +130,8 @@ class ControllerCallableCodeLocatorTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
-     * @dataProvider provides_parseControllerCallable_invalid_forms
      */
+    #[DataProvider('provides_parseControllerCallable_invalid_forms')]
     public function test_parseControllerCallable_rejects_invalid_forms(string $controllerCallable): void
     {
         $this->expectException(\InvalidArgumentException::class);

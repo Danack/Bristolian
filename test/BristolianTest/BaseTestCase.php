@@ -9,6 +9,7 @@ use DataType\ValidationResult;
 use DI\Injector;
 use PHPUnit\Framework\TestCase;
 use Danack\PHPUnitHelper\StringTemplateMatching;
+use JMac\Testing\PhpUnit\Tia\Traits\RunWithTia;
 use function \Danack\PHPUnitHelper\templateStringToRegExp;
 
 /**
@@ -20,6 +21,9 @@ use function \Danack\PHPUnitHelper\templateStringToRegExp;
 class BaseTestCase extends TestCase
 {
     use StringTemplateMatching;
+    use RunWithTia {
+        RunWithTia::setUp as tiaSetUp;
+    }
 
     private int $startLevel = -1;
 
@@ -27,6 +31,8 @@ class BaseTestCase extends TestCase
 
     public function setup(): void
     {
+        $this->tiaSetUp();
+
         $this->injector = createTestInjector();
         $this->startLevel = ob_get_level();
         ob_start();

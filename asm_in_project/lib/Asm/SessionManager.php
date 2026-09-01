@@ -55,8 +55,8 @@ class SessionManager implements CookieGenerator
     public function __construct(
         SessionConfig $sessionConfig,
         SessionDriver $driver,
-        ValidationConfig $validationConfig = null,
-        EncrypterFactory $encrypterFactory = null
+        ValidationConfig|null $validationConfig = null,
+        EncrypterFactory|null $encrypterFactory = null
     ) {
         $this->sessionConfig = $sessionConfig;
         $this->driver = $driver;

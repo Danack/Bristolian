@@ -11,6 +11,7 @@ use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -35,9 +36,9 @@ class RoomFileDescriptionTest extends BaseTestCase
     /**
      * @covers \Bristolian\Parameters\PropertyType\RoomFileDescription::__construct
      * @covers \Bristolian\Parameters\PropertyType\RoomFileDescription::getInputType
-     * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_valid_input_and_expected_output')]
     public function test_parses_valid_input_to_expected_output(array $input, ?string $expectedValue): void
     {
         $fixture = RoomFileDescriptionFixture::createFromVarMap(new ArrayVarMap($input));
@@ -59,9 +60,9 @@ class RoomFileDescriptionTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\PropertyType\RoomFileDescription::getInputType
-     * @dataProvider provides_invalid_input_and_expected_error
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_invalid_input_and_expected_error')]
     public function test_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {

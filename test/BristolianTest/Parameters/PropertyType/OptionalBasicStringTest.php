@@ -8,6 +8,7 @@ use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -26,9 +27,9 @@ class OptionalBasicStringTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\PropertyType\OptionalBasicString
-     * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_valid_input_and_expected_output')]
     public function test_parses_input_to_expected_output(array $input, ?string $expectedValue): void
     {
         $paramTest = OptionalBasicStringFixture::createFromVarMap(new ArrayVarMap($input));

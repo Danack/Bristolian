@@ -10,6 +10,7 @@ use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -29,9 +30,9 @@ class OptionalBoolTest extends BaseTestCase
     /**
      * @covers \Bristolian\Parameters\PropertyType\OptionalBool::__construct
      * @covers \Bristolian\Parameters\PropertyType\OptionalBool::getInputType
-     * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_valid_input_and_expected_output')]
     public function test_parses_input_to_expected_output(array $input, bool $expectedValue): void
     {
         $params = OptionalBoolFixture::createFromVarMap(new ArrayVarMap($input));
@@ -51,9 +52,9 @@ class OptionalBoolTest extends BaseTestCase
     /**
      * @covers \Bristolian\Parameters\PropertyType\OptionalBool::__construct
      * @covers \Bristolian\Parameters\PropertyType\OptionalBool::getInputType
-     * @dataProvider provides_default_true_input_and_expected_output
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_default_true_input_and_expected_output')]
     public function test_default_true_parses_input_to_expected_output(array $input, bool $expectedValue): void
     {
         $params = OptionalBoolDefaultTrueFixture::createFromVarMap(new ArrayVarMap($input));

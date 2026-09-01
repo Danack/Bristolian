@@ -11,6 +11,7 @@ use DataType\Create\CreateFromVarMap;
 use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @covers \Bristolian\Parameters\PropertyType\RoomContentSearchTagIds
@@ -32,10 +33,10 @@ class RoomContentSearchTagIdsTest extends BaseTestCase
     }
 
     /**
-     * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      * @param string[] $expected
      */
+    #[DataProvider('provides_valid_input_and_expected_output')]
     public function test_parses_valid_input_to_expected_output(array $input, array $expected): void
     {
         $paramTest = RoomContentSearchTagIdsFixture::createFromVarMap(new ArrayVarMap($input));
@@ -70,9 +71,9 @@ class RoomContentSearchTagIdsTest extends BaseTestCase
     }
 
     /**
-     * @dataProvider provides_invalid_input_and_expected_error
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_invalid_input_and_expected_error')]
     public function test_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {

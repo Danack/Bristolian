@@ -44,7 +44,7 @@ class FakeAsmDriver implements Driver
     public function createSession(
         Encrypter $encrypter,
         SessionManager $sessionManager,
-        SimpleProfile $userProfile = null
+        SimpleProfile|null $userProfile = null
     ): Session {
         $sessionId = 'session-' . $this->nextId++;
         $session = new FakeAsmSession($sessionId, $this->defaultHeaders);

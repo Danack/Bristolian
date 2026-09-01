@@ -9,6 +9,7 @@ use Bristolian\Middleware\PermissionsCheckHtmlMiddleware;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequest;
 use Bristolian\Exception\InvalidPermissionsException;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @covers \Bristolian\Middleware\PermissionsCheckHtmlMiddleware
@@ -67,6 +68,7 @@ class PermissionsCheckHtmlMiddlewareTest extends BaseTestCase
     /**
      * @dataProvider provides_login_route
      */
+    #[DataProvider('provides_login_route')]
     public function testWorks_standard_POST_to_optional_login_route(string $route)
     {
         $appSessionManager = new FakeAppSessionManager();

@@ -7,6 +7,7 @@ namespace BristolianTest\Parameters;
 use Bristolian\Parameters\LinkParam;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -35,8 +36,8 @@ class LinkParamTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\LinkParam
-     * @dataProvider provides_test_works
      */
+    #[DataProvider('provides_test_works')]
     public function testWorks(string $title, string $url, string|null $description,)
     {
         $data = [

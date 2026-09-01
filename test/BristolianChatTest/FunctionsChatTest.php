@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace BristolianChatTest;
 
-use Bristolian\Model\Chat\SystemChatMessage;
 use Bristolian\Model\Chat\UserChatMessage;
 use BristolianChat\ClientHandler\FakeClientHandler;
 use BristolianTest\BaseTestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -96,8 +96,8 @@ class FunctionsChatTest extends BaseTestCase
     /**
      * @covers ::send_user_message_to_clients
      * @covers ::send_data_to_clients
-     * @dataProvider provides_send_user_message_to_clients
      */
+    #[DataProvider('provides_send_user_message_to_clients')]
     public function test_send_user_message_to_clients_broadcasts_to_handler_and_logs(
         UserChatMessage $chatMessage,
         int $expectedId,

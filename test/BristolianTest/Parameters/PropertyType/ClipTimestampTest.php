@@ -13,6 +13,7 @@ use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -32,9 +33,9 @@ class ClipTimestampTest extends BaseTestCase
     /**
      * @covers \Bristolian\Parameters\PropertyType\ClipTimestamp::__construct
      * @covers \Bristolian\Parameters\PropertyType\ClipTimestamp::getInputType
-     * @dataProvider provides_valid_standalone_input_and_expected_seconds
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_valid_standalone_input_and_expected_seconds')]
     public function test_standalone_parses_valid_input_to_expected_seconds(array $input, int $expectedSeconds): void
     {
         $fixture = ClipTimestampStandaloneFixture::createFromVarMap(new ArrayVarMap($input));
@@ -54,9 +55,9 @@ class ClipTimestampTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\PropertyType\ClipTimestamp::getInputType
-     * @dataProvider provides_invalid_standalone_input_and_expected_error
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_invalid_standalone_input_and_expected_error')]
     public function test_standalone_rejects_invalid_input_with_expected_error(array $input, string $expectedErrorMessage): void
     {
         try {

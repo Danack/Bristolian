@@ -10,6 +10,7 @@ use Bristolian\Parameters\UpdateRoomDetailsParam;
 use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -45,9 +46,9 @@ class UpdateRoomDetailsParamTest extends BaseTestCase
      * @covers \Bristolian\Parameters\UpdateRoomDetailsParam::__construct
      * @covers \Bristolian\Parameters\PropertyType\RoomName
      * @covers \Bristolian\Parameters\PropertyType\AboutMeText
-     * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_valid_input_and_expected_output')]
     public function test_createFromArray_parses_to_expected_values(
         array $input,
         string $expectedName,
@@ -63,9 +64,9 @@ class UpdateRoomDetailsParamTest extends BaseTestCase
      * @covers \Bristolian\Parameters\UpdateRoomDetailsParam
      * @covers \Bristolian\Parameters\PropertyType\RoomName
      * @covers \Bristolian\Parameters\PropertyType\AboutMeText
-     * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_valid_input_and_expected_output')]
     public function test_createFromVarMap_parses_to_expected_values(
         array $input,
         string $expectedName,
@@ -115,9 +116,9 @@ class UpdateRoomDetailsParamTest extends BaseTestCase
      * @covers \Bristolian\Parameters\UpdateRoomDetailsParam
      * @covers \Bristolian\Parameters\PropertyType\RoomName
      * @covers \Bristolian\Parameters\PropertyType\AboutMeText
-     * @dataProvider provides_invalid_input_and_expected_error
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_invalid_input_and_expected_error')]
     public function test_createFromArray_rejects_invalid_input(
         array $input,
         string $expectedPath,

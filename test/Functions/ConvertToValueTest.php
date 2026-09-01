@@ -11,6 +11,7 @@ use VarMap\ArrayVarMap;
 use DataType\Exception\ValidationException;
 use function convertToValue;
 use function convertToValueSafe;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -35,8 +36,8 @@ class ConvertToValueTest extends BaseTestCase
 
     /**
      * @covers ::convertToValue
-     * @dataProvider provides_convertToValue_works
      */
+    #[DataProvider('provides_convertToValue_works')]
     public function test_convertToValue_works(mixed $input, mixed $expected_value)
     {
         [$error, $value] = convertToValue($input);
@@ -59,8 +60,8 @@ class ConvertToValueTest extends BaseTestCase
 
     /**
      * @covers ::convertToValue
-     * @dataProvider provides_convertToValue_fails
      */
+    #[DataProvider('provides_convertToValue_fails')]
     public function test_convertToValue_fails(mixed $input, string $expected_error)
     {
         [$error, $value] = convertToValue($input);

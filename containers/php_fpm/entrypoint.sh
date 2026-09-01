@@ -23,22 +23,22 @@ if [ "$IS_LOCAL" = "true" ]; then
     # Enable pcov for local development
     # Copy our custom pcov.ini which loads the extension and sets our custom settings
     if [ -f "/var/app/containers/php_fpm/pcov.ini" ]; then
-        cp /var/app/containers/php_fpm/pcov.ini /etc/php/8.2/fpm/conf.d/20-pcov.ini
+        cp /var/app/containers/php_fpm/pcov.ini /etc/php/8.4/fpm/conf.d/20-pcov.ini
         echo "pcov enabled for local development"
     else
         # Fallback: enable via phpenmod if custom ini doesn't exist
-        phpenmod -v 8.2 -s fpm pcov 2>/dev/null || true
+        phpenmod -v 8.4 -s fpm pcov 2>/dev/null || true
         echo "pcov enabled for local development (using system default)"
     fi
 else
     # Disable pcov for production
     # Remove any pcov configuration files
-    rm -f /etc/php/8.2/fpm/conf.d/20-pcov.ini
-    phpdismod -v 8.2 -s fpm pcov 2>/dev/null || true
+    rm -f /etc/php/8.4/fpm/conf.d/20-pcov.ini
+    phpdismod -v 8.4 -s fpm pcov 2>/dev/null || true
     echo "pcov disabled for production"
 fi
 
-exec /usr/sbin/php-fpm8.2 \
+exec /usr/sbin/php-fpm8.4 \
   --nodaemonize \
   --fpm-config=/var/app/containers/php_fpm/config/fpm.conf \
   -c /var/app/containers/php_fpm/config/php.ini

@@ -7,6 +7,7 @@ namespace BristolianTest\Parameters;
 use Bristolian\Parameters\UpdateRoomVideoParam;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @covers \Bristolian\Parameters\UpdateRoomVideoParam
@@ -30,9 +31,9 @@ class UpdateRoomVideoParamTest extends BaseTestCase
     }
 
     /**
-     * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_valid_input_and_expected_output')]
     public function test_createFromArray_parses_to_expected_values(
         array $input,
         ?string $expectedTitle,
@@ -45,9 +46,9 @@ class UpdateRoomVideoParamTest extends BaseTestCase
     }
 
     /**
-     * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_valid_input_and_expected_output')]
     public function test_createFromVarMap_parses_to_expected_values(
         array $input,
         ?string $expectedTitle,

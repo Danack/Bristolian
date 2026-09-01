@@ -8,6 +8,7 @@ use BristolianTest\BaseTestCase;
 use Bristolian\Parameters\DebugParams;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -28,9 +29,9 @@ class DebugParamsTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\DebugParams
-     * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_valid_input_and_expected_output')]
     public function test_parses_valid_input_to_expected_output(
         array $input,
         string $expectedMessage,
@@ -79,10 +80,10 @@ class DebugParamsTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\DebugParams
-     * @dataProvider provides_invalid_input_and_expected_errors
      * @param array<string, mixed> $input
      * @param array<string, string> $expectedProblems
      */
+    #[DataProvider('provides_invalid_input_and_expected_errors')]
     public function test_rejects_invalid_input_with_expected_errors(array $input, array $expectedProblems): void
     {
         try {

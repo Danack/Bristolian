@@ -35,7 +35,7 @@ interface Driver
     public function createSession(
         Encrypter $encrypter,
         SessionManager $sessionManager,
-        SimpleProfile $userProfile = null
+        SimpleProfile|null $userProfile = null
     ): Session;
 
 

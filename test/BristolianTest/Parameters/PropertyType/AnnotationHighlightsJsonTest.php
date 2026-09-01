@@ -8,6 +8,7 @@ use Bristolian\Parameters\PropertyType\AnnotationHighlightsJson;
 use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -42,9 +43,9 @@ class AnnotationHighlightsJsonTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\PropertyType\AnnotationHighlightsJson
-     * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $params
      */
+    #[DataProvider('provides_valid_input_and_expected_output')]
     public function test_parses_valid_input_to_expected_output(array $params, string $expectedValue): void
     {
         $fullParams = $this->fullAnnotationParams($params);
@@ -66,9 +67,9 @@ class AnnotationHighlightsJsonTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\PropertyType\AnnotationHighlightsJson
-     * @dataProvider provides_invalid_input_and_expected_error
      * @param array<string, mixed> $params
      */
+    #[DataProvider('provides_invalid_input_and_expected_error')]
     public function test_rejects_invalid_input_with_expected_error(array $params, string $expectedErrorMessage): void
     {
         $fullParams = $this->fullAnnotationParams($params);

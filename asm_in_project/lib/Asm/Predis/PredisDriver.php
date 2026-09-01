@@ -85,9 +85,9 @@ END;
 
     public function __construct(
         RedisClient $redisClient,
-        Serializer $serializer = null,
-        IdGenerator $idGenerator = null,
-        RedisKeyGenerator $keyGenerator = null
+        Serializer|null $serializer = null,
+        IdGenerator|null $idGenerator = null,
+        RedisKeyGenerator|null $keyGenerator = null
     ) {
         $this->redisClient = $redisClient;
 
@@ -193,7 +193,7 @@ END;
     public function createSession(
         Encrypter $encrypter,
         SessionManager $sessionManager,
-        SimpleProfile $userProfile = null
+        SimpleProfile|null $userProfile = null
     ): PredisSession {
         $sessionLifeTime = $sessionManager->getSessionConfig()->getLifetime();
         $initialData = [];

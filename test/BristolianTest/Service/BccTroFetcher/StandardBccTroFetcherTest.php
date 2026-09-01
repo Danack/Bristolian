@@ -8,6 +8,7 @@ use Bristolian\Service\BccTroFetcher\StandardBccTroFetcher;
 use Bristolian\Service\HttpFetcher\FakeHttpFetcherReturning404;
 use Bristolian\Service\HttpFetcher\FakeHttpFetcherWithFixedResponse;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -63,11 +64,10 @@ class StandardBccTroFetcherTest extends BaseTestCase
 
 
     /**
-
-     * @dataProvider provides_FetchTrosReturnsParsedTrosWhenHttpReturns200WithExampleHtml
      * @covers \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::fetchTros
      * @covers \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::fetchHtmlContent
      */
+    #[DataProvider('provides_FetchTrosReturnsParsedTrosWhenHttpReturns200WithExampleHtml')]
     public function testFetchTrosReturnsParsedTrosWhenHttpReturns200WithExampleHtml(
         string $html_input_file,
         BccTro $expected_bcc_tro

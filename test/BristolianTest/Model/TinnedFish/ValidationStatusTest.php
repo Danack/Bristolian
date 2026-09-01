@@ -6,6 +6,7 @@ namespace BristolianTest\Model\TinnedFish;
 
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -24,8 +25,8 @@ class ValidationStatusTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Model\TinnedFish\ValidationStatus::getDisplayName
-     * @dataProvider provides_status_and_display_name
      */
+    #[DataProvider('provides_status_and_display_name')]
     public function test_getDisplayName_returns_expected_string(ValidationStatus $status, string $expectedDisplayName): void
     {
         $this->assertSame($expectedDisplayName, $status->getDisplayName());

@@ -4,6 +4,7 @@ namespace BristolianTest;
 
 use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -22,8 +23,8 @@ class FunctionsBccTest extends BaseTestCase
 
     /**
      * @covers \parseTrosFromHtml
-     * @dataProvider provides_parse_tros_from_html_returns_empty
      */
+    #[DataProvider('provides_parse_tros_from_html_returns_empty')]
     public function testParseTrosFromHtmlReturnsEmptyForInput(string $html): void
     {
         $tros = \parseTrosFromHtml($html);
@@ -97,8 +98,8 @@ class FunctionsBccTest extends BaseTestCase
     /**
      * @covers \parseTrosFromHtml
      * @group tro_wip
-     * @dataProvider provides_ParseTrosFromHtmlParsesExampleFile
      */
+    #[DataProvider('provides_ParseTrosFromHtmlParsesExampleFile')]
     public function testParseTrosFromHtmlParsesExampleFile(
         string $html_input_file,
         BccTro $expected_bcc_tro

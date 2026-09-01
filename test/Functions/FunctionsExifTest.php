@@ -8,6 +8,7 @@ use BristolianTest\BaseTestCase;
 use function get_image_gps;
 use function getGps;
 use function gps2Num;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -76,9 +77,9 @@ class FunctionsExifTest extends BaseTestCase
 
     /**
      * @covers ::getGps
-     * @dataProvider provides_getGps_input_and_expected
      * @param array<string> $exifCoord
      */
+    #[DataProvider('provides_getGps_input_and_expected')]
     public function test_getGps_converts_exif_coord_to_decimal(
         array $exifCoord,
         string $hemi,
@@ -101,8 +102,8 @@ class FunctionsExifTest extends BaseTestCase
 
     /**
      * @covers ::gps2Num
-     * @dataProvider provides_gps2Num_input_and_expected
      */
+    #[DataProvider('provides_gps2Num_input_and_expected')]
     public function test_gps2Num_converts_coord_part_to_float(string $coordPart, float $expected): void
     {
         $result = gps2Num($coordPart);

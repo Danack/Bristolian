@@ -5,15 +5,15 @@ declare(strict_types = 1);
 namespace IntegrationTest;
 
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
- * @ group varnish
  * @coversNothing
- * @group needs_fixing
  */
+#[Group('needs_fixing')]
 class VarnishTest extends BaseTestCase
 {
-
     public static function providesCountryLookupWorks()
     {
         return [
@@ -24,9 +24,7 @@ class VarnishTest extends BaseTestCase
         ];
     }
 
-    /**
-     * @dataProvider providesCountryLookupWorks
-     */
+    #[DataProvider('providesCountryLookupWorks')]
     public function testCountryLookupWorks(string $ipAddressToTest, string $expectedCountry)
     {
         $data = fetchDataWithHeaders(
@@ -52,10 +50,7 @@ class VarnishTest extends BaseTestCase
         ];
     }
 
-
-    /**
-     * @dataProvider providesCountryLookupBlank
-     */
+    #[DataProvider('providesCountryLookupBlank')]
     public function testCountryLookupBlank(string $ipAddressToTest)
     {
         $data = fetchDataWithHeaders(

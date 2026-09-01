@@ -7,6 +7,7 @@ use BristolianTest\BaseTestCase;
 use DataType\Create\CreateFromVarMap;
 use DataType\GetInputTypesFromAttributes;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -23,9 +24,9 @@ class BasicFloatTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\PropertyType\BasicFloat
-     * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_valid_input_and_expected_output')]
     public function test_parses_valid_input_to_expected_output(array $input, float $expectedValue): void
     {
         $paramTest = BasicFloatFixture::createFromVarMap(new ArrayVarMap($input));

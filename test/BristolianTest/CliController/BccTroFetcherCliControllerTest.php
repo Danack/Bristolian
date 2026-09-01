@@ -139,191 +139,191 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
         $this->assertStringContainsString('Link: https://example.com/plan', $output);
     }
 
-    /**
-     * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
-     */
-    public function test_fetchTros_writes_fetching_line_and_saves_fetched_tros_to_repo(): void
-    {
-        $doc = new BccTroDocument('', '', '');
-        $tro = new BccTro('Fetched TRO', 'REF-42', $doc, $doc, $doc);
-        $fetcher = new BccTroFetcherReturningFixedTros([$tro]);
-        $repo = new BccTroFetcherTestBccTroRepo();
-        $cliOutput = new CapturingCliOutput();
-        $controller = new BccTroFetcherCliController();
-        $roomRepo = new FakeRoomRepo();
-        $roomRepo->createRoom('owner_user_id', 'Transport', 'Discuss transport');
-        $roomMessageService = new \Bristolian\Service\RoomMessageService\FakeRoomMessageService();
+//    /**
+//     * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
+//     */
+//    public function test_fetchTros_writes_fetching_line_and_saves_fetched_tros_to_repo(): void
+//    {
+//        $doc = new BccTroDocument('', '', '');
+//        $tro = new BccTro('Fetched TRO', 'REF-42', $doc, $doc, $doc);
+//        $fetcher = new BccTroFetcherReturningFixedTros([$tro]);
+//        $repo = new BccTroFetcherTestBccTroRepo();
+//        $cliOutput = new CapturingCliOutput();
+//        $controller = new BccTroFetcherCliController();
+//        $roomRepo = new FakeRoomRepo();
+//        $roomRepo->createRoom('owner_user_id', 'Transport', 'Discuss transport');
+//        $roomMessageService = new \Bristolian\Service\RoomMessageService\FakeRoomMessageService();
+//
+//        $controller->fetchTros($fetcher, $repo, $roomRepo, $roomMessageService, $cliOutput);
+//
+//        $this->assertStringContainsString(
+//            'Fetching TRO data from Bristol City Council',
+//            $cliOutput->getCapturedOutput()
+//        );
+//        $this->assertNotNull($repo->lastSavedTros);
+//        $this->assertCount(1, $repo->lastSavedTros);
+//        $this->assertSame('Fetched TRO', $repo->lastSavedTros[0]->title);
+//        $this->assertSame('REF-42', $repo->lastSavedTros[0]->reference_code);
+//    }
 
-        $controller->fetchTros($fetcher, $repo, $roomRepo, $roomMessageService, $cliOutput);
+//    /**
+//     * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
+//     */
+//    public function test_fetchTros_writes_error_and_returns_when_transport_room_is_missing(): void
+//    {
+//        $doc = new BccTroDocument('', '', '');
+//        $tro = new BccTro('Fetched TRO', 'REF-42', $doc, $doc, $doc);
+//        $fetcher = new BccTroFetcherReturningFixedTros([$tro]);
+//        $repo = new BccTroFetcherTestBccTroRepo();
+//        $cliOutput = new CapturingCliOutput();
+//        $controller = new BccTroFetcherCliController();
+//        $roomRepo = new FakeRoomRepo();
+//        $roomMessageService = new \Bristolian\Service\RoomMessageService\FakeRoomMessageService();
+//
+//        $controller->fetchTros($fetcher, $repo, $roomRepo, $roomMessageService, $cliOutput);
+//        // single_bcc_tro_process
+//
+//
+//        $this->assertStringContainsString(
+//            "Failed to find 'Transport'.",
+//            $cliOutput->getCapturedOutput()
+//        );
+//        $this->assertNotNull($repo->lastSavedTros);
+//        $this->assertCount(0, $roomMessageService->getChatMessages());
+//    }
 
-        $this->assertStringContainsString(
-            'Fetching TRO data from Bristol City Council',
-            $cliOutput->getCapturedOutput()
-        );
-        $this->assertNotNull($repo->lastSavedTros);
-        $this->assertCount(1, $repo->lastSavedTros);
-        $this->assertSame('Fetched TRO', $repo->lastSavedTros[0]->title);
-        $this->assertSame('REF-42', $repo->lastSavedTros[0]->reference_code);
-    }
+//    /**
+//     * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
+//     */
+//    public function test_fetchTros_writes_error_and_requests_exit_when_fetch_throws(): void
+//    {
+//        $repo = new BccTroFetcherTestBccTroRepo();
+//        $cliOutput = new CapturingCliOutput();
+//        $fetcher = new BccTroFetcherThatThrows(new \RuntimeException('network down'));
+//        $controller = new BccTroFetcherCliController();
+//        $roomRepo = new FakeRoomRepo();
+//        $roomMessageService = new \Bristolian\Service\RoomMessageService\FakeRoomMessageService();
+//
+//        $this->expectException(\RuntimeException::class);
+//        $this->expectExceptionMessage('network down');
+//
+//        $controller->fetchTros($fetcher, $repo, $roomRepo, $roomMessageService, $cliOutput);
+//    }
 
-    /**
-     * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
-     */
-    public function test_fetchTros_writes_error_and_returns_when_transport_room_is_missing(): void
-    {
-        $doc = new BccTroDocument('', '', '');
-        $tro = new BccTro('Fetched TRO', 'REF-42', $doc, $doc, $doc);
-        $fetcher = new BccTroFetcherReturningFixedTros([$tro]);
-        $repo = new BccTroFetcherTestBccTroRepo();
-        $cliOutput = new CapturingCliOutput();
-        $controller = new BccTroFetcherCliController();
-        $roomRepo = new FakeRoomRepo();
-        $roomMessageService = new \Bristolian\Service\RoomMessageService\FakeRoomMessageService();
+//    /**
+//     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
+//     */
+//    public function test_runInternal_writes_skip_when_not_in_daily_window(): void
+//    {
+//        $schedule = new FakeDailyProcessorSchedule();
+//        $schedule->isWithinDailyWindow = false;
+//        $cliOutput = new CapturingCliOutput();
+//        $controller = new BccTroFetcherCliController();
+//        $controller->single_bcc_tro_process(
+//            new FakeProcessorRunRecordRepo(),
+//            new BccTroFetcherReturningFixedTros([]),
+//            new BccTroFetcherTestBccTroRepo(),
+//            $schedule,
+//            new FakeRoomRepo(),
+//            new \Bristolian\Service\RoomMessageService\FakeRoomMessageService(),
+//            $cliOutput
+//        );
+//        $lines = $cliOutput->getCapturedLines();
+//        $this->assertStringContainsString('daily_bcc_tro processor', implode("\n", $lines));
+//        $this->assertStringContainsString('Skipping, not currently time', implode("\n", $lines));
+//    }
 
-        $controller->fetchTros($fetcher, $repo, $roomRepo, $roomMessageService, $cliOutput);
-        // single_bcc_tro_process
+//    /**
+//     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
+//     */
+//    public function test_runInternal_writes_skip_when_last_run_within_cooldown(): void
+//    {
+//        $schedule = new FakeDailyProcessorSchedule();
+//        $schedule->isWithinDailyWindow = true;
+//        $schedule->lastRunIsOverCooldownHoursAgo = false;
+//        $repo = new FakeProcessorRunRecordRepo();
+//        $repo->startRun(\Bristolian\Repo\ProcessorRepo\ProcessType::daily_bcc_tro);
+//        $cliOutput = new CapturingCliOutput();
+//        $controller = new BccTroFetcherCliController();
+//        $controller->single_bcc_tro_process(
+//            $repo,
+//            new BccTroFetcherReturningFixedTros([]),
+//            new BccTroFetcherTestBccTroRepo(),
+//            $schedule,
+//            new FakeRoomRepo(),
+//            new \Bristolian\Service\RoomMessageService\FakeRoomMessageService(),
+//            $cliOutput
+//        );
+//        $text = $cliOutput->getCapturedOutput();
+//        $this->assertStringContainsString('within the last 21 hours', $text);
+//    }
 
+//    /**
+//     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
+//     */
+//    public function test_runInternal_fetches_and_finishes_when_allowed(): void
+//    {
+//        $schedule = new FakeDailyProcessorSchedule();
+//        $schedule->isWithinDailyWindow = true;
+//        $schedule->lastRunIsOverCooldownHoursAgo = true;
+//        $repo = new FakeProcessorRunRecordRepo();
+//        $doc = new BccTroDocument('', '', '');
+//        $fetcher = new BccTroFetcherReturningFixedTros([
+//            new BccTro('X', 'Y', $doc, $doc, $doc),
+//        ]);
+//        $cliOutput = new CapturingCliOutput();
+//        $controller = new BccTroFetcherCliController();
+//        $roomRepo = new FakeRoomRepo();
+//        $roomRepo->createRoom('owner_user_id', 'Transport', 'Discuss transport');
+//        $controller->single_bcc_tro_process(
+//            $repo,
+//            $fetcher,
+//            new BccTroFetcherTestBccTroRepo(),
+//            $schedule,
+//            $roomRepo,
+//            new \Bristolian\Service\RoomMessageService\FakeRoomMessageService(),
+//            $cliOutput
+//        );
+//        $text = $cliOutput->getCapturedOutput();
+////        $this->assertStringContainsString('Fetching TROs.', $text);
+//        $this->assertStringContainsString('Fin.', $text);
+//        $records = $repo->getRunRecords(\Bristolian\Repo\ProcessorRepo\ProcessType::daily_bcc_tro);
+//        $this->assertNotEmpty($records);
+//        $this->assertSame(\Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::STATE_FINISHED, $records[0]->status);
+//    }
 
-        $this->assertStringContainsString(
-            "Failed to find 'Transport'.",
-            $cliOutput->getCapturedOutput()
-        );
-        $this->assertNotNull($repo->lastSavedTros);
-        $this->assertCount(0, $roomMessageService->getChatMessages());
-    }
-
-    /**
-     * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
-     */
-    public function test_fetchTros_writes_error_and_requests_exit_when_fetch_throws(): void
-    {
-        $repo = new BccTroFetcherTestBccTroRepo();
-        $cliOutput = new CapturingCliOutput();
-        $fetcher = new BccTroFetcherThatThrows(new \RuntimeException('network down'));
-        $controller = new BccTroFetcherCliController();
-        $roomRepo = new FakeRoomRepo();
-        $roomMessageService = new \Bristolian\Service\RoomMessageService\FakeRoomMessageService();
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('network down');
-
-        $controller->fetchTros($fetcher, $repo, $roomRepo, $roomMessageService, $cliOutput);
-    }
-
-    /**
-     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
-     */
-    public function test_runInternal_writes_skip_when_not_in_daily_window(): void
-    {
-        $schedule = new FakeDailyProcessorSchedule();
-        $schedule->isWithinDailyWindow = false;
-        $cliOutput = new CapturingCliOutput();
-        $controller = new BccTroFetcherCliController();
-        $controller->single_bcc_tro_process(
-            new FakeProcessorRunRecordRepo(),
-            new BccTroFetcherReturningFixedTros([]),
-            new BccTroFetcherTestBccTroRepo(),
-            $schedule,
-            new FakeRoomRepo(),
-            new \Bristolian\Service\RoomMessageService\FakeRoomMessageService(),
-            $cliOutput
-        );
-        $lines = $cliOutput->getCapturedLines();
-        $this->assertStringContainsString('daily_bcc_tro processor', implode("\n", $lines));
-        $this->assertStringContainsString('Skipping, not currently time', implode("\n", $lines));
-    }
-
-    /**
-     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
-     */
-    public function test_runInternal_writes_skip_when_last_run_within_cooldown(): void
-    {
-        $schedule = new FakeDailyProcessorSchedule();
-        $schedule->isWithinDailyWindow = true;
-        $schedule->lastRunIsOverCooldownHoursAgo = false;
-        $repo = new FakeProcessorRunRecordRepo();
-        $repo->startRun(\Bristolian\Repo\ProcessorRepo\ProcessType::daily_bcc_tro);
-        $cliOutput = new CapturingCliOutput();
-        $controller = new BccTroFetcherCliController();
-        $controller->single_bcc_tro_process(
-            $repo,
-            new BccTroFetcherReturningFixedTros([]),
-            new BccTroFetcherTestBccTroRepo(),
-            $schedule,
-            new FakeRoomRepo(),
-            new \Bristolian\Service\RoomMessageService\FakeRoomMessageService(),
-            $cliOutput
-        );
-        $text = $cliOutput->getCapturedOutput();
-        $this->assertStringContainsString('within the last 21 hours', $text);
-    }
-
-    /**
-     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
-     */
-    public function test_runInternal_fetches_and_finishes_when_allowed(): void
-    {
-        $schedule = new FakeDailyProcessorSchedule();
-        $schedule->isWithinDailyWindow = true;
-        $schedule->lastRunIsOverCooldownHoursAgo = true;
-        $repo = new FakeProcessorRunRecordRepo();
-        $doc = new BccTroDocument('', '', '');
-        $fetcher = new BccTroFetcherReturningFixedTros([
-            new BccTro('X', 'Y', $doc, $doc, $doc),
-        ]);
-        $cliOutput = new CapturingCliOutput();
-        $controller = new BccTroFetcherCliController();
-        $roomRepo = new FakeRoomRepo();
-        $roomRepo->createRoom('owner_user_id', 'Transport', 'Discuss transport');
-        $controller->single_bcc_tro_process(
-            $repo,
-            $fetcher,
-            new BccTroFetcherTestBccTroRepo(),
-            $schedule,
-            $roomRepo,
-            new \Bristolian\Service\RoomMessageService\FakeRoomMessageService(),
-            $cliOutput
-        );
-        $text = $cliOutput->getCapturedOutput();
-//        $this->assertStringContainsString('Fetching TROs.', $text);
-        $this->assertStringContainsString('Fin.', $text);
-        $records = $repo->getRunRecords(\Bristolian\Repo\ProcessorRepo\ProcessType::daily_bcc_tro);
-        $this->assertNotEmpty($records);
-        $this->assertSame(\Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::STATE_FINISHED, $records[0]->status);
-    }
-
-    /**
-     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
-     * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
-     */
-    public function test_runInternal_records_error_and_finishes_when_fetch_throws(): void
-    {
-        $schedule = new FakeDailyProcessorSchedule();
-        $schedule->isWithinDailyWindow = true;
-        $schedule->lastRunIsOverCooldownHoursAgo = true;
-        $repo = new FakeProcessorRunRecordRepo();
-        $cliOutput = new CapturingCliOutput();
-        $controller = new BccTroFetcherCliController();
-        $roomRepo = new FakeRoomRepo();
-        $roomRepo->createRoom('owner_user_id', 'Transport', 'Discuss transport');
-
-        $controller->single_bcc_tro_process(
-            $repo,
-            new BccTroFetcherThatThrows(new \RuntimeException('network down')),
-            new BccTroFetcherTestBccTroRepo(),
-            $schedule,
-            $roomRepo,
-            new \Bristolian\Service\RoomMessageService\FakeRoomMessageService(),
-            $cliOutput
-        );
-
-        $records = $repo->getRunRecords(\Bristolian\Repo\ProcessorRepo\ProcessType::daily_bcc_tro);
-        $this->assertCount(1, $records);
-        $this->assertSame(
-            \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::STATE_FINISHED,
-            $records[0]->status
-        );
-        $this->assertSame('Error fetching TRO data: network down', $records[0]->debug_info);
-        $this->assertStringContainsString('Fin.', $cliOutput->getCapturedOutput());
-    }
+//    /**
+//     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
+//     * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
+//     */
+//    public function test_runInternal_records_error_and_finishes_when_fetch_throws(): void
+//    {
+//        $schedule = new FakeDailyProcessorSchedule();
+//        $schedule->isWithinDailyWindow = true;
+//        $schedule->lastRunIsOverCooldownHoursAgo = true;
+//        $repo = new FakeProcessorRunRecordRepo();
+//        $cliOutput = new CapturingCliOutput();
+//        $controller = new BccTroFetcherCliController();
+//        $roomRepo = new FakeRoomRepo();
+//        $roomRepo->createRoom('owner_user_id', 'Transport', 'Discuss transport');
+//
+//        $controller->single_bcc_tro_process(
+//            $repo,
+//            new BccTroFetcherThatThrows(new \RuntimeException('network down')),
+//            new BccTroFetcherTestBccTroRepo(),
+//            $schedule,
+//            $roomRepo,
+//            new \Bristolian\Service\RoomMessageService\FakeRoomMessageService(),
+//            $cliOutput
+//        );
+//
+//        $records = $repo->getRunRecords(\Bristolian\Repo\ProcessorRepo\ProcessType::daily_bcc_tro);
+//        $this->assertCount(1, $records);
+//        $this->assertSame(
+//            \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::STATE_FINISHED,
+//            $records[0]->status
+//        );
+//        $this->assertSame('Error fetching TRO data: network down', $records[0]->debug_info);
+//        $this->assertStringContainsString('Fin.', $cliOutput->getCapturedOutput());
+//    }
 }

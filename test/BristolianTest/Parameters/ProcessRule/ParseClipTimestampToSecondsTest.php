@@ -8,6 +8,7 @@ use BristolianTest\BaseTestCase;
 use DataType\DataStorage\TestArrayDataStorage;
 use DataType\ProcessedValues;
 use Bristolian\Parameters\ProcessRule\ParseClipTimestampToSeconds;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -25,6 +26,7 @@ class ParseClipTimestampToSecondsTest extends BaseTestCase
      * @covers \Bristolian\Parameters\ProcessRule\ParseClipTimestampToSeconds::process
      * @dataProvider provides_valid_time_inputs
      */
+    #[DataProvider('provides_valid_time_inputs')]
     public function test_process_works(string $input, int $expected_seconds): void
     {
         $rule = new ParseClipTimestampToSeconds();

@@ -10,6 +10,7 @@ use Bristolian\Parameters\ProcessRule\ParseClipTimestampToSeconds;
 use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @covers \Bristolian\Parameters\AddVideoClipParam
@@ -51,9 +52,9 @@ class AddVideoClipParamTest extends BaseTestCase
     }
 
     /**
-     * @dataProvider provides_valid_input
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_valid_input')]
     public function test_add_video_clip_param_parses_valid_input(
         array $input,
         string $expected_youtube_video_id,
@@ -107,9 +108,9 @@ class AddVideoClipParamTest extends BaseTestCase
     }
 
     /**
-     * @dataProvider provides_invalid_input
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_invalid_input')]
     public function test_add_video_clip_param_rejects_invalid_input(
         array $input,
         string $expected_error_path,

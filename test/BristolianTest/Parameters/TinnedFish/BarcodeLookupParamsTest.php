@@ -5,6 +5,7 @@ namespace BristolianTest\Parameters\TinnedFish;
 use Bristolian\Parameters\TinnedFish\BarcodeLookupParams;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests for BarcodeLookupParams
@@ -28,9 +29,9 @@ class BarcodeLookupParamsTest extends BaseTestCase
     /**
      * @covers \Bristolian\Parameters\TinnedFish\BarcodeLookupParams
      * @covers \Bristolian\Parameters\PropertyType\OptionalBoolDefaultTrue
-     * @dataProvider provides_fetch_external_input_and_expected_output
      * @param array<string, mixed> $input
      */
+    #[DataProvider('provides_fetch_external_input_and_expected_output')]
     public function test_fetch_external_parses_input_to_expected_output(
         array $input,
         bool $expectedFetchExternal

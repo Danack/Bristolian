@@ -6,6 +6,8 @@ use DataType\ExtractRule\GetString;
 use DataType\HasInputType;
 use DataType\InputType;
 
+// TODO - why does this exist when \DataType\Basic\BasicString exists?
+
 #[\Attribute]
 class BasicString implements HasInputType
 {

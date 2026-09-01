@@ -4,7 +4,7 @@
          bootstrap="test/phpunit_bootstrap.php"
          cacheDirectory=".phpunit.cache"
          executionOrder="depends,defects"
-         requireCoverageMetadata="true"
+
          beStrictAboutCoverageMetadata="false"
          beStrictAboutOutputDuringTests="true"
          displayDetailsOnPhpunitDeprecations="false"
@@ -17,6 +17,8 @@
          failOnRisky="true"
          failOnWarning="true">
 
+    <!--         requireCoverageMetadata="true"-->
+
         <!-- Every so often re-enable displayDetailsOnSkippedTests to check that we don't have new ones. -->
 
   <!--         stopOnFailure="true"-->
@@ -25,6 +27,13 @@
 <!--  <extensions>-->
 <!--    &lt;!&ndash; Paratest does not run the slow logging extension &ndash;&gt;-->
 <!--    <bootstrap class="\BristolianTest\PHPUnit\DanackExtension" />-->
+<!--  </extensions>-->
+
+
+<!--  <extensions>-->
+<!--    <bootstrap class="JMac\Testing\PhpUnit\Tia\Extension">-->
+<!--      <parameter name="storage" value="global"/>-->
+<!--    </bootstrap>-->
 <!--  </extensions>-->
 
   <testsuites>

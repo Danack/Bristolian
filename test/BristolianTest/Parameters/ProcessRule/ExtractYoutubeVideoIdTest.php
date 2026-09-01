@@ -8,6 +8,7 @@ use Bristolian\Parameters\ProcessRule\ExtractYoutubeVideoId;
 use BristolianTest\BaseTestCase;
 use DataType\DataStorage\TestArrayDataStorage;
 use DataType\ProcessedValues;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @coversNothing
@@ -26,6 +27,7 @@ class ExtractYoutubeVideoIdTest extends BaseTestCase
      * @covers \Bristolian\Parameters\ProcessRule\ExtractYoutubeVideoId::process
      * @dataProvider provides_valid_youtube_inputs
      */
+    #[DataProvider('provides_valid_youtube_inputs')]
     public function test_process_extracts_valid_youtube_id(string $input, string $expectedId): void
     {
         $rule = new ExtractYoutubeVideoId();
