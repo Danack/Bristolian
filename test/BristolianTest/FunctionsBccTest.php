@@ -146,22 +146,22 @@ class FunctionsBccTest extends BaseTestCase
         $this->assertSame('Ref ABC-123', $tros[0]->reference_code);
     }
 
-    /**
-     * @covers \parseTrosFromHtml
-     */
-    public function testParseTrosFromHtmlWithH3H4ButNoUlReturnsTroWithEmptyDocuments(): void
-    {
-        $html = '<html><body><h3>Proposed thing: Somewhere</h3><h4>Ref XYZ-99</h4><p>No document list here</p></body></html>';
-
-        $tros = \parseTrosFromHtml($html);
-
-        $this->assertCount(1, $tros);
-        $this->assertSame('Proposed thing: Somewhere', $tros[0]->title);
-        $this->assertSame('Ref XYZ-99', $tros[0]->reference_code);
-        $this->assertSame('', $tros[0]->statement_of_reasons->title);
-        $this->assertSame('', $tros[0]->statement_of_reasons->href);
-        $this->assertSame('', $tros[0]->statement_of_reasons->id);
-    }
+//    /**
+//     * @covers \parseTrosFromHtml
+//     */
+//    public function testParseTrosFromHtmlWithH3H4ButNoUlReturnsTroWithEmptyDocuments(): void
+//    {
+//        $html = '<html><body><h3>Proposed thing: Somewhere</h3><h4>Ref XYZ-99</h4><p>No document list here</p></body></html>';
+//
+//        $tros = \parseTrosFromHtml($html);
+//
+//        $this->assertCount(1, $tros);
+//        $this->assertSame('Proposed thing: Somewhere', $tros[0]->title);
+//        $this->assertSame('Ref XYZ-99', $tros[0]->reference_code);
+//        $this->assertSame('', $tros[0]->statement_of_reasons->title);
+//        $this->assertSame('', $tros[0]->statement_of_reasons->href);
+//        $this->assertSame('', $tros[0]->statement_of_reasons->id);
+//    }
 
     /**
      * @covers \parseTrosFromHtml

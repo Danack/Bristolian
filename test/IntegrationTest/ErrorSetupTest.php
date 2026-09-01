@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\Group;
  * @coversNothing
  * @group needs_fixing
  */
+#[Group('needs_fixing')]
 class ErrorSetupTest extends BaseTestCase
 {
     public static function providesCaughtExceptionsAreActuallyCaughtForApp()

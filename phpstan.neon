@@ -1,5 +1,6 @@
 includes:
     - vendor/danack/datatype/library.neon
+    - vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
 parameters:
     editorUrl: 'phpstorm://open?file=/Users/danack/projects/github/Bristolian/%%relFile%%&line=%%line%%'
     level: 6

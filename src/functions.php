@@ -297,7 +297,7 @@ function convertToArrayOfObjects(string $classname, array $data)
  * @param mixed[] $headers
  * @return array{0:int, 1:string, 2:mixed[]}
  */
-function fetchUri(string $uri, string $method, array $queryParams = [], string $body = null, array $headers = [])
+function fetchUri(string $uri, string $method, array $queryParams = [], string|null $body = null, array $headers = [])
 {
     // @codeCoverageIgnoreStart
     $query = http_build_query($queryParams);

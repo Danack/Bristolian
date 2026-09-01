@@ -8,6 +8,8 @@ declare(strict_types = 1);
 
 use Bristolian\SiteHtml\HeaderLink;
 use Bristolian\SiteHtml\HeaderLinks;
+use Bristolian\Config\Config;
+
 
 function createPageHeaderHtml(/*HeaderLinks $headerLinks*/) : string
 {
@@ -102,6 +104,10 @@ function createPageHtml(
 ): string {
 
     $pageTitle = "Bristolian";
+
+//    if ($config->isProductionEnv() !== true) {
+//        $pageTitle .= " - not production";
+//    }
 
     $assetSuffix = $assetLinkEmitter->getAssetSuffix();
     $widgetyDebugAllowed = $assetLinkEmitter->isProductionEnv() ? '0' : '1';
