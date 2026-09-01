@@ -30,11 +30,11 @@
 <!--  </extensions>-->
 
 
-<!--  <extensions>-->
-<!--    <bootstrap class="JMac\Testing\PhpUnit\Tia\Extension">-->
-<!--      <parameter name="storage" value="global"/>-->
-<!--    </bootstrap>-->
-<!--  </extensions>-->
+  <extensions>
+    <bootstrap class="JMac\Testing\PhpUnit\Tia\Extension">
+      <parameter name="storage" value="global"/>
+    </bootstrap>
+  </extensions>
 
   <testsuites>
     <testsuite name="default">

@@ -36,10 +36,15 @@ class BaseTestCase extends TestCase
         $this->injector = createTestInjector();
         $this->startLevel = ob_get_level();
         ob_start();
+
     }
 
     public function teardown(): void
     {
+        if ($this->skippedByTia() === true) {
+            return;
+        }
+
         if ($this->startLevel === -1) {
             $this->fail("startLevel was not set, cannot complete teardown");
         }

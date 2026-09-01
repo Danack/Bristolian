@@ -7,6 +7,7 @@ use Bristolian\Exception\DebuggingUncaughtException;
 use BristolianTest\BaseTestCase;
 use Bristolian\ApiController\Debug;
 use SlimDispatcher\Response\JsonResponse;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @covers \Bristolian\ApiController\Debug
@@ -28,9 +29,7 @@ class DebugTest extends BaseTestCase
         $debug->testUncaughtException();
     }
 
-    /**
-     * @group xdebug
-     */
+    #[Group('xdebug')]
     public function testXdebugWorking(): void
     {
         $debug = new Debug();

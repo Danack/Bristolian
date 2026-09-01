@@ -6,6 +6,7 @@ namespace UrlFetcherTest;
 
 use BristolianTest\BaseTestCase;
 use UrlFetcher\FakeUrlFetcher;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @coversNothing
@@ -15,6 +16,7 @@ class FakeUrlFetcherTest extends BaseTestCase
     /**
      * @covers \UrlFetcher\FakeUrlFetcher
      */
+    #[Group('wip')]
     public function testBasic(): void
     {
         $data = 'John';
