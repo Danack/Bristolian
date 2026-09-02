@@ -25,8 +25,6 @@ class BaseTestCase extends TestCase
         RunWithTia::setUp as tiaSetUp;
     }
 
-    private int $startLevel = -1;
-
     protected \DI\Injector $injector;
 
     public function setup(): void
@@ -86,12 +84,6 @@ class BaseTestCase extends TestCase
         $standardFakes = [
           \Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage::class =>
             \Bristolian\Service\BristolStairImageStorage\FakeWorksBristolStairImageStorage::class,
-
-//            \Bristolian\Repo\AdminRepo\AdminRepo::class =>
-//                \Bristolian\Repo\AdminRepo\PdoAdminRepo::class,
-//
-//            \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::class =>
-//                \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::class,
 
             \Bristolian\Basic\ErrorLogger::class =>
                 \Bristolian\Basic\FakeErrorLogger::class,
