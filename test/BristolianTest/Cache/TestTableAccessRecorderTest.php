@@ -6,11 +6,12 @@ namespace BristolianTest\Cache;
 
 use Bristolian\Cache\TestTableAccessRecorder;
 use PHPUnit\Framework\TestCase;
+use BristolianTest\BaseTestCase;
 
 /**
  * @covers \Bristolian\Cache\TestTableAccessRecorder
  */
-class TestTableAccessRecorderTest extends TestCase
+class TestTableAccessRecorderTest extends BaseTestCase
 {
     public function testRecordedReadsInitiallyEmpty(): void
     {

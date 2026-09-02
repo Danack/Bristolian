@@ -7,11 +7,12 @@ namespace BristolianTest\Cache;
 use Bristolian\Cache\ThrowOnUnknownQuery;
 use Bristolian\Cache\UnknownQueryException;
 use PHPUnit\Framework\TestCase;
+use BristolianTest\BaseTestCase;
 
 /**
  * @covers \Bristolian\Cache\ThrowOnUnknownQuery
  */
-class ThrowOnUnknownQueryTest extends TestCase
+class ThrowOnUnknownQueryTest extends BaseTestCase
 {
     public function testThrowsUnknownQueryException(): void
     {

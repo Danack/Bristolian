@@ -15,20 +15,22 @@ use Bristolian\Repo\RoomVideoTagRepo\InMemoryRoomVideoTagRepo;
 use Bristolian\Repo\VideoRepo\InMemoryVideoRepo;
 use PHPUnit\Framework\TestCase;
 use VarMap\ArrayVarMap;
+use BristolianTest\BaseTestCase;
 
 /**
  * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo
  * @group standard_repo
  */
-class InMemoryRoomVideoRepoTest extends TestCase
+class InMemoryRoomVideoRepoTest extends BaseTestCase
 {
     private InMemoryRoomVideoTagRepo $roomVideoTagRepo;
     private InMemoryVideoRepo $videoRepo;
     private FakeRoomTagRepo $roomTagRepo;
     private InMemoryRoomVideoRepo $repo;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
+        parent::setUp();
         $this->roomVideoTagRepo = new InMemoryRoomVideoTagRepo();
         $this->videoRepo = new InMemoryVideoRepo();
         $this->roomTagRepo = new FakeRoomTagRepo();

@@ -7,12 +7,13 @@ namespace BristolianTest\Repo\UserSearch;
 use Bristolian\Repo\UserSearch\InMemoryUserSearch;
 use Bristolian\Repo\UserSearch\UserSearch;
 use PHPUnit\Framework\TestCase;
+use BristolianTest\BaseTestCase;
 
 /**
  * @covers \Bristolian\Repo\UserSearch\InMemoryUserSearch
  * @group standard_repo
  */
-class InMemoryUserSearchTest extends TestCase
+class InMemoryUserSearchTest extends BaseTestCase
 {
     public function test_empty_repo_returns_no_results(): void
     {

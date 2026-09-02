@@ -6,11 +6,12 @@ namespace BristolianTest\Keys;
 
 use Bristolian\Keys\UnknownCacheQueryKey;
 use PHPUnit\Framework\TestCase;
+use BristolianTest\BaseTestCase;
 
 /**
  * @covers \Bristolian\Keys\UnknownCacheQueryKey
  */
-class UnknownCacheQueryKeyTest extends TestCase
+class UnknownCacheQueryKeyTest extends BaseTestCase
 {
     public function testSetKeyConstant(): void
     {

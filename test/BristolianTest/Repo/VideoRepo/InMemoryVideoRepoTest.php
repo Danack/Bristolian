@@ -8,12 +8,13 @@ use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\Video;
 use Bristolian\Repo\VideoRepo\InMemoryVideoRepo;
 use PHPUnit\Framework\TestCase;
+use BristolianTest\BaseTestCase;
 
 /**
  * @covers \Bristolian\Repo\VideoRepo\InMemoryVideoRepo
  * @group standard_repo
  */
-class InMemoryVideoRepoTest extends TestCase
+class InMemoryVideoRepoTest extends BaseTestCase
 {
     public function test_create_returns_id(): void
     {

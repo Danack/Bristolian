@@ -11,16 +11,18 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use BristolianTest\BaseTestCase;
 
 /**
  * @covers \Bristolian\Middleware\CacheTagMiddleware
  */
-class CacheTagMiddlewareTest extends TestCase
+class CacheTagMiddlewareTest extends BaseTestCase
 {
     private RequestTableAccessRecorder $recorder;
 
     public function setup(): void
     {
+        parent::setUp();
         $this->recorder = new RequestTableAccessRecorder();
     }
 

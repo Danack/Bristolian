@@ -19,11 +19,13 @@ class ServerFilesUploadedFilesTest extends BaseTestCase
 
     public function setUp(): void
     {
+        parent::setUp();
+
         // Save the original $_FILES array
         $this->originalFiles = $_FILES;
         // Clear $_FILES for each test
         $_FILES = [];
-        parent::setUp();
+
     }
 
     public function tearDown(): void

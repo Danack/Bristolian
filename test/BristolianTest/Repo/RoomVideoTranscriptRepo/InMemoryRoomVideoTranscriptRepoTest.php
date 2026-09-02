@@ -9,12 +9,13 @@ use Bristolian\Model\Generated\RoomVideoTranscript;
 use Bristolian\Model\Types\RoomVideoTranscriptList;
 use Bristolian\Repo\RoomVideoTranscriptRepo\InMemoryRoomVideoTranscriptRepo;
 use PHPUnit\Framework\TestCase;
+use BristolianTest\BaseTestCase;
 
 /**
  * @covers \Bristolian\Repo\RoomVideoTranscriptRepo\InMemoryRoomVideoTranscriptRepo
  * @group standard_repo
  */
-class InMemoryRoomVideoTranscriptRepoTest extends TestCase
+class InMemoryRoomVideoTranscriptRepoTest extends BaseTestCase
 {
     public function test_getTranscripts_returns_empty_list_initially(): void
     {

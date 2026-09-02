@@ -6,11 +6,12 @@ namespace BristolianTest\Cache;
 
 use Bristolian\Cache\QueryTagMapping;
 use PHPUnit\Framework\TestCase;
+use BristolianTest\BaseTestCase;
 
 /**
  * @covers \Bristolian\Cache\QueryTagMapping
  */
-class QueryTagMappingTest extends TestCase
+class QueryTagMappingTest extends BaseTestCase
 {
     public function testGetExactMappingsReturnsNonEmptyArray(): void
     {
