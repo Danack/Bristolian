@@ -7,6 +7,7 @@
 
          beStrictAboutCoverageMetadata="false"
          beStrictAboutOutputDuringTests="true"
+         beStrictAboutTestsThatDoNotTestAnything="false"
          displayDetailsOnPhpunitDeprecations="false"
          displayDetailsOnSkippedTests="false"
          displayDetailsOnTestsThatTriggerDeprecations="true"
@@ -32,7 +33,8 @@
 
   <extensions>
     <bootstrap class="JMac\Testing\PhpUnit\Tia\Extension">
-      <parameter name="storage" value="global"/>
+<!--      <parameter name="storage" value="global"/>-->
+      <parameter name="storage" value="local"/>
     </bootstrap>
   </extensions>
 

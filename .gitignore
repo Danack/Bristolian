@@ -1,5 +1,6 @@
 /credentials.php
 .idea
+.phpunit-tia
 node_modules/
 vendor/
 var/

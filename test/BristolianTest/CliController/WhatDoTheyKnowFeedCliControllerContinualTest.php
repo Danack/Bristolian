@@ -10,14 +10,14 @@ use Bristolian\Repo\RoomRepo\FakeRoomRepo;
 use Bristolian\Service\CliOutput\CapturingCliOutput;
 use Bristolian\Service\RoomMessageService\FakeRoomMessageService;
 use Bristolian\Service\WhatDoTheyKnowFeedFetcher\FakeWhatDoTheyKnowFeedFetcherReturningJson;
-use PHPUnit\Framework\TestCase;
+use BristolianTest\BaseTestCase;
 
 /**
  * continualExecuteCallable() writes to stdout; BaseTestCase teardown forbids any output, so these tests use TestCase.
  *
  * @coversNothing
  */
-final class WhatDoTheyKnowFeedCliControllerContinualTest extends TestCase
+final class WhatDoTheyKnowFeedCliControllerContinualTest extends BaseTestCase
 {
     private function expectContinuallyExecuteCallableStdout(): void
     {

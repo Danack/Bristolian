@@ -237,7 +237,7 @@ class PredisSession implements Session
      */
     public function get(
         string $name,
-        int|bool|array|string|float $default = null,
+        int|bool|array|string|float|null $default = null,
         bool $clear = false
     ): int|bool|array|string|float|null {
         if (array_key_exists($name, $this->data) == false) {
