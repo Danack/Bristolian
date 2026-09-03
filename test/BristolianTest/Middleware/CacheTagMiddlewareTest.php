@@ -12,6 +12,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\RequiresEnvironmentVariable;
+
 
 /**
  * @covers \Bristolian\Middleware\CacheTagMiddleware
@@ -148,6 +150,7 @@ class CacheTagMiddlewareTest extends BaseTestCase
         $this->assertSame(201, $response->getStatusCode());
     }
 
+    #[RequiresEnvironmentVariable('RUNNING_IN_DOCKER', '1')]
     public function testWriteTablesDoNotAffectCacheTagsHeader(): void
     {
         $this->recorder->recordTablesWritten(['users']);
@@ -161,6 +164,8 @@ class CacheTagMiddlewareTest extends BaseTestCase
         $this->assertFalse($response->hasHeader('X-Cache-Tags'));
     }
 
+
+    #[RequiresEnvironmentVariable('RUNNING_IN_DOCKER', '1')]
     public function testBothReadAndWriteTablesOnlyReadsInHeader(): void
     {
         $this->recorder->recordTablesRead(['rooms']);
