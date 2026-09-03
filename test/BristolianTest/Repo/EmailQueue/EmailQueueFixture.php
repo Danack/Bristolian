@@ -32,7 +32,7 @@ abstract class EmailQueueFixture extends BaseTestCase
      * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::__construct
      * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
      */
-    public function test_queueEmailToUsers_creates_emails(): void
+    public function testqueueEmailToUserscreatesemails(): void
     {
         $env = new HardCodedEnvironmentName('testing');
         $repo = $this->getTestInstance($env);

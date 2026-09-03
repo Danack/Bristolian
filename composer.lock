@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7af1680cb89d4104fb63ae6d8907ad75",
+    "content-hash": "fe586b7adb3f2d7b551e519dd0d13ff7",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.394.6",
+            "version": "3.394.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "860a8b13413adcef698afa0770f0d85f85777a78"
+                "reference": "40a8717706fd789cd3e8c72a2e8e93ee4455b391"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/860a8b13413adcef698afa0770f0d85f85777a78",
-                "reference": "860a8b13413adcef698afa0770f0d85f85777a78",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/40a8717706fd789cd3e8c72a2e8e93ee4455b391",
+                "reference": "40a8717706fd789cd3e8c72a2e8e93ee4455b391",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.394.6"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.394.7"
             },
-            "time": "2026-09-01T18:09:58+00:00"
+            "time": "2026-09-02T18:07:40+00:00"
         },
         {
             "name": "brick/math",
@@ -7617,16 +7617,16 @@
         },
         {
             "name": "jasonmccreary/phpunit-tia",
-            "version": "v0.2.1",
+            "version": "dev-tia-debug-reason",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jasonmccreary/phpunit-tia.git",
-                "reference": "af5c8ea3a2c43aedfe3b9b245fb0eed318a4a636"
+                "reference": "5cab835dc3c238e03077b303cbbf5d3ac4ce6643"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jasonmccreary/phpunit-tia/zipball/af5c8ea3a2c43aedfe3b9b245fb0eed318a4a636",
-                "reference": "af5c8ea3a2c43aedfe3b9b245fb0eed318a4a636",
+                "url": "https://api.github.com/repos/jasonmccreary/phpunit-tia/zipball/5cab835dc3c238e03077b303cbbf5d3ac4ce6643",
+                "reference": "5cab835dc3c238e03077b303cbbf5d3ac4ce6643",
                 "shasum": ""
             },
             "require": {
@@ -7647,7 +7647,11 @@
                     "JMac\\Testing\\PhpUnit\\Tia\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "JMac\\Testing\\PhpUnit\\Tia\\Tests\\": "tests/"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -7667,10 +7671,10 @@
                 "tia"
             ],
             "support": {
-                "issues": "https://github.com/jasonmccreary/phpunit-tia/issues",
-                "source": "https://github.com/jasonmccreary/phpunit-tia/tree/v0.2.1"
+                "source": "https://github.com/jasonmccreary/phpunit-tia/tree/tia-debug-reason",
+                "issues": "https://github.com/jasonmccreary/phpunit-tia/issues"
             },
-            "time": "2026-08-13T13:10:27+00:00"
+            "time": "2026-09-02T19:45:11+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
@@ -11514,7 +11518,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "danack/slim-dispatcher": 20
+        "danack/slim-dispatcher": 20,
+        "jasonmccreary/phpunit-tia": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
