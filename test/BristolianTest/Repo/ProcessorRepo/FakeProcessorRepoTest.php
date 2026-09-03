@@ -17,9 +17,4 @@ class FakeProcessorRepoTest extends ProcessorRepoFixture
     {
         return new FakeProcessorRepo();
     }
-
-    public function testCestNestPasUneEdge()
-    {
-        $this->assertTrue(true);
-    }
 }

@@ -17,9 +17,4 @@ class PdoTinnedFishProductRepoTest extends TinnedFishProductRepoFixture
     {
         return $this->injector->make(PdoTinnedFishProductRepo::class);
     }
-
-    public function testCestNestPasUneEdge()
-    {
-        $this->assertTrue(true);
-    }
 }

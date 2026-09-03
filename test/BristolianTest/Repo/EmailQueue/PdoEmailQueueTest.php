@@ -31,9 +31,4 @@ class PdoEmailQueueTest extends EmailQueueFixture
 
         return $this->injector->make(PdoEmailQueue::class);
     }
-
-    public function testCestNestPasUneEdge()
-    {
-        $this->assertTrue(true);
-    }
 }

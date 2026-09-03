@@ -94,9 +94,4 @@ class PdoRoomAnnotationRepoTest extends RoomAnnotationRepoFixture
         $this->world()->roomFileObjectInfoRepo()->setRoomFileObjectUploaded($fileId);
         return $fileId;
     }
-
-    public function testCestNestPasUneEdge()
-    {
-        $this->assertTrue(true);
-    }
 }

@@ -26,10 +26,4 @@ class PdoRoomRepoTest extends RoomRepoFixture
         $this->ensureStandardSetup();
         return $this->standardTestData()->getTestingUserId();
     }
-
-    public function testCestNestPasUneEdge()
-    {
-        $this->assertTrue(true);
-    }
-
 }
