@@ -643,6 +643,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
 
     /**
      * Room membership can reference a file id without metadata if internal state is inconsistent; skip those ids.
+     * TODO - what is this test? Why is this a thing?
      *
      * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesInRoomByOriginalFilename
      */
@@ -654,7 +655,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
 
         $reflection = new \ReflectionClass($roomFileRepo);
         $files_property = $reflection->getProperty('files');
-        $files_property->setAccessible(true);
+
         $files = $files_property->getValue($roomFileRepo);
         unset($files['file_a']);
         $files_property->setValue($roomFileRepo, $files);
