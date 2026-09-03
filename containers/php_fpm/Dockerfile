@@ -28,10 +28,6 @@ WORKDIR /tmp
 COPY pie.phar /tmp/pie.phar
 RUN php pie.phar install danack/fnbind:@alpha
 
-RUN ls -l /usr/lib/php
-RUN ls -l /usr/lib/php
-RUN ls -l /usr/lib/php
-
 # Stage 2: Runtime stage without dev dependencies
 FROM debian:11-slim AS runtime
 

@@ -16,7 +16,8 @@
          displayDetailsOnTestsThatTriggerErrors="true"
          failOnPhpunitDeprecation="false"
          failOnRisky="true"
-         failOnWarning="true">
+         failOnWarning="true"
+         processIsolation="false">
 
     <!--         requireCoverageMetadata="true"-->
 

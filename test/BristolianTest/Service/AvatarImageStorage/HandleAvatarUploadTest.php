@@ -16,6 +16,7 @@ use Bristolian\UploadedFiles\FakeUploadedFiles;
 use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
 use Bristolian\Service\AvatarImageStorage\FakeAvatarImageStorage;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use SlimDispatcher\Response\StubResponse;
 
 /**
@@ -49,6 +50,7 @@ class HandleAvatarUploadTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\AvatarImageStorage\HandleAvatarUpload::handle
      */
+    #[RequiresPhpExtension('Imagick')]
     public function test_handle_returns_failure_when_storage_returns_upload_error(): void
     {
         $imagePath = __DIR__ . '/../../../fixtures/images/small_avatar.jpg';
@@ -79,6 +81,7 @@ class HandleAvatarUploadTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\AvatarImageStorage\HandleAvatarUpload::handle
      */
+    #[RequiresPhpExtension('Imagick')]
     public function test_handle_returns_success_and_updates_profile_when_storage_succeeds(): void
     {
         $imagePath = __DIR__ . '/../../../fixtures/stairs/stairs_test_c_7.jpeg';

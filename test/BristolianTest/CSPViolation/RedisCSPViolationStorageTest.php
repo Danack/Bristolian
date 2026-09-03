@@ -6,10 +6,12 @@ use BristolianTest\BaseTestCase;
 use Bristolian\CSPViolation\RedisCSPViolationStorage;
 use BristolianTest\Repo\TestPlaceholders;
 use Bristolian\CSPViolation\CSPViolationStorage;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 
 /**
  * @covers \Bristolian\CSPViolation\RedisCSPViolationStorage
  */
+#[RequiresPhpExtension('redis')]
 class RedisCSPViolationStorageTest extends BaseTestCase
 {
     use TestPlaceholders;

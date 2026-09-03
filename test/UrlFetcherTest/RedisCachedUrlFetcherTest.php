@@ -8,6 +8,7 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use UrlFetcher\FakeUrlFetcher;
 use UrlFetcher\RedisCachedUrlFetcher;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 
 /**
  * @coversNothing
@@ -22,6 +23,7 @@ class RedisCachedUrlFetcherTest extends BaseTestCase
      * @covers \UrlFetcher\RedisCachedUrlFetcher
      * @group network
      */
+    #[RequiresPhpExtension('redis')]
     public function testBasic(): void
     {
         $data = 'John';

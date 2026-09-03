@@ -10,6 +10,7 @@ use Bristolian\Service\AvatarImageStorage\UploadError;
 use Bristolian\Service\ObjectStore\FakeAvatarImageObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 
 /**
  * @coversNothing
@@ -41,6 +42,7 @@ class StandardAvatarImageStorageTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::storeAvatarForUser
      */
+    #[RequiresPhpExtension('Imagick')]
     public function test_storeAvatarForUser_returns_imageTooSmall_when_image_smaller_than_512(): void
     {
         $imagePath = __DIR__ . '/../../../fixtures/images/small_avatar.jpg';
@@ -63,6 +65,7 @@ class StandardAvatarImageStorageTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::storeAvatarForUser
      */
+    #[RequiresPhpExtension('Imagick')]
     public function test_storeAvatarForUser_returns_avatar_image_id_and_uploads_to_object_store(): void
     {
         $imagePath = __DIR__ . '/../../../fixtures/stairs/stairs_test_c_7.jpeg';
@@ -99,6 +102,7 @@ class StandardAvatarImageStorageTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::storeAvatarForUser
      */
+    #[RequiresPhpExtension('Imagick')]
     public function test_storeAvatarForUser_returns_uploadedFileUnreadable_when_file_cannot_be_read(): void
     {
         $infoRepo = new FakeAvatarImageStorageInfoRepo();
@@ -120,6 +124,7 @@ class StandardAvatarImageStorageTest extends BaseTestCase
     /**
      * @covers \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::storeAvatarForUser
      */
+    #[RequiresPhpExtension('Imagick')]
     public function test_storeAvatarForUser_returns_uploadedFileUnreadable_when_imagick_fails(): void
     {
         $invalidImagePath = __DIR__ . '/../../../fixtures/images/invalid_avatar.jpg';

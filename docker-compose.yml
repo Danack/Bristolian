@@ -72,6 +72,7 @@ services:
       - MYSQL_DATABASE=bristolian
       - MYSQL_USER=bristolian
       - MYSQL_PASSWORD=p5ffrKSk4mPqN8vH
+      - RUNNING_IN_DOCKER=1
     networks:
       app_network:
     volumes:
@@ -107,6 +108,7 @@ services:
       - COMPOSER_ALLOW_SUPERUSER=1
       # Absolute path to this repo on your machine (see .env). Maps /var/app for Behat fail-aid file:// links.
       - BRISTOLIAN_HOST_PATH=${BRISTOLIAN_HOST_PATH}
+      - RUNNING_IN_DOCKER=1
    networks:
       app_network:
    restart: always
@@ -120,6 +122,7 @@ services:
       - ITERM_TITLE=bristolian php-debug
       - PHP_IDE_CONFIG=serverName=BRISTOLIAN_DEBUG
       - BRISTOLIAN_HOST_PATH=${BRISTOLIAN_HOST_PATH}
+      - RUNNING_IN_DOCKER=1
     depends_on:
       - php_fpm
     networks:

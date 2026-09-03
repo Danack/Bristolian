@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.394.7",
+            "version": "3.394.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "40a8717706fd789cd3e8c72a2e8e93ee4455b391"
+                "reference": "9afa5f6652e7035a029369c98db68bc21279a3cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/40a8717706fd789cd3e8c72a2e8e93ee4455b391",
-                "reference": "40a8717706fd789cd3e8c72a2e8e93ee4455b391",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9afa5f6652e7035a029369c98db68bc21279a3cf",
+                "reference": "9afa5f6652e7035a029369c98db68bc21279a3cf",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.394.7"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.394.8"
             },
-            "time": "2026-09-02T18:07:40+00:00"
+            "time": "2026-09-03T18:08:51+00:00"
         },
         {
             "name": "brick/math",
@@ -7621,12 +7621,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jasonmccreary/phpunit-tia.git",
-                "reference": "5cab835dc3c238e03077b303cbbf5d3ac4ce6643"
+                "reference": "0695af7aba37a9634db2436f380ce846c7df7893"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jasonmccreary/phpunit-tia/zipball/5cab835dc3c238e03077b303cbbf5d3ac4ce6643",
-                "reference": "5cab835dc3c238e03077b303cbbf5d3ac4ce6643",
+                "url": "https://api.github.com/repos/jasonmccreary/phpunit-tia/zipball/0695af7aba37a9634db2436f380ce846c7df7893",
+                "reference": "0695af7aba37a9634db2436f380ce846c7df7893",
                 "shasum": ""
             },
             "require": {
@@ -7674,7 +7674,7 @@
                 "source": "https://github.com/jasonmccreary/phpunit-tia/tree/tia-debug-reason",
                 "issues": "https://github.com/jasonmccreary/phpunit-tia/issues"
             },
-            "time": "2026-09-02T19:45:11+00:00"
+            "time": "2026-09-03T13:19:06+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",

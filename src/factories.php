@@ -135,9 +135,6 @@ function createApiDomain(Config $config)
  */
 function createPDOForUser(Config $config)
 {
-//    global $number_of_pdo_connections;
-//    $number_of_pdo_connections += 1;
-
     $db_config = $config->getDatabaseUserConfig();
 
     $dsn_string = sprintf(
@@ -146,24 +143,32 @@ function createPDOForUser(Config $config)
         $db_config->schema
     );
 
+    $running_in_docker = getenv("RUNNING_IN_DOCKER");
+
+    if ($running_in_docker === null || $running_in_docker !== "1") {
+        $dsn_string = sprintf(
+            'mysql:host=%s;dbname=%s',
+            "127.0.0.1",
+            $db_config->schema
+        );
+    }
     $pdo_options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_EMULATE_PREPARES => false,
         PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
         PDO::ATTR_TIMEOUT => 3,
-        PDO::MYSQL_ATTR_FOUND_ROWS => true,
 //        PDO::ATTR_PERSISTENT => true
     ];
 
+    if (PHP_VERSION_ID < 80500) {
+        $pdo_options[PDO::MYSQL_ATTR_FOUND_ROWS] = true;
+     } else {
+        $pdo_options[\Pdo\Mysql::ATTR_FOUND_ROWS] = true;
+    }
+
     // TODO - return a readonly connection.
-    // this needs a little thought to allow people to login.
-    // 'bristolian_readonly_user'
-    // 's^Z8p!R3tM#9wXj@Qk2'
-
+    // this needs a little thought to allow people to login, or you know, write to the DB
     $attempt_retry = true;
-
-
-
     $pdo = new \PDO(
         $dsn_string,
         $db_config->username,

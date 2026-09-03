@@ -8,6 +8,7 @@ use Bristolian\Data\DatabaseUserConfig;
 use Bristolian\Config\RedisConfig;
 use Bristolian\Session\FakeAppSessionManager;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 
 /**
  * Test Config class that allows testing production environment paths
@@ -120,6 +121,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createRedis
      */
+    #[RequiresPhpExtension('redis')]
     public function test_createRedis()
     {
         $result = $this->injector->execute('createRedis');
@@ -130,6 +132,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::createRedisCachedUrlFetcher
      */
+    #[RequiresPhpExtension('redis')]
     public function test_createRedisCachedUrlFetcher()
     {
         $result = $this->injector->execute(createRedisCachedUrlFetcher(...));
@@ -140,6 +143,7 @@ class FactoriesFunctionsTest extends BaseTestCase
     /**
      * @covers ::getRedisConfig
      */
+    #[RequiresPhpExtension('redis')]
     public function test_getRedisConfig()
     {
         $config = $this->injector->make(Config::class);
@@ -389,6 +393,7 @@ class FactoriesFunctionsTest extends BaseTestCase
      * @covers ::createUnknownQueryHandler
      * @group db
      */
+    #[RequiresPhpExtension('redis')]
     public function test_createUnknownQueryHandler_dev_returns_ThrowOnUnknownQuery(): void
     {
         $config = new TestProductionConfig(false);
@@ -401,6 +406,7 @@ class FactoriesFunctionsTest extends BaseTestCase
      * @covers ::createUnknownQueryHandler
      * @group db
      */
+    #[RequiresPhpExtension('redis')]
     public function test_createUnknownQueryHandler_production_returns_RedisLogUnknownQuery(): void
     {
         $config = new TestProductionConfig(true);
@@ -413,6 +419,7 @@ class FactoriesFunctionsTest extends BaseTestCase
      * @covers ::createUnknownCacheQueriesProvider
      * @group db
      */
+    #[RequiresPhpExtension('redis')]
     public function test_createUnknownCacheQueriesProvider_returns_RedisProvider(): void
     {
         $redis = $this->injector->make(\Redis::class);
