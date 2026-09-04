@@ -31,37 +31,7 @@ The following test types are **NOT needed** for DataType parameter classes:
 
 These edge cases are handled by the underlying DataType validation framework and don't need to be tested at the parameter class level.
 
-### Example Test Structure
 
-```php
-class ExampleParamTest extends BaseTestCase
-{
-    public function testWorks()
-    {
-        // Basic functionality test with valid data
-    }
-
-    public function testWorksWithAllOptionalParameters()
-    {
-        // Test with all optional parameters provided
-    }
-
-    public function testWorksWithNoOptionalParameters()
-    {
-        // Test with no optional parameters (only required ones)
-    }
-
-    public function testFailsWithMissingRequiredParameter()
-    {
-        // Validation error test
-    }
-
-    public function testFailsWithInvalidDataType()
-    {
-        // Validation error test
-    }
-}
-```
 
 ### Test Behaviour, Not Interfaces
 
@@ -276,18 +246,7 @@ Databases can be seeded with data, so testing for initial emptiness is unreliabl
 
 ## Running PHP Tests
 
-### phpunit.xml: fast vs full runs (db group and HTML coverage)
 
-`phpunit.xml` can have the `@group db` tests excluded and HTML coverage disabled so normal test runs stay fast. Tests marked `@group db` depend on PDO/database.
-
-**Toggle scripts** (run from project root, pass path to `phpunit.xml` when not using default):
-
-- **Enable slow tests and HTML coverage** (for finalise_work / full coverage):  
-  `php scripts/streamdeck/toggle_restore_content.php phpunit.xml`
-- **Disable them again** (fast runs):  
-  `php scripts/streamdeck/toggle_remove_content.php phpunit.xml`
-
-When finalising work, run the restore script first so PHPUnit runs the db tests and produces the HTML coverage report.
 
 ### Running All PHPUnit Tests
 
