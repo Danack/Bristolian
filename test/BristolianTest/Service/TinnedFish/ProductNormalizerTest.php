@@ -8,7 +8,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use function isValidBarcode;
 use function normalizeOpenFoodFactsData;
 
-
 /**
  * Tests for tinned fish normalization functions
  *

@@ -378,10 +378,7 @@ import {
 />
 ```
 
-**Why share constants?**
-- Ensures validation limits match between frontend and backend
-- Single source of truth for validation rules
-- Changes to limits automatically propagate to both sides
+
 
 ## Data Flow
 
@@ -721,10 +718,6 @@ Used for API endpoints. Has a separate, smaller set of dependencies.
     \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class,
 ```
 
-**Why separate configs?**
-- The API runs with minimal dependencies for better performance
-- Web pages may need additional services (rendering, assets, etc.)
-- Keeps API lightweight and focused
 
 **Common mistake:** Forgetting to add repository/service to API config when API endpoints use it. This results in "Injection definition required" errors.
 

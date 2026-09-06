@@ -6,6 +6,7 @@ namespace Bristolian\PHPStan;
 
 /**
  * Best-effort extraction of database table names from SQL strings.
+ * @codeCoverageIgnore
  *
  * @phpstan-type TableAccess array{reads: list<string>, writes: list<string>}
  */

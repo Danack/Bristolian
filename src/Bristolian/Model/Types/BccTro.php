@@ -2,11 +2,14 @@
 
 namespace Bristolian\Model\Types;
 
+use Bristolian\FromString;
+use Bristolian\ToString;
 use Bristolian\ToArray;
 
 class BccTro
 {
-    use ToArray;
+    use ToString;
+    use FromString;
 
     public function __construct(
         public readonly string $title,

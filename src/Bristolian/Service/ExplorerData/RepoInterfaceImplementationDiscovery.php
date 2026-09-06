@@ -11,6 +11,9 @@ use RecursiveIteratorIterator;
 use RegexIterator;
 use SplFileInfo;
 
+/**
+ * @codeCoverageIgnore
+ */
 class RepoInterfaceImplementationDiscovery
 {
     private const REPO_DIRECTORY = 'src/Bristolian/Repo';

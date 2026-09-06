@@ -20,24 +20,26 @@ use BristolianTest\BaseTestCase;
  *
  * @coversNothing
  */
-final class BccTroFetcherTestBccTroRepo implements BccTroRepo
-{
-    /** @var BccTro[]|null */
-    public ?array $lastSavedTros = null;
-
-    public function saveData(array $tros): int
-    {
-        $this->lastSavedTros = $tros;
-
-        return 1;
-    }
-}
+//final class BccTroFetcherTestBccTroRepo implements BccTroRepo
+//{
+//    /** @var BccTro[]|null */
+//    public ?array $lastSavedTros = null;
+//
+//    public function saveData(array $tros): int
+//    {
+//        $this->lastSavedTros = $tros;
+//
+//        return 1;
+//    }
+//}
 
 /**
  * BccTroFetcher that returns a fixed list of TROs for testing.
  *
  * @coversNothing
  */
+
+// TODO - why do these rubbish fakes exist.
 final class BccTroFetcherReturningFixedTros implements BccTroFetcher
 {
     /** @param BccTro[] $tros */
@@ -326,4 +328,7 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
 //        $this->assertSame('Error fetching TRO data: network down', $records[0]->debug_info);
 //        $this->assertStringContainsString('Fin.', $cliOutput->getCapturedOutput());
 //    }
+
+
+
 }

@@ -28,4 +28,14 @@ class FakeBccTroRepo implements BccTroRepo
 
         return (count($this->savedData) - 1);
     }
+
+
+    public function getMostRecentData(): BccTro|null
+    {
+        if (count($this->savedData[]) !== 0) {
+            return \end($this->savedData[]);
+        }
+
+        return null;
+    }
 }

@@ -18,6 +18,7 @@ use PhpParser\NodeFinder;
 use ReflectionMethod;
 
 /**
+ * @codeCoverageIgnore
  * Collects and compares method-level ReadsTable/WritesTable attributes against
  * Database::* constant usage and SQL string table references.
  */

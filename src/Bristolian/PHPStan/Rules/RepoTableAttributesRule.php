@@ -18,6 +18,7 @@ use PHPStan\Rules\RuleErrorBuilder;
 
 /**
  * @implements Rule<InClassNode>
+ * @codeCoverageIgnore
  */
 class RepoTableAttributesRule implements Rule
 {

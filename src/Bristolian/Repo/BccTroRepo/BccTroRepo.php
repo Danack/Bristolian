@@ -14,4 +14,6 @@ interface BccTroRepo
      */
     #[WritesTable(bcc_tro_information::class)]
     public function saveData(array $tros): int;
+
+    public function getMostRecentData(): BccTro|null;
 }

@@ -10,7 +10,17 @@ Have something that watches for TRO changes, and writes a message into the appro
 Notify unread messages in other rooms in front end.
 
 
-
 More TODO
 
 Normalise cli command names to make them easier to debug.
+
+
+
+
+AI clean up.
+
+* Remove generation of output.json files
+* Remove coverage of 'tool' code, including everything under Bristolian\Service\ExplorerData
+* re-organise all generated PHP code into src/BristolianGenerated
+* standardise naming convention for SCSS + widgets.
+* divide pages.php into more sane components.

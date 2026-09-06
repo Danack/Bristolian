@@ -970,7 +970,18 @@ values (
     :raw
 )
 SQL) => ['read' => [], 'write' => ['user_webpush_subscription']],
-        ];
+
+
+        trim(<<<SQL
+select
+    id,
+    tro_data,
+    created_at
+from
+  bcc_tro_information  order by id desc
+SQL) => ['read' => ['bcc_tro_information'], 'write' => []],
+
+         ];
     }
 
     /**

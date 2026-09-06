@@ -35,7 +35,8 @@ class FunctionsBccTest extends BaseTestCase
 
 
 
-    public static function provides_ParseTrosFromHtmlParsesExampleFile() {
+    public static function provides_ParseTrosFromHtmlParsesExampleFile()
+    {
 
         $statement_of_reasons_1 = new BccTroDocument(
             '(1) Statement of Reasons Hengrove Promenade',
@@ -103,9 +104,7 @@ class FunctionsBccTest extends BaseTestCase
     public function testParseTrosFromHtmlParsesExampleFile(
         string $html_input_file,
         BccTro $expected_bcc_tro
-
-    ): void
-    {
+    ): void {
         $exampleFile = $html_input_file;
         $htmlContent = file_get_contents($exampleFile);
         if ($htmlContent === false) {
@@ -122,8 +121,6 @@ class FunctionsBccTest extends BaseTestCase
         $this->assertInstanceOf(BccTro::class, $tro);
 
         $this->assertEquals($expected_bcc_tro, $tro);
-
-
     }
 
     /**
@@ -224,5 +221,33 @@ class FunctionsBccTest extends BaseTestCase
 
         $this->assertSame('Statement of Reasons', $documents['statement_of_reasons']->title);
         $this->assertSame('42', $documents['statement_of_reasons']->id);
+    }
+
+
+    /**
+     * @covers ::renderBccTrosAsMarkdown
+     */
+    public function test_renderBccTrosAsMarkdown(): void
+    {
+//        $statement = new BccTroDocument('Stmt', '/f/1', 'd1');
+//        $notice = new BccTroDocument('Notice', '/f/2', 'd2');
+//        $plan = new BccTroDocument('Plan', '/f/3', 'd3');
+//        $tro = new BccTro(
+//            title: 'Fake TRO',
+//            reference_code: 'F-001',
+//            statement_of_reasons: $statement,
+//            notice_of_proposal: $notice,
+//            proposed_plan: $plan
+//        );
+
+        $test_tro_test = <<< JSON
+[{"title": "Proposed Zebra Crossing: Marsh Street, City Centre (Central ward): ref PX-DJR-26-004", "proposed_plan": {"id": "11285", "href": "/files/documents/11285-proposed-plan-zebra-crossing-px-djr-26-004", "title": "Proposed Plan   Zebra crossing, PX DJR 26 004"}, "reference_code": "PX-DJR-26-004", "notice_of_proposal": {"id": "11287", "href": "/files/documents/11287-notice-of-proposal-px-djr-26-004", "title": "Notice of Proposal, PX DJR 26 004"}, "statement_of_reasons": {"id": "11286", "href": "/files/documents/11286-statement-of-reasons-px-djr-26-004", "title": "Statement of Reasons, PX DJR 26 004"}}]
+JSON;
+
+        $bcc_tro = BccTro::fromString($test_tro_test);
+
+        $output = renderBccTrosAsMarkdown([$bcc_tro]);
+
+        $this->assertSame("foo", $output);
     }
 }

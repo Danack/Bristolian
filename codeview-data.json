@@ -2653,21 +2653,21 @@
             "name": "Bristolian\\Repo\\BccTroRepo\\BccTroRepo",
             "file": "src/Bristolian/Repo/BccTroRepo/BccTroRepo.php",
             "line-start": 9,
-            "line-end": 17,
+            "line-end": 19,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Repo\\BccTroRepo\\FakeBccTroRepo",
             "file": "src/Bristolian/Repo/BccTroRepo/FakeBccTroRepo.php",
             "line-start": 12,
-            "line-end": 31,
+            "line-end": 41,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Repo\\BccTroRepo\\PdoBccTroRepo",
             "file": "src/Bristolian/Repo/BccTroRepo/PdoBccTroRepo.php",
-            "line-start": 10,
-            "line-end": 40,
+            "line-start": 11,
+            "line-end": 53,
             "dependencies": []
         },
         {
@@ -3590,8 +3590,8 @@
         {
             "name": "Bristolian\\Service\\ExplorerData\\RepoInterfaceImplementationDiscovery",
             "file": "src/Bristolian/Service/ExplorerData/RepoInterfaceImplementationDiscovery.php",
-            "line-start": 14,
-            "line-end": 368,
+            "line-start": 17,
+            "line-end": 371,
             "dependencies": []
         },
         {

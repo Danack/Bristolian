@@ -6,6 +6,7 @@ use Bristolian\Database\bcc_tro_information;
 use Bristolian\Model\Types\BccTro;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Attribute\WritesTable;
+use Bristolian\Model\Generated\BccTroInformation;
 
 class PdoBccTroRepo implements BccTroRepo
 {
@@ -33,8 +34,20 @@ class PdoBccTroRepo implements BccTroRepo
         );
     }
 
-    public function getMostRecentData(): null
+    public function getMostRecentData(): BccTro|null
     {
-        return null;
+        $sql = bcc_tro_information::SELECT . " order by id desc";
+
+        $latest_entry = $this->pdo_simple->fetchOneAsObjectOrNull(
+            $sql,
+            [],
+            BccTroInformation::class
+        );
+
+        if ($latest_entry === null) {
+            return null;
+        }
+
+        return BccTro::fromString($latest_entry->tro_data);
     }
 }

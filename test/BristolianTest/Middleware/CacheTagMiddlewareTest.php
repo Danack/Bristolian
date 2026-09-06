@@ -14,7 +14,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\RequiresEnvironmentVariable;
 
-
 /**
  * @covers \Bristolian\Middleware\CacheTagMiddleware
  */

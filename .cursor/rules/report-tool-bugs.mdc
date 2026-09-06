@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Report bugs in tools
 
-When a tool (PHPUnit, coverage drivers, Composer, Docker, IDE helpers, etc.) behaves incorrectly or has a clear bug:
+When a tool behaves incorrectly or has a clear bug:
 
 1. **Report it** — tell the user what is wrong, with enough evidence to reproduce (what you ran, what you expected, what happened).
 2. **Do not work around it** without explicit approval — no alternate APIs, renamed symbols, broader `@covers`, silenced checks, or other patches that paper over the tool bug.

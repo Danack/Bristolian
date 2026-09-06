@@ -119,13 +119,6 @@ When you need to inspect how a PHP dependency works (e.g. Amp interfaces, method
 3. **Websocket Backend**: `/chat/src/index.php`
 4. **CLI**: `/cli.php`
 
-
-
-
-
-
-## Running Tests
-
 ## Frontend Development
 
 ### Building Assets
@@ -145,6 +138,9 @@ docker exec bristolian-js_builder-1 bash -c "npm run sass:build:prod"
 docker exec -it bristolian-js_builder-1 bash -c "npm run js:build:dev:watch"
 docker exec -it bristolian-js_builder-1 bash -c "npm run sass:build:watch"
 ```
+In the normal development environment, the JavaScript and Sass is rebuilt continually by watchers.
+
+Most of the time, you should just check the output of the `bristolian-js_builder-1` and `bristolian-sass_dev_builder-1` containers to check for errors, rather than invoking the build tools yourself.
 
 ### Frontend Structure
 - **TypeScript/React**: `/app/public/tsx`
@@ -255,80 +251,57 @@ docker-compose logs -f [service_name]
 - **Tests**: `/test` (PHP), `/app/public/tsx` (Jest)
 - **Docker**: `/containers` (service configurations)
 
+# Code quality and testing Guidelines
 
-
-# Testing Guidelines
-
+As a general rule, all PHP code that runs in production should have 100% unit test coverage. The main exception to this rule is PHP code that is run in developlment that generates data/code for use by the application. The generated code is tested through integration tests, and so the code that does the generation does not need to be tested for correctness.
 
 ## Running PHP Tests
 
+When developing PHP code, the tests should be run outside of the container in the root of the project: 
 
+```
+sh runUnitTestsFast.sh
+```
+This will run all of the tests that need to be tested due to modified source or test files.
 
-### Running All PHPUnit Tests
+When those tests are passing, the next step is to run PHPStan:
+
+```
+sh runPhpStan.sh
+```
+
+When there are no PHPStan errors, the next step is to run the full suite inside the container.
 
 ```bash
 docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh"
 ```
+That will generate code coverage reports in both HTML and Clover formats.
 
+To identify which lines of code need test coverage, run: 
 
-
-### Running Specific Tests
-
-Use the `--filter` option to run specific tests by name:
-
-```bash
-# Run a specific test method
-docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c phpunit.xml --filter testRooms_addLink_working"
-
-# Run all tests in a specific test class
-docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c phpunit.xml --filter RoomsTest"
-
-# Run tests matching a pattern
-docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c phpunit.xml --filter 'testRooms_'"
+```
+php list_uncovered_lines.php
 ```
 
-### Running a Specific Test File
+When the code coverage is at 100% and all the tests are passing, re-run the PHPStan tests to check that nothing broken.
 
-```bash
-docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c phpunit.xml test/BristolianTest/AppController/RoomsTest.php"
+Finally run CodeSniffer with:
+
+```
+sh runCodeSniffer.sh
 ```
 
-### Finding Uncovered Lines of Code
+to check that all code style rules are met. CodeSniffer will fix some issues itself. Re-run it if it said it fixed issues.
 
-To identify which lines of code need test coverage, first run the unit tests to generate a coverage report:
 
-```bash
-docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh --no-progress"
-```
+### Running a Specific Test
 
-Then use `report_missing_coverage.php` for a clear summary of overall coverage and which files need more tests:
+To run a specific test, e.g. to investigate a failure use: 
 
 ```bash
-# Whole project: summary, directories gaps, file gaps
-docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php"
-
-# Focus on one area
-docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php --filter=Bristolian/Response"
-
-# Top gaps with uncovered line numbers
-docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php --limit=20 --lines"
-
-# Machine-readable JSON (for extensions / tooling)
-docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php --json"
+docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c phpunit.xml --filter testRooms_addLink_working test/BristolianTest/AppController/RoomsTest.php"
 ```
 
-Every successful run also writes cache files beside the script (for CodeView / agents):
-
-- `report_missing_coverage.php.output.json` — machine-readable payload with `generated_at` as ISO-8601 UTC (`Y-m-d\TH:i:s\Z`) and `generated_at_unix` (epoch seconds) for staleness checks
-- `report_missing_coverage.php.output.llm` — same report as text, prefixed with `generated_at`
-
-Exit **0** means the report was produced (whether or not there are gaps). Exit **2** is for usage/file/parse errors. Read the cache or JSON for uncovered files — do not treat a non-zero exit as “gaps found”.
-
-For a raw `path:line` dump (e.g. scripting), use `list_uncovered_lines.php`:
-
-```bash
-docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml | grep Bristolian/Response"
-```
 
 **Note:** Some uncovered lines may be error-handling paths that are difficult to trigger in normal operation. When you have analyzed a path and concluded it is difficult to test, add a comment in the source code above that code explaining why it is difficult to test. Tell the user that these lines are difficult to test, and ask for guidance on how to handle them.
 
@@ -361,53 +334,6 @@ docker exec bristolian-js_builder-1 npm <command>
 
 
 
-
-
-### JavaScript Tests
-```bash
-# Run Jest tests
-docker exec bristolian-js_builder-1 bash -c "npm run test"
-```
-
-### Interactive shell (when you need to run multiple commands)
-```bash
-# PHP container
-docker exec -it bristolian-php_fpm-1 bash
-# Then run: sh runUnitTests.sh, sh runBehat.sh, etc.
-
-# JavaScript container
-docker exec -it bristolian-js_builder-1 bash
-# Then run: npm run test, npm run js:build:dev, etc.
-```
-
-## Code Quality Tools
-
-### PHPStan Static Analysis
-PHPStan is used for static analysis of PHP code to catch potential bugs and type issues.
-
-```bash
-# Run PHPStan analysis (uses --no-progress by default)
-docker exec bristolian-php_fpm-1 bash -c "sh runPhpStan.sh"
-```
-
-**Note**: The script runs PHPStan with `--no-progress` by default to keep output clean. Additional flags can be passed as arguments to the script.
-
-**Configuration**: `phpstan.neon`
-- **Analysis Level**: 6 (strict)
-- **Target Paths**: `src/` and `test/` directories
-- **Bootstrap Files**: Configuration and factory files for dependency injection
-- **Excluded Paths**: Generated files and specific problematic files
-
-
-## Code Coverage
-
-The project generates HTML code coverage reports for PHP unit tests. Coverage reports are generated in the `tmp/coverage/` directory.
-
-
-
-
-
-
 ### Running Chat (WebSocket) PHPUnit Tests
 
 The project has two PHP codebases that share code but use different `composer.json` files:
@@ -424,9 +350,6 @@ docker exec bristolian-php_fpm-1 bash -c "sh runChatUnitTests.sh"
 ```
 
 This uses `phpunit_chat.xml` and tests under `test/BristolianChatTest`, with coverage for `src/BristolianChat` and `src/functions_chat.php`. To run specific chat tests, pass `-c phpunit_chat.xml` instead of `-c phpunit.xml` to PHPUnit.
-
-
-
 
 
 ## DataType Parameter Classes Testing
@@ -652,13 +575,85 @@ Databases can be seeded with data, so testing for initial emptiness is unreliabl
 - Verifying behavior with data present
 - Testing filtering/querying logic with specific data
 
-**Examples of tests to avoid:**
-- `test_getAll_returns_empty_array_initially()`
-- `test_getMessagesForRoom_returns_empty_array_initially()`
-- `test_getEmailToSendAndUpdateState_returns_null_when_queue_is_empty()`
-- `test_clearQueue_returns_zero_when_queue_is_empty()`
 
-**Instead, write tests that:**
-- Create data and verify retrieval: `test_getAll_returns_saved_items()`
-- Test behavior with data: `test_getMessagesForRoom_returns_messages_after_adding()`
-- Test filtering logic: `test_getMessagesForRoom_returns_only_messages_for_specified_room()`
+
+# Front-end notes
+
+## Buttons must have a CSS class
+
+All `<button>` elements must have the `button_standard` class (or another explicit styling class). The global default button style in `standard_ui_objects.scss` is deliberately set to bright pink (`#ff00ff`) so that unstyled buttons are visually obvious as mistakes. Use `className="button_standard"` for standard buttons, and add `button_chat` as a secondary class for smaller inline action buttons (e.g. Edit, Play, Edit tags).
+
+## Modals must close on Escape key
+
+Any modal or overlay dialog must close when the user presses the Escape key. Add an `onKeyDown` handler on the modal overlay element that checks for `e.key === "Escape"` and calls the close function.
+
+## Modal overlay structure
+
+Modals follow a consistent two-div pattern: an outer overlay div that closes the modal on click, and an inner content div with `onClick={(e) => e.stopPropagation()}` to prevent clicks inside the modal from closing it. Use the classes `room_edit_tags_modal_overlay` for the overlay and `room_edit_tags_modal` for the inner content. When a save operation is in progress, disable closing: `onClick={() => !saveInProgress && this.close()}`.
+
+## Error and success messages
+
+Display errors using `<div className="error">` or `<span className="error">`. Display success messages using `<div className="success">`. Store error state as `error: string | null` in component state, and conditionally render: `{state.error && <div className="error">{state.error}</div>}`.
+
+## Login-gated UI
+
+Use the `store.ts` login state to conditionally show logged-in-only features. In class components, call `get_logged_in()` for the initial value and `subscribe_logged_in(callback)` in `componentDidMount` (unsubscribe in `componentWillUnmount`). In function components, use the `use_logged_in()` hook. Hide controls behind `{state.logged_in && (<button ...>)}`.
+
+## API calls
+
+Use the generated `api` object from `generated/api_routes` for standard GET endpoints (e.g. `api.rooms.links(room_id)`, `api.rooms.videos(room_id)`). Use raw `fetch` for POST/PUT endpoints or custom API calls. For tag mutations, use the helpers in `api_room_entity_tags.tsx` (`setLinkTags`, `setFileTags`, `setVideoTags`, `setAnnotationTags`).
+
+## Optional initial data from PHP (widgety)
+
+Panels are mounted by `bootstrap.tsx` + `widgety/widgety.tsx`. The PHP page renders a container whose `class` matches a bootstrap entry. **If** the server has data the client cannot derive, PHP may add `data-widgety_json`; `widgety.tsx` parses it and passes the object as constructor props (see `BristolStairs::render_stairs_page()`). If PHP only mounts an empty div, props are `{}` and the panel should take copy, defaults, and reference data from TypeScript (see `committee_seats/page_config.ts`, `committee_seats/example_councils.ts`, or `TwitterSplitterPanel`).
+
+**When using `data-widgety_json`:**
+
+- Declare a `*PanelProps` interface matching the PHP `$data` keys.
+- Build `$data` with `convertToValue()`, `json_encode_safe()`, and `htmlspecialchars()` on the attribute.
+
+**When not using it:**
+
+- Keep configuration in `app/public/tsx/` (or generated types). PHP returns a mount point only, e.g. `Pages::committee_seats_page()`.
+
+Do not use CSS parent selectors (e.g. `:has()`) to stand in for data or copy.
+
+More detail: [creating_webpages.md](creating_webpages.md) — “PHP to TypeScript”.
+
+## Component state initialization
+
+Class components should define a `getDefaultState()` function that returns the initial state object, and set `this.state = getDefaultState()` in the constructor (or `getDefaultState(props)` when PHP passes initial props). This keeps defaults readable and separate from the constructor logic.
+
+## Preact render return types
+
+This project uses **Preact**, not React. Do not type `render()` or private render helpers with `h.JSX.Element` — that name comes from React’s JSX typings and is misleading here.
+
+**Preferred:** omit the return type and let `Component`’s `render` signature infer it.
+
+**If you need an explicit type** (e.g. a variable holding JSX before return), use Preact’s `VNode`:
+
+```typescript
+import type { VNode } from "preact";
+
+private renderSection(): VNode | null {
+    // ...
+}
+```
+
+Event handlers can use `JSX.TargetedEvent<...>` via `import type { JSX } from "preact"`; that is only for DOM events, not for render output.
+
+## CSS class naming
+
+Use `snake_case` for CSS class names (e.g. `room_links_panel_react`, `room_edit_tags_modal_overlay`, `button_standard`). Panel root elements should use the pattern `{feature}_panel_react` (e.g. `room_videos_panel_react`, `meme_management_panel_react`).
+
+## Tags display
+
+Display entity tags using `<span className="room_entity_tags">` containing `<span className="room_entity_tag_chip">` elements for each tag. When there are no tags, render `<span className="room_entity_tags empty">—</span>`.
+
+## Date/time for files, links and videos
+
+When displaying timestamps for files, links and videos (e.g. in lists or panels), use the `formatDateTimeForContent` function from `functions.tsx`. It shows relative time within the last hour, "Today" + time for the same day, and date-only for older items.
+
+## Empty states
+
+When a list has no items, render a short descriptive `<p>` element (e.g. `<p>No videos.</p>`, `<p>No links.</p>`, `<p>No files.</p>`).

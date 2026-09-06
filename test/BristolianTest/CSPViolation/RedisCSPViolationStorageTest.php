@@ -16,6 +16,9 @@ class RedisCSPViolationStorageTest extends BaseTestCase
 {
     use TestPlaceholders;
 
+    /**
+     * @covers \Bristolian\CSPViolation\RedisCSPViolationStorage
+     */
     public function testWorks()
     {
         $cspViolationStorage = $this->injector->make(RedisCSPViolationStorage::class);

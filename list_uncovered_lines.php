@@ -3,30 +3,27 @@
 
 /**
  * Usage:
- *   php list_uncovered_lines.php clover.xml [mode]
+ *   php list_uncovered_lines.php clover.xml
  *
  * Output:
- *   default: path/to/file.php:LINE
- *   improve_test_coverage: /improve_test_coverage path/to/file.php
+ *   path/to/file.php:LINE
+ *   or
+ *   path/to/file.php:LINE_START-LINE_END
  */
 
 if ($argc < 2) {
-    fwrite(STDERR, "Usage: php list_uncovered_lines.php clover.xml [mode]\n");
+    fwrite(STDERR, "Usage: php list_uncovered_lines.php clover.xml\n");
     exit(1);
 }
 
 $cloverFile = $argv[1];
-$mode = $argv[2] ?? 'default';
+
 
 if (!file_exists($cloverFile)) {
     fwrite(STDERR, "File not found: $cloverFile\n");
     exit(1);
 }
 
-if ($mode !== 'default' && $mode !== 'improve_test_coverage') {
-    fwrite(STDERR, "Unknown mode: $mode\n");
-    exit(1);
-}
 
 $xml = simplexml_load_file($cloverFile);
 if ($xml === false) {
@@ -58,6 +55,8 @@ foreach ($xml->xpath('//file') as $file) {
         $fileName = substr($fileName, strlen($containerPrefix));
     }
 
+    $uncoveredLines = [];
+
     foreach ($file->line as $line) {
         $type  = (string) $line['type'];
         $count = (int)    $line['count'];
@@ -68,18 +67,40 @@ foreach ($xml->xpath('//file') as $file) {
         }
 
         if ($count === 0) {
-            if ($mode === 'improve_test_coverage') {
-                $filesWithUncoveredLines[$fileName] = true;
-                continue;
-            }
-
-            echo $fileName . ':' . $num . PHP_EOL;
+            $uncoveredLines[] = $num;
         }
     }
-}
 
-if ($mode === 'improve_test_coverage') {
-    foreach (array_keys($filesWithUncoveredLines) as $fileName) {
-        echo '/improve_test_coverage ' . $fileName . PHP_EOL;
+    // Group contiguous lines into ranges
+    $start = null;
+    $previous = null;
+
+    foreach ($uncoveredLines as $num) {
+        if ($start === null) {
+            $start = $num;
+        } elseif ($num !== $previous + 1) {
+            echo $fileName . ':' . $start;
+
+            if ($start !== $previous) {
+                echo '-' . $previous;
+            }
+
+            echo PHP_EOL;
+
+            $start = $num;
+        }
+
+        $previous = $num;
+    }
+
+    // Output the final range
+    if ($start !== null) {
+        echo $fileName . ':' . $start;
+
+        if ($start !== $previous) {
+            echo '-' . $previous;
+        }
+
+        echo PHP_EOL;
     }
 }
