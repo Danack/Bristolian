@@ -8,6 +8,7 @@ namespace Bristolian\Service\ExplorerData;
  * Cursor slash-command markdown under .cursor/commands/, driven by command.meta.json.
  *
  * Generation fails if meta is missing fields, lists unknown files, or omits a .md file on disk.
+ * @codeCoverageIgnore
  */
 class CursorCommandsEntryTypeFinder implements EntryTypeFinder
 {

@@ -229,25 +229,28 @@ class FunctionsBccTest extends BaseTestCase
      */
     public function test_renderBccTrosAsMarkdown(): void
     {
-//        $statement = new BccTroDocument('Stmt', '/f/1', 'd1');
-//        $notice = new BccTroDocument('Notice', '/f/2', 'd2');
-//        $plan = new BccTroDocument('Plan', '/f/3', 'd3');
-//        $tro = new BccTro(
-//            title: 'Fake TRO',
-//            reference_code: 'F-001',
-//            statement_of_reasons: $statement,
-//            notice_of_proposal: $notice,
-//            proposed_plan: $plan
-//        );
+        $output_none = renderBccTrosAsMarkdown([]);
+        $this->assertSame("There are no TROs.", $output_none);
 
         $test_tro_test = <<< JSON
-[{"title": "Proposed Zebra Crossing: Marsh Street, City Centre (Central ward): ref PX-DJR-26-004", "proposed_plan": {"id": "11285", "href": "/files/documents/11285-proposed-plan-zebra-crossing-px-djr-26-004", "title": "Proposed Plan   Zebra crossing, PX DJR 26 004"}, "reference_code": "PX-DJR-26-004", "notice_of_proposal": {"id": "11287", "href": "/files/documents/11287-notice-of-proposal-px-djr-26-004", "title": "Notice of Proposal, PX DJR 26 004"}, "statement_of_reasons": {"id": "11286", "href": "/files/documents/11286-statement-of-reasons-px-djr-26-004", "title": "Statement of Reasons, PX DJR 26 004"}}]
+{"title": "Proposed Zebra Crossing: Marsh Street, City Centre (Central ward): ref PX-DJR-26-004", "proposed_plan": {"id": "11285", "href": "/files/documents/11285-proposed-plan-zebra-crossing-px-djr-26-004", "title": "Proposed Plan   Zebra crossing, PX DJR 26 004"}, "reference_code": "PX-DJR-26-004", "notice_of_proposal": {"id": "11287", "href": "/files/documents/11287-notice-of-proposal-px-djr-26-004", "title": "Notice of Proposal, PX DJR 26 004"}, "statement_of_reasons": {"id": "11286", "href": "/files/documents/11286-statement-of-reasons-px-djr-26-004", "title": "Statement of Reasons, PX DJR 26 004"}}
 JSON;
 
-        $bcc_tro = BccTro::fromString($test_tro_test);
+        $expected_output = <<< TEXT
+There are 1 TROs.## Proposed Zebra Crossing: Marsh Street, City Centre (Central ward): ref PX-DJR-26-004
+
+**Reference:** PX-DJR-26-004
+
+- [Statement of Reasons](/files/documents/11286-statement-of-reasons-px-djr-26-004)
+- [Notice of Proposal](/files/documents/11287-notice-of-proposal-px-djr-26-004)
+- [Proposed Plan](/files/documents/11285-proposed-plan-zebra-crossing-px-djr-26-004)
+TEXT;
+
+
+        $bcc_tro = BccTro::fromJson($test_tro_test);
 
         $output = renderBccTrosAsMarkdown([$bcc_tro]);
 
-        $this->assertSame("foo", $output);
+        $this->assertSame($expected_output, $output);
     }
 }

@@ -3492,64 +3492,64 @@
         {
             "name": "Bristolian\\Service\\ExplorerData\\ApiEndpointsEntryTypeFinder",
             "file": "src/Bristolian/Service/ExplorerData/ApiEndpointsEntryTypeFinder.php",
-            "line-start": 7,
-            "line-end": 27,
+            "line-start": 10,
+            "line-end": 30,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\CliCommandsEntryTypeFinder",
             "file": "src/Bristolian/Service/ExplorerData/CliCommandsEntryTypeFinder.php",
-            "line-start": 9,
-            "line-end": 32,
+            "line-start": 12,
+            "line-end": 35,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\CodeMapEntryTypeFinder",
             "file": "src/Bristolian/Service/ExplorerData/CodeMapEntryTypeFinder.php",
-            "line-start": 9,
-            "line-end": 124,
+            "line-start": 12,
+            "line-end": 127,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\CodegenProvenance",
             "file": "src/Bristolian/Service/ExplorerData/CodegenProvenance.php",
-            "line-start": 13,
-            "line-end": 483,
+            "line-start": 14,
+            "line-end": 484,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\ControllerCallableCodeLocator",
             "file": "src/Bristolian/Service/ExplorerData/ControllerCallableCodeLocator.php",
-            "line-start": 7,
-            "line-end": 162,
+            "line-start": 10,
+            "line-end": 165,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\ControllersEntryTypeFinder",
             "file": "src/Bristolian/Service/ExplorerData/ControllersEntryTypeFinder.php",
-            "line-start": 9,
-            "line-end": 157,
+            "line-start": 12,
+            "line-end": 160,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\CursorCommandsEntryTypeFinder",
             "file": "src/Bristolian/Service/ExplorerData/CursorCommandsEntryTypeFinder.php",
-            "line-start": 12,
-            "line-end": 250,
+            "line-start": 13,
+            "line-end": 251,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\DatasourcesEntryTypeFinder",
             "file": "src/Bristolian/Service/ExplorerData/DatasourcesEntryTypeFinder.php",
-            "line-start": 7,
-            "line-end": 20,
+            "line-start": 10,
+            "line-end": 23,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\DependenciesEntryTypeFinder",
             "file": "src/Bristolian/Service/ExplorerData/DependenciesEntryTypeFinder.php",
-            "line-start": 7,
-            "line-end": 30,
+            "line-start": 10,
+            "line-end": 33,
             "dependencies": []
         },
         {
@@ -3562,29 +3562,29 @@
         {
             "name": "Bristolian\\Service\\ExplorerData\\ExplorerDataBuilder",
             "file": "src/Bristolian/Service/ExplorerData/ExplorerDataBuilder.php",
-            "line-start": 7,
-            "line-end": 541,
+            "line-start": 10,
+            "line-end": 544,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\GeneratedArtifactsEntryTypeFinder",
             "file": "src/Bristolian/Service/ExplorerData/GeneratedArtifactsEntryTypeFinder.php",
-            "line-start": 13,
-            "line-end": 114,
+            "line-start": 14,
+            "line-end": 115,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\HttpEndpointsEntryTypeFinder",
             "file": "src/Bristolian/Service/ExplorerData/HttpEndpointsEntryTypeFinder.php",
-            "line-start": 7,
-            "line-end": 27,
+            "line-start": 10,
+            "line-end": 30,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\PhpClassUnderDirectoryDiscovery",
             "file": "src/Bristolian/Service/ExplorerData/PhpClassUnderDirectoryDiscovery.php",
-            "line-start": 14,
-            "line-end": 76,
+            "line-start": 15,
+            "line-end": 77,
             "dependencies": []
         },
         {
@@ -3597,29 +3597,29 @@
         {
             "name": "Bristolian\\Service\\ExplorerData\\RouteEndpointEntryBuilder",
             "file": "src/Bristolian/Service/ExplorerData/RouteEndpointEntryBuilder.php",
-            "line-start": 10,
-            "line-end": 168,
+            "line-start": 11,
+            "line-end": 169,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\ServiceDependencyDiscovery",
             "file": "src/Bristolian/Service/ExplorerData/ServiceDependencyDiscovery.php",
-            "line-start": 14,
-            "line-end": 245,
+            "line-start": 16,
+            "line-end": 247,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\SupervisordTasksEntryTypeFinder",
             "file": "src/Bristolian/Service/ExplorerData/SupervisordTasksEntryTypeFinder.php",
-            "line-start": 10,
-            "line-end": 77,
+            "line-start": 13,
+            "line-end": 80,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\WidgetsEntryTypeFinder",
             "file": "src/Bristolian/Service/ExplorerData/WidgetsEntryTypeFinder.php",
-            "line-start": 11,
-            "line-end": 69,
+            "line-start": 14,
+            "line-end": 72,
             "dependencies": []
         },
         {

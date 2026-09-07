@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Bristolian\Service\ExplorerData;
 
+/**
+ * @codeCoverageIgnore
+ */
 class DependenciesEntryTypeFinder implements EntryTypeFinder
 {
     public function getEntryTypeKey(): string

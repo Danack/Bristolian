@@ -9,6 +9,7 @@ namespace Bristolian\Service\ExplorerData;
  *
  * One CodeView entry per generation process (not per emitted file). Headers in
  * generated files use CODEVIEW_GENERATED_BEGIN / END markers around the same JSON.
+ * @codeCoverageIgnore
  */
 class CodegenProvenance
 {

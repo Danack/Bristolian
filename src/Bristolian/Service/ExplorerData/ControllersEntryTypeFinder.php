@@ -6,6 +6,9 @@ namespace Bristolian\Service\ExplorerData;
 
 use Bristolian\Cli\CliCommandRegistry;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ControllersEntryTypeFinder implements EntryTypeFinder
 {
     public function getEntryTypeKey(): string

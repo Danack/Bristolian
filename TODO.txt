@@ -24,3 +24,4 @@ AI clean up.
 * re-organise all generated PHP code into src/BristolianGenerated
 * standardise naming convention for SCSS + widgets.
 * divide pages.php into more sane components.
+* setup feeds for rooms and have the BccTro pipe data into the DB, then expose that as an RSS feed. Probably list all feed.

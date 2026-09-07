@@ -657,3 +657,20 @@ When displaying timestamps for files, links and videos (e.g. in lists or panels)
 ## Empty states
 
 When a list has no items, render a short descriptive `<p>` element (e.g. `<p>No videos.</p>`, `<p>No links.</p>`, `<p>No files.</p>`).
+
+
+## Exceptions
+
+Do not throw PHPs built-in exceptions. Each place where an exception is thrown in application code should have a custom exception generated in the appropriate directory e.g. src/Bristolian/Exception or src/BristolianChat/Exception
+
+The message for an exception should be held inside a static constructor for the exception e.g.
+
+```
+class TooManyRoomTagsException extends BristolianException
+{
+    public static function forMaxReached(int $max): self
+    {
+        return new self("Maximum tags per room ($max) reached.");
+    }
+}
+```

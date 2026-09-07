@@ -20,7 +20,6 @@ class BccTroTest extends BaseTestCase
      */
     public function test_construct(): void
     {
-        $repo = new FakeBccTroRepo();
         $statement = new BccTroDocument('Stmt', '/f/1', 'd1');
         $notice = new BccTroDocument('Notice', '/f/2', 'd2');
         $plan = new BccTroDocument('Plan', '/f/3', 'd3');
@@ -32,7 +31,10 @@ class BccTroTest extends BaseTestCase
             proposed_plan: $plan
         );
 
-        $string = $tro->toString();
+        $json_string = $tro->toString();
 
+        $bcc_recreated = BccTro::fromJson($json_string);
+
+        $this->assertEquals($tro, $bcc_recreated);
     }
 }

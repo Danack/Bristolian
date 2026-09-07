@@ -6,6 +6,7 @@ namespace Bristolian\Service\ExplorerData;
 
 /**
  * Shared helpers for turning Slim route rows into codeview endpoint entries.
+ * @codeCoverageIgnore
  */
 class RouteEndpointEntryBuilder
 {

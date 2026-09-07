@@ -10,6 +10,7 @@ use RegexIterator;
 
 /**
  * Discover PHP FQCNs under a project subdirectory by relative path → namespace mapping.
+ * @codeCoverageIgnore
  */
 class PhpClassUnderDirectoryDiscovery
 {

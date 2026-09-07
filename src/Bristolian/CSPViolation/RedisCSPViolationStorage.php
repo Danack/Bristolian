@@ -62,6 +62,7 @@ class RedisCSPViolationStorage implements CSPViolationStorage
     public function getReportsByPage(int $page)
     {
         if ($page < 0) {
+            // TODO- replace with exception.
             $page = 0;
         }
 

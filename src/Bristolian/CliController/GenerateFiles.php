@@ -2112,6 +2112,7 @@ SQL;
         $definitions = WidgetRegistry::getAllDefinitions();
 
         require_once __DIR__ . "/../../../api/src/api_routes.php";
+        // TODO - why is this needed?
         WidgetApiCallValidator::validateDefinitionsAgainstApiRoutes(
             $definitions,
             getAllApiRoutes()

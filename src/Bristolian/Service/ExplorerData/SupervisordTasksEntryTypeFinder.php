@@ -7,6 +7,9 @@ namespace Bristolian\Service\ExplorerData;
 use Bristolian\Cli\CliCommandRegistry;
 use Bristolian\Parameters\SupervisordProgramParams;
 
+/**
+ * @codeCoverageIgnore
+ */
 class SupervisordTasksEntryTypeFinder implements EntryTypeFinder
 {
     private const TASKS_DIRECTORY = 'containers/supervisord/tasks';

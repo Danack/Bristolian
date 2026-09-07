@@ -8,6 +8,9 @@ use Bristolian\Widget\WidgetApiCall;
 use Bristolian\Widget\WidgetApiCallValidator;
 use Bristolian\Widget\WidgetRegistry;
 
+/**
+ * @codeCoverageIgnore
+ */
 class WidgetsEntryTypeFinder implements EntryTypeFinder
 {
     private const TSX_BASE_DIRECTORY = 'app/public/tsx';

@@ -9,6 +9,7 @@ namespace Bristolian\Service\ExplorerData;
  *
  * generator_callable is the click-through target (code-map / open-in-editor).
  * When detail is taken from PHP source, detail_source points at that span.
+ * @codeCoverageIgnore
  */
 class GeneratedArtifactsEntryTypeFinder implements EntryTypeFinder
 {

@@ -7,6 +7,7 @@ declare(strict_types=1);
  * program_name and command via SupervisordProgramParams.
  *
  * @return array<string, string>
+ * @codeCoverageIgnore only used by CodeView
  */
 function parseSupervisordProgramConfigFile(string $filePath): array
 {

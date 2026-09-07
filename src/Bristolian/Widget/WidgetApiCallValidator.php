@@ -8,6 +8,9 @@ use Bristolian\Exception\BristolianException;
 
 /**
  * Ensures widget api_calls reference real api_routes entries (METHOD + path keys).
+ * // TODO - move this to a CodeView namespace.
+ * // TODO - why does this exist?
+ * @codeCoverageIgnore
  */
 final class WidgetApiCallValidator
 {

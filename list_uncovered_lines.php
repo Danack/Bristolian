@@ -11,12 +11,18 @@
  *   path/to/file.php:LINE_START-LINE_END
  */
 
-if ($argc < 2) {
-    fwrite(STDERR, "Usage: php list_uncovered_lines.php clover.xml\n");
-    exit(1);
-}
+//if ($argc < 2) {
+//    fwrite(STDERR, "Usage: php list_uncovered_lines.php clover.xml\n");
+//
+//    var_dump($argv);
+//    exit(1);
+//}
 
-$cloverFile = $argv[1];
+$cloverFile = "clover.xml";
+
+if ($argc > 1) {
+    $cloverFile = $argv[1];
+}
 
 
 if (!file_exists($cloverFile)) {

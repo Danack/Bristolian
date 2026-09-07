@@ -252,14 +252,10 @@ function renderBccTroAsMarkdown(BccTro $tro): string
     ];
 
     foreach ($documents as $label => $document) {
-        if ($document->url === '') {
-            continue;
-        }
-
         $lines[] = sprintf(
             '- [%s](%s)',
             $label,
-            $document->url
+            $document->href
         );
     }
 

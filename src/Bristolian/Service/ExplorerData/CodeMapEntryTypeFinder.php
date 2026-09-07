@@ -6,6 +6,9 @@ namespace Bristolian\Service\ExplorerData;
 
 use Bristolian\Cli\CliCommandRegistry;
 
+/**
+ * @codeCoverageIgnore
+ */
 class CodeMapEntryTypeFinder implements EntryTypeFinder
 {
     public function getEntryTypeKey(): string

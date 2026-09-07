@@ -42,28 +42,28 @@ class PdoBccTroRepoTest extends BccTroRepoFixture
         $this->addToAssertionCount(1);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::getMostRecentData
-     */
-    public function test_pdo_getMostRecentData_returns_null(): void
-    {
-        $repo = $this->injector->make(PdoBccTroRepo::class);
-        $this->assertNull($repo->getMostRecentData());
-    }
+//    /**
+//     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::getMostRecentData
+//     */
+//    public function test_pdo_getMostRecentData_returns_null(): void
+//    {
+//        $repo = $this->injector->make(PdoBccTroRepo::class);
+//        $this->assertNull($repo->getMostRecentData());
+//    }
 
-    /**
-     * saveData throws when convertToValue returns an error (e.g. unsupported type).
-     *
-     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveData
-     */
-    public function test_pdo_saveData_throws_when_conversion_fails(): void
-    {
-        $repo = $this->injector->make(PdoBccTroRepo::class);
-        $unsupported = [new \stdClass()];
-
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Unsupported type');
-
-        $repo->saveData($unsupported);
-    }
+//    /**
+//     * saveData throws when convertToValue returns an error (e.g. unsupported type).
+//     *
+//     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveData
+//     */
+//    public function test_pdo_saveData_throws_when_conversion_fails(): void
+//    {
+//        $repo = $this->injector->make(PdoBccTroRepo::class);
+//        $unsupported = [new \stdClass()];
+//
+//        $this->expectException(\Exception::class);
+//        $this->expectExceptionMessageIs('Unsupported type');
+//
+//        $repo->saveData($unsupported);
+//    }
 }

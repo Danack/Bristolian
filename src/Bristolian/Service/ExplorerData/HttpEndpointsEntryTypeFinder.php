@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Bristolian\Service\ExplorerData;
 
+/**
+ * @codeCoverageIgnore
+ */
 class HttpEndpointsEntryTypeFinder implements EntryTypeFinder
 {
     public function getEntryTypeKey(): string

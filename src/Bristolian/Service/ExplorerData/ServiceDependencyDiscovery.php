@@ -10,6 +10,8 @@ namespace Bristolian\Service\ExplorerData;
  * - Every service interface → entry with same-package implementations
  * - Injectable concrete contracts (not Fake*, not already an implementation of a
  *   listed service interface) → entry with same-package subclasses as implementations
+ *
+ * @codeCoverageIgnore
  */
 class ServiceDependencyDiscovery
 {

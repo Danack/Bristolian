@@ -38,7 +38,7 @@ class PdoBccTroRepo implements BccTroRepo
     {
         $sql = bcc_tro_information::SELECT . " order by id desc";
 
-        $latest_entry = $this->pdo_simple->fetchOneAsObjectOrNull(
+        $latest_entry = $this->pdo_simple->fetchOneAsObjectOrNullConstructor(
             $sql,
             [],
             BccTroInformation::class
@@ -48,6 +48,6 @@ class PdoBccTroRepo implements BccTroRepo
             return null;
         }
 
-        return BccTro::fromString($latest_entry->tro_data);
+        return BccTro::fromJson($latest_entry->tro_data);
     }
 }
