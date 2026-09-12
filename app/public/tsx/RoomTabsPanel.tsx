@@ -3,6 +3,7 @@ import { ChatPanel } from "./ChatPanel";
 import { RoomLinksPanel } from "./RoomLinksPanel";
 import { RoomFilesPanel } from "./RoomFilesPanel";
 import { RoomFileUploadPanel } from "./RoomFileUploadPanel";
+import { RoomNotesPanel } from "./RoomNotesPanel";
 import { RoomAnnotationsPanel } from "./RoomAnnotationsPanel";
 import { RoomVideosPanel } from "./RoomVideosPanel";
 import { RoomManagementPanel } from "./RoomManagementPanel";
@@ -14,7 +15,7 @@ export interface RoomTabsPanelProps {
     accepted_file_extensions: string[];
 }
 
-export type RoomTabId = "chat" | "links" | "files" | "annotations" | "video" | "management";
+export type RoomTabId = "chat" | "links" | "files" | "notes" | "annotations" | "video" | "management";
 
 interface RoomTabsPanelState {
     activeTab: RoomTabId;
@@ -24,6 +25,7 @@ const TAB_LABELS: ReadonlyArray<{ id: RoomTabId; label: string }> = [
     { id: "chat", label: "Chat" },
     { id: "links", label: "Links" },
     { id: "files", label: "Files" },
+    { id: "notes", label: "Notes" },
     { id: "annotations", label: "Annotations" },
     { id: "video", label: "Videos" },
     { id: "management", label: "Room Management" },
@@ -134,6 +136,10 @@ export class RoomTabsPanel extends Component<RoomTabsPanelProps, RoomTabsPanelSt
                     <div className={this.panelClass("files")}>
                         <RoomFilesPanel room_id={room_id} />
                         <RoomFileUploadPanel room_id={room_id} />
+                    </div>
+
+                    <div className={this.panelClass("notes")}>
+                        <RoomNotesPanel room_id={room_id} />
                     </div>
 
                     <div className={this.panelClass("annotations")}>

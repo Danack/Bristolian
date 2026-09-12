@@ -23,6 +23,8 @@ use Bristolian\Database\room;
 use Bristolian\Database\room_annotation;
 use Bristolian\Database\room_file_object_info;
 use Bristolian\Database\room_link;
+use Bristolian\Database\room_note;
+use Bristolian\Database\room_note_tag;
 use Bristolian\Database\room_tag;
 use Bristolian\Database\room_video;
 use Bristolian\Database\room_video_tag;
@@ -776,6 +778,38 @@ SQL) => ['read' => [], 'write' => ['room_link']],
             trim('INSERT INTO room_link_tag (room_link_id, tag_id) VALUES (:room_link_id, :tag_id)')
                 => ['read' => [], 'write' => ['room_link_tag']],
 
+            // ===== RoomNoteRepo =====
+            trim(room_note::INSERT)
+                => ['read' => [], 'write' => ['room_note']],
+
+            trim(room_note::SELECT . " where id = :id and room_id = :room_id")
+                => ['read' => ['room_note'], 'write' => []],
+
+            trim(<<<SQL
+update room_note
+set
+  title = :title,
+  markdown = :markdown,
+  document_timestamp = :document_timestamp
+where
+  id = :id
+and
+  room_id = :room_id
+SQL) => ['read' => [], 'write' => ['room_note']],
+
+            trim('DELETE FROM room_note WHERE id = :id AND room_id = :room_id')
+                => ['read' => [], 'write' => ['room_note']],
+
+            // ===== RoomNoteTagRepo =====
+            trim("SELECT tag_id FROM room_note_tag WHERE room_note_id = :room_note_id")
+                => ['read' => ['room_note_tag'], 'write' => []],
+
+            trim('DELETE FROM room_note_tag WHERE room_note_id = :room_note_id')
+                => ['read' => [], 'write' => ['room_note_tag']],
+
+            trim('INSERT INTO room_note_tag (room_note_id, tag_id) VALUES (:room_note_id, :tag_id)')
+                => ['read' => [], 'write' => ['room_note_tag']],
+
             // ===== RoomRepo =====
             trim(room::INSERT)
                 => ['read' => [], 'write' => ['room']],
@@ -1039,6 +1073,18 @@ SQL) => ['read' => ['bcc_tro_information'], 'write' => []],
             [
                 'pattern' => '#^select\s+.+\s+from\s+room_video\s+where\s+.+\s+order\s+by\s+created_at\s+desc\s+limit\s+:limit$#',
                 'read' => ['room_video'],
+                'write' => [],
+            ],
+            // RoomNoteRepo::getNotesForRoom - tag filter (subquery reads room_note_tag); must be before the general pattern
+            [
+                'pattern' => '#^select\s+.+\s+from\s+room_note\s+where.+room_note_tag.+order\s+by\s+created_at\s+desc\s+limit\s+:limit$#',
+                'read' => ['room_note', 'room_note_tag'],
+                'write' => [],
+            ],
+            // RoomNoteRepo::getNotesForRoom - other dynamic WHERE (title, markdown, dates)
+            [
+                'pattern' => '#^select\s+.+\s+from\s+room_note\s+where\s+.+\s+order\s+by\s+created_at\s+desc\s+limit\s+:limit$#',
+                'read' => ['room_note'],
                 'write' => [],
             ],
         ];

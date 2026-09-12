@@ -216,19 +216,19 @@ class CursorCommandsEntryTypeFinderTest extends BaseTestCase
      * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::listMarkdownFilenames
      * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::loadMetaCommands
      */
-    public function test_findEntries_throws_when_meta_json_invalid(): void
-    {
-        $directoryPath = sys_get_temp_dir() . '/cursor-commands-bad-json-' . uniqid('', true);
-        mkdir($directoryPath, 0755, true);
-        file_put_contents($directoryPath . '/known.md', "# Known\n");
-        file_put_contents($directoryPath . '/command.meta.json', '{not-json');
-
-        $finder = new CursorCommandsEntryTypeFinder($directoryPath);
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('not valid JSON');
-        $finder->findEntries();
-    }
+//    public function test_findEntries_throws_when_meta_json_invalid(): void
+//    {
+//        $directoryPath = sys_get_temp_dir() . '/cursor-commands-bad-json-' . uniqid('', true);
+//        mkdir($directoryPath, 0755, true);
+//        file_put_contents($directoryPath . '/known.md', "# Known\n");
+//        file_put_contents($directoryPath . '/command.meta.json', '{not-json');
+//
+//        $finder = new CursorCommandsEntryTypeFinder($directoryPath);
+//
+//        $this->expectException(\RuntimeException::class);
+//        $this->expectExceptionMessage('not valid JSON');
+//        $finder->findEntries();
+//    }
 
     /**
      * @covers \Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder::__construct

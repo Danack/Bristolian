@@ -382,6 +382,46 @@ function getAllApiRoutes()
             \Bristolian\Parameters\UpdateRoomLinkParam::class,
         ],
 
+        [
+            '/api/rooms/{room_id:.*}/notes',
+            'GET',
+            'Bristolian\AppController\Rooms::getNotes',
+            [
+                ['notes', \Bristolian\Model\Types\RoomNoteWithTags::class, true]
+            ],
+        ],
+
+        [
+            '/api/rooms/{room_id:.*}/notes',
+            'POST',
+            'Bristolian\AppController\Rooms::addNote',
+            null,
+            \Bristolian\Parameters\CreateRoomNoteParam::class,
+        ],
+
+        [
+            '/api/rooms/{room_id:.*}/notes/{room_note_id:.*}/tags',
+            'PUT',
+            'Bristolian\AppController\Rooms::setNoteTags',
+            null,
+            \Bristolian\Parameters\SetEntityTagsParam::class,
+        ],
+
+        [
+            '/api/rooms/{room_id:.*}/notes/{room_note_id:.*}',
+            'PATCH',
+            'Bristolian\AppController\Rooms::updateNote',
+            null,
+            \Bristolian\Parameters\UpdateRoomNoteParam::class,
+        ],
+
+        [
+            '/api/rooms/{room_id:.*}/notes/{room_note_id:.*}',
+            'DELETE',
+            'Bristolian\AppController\Rooms::deleteNote',
+            null,
+        ],
+
         // List YouTube videos and clips for the room.
         [
             '/api/rooms/{room_id:.*}/videos',

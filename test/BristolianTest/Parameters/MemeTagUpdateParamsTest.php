@@ -32,7 +32,6 @@ class MemeTagUpdateParamsTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\MemeTagUpdateParams
-     * @covers \Bristolian\Parameters\PropertyType\BasicString
      * @covers \Bristolian\Parameters\PropertyType\TagString
      * @param array<string, mixed> $input
      */

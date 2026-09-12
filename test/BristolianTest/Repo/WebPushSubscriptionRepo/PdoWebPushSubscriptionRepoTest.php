@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\Repo\WebPushSubscriptionRepo;
 
-use Bristolian\Parameters\PropertyType\BasicString;
+use DataType\Basic\BasicString;
 use Bristolian\Parameters\CreateUserParams;
 use Bristolian\Parameters\PropertyType\WebPushEndPoint;
 use Bristolian\Parameters\WebPushSubscriptionParams;

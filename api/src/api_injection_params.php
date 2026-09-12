@@ -44,6 +44,12 @@ function apiInjectionParams() : InjectionParams
         \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::class =>
             \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::class,
 
+        \Bristolian\Repo\RoomNoteRepo\RoomNoteRepo::class =>
+            \Bristolian\Repo\RoomNoteRepo\PdoRoomNoteRepo::class,
+
+        \Bristolian\Repo\RoomNoteTagRepo\RoomNoteTagRepo::class =>
+            \Bristolian\Repo\RoomNoteTagRepo\PdoRoomNoteTagRepo::class,
+
         \Bristolian\Service\RoomFileStorage\RoomFileStorage::class =>
             \Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::class,
 

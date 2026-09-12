@@ -264,6 +264,8 @@ sh runUnitTestsFast.sh
 ```
 This will run all of the tests that need to be tested due to modified source or test files.
 
+If the test runner (or PHPStan / CodeSniffer / similar) behaves oddly — weird output, no real results, exit code that does not match what you see — **stop**. Report what you ran, what you expected, and what happened. Do not start debugging the tool, probing alternate commands, or working around it unless the user asks you to.
+
 When those tests are passing, the next step is to run PHPStan:
 
 ```

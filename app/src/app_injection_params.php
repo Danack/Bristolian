@@ -155,6 +155,12 @@ function injectionParams()
         \Bristolian\Repo\RoomLinkTagRepo\RoomLinkTagRepo::class =>
             \Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo::class,
 
+        \Bristolian\Repo\RoomNoteRepo\RoomNoteRepo::class =>
+            \Bristolian\Repo\RoomNoteRepo\PdoRoomNoteRepo::class,
+
+        \Bristolian\Repo\RoomNoteTagRepo\RoomNoteTagRepo::class =>
+            \Bristolian\Repo\RoomNoteTagRepo\PdoRoomNoteTagRepo::class,
+
         \Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo::class =>
             \Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::class,
 

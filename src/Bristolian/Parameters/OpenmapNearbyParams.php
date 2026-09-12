@@ -2,7 +2,7 @@
 
 namespace Bristolian\Parameters;
 
-use Bristolian\Parameters\PropertyType\BasicFloat;
+use DataType\Basic\BasicFloat;
 use Bristolian\StaticFactory;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;

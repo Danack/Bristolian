@@ -15,14 +15,18 @@ use Bristolian\Model\Generated\Video;
 use Bristolian\Model\Types\RoomAnnotationWithTags;
 use Bristolian\Model\Types\RoomFileWithTags;
 use Bristolian\Model\Types\RoomLinkWithTags;
+use Bristolian\Model\Types\RoomNoteWithTags;
 use Bristolian\Model\Types\RoomVideoWithTags;
+use Bristolian\MarkdownRenderer\MarkdownRenderer;
 use Bristolian\Parameters\AddVideoParam;
+use Bristolian\Parameters\CreateRoomNoteParam;
 use Bristolian\Parameters\CreateClipParam;
 use Bristolian\Parameters\UpdateRoomAnnotationParam;
 use Bristolian\Parameters\UpdateRoomVideoParam;
 use Bristolian\Parameters\UpdateRoomFileParam;
 use Bristolian\Parameters\UpdateRoomDetailsParam;
 use Bristolian\Parameters\UpdateRoomLinkParam;
+use Bristolian\Parameters\UpdateRoomNoteParam;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Parameters\SetEntityTagsParam;
@@ -33,6 +37,8 @@ use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
 use Bristolian\Repo\RoomFileTagRepo\RoomFileTagRepo;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use Bristolian\Repo\RoomLinkTagRepo\RoomLinkTagRepo;
+use Bristolian\Repo\RoomNoteRepo\RoomNoteRepo;
+use Bristolian\Repo\RoomNoteTagRepo\RoomNoteTagRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo;
 use Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo;
@@ -54,6 +60,7 @@ use Bristolian\Response\SuccessResponse;
 use Bristolian\Response\Typed\GetRoomsFileAnnotationsResponse;
 use Bristolian\Response\Typed\GetRoomsFilesResponse;
 use Bristolian\Response\Typed\GetRoomsLinksResponse;
+use Bristolian\Response\Typed\GetRoomsNotesResponse;
 use Bristolian\Response\Typed\GetRoomsAnnotationsResponse;
 use Bristolian\Response\Typed\GetRoomsDetailsResponse;
 use Bristolian\Response\Typed\GetRoomsTagsResponse;
@@ -229,6 +236,101 @@ class Rooms
             );
         }
         return new GetRoomsLinksResponse($withTags);
+    }
+
+    public function getNotes(
+        RoomNoteRepo $roomNoteRepo,
+        RoomNoteTagRepo $roomNoteTagRepo,
+        RoomTagRepo $roomTagRepo,
+        string $room_id,
+        RoomContentSearchParams $search
+    ): GetRoomsNotesResponse {
+        $notes = $roomNoteRepo->getNotesForRoom($room_id, $search);
+        $roomTags = $roomTagRepo->getTagsForRoom($room_id);
+        $roomTagsById = [];
+        foreach ($roomTags as $tag) {
+            $roomTagsById[$tag->tag_id] = $tag;
+        }
+        $withTags = [];
+        foreach ($notes as $note) {
+            $tagIds = $roomNoteTagRepo->getTagIdsForRoomNote($note->id);
+            $tags = self::resolveTagIdsToTags($tagIds, $roomTagsById);
+            $withTags[] = new RoomNoteWithTags(
+                $note->id,
+                $note->room_id,
+                $note->user_id,
+                $note->title,
+                $note->markdown,
+                $note->created_at,
+                $note->updated_at,
+                $note->document_timestamp,
+                $tags
+            );
+        }
+        return new GetRoomsNotesResponse($withTags);
+    }
+
+    public function addNote(
+        UserSession $appSession,
+        RoomNoteRepo $roomNoteRepo,
+        JsonInput $jsonInput,
+        string $room_id
+    ): SuccessResponse {
+        $param = CreateRoomNoteParam::createFromArray($jsonInput->getData());
+        $roomNoteRepo->create(
+            $appSession->getUserId(),
+            $room_id,
+            $param->title,
+            $param->markdown,
+            self::parseOptionalDocumentTimestamp($param->document_timestamp)
+        );
+        return new SuccessResponse();
+    }
+
+    public function updateNote(
+        RoomNoteRepo $roomNoteRepo,
+        JsonInput $jsonInput,
+        string $room_id,
+        string $room_note_id
+    ): SuccessResponse {
+        $param = UpdateRoomNoteParam::createFromArray($jsonInput->getData());
+        $roomNoteRepo->update(
+            $room_id,
+            $room_note_id,
+            $param->title,
+            $param->markdown,
+            self::parseOptionalDocumentTimestamp($param->document_timestamp)
+        );
+        return new SuccessResponse();
+    }
+
+    public function deleteNote(
+        RoomNoteRepo $roomNoteRepo,
+        string $room_id,
+        string $room_note_id
+    ): SuccessResponse {
+        $roomNoteRepo->delete($room_id, $room_note_id);
+        return new SuccessResponse();
+    }
+
+    public function setNoteTags(
+        RoomNoteRepo $roomNoteRepo,
+        RoomNoteTagRepo $roomNoteTagRepo,
+        RoomTagRepo $roomTagRepo,
+        JsonInput $jsonInput,
+        string $room_id,
+        string $room_note_id
+    ): SuccessResponse {
+        $roomNoteRepo->getNote($room_id, $room_note_id);
+        $param = SetEntityTagsParam::fromArray($jsonInput->getData());
+        $roomTags = $roomTagRepo->getTagsForRoom($room_id);
+        $validIds = [];
+        foreach ($roomTags as $t) {
+            $validIds[$t->tag_id] = true;
+        }
+        $filtered = array_filter($param->tag_ids, fn (string $id) => isset($validIds[$id]));
+        $roomNoteTagRepo->setTagsForRoomNote($room_note_id, array_values($filtered));
+        return new SuccessResponse();
     }
 
     public function getVideos(
@@ -424,6 +526,15 @@ class Rooms
             }
         }
         return $tags;
+    }
+
+    private static function parseOptionalDocumentTimestamp(string|null $document_timestamp): \DateTimeInterface|null
+    {
+        if ($document_timestamp === null || trim($document_timestamp) === '') {
+            return null;
+        }
+
+        return new DateTimeImmutable($document_timestamp);
     }
 
     public function getTags(
@@ -715,6 +826,38 @@ HTML;
         $content = esprintf($template, $params);
 
         return $content;
+    }
+
+    public function showNote(
+        RoomRepo $roomRepo,
+        RoomNoteRepo $roomNoteRepo,
+        MarkdownRenderer $markdownRenderer,
+        string $room_id,
+        string $room_note_id
+    ): string {
+        $room = $roomRepo->getRoomById($room_id);
+        if ($room === null) {
+            return "Room not found.";
+        }
+
+        $note = $roomNoteRepo->getNote($room_id, $room_note_id);
+        $rendered_markdown = $markdownRenderer->render($note->markdown);
+
+        $template = <<< HTML
+<div class="room_note_page">
+  <p><a href="/rooms/:attr_room_id#notes">Back to room</a></p>
+  <h1>:html_note_title</h1>
+  <p class="room_note_page_room">:html_room_name</p>
+  <div class="room_note_rendered">:raw_note_html</div>
+</div>
+HTML;
+
+        return esprintf($template, [
+            ':attr_room_id' => $room_id,
+            ':html_note_title' => $note->title,
+            ':html_room_name' => $room->name,
+            ':raw_note_html' => $rendered_markdown,
+        ]);
     }
 
     private function render_annotate_file(

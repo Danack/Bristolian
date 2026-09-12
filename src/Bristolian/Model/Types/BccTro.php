@@ -6,7 +6,7 @@ use Bristolian\FromString;
 use Bristolian\StaticFactory;
 use Bristolian\ToString;
 use Bristolian\ToArray;
-use Bristolian\Parameters\PropertyType\BasicString;
+use DataType\Basic\BasicString;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromJson;
 use DataType\Create\CreateFromRequest;

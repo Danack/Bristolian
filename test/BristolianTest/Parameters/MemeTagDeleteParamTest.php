@@ -2,7 +2,7 @@
 
 namespace BristolianTest\Parameters;
 
-use Bristolian\Parameters\PropertyType\BasicString;
+use DataType\Basic\BasicString;
 use BristolianTest\BaseTestCase;
 use Bristolian\Parameters\MemeTagDeleteParams;
 use VarMap\ArrayVarMap;

@@ -32,7 +32,6 @@ class MemeSearchParamsTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\MemeSearchParams
-     * @covers \Bristolian\Parameters\PropertyType\OptionalBasicString
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_input_and_expected_output')]

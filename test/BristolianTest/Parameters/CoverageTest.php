@@ -22,8 +22,6 @@ class CoverageTest extends BaseTestCase
 {
     /**
      * @covers \Bristolian\Parameters\PropertyType\AnnotationPositionValue
-     * @covers \Bristolian\Parameters\PropertyType\BasicString
-     * @covers \Bristolian\Parameters\PropertyType\BasicDateTime
      * @covers \Bristolian\Parameters\PropertyType\EmailAddress
      * @covers \Bristolian\Parameters\PropertyType\LinkDescription
      * @covers \Bristolian\Parameters\PropertyType\LinkTitle
@@ -32,8 +30,6 @@ class CoverageTest extends BaseTestCase
      * @covers \Bristolian\Parameters\PropertyType\WebPushEndPoint
      * @covers \Bristolian\Parameters\PropertyType\WebPushExpirationTime
      * @covers \Bristolian\Parameters\PropertyType\PasswordOrRandom
-     *
-     *
      */
     public function testWorks()
     {

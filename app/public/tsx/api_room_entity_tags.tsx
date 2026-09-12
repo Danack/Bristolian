@@ -36,6 +36,10 @@ export function setVideoTags(room_id: string, room_video_id: string, body: SetEn
     return putTags(`/api/rooms/${room_id}/videos/${room_video_id}/tags`, body);
 }
 
+export function setNoteTags(room_id: string, room_note_id: string, body: SetEntityTagsBody): Promise<void> {
+    return putTags(`/api/rooms/${room_id}/notes/${room_note_id}/tags`, body);
+}
+
 export interface PatchRoomAnnotationBody {
     title: string;
     text: string;

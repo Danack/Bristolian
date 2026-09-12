@@ -826,8 +826,8 @@
         {
             "name": "Bristolian\\ApiController\\MailgunEmailHandler::handleIncomingEmail",
             "file": "src/Bristolian/ApiController/MailgunEmailHandler.php",
-            "line-start": 26,
-            "line-end": 47,
+            "line-start": 27,
+            "line-end": 48,
             "dependencies": [
                 "Bristolian\\Service\\Mailgun\\PayloadValidator",
                 "VarMap\\VarMap"
@@ -929,8 +929,8 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::getData",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 174,
-            "line-end": 179,
+            "line-start": 176,
+            "line-end": 181,
             "dependencies": [
                 "Bristolian\\Repo\\BristolStairsRepo\\BristolStairsRepo"
             ]
@@ -938,8 +938,8 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::getImage",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 140,
-            "line-end": 171,
+            "line-start": 142,
+            "line-end": 173,
             "dependencies": [
                 "Bristolian\\Filesystem\\BristolStairsFilesystem",
                 "Bristolian\\Filesystem\\LocalCacheFilesystem",
@@ -949,8 +949,8 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::getOpenmapNearby",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 186,
-            "line-end": 249,
+            "line-start": 188,
+            "line-end": 251,
             "dependencies": [
                 "Bristolian\\Parameters\\OpenmapNearbyParams",
                 "Bristolian\\Session\\UserSession"
@@ -959,8 +959,8 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::handleFileUpload",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 259,
-            "line-end": 293,
+            "line-start": 261,
+            "line-end": 295,
             "dependencies": [
                 "Bristolian\\Service\\BristolStairImageStorage\\BristolStairImageStorage",
                 "Bristolian\\Session\\UserSession",
@@ -971,8 +971,8 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::stairs_page",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 76,
-            "line-end": 83,
+            "line-start": 78,
+            "line-end": 85,
             "dependencies": [
                 "Bristolian\\Repo\\BristolStairsRepo\\BristolStairsRepo",
                 "Bristolian\\SiteHtml\\ExtraAssets"
@@ -981,8 +981,8 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::stairs_page_stair_selected",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 62,
-            "line-end": 74,
+            "line-start": 64,
+            "line-end": 76,
             "dependencies": [
                 "Bristolian\\Repo\\BristolStairsRepo\\BristolStairsRepo",
                 "Bristolian\\SiteHtml\\ExtraAssets"
@@ -991,8 +991,8 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::update_stairs_info",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 41,
-            "line-end": 49,
+            "line-start": 43,
+            "line-end": 51,
             "dependencies": [
                 "Bristolian\\Parameters\\BristolStairsInfoParams",
                 "Bristolian\\Repo\\BristolStairsRepo\\BristolStairsRepo",
@@ -1002,15 +1002,15 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::update_stairs_info_get",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 36,
-            "line-end": 39,
+            "line-start": 38,
+            "line-end": 41,
             "dependencies": []
         },
         {
             "name": "Bristolian\\AppController\\BristolStairs::update_stairs_position",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 51,
-            "line-end": 60,
+            "line-start": 53,
+            "line-end": 62,
             "dependencies": [
                 "Bristolian\\Parameters\\BristolStairsPositionParams",
                 "Bristolian\\Repo\\BristolStairsRepo\\BristolStairsRepo",
@@ -1208,15 +1208,15 @@
         {
             "name": "Bristolian\\AppController\\Notifications::generate_keys",
             "file": "src/Bristolian/AppController/Notifications.php",
-            "line-start": 16,
-            "line-end": 22,
+            "line-start": 17,
+            "line-end": 23,
             "dependencies": []
         },
         {
             "name": "Bristolian\\AppController\\Notifications::save_subscription",
             "file": "src/Bristolian/AppController/Notifications.php",
-            "line-start": 29,
-            "line-end": 54,
+            "line-start": 30,
+            "line-end": 55,
             "dependencies": [
                 "Bristolian\\JsonInput\\JsonInput",
                 "Bristolian\\Repo\\WebPushSubscriptionRepo\\WebPushSubscriptionRepo",
@@ -1226,8 +1226,8 @@
         {
             "name": "Bristolian\\AppController\\Notifications::save_subscription_get",
             "file": "src/Bristolian/AppController/Notifications.php",
-            "line-start": 24,
-            "line-end": 27,
+            "line-start": 25,
+            "line-end": 28,
             "dependencies": []
         },
         {
@@ -1443,8 +1443,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::addLink",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 603,
-            "line-end": 628,
+            "line-start": 716,
+            "line-end": 741,
             "dependencies": [
                 "Bristolian\\Parameters\\LinkParam",
                 "Bristolian\\Repo\\RoomLinkRepo\\RoomLinkRepo",
@@ -1452,10 +1452,21 @@
             ]
         },
         {
+            "name": "Bristolian\\AppController\\Rooms::addNote",
+            "file": "src/Bristolian/AppController/Rooms.php",
+            "line-start": 273,
+            "line-end": 288,
+            "dependencies": [
+                "Bristolian\\JsonInput\\JsonInput",
+                "Bristolian\\Repo\\RoomNoteRepo\\RoomNoteRepo",
+                "Bristolian\\Session\\UserSession"
+            ]
+        },
+        {
             "name": "Bristolian\\AppController\\Rooms::addTag",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 463,
-            "line-end": 470,
+            "line-start": 576,
+            "line-end": 583,
             "dependencies": [
                 "Bristolian\\Parameters\\TagParams",
                 "Bristolian\\Repo\\RoomTagRepo\\RoomTagRepo"
@@ -1464,8 +1475,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::addVideo",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 240,
-            "line-end": 251,
+            "line-start": 344,
+            "line-end": 355,
             "dependencies": [
                 "Bristolian\\JsonInput\\JsonInput",
                 "Bristolian\\Repo\\RoomVideoRepo\\RoomVideoRepo",
@@ -1476,8 +1487,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::annotate_file",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 787,
-            "line-end": 800,
+            "line-start": 923,
+            "line-end": 936,
             "dependencies": [
                 "Bristolian\\Repo\\RoomFileRepo\\RoomFileRepo",
                 "Bristolian\\Repo\\RoomRepo\\RoomRepo"
@@ -1486,18 +1497,27 @@
         {
             "name": "Bristolian\\AppController\\Rooms::createClip",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 253,
-            "line-end": 269,
+            "line-start": 357,
+            "line-end": 373,
             "dependencies": [
                 "Bristolian\\JsonInput\\JsonInput",
                 "Bristolian\\Repo\\RoomVideoRepo\\RoomVideoRepo"
             ]
         },
         {
+            "name": "Bristolian\\AppController\\Rooms::deleteNote",
+            "file": "src/Bristolian/AppController/Rooms.php",
+            "line-start": 307,
+            "line-end": 314,
+            "dependencies": [
+                "Bristolian\\Repo\\RoomNoteRepo\\RoomNoteRepo"
+            ]
+        },
+        {
             "name": "Bristolian\\AppController\\Rooms::fetchTranscript",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 305,
-            "line-end": 325,
+            "line-start": 409,
+            "line-end": 429,
             "dependencies": [
                 "Bristolian\\Repo\\RoomVideoRepo\\RoomVideoRepo",
                 "Bristolian\\Repo\\RoomVideoTranscriptRepo\\RoomVideoTranscriptRepo",
@@ -1508,8 +1528,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::getAnnotations",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 381,
-            "line-end": 409,
+            "line-start": 485,
+            "line-end": 513,
             "dependencies": [
                 "Bristolian\\Repo\\RoomAnnotationRepo\\RoomAnnotationRepo",
                 "Bristolian\\Repo\\RoomAnnotationTagRepo\\RoomAnnotationTagRepo",
@@ -1519,8 +1539,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::getAnnotationsForFile",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 347,
-            "line-end": 379,
+            "line-start": 451,
+            "line-end": 483,
             "dependencies": [
                 "Bristolian\\Repo\\RoomAnnotationRepo\\RoomAnnotationRepo",
                 "Bristolian\\Repo\\RoomAnnotationTagRepo\\RoomAnnotationTagRepo",
@@ -1530,8 +1550,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::getFiles",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 159,
-            "line-end": 191,
+            "line-start": 168,
+            "line-end": 200,
             "dependencies": [
                 "Bristolian\\Parameters\\RoomContentSearchParams",
                 "Bristolian\\Repo\\RoomFileRepo\\RoomFileRepo",
@@ -1542,8 +1562,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::getLinks",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 200,
-            "line-end": 230,
+            "line-start": 209,
+            "line-end": 239,
             "dependencies": [
                 "Bristolian\\Parameters\\RoomContentSearchParams",
                 "Bristolian\\Repo\\RoomLinkRepo\\RoomLinkRepo",
@@ -1552,10 +1572,22 @@
             ]
         },
         {
+            "name": "Bristolian\\AppController\\Rooms::getNotes",
+            "file": "src/Bristolian/AppController/Rooms.php",
+            "line-start": 241,
+            "line-end": 271,
+            "dependencies": [
+                "Bristolian\\Parameters\\RoomContentSearchParams",
+                "Bristolian\\Repo\\RoomNoteRepo\\RoomNoteRepo",
+                "Bristolian\\Repo\\RoomNoteTagRepo\\RoomNoteTagRepo",
+                "Bristolian\\Repo\\RoomTagRepo\\RoomTagRepo"
+            ]
+        },
+        {
             "name": "Bristolian\\AppController\\Rooms::getRoomDetails",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 435,
-            "line-end": 445,
+            "line-start": 548,
+            "line-end": 558,
             "dependencies": [
                 "Bristolian\\Repo\\RoomRepo\\RoomRepo"
             ]
@@ -1563,8 +1595,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::getTags",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 427,
-            "line-end": 433,
+            "line-start": 540,
+            "line-end": 546,
             "dependencies": [
                 "Bristolian\\Repo\\RoomTagRepo\\RoomTagRepo"
             ]
@@ -1572,8 +1604,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::getTranscript",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 296,
-            "line-end": 303,
+            "line-start": 400,
+            "line-end": 407,
             "dependencies": [
                 "Bristolian\\Repo\\RoomVideoTranscriptRepo\\RoomVideoTranscriptRepo"
             ]
@@ -1581,8 +1613,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::getTranscripts",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 288,
-            "line-end": 294,
+            "line-start": 392,
+            "line-end": 398,
             "dependencies": [
                 "Bristolian\\Repo\\RoomVideoTranscriptRepo\\RoomVideoTranscriptRepo"
             ]
@@ -1590,8 +1622,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::getVideos",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 232,
-            "line-end": 238,
+            "line-start": 336,
+            "line-end": 342,
             "dependencies": [
                 "Bristolian\\Parameters\\RoomContentSearchParams",
                 "Bristolian\\Repo\\RoomVideoRepo\\RoomVideoRepo"
@@ -1600,8 +1632,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::handleAddAnnotation",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 869,
-            "line-end": 902,
+            "line-start": 1005,
+            "line-end": 1038,
             "dependencies": [
                 "Bristolian\\Parameters\\AnnotationParam",
                 "Bristolian\\Repo\\RoomAnnotationRepo\\RoomAnnotationRepo",
@@ -1613,8 +1645,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::handleFileUpload",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 129,
-            "line-end": 149,
+            "line-start": 138,
+            "line-end": 158,
             "dependencies": [
                 "Bristolian\\Service\\RoomFileStorage\\HandleRoomFileUpload",
                 "Bristolian\\Session\\UserSession"
@@ -1623,15 +1655,15 @@
         {
             "name": "Bristolian\\AppController\\Rooms::handleFileUpload_get",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 98,
-            "line-end": 101,
+            "line-start": 107,
+            "line-end": 110,
             "dependencies": []
         },
         {
             "name": "Bristolian\\AppController\\Rooms::iframe_show_file",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 806,
-            "line-end": 866,
+            "line-start": 942,
+            "line-end": 1002,
             "dependencies": [
                 "Bristolian\\Repo\\RoomFileRepo\\RoomFileRepo",
                 "Bristolian\\Repo\\RoomRepo\\RoomRepo",
@@ -1642,8 +1674,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::index",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 75,
-            "line-end": 96,
+            "line-start": 84,
+            "line-end": 105,
             "dependencies": [
                 "Bristolian\\Repo\\RoomRepo\\RoomRepo"
             ]
@@ -1651,8 +1683,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::serveFileForRoom",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 643,
-            "line-end": 687,
+            "line-start": 756,
+            "line-end": 791,
             "dependencies": [
                 "Bristolian\\Filesystem\\LocalCacheFilesystem",
                 "Bristolian\\Filesystem\\RoomFileFilesystem",
@@ -1663,8 +1695,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::setAnnotationTags",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 555,
-            "line-end": 583,
+            "line-start": 668,
+            "line-end": 696,
             "dependencies": [
                 "Bristolian\\JsonInput\\JsonInput",
                 "Bristolian\\Repo\\RoomAnnotationRepo\\RoomAnnotationRepo",
@@ -1675,8 +1707,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::setFileTags",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 472,
-            "line-end": 493,
+            "line-start": 585,
+            "line-end": 606,
             "dependencies": [
                 "Bristolian\\JsonInput\\JsonInput",
                 "Bristolian\\Repo\\RoomFileRepo\\RoomFileRepo",
@@ -1687,8 +1719,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::setLinkTags",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 516,
-            "line-end": 537,
+            "line-start": 629,
+            "line-end": 650,
             "dependencies": [
                 "Bristolian\\JsonInput\\JsonInput",
                 "Bristolian\\Repo\\RoomLinkRepo\\RoomLinkRepo",
@@ -1697,10 +1729,22 @@
             ]
         },
         {
+            "name": "Bristolian\\AppController\\Rooms::setNoteTags",
+            "file": "src/Bristolian/AppController/Rooms.php",
+            "line-start": 316,
+            "line-end": 334,
+            "dependencies": [
+                "Bristolian\\JsonInput\\JsonInput",
+                "Bristolian\\Repo\\RoomNoteRepo\\RoomNoteRepo",
+                "Bristolian\\Repo\\RoomNoteTagRepo\\RoomNoteTagRepo",
+                "Bristolian\\Repo\\RoomTagRepo\\RoomTagRepo"
+            ]
+        },
+        {
             "name": "Bristolian\\AppController\\Rooms::setVideoTags",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 327,
-            "line-end": 345,
+            "line-start": 431,
+            "line-end": 449,
             "dependencies": [
                 "Bristolian\\JsonInput\\JsonInput",
                 "Bristolian\\Repo\\RoomTagRepo\\RoomTagRepo",
@@ -1709,10 +1753,21 @@
             ]
         },
         {
+            "name": "Bristolian\\AppController\\Rooms::showNote",
+            "file": "src/Bristolian/AppController/Rooms.php",
+            "line-start": 831,
+            "line-end": 861,
+            "dependencies": [
+                "Bristolian\\MarkdownRenderer\\MarkdownRenderer",
+                "Bristolian\\Repo\\RoomNoteRepo\\RoomNoteRepo",
+                "Bristolian\\Repo\\RoomRepo\\RoomRepo"
+            ]
+        },
+        {
             "name": "Bristolian\\AppController\\Rooms::showRoom",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 689,
-            "line-end": 725,
+            "line-start": 793,
+            "line-end": 829,
             "dependencies": [
                 "Bristolian\\Repo\\RoomRepo\\RoomRepo"
             ]
@@ -1720,8 +1775,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::updateAnnotation",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 585,
-            "line-end": 599,
+            "line-start": 698,
+            "line-end": 712,
             "dependencies": [
                 "Bristolian\\JsonInput\\JsonInput",
                 "Bristolian\\Repo\\RoomAnnotationRepo\\RoomAnnotationRepo"
@@ -1730,18 +1785,28 @@
         {
             "name": "Bristolian\\AppController\\Rooms::updateLink",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 539,
-            "line-end": 553,
+            "line-start": 652,
+            "line-end": 666,
             "dependencies": [
                 "Bristolian\\JsonInput\\JsonInput",
                 "Bristolian\\Repo\\RoomLinkRepo\\RoomLinkRepo"
             ]
         },
         {
+            "name": "Bristolian\\AppController\\Rooms::updateNote",
+            "file": "src/Bristolian/AppController/Rooms.php",
+            "line-start": 290,
+            "line-end": 305,
+            "dependencies": [
+                "Bristolian\\JsonInput\\JsonInput",
+                "Bristolian\\Repo\\RoomNoteRepo\\RoomNoteRepo"
+            ]
+        },
+        {
             "name": "Bristolian\\AppController\\Rooms::updateRoomDetails",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 447,
-            "line-end": 461,
+            "line-start": 560,
+            "line-end": 574,
             "dependencies": [
                 "Bristolian\\JsonInput\\JsonInput",
                 "Bristolian\\Repo\\RoomRepo\\RoomRepo"
@@ -1750,8 +1815,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::updateRoomFile",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 495,
-            "line-end": 514,
+            "line-start": 608,
+            "line-end": 627,
             "dependencies": [
                 "Bristolian\\JsonInput\\JsonInput",
                 "Bristolian\\Repo\\RoomFileRepo\\RoomFileRepo"
@@ -1760,8 +1825,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::updateVideo",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 271,
-            "line-end": 286,
+            "line-start": 375,
+            "line-end": 390,
             "dependencies": [
                 "Bristolian\\JsonInput\\JsonInput",
                 "Bristolian\\Repo\\RoomVideoRepo\\RoomVideoRepo"
@@ -1770,8 +1835,8 @@
         {
             "name": "Bristolian\\AppController\\Rooms::viewAnnotation",
             "file": "src/Bristolian/AppController/Rooms.php",
-            "line-start": 909,
-            "line-end": 923,
+            "line-start": 1045,
+            "line-end": 1059,
             "dependencies": [
                 "Bristolian\\Repo\\RoomFileRepo\\RoomFileRepo",
                 "Bristolian\\Repo\\RoomRepo\\RoomRepo"
@@ -1780,8 +1845,8 @@
         {
             "name": "Bristolian\\AppController\\System::debugging",
             "file": "src/Bristolian/AppController/System.php",
-            "line-start": 174,
-            "line-end": 189,
+            "line-start": 171,
+            "line-end": 186,
             "dependencies": [
                 "Bristolian\\Session\\UserSession"
             ]
@@ -1789,8 +1854,8 @@
         {
             "name": "Bristolian\\AppController\\System::deploy_log",
             "file": "src/Bristolian/AppController/System.php",
-            "line-start": 89,
-            "line-end": 94,
+            "line-start": 86,
+            "line-end": 91,
             "dependencies": [
                 "Bristolian\\Service\\DeployLogRenderer\\DeployLogRenderer"
             ]
@@ -1798,8 +1863,8 @@
         {
             "name": "Bristolian\\AppController\\System::display_swagger",
             "file": "src/Bristolian/AppController/System.php",
-            "line-start": 96,
-            "line-end": 101,
+            "line-start": 93,
+            "line-end": 98,
             "dependencies": [
                 "OpenApi\\OpenApiGenerator"
             ]
@@ -1807,8 +1872,8 @@
         {
             "name": "Bristolian\\AppController\\System::index",
             "file": "src/Bristolian/AppController/System.php",
-            "line-start": 26,
-            "line-end": 78,
+            "line-start": 29,
+            "line-end": 75,
             "dependencies": [
                 "Bristolian\\Config\\Config"
             ]
@@ -1816,15 +1881,15 @@
         {
             "name": "Bristolian\\AppController\\System::route_explorer",
             "file": "src/Bristolian/AppController/System.php",
-            "line-start": 214,
-            "line-end": 238,
+            "line-start": 211,
+            "line-end": 235,
             "dependencies": []
         },
         {
             "name": "Bristolian\\AppController\\System::showDbInfo",
             "file": "src/Bristolian/AppController/System.php",
-            "line-start": 80,
-            "line-end": 87,
+            "line-start": 77,
+            "line-end": 84,
             "dependencies": [
                 "Bristolian\\Repo\\DbInfo\\DbInfo"
             ]
@@ -1832,8 +1897,8 @@
         {
             "name": "Bristolian\\AppController\\System::show_csp_reports",
             "file": "src/Bristolian/AppController/System.php",
-            "line-start": 191,
-            "line-end": 211,
+            "line-start": 188,
+            "line-end": 208,
             "dependencies": [
                 "Bristolian\\CSPViolation\\CSPViolationStorage"
             ]
@@ -1841,8 +1906,8 @@
         {
             "name": "Bristolian\\AppController\\System::tinned_fish_products",
             "file": "src/Bristolian/AppController/System.php",
-            "line-start": 240,
-            "line-end": 278,
+            "line-start": 237,
+            "line-end": 275,
             "dependencies": [
                 "Bristolian\\Repo\\TinnedFishProductRepo\\TinnedFishProductRepo",
                 "Bristolian\\SiteHtml\\ExtraAssets"
@@ -1851,8 +1916,8 @@
         {
             "name": "Bristolian\\AppController\\System::updateProductValidationStatus",
             "file": "src/Bristolian/AppController/System.php",
-            "line-start": 280,
-            "line-end": 291,
+            "line-start": 277,
+            "line-end": 288,
             "dependencies": [
                 "Bristolian\\Parameters\\TinnedFish\\UpdateProductValidationStatusParams",
                 "Bristolian\\Repo\\TinnedFishProductRepo\\TinnedFishProductRepo"
@@ -2030,8 +2095,8 @@
         {
             "name": "Bristolian\\AppController\\Users::getAvatarImage",
             "file": "src/Bristolian/AppController/Users.php",
-            "line-start": 250,
-            "line-end": 288,
+            "line-start": 242,
+            "line-end": 271,
             "dependencies": [
                 "Bristolian\\Filesystem\\AvatarImageFilesystem",
                 "Bristolian\\Filesystem\\LocalCacheFilesystem",
@@ -2041,8 +2106,8 @@
         {
             "name": "Bristolian\\AppController\\Users::getUserAvatar",
             "file": "src/Bristolian/AppController/Users.php",
-            "line-start": 87,
-            "line-end": 137,
+            "line-start": 88,
+            "line-end": 129,
             "dependencies": [
                 "Bristolian\\Filesystem\\AvatarImageFilesystem",
                 "Bristolian\\Filesystem\\LocalCacheFilesystem",
@@ -2053,8 +2118,8 @@
         {
             "name": "Bristolian\\AppController\\Users::getUserInfo",
             "file": "src/Bristolian/AppController/Users.php",
-            "line-start": 70,
-            "line-end": 85,
+            "line-start": 71,
+            "line-end": 86,
             "dependencies": [
                 "Bristolian\\Repo\\UserProfileRepo\\UserProfileRepo"
             ]
@@ -2062,15 +2127,15 @@
         {
             "name": "Bristolian\\AppController\\Users::index",
             "file": "src/Bristolian/AppController/Users.php",
-            "line-start": 20,
-            "line-end": 41,
+            "line-start": 21,
+            "line-end": 42,
             "dependencies": []
         },
         {
             "name": "Bristolian\\AppController\\Users::showOwnProfile",
             "file": "src/Bristolian/AppController/Users.php",
-            "line-start": 139,
-            "line-end": 173,
+            "line-start": 131,
+            "line-end": 165,
             "dependencies": [
                 "Bristolian\\Repo\\UserProfileRepo\\UserProfileRepo",
                 "Bristolian\\Session\\AppSessionManager"
@@ -2079,8 +2144,8 @@
         {
             "name": "Bristolian\\AppController\\Users::showUserProfile",
             "file": "src/Bristolian/AppController/Users.php",
-            "line-start": 177,
-            "line-end": 212,
+            "line-start": 169,
+            "line-end": 204,
             "dependencies": [
                 "Bristolian\\Repo\\UserProfileRepo\\UserProfileRepo",
                 "Bristolian\\Session\\AppSessionManager"
@@ -2089,8 +2154,8 @@
         {
             "name": "Bristolian\\AppController\\Users::updateProfile",
             "file": "src/Bristolian/AppController/Users.php",
-            "line-start": 214,
-            "line-end": 228,
+            "line-start": 206,
+            "line-end": 220,
             "dependencies": [
                 "Bristolian\\Parameters\\UserProfileUpdateParams",
                 "Bristolian\\Repo\\UserProfileRepo\\UserProfileRepo",
@@ -2100,8 +2165,8 @@
         {
             "name": "Bristolian\\AppController\\Users::uploadAvatar",
             "file": "src/Bristolian/AppController/Users.php",
-            "line-start": 230,
-            "line-end": 248,
+            "line-start": 222,
+            "line-end": 240,
             "dependencies": [
                 "Bristolian\\Service\\AvatarImageStorage\\HandleAvatarUpload",
                 "Bristolian\\Session\\UserSession"
@@ -2110,8 +2175,8 @@
         {
             "name": "Bristolian\\AppController\\Users::whoami",
             "file": "src/Bristolian/AppController/Users.php",
-            "line-start": 43,
-            "line-end": 68,
+            "line-start": 44,
+            "line-end": 69,
             "dependencies": [
                 "Bristolian\\Repo\\UserProfileRepo\\UserProfileRepo",
                 "Bristolian\\Session\\AppSessionManager"
@@ -2152,8 +2217,8 @@
         {
             "name": "Bristolian\\CliController\\BccTroFetcherCliController::continual_bcc_tro_process",
             "file": "src/Bristolian/CliController/BccTroFetcherCliController.php",
-            "line-start": 23,
-            "line-end": 53,
+            "line-start": 20,
+            "line-end": 50,
             "dependencies": [
                 "Bristolian\\Repo\\ProcessorRunRecordRepo\\ProcessorRunRecordRepo",
                 "Bristolian\\Service\\BccTroService\\BccTroService",
@@ -2164,8 +2229,8 @@
         {
             "name": "Bristolian\\CliController\\BccTroFetcherCliController::single_bcc_tro_process",
             "file": "src/Bristolian/CliController/BccTroFetcherCliController.php",
-            "line-start": 55,
-            "line-end": 93,
+            "line-start": 52,
+            "line-end": 90,
             "dependencies": [
                 "Bristolian\\Repo\\ProcessorRunRecordRepo\\ProcessorRunRecordRepo",
                 "Bristolian\\Service\\BccTroService\\BccTroService",
@@ -2215,8 +2280,8 @@
         {
             "name": "Bristolian\\CliController\\Database::performMigrations",
             "file": "src/Bristolian/CliController/Database.php",
-            "line-start": 251,
-            "line-end": 264,
+            "line-start": 252,
+            "line-end": 265,
             "dependencies": [
                 "Bristolian\\PdoSimple\\PdoSimple"
             ]
@@ -2224,8 +2289,8 @@
         {
             "name": "Bristolian\\CliController\\Database::setMaxConnections",
             "file": "src/Bristolian/CliController/Database.php",
-            "line-start": 266,
-            "line-end": 271,
+            "line-start": 267,
+            "line-end": 272,
             "dependencies": [
                 "PDO"
             ]
@@ -2233,8 +2298,8 @@
         {
             "name": "Bristolian\\CliController\\Database::waitForDBToBeWorking",
             "file": "src/Bristolian/CliController/Database.php",
-            "line-start": 220,
-            "line-end": 245,
+            "line-start": 221,
+            "line-end": 246,
             "dependencies": [
                 "Bristolian\\Config\\Config"
             ]
@@ -2348,8 +2413,8 @@
         {
             "name": "Bristolian\\CliController\\GenerateFiles::generateModelClasses",
             "file": "src/Bristolian/CliController/GenerateFiles.php",
-            "line-start": 2053,
-            "line-end": 2104,
+            "line-start": 2067,
+            "line-end": 2118,
             "dependencies": [
                 "Bristolian\\Config\\Config",
                 "PDO"
@@ -2358,15 +2423,15 @@
         {
             "name": "Bristolian\\CliController\\GenerateFiles::generatePhpResponseTypes",
             "file": "src/Bristolian/CliController/GenerateFiles.php",
-            "line-start": 1034,
-            "line-end": 1081,
+            "line-start": 1047,
+            "line-end": 1094,
             "dependencies": []
         },
         {
             "name": "Bristolian\\CliController\\GenerateFiles::generateTableHelperClasses",
             "file": "src/Bristolian/CliController/GenerateFiles.php",
-            "line-start": 994,
-            "line-end": 1026,
+            "line-start": 1007,
+            "line-end": 1039,
             "dependencies": [
                 "Bristolian\\Config\\Config",
                 "PDO"
@@ -2375,15 +2440,15 @@
         {
             "name": "Bristolian\\CliController\\GenerateFiles::generateTypeScriptApiRoutes",
             "file": "src/Bristolian/CliController/GenerateFiles.php",
-            "line-start": 1462,
-            "line-end": 1610,
+            "line-start": 1475,
+            "line-end": 1623,
             "dependencies": []
         },
         {
             "name": "Bristolian\\CliController\\GenerateFiles::generateWidgetPanels",
             "file": "src/Bristolian/CliController/GenerateFiles.php",
-            "line-start": 2110,
-            "line-end": 2162,
+            "line-start": 2124,
+            "line-end": 2176,
             "dependencies": []
         },
         {
@@ -2411,8 +2476,8 @@
         {
             "name": "Bristolian\\CliController\\MemeOcr::process",
             "file": "src/Bristolian/CliController/MemeOcr.php",
-            "line-start": 35,
-            "line-end": 49,
+            "line-start": 36,
+            "line-end": 50,
             "dependencies": [
                 "Bristolian\\Filesystem\\LocalCacheFilesystem",
                 "Bristolian\\Filesystem\\MemeFilesystem",
@@ -2428,7 +2493,7 @@
         {
             "name": "Bristolian\\CliController\\OpenApi::generate",
             "file": "src/Bristolian/CliController/OpenApi.php",
-            "line-start": 21,
+            "line-start": 25,
             "line-end": 34,
             "dependencies": []
         },
@@ -2617,8 +2682,8 @@
         {
             "name": "Bristolian\\Repo\\ApiTokenRepo\\FakeApiTokenRepo",
             "file": "src/Bristolian/Repo/ApiTokenRepo/FakeApiTokenRepo.php",
-            "line-start": 14,
-            "line-end": 99,
+            "line-start": 15,
+            "line-end": 100,
             "dependencies": []
         },
         {
@@ -2638,8 +2703,8 @@
         {
             "name": "Bristolian\\Repo\\AvatarImageStorageInfoRepo\\FakeAvatarImageStorageInfoRepo",
             "file": "src/Bristolian/Repo/AvatarImageStorageInfoRepo/FakeAvatarImageStorageInfoRepo.php",
-            "line-start": 14,
-            "line-end": 78,
+            "line-start": 15,
+            "line-end": 79,
             "dependencies": []
         },
         {
@@ -2652,22 +2717,22 @@
         {
             "name": "Bristolian\\Repo\\BccTroRepo\\BccTroRepo",
             "file": "src/Bristolian/Repo/BccTroRepo/BccTroRepo.php",
-            "line-start": 9,
-            "line-end": 19,
+            "line-start": 10,
+            "line-end": 21,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Repo\\BccTroRepo\\FakeBccTroRepo",
             "file": "src/Bristolian/Repo/BccTroRepo/FakeBccTroRepo.php",
             "line-start": 12,
-            "line-end": 41,
+            "line-end": 46,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Repo\\BccTroRepo\\PdoBccTroRepo",
             "file": "src/Bristolian/Repo/BccTroRepo/PdoBccTroRepo.php",
-            "line-start": 11,
-            "line-end": 53,
+            "line-start": 12,
+            "line-end": 55,
             "dependencies": []
         },
         {
@@ -2680,8 +2745,8 @@
         {
             "name": "Bristolian\\Repo\\BristolStairImageStorageInfoRepo\\FakeBristolStairImageStorageInfoRepo",
             "file": "src/Bristolian/Repo/BristolStairImageStorageInfoRepo/FakeBristolStairImageStorageInfoRepo.php",
-            "line-start": 9,
-            "line-end": 82,
+            "line-start": 10,
+            "line-end": 83,
             "dependencies": []
         },
         {
@@ -2701,8 +2766,8 @@
         {
             "name": "Bristolian\\Repo\\BristolStairsRepo\\FakeBristolStairsRepo",
             "file": "src/Bristolian/Repo/BristolStairsRepo/FakeBristolStairsRepo.php",
-            "line-start": 10,
-            "line-end": 166,
+            "line-start": 11,
+            "line-end": 167,
             "dependencies": []
         },
         {
@@ -2722,8 +2787,8 @@
         {
             "name": "Bristolian\\Repo\\ChatMessageRepo\\FakeChatMessageRepo",
             "file": "src/Bristolian/Repo/ChatMessageRepo/FakeChatMessageRepo.php",
-            "line-start": 13,
-            "line-end": 64,
+            "line-start": 14,
+            "line-end": 65,
             "dependencies": []
         },
         {
@@ -2757,8 +2822,8 @@
         {
             "name": "Bristolian\\Repo\\LinkRepo\\FakeLinkRepo",
             "file": "src/Bristolian/Repo/LinkRepo/FakeLinkRepo.php",
-            "line-start": 8,
-            "line-end": 54,
+            "line-start": 9,
+            "line-end": 55,
             "dependencies": []
         },
         {
@@ -2778,8 +2843,8 @@
         {
             "name": "Bristolian\\Repo\\MemeStorageRepo\\FakeMemeStorageRepo",
             "file": "src/Bristolian/Repo/MemeStorageRepo/FakeMemeStorageRepo.php",
-            "line-start": 10,
-            "line-end": 173,
+            "line-start": 11,
+            "line-end": 174,
             "dependencies": []
         },
         {
@@ -2799,8 +2864,8 @@
         {
             "name": "Bristolian\\Repo\\MemeTagRepo\\FakeMemeTagRepo",
             "file": "src/Bristolian/Repo/MemeTagRepo/FakeMemeTagRepo.php",
-            "line-start": 16,
-            "line-end": 256,
+            "line-start": 17,
+            "line-end": 257,
             "dependencies": []
         },
         {
@@ -2820,8 +2885,8 @@
         {
             "name": "Bristolian\\Repo\\MemeTextRepo\\FakeMemeTextRepo",
             "file": "src/Bristolian/Repo/MemeTextRepo/FakeMemeTextRepo.php",
-            "line-start": 16,
-            "line-end": 171,
+            "line-start": 17,
+            "line-end": 172,
             "dependencies": []
         },
         {
@@ -2841,8 +2906,8 @@
         {
             "name": "Bristolian\\Repo\\ProcessorRepo\\FakeProcessorRepo",
             "file": "src/Bristolian/Repo/ProcessorRepo/FakeProcessorRepo.php",
-            "line-start": 12,
-            "line-end": 47,
+            "line-start": 13,
+            "line-end": 48,
             "dependencies": []
         },
         {
@@ -2862,8 +2927,8 @@
         {
             "name": "Bristolian\\Repo\\ProcessorRunRecordRepo\\FakeProcessorRunRecordRepo",
             "file": "src/Bristolian/Repo/ProcessorRunRecordRepo/FakeProcessorRunRecordRepo.php",
-            "line-start": 13,
-            "line-end": 92,
+            "line-start": 14,
+            "line-end": 93,
             "dependencies": []
         },
         {
@@ -2925,8 +2990,8 @@
         {
             "name": "Bristolian\\Repo\\RoomFileObjectInfoRepo\\FakeRoomFileObjectInfoRepo",
             "file": "src/Bristolian/Repo/RoomFileObjectInfoRepo/FakeRoomFileObjectInfoRepo.php",
-            "line-start": 9,
-            "line-end": 50,
+            "line-start": 10,
+            "line-end": 51,
             "dependencies": []
         },
         {
@@ -2946,8 +3011,8 @@
         {
             "name": "Bristolian\\Repo\\RoomFileRepo\\FakeRoomFileRepo",
             "file": "src/Bristolian/Repo/RoomFileRepo/FakeRoomFileRepo.php",
-            "line-start": 10,
-            "line-end": 231,
+            "line-start": 11,
+            "line-end": 232,
             "dependencies": []
         },
         {
@@ -2988,8 +3053,8 @@
         {
             "name": "Bristolian\\Repo\\RoomLinkRepo\\FakeRoomLinkRepo",
             "file": "src/Bristolian/Repo/RoomLinkRepo/FakeRoomLinkRepo.php",
-            "line-start": 13,
-            "line-end": 200,
+            "line-start": 14,
+            "line-end": 201,
             "dependencies": []
         },
         {
@@ -3028,10 +3093,52 @@
             "dependencies": []
         },
         {
+            "name": "Bristolian\\Repo\\RoomNoteRepo\\FakeRoomNoteRepo",
+            "file": "src/Bristolian/Repo/RoomNoteRepo/FakeRoomNoteRepo.php",
+            "line-start": 13,
+            "line-end": 134,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\Repo\\RoomNoteRepo\\PdoRoomNoteRepo",
+            "file": "src/Bristolian/Repo/RoomNoteRepo/PdoRoomNoteRepo.php",
+            "line-start": 17,
+            "line-end": 173,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\Repo\\RoomNoteRepo\\RoomNoteRepo",
+            "file": "src/Bristolian/Repo/RoomNoteRepo/RoomNoteRepo.php",
+            "line-start": 15,
+            "line-end": 56,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\Repo\\RoomNoteTagRepo\\FakeRoomNoteTagRepo",
+            "file": "src/Bristolian/Repo/RoomNoteTagRepo/FakeRoomNoteTagRepo.php",
+            "line-start": 7,
+            "line-end": 29,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\Repo\\RoomNoteTagRepo\\PdoRoomNoteTagRepo",
+            "file": "src/Bristolian/Repo/RoomNoteTagRepo/PdoRoomNoteTagRepo.php",
+            "line-start": 12,
+            "line-end": 46,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\Repo\\RoomNoteTagRepo\\RoomNoteTagRepo",
+            "file": "src/Bristolian/Repo/RoomNoteTagRepo/RoomNoteTagRepo.php",
+            "line-start": 11,
+            "line-end": 24,
+            "dependencies": []
+        },
+        {
             "name": "Bristolian\\Repo\\RoomRepo\\FakeRoomRepo",
             "file": "src/Bristolian/Repo/RoomRepo/FakeRoomRepo.php",
-            "line-start": 13,
-            "line-end": 81,
+            "line-start": 14,
+            "line-end": 82,
             "dependencies": []
         },
         {
@@ -3051,8 +3158,8 @@
         {
             "name": "Bristolian\\Repo\\RoomTagRepo\\FakeRoomTagRepo",
             "file": "src/Bristolian/Repo/RoomTagRepo/FakeRoomTagRepo.php",
-            "line-start": 12,
-            "line-end": 48,
+            "line-start": 13,
+            "line-end": 49,
             "dependencies": []
         },
         {
@@ -3072,8 +3179,8 @@
         {
             "name": "Bristolian\\Repo\\RoomVideoRepo\\InMemoryRoomVideoRepo",
             "file": "src/Bristolian/Repo/RoomVideoRepo/InMemoryRoomVideoRepo.php",
-            "line-start": 14,
-            "line-end": 219,
+            "line-start": 15,
+            "line-end": 220,
             "dependencies": []
         },
         {
@@ -3114,8 +3221,8 @@
         {
             "name": "Bristolian\\Repo\\RoomVideoTranscriptRepo\\InMemoryRoomVideoTranscriptRepo",
             "file": "src/Bristolian/Repo/RoomVideoTranscriptRepo/InMemoryRoomVideoTranscriptRepo.php",
-            "line-start": 10,
-            "line-end": 61,
+            "line-start": 11,
+            "line-end": 62,
             "dependencies": []
         },
         {
@@ -3156,8 +3263,8 @@
         {
             "name": "Bristolian\\Repo\\UserProfileRepo\\FakeUserProfileRepo",
             "file": "src/Bristolian/Repo/UserProfileRepo/FakeUserProfileRepo.php",
-            "line-start": 15,
-            "line-end": 161,
+            "line-start": 16,
+            "line-end": 162,
             "dependencies": []
         },
         {
@@ -3191,8 +3298,8 @@
         {
             "name": "Bristolian\\Repo\\VideoRepo\\InMemoryVideoRepo",
             "file": "src/Bristolian/Repo/VideoRepo/InMemoryVideoRepo.php",
-            "line-start": 9,
-            "line-end": 33,
+            "line-start": 10,
+            "line-end": 34,
             "dependencies": []
         },
         {
@@ -3275,8 +3382,8 @@
         {
             "name": "Bristolian\\Service\\AvatarImageStorage\\StandardAvatarImageStorage",
             "file": "src/Bristolian/Service/AvatarImageStorage/StandardAvatarImageStorage.php",
-            "line-start": 10,
-            "line-end": 96,
+            "line-start": 11,
+            "line-end": 98,
             "dependencies": []
         },
         {
@@ -3317,8 +3424,8 @@
         {
             "name": "Bristolian\\Service\\BccTroService\\StandardBccTroService",
             "file": "src/Bristolian/Service/BccTroService/StandardBccTroService.php",
-            "line-start": 15,
-            "line-end": 71,
+            "line-start": 13,
+            "line-end": 69,
             "dependencies": []
         },
         {
@@ -3331,8 +3438,8 @@
         {
             "name": "Bristolian\\Service\\BristolStairImageStorage\\FakeWorksBristolStairImageStorage",
             "file": "src/Bristolian/Service/BristolStairImageStorage/FakeWorksBristolStairImageStorage.php",
-            "line-start": 10,
-            "line-end": 48,
+            "line-start": 11,
+            "line-end": 49,
             "dependencies": []
         },
         {
@@ -3345,8 +3452,8 @@
         {
             "name": "Bristolian\\Service\\BristolStairImageStorage\\StandardBristolStairImageStorage",
             "file": "src/Bristolian/Service/BristolStairImageStorage/StandardBristolStairImageStorage.php",
-            "line-start": 13,
-            "line-end": 124,
+            "line-start": 15,
+            "line-end": 128,
             "dependencies": []
         },
         {
@@ -3394,8 +3501,8 @@
         {
             "name": "Bristolian\\Service\\CliOutput\\EchoCliOutput",
             "file": "src/Bristolian/Service/CliOutput/EchoCliOutput.php",
-            "line-start": 10,
-            "line-end": 30,
+            "line-start": 12,
+            "line-end": 32,
             "dependencies": []
         },
         {
@@ -3422,15 +3529,15 @@
         {
             "name": "Bristolian\\Service\\DailyProcessorSchedule\\LocalDevBccTroExecutionCheck",
             "file": "src/Bristolian/Service/DailyProcessorSchedule/LocalDevBccTroExecutionCheck.php",
-            "line-start": 5,
-            "line-end": 26,
+            "line-start": 7,
+            "line-end": 28,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\DailyProcessorSchedule\\StandardDailyProcessorSchedule",
             "file": "src/Bristolian/Service/DailyProcessorSchedule/StandardDailyProcessorSchedule.php",
-            "line-start": 10,
-            "line-end": 29,
+            "line-start": 13,
+            "line-end": 32,
             "dependencies": []
         },
         {
@@ -3450,8 +3557,8 @@
         {
             "name": "Bristolian\\Service\\DeployLogRenderer\\ProdDeployLogRenderer",
             "file": "src/Bristolian/Service/DeployLogRenderer/ProdDeployLogRenderer.php",
-            "line-start": 5,
-            "line-end": 46,
+            "line-start": 8,
+            "line-end": 41,
             "dependencies": []
         },
         {
@@ -3513,8 +3620,8 @@
         {
             "name": "Bristolian\\Service\\ExplorerData\\CodegenProvenance",
             "file": "src/Bristolian/Service/ExplorerData/CodegenProvenance.php",
-            "line-start": 14,
-            "line-end": 484,
+            "line-start": 20,
+            "line-end": 483,
             "dependencies": []
         },
         {
@@ -3534,8 +3641,8 @@
         {
             "name": "Bristolian\\Service\\ExplorerData\\CursorCommandsEntryTypeFinder",
             "file": "src/Bristolian/Service/ExplorerData/CursorCommandsEntryTypeFinder.php",
-            "line-start": 13,
-            "line-end": 251,
+            "line-start": 17,
+            "line-end": 245,
             "dependencies": []
         },
         {
@@ -3562,8 +3669,8 @@
         {
             "name": "Bristolian\\Service\\ExplorerData\\ExplorerDataBuilder",
             "file": "src/Bristolian/Service/ExplorerData/ExplorerDataBuilder.php",
-            "line-start": 10,
-            "line-end": 544,
+            "line-start": 14,
+            "line-end": 538,
             "dependencies": []
         },
         {
@@ -3590,8 +3697,8 @@
         {
             "name": "Bristolian\\Service\\ExplorerData\\RepoInterfaceImplementationDiscovery",
             "file": "src/Bristolian/Service/ExplorerData/RepoInterfaceImplementationDiscovery.php",
-            "line-start": 17,
-            "line-end": 371,
+            "line-start": 20,
+            "line-end": 375,
             "dependencies": []
         },
         {
@@ -3604,22 +3711,22 @@
         {
             "name": "Bristolian\\Service\\ExplorerData\\ServiceDependencyDiscovery",
             "file": "src/Bristolian/Service/ExplorerData/ServiceDependencyDiscovery.php",
-            "line-start": 16,
-            "line-end": 247,
+            "line-start": 20,
+            "line-end": 252,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\SupervisordTasksEntryTypeFinder",
             "file": "src/Bristolian/Service/ExplorerData/SupervisordTasksEntryTypeFinder.php",
-            "line-start": 13,
-            "line-end": 80,
+            "line-start": 14,
+            "line-end": 81,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Service\\ExplorerData\\WidgetsEntryTypeFinder",
             "file": "src/Bristolian/Service/ExplorerData/WidgetsEntryTypeFinder.php",
-            "line-start": 14,
-            "line-end": 72,
+            "line-start": 15,
+            "line-end": 70,
             "dependencies": []
         },
         {
@@ -3723,7 +3830,7 @@
         {
             "name": "Bristolian\\Service\\MemeImageOcr\\ProcOpenPythonMemeImageOcrRunner",
             "file": "src/Bristolian/Service/MemeImageOcr/ProcOpenPythonMemeImageOcrRunner.php",
-            "line-start": 11,
+            "line-start": 16,
             "line-end": 61,
             "dependencies": []
         },
@@ -3758,8 +3865,8 @@
         {
             "name": "Bristolian\\Service\\MemeStorageProcessor\\StandardMemeStorageProcessor",
             "file": "src/Bristolian/Service/MemeStorageProcessor/StandardMemeStorageProcessor.php",
-            "line-start": 10,
-            "line-end": 79,
+            "line-start": 11,
+            "line-end": 81,
             "dependencies": []
         },
         {
@@ -3933,8 +4040,8 @@
         {
             "name": "Bristolian\\Service\\RoomFileStorage\\StandardRoomFileStorage",
             "file": "src/Bristolian/Service/RoomFileStorage/StandardRoomFileStorage.php",
-            "line-start": 15,
-            "line-end": 78,
+            "line-start": 16,
+            "line-end": 80,
             "dependencies": []
         },
         {
@@ -3954,8 +4061,8 @@
         {
             "name": "Bristolian\\Service\\RoomMessageService\\FakeRoomMessageService",
             "file": "src/Bristolian/Service/RoomMessageService/FakeRoomMessageService.php",
-            "line-start": 8,
-            "line-end": 50,
+            "line-start": 9,
+            "line-end": 51,
             "dependencies": []
         },
         {
@@ -4136,8 +4243,8 @@
         {
             "name": "Bristolian\\Service\\YouTube\\YouTubeTranscriptFetcher",
             "file": "src/Bristolian/Service/YouTube/YouTubeTranscriptFetcher.php",
-            "line-start": 17,
-            "line-end": 184,
+            "line-start": 19,
+            "line-end": 186,
             "dependencies": []
         }
     ],
@@ -4304,6 +4411,7 @@
                 "Bristolian\\Filesystem\\LocalCacheFilesystem",
                 "Bristolian\\Filesystem\\RoomFileFilesystem",
                 "Bristolian\\JsonInput\\JsonInput",
+                "Bristolian\\MarkdownRenderer\\MarkdownRenderer",
                 "Bristolian\\Parameters\\AnnotationParam",
                 "Bristolian\\Parameters\\LinkParam",
                 "Bristolian\\Parameters\\RoomContentSearchParams",
@@ -4314,6 +4422,8 @@
                 "Bristolian\\Repo\\RoomFileTagRepo\\RoomFileTagRepo",
                 "Bristolian\\Repo\\RoomLinkRepo\\RoomLinkRepo",
                 "Bristolian\\Repo\\RoomLinkTagRepo\\RoomLinkTagRepo",
+                "Bristolian\\Repo\\RoomNoteRepo\\RoomNoteRepo",
+                "Bristolian\\Repo\\RoomNoteTagRepo\\RoomNoteTagRepo",
                 "Bristolian\\Repo\\RoomRepo\\RoomRepo",
                 "Bristolian\\Repo\\RoomTagRepo\\RoomTagRepo",
                 "Bristolian\\Repo\\RoomVideoRepo\\RoomVideoRepo",
@@ -4600,6 +4710,14 @@
             "type": "database"
         },
         {
+            "name": "room_note",
+            "type": "database"
+        },
+        {
+            "name": "room_note_tag",
+            "type": "database"
+        },
+        {
             "name": "room_tag",
             "type": "database"
         },
@@ -4795,6 +4913,16 @@
                 "Bristolian\\Repo\\BccTroRepo\\PdoBccTroRepo"
             ],
             "methods": [
+                {
+                    "name": "getMostRecentData",
+                    "datasources": [
+                        {
+                            "path": "/datasources/bcc_tro_information",
+                            "reads": true,
+                            "writes": false
+                        }
+                    ]
+                },
                 {
                     "name": "saveData",
                     "datasources": [
@@ -5728,6 +5856,99 @@
                     "datasources": [
                         {
                             "path": "/datasources/room_link_tag",
+                            "reads": false,
+                            "writes": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Bristolian\\Repo\\RoomNoteRepo\\RoomNoteRepo",
+            "implementations": [
+                "Bristolian\\Repo\\RoomNoteRepo\\FakeRoomNoteRepo",
+                "Bristolian\\Repo\\RoomNoteRepo\\PdoRoomNoteRepo"
+            ],
+            "methods": [
+                {
+                    "name": "create",
+                    "datasources": [
+                        {
+                            "path": "/datasources/room_note",
+                            "reads": false,
+                            "writes": true
+                        }
+                    ]
+                },
+                {
+                    "name": "delete",
+                    "datasources": [
+                        {
+                            "path": "/datasources/room_note",
+                            "reads": false,
+                            "writes": true
+                        }
+                    ]
+                },
+                {
+                    "name": "getNote",
+                    "datasources": [
+                        {
+                            "path": "/datasources/room_note",
+                            "reads": true,
+                            "writes": false
+                        }
+                    ]
+                },
+                {
+                    "name": "getNotesForRoom",
+                    "datasources": [
+                        {
+                            "path": "/datasources/room_note",
+                            "reads": true,
+                            "writes": false
+                        },
+                        {
+                            "path": "/datasources/room_note_tag",
+                            "reads": true,
+                            "writes": false
+                        }
+                    ]
+                },
+                {
+                    "name": "update",
+                    "datasources": [
+                        {
+                            "path": "/datasources/room_note",
+                            "reads": false,
+                            "writes": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Bristolian\\Repo\\RoomNoteTagRepo\\RoomNoteTagRepo",
+            "implementations": [
+                "Bristolian\\Repo\\RoomNoteTagRepo\\FakeRoomNoteTagRepo",
+                "Bristolian\\Repo\\RoomNoteTagRepo\\PdoRoomNoteTagRepo"
+            ],
+            "methods": [
+                {
+                    "name": "getTagIdsForRoomNote",
+                    "datasources": [
+                        {
+                            "path": "/datasources/room_note_tag",
+                            "reads": true,
+                            "writes": false
+                        }
+                    ]
+                },
+                {
+                    "name": "setTagsForRoomNote",
+                    "datasources": [
+                        {
+                            "path": "/datasources/room_note_tag",
                             "reads": false,
                             "writes": true
                         }
@@ -6904,6 +7125,20 @@
             "path": "/comms",
             "method": "GET",
             "controller": "Bristolian\\AppController\\Chat::get_test_page",
+            "return_types": [
+                "string"
+            ],
+            "response_mappers": [
+                {
+                    "return_type": "string",
+                    "mapper": "Bristolian\\StringToHtmlPageConverter::convertStringToHtmlResponse"
+                }
+            ]
+        },
+        {
+            "path": "/rooms/{room_id:.*}/notes/{room_note_id:.*}",
+            "method": "GET",
+            "controller": "Bristolian\\AppController\\Rooms::showNote",
             "return_types": [
                 "string"
             ],
@@ -8280,6 +8515,79 @@
             "request_body_param": "Bristolian\\Parameters\\UpdateRoomLinkParam"
         },
         {
+            "path": "/api/rooms/{room_id:.*}/notes",
+            "method": "GET",
+            "controller": "Bristolian\\AppController\\Rooms::getNotes",
+            "return_types": [
+                "Bristolian\\Response\\Typed\\GetRoomsNotesResponse"
+            ],
+            "response_mappers": [
+                {
+                    "return_type": "Bristolian\\Response\\Typed\\GetRoomsNotesResponse",
+                    "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
+                }
+            ]
+        },
+        {
+            "path": "/api/rooms/{room_id:.*}/notes",
+            "method": "POST",
+            "controller": "Bristolian\\AppController\\Rooms::addNote",
+            "return_types": [
+                "Bristolian\\Response\\SuccessResponse"
+            ],
+            "response_mappers": [
+                {
+                    "return_type": "Bristolian\\Response\\SuccessResponse",
+                    "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
+                }
+            ],
+            "request_body_param": "Bristolian\\Parameters\\CreateRoomNoteParam"
+        },
+        {
+            "path": "/api/rooms/{room_id:.*}/notes/{room_note_id:.*}/tags",
+            "method": "PUT",
+            "controller": "Bristolian\\AppController\\Rooms::setNoteTags",
+            "return_types": [
+                "Bristolian\\Response\\SuccessResponse"
+            ],
+            "response_mappers": [
+                {
+                    "return_type": "Bristolian\\Response\\SuccessResponse",
+                    "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
+                }
+            ],
+            "request_body_param": "Bristolian\\Parameters\\SetEntityTagsParam"
+        },
+        {
+            "path": "/api/rooms/{room_id:.*}/notes/{room_note_id:.*}",
+            "method": "PATCH",
+            "controller": "Bristolian\\AppController\\Rooms::updateNote",
+            "return_types": [
+                "Bristolian\\Response\\SuccessResponse"
+            ],
+            "response_mappers": [
+                {
+                    "return_type": "Bristolian\\Response\\SuccessResponse",
+                    "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
+                }
+            ],
+            "request_body_param": "Bristolian\\Parameters\\UpdateRoomNoteParam"
+        },
+        {
+            "path": "/api/rooms/{room_id:.*}/notes/{room_note_id:.*}",
+            "method": "DELETE",
+            "controller": "Bristolian\\AppController\\Rooms::deleteNote",
+            "return_types": [
+                "Bristolian\\Response\\SuccessResponse"
+            ],
+            "response_mappers": [
+                {
+                    "return_type": "Bristolian\\Response\\SuccessResponse",
+                    "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
+                }
+            ]
+        },
+        {
             "path": "/api/rooms/{room_id:.*}/videos",
             "method": "GET",
             "controller": "Bristolian\\AppController\\Rooms::getVideos",
@@ -8922,6 +9230,37 @@
             ]
         },
         {
+            "name": "room_notes_panel",
+            "component": "RoomNotesPanel",
+            "source": "app/public/tsx/RoomNotesPanel.tsx",
+            "api_calls": [
+                {
+                    "method": "GET",
+                    "path": "/api/rooms/{room_id:.*}/notes"
+                },
+                {
+                    "method": "POST",
+                    "path": "/api/rooms/{room_id:.*}/notes"
+                },
+                {
+                    "method": "PATCH",
+                    "path": "/api/rooms/{room_id:.*}/notes/{room_note_id:.*}"
+                },
+                {
+                    "method": "DELETE",
+                    "path": "/api/rooms/{room_id:.*}/notes/{room_note_id:.*}"
+                },
+                {
+                    "method": "PUT",
+                    "path": "/api/rooms/{room_id:.*}/notes/{room_note_id:.*}/tags"
+                },
+                {
+                    "method": "GET",
+                    "path": "/api/rooms/{room_id:.*}/tags"
+                }
+            ]
+        },
+        {
             "name": "room_annotations_panel",
             "component": "RoomAnnotationsPanel",
             "source": "app/public/tsx/RoomAnnotationsPanel.tsx",
@@ -9131,11 +9470,11 @@
             "generator_callable": "Bristolian\\CliController\\GenerateFiles::generateJavaScriptConstants",
             "output_file": "app/public/tsx/generated/constants.tsx",
             "description": "This generates a TypeScript file that contains constants that need to be shared between the front and backend e.g. the name for the field on a form that uploads a file.",
-            "detail": "$constantDefinitions = [\n            'MEME_FILE_UPLOAD_FORM_NAME' => [\n                \\Bristolian\\AppController\\MemeUpload::class,\n                'MEME_FILE_UPLOAD_FORM_NAME',\n            ],\n            'ROOM_FILE_UPLOAD_FORM_NAME' => [\n                \\Bristolian\\AppController\\Rooms::class,\n                'ROOM_FILE_UPLOAD_FORM_NAME',\n            ],\n            'BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME' => [\n                \\Bristolian\\AppController\\BristolStairs::class,\n                'BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME',\n            ],\n            'ANNOTATION_JSON_MINIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationHighlightsJson::class,\n                'MINIMUM_LENGTH',\n            ],\n            'ANNOTATION_JSON_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationHighlightsJson::class,\n                'MAXIMUM_LENGTH',\n            ],\n            'ANNOTATION_TITLE_MINIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationTitle::class,\n                'MINIMUM_LENGTH',\n            ],\n            'ANNOTATION_TITLE_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationTitle::class,\n                'MAXIMUM_LENGTH',\n            ],\n            'ANNOTATION_TEXT_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationText::class,\n                'MAXIMUM_LENGTH',\n            ],\n            'ANNOTATION_MAX_PAGES' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationPage::class,\n                'MAX_PAGES',\n            ],\n            'MINIMUM_DISPLAY_NAME_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\DisplayName::class,\n                'MINIMUM_DISPLAY_NAME_LENGTH',\n            ],\n            'MAXIMUM_DISPLAY_NAME_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\DisplayName::class,\n                'MAXIMUM_DISPLAY_NAME_LENGTH',\n            ],\n            'MINIMUM_ABOUT_ME_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AboutMeText::class,\n                'MINIMUM_ABOUT_ME_LENGTH',\n            ],\n            'MAXIMUM_ABOUT_ME_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AboutMeText::class,\n                'MAXIMUM_ABOUT_ME_LENGTH',\n            ],\n            'DUPLICATE_FILENAME' => [\n                \\Bristolian\\Service\\MemeStorageProcessor\\UploadError::class,\n                'DUPLICATE_FILENAME',\n            ],\n            'MEMES_DISPLAY_LIMIT' => [\n                \\Bristolian\\AppController\\User::class,\n                'MEMES_DISPLAY_LIMIT',\n            ],\n            'MAX_TAGS_PER_ROOM' => [\n                \\Bristolian\\Repo\\RoomTagRepo\\RoomTagRepo::class,\n                'MAX_TAGS_PER_ROOM',\n            ],\n            'CLIP_TITLE_MINIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\ClipTitle::class,\n                'TITLE_MINIMUM_LENGTH',\n            ],\n            'CLIP_TITLE_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\ClipTitle::class,\n                'TITLE_MAXIMUM_LENGTH',\n            ],\n            'ROOM_CONTENT_LIST_DEFAULT_LIMIT' => [\n                \\Bristolian\\Parameters\\RoomContentSearchParams::class,\n                'DEFAULT_LIMIT',\n            ],\n        ];",
+            "detail": "$constantDefinitions = [\n            'MEME_FILE_UPLOAD_FORM_NAME' => [\n                \\Bristolian\\AppController\\MemeUpload::class,\n                'MEME_FILE_UPLOAD_FORM_NAME',\n            ],\n            'ROOM_FILE_UPLOAD_FORM_NAME' => [\n                \\Bristolian\\AppController\\Rooms::class,\n                'ROOM_FILE_UPLOAD_FORM_NAME',\n            ],\n            'BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME' => [\n                \\Bristolian\\AppController\\BristolStairs::class,\n                'BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME',\n            ],\n            'ANNOTATION_JSON_MINIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationHighlightsJson::class,\n                'MINIMUM_LENGTH',\n            ],\n            'ANNOTATION_JSON_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationHighlightsJson::class,\n                'MAXIMUM_LENGTH',\n            ],\n            'ANNOTATION_TITLE_MINIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationTitle::class,\n                'MINIMUM_LENGTH',\n            ],\n            'ANNOTATION_TITLE_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationTitle::class,\n                'MAXIMUM_LENGTH',\n            ],\n            'ANNOTATION_TEXT_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationText::class,\n                'MAXIMUM_LENGTH',\n            ],\n            'ANNOTATION_MAX_PAGES' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationPage::class,\n                'MAX_PAGES',\n            ],\n            'MINIMUM_DISPLAY_NAME_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\DisplayName::class,\n                'MINIMUM_DISPLAY_NAME_LENGTH',\n            ],\n            'MAXIMUM_DISPLAY_NAME_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\DisplayName::class,\n                'MAXIMUM_DISPLAY_NAME_LENGTH',\n            ],\n            'MINIMUM_ABOUT_ME_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AboutMeText::class,\n                'MINIMUM_ABOUT_ME_LENGTH',\n            ],\n            'MAXIMUM_ABOUT_ME_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AboutMeText::class,\n                'MAXIMUM_ABOUT_ME_LENGTH',\n            ],\n            'DUPLICATE_FILENAME' => [\n                \\Bristolian\\Service\\MemeStorageProcessor\\UploadError::class,\n                'DUPLICATE_FILENAME',\n            ],\n            'MEMES_DISPLAY_LIMIT' => [\n                \\Bristolian\\AppController\\User::class,\n                'MEMES_DISPLAY_LIMIT',\n            ],\n            'MAX_TAGS_PER_ROOM' => [\n                \\Bristolian\\Repo\\RoomTagRepo\\RoomTagRepo::class,\n                'MAX_TAGS_PER_ROOM',\n            ],\n            'CLIP_TITLE_MINIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\ClipTitle::class,\n                'TITLE_MINIMUM_LENGTH',\n            ],\n            'CLIP_TITLE_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\ClipTitle::class,\n                'TITLE_MAXIMUM_LENGTH',\n            ],\n            'ROOM_CONTENT_LIST_DEFAULT_LIMIT' => [\n                \\Bristolian\\Parameters\\RoomContentSearchParams::class,\n                'DEFAULT_LIMIT',\n            ],\n            'ROOM_NOTE_TITLE_MINIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\RoomNoteTitle::class,\n                'MINIMUM_LENGTH',\n            ],\n            'ROOM_NOTE_TITLE_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\RoomNoteTitle::class,\n                'MAXIMUM_LENGTH',\n            ],\n            'ROOM_NOTE_MARKDOWN_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\RoomNoteMarkdown::class,\n                'MAXIMUM_LENGTH',\n            ],\n        ];",
             "detail_source": {
                 "file": "src/Bristolian/CliController/GenerateFiles.php",
-                "line-start": 861,
-                "line-end": 938
+                "line-start": 862,
+                "line-end": 951
             }
         },
         {
@@ -9144,11 +9483,11 @@
             "generator_callable": "Bristolian\\CliController\\GenerateFiles::generateJavaScriptTypes",
             "output_file": "app/public/tsx/generated/types.tsx",
             "description": "Generate TypeScript interfaces and enums from selected PHP model / enum classes into app/public/tsx/generated/types.tsx for shared front/backend shapes.",
-            "detail": "$types = [\n            \\Bristolian\\Model\\Generated\\BristolStairInfo::class,\n            \\Bristolian\\Model\\Chat\\UserChatMessage::class,\n            \\Bristolian\\Model\\Generated\\EmailIncoming::class,\n            \\Bristolian\\Model\\Generated\\StoredMeme::class,\n            \\Bristolian\\Model\\Generated\\MemeTag::class,\n            \\Bristolian\\Model\\Generated\\ProcessorRunRecord::class,\n            \\Bristolian\\Model\\Generated\\RoomLink::class,\n            \\Bristolian\\Model\\Generated\\RoomAnnotation::class,\n            \\Bristolian\\Model\\Generated\\RoomTag::class,\n            \\Bristolian\\Model\\Generated\\Room::class,\n            \\Bristolian\\Model\\Generated\\RoomFileObjectInfo::class,\n            \\Bristolian\\Model\\Types\\RoomAnnotationView::class,\n            \\Bristolian\\Model\\Types\\RoomFileWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomLinkWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomAnnotationWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomVideoWithTags::class,\n            \\Bristolian\\Model\\Types\\UserProfile::class,\n            \\Bristolian\\Model\\Types\\UserDisplayName::class,\n            \\Bristolian\\Model\\Types\\UserProfileWithDisplayName::class,\n            \\Bristolian\\Model\\TinnedFish\\Product::class,\n        ];\n\n$enums = [\n            \\Bristolian\\ChatMessage\\ChatType::class,\n            \\Bristolian\\Repo\\ProcessorRepo\\ProcessType::class,\n            \\Bristolian\\Model\\TinnedFish\\ValidationStatus::class,\n        ];",
+            "detail": "$types = [\n            \\Bristolian\\Model\\Generated\\BristolStairInfo::class,\n            \\Bristolian\\Model\\Chat\\UserChatMessage::class,\n            \\Bristolian\\Model\\Generated\\EmailIncoming::class,\n            \\Bristolian\\Model\\Generated\\StoredMeme::class,\n            \\Bristolian\\Model\\Generated\\MemeTag::class,\n            \\Bristolian\\Model\\Generated\\ProcessorRunRecord::class,\n            \\Bristolian\\Model\\Generated\\RoomLink::class,\n            \\Bristolian\\Model\\Generated\\RoomAnnotation::class,\n            \\Bristolian\\Model\\Generated\\RoomTag::class,\n            \\Bristolian\\Model\\Generated\\Room::class,\n            \\Bristolian\\Model\\Generated\\RoomFileObjectInfo::class,\n            \\Bristolian\\Model\\Types\\RoomAnnotationView::class,\n            \\Bristolian\\Model\\Types\\RoomFileWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomLinkWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomNoteWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomAnnotationWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomVideoWithTags::class,\n            \\Bristolian\\Model\\Types\\UserProfile::class,\n            \\Bristolian\\Model\\Types\\UserDisplayName::class,\n            \\Bristolian\\Model\\Types\\UserProfileWithDisplayName::class,\n            \\Bristolian\\Model\\TinnedFish\\Product::class,\n        ];\n\n$enums = [\n            \\Bristolian\\ChatMessage\\ChatType::class,\n            \\Bristolian\\Repo\\ProcessorRepo\\ProcessType::class,\n            \\Bristolian\\Model\\TinnedFish\\ValidationStatus::class,\n        ];",
             "detail_source": {
                 "file": "src/Bristolian/CliController/GenerateFiles.php",
                 "line-start": 760,
-                "line-end": 790
+                "line-end": 791
             }
         },
         {

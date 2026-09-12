@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\Parameters\TinnedFish;
 
-use Bristolian\Parameters\PropertyType\BasicString;
+use DataType\Basic\BasicString;
 use Bristolian\StaticFactory;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;

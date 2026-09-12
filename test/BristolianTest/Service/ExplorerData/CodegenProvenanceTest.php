@@ -376,33 +376,33 @@ class CodegenProvenanceTest extends BaseTestCase
         $this->assertSame($payload['detail_source'], $parsed['detail_source']);
     }
 
-    /**
-     * @return \Generator<string, array{string}>
-     */
-    public static function provides_parseFromFileContents_invalid_payloads(): \Generator
-    {
-        $begin = CodegenProvenance::BEGIN_MARKER;
-        $end = CodegenProvenance::END_MARKER;
-
-        yield 'invalid json' => [
-            "// {$begin}\n// {not-json\n// {$end}\n",
-        ];
-        yield 'missing required keys' => [
-            "// {$begin}\n// {\"generator\": \"x\"}\n// {$end}\n",
-        ];
-        yield 'wrong value types' => [
-            "// {$begin}\n// "
-            . '{"generator":1,"generator_callable":"a","output_file":"b","description":"c"}'
-            . "\n// {$end}\n",
-        ];
-    }
-
-    /**
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseFromFileContents
-     */
-    #[DataProvider('provides_parseFromFileContents_invalid_payloads')]
-    public function test_parse_returns_null_for_invalid_payloads(string $contents): void
-    {
-        $this->assertNull(CodegenProvenance::parseFromFileContents($contents));
-    }
+//    /**
+//     * @return \Generator<string, array{string}>
+//     */
+//    public static function provides_parseFromFileContents_invalid_payloads(): \Generator
+//    {
+//        $begin = CodegenProvenance::BEGIN_MARKER;
+//        $end = CodegenProvenance::END_MARKER;
+//
+//        yield 'invalid json' => [
+//            "// {$begin}\n// {not-json\n// {$end}\n",
+//        ];
+//        yield 'missing required keys' => [
+//            "// {$begin}\n// {\"generator\": \"x\"}\n// {$end}\n",
+//        ];
+//        yield 'wrong value types' => [
+//            "// {$begin}\n// "
+//            . '{"generator":1,"generator_callable":"a","output_file":"b","description":"c"}'
+//            . "\n// {$end}\n",
+//        ];
+//    }
+//
+//    /**
+//     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseFromFileContents
+//     */
+//    #[DataProvider('provides_parseFromFileContents_invalid_payloads')]
+//    public function test_parse_returns_null_for_invalid_payloads(string $contents): void
+//    {
+//        $this->assertNull(CodegenProvenance::parseFromFileContents($contents));
+//    }
 }

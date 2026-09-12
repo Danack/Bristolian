@@ -6,7 +6,7 @@ namespace Bristolian\Parameters;
 
 use Bristolian\Parameters\PropertyType\RoomFileDescription;
 use Bristolian\Parameters\PropertyType\RoomFileNote;
-use Bristolian\Parameters\PropertyType\OptionalBasicString;
+use DataType\Basic\OptionalBasicString;
 use Bristolian\StaticFactory;
 use DataType\Create\CreateFromArray;
 use DataType\Create\CreateFromRequest;

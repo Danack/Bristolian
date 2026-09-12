@@ -7,10 +7,10 @@ use DataType\Create\CreateFromVarMap;
 use DataType\GetInputTypesFromAttributes;
 
 use Bristolian\Parameters\PropertyType\AnnotationPositionValue;
-use Bristolian\Parameters\PropertyType\BasicString;
+use DataType\Basic\BasicString;
 use Bristolian\Parameters\PropertyType\Url;
 use Bristolian\Parameters\PropertyType\Username;
-use Bristolian\Parameters\PropertyType\BasicDateTime;
+use DataType\Basic\BasicDateTime;
 use Bristolian\Parameters\PropertyType\EmailAddress;
 use Bristolian\Parameters\PropertyType\LinkDescription;
 use Bristolian\Parameters\PropertyType\LinkTitle;

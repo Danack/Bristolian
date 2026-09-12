@@ -4,4 +4,6 @@
 
 # php vendor/bin/phpunit -c phpunit.xml "$@"
 
+# php vendor/bin/phpunit -c phpunit.xml --no-coverage "$@"
+
 php vendor/bin/paratest -c phpunit.xml --processes=auto --no-coverage "$@"

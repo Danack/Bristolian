@@ -40,10 +40,7 @@ final class CliCommandRegistry
     public static function registerCommand(Application $console, CliCommandDefinition $definition): void
     {
         $command = new Command($definition->commandName, $definition->controllerCallable);
-
-        if ($definition->description !== '') {
-            $command->setDescription($definition->description);
-        }
+        $command->setDescription($definition->description);
 
         if ($definition->configure !== null) {
             ($definition->configure)($command);

@@ -2,7 +2,7 @@
 
 namespace Bristolian\Parameters;
 
-use Bristolian\Parameters\PropertyType\OptionalBasicString;
+use DataType\Basic\OptionalBasicString;
 use Bristolian\StaticFactory;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;

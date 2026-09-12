@@ -21,6 +21,7 @@ use Bristolian\Model\Types\ProcessorState;
 use Bristolian\Model\Types\RoomAnnotationWithTags;
 use Bristolian\Model\Types\RoomFileWithTags;
 use Bristolian\Model\Types\RoomLinkWithTags;
+use Bristolian\Model\Types\RoomNoteWithTags;
 use Bristolian\Model\Types\RoomVideoTranscriptList;
 use Bristolian\Model\Types\RoomVideoWithTags;
 use Bristolian\Model\Types\UserWebPushSubscription;
@@ -269,6 +270,28 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertSame('room-1', $link->room_id);
         $this->assertSame('Title', $link->title);
         $this->assertCount(1, $link->tags);
+    }
+
+    /** @covers \Bristolian\Model\Types\RoomNoteWithTags::__construct */
+    public function test_RoomNoteWithTags(): void
+    {
+        $tag = new RoomTag('tag-1', 'room-1', 'Tag', '', self::now());
+        $note = new RoomNoteWithTags(
+            'id-1',
+            'room-1',
+            'user-1',
+            'Title',
+            'markdown',
+            self::now(),
+            self::now(),
+            null,
+            [$tag]
+        );
+
+        $this->assertSame('id-1', $note->id);
+        $this->assertSame('room-1', $note->room_id);
+        $this->assertSame('Title', $note->title);
+        $this->assertCount(1, $note->tags);
     }
 
     /** @covers \Bristolian\Model\Types\RoomVideoTranscriptList::__construct */

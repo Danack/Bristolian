@@ -25,3 +25,6 @@ AI clean up.
 * standardise naming convention for SCSS + widgets.
 * divide pages.php into more sane components.
 * setup feeds for rooms and have the BccTro pipe data into the DB, then expose that as an RSS feed. Probably list all feed.
+
+
+* Covers sniff is broken. Maybe move to PHPStan?

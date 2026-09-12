@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bristolian\Parameters;
 
-use Bristolian\Parameters\PropertyType\OptionalBasicString;
+use DataType\Basic\OptionalBasicString;
 use Bristolian\Parameters\PropertyType\OptionalRoomContentListOrder;
 use Bristolian\Parameters\PropertyType\RoomContentSearchTagIds;
 use DataType\Value\Ordering;

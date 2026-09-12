@@ -2,8 +2,8 @@
 
 namespace Bristolian\Parameters;
 
-use Bristolian\Parameters\PropertyType\BasicInteger;
-use Bristolian\Parameters\PropertyType\BasicString;
+use DataType\Basic\BasicInteger;
+use DataType\Basic\BasicString;
 use Bristolian\StaticFactory;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;

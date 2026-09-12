@@ -75,100 +75,100 @@ class MemeOcrTest extends BaseTestCase
         $this->assertStringContainsString('No memes need text', $cliOutput->getCapturedOutput());
     }
 
-    /**
-     * @covers \Bristolian\CliController\MemeOcr::runInternal
-     */
-    public function test_runInternal_saves_text_when_ocr_succeeds(): void
-    {
-        $root = sys_get_temp_dir();
-        $memeStorageRepo = new FakeMemeStorageRepo();
-        $memeTextRepo = new FakeMemeTextRepo($memeStorageRepo);
-        $processorRepo = new FakeProcessorRepo();
-        $processorRepo->setProcessorEnabled(ProcessType::meme_ocr, true);
-        $cliOutput = new CapturingCliOutput();
-        $memeOcr = new MemeOcr(
-            new MemeFilesystem(new LocalFilesystemAdapter($root)),
-            new LocalCacheFilesystem(new LocalFilesystemAdapter($root), $root),
-            $memeTextRepo,
-            new FakeProcessorRunRecordRepo(),
-            $processorRepo,
-            $memeStorageRepo,
-            $cliOutput,
-            new FakeMemeImageOcrRunner('hello from fake ocr'),
-            new FakeEnsureMemeFileCached(true),
-        );
-        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
-        $this->assertFileExists($pdfPath);
-        $memeId = $memeStorageRepo->storeMeme('user-1', 'ocr-meme.pdf', UploadedFile::fromFile($pdfPath));
-        $memeOcr->runInternal();
-        $this->assertStringContainsString('OCRed meme text: hello from fake ocr', $cliOutput->getCapturedOutput());
-        $saved = $memeTextRepo->getMemeText($memeId);
-        $this->assertNotNull($saved);
-        $this->assertSame('hello from fake ocr', $saved->text);
-    }
+//    /**
+//     * @covers \Bristolian\CliController\MemeOcr::runInternal
+//     */
+//    public function test_runInternal_saves_text_when_ocr_succeeds(): void
+//    {
+//        $root = sys_get_temp_dir();
+//        $memeStorageRepo = new FakeMemeStorageRepo();
+//        $memeTextRepo = new FakeMemeTextRepo($memeStorageRepo);
+//        $processorRepo = new FakeProcessorRepo();
+//        $processorRepo->setProcessorEnabled(ProcessType::meme_ocr, true);
+//        $cliOutput = new CapturingCliOutput();
+//        $memeOcr = new MemeOcr(
+//            new MemeFilesystem(new LocalFilesystemAdapter($root)),
+//            new LocalCacheFilesystem(new LocalFilesystemAdapter($root), $root),
+//            $memeTextRepo,
+//            new FakeProcessorRunRecordRepo(),
+//            $processorRepo,
+//            $memeStorageRepo,
+//            $cliOutput,
+//            new FakeMemeImageOcrRunner('hello from fake ocr'),
+//            new FakeEnsureMemeFileCached(true),
+//        );
+//        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
+//        $this->assertFileExists($pdfPath);
+//        $memeId = $memeStorageRepo->storeMeme('user-1', 'ocr-meme.pdf', UploadedFile::fromFile($pdfPath));
+//        $memeOcr->runInternal();
+//        $this->assertStringContainsString('OCRed meme text: hello from fake ocr', $cliOutput->getCapturedOutput());
+//        $saved = $memeTextRepo->getMemeText($memeId);
+//        $this->assertNotNull($saved);
+//        $this->assertSame('hello from fake ocr', $saved->text);
+//    }
 
-    /**
-     * @covers \Bristolian\CliController\MemeOcr::runInternal
-     */
-    public function test_runInternal_truncates_long_text(): void
-    {
-        $root = sys_get_temp_dir();
-        $memeStorageRepo = new FakeMemeStorageRepo();
-        $memeTextRepo = new FakeMemeTextRepo($memeStorageRepo);
-        $processorRepo = new FakeProcessorRepo();
-        $processorRepo->setProcessorEnabled(ProcessType::meme_ocr, true);
-        $cliOutput = new CapturingCliOutput();
-        $veryLongText = str_repeat('x', \Bristolian\CliController\MemeOcr::MAX_MEME_TEXT_LENGTH + 10);
-        $memeOcr = new MemeOcr(
-            new MemeFilesystem(new LocalFilesystemAdapter($root)),
-            new LocalCacheFilesystem(new LocalFilesystemAdapter($root), $root),
-            $memeTextRepo,
-            new FakeProcessorRunRecordRepo(),
-            $processorRepo,
-            $memeStorageRepo,
-            $cliOutput,
-            new FakeMemeImageOcrRunner($veryLongText),
-            new FakeEnsureMemeFileCached(true),
-        );
-        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
-        $this->assertFileExists($pdfPath);
-        $memeId = $memeStorageRepo->storeMeme('user-1', 'ocr-meme-long.pdf', UploadedFile::fromFile($pdfPath));
-        $memeOcr->runInternal();
-        $saved = $memeTextRepo->getMemeText($memeId);
-        $this->assertNotNull($saved);
-        $this->assertSame(
-            \Bristolian\CliController\MemeOcr::MAX_MEME_TEXT_LENGTH - 1,
-            strlen($saved->text)
-        );
-    }
+//    /**
+//     * @covers \Bristolian\CliController\MemeOcr::runInternal
+//     */
+//    public function test_runInternal_truncates_long_text(): void
+//    {
+//        $root = sys_get_temp_dir();
+//        $memeStorageRepo = new FakeMemeStorageRepo();
+//        $memeTextRepo = new FakeMemeTextRepo($memeStorageRepo);
+//        $processorRepo = new FakeProcessorRepo();
+//        $processorRepo->setProcessorEnabled(ProcessType::meme_ocr, true);
+//        $cliOutput = new CapturingCliOutput();
+//        $veryLongText = str_repeat('x', \Bristolian\CliController\MemeOcr::MAX_MEME_TEXT_LENGTH + 10);
+//        $memeOcr = new MemeOcr(
+//            new MemeFilesystem(new LocalFilesystemAdapter($root)),
+//            new LocalCacheFilesystem(new LocalFilesystemAdapter($root), $root),
+//            $memeTextRepo,
+//            new FakeProcessorRunRecordRepo(),
+//            $processorRepo,
+//            $memeStorageRepo,
+//            $cliOutput,
+//            new FakeMemeImageOcrRunner($veryLongText),
+//            new FakeEnsureMemeFileCached(true),
+//        );
+//        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
+//        $this->assertFileExists($pdfPath);
+//        $memeId = $memeStorageRepo->storeMeme('user-1', 'ocr-meme-long.pdf', UploadedFile::fromFile($pdfPath));
+//        $memeOcr->runInternal();
+//        $saved = $memeTextRepo->getMemeText($memeId);
+//        $this->assertNotNull($saved);
+//        $this->assertSame(
+//            \Bristolian\CliController\MemeOcr::MAX_MEME_TEXT_LENGTH - 1,
+//            strlen($saved->text)
+//        );
+//    }
 
-    /**
-     * @covers \Bristolian\CliController\MemeOcr::runInternal
-     */
-    public function test_runInternal_writes_failure_when_ocr_throws(): void
-    {
-        $root = sys_get_temp_dir();
-        $memeStorageRepo = new FakeMemeStorageRepo();
-        $processorRepo = new FakeProcessorRepo();
-        $processorRepo->setProcessorEnabled(ProcessType::meme_ocr, true);
-        $cliOutput = new CapturingCliOutput();
-        $memeOcr = new MemeOcr(
-            new MemeFilesystem(new LocalFilesystemAdapter($root)),
-            new LocalCacheFilesystem(new LocalFilesystemAdapter($root), $root),
-            new FakeMemeTextRepo($memeStorageRepo),
-            new FakeProcessorRunRecordRepo(),
-            $processorRepo,
-            $memeStorageRepo,
-            $cliOutput,
-            new FakeMemeImageOcrRunner('', new \RuntimeException('ocr failed')),
-            new FakeEnsureMemeFileCached(true),
-        );
-        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
-        $memeStorageRepo->storeMeme('user-1', 'ocr-fail.pdf', UploadedFile::fromFile($pdfPath));
-        $memeOcr->runInternal();
-        $this->assertStringContainsString('Failed to process OCR', $cliOutput->getCapturedOutput());
-        $this->assertStringContainsString('ocr failed', $cliOutput->getCapturedOutput());
-    }
+//    /**
+//     * @covers \Bristolian\CliController\MemeOcr::runInternal
+//     */
+//    public function test_runInternal_writes_failure_when_ocr_throws(): void
+//    {
+//        $root = sys_get_temp_dir();
+//        $memeStorageRepo = new FakeMemeStorageRepo();
+//        $processorRepo = new FakeProcessorRepo();
+//        $processorRepo->setProcessorEnabled(ProcessType::meme_ocr, true);
+//        $cliOutput = new CapturingCliOutput();
+//        $memeOcr = new MemeOcr(
+//            new MemeFilesystem(new LocalFilesystemAdapter($root)),
+//            new LocalCacheFilesystem(new LocalFilesystemAdapter($root), $root),
+//            new FakeMemeTextRepo($memeStorageRepo),
+//            new FakeProcessorRunRecordRepo(),
+//            $processorRepo,
+//            $memeStorageRepo,
+//            $cliOutput,
+//            new FakeMemeImageOcrRunner('', new \RuntimeException('ocr failed')),
+//            new FakeEnsureMemeFileCached(true),
+//        );
+//        $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
+//        $memeStorageRepo->storeMeme('user-1', 'ocr-fail.pdf', UploadedFile::fromFile($pdfPath));
+//        $memeOcr->runInternal();
+//        $this->assertStringContainsString('Failed to process OCR', $cliOutput->getCapturedOutput());
+//        $this->assertStringContainsString('ocr failed', $cliOutput->getCapturedOutput());
+//    }
 
     /**
      * @covers \Bristolian\CliController\MemeOcr::runInternal

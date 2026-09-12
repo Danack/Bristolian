@@ -25,6 +25,8 @@ use Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo;
 use Bristolian\Repo\RoomFileTagRepo\RoomFileTagRepo;
 use Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
+use Bristolian\Repo\RoomNoteRepo\FakeRoomNoteRepo;
+use Bristolian\Repo\RoomNoteTagRepo\FakeRoomNoteTagRepo;
 use Bristolian\Repo\RoomLinkTagRepo\FakeRoomLinkTagRepo;
 use Bristolian\Repo\RoomLinkTagRepo\RoomLinkTagRepo;
 use Bristolian\Repo\RoomRepo\FakeRoomRepo;
@@ -55,6 +57,7 @@ use Bristolian\Response\Typed\GetRoomsDetailsResponse;
 use Bristolian\Response\Typed\GetRoomsFileAnnotationsResponse;
 use Bristolian\Response\Typed\GetRoomsFilesResponse;
 use Bristolian\Response\Typed\GetRoomsLinksResponse;
+use Bristolian\Response\Typed\GetRoomsNotesResponse;
 use Bristolian\Response\Typed\GetRoomsTagsResponse;
 use Bristolian\Response\Typed\GetRoomsVideosResponse;
 use Bristolian\Service\RoomFileStorage\FakeRoomFileStorage;
@@ -206,6 +209,15 @@ class RoomsTest extends BaseTestCase
     {
         $result = $this->injector->execute([Rooms::class, 'getLinks']);
         $this->assertInstanceOf(GetRoomsLinksResponse::class, $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::getNotes
+     */
+    public function test_getNotes(): void
+    {
+        $result = $this->injector->execute([Rooms::class, 'getNotes']);
+        $this->assertInstanceOf(GetRoomsNotesResponse::class, $result);
     }
 
     /**
@@ -941,6 +953,171 @@ class RoomsTest extends BaseTestCase
         $this->assertNotNull($updated);
         $this->assertSame('Updated link title that is long enough', $updated->title);
         $this->assertSame('Updated link description that is also long enough', $updated->description);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::addNote
+     */
+    public function test_addNote(): void
+    {
+        $jsonInput = new FakeJsonInput([
+            'title' => 'Agenda',
+            'markdown' => '# Hello',
+        ]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+
+        $result = $this->injector->execute([Rooms::class, 'addNote']);
+        $this->assertInstanceOf(SuccessResponse::class, $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::getNotes
+     * @covers \Bristolian\AppController\Rooms::resolveTagIdsToTags
+     */
+    public function test_getNotes_with_notes_and_tags_resolves_tags(): void
+    {
+        $roomNoteRepo = $this->injector->make(FakeRoomNoteRepo::class);
+        $noteId = $roomNoteRepo->create('test-user-id-001', $this->roomId, 'Tagged note', 'body', null);
+
+        $roomTagRepo = $this->injector->make(FakeRoomTagRepo::class);
+        $tag = $roomTagRepo->createTag($this->roomId, TagParams::createFromVarMap(new ArrayVarMap([
+            'text' => 'note-tag',
+            'description' => 'Note tag desc',
+        ])));
+
+        $roomNoteTagRepo = $this->injector->make(FakeRoomNoteTagRepo::class);
+        $roomNoteTagRepo->setTagsForRoomNote($noteId, [$tag->tag_id]);
+
+        $result = $this->injector->execute([Rooms::class, 'getNotes']);
+        $this->assertInstanceOf(GetRoomsNotesResponse::class, $result);
+        $data = json_decode($result->getBody(), true);
+        $this->assertCount(1, $data['data']['notes']);
+        $this->assertCount(1, $data['data']['notes'][0]['tags']);
+        $this->assertSame('note-tag', $data['data']['notes'][0]['tags'][0]['text']);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::updateNote
+     */
+    public function test_updateNote(): void
+    {
+        $roomNoteRepo = $this->injector->make(FakeRoomNoteRepo::class);
+        $noteId = $roomNoteRepo->create('test-user-id-001', $this->roomId, 'Original', 'old body', null);
+
+        $jsonInput = new FakeJsonInput([
+            'title' => 'Updated',
+            'markdown' => 'new body',
+            'document_timestamp' => '2020-01-02T03:04',
+        ]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+        $this->injector->defineParam('room_note_id', $noteId);
+
+        $result = $this->injector->execute([Rooms::class, 'updateNote']);
+        $this->assertInstanceOf(SuccessResponse::class, $result);
+
+        $updated = $roomNoteRepo->getNote($this->roomId, $noteId);
+        $this->assertSame('Updated', $updated->title);
+        $this->assertSame('new body', $updated->markdown);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::updateNote
+     */
+    public function test_updateNote_throws_when_note_not_found(): void
+    {
+        $jsonInput = new FakeJsonInput([
+            'title' => 'Updated',
+            'markdown' => 'new body',
+        ]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+        $this->injector->defineParam('room_note_id', 'nonexistent-note-id');
+
+        $this->expectException(ContentNotFoundException::class);
+        $this->injector->execute([Rooms::class, 'updateNote']);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::deleteNote
+     */
+    public function test_deleteNote(): void
+    {
+        $roomNoteRepo = $this->injector->make(FakeRoomNoteRepo::class);
+        $noteId = $roomNoteRepo->create('test-user-id-001', $this->roomId, 'To delete', 'body', null);
+        $this->injector->defineParam('room_note_id', $noteId);
+
+        $result = $this->injector->execute([Rooms::class, 'deleteNote']);
+        $this->assertInstanceOf(SuccessResponse::class, $result);
+
+        $this->expectException(ContentNotFoundException::class);
+        $roomNoteRepo->getNote($this->roomId, $noteId);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::setNoteTags
+     */
+    public function test_setNoteTags_success(): void
+    {
+        $roomNoteRepo = $this->injector->make(FakeRoomNoteRepo::class);
+        $noteId = $roomNoteRepo->create('test-user-id-001', $this->roomId, 'Tagged', 'body', null);
+
+        $roomTagRepo = $this->injector->make(FakeRoomTagRepo::class);
+        $tag = $roomTagRepo->createTag($this->roomId, TagParams::createFromVarMap(new ArrayVarMap([
+            'text' => 'note-tag-2',
+            'description' => 'Note tag desc',
+        ])));
+
+        $jsonInput = new FakeJsonInput(['tag_ids' => [$tag->tag_id]]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+        $this->injector->defineParam('room_note_id', $noteId);
+
+        $result = $this->injector->execute([Rooms::class, 'setNoteTags']);
+        $this->assertInstanceOf(SuccessResponse::class, $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::setNoteTags
+     */
+    public function test_setNoteTags_throws_when_note_not_found(): void
+    {
+        $jsonInput = new FakeJsonInput(['tag_ids' => []]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+        $this->injector->defineParam('room_note_id', 'nonexistent-note-id');
+
+        $this->expectException(ContentNotFoundException::class);
+        $this->injector->execute([Rooms::class, 'setNoteTags']);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::showNote
+     */
+    public function test_showNote(): void
+    {
+        $roomNoteRepo = $this->injector->make(FakeRoomNoteRepo::class);
+        $noteId = $roomNoteRepo->create('test-user-id-001', $this->roomId, 'View me', '**bold**', null);
+        $this->injector->defineParam('room_note_id', $noteId);
+
+        $result = $this->injector->execute([Rooms::class, 'showNote']);
+        $this->assertIsString($result);
+        $this->assertStringContainsString('View me', $result);
+        $this->assertStringContainsString('Test Room', $result);
+        $this->assertStringContainsString('#notes', $result);
+    }
+
+    /**
+     * @covers \Bristolian\AppController\Rooms::showNote
+     */
+    public function test_showNote_room_not_found(): void
+    {
+        $this->injector->defineParam('room_id', 'nonexistent-room-id');
+        $this->injector->defineParam('room_note_id', 'any-note-id');
+        $result = $this->injector->execute([Rooms::class, 'showNote']);
+        $this->assertIsString($result);
+        $this->assertStringContainsString('Room not found', $result);
     }
 
     /**

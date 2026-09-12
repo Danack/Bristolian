@@ -39,4 +39,9 @@ class ContentNotFoundException extends BristolianException
     {
         return new self("Transcript not found");
     }
+
+    public static function room_note_not_found(string $room_id, string $room_note_id): self
+    {
+        return new self("room note with id ($room_note_id) in room ($room_id) not found");
+    }
 }

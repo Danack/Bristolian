@@ -26,7 +26,6 @@ class GenerateApiTokenParamsTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\TinnedFish\GenerateApiTokenParams
-     * @covers \Bristolian\Parameters\PropertyType\BasicString
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]

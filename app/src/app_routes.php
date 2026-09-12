@@ -82,6 +82,8 @@ function getAllAppRoutes()
         // Comms/chat test page
         ['/comms', 'GET', 'Bristolian\AppController\Chat::get_test_page'],
 
+        // View a single room note
+        ['/rooms/{room_id:.*}/notes/{room_note_id:.*}', 'GET', 'Bristolian\AppController\Rooms::showNote'],
         // View single annotation
         ['/rooms/{room_id:.*}/file/{file_id:.*}/annotations/{annotation_id}/view', 'GET', '\Bristolian\AppController\Rooms::viewAnnotation'],
         // Iframe embedding for annotatable file

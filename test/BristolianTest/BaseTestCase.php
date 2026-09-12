@@ -148,6 +148,10 @@ class BaseTestCase extends TestCase
                 \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::class,
             \Bristolian\Repo\RoomLinkTagRepo\RoomLinkTagRepo::class =>
                 \Bristolian\Repo\RoomLinkTagRepo\FakeRoomLinkTagRepo::class,
+            \Bristolian\Repo\RoomNoteRepo\RoomNoteRepo::class =>
+                \Bristolian\Repo\RoomNoteRepo\FakeRoomNoteRepo::class,
+            \Bristolian\Repo\RoomNoteTagRepo\RoomNoteTagRepo::class =>
+                \Bristolian\Repo\RoomNoteTagRepo\FakeRoomNoteTagRepo::class,
             \Bristolian\Repo\RoomRepo\RoomRepo::class =>
                 \Bristolian\Repo\RoomRepo\FakeRoomRepo::class,
             \Bristolian\Repo\RoomTagRepo\RoomTagRepo::class =>

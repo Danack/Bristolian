@@ -32,7 +32,6 @@ class OpenmapNearbyParamsTest extends BaseTestCase
 
     /**
      * @covers \Bristolian\Parameters\OpenmapNearbyParams
-     * @covers \Bristolian\Parameters\PropertyType\BasicFloat
      * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */

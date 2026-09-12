@@ -145,6 +145,19 @@ final class WidgetRegistry
                 ],
             ),
             new WidgetDefinition(
+                'room_notes_panel',
+                'RoomNotesPanel',
+                './RoomNotesPanel',
+                [
+                    new WidgetApiCall('GET', '/api/rooms/{room_id:.*}/notes'),
+                    new WidgetApiCall('POST', '/api/rooms/{room_id:.*}/notes'),
+                    new WidgetApiCall('PATCH', '/api/rooms/{room_id:.*}/notes/{room_note_id:.*}'),
+                    new WidgetApiCall('DELETE', '/api/rooms/{room_id:.*}/notes/{room_note_id:.*}'),
+                    new WidgetApiCall('PUT', '/api/rooms/{room_id:.*}/notes/{room_note_id:.*}/tags'),
+                    new WidgetApiCall('GET', '/api/rooms/{room_id:.*}/tags'),
+                ],
+            ),
+            new WidgetDefinition(
                 'room_annotations_panel',
                 'RoomAnnotationsPanel',
                 './RoomAnnotationsPanel',

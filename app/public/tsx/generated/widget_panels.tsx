@@ -31,6 +31,7 @@ import { QrCodeGeneratorPanel } from "../QrCodeGenerator";
 import { RoomFilesPanel } from "../RoomFilesPanel";
 import { RoomFileUploadPanel } from "../RoomFileUploadPanel";
 import { RoomLinksPanel } from "../RoomLinksPanel";
+import { RoomNotesPanel } from "../RoomNotesPanel";
 import { RoomAnnotationsPanel } from "../RoomAnnotationsPanel";
 import { RoomVideosPanel } from "../RoomVideosPanel";
 import { RoomManagementPanel } from "../RoomManagementPanel";
@@ -105,6 +106,10 @@ export const panels: WidgetClassBinding[] = [
     {
         class: "room_links_panel",
         component: RoomLinksPanel,
+    },
+    {
+        class: "room_notes_panel",
+        component: RoomNotesPanel,
     },
     {
         class: "room_annotations_panel",
@@ -227,6 +232,14 @@ export const WIDGET_API_CALLS: Record<string, ReadonlyArray<{ method: string; pa
         { method: "POST", path: "/api/rooms/{room_id:.*}/links" },
         { method: "PATCH", path: "/api/rooms/{room_id:.*}/links/{room_link_id:.*}" },
         { method: "PUT", path: "/api/rooms/{room_id:.*}/links/{room_link_id:.*}/tags" },
+    ],
+    "room_notes_panel": [
+        { method: "GET", path: "/api/rooms/{room_id:.*}/notes" },
+        { method: "POST", path: "/api/rooms/{room_id:.*}/notes" },
+        { method: "PATCH", path: "/api/rooms/{room_id:.*}/notes/{room_note_id:.*}" },
+        { method: "DELETE", path: "/api/rooms/{room_id:.*}/notes/{room_note_id:.*}" },
+        { method: "PUT", path: "/api/rooms/{room_id:.*}/notes/{room_note_id:.*}/tags" },
+        { method: "GET", path: "/api/rooms/{room_id:.*}/tags" },
     ],
     "room_annotations_panel": [
         { method: "GET", path: "/api/rooms/{room_id:.*}/annotations" },

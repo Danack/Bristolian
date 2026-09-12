@@ -855,8 +855,8 @@ In Preact, `onChange` may only fire when an input field loses focus, not on ever
 
 ```php
 use DataType\Create\CreateFromRequest;
-use Bristolian\Parameters\PropertyType\BasicString;
-use Bristolian\Parameters\PropertyType\BasicInteger;
+use DataType\Basic\BasicString;
+use DataType\Basic\BasicInteger;
 
 class MyParams implements DataType, StaticFactory
 {

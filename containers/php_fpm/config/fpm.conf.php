@@ -137,6 +137,7 @@ security.limit_extensions = .php
 
 ; Pass environment variables
 ;env[HOSTNAME] = \$HOSTNAME
+env[RUNNING_IN_DOCKER] = \$RUNNING_IN_DOCKER
 
 ; Additional php.ini defines
 ;php_admin_value[memory_limit] = 32M

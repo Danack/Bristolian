@@ -6,7 +6,7 @@ use Bristolian\StaticFactory;
 use Bristolian\ToArray;
 use Bristolian\FromArray;
 use Bristolian\FromString;
-use Bristolian\Parameters\PropertyType\BasicString;
+use DataType\Basic\BasicString;
 use Bristolian\ToString;
 use DataType\Create\CreateFromRequest;
 use DataType\Create\CreateFromVarMap;

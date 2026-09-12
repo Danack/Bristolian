@@ -772,6 +772,7 @@ class GenerateFiles
             \Bristolian\Model\Types\RoomAnnotationView::class,
             \Bristolian\Model\Types\RoomFileWithTags::class,
             \Bristolian\Model\Types\RoomLinkWithTags::class,
+            \Bristolian\Model\Types\RoomNoteWithTags::class,
             \Bristolian\Model\Types\RoomAnnotationWithTags::class,
             \Bristolian\Model\Types\RoomVideoWithTags::class,
             \Bristolian\Model\Types\UserProfile::class,
@@ -934,6 +935,18 @@ class GenerateFiles
             'ROOM_CONTENT_LIST_DEFAULT_LIMIT' => [
                 \Bristolian\Parameters\RoomContentSearchParams::class,
                 'DEFAULT_LIMIT',
+            ],
+            'ROOM_NOTE_TITLE_MINIMUM_LENGTH' => [
+                \Bristolian\Parameters\PropertyType\RoomNoteTitle::class,
+                'MINIMUM_LENGTH',
+            ],
+            'ROOM_NOTE_TITLE_MAXIMUM_LENGTH' => [
+                \Bristolian\Parameters\PropertyType\RoomNoteTitle::class,
+                'MAXIMUM_LENGTH',
+            ],
+            'ROOM_NOTE_MARKDOWN_MAXIMUM_LENGTH' => [
+                \Bristolian\Parameters\PropertyType\RoomNoteMarkdown::class,
+                'MAXIMUM_LENGTH',
             ],
         ];
 

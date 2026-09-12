@@ -2,7 +2,7 @@
 
 namespace Bristolian\Parameters;
 
-use Bristolian\Parameters\PropertyType\BasicString;
+use DataType\Basic\BasicString;
 use Bristolian\Parameters\PropertyType\WebPushEndPoint;
 use Bristolian\Parameters\PropertyType\WebPushExpirationTime;
 use Bristolian\StaticFactory;

@@ -105,4 +105,14 @@ class ContentNotFoundExceptionTest extends BaseTestCase
         $this->assertInstanceOf(ContentNotFoundException::class, $exception);
         $this->assertSame("Transcript not found", $exception->getMessage());
     }
+
+    /**
+     * @covers \Bristolian\Exception\ContentNotFoundException::room_note_not_found
+     */
+    public function test_room_note_not_found(): void
+    {
+        $exception = ContentNotFoundException::room_note_not_found('room_1', 'note_1');
+        $this->assertStringContainsString('note_1', $exception->getMessage());
+        $this->assertStringContainsString('room_1', $exception->getMessage());
+    }
 }

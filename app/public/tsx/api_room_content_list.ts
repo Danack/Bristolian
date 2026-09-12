@@ -1,3 +1,5 @@
+import type { GetRoomsNotesResponse } from "./generated/api_routes";
+
 /**
  * Helper to call room content list endpoints (files, links, videos) with optional search params.
  * Builds URL with query string; does not modify the generated api_routes.
@@ -107,4 +109,12 @@ export function fetchRoomVideos(
     options?: FetchRoomContentListOptions
 ): Promise<GetRoomsVideosResponse> {
     return fetchWithParams<GetRoomsVideosResponse>(`/api/rooms/${roomId}/videos`, params, options);
+}
+
+export function fetchRoomNotes(
+    roomId: string,
+    params: RoomContentSearchParams,
+    options?: FetchRoomContentListOptions
+): Promise<GetRoomsNotesResponse> {
+    return fetchWithParams<GetRoomsNotesResponse>(`/api/rooms/${roomId}/notes`, params, options);
 }
