@@ -1,0 +1,38 @@
+.room_notes_add_form {
+  .room_note_add_success {
+    display: inline-block;
+    margin-top: 0.25rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: 4px;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+    font-weight: 600;
+  }
+}
+
+
+.room_note_markdown_input {
+  width: 100%;
+  min-height: 12rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.room_note_page {
+  max-width: 48rem;
+}
+
+.room_note_rendered {
+  margin-top: 1rem;
+  line-height: 1.5;
+
+  table {
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    border: 1px solid #ccc;
+    padding: 0.25rem 0.5rem;
+  }
+}
