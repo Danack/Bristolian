@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Bristolian\Service\MemeImageOcr;
 
+use function Safe\fclose;
+use function Safe\proc_close;
+use function Safe\proc_open;
+use function Safe\stream_get_contents;
+
 /**
  * Production: runs containers/supervisord/image_ocr.py via python3.
  * @codeCoverageIgnore
@@ -19,12 +24,11 @@ final class ProcOpenPythonMemeImageOcrRunner implements MemeImageOcrRunner
 
     public function extractTextFromImageFile(string $absoluteImagePath): string
     {
-        $cmd = [
-            '/usr/bin/env',
-            'python3',
-            $this->pythonScriptPath,
-            $absoluteImagePath,
-        ];
+        $command = sprintf(
+            '/usr/bin/env python3 %s %s',
+            escapeshellarg($this->pythonScriptPath),
+            escapeshellarg($absoluteImagePath)
+        );
 
         $descriptorspec = [
             0 => ['pipe', 'r'],
@@ -32,11 +36,7 @@ final class ProcOpenPythonMemeImageOcrRunner implements MemeImageOcrRunner
             2 => ['pipe', 'w'],
         ];
 
-        $process = proc_open($cmd, $descriptorspec, $pipes);
-
-        if (!is_resource($process)) {
-            throw new \RuntimeException('Failed to start OCR process');
-        }
+        $process = proc_open($command, $descriptorspec, $pipes);
 
         fclose($pipes[0]);
 

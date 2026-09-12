@@ -28,6 +28,7 @@ use Bristolian\Service\RoomFileStorage\FakeRoomFileStorage;
 use Bristolian\Service\RoomFileStorage\UploadError;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -386,7 +387,7 @@ class RoomsTest extends BaseTestCase
             'uploaded',
             100,
             'user-1',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         ));
         $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
             'file-b-id',
@@ -395,7 +396,7 @@ class RoomsTest extends BaseTestCase
             'uploaded',
             200,
             'user-1',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         ));
         $roomFileRepo->addFileToRoom('file-a-id', $room->id);
         $roomFileRepo->addFileToRoom('file-b-id', $room->id);
@@ -440,7 +441,7 @@ class RoomsTest extends BaseTestCase
             'uploaded',
             100,
             'user-1',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         ));
         $roomFileRepo->addFileToRoom($file_id, $room->id);
 
@@ -481,7 +482,7 @@ class RoomsTest extends BaseTestCase
             'uploaded',
             100,
             'user-1',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         ));
         $roomFileRepo->addFileToRoom($file_id, $room->id);
 
@@ -529,7 +530,7 @@ class RoomsTest extends BaseTestCase
             'uploaded',
             100,
             'user-1',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         ));
         $roomFileRepo->addFileToRoom($file_id, $room->id);
 
@@ -1301,7 +1302,7 @@ class RoomsTest extends BaseTestCase
             'uploaded',
             100,
             'user-1',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         ));
         $roomFileRepo->addFileToRoom($file_id, $room->id);
 
@@ -1519,7 +1520,7 @@ class RoomsTest extends BaseTestCase
             'uploaded',
             100,
             'user-1',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         ));
         $roomFileRepo->addFileToRoom($file_id, $room->id);
 
@@ -1576,7 +1577,7 @@ class RoomsTest extends BaseTestCase
             'uploaded',
             100,
             'user-1',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         ));
         $roomFileRepo->addFileToRoom($file_id, $room->id);
 
@@ -1639,7 +1640,7 @@ class RoomsTest extends BaseTestCase
             'uploaded',
             100,
             'user-1',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         ));
         $roomFileRepo->addFileToRoom($file_id, $room->id);
 

@@ -6,6 +6,8 @@ namespace BristolianTest\Service\CliOutput;
 
 use Bristolian\Service\CliOutput\EchoCliOutput;
 use BristolianTest\BaseTestCase;
+use function Safe\ob_get_clean;
+use function Safe\ob_start;
 
 /**
  * @coversNothing

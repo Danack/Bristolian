@@ -6,6 +6,7 @@ use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\RoomVideoTranscript;
 use Bristolian\Model\Types\RoomVideoTranscriptList;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
 
 class InMemoryRoomVideoTranscriptRepo implements RoomVideoTranscriptRepo
 {
@@ -42,7 +43,7 @@ class InMemoryRoomVideoTranscriptRepo implements RoomVideoTranscriptRepo
             transcript_number: $maxNumber + 1,
             language: $language,
             vtt_content: $vtt_content,
-            created_at: new \DateTimeImmutable()
+            created_at: new DateTimeImmutable()
         );
 
         $this->transcriptsById[$id] = $transcript;

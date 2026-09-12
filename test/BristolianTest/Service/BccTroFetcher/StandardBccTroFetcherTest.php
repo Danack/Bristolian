@@ -9,6 +9,7 @@ use Bristolian\Service\HttpFetcher\FakeHttpFetcherReturning404;
 use Bristolian\Service\HttpFetcher\FakeHttpFetcherWithFixedResponse;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use function Safe\file_get_contents;
 
 /**
  * @coversNothing
@@ -75,9 +76,6 @@ class StandardBccTroFetcherTest extends BaseTestCase
     ): void {
 
         $htmlContent = file_get_contents($html_input_file);
-        if ($htmlContent === false) {
-            $this->fail("Could not read example file: $html_input_file");
-        }
 
         $httpFetcher = new FakeHttpFetcherWithFixedResponse(200, $htmlContent);
         $fetcher = new StandardBccTroFetcher($httpFetcher);

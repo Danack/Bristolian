@@ -4,6 +4,7 @@ namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Model\Generated\User;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -17,7 +18,7 @@ class UserTest extends BaseTestCase
     {
         // User constructor takes: id (string), created_at (DateTimeInterface)
         $id = 'test-user-id';
-        $createdAt = new \DateTimeImmutable();
+        $createdAt = new DateTimeImmutable();
         $user = new User($id, $createdAt);
 
         $this->assertSame($id, $user->id);

@@ -6,6 +6,9 @@ use Bristolian\Exception\BristolianException;
 use Bristolian\Model\Types\IncomingEmail;
 use Bristolian\Model\Types\IncomingEmailParam;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
+use function Safe\file_get_contents;
+use function Safe\json_decode;
 
 /**
  * @coversNothing
@@ -63,7 +66,7 @@ class IncomingEmailTest extends BaseTestCase
      */
     public function testIncomingEmail_construct(): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $email = new IncomingEmail(
             id: 1,
             message_id: '<msg-123>',

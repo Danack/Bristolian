@@ -2,10 +2,14 @@
 
 namespace Bristolian\CliController;
 
-use Bristolian\Exception\BristolianException;
 use OpenApi\OpenApiGenerator;
 use Seld\JsonLint\JsonParser;
 use VarMap\VarMap;
+use function Safe\file_get_contents;
+use function Safe\file_put_contents;
+use function Safe\json_encode;
+use function Safe\preg_match;
+use function Safe\unlink;
 
 /**
  * CLI controller for OpenAPI/Swagger operations.
@@ -25,10 +29,6 @@ class OpenApi
         
         // Convert to JSON with pretty printing
         $jsonContent = json_encode($apiData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        
-        if ($jsonContent === false) {
-            throw new BristolianException("Failed to encode OpenAPI data to JSON");
-        }
 
         echo $jsonContent . "\n";
     }

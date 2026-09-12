@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use function Safe\file_get_contents;
+use function Safe\preg_match;
+
 /**
  * Parse a Supervisord program config file. Explorer output uses
  * program_name and command via SupervisordProgramParams.
@@ -12,10 +15,6 @@ declare(strict_types=1);
 function parseSupervisordProgramConfigFile(string $filePath): array
 {
     $content = file_get_contents($filePath);
-
-    if ($content === false) {
-        throw new \InvalidArgumentException('Could not read Supervisord config file: ' . $filePath);
-    }
 
     $programName = null;
     $values = [];

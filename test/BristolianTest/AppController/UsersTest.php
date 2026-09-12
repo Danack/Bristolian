@@ -33,6 +33,9 @@ use Laminas\Diactoros\ServerRequest;
 use SlimDispatcher\Response\HtmlResponse;
 use SlimDispatcher\Response\JsonResponse;
 use VarMap\ArrayVarMap;
+use function Safe\file_put_contents;
+use function Safe\json_decode;
+use function Safe\mkdir;
 
 /**
  * @coversNothing

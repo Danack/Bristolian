@@ -14,6 +14,7 @@ use BristolianTest\TestFixtures\ToArrayClassWithDatetime;
 use BristolianTest\TestFixtures\ToArrayClassWithSkippedProperty;
 use BristolianTest\TestFixtures\ToArrayClassWithUnsupportedProperty;
 use Bristolian\Exception\BristolianException;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -58,7 +59,7 @@ class ToArrayTest extends BaseTestCase
     public function test_works_with_datetime()
     {
         $string_value = "John";
-        $date_value = new \DateTimeImmutable("2010-01-28T15:00:00+02:00");
+        $date_value = new DateTimeImmutable("2010-01-28T15:00:00+02:00");
 
         $object = new ToArrayClassWithDatetime($string_value, $date_value);
 
@@ -94,6 +95,6 @@ class ToArrayTest extends BaseTestCase
         $this->expectException(BristolianException::class);
         $this->expectExceptionMessage('Failed to convert object to array on item [unsupported]');
 
-        $object->toArray();
+        $this->assertNotEmpty($object->toArray());
     }
 }

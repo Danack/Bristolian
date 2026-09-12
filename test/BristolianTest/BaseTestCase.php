@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Danack\PHPUnitHelper\StringTemplateMatching;
 use JMac\Testing\PhpUnit\Tia\Traits\RunWithTia;
 use function \Danack\PHPUnitHelper\templateStringToRegExp;
+use function Safe\preg_match;
 
 /**
  * @coversNothing

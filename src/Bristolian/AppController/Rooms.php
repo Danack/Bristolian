@@ -66,6 +66,8 @@ use Bristolian\Service\RoomFileStorage\HandleRoomFileUpload;
 use Bristolian\Session\UserSession;
 use SlimDispatcher\Response\StubResponse;
 use function DataType\createArrayOfTypeOrError;
+use Safe\DateTimeImmutable;
+use function Safe\realpath;
 
 class Rooms
 {
@@ -501,7 +503,7 @@ class Rooms
         $param = UpdateRoomFileParam::createFromArray($jsonInput->getData());
         $documentTimestamp = null;
         if ($param->document_timestamp !== null && trim($param->document_timestamp) !== '') {
-            $documentTimestamp = new \DateTimeImmutable($param->document_timestamp);
+            $documentTimestamp = new DateTimeImmutable($param->document_timestamp);
         }
         $roomFileRepo->updateRoomFileDetails(
             $room_id,
@@ -671,15 +673,6 @@ class Rooms
         $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;
 
         $filenameToServe = realpath($localCacheFilename);
-
-        // Difficult to test: requires cache adapter to not persist under getFullPath() (e.g. in-memory).
-        if ($filenameToServe === false) {
-            // @codeCoverageIgnoreStart
-            throw new BristolianException(
-                "Failed to retrieve file from object store [" . $normalized_name . "]."
-            );
-            // @codeCoverageIgnoreEnd
-        }
 
         return new StreamingResponse(
             $filenameToServe

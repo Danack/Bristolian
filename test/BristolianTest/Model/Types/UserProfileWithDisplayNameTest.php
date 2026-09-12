@@ -8,6 +8,7 @@ use Bristolian\Model\Generated\UserDisplayName;
 use Bristolian\Model\Generated\UserProfile;
 use Bristolian\Model\Types\UserProfileWithDisplayName;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -19,7 +20,7 @@ class UserProfileWithDisplayNameTest extends BaseTestCase
      */
     public function test_getters_with_display_name(): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $userProfile = new UserProfile(
             user_id: 'user-123',
             avatar_image_id: 'avatar-456',
@@ -48,7 +49,7 @@ class UserProfileWithDisplayNameTest extends BaseTestCase
      */
     public function test_getDisplayName_returns_empty_string_when_display_name_null(): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $userProfile = new UserProfile(
             user_id: 'user-123',
             avatar_image_id: null,

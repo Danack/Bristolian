@@ -8,6 +8,10 @@ use Bristolian\Filesystem\BristolStairsFilesystem;
 use Bristolian\Service\ObjectStore\StandardBristolianStairImageObjectStore;
 use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
+use function Safe\file_get_contents;
+use function Safe\mkdir;
+use function Safe\rmdir;
+use function Safe\unlink;
 
 /**
  * Unit test for StandardBristolianStairImageObjectStore using a local filesystem (no external storage).

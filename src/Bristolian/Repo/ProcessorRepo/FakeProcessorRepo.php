@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Bristolian\Repo\ProcessorRepo;
 
 use Bristolian\Model\Types\ProcessorState;
+use Safe\DateTimeImmutable;
 
 /**
  * Fake implementation of ProcessorRepo for testing.
@@ -36,7 +37,7 @@ class FakeProcessorRepo implements ProcessorRepo
             id: 'fake-' . $processor->value,
             enabled: $enabled,
             type: $processor->value,
-            updated_at: new \DateTimeImmutable()
+            updated_at: new DateTimeImmutable()
         );
     }
 

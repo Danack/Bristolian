@@ -8,6 +8,10 @@ use Bristolian\Filesystem\MemeFilesystem;
 use Bristolian\Service\ObjectStore\StandardMemeObjectStore;
 use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
+use function Safe\file_get_contents;
+use function Safe\mkdir;
+use function Safe\rmdir;
+use function Safe\unlink;
 
 /**
  * Unit test for StandardMemeObjectStore using a local filesystem (no external storage).

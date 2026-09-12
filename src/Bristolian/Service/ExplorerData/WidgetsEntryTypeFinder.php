@@ -7,6 +7,7 @@ namespace Bristolian\Service\ExplorerData;
 use Bristolian\Widget\WidgetApiCall;
 use Bristolian\Widget\WidgetApiCallValidator;
 use Bristolian\Widget\WidgetRegistry;
+use function Safe\preg_replace;
 
 /**
  * @codeCoverageIgnore
@@ -54,9 +55,6 @@ class WidgetsEntryTypeFinder implements EntryTypeFinder
     {
         $projectRoot = dirname(__DIR__, 4);
         $normalizedModulePath = preg_replace('#^\./#', '', $modulePath);
-        if (is_string($normalizedModulePath) === false) {
-            $normalizedModulePath = $modulePath;
-        }
 
         $relativeWithoutExtension = self::TSX_BASE_DIRECTORY . '/' . $normalizedModulePath;
 

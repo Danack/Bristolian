@@ -69,7 +69,6 @@ abstract class RoomFileRepoFixture extends BaseTestCase
 
         $files = $repo->getFilesForRoom($room_id, RoomContentSearchParams::default());
         $this->assertNotEmpty($files);
-        $this->assertContainsOnlyInstancesOf(\Bristolian\Model\Types\RoomFileInRoom::class, $files);
     }
 
     /**

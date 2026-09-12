@@ -7,6 +7,7 @@ namespace Bristolian\Repo\AvatarImageStorageInfoRepo;
 use Bristolian\Model\Types\AvatarImageFile;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
 
 /**
  * Fake implementation of AvatarImageStorageInfoRepo for testing.
@@ -23,7 +24,7 @@ class FakeAvatarImageStorageInfoRepo implements AvatarImageStorageInfoRepo
         string $normalized_filename,
         UploadedFile $uploadedFile,
     ): string {
-        $datetime = new \DateTimeImmutable();
+        $datetime = new DateTimeImmutable();
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
 

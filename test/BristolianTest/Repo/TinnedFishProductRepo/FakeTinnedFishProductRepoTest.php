@@ -6,6 +6,7 @@ namespace BristolianTest\Repo\TinnedFishProductRepo;
 
 use Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo;
 use Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo;
+use Safe\DateTimeImmutable;
 
 /**
  * @group standard_repo
@@ -37,8 +38,8 @@ class FakeTinnedFishProductRepoTest extends TinnedFishProductRepoFixture
             image_url: null,
             validation_status: \Bristolian\Model\TinnedFish\ValidationStatus::NOT_VALIDATED,
             raw_data: null,
-            created_at: new \DateTimeImmutable(),
-            updated_at: new \DateTimeImmutable(),
+            created_at: new DateTimeImmutable(),
+            updated_at: new DateTimeImmutable(),
         );
         $repo = new FakeTinnedFishProductRepo([$product]);
         $this->assertSame($product, $repo->getByBarcode('123456'));

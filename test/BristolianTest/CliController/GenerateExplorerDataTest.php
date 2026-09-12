@@ -7,6 +7,9 @@ namespace BristolianTest\CliController;
 use Bristolian\CliController\GenerateExplorerData;
 use Bristolian\Service\CliOutput\CapturingCliOutput;
 use BristolianTest\BaseTestCase;
+use function Safe\file_get_contents;
+use function Safe\json_decode;
+use function Safe\unlink;
 
 /**
  * @coversNothing

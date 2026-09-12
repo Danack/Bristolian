@@ -5,6 +5,7 @@ namespace BristolianTest\Response;
 use Bristolian\Response\UploadAvatarErrorResponse;
 use Bristolian\Service\AvatarImageStorage\UploadError;
 use BristolianTest\BaseTestCase;
+use function Safe\json_decode;
 
 /**
  * @coversNothing

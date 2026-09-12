@@ -6,6 +6,7 @@ namespace Bristolian\Repo\ChatMessageRepo;
 
 use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\Parameters\ChatMessageParam;
+use Safe\DateTimeImmutable;
 
 /**
  * Fake implementation of ChatMessageRepo for testing.
@@ -28,7 +29,7 @@ class FakeChatMessageRepo implements ChatMessageRepo
     public function storeChatMessageForUser(string $user_id, ChatMessageParam $chatMessage): UserChatMessage
     {
         $messageId = $this->messageIdCounter++;
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
 
         $userChatMessage = new UserChatMessage(
             id: $messageId,

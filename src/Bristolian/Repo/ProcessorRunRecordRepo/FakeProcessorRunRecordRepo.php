@@ -6,6 +6,7 @@ namespace Bristolian\Repo\ProcessorRunRecordRepo;
 
 use Bristolian\Model\Generated\ProcessorRunRecord;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
+use Safe\DateTimeImmutable;
 
 /**
  * Fake implementation of ProcessorRunRecordRepo for testing.
@@ -33,7 +34,7 @@ class FakeProcessorRunRecordRepo implements ProcessorRunRecordRepo
 
     public function startRun(ProcessType $process_type): string
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
 
         $record = new ProcessorRunRecord(
             id: $this->nextId++,
@@ -59,7 +60,7 @@ class FakeProcessorRunRecordRepo implements ProcessorRunRecordRepo
                     debug_info: $debug_info,
                     start_time: $record->start_time,
                     status: self::STATE_FINISHED,
-                    end_time: new \DateTimeImmutable(),
+                    end_time: new DateTimeImmutable(),
                 );
 
                 $this->runRecords[$index] = $updatedRecord;

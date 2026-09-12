@@ -8,6 +8,7 @@ use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Test\Finished as TestFinished;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\TestRunner\Finished as TestRunnerFinished;
+use function Safe\fwrite;
 
 /**
  * Collects tests whose duration from {@see Prepared} to {@see TestFinished} exceeds the threshold.

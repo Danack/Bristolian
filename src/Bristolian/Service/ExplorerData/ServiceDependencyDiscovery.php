@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Bristolian\Service\ExplorerData;
 
+use function Safe\file_get_contents;
+use function Safe\glob;
+use function Safe\preg_match;
+
 /**
  * Discovers Bristolian\Service types for the CodeView dependencies catalog.
  *
@@ -209,8 +213,9 @@ class ServiceDependencyDiscovery
                 continue;
             }
 
-            $fileContents = file_get_contents($phpFilePath);
-            if ($fileContents === false) {
+            try {
+                $fileContents = file_get_contents($phpFilePath);
+            } catch (\Safe\Exceptions\FilesystemException $exception) {
                 continue;
             }
 

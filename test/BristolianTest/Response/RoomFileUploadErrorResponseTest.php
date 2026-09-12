@@ -5,6 +5,7 @@ namespace BristolianTest\Response;
 use Bristolian\Response\RoomFileUploadErrorResponse;
 use Bristolian\Service\RoomFileStorage\UploadError;
 use BristolianTest\BaseTestCase;
+use function Safe\json_decode;
 
 /**
  * @coversNothing

@@ -6,6 +6,7 @@ namespace Bristolian\Service\ExplorerData;
 
 use Bristolian\Cli\CliCommandRegistry;
 use Bristolian\Parameters\SupervisordProgramParams;
+use function Safe\preg_match;
 
 /**
  * @codeCoverageIgnore

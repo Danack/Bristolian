@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Bristolian\Response\TinnedFish;
 
 use SlimDispatcher\Response\StubResponse;
+use function Safe\json_encode;
 
 /**
  * Response for generating an API token.

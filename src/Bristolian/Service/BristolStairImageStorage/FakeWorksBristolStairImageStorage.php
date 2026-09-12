@@ -6,6 +6,7 @@ use Bristolian\Model\Generated\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsGpsParams;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
 
 class FakeWorksBristolStairImageStorage implements BristolStairImageStorage
 {
@@ -41,8 +42,8 @@ class FakeWorksBristolStairImageStorage implements BristolStairImageStorage
             stored_stair_image_file_id: $fileStorageId,
             steps: 10,
             is_deleted: 0,
-            created_at: new \DateTimeImmutable(),
-            updated_at: new \DateTimeImmutable()
+            created_at: new DateTimeImmutable(),
+            updated_at: new DateTimeImmutable()
         );
     }
 }

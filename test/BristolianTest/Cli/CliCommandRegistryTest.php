@@ -155,9 +155,10 @@ class CliCommandRegistryTest extends BaseTestCase
 
         $this->assertTrue($console->has('test:minimal'));
         $command = $console->get('test:minimal');
-        $this->assertTrue(
-            $command->getDescription() === null || $command->getDescription() === '',
-            'Expected empty/null description when none was set'
+        $this->assertSame(
+            '',
+            $command->getDescription(),
+            'Expected empty description when none was set'
         );
     }
 

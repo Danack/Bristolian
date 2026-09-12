@@ -6,6 +6,7 @@ use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\RoomFileObjectInfo;
 use Bristolian\Model\Types\RoomFileInRoom;
 use Bristolian\Parameters\RoomContentSearchParams;
+use Safe\DateTimeImmutable;
 
 class FakeRoomFileRepo implements RoomFileRepo
 {
@@ -52,7 +53,7 @@ class FakeRoomFileRepo implements RoomFileRepo
                 state: 'uploaded',
                 size: 1024,
                 user_id: 'fake_user_id',
-                created_at: new \DateTimeImmutable()
+                created_at: new DateTimeImmutable()
             );
         }
     }

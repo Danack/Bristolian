@@ -12,6 +12,10 @@ use Bristolian\Service\MemeFileLocalCache\FakeEnsureMemeFileCached;
 use Bristolian\Service\MemeFileLocalCache\EnsureMemeFileCachedResult;
 use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
+use function Safe\mkdir;
+use function Safe\rmdir;
+use function Safe\scandir;
+use function Safe\unlink;
 
 /**
  * @coversNothing

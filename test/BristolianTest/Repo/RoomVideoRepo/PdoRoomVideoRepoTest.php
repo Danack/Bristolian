@@ -19,6 +19,7 @@ use Bristolian\Repo\VideoRepo\PdoVideoRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
+use Safe\DateTimeImmutable;
 
 /**
  * @group db
@@ -380,7 +381,7 @@ class PdoRoomVideoRepoTest extends BaseTestCase
 
         $repo->addVideo($this->roomId, $this->videoId, 'Video', null);
 
-        $future = (new \DateTimeImmutable('now'))->modify('+1 day')->format('Y-m-d H:i:s');
+        $future = (new DateTimeImmutable('now'))->modify('+1 day')->format('Y-m-d H:i:s');
         $search = \Bristolian\Parameters\RoomContentSearchParams::createFromVarMap(new \VarMap\ArrayVarMap(['created_at_after' => $future]));
         $videos = $repo->getVideosForRoom($this->roomId, $search);
 
@@ -397,7 +398,7 @@ class PdoRoomVideoRepoTest extends BaseTestCase
 
         $repo->addVideo($this->roomId, $this->videoId, 'Video', null);
 
-        $past = (new \DateTimeImmutable('now'))->modify('-1 day')->format('Y-m-d H:i:s');
+        $past = (new DateTimeImmutable('now'))->modify('-1 day')->format('Y-m-d H:i:s');
         $search = \Bristolian\Parameters\RoomContentSearchParams::createFromVarMap(new \VarMap\ArrayVarMap(['created_at_before' => $past]));
         $videos = $repo->getVideosForRoom($this->roomId, $search);
 

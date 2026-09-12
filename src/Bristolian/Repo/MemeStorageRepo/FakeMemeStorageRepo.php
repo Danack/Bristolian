@@ -6,6 +6,7 @@ use Bristolian\Exception\BristolianException;
 use Bristolian\Model\Types\Meme;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
 
 class FakeMemeStorageRepo implements MemeStorageRepo
 {
@@ -38,7 +39,7 @@ class FakeMemeStorageRepo implements MemeStorageRepo
 
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
-        $datetime = new \DateTimeImmutable();
+        $datetime = new DateTimeImmutable();
 
         $this->storedMemes[$id] = new Meme(
             $id,

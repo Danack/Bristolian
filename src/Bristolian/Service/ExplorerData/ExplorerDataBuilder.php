@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Bristolian\Service\ExplorerData;
 
+use function Safe\file_put_contents;
+use function Safe\json_encode;
+use function Safe\mkdir;
+
 /**
  * @codeCoverageIgnore
  */
@@ -505,13 +509,7 @@ class ExplorerDataBuilder
         }
 
         $jsonContent = $this->buildJsonContent();
-        $bytesWritten = file_put_contents($this->outputPath, $jsonContent);
-
-        if ($bytesWritten === false) {
-            throw new \RuntimeException(
-                'Failed to write explorer data to ' . $this->outputPath
-            );
-        }
+        file_put_contents($this->outputPath, $jsonContent);
     }
 
     private function buildJsonContent(): string
@@ -534,10 +532,6 @@ class ExplorerDataBuilder
             $output,
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
         );
-
-        if ($encoded === false) {
-            throw new \RuntimeException('Failed to encode explorer data as JSON.');
-        }
 
         return $encoded . "\n";
     }

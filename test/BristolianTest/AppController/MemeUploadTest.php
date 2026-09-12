@@ -16,6 +16,8 @@ use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\UploadedFiles\UploadedFiles;
 use BristolianTest\BaseTestCase;
 use SlimDispatcher\Response\StubResponse;
+use function Safe\fclose;
+use function Safe\tmpfile;
 
 /**
  * MemeStorageProcessor that always returns UploadError for coverage of error path.

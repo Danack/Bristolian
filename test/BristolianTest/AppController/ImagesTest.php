@@ -14,6 +14,8 @@ use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use SlimDispatcher\Response\ImageResponse;
+use function Safe\file_put_contents;
+use function Safe\mkdir;
 
 /**
  * @coversNothing

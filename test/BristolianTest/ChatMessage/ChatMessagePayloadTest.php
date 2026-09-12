@@ -9,6 +9,7 @@ use Bristolian\ChatMessage\ChatType;
 use Bristolian\Model\Chat\SystemChatMessage;
 use Bristolian\Model\Chat\UserChatMessage;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -22,7 +23,7 @@ class ChatMessagePayloadTest extends BaseTestCase
      */
     public function test_create_from_user_message_returns_payload_with_chat_message(): void
     {
-        $createdAt = new \DateTimeImmutable('2024-01-15 12:00:00');
+        $createdAt = new DateTimeImmutable('2024-01-15 12:00:00');
         $chatMessage = new UserChatMessage(
             id: 1,
             user_id: 'user-1',
@@ -48,7 +49,7 @@ class ChatMessagePayloadTest extends BaseTestCase
 //     */
 //    public function test_create_from_system_message_returns_payload_with_system_message(): void
 //    {
-//        $createdAt = new \DateTimeImmutable('2024-01-15 12:00:00');
+//        $createdAt = new DateTimeImmutable('2024-01-15 12:00:00');
 //        $systemMessage = new SystemChatMessage(
 //            id: 2,
 //            room_id: 'room-2',

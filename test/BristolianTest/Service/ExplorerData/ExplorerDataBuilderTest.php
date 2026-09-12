@@ -7,6 +7,10 @@ namespace BristolianTest\Service\ExplorerData;
 use Bristolian\Service\ExplorerData\ExplorerDataBuilder;
 use Bristolian\Service\ExplorerData\SupervisordTasksEntryTypeFinder;
 use BristolianTest\BaseTestCase;
+use function Safe\file_get_contents;
+use function Safe\json_decode;
+use function Safe\rmdir;
+use function Safe\unlink;
 
 /**
  * @coversNothing

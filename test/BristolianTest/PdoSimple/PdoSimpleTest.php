@@ -18,6 +18,8 @@ use Bristolian\Database\pdo_simple_test;
 use Bristolian\PdoSimple\RowNotFoundException;
 use BristolianTest\PdoSimple\PdoSimpleTestObjectConstructor;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
+use function Safe\mktime;
 
 /**
  * @covers \Bristolian\PdoSimple\PdoSimple
@@ -430,7 +432,7 @@ values (
 SQL;
 
         $test_string = $this->getTestString();
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $params = [
             ':test_string' => $test_string,
             ':test_int' => 9999,

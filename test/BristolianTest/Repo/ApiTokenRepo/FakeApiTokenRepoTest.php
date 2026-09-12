@@ -8,6 +8,7 @@ use Bristolian\Repo\ApiTokenRepo\ApiTokenCreateFailedException;
 use Bristolian\Repo\ApiTokenRepo\ApiTokenRepo;
 use Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo;
 use Bristolian\Service\SecureTokenGenerator\FixedSecureTokenGenerator;
+use Safe\DateTimeImmutable;
 
 /**
  * @group standard_repo
@@ -32,7 +33,7 @@ class FakeApiTokenRepoTest extends ApiTokenRepoFixture
             id: 'existing-id',
             token: 'existing-token',
             name: 'Existing',
-            created_at: new \DateTimeImmutable(),
+            created_at: new DateTimeImmutable(),
             is_revoked: false,
             revoked_at: null
         );
@@ -70,7 +71,7 @@ class FakeApiTokenRepoTest extends ApiTokenRepoFixture
             id: 'id-1',
             token: $collidingToken,
             name: 'Existing',
-            created_at: new \DateTimeImmutable(),
+            created_at: new DateTimeImmutable(),
             is_revoked: false,
             revoked_at: null
         );

@@ -19,6 +19,7 @@ use BristolianTest\Support\HasTestWorld;
 use Bristolian\Model\Generated\RoomLink;
 use Bristolian\Model\Types\RoomLinkWithUrl;
 use VarMap\ArrayVarMap;
+use Safe\DateTimeImmutable;
 
 /**
  * @group db
@@ -297,7 +298,7 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $roomLinkRepo = $this->injector->make(PdoRoomLinkRepo::class);
         $roomLinkRepo->addLinkToRoomFromParam($user->getUserId(), $room->id, LinkParam::createFromArray(['url' => $this->getTestLink()]));
 
-        $future = (new \DateTimeImmutable('now'))->modify('+1 day')->format('Y-m-d H:i:s');
+        $future = (new DateTimeImmutable('now'))->modify('+1 day')->format('Y-m-d H:i:s');
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_after' => $future]));
         $links = $roomLinkRepo->getLinksForRoom($room->id, $search);
 
@@ -314,7 +315,7 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $roomLinkRepo = $this->injector->make(PdoRoomLinkRepo::class);
         $roomLinkRepo->addLinkToRoomFromParam($user->getUserId(), $room->id, LinkParam::createFromArray(['url' => $this->getTestLink()]));
 
-        $past = (new \DateTimeImmutable('now'))->modify('-1 day')->format('Y-m-d H:i:s');
+        $past = (new DateTimeImmutable('now'))->modify('-1 day')->format('Y-m-d H:i:s');
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_before' => $past]));
         $links = $roomLinkRepo->getLinksForRoom($room->id, $search);
 

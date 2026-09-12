@@ -6,6 +6,7 @@ use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
+use Safe\DateTimeImmutable;
 
 class FakeBristolStairsRepo implements BristolStairsRepo
 {
@@ -26,8 +27,8 @@ class FakeBristolStairsRepo implements BristolStairsRepo
                 'fake_image_1',
                 45,
                 0,
-                new \DateTimeImmutable('2024-01-15 10:00:00'),
-                new \DateTimeImmutable('2024-01-15 10:00:00')
+                new DateTimeImmutable('2024-01-15 10:00:00'),
+                new DateTimeImmutable('2024-01-15 10:00:00')
             ),
             new BristolStairInfo(
                 2,
@@ -37,8 +38,8 @@ class FakeBristolStairsRepo implements BristolStairsRepo
                 'fake_image_2',
                 32,
                 0,
-                new \DateTimeImmutable('2024-02-20 14:30:00'),
-                new \DateTimeImmutable('2024-02-20 14:30:00')
+                new DateTimeImmutable('2024-02-20 14:30:00'),
+                new DateTimeImmutable('2024-02-20 14:30:00')
             ),
             new BristolStairInfo(
                 3,
@@ -48,8 +49,8 @@ class FakeBristolStairsRepo implements BristolStairsRepo
                 'fake_image_3',
                 28,
                 0,
-                new \DateTimeImmutable('2024-03-10 09:15:00'),
-                new \DateTimeImmutable('2024-03-10 09:15:00')
+                new DateTimeImmutable('2024-03-10 09:15:00'),
+                new DateTimeImmutable('2024-03-10 09:15:00')
             ),
         ];
     }
@@ -62,7 +63,7 @@ class FakeBristolStairsRepo implements BristolStairsRepo
         int $steps
     ): BristolStairInfo {
         $new_id = count($this->stairs) + 1;
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
 
         $stair_info = new BristolStairInfo(
             $new_id,
@@ -128,7 +129,7 @@ class FakeBristolStairsRepo implements BristolStairsRepo
                     (int)$stairs_info_params->steps,
                     $stair->is_deleted,
                     $stair->created_at,
-                    new \DateTimeImmutable()
+                    new DateTimeImmutable()
                 );
                 return;
             }
@@ -153,7 +154,7 @@ class FakeBristolStairsRepo implements BristolStairsRepo
                     $stair->steps,
                     $stair->is_deleted,
                     $stair->created_at,
-                    new \DateTimeImmutable()
+                    new DateTimeImmutable()
                 );
                 return;
             }

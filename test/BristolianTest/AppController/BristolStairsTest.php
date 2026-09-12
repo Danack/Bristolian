@@ -31,6 +31,11 @@ use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\StubResponse;
 use VarMap\ArrayVarMap;
 use VarMap\VarMap;
+use function Safe\fclose;
+use function Safe\file_put_contents;
+use function Safe\json_decode;
+use function Safe\mkdir;
+use function Safe\tmpfile;
 
 /**
  * BristolStairImageStorage that always returns UploadError for testing error path.

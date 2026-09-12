@@ -5,6 +5,7 @@ namespace BristolianTest\Response;
 use Bristolian\Exception\DataEncodingException;
 use Bristolian\Response\GetCspReportsResponse;
 use BristolianTest\BaseTestCase;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\Response\GetCspReportsResponse

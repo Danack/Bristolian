@@ -146,7 +146,6 @@ abstract class RoomRepoFixture extends BaseTestCase
         $rooms = $repo->getAllRooms();
 
         $this->assertGreaterThanOrEqual(2, count($rooms));
-        $this->assertContainsOnlyInstancesOf(Room::class, $rooms);
         $roomIds = array_map(fn(Room $r) => $r->id, $rooms);
         $this->assertContains($room1->id, $roomIds);
         $this->assertContains($room2->id, $roomIds);

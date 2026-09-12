@@ -13,6 +13,9 @@ use FailAid\Context\FailureContext;
 use FailAid\Service\Output;
 use ReflectionMethod;
 use ReflectionProperty;
+use function Safe\ob_flush;
+use function Safe\parse_url;
+use function Safe\preg_replace_callback;
 
 /**
  * Rewrites Fail Aid screenshot URLs to host {@see file://} paths via {@see containerPathToHostPath()}

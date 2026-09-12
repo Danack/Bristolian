@@ -2,6 +2,9 @@
 
 declare(strict_types = 1);
 
+use function Safe\json_encode;
+use function Safe\realpath;
+
 function getExceptionText(\Throwable $exception): string
 {
     $text = "";
@@ -132,11 +135,6 @@ function formatTraceLine(array $trace, int $count): string
 
 
     $baseDir = realpath(__DIR__ . '/../');
-    if ($baseDir === false) {
-        // @codeCoverageIgnoreStart
-        throw new \Exception("Couldn't find parent directory from " . __DIR__);
-        // @codeCoverageIgnoreEnd
-    }
 
     $location = str_replace($baseDir, '', $location);
 

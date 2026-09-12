@@ -6,6 +6,7 @@ namespace BristolianTest\CliController;
 
 use Bristolian\CliController\GenerateFiles;
 use BristolianTest\BaseTestCase;
+use function Safe\file_get_contents;
 
 /**
  * @coversNothing
@@ -25,7 +26,6 @@ class GenerateWidgetPanelsTest extends BaseTestCase
         $this->assertFileExists($outputPath);
 
         $content = file_get_contents($outputPath);
-        $this->assertIsString($content);
         $this->assertStringContainsString('export const panels: WidgetClassBinding[] = [', $content);
         $this->assertStringContainsString('class: "bristol_stairs_panel"', $content);
         $this->assertStringContainsString('import { BristolStairsPanel } from "../BristolStairsPanel";', $content);

@@ -5,8 +5,10 @@ declare(strict_types = 1);
 namespace Bristolian\Response;
 
 use Bristolian\Exception\BristolianResponseException;
-use SlimDispatcher\Response\ResponseException;
 use SlimDispatcher\Response\StubResponse;
+use function Safe\fopen;
+use function Safe\rewind;
+use function Safe\stream_get_contents;
 
 class BristolianFileResponse implements StubResponse
 {
@@ -14,17 +16,14 @@ class BristolianFileResponse implements StubResponse
     private $headers;
 
     /**
-     * @var false|resource
+     * @var resource
      */
     private $filehandle;
-
-    /** @var string */
-    private $filenameToServe;
 
     /**
      * @param string $filenameToServe
      * @param array<string, string> $headers
-     * @throws ResponseException
+     * @throws BristolianResponseException
      */
     public function __construct(
         string $filenameToServe,
@@ -36,13 +35,11 @@ class BristolianFileResponse implements StubResponse
 
         $this->headers = array_merge($standardHeaders, $headers);
 
-        $this->filehandle = @fopen($filenameToServe, 'r');
-
-        if ($this->filehandle === false) {
+        try {
+            $this->filehandle = fopen($filenameToServe, 'r');
+        } catch (\Safe\Exceptions\FilesystemException $exception) {
             throw BristolianResponseException::failedToOpenFile($filenameToServe);
         }
-
-        $this->filenameToServe = $filenameToServe;
     }
 
     public function getStatus() : int
@@ -56,22 +53,8 @@ class BristolianFileResponse implements StubResponse
     public function getBody() : string
     {
         rewind($this->filehandle);
-        $contents = stream_get_contents($this->filehandle);
 
-        // @codeCoverageIgnoreStart
-        // I have no idea how to trigger this situation, other than
-        // pulling out the hard drive mid-test.
-        if ($contents === false) {
-            $message = sprintf(
-                "Failed to read contents of [%s] from open filehandle.",
-                $this->filenameToServe
-            );
-
-            throw new ResponseException($message);
-        }
-        // @codeCoverageIgnoreEnd
-
-        return $contents;
+        return stream_get_contents($this->filehandle);
     }
 
     /**

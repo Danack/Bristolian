@@ -16,14 +16,15 @@ use League\CommonMark\Extension\Table\TableExtension;
 use League\CommonMark\Extension\TaskList\TaskListExtension;
 use League\CommonMark\MarkdownConverter;
 use League\CommonMark\Normalizer\SlugNormalizer;
+use function Safe\file_get_contents;
 
 class CommonMarkRenderer implements MarkdownRenderer
 {
     public function renderFile(string $filepath): string
     {
-        $markdown = @file_get_contents($filepath);
-
-        if ($markdown === false) {
+        try {
+            $markdown = file_get_contents($filepath);
+        } catch (\Safe\Exceptions\FilesystemException $exception) {
             throw MarkdownRendererException::fileNotFound($filepath);
         }
 

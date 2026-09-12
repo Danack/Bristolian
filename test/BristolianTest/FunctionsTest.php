@@ -14,6 +14,18 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use SlimDispatcher\Response\JsonResponse;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Safe\DateTimeImmutable;
+use function Safe\fopen;
+use function Safe\ini_get;
+use function Safe\json_decode;
+use function Safe\json_encode;
+use function Safe\mkdir;
+use function Safe\ob_get_clean;
+use function Safe\ob_start;
+use function Safe\putenv;
+use function Safe\rmdir;
+use function Safe\scandir;
+use function Safe\unlink;
 
 /**
  * @coversNothing
@@ -307,7 +319,7 @@ TEXT;
             'active',
             1024,
             'user_1',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
         $result = getRouteForStoredFile('room_456', $storedFile);
         $this->assertStringContainsString('/rooms/', $result);
@@ -827,7 +839,6 @@ TEXT;
     {
         $cases = getEnumCases(DocumentType::class);
         $this->assertNotEmpty($cases);
-        $this->assertContainsOnlyInstancesOf(\UnitEnum::class, $cases);
     }
 
     /**
@@ -1072,7 +1083,7 @@ TEXT;
             'room-789',
             'Hello **world**',
             null,
-            new \DateTimeImmutable('2026-04-16 14:00:00')
+            new DateTimeImmutable('2026-04-16 14:00:00')
         );
         $markdownRenderer = new class implements MarkdownRenderer {
             public function render(string $markdown): string

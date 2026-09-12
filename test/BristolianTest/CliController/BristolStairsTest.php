@@ -19,6 +19,7 @@ use Bristolian\Service\CliOutput\CliExitRequestedException;
 use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\UnableToListContents;
+use Safe\DateTimeImmutable;
 
 /**
  * Adapter that throws UnableToListContents when the listing is iterated (so BristolStairs' try/foreach catches it).
@@ -70,7 +71,7 @@ final class BristolStairImageStorageInfoRepoWithOneKnown implements BristolStair
                 state: FileState::INITIAL->value,
                 size: 0,
                 user_id: 'user-1',
-                created_at: new \DateTimeImmutable(),
+                created_at: new DateTimeImmutable(),
             );
         }
         return null;

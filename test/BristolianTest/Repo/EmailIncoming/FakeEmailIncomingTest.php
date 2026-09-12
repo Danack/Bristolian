@@ -7,6 +7,7 @@ namespace BristolianTest\Repo\EmailIncoming;
 use Bristolian\Model\Types\IncomingEmailParam;
 use Bristolian\Repo\EmailIncoming\EmailIncoming;
 use Bristolian\Repo\EmailIncoming\FakeEmailIncoming;
+use function Safe\json_encode;
 
 /**
  * @coversNothing

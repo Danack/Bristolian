@@ -4,6 +4,7 @@ namespace BristolianTest\Response;
 
 use Bristolian\Response\SuccessResponse;
 use BristolianTest\BaseTestCase;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\Response\SuccessResponse

@@ -12,6 +12,7 @@ use Bristolian\Service\UuidGenerator\FixedUuidGenerator;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\Repo\TestPlaceholders;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
 
 /**
  * @group db
@@ -301,7 +302,7 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
         $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
         $user = $this->createTestAdminUser();
 
-        $before = new \DateTimeImmutable();
+        $before = new DateTimeImmutable();
         
         $uuid = Uuid::uuid7();
         $normalized_filename = $uuid->toString() . '.jpg';
@@ -313,7 +314,7 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
             $uploadedFile
         );
 
-        $after = new \DateTimeImmutable();
+        $after = new DateTimeImmutable();
 
         $file_info = $repo->getById($file_id);
 

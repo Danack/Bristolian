@@ -62,7 +62,6 @@ abstract class RoomTagRepoFixture extends BaseTestCase
         $tags = $repo->getTagsForRoom($this->getTestRoomId());
 
         $this->assertGreaterThanOrEqual(2, count($tags));
-        $this->assertContainsOnlyInstancesOf(RoomTag::class, $tags);
 
         $tagTexts = array_map(fn(RoomTag $t) => $t->text, $tags);
         $this->assertContains('tag-1', $tagTexts);

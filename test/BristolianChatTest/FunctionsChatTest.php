@@ -10,6 +10,8 @@ use BristolianTest\BaseTestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Safe\DateTimeImmutable;
+use function Safe\json_decode;
 
 /**
  * @coversNothing
@@ -72,7 +74,7 @@ class FunctionsChatTest extends BaseTestCase
                 'room_456',
                 'Hello world',
                 null,
-                new \DateTimeImmutable('2025-01-15 12:00:00')
+                new DateTimeImmutable('2025-01-15 12:00:00')
             ),
             42,
             'Hello world',
@@ -85,7 +87,7 @@ class FunctionsChatTest extends BaseTestCase
                 'room_xyz',
                 'Reply text',
                 10,
-                new \DateTimeImmutable('2025-02-01 08:30:00')
+                new DateTimeImmutable('2025-02-01 08:30:00')
             ),
             99,
             'Reply text',
@@ -145,7 +147,7 @@ class FunctionsChatTest extends BaseTestCase
 //            'room_789',
 //            'System notification',
 //            null,
-//            new \DateTimeImmutable('2025-01-20 14:00:00')
+//            new DateTimeImmutable('2025-01-20 14:00:00')
 //        );
 //
 //        send_system_message_to_clients($systemMessage, $logger, $fakeClientHandler);
@@ -183,7 +185,7 @@ class FunctionsChatTest extends BaseTestCase
 //            'room_abc',
 //            'System reply',
 //            3,
-//            new \DateTimeImmutable('2025-02-10 09:00:00')
+//            new DateTimeImmutable('2025-02-10 09:00:00')
 //        );
 //
 //        send_system_message_to_clients($systemMessage, $logger, $fakeClientHandler);

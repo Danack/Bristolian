@@ -5,6 +5,7 @@ namespace BristolianTest\Response;
 use Bristolian\Response\ValidationErrorResponse;
 use BristolianTest\BaseTestCase;
 use DataType\ValidationProblem;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\Response\ValidationErrorResponse

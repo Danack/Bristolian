@@ -5,6 +5,7 @@ namespace Bristolian\Repo\RoomFileObjectInfoRepo;
 use Bristolian\Model\Generated\RoomFileObjectInfo;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
 
 class FakeRoomFileObjectInfoRepo implements RoomFileObjectInfoRepo
 {
@@ -19,7 +20,7 @@ class FakeRoomFileObjectInfoRepo implements RoomFileObjectInfoRepo
         UploadedFile $uploadedFile,
     ): string {
 
-        $datetime = new \DateTimeImmutable();
+        $datetime = new DateTimeImmutable();
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
         $this->storedFileInfo[$id] = new RoomFileObjectInfo(

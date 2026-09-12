@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Bristolian\Service\ExplorerData;
 
+use function Safe\file_get_contents;
+use function Safe\json_decode;
+use function Safe\scandir;
+
 /**
  * Cursor slash-command markdown under .cursor/commands/, driven by command.meta.json.
  *
@@ -91,11 +95,6 @@ class CursorCommandsEntryTypeFinder implements EntryTypeFinder
         $filenames = [];
 
         $directoryEntries = scandir($this->commandsDirectoryPath);
-        if ($directoryEntries === false) {
-            throw new \RuntimeException(
-                'Failed to read Cursor commands directory: ' . $this->commandsDirectoryPath
-            );
-        }
 
         foreach ($directoryEntries as $directoryEntry) {
             if ($directoryEntry === '.' || $directoryEntry === '..') {
@@ -128,11 +127,6 @@ class CursorCommandsEntryTypeFinder implements EntryTypeFinder
         }
 
         $rawContents = file_get_contents($metaPath);
-        if ($rawContents === false) {
-            throw new \RuntimeException(
-                'Failed to read Cursor commands meta file: ' . $metaPath
-            );
-        }
 
         $decoded = json_decode($rawContents, true);
         if (is_array($decoded) === false) {

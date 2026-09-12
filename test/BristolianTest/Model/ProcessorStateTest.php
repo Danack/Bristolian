@@ -4,6 +4,7 @@ namespace BristolianTest\Model;
 
 use Bristolian\Model\Types\ProcessorState;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -18,7 +19,7 @@ class ProcessorStateTest extends BaseTestCase
         $id = 'processor-123';
         $enabled = true;
         $type = 'email_processor';
-        $updatedAt = new \DateTimeImmutable();
+        $updatedAt = new DateTimeImmutable();
 
         $state = new ProcessorState($id, $enabled, $type, $updatedAt);
 
@@ -37,7 +38,7 @@ class ProcessorStateTest extends BaseTestCase
             'processor-456',
             false,
             'test_processor',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
 
         $this->assertFalse($state->enabled);

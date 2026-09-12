@@ -4,6 +4,7 @@ namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Model\Generated\Link;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -18,7 +19,7 @@ class LinkTest extends BaseTestCase
         $id = 'link-123';
         $userId = 'user-456';
         $url = 'https://example.com';
-        $createdAt = new \DateTimeImmutable('2025-10-09 12:00:00');
+        $createdAt = new DateTimeImmutable('2025-10-09 12:00:00');
 
         $link = new Link($id, $userId, $url, $createdAt);
 

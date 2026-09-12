@@ -46,6 +46,7 @@ use Bristolian\Model\Generated\User;
 use Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo;
 use function createBlankUserProfileForUserId;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * Minimal coverage tests for auto-generated Model classes.
@@ -54,9 +55,9 @@ use BristolianTest\BaseTestCase;
  */
 class GeneratedModelCoverageTest extends BaseTestCase
 {
-    private static function now(): \DateTimeImmutable
+    private static function now(): DateTimeImmutable
     {
-        return new \DateTimeImmutable();
+        return new DateTimeImmutable();
     }
 
     /** @covers \Bristolian\Model\Generated\ApiToken */

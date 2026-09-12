@@ -4,6 +4,7 @@ namespace BristolianTest\Model;
 
 use Bristolian\Model\Types\Email;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -21,8 +22,8 @@ class EmailTest extends BaseTestCase
         $retries = 0;
         $status = 'pending';
         $subject = 'Test Subject';
-        $createdAt = new \DateTimeImmutable();
-        $updatedAt = new \DateTimeImmutable();
+        $createdAt = new DateTimeImmutable();
+        $updatedAt = new DateTimeImmutable();
 
         $email = new Email(
             $id,

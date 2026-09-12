@@ -8,6 +8,10 @@ use Bristolian\Filesystem\RoomFileFilesystem;
 use Bristolian\Service\ObjectStore\StandardRoomFileObjectStore;
 use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
+use function Safe\file_get_contents;
+use function Safe\mkdir;
+use function Safe\rmdir;
+use function Safe\unlink;
 
 /**
  * Unit test for StandardRoomFileObjectStore using a local filesystem (no external storage).

@@ -10,6 +10,7 @@ use Bristolian\Response\SuccessResponse;
 use Bristolian\Response\ValidationErrorResponse;
 use Bristolian\Session\UserSession;
 use Minishlink\WebPush\VAPID;
+use function Safe\file_get_contents;
 
 class Notifications
 {

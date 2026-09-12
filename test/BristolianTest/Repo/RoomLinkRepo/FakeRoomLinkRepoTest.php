@@ -13,6 +13,7 @@ use Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use VarMap\ArrayVarMap;
+use Safe\DateTimeImmutable;
 
 /**
  * @group standard_repo
@@ -228,7 +229,7 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $repo = new FakeRoomLinkRepo($linkRepo);
         $roomId = 'room-1';
         $roomLinkId = $repo->addLinkToRoomFromParam('user-1', $roomId, LinkParam::createFromVarMap(new ArrayVarMap(['url' => 'https://example.com'])));
-        $repo->setDocumentTimestampForRoomLink($roomLinkId, new \DateTimeImmutable('2024-06-01 12:00:00'));
+        $repo->setDocumentTimestampForRoomLink($roomLinkId, new DateTimeImmutable('2024-06-01 12:00:00'));
 
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['document_timestamp_after' => '2024-06-02 00:00:00']));
         $links = $repo->getLinksForRoom($roomId, $search);
@@ -247,7 +248,7 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $repo = new FakeRoomLinkRepo($linkRepo);
         $roomId = 'room-1';
         $roomLinkId = $repo->addLinkToRoomFromParam('user-1', $roomId, LinkParam::createFromVarMap(new ArrayVarMap(['url' => 'https://example.com'])));
-        $repo->setDocumentTimestampForRoomLink($roomLinkId, new \DateTimeImmutable('2024-06-15 12:00:00'));
+        $repo->setDocumentTimestampForRoomLink($roomLinkId, new DateTimeImmutable('2024-06-15 12:00:00'));
 
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['document_timestamp_before' => '2024-06-01 00:00:00']));
         $links = $repo->getLinksForRoom($roomId, $search);

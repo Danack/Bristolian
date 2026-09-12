@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Bristolian\Service\CliOutput;
 
+use function Safe\error_log;
+
 /**
  * Production CLI output: writes to stdout and exits the process on exit().
  */
@@ -17,7 +19,7 @@ class EchoCliOutput implements CliOutput
     public function writeError(string $message): void
     {
         // @codeCoverageIgnoreStart
-        \error_log($message);
+        error_log($message);
         // @codeCoverageIgnoreEnd
     }
 

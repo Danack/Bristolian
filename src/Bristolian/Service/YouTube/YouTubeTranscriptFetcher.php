@@ -9,6 +9,8 @@ use Bristolian\Exception\YouTube\YouTubeNoCaptionTracksException;
 use Bristolian\Exception\YouTube\YouTubeWatchPageFetchException;
 use UrlFetcher\UrlFetcher;
 use UrlFetcher\UrlNotOkException;
+use function Safe\json_decode;
+use function Safe\preg_match;
 
 /**
  * Fetches transcript/captions from YouTube using the unofficial timedtext/caption

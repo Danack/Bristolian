@@ -9,6 +9,7 @@ use Bristolian\Config\EnvironmentName;
 use Bristolian\Model\Types\Email;
 use Bristolian\Repo\EmailQueue\EmailQueue;
 use Bristolian\Repo\EmailQueue\FakeEmailQueue;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -214,8 +215,8 @@ class FakeEmailQueueTest extends EmailQueueFixture
             retries: 0,
             status: EmailController::STATE_INITIAL,
             subject: 'Subject',
-            created_at: new \DateTimeImmutable(),
-            updated_at: new \DateTimeImmutable(),
+            created_at: new DateTimeImmutable(),
+            updated_at: new DateTimeImmutable(),
         );
         $fakeQueue->setEmailSent($unknownEmail);
         $this->assertNull($fakeQueue->getEmailById(99999));
@@ -234,8 +235,8 @@ class FakeEmailQueueTest extends EmailQueueFixture
             retries: 0,
             status: EmailController::STATE_INITIAL,
             subject: 'Subject',
-            created_at: new \DateTimeImmutable(),
-            updated_at: new \DateTimeImmutable(),
+            created_at: new DateTimeImmutable(),
+            updated_at: new DateTimeImmutable(),
         );
         $fakeQueue->setEmailFailed($unknownEmail);
         $this->assertNull($fakeQueue->getEmailById(99999));
@@ -254,8 +255,8 @@ class FakeEmailQueueTest extends EmailQueueFixture
             retries: 0,
             status: EmailController::STATE_INITIAL,
             subject: 'Subject',
-            created_at: new \DateTimeImmutable(),
-            updated_at: new \DateTimeImmutable(),
+            created_at: new DateTimeImmutable(),
+            updated_at: new DateTimeImmutable(),
         );
         $fakeQueue->setEmailToRetry($unknownEmail);
         $this->assertNull($fakeQueue->getEmailById(99999));

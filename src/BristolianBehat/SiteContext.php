@@ -14,6 +14,13 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
+use function Safe\file_put_contents;
+use function Safe\json_decode;
+use function Safe\json_encode;
+use function Safe\mkdir;
+use function Safe\parse_url;
+use function Safe\preg_match;
+use function Safe\preg_replace;
 
 //use Behat\Mink\Element\DocumentElement;
 //use Osf\Repo\StripeCheckoutSessionRepo\StripeCheckoutSessionRepo;
@@ -176,8 +183,8 @@ JS
         $projectRoot = dirname(__DIR__, 2);
         $coverageDir = $projectRoot . '/tmp/behat-js-coverage';
 
-        if (!is_dir($coverageDir) && !@mkdir($coverageDir, 0775, true) && !is_dir($coverageDir)) {
-            return;
+        if (is_dir($coverageDir) === false) {
+            mkdir($coverageDir, 0775, true);
         }
 
         $feature = $scope->getFeature();
@@ -189,7 +196,7 @@ JS
 
         $slug = static function (string $value): string {
             $value = preg_replace('/[^a-zA-Z0-9_-]+/', '_', $value);
-            if ($value === null || $value === '') {
+            if ($value === '') {
                 $value = 'coverage';
             }
             return substr($value, 0, 80);
@@ -840,7 +847,7 @@ JS
         }
 
         $sanitized = preg_replace('/[^a-zA-Z0-9_-]/', '_', $text);
-        $identifier = 'missing_text_' . substr($sanitized ?? 'text', 0, 40);
+        $identifier = 'missing_text_' . substr($sanitized, 0, 40);
         $this->takeDebugScreenshot($identifier);
 
         $pageText = $session->getPage()->getText();

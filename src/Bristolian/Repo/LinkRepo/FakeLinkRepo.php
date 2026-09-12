@@ -4,6 +4,7 @@ namespace Bristolian\Repo\LinkRepo;
 
 use Bristolian\Model\Generated\Link;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
 
 class FakeLinkRepo implements LinkRepo
 {
@@ -20,7 +21,7 @@ class FakeLinkRepo implements LinkRepo
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
 
-        $datetime = new \DateTimeImmutable();
+        $datetime = new DateTimeImmutable();
 
         $this->storedLinks[$id] = new Link(
             $id,

@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Bristolian\Model\TinnedFish\Product;
+use function Safe\preg_match;
 
 /**
  * Validate barcode format.

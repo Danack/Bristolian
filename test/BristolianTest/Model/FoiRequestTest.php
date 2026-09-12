@@ -6,6 +6,7 @@ use Bristolian\Model\Types\FoiRequest;
 use Bristolian\Parameters\FoiRequestParams;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -21,7 +22,7 @@ class FoiRequestTest extends BaseTestCase
         $text = 'Request text';
         $url = 'https://example.com/request';
         $description = 'A test FOI request';
-        $createdAt = new \DateTimeImmutable('2024-01-15 12:00:00');
+        $createdAt = new DateTimeImmutable('2024-01-15 12:00:00');
 
         $foiRequest = new FoiRequest($foiRequestId, $text, $url, $description, $createdAt);
 

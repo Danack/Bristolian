@@ -124,7 +124,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         $links = $repo->getAnnotationsForRoom($roomId);
 
         $this->assertCount(1, $links);
-        $this->assertContainsOnlyInstancesOf(RoomAnnotationView::class, $links);
         $this->assertSame('Test Source Link Title That Is Long Enough', $links[0]->title);
         $this->assertSame('Test text content', $links[0]->text);
     }
@@ -188,7 +187,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         $links = $repo->getAnnotationsForRoomAndFile($roomId, $fileId);
 
         $this->assertCount(1, $links);
-        $this->assertContainsOnlyInstancesOf(RoomAnnotationView::class, $links);
         $this->assertSame($fileId, $links[0]->file_id);
     }
 

@@ -5,6 +5,7 @@ namespace BristolianTest\Response\TinnedFish;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use Bristolian\Response\TinnedFish\UpdateProductValidationStatusResponse;
 use BristolianTest\BaseTestCase;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\Response\TinnedFish\UpdateProductValidationStatusResponse

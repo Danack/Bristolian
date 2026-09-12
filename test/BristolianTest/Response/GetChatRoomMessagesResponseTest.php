@@ -5,6 +5,8 @@ namespace BristolianTest\Response;
 use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\Response\GetChatRoomMessagesResponse;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\Response\GetChatRoomMessagesResponse
@@ -19,7 +21,7 @@ class GetChatRoomMessagesResponseTest extends BaseTestCase
             $roomId,
             $text,
             $replyMessageId,
-            new \DateTimeImmutable('2025-01-01 12:00:00')
+            new DateTimeImmutable('2025-01-01 12:00:00')
         );
     }
 

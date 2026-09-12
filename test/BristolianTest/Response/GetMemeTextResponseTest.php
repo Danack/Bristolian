@@ -5,6 +5,8 @@ namespace BristolianTest\Response;
 use Bristolian\Model\Generated\MemeText;
 use Bristolian\Response\GetMemeTextResponse;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\Response\GetMemeTextResponse
@@ -17,7 +19,7 @@ class GetMemeTextResponseTest extends BaseTestCase
             id: 1,
             text: 'Some meme text',
             meme_id: 'meme-123',
-            created_at: new \DateTimeImmutable()
+            created_at: new DateTimeImmutable()
         );
         $response = new GetMemeTextResponse($memeText);
         
@@ -37,7 +39,7 @@ class GetMemeTextResponseTest extends BaseTestCase
             id: 1,
             text: 'Some meme text',
             meme_id: 'meme-123',
-            created_at: new \DateTimeImmutable()
+            created_at: new DateTimeImmutable()
         );
         $response = new GetMemeTextResponse($memeText);
         $headers = $response->getHeaders();
@@ -48,7 +50,7 @@ class GetMemeTextResponseTest extends BaseTestCase
 
     public function testGetBodyReturnsMemeText()
     {
-        $createdAt = new \DateTimeImmutable('2024-01-15 12:00:00');
+        $createdAt = new DateTimeImmutable('2024-01-15 12:00:00');
         $memeText = new MemeText(
             id: 1,
             text: 'Some meme text',

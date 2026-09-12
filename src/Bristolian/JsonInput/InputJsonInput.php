@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Bristolian\JsonInput;
 
+use function Safe\file_get_contents;
+
 class InputJsonInput implements JsonInput
 {
     /**
@@ -17,9 +19,10 @@ class InputJsonInput implements JsonInput
      */
     public function getData(): array
     {
-        $payload = @file_get_contents("php://input");
-        if ($payload === false) {
-            throw new \Exception("Failed to read php://input");
+        try {
+            $payload = file_get_contents("php://input");
+        } catch (\Safe\Exceptions\FilesystemException $exception) {
+            throw new \Exception("Failed to read php://input", 0, $exception);
         }
 
         return json_decode_safe($payload);

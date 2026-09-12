@@ -3,6 +3,7 @@
 namespace Bristolian\Model\Types;
 
 use Bristolian\Parameters\FoiRequestParams;
+use Safe\DateTimeImmutable;
 
 class FoiRequest
 {
@@ -40,7 +41,7 @@ class FoiRequest
             $foiParam->text,
             $foiParam->url,
             $foiParam->description,
-            created_at: new \DateTimeImmutable(),
+            created_at: new DateTimeImmutable(),
         );
     }
 

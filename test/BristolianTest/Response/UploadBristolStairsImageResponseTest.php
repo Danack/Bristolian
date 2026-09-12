@@ -5,6 +5,8 @@ namespace BristolianTest\Response;
 use Bristolian\Model\Generated\BristolStairInfo;
 use Bristolian\Response\UploadBristolStairsImageResponse;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\Response\UploadBristolStairsImageResponse
@@ -21,8 +23,8 @@ class UploadBristolStairsImageResponseTest extends BaseTestCase
             stored_stair_image_file_id: 'image-456',
             steps: 42,
             is_deleted: 0,
-            created_at: new \DateTimeImmutable(),
-            updated_at: new \DateTimeImmutable()
+            created_at: new DateTimeImmutable(),
+            updated_at: new DateTimeImmutable()
         );
         $response = new UploadBristolStairsImageResponse($stairInfo);
         
@@ -39,8 +41,8 @@ class UploadBristolStairsImageResponseTest extends BaseTestCase
             stored_stair_image_file_id: 'image-456',
             steps: 42,
             is_deleted: 0,
-            created_at: new \DateTimeImmutable(),
-            updated_at: new \DateTimeImmutable()
+            created_at: new DateTimeImmutable(),
+            updated_at: new DateTimeImmutable()
         );
         $response = new UploadBristolStairsImageResponse($stairInfo);
         $headers = $response->getHeaders();
@@ -51,8 +53,8 @@ class UploadBristolStairsImageResponseTest extends BaseTestCase
 
     public function testGetBodyReturnsStairInfo()
     {
-        $createdAt = new \DateTimeImmutable('2024-01-15 12:00:00');
-        $updatedAt = new \DateTimeImmutable('2024-01-15 12:00:00');
+        $createdAt = new DateTimeImmutable('2024-01-15 12:00:00');
+        $updatedAt = new DateTimeImmutable('2024-01-15 12:00:00');
         $stairInfo = new BristolStairInfo(
             id: 1,
             description: 'A nice set of stairs',

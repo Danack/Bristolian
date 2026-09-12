@@ -11,6 +11,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use function Bristolian\Repo\RoomFileRepo\compare_room_file_document_timestamp;
 use function Bristolian\Repo\RoomFileRepo\compare_room_files_for_list_sort;
 use function Bristolian\Repo\RoomFileRepo\room_files_sql_order_by_clause;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -164,8 +165,8 @@ class FunctionsSearchingTest extends BaseTestCase
             state: 'uploaded',
             size: $size,
             user_id: 'user_1',
-            created_at: new \DateTimeImmutable($createdAt),
-            document_timestamp: $documentTimestamp !== null ? new \DateTimeImmutable($documentTimestamp) : null,
+            created_at: new DateTimeImmutable($createdAt),
+            document_timestamp: $documentTimestamp !== null ? new DateTimeImmutable($documentTimestamp) : null,
             description: null,
             note: null
         );

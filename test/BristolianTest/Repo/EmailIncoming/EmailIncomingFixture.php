@@ -7,6 +7,7 @@ namespace BristolianTest\Repo\EmailIncoming;
 use Bristolian\Model\Types\IncomingEmailParam;
 use Bristolian\Repo\EmailIncoming\EmailIncoming;
 use BristolianTest\BaseTestCase;
+use function Safe\json_encode;
 
 /**
  * Abstract test class for EmailIncoming implementations.

@@ -8,6 +8,7 @@ use Bristolian\Config\Config;
 use Bristolian\Model\Types\MigrationFromCode;
 use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use Bristolian\PdoSimple\PdoSimple;
+use function Safe\glob;
 
 /**
  * @codeCoverageIgnore

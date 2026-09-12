@@ -5,6 +5,7 @@ namespace Bristolian\Repo\BristolStairImageStorageInfoRepo;
 use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
 
 class FakeBristolStairImageStorageInfoRepo implements BristolStairImageStorageInfoRepo
 {
@@ -19,7 +20,7 @@ class FakeBristolStairImageStorageInfoRepo implements BristolStairImageStorageIn
         UploadedFile $uploadedFile,
     ): string {
 
-        $datetime = new \DateTimeImmutable();
+        $datetime = new DateTimeImmutable();
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
         

@@ -7,6 +7,7 @@ use Bristolian\Model\TinnedFish\Product;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use Bristolian\Response\TinnedFish\ProductLookupResponse;
 use BristolianTest\BaseTestCase;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\Response\TinnedFish\ProductLookupResponse

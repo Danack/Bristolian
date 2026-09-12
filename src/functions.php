@@ -10,6 +10,24 @@ declare(strict_types = 1);
 use Bristolian\App;
 use Bristolian\Types\DocumentType;
 use SlimDispatcher\Response\JsonNoCacheResponse;
+use Safe\DateTimeImmutable;
+use function Safe\class_implements;
+use function Safe\curl_exec;
+use function Safe\curl_getinfo;
+use function Safe\curl_init;
+use function Safe\curl_setopt;
+use function Safe\error_log;
+use function Safe\exec;
+use function Safe\fclose;
+use function Safe\fsockopen;
+use function Safe\fwrite;
+use function Safe\ini_get;
+use function Safe\json_decode;
+use function Safe\json_encode;
+use function Safe\pcntl_signal;
+use function Safe\pcntl_signal_dispatch;
+use function Safe\preg_match;
+use function Safe\preg_replace;
 
 /**
  * Format an array of strings to have a count at the start
@@ -135,26 +153,26 @@ function json_decode_safe(?string $json): array
         throw new \Bristolian\Exception\JsonException("Error decoding JSON: cannot decode null.");
     }
 
-    $data = json_decode($json, true);
+    try {
+        $data = json_decode($json, true);
+    } catch (\Safe\Exceptions\JsonException $exception) {
+        $parser = new \Seld\JsonLint\JsonParser();
+        $parsingException = $parser->lint($json);
 
-    if (json_last_error() === JSON_ERROR_NONE) {
-        return $data;
+        if ($parsingException !== null) {
+            throw $parsingException;
+        }
+
+        throw new \Bristolian\Exception\JsonException(
+            "Error decoding JSON: " . $exception->getMessage()
+        );
     }
 
-    $parser = new \Seld\JsonLint\JsonParser();
-    $parsingException = $parser->lint($json);
-
-    if ($parsingException !== null) {
-        throw $parsingException;
-    }
-
-    if ($data === null) {
+    if (is_array($data) !== true) {
         throw new \Bristolian\Exception\JsonException("Error decoding JSON: null returned.");
     }
 
-    // @codeCoverageIgnoreStart
-    throw new \Bristolian\Exception\JsonException("Error decoding JSON: " . json_last_error_msg());
-    // @codeCoverageIgnoreEnd
+    return $data;
 }
 
 /**
@@ -214,14 +232,15 @@ TABLE;
  */
 function json_encode_safe($data, $options = 0): string
 {
-
-    $result = json_encode($data, $options | JSON_PRETTY_PRINT);
-
-    if ($result === false) {
-        throw new \Bristolian\Exception\JsonException("Failed to encode data as json: " . json_last_error_msg());
+    try {
+        return json_encode($data, $options | JSON_PRETTY_PRINT);
+    } catch (\Safe\Exceptions\JsonException $exception) {
+        throw new \Bristolian\Exception\JsonException(
+            "Failed to encode data as json: " . $exception->getMessage(),
+            0,
+            $exception
+        );
     }
-
-    return $result;
 }
 
 /**
@@ -1175,9 +1194,10 @@ function purgeVarnish(string $urlPath): bool
 
     $errno = 0;
     $errstr = '';
-    $fp = fsockopen($varnishHost, $varnishPort, $errno, $errstr, 2);
-    if (!$fp) {
-        \error_log(sprintf("Failed to connect to Varnish: %s (%d)\n", $errstr, $errno));
+    try {
+        $fp = fsockopen($varnishHost, $varnishPort, $errno, $errstr, 2);
+    } catch (\Safe\Exceptions\NetworkException $exception) {
+        error_log(sprintf("Failed to connect to Varnish: %s (%d)\n", $errstr, $errno));
         return false;
     }
 
@@ -1199,16 +1219,16 @@ function purgeVarnish(string $urlPath): bool
     if (preg_match('#HTTP/\d\.\d (\d{3})#', $response, $matches)) {
         $status = (int)$matches[1];
         if ($status >= 200 && $status < 300) {
-            \error_log(sprintf("Varnish purge successful: HTTP %d\n", $status));
+            error_log(sprintf("Varnish purge successful: HTTP %d\n", $status));
             return true;
         }
         else {
-            \error_log(sprintf("Varnish purge failed: HTTP %d\n%s", $status, $response));
+            error_log(sprintf("Varnish purge failed: HTTP %d\n%s", $status, $response));
             return false;
         }
     }
     else {
-        \error_log("Could not read HTTP response from Varnish\n");
+        error_log("Could not read HTTP response from Varnish\n");
         return false;
     }
 }
@@ -1226,9 +1246,10 @@ function banVarnishByTag(string $table): bool
 
     $errno = 0;
     $errstr = '';
-    $fp = fsockopen($varnishHost, $varnishPort, $errno, $errstr, 2);
-    if (!$fp) {
-        \error_log(sprintf("Failed to connect to Varnish for BAN: %s (%d)\n", $errstr, $errno));
+    try {
+        $fp = fsockopen($varnishHost, $varnishPort, $errno, $errstr, 2);
+    } catch (\Safe\Exceptions\NetworkException $exception) {
+        error_log(sprintf("Failed to connect to Varnish for BAN: %s (%d)\n", $errstr, $errno));
         return false;
     }
 
@@ -1252,12 +1273,12 @@ function banVarnishByTag(string $table): bool
             return true;
         }
         else {
-            \error_log(sprintf("Varnish BAN failed: HTTP %d\n%s", $status, $response));
+            error_log(sprintf("Varnish BAN failed: HTTP %d\n%s", $status, $response));
             return false;
         }
     }
     else {
-        \error_log("Could not read HTTP response from Varnish BAN\n");
+        error_log("Could not read HTTP response from Varnish BAN\n");
         return false;
     }
 }
@@ -1265,7 +1286,7 @@ function banVarnishByTag(string $table): bool
 
 function createBlankUserProfileForUserId(string $user_id): \Bristolian\Model\Generated\UserProfile
 {
-    $now = new \DateTimeImmutable();
+    $now = new DateTimeImmutable();
     return new \Bristolian\Model\Generated\UserProfile(
         user_id: $user_id,
         avatar_image_id: null,
@@ -1395,12 +1416,13 @@ function underscore_separated_datetime_to_human_readable(string $value): string
     }
 
     $format = '!' . App::DATE_TIME_FORMAT;
-    $parsed = \DateTimeImmutable::createFromFormat($format, $trimmed);
-    if ($parsed === false) {
+    try {
+        $parsed = DateTimeImmutable::createFromFormat($format, $trimmed);
+    } catch (\Safe\Exceptions\DatetimeException $exception) {
         throw new \Bristolian\Exception\BristolianException('Underscore-separated datetime is not parseable.');
     }
 
-    $errors = \DateTimeImmutable::getLastErrors();
+    $errors = DateTimeImmutable::getLastErrors();
     if ($errors !== false && ($errors['error_count'] > 0 || $errors['warning_count'] > 0)) {
         throw new \Bristolian\Exception\BristolianException('Underscore-separated datetime is not parseable.');
     }

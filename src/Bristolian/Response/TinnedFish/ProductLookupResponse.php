@@ -7,6 +7,7 @@ namespace Bristolian\Response\TinnedFish;
 use Bristolian\Model\TinnedFish\Copyright;
 use Bristolian\Model\TinnedFish\Product;
 use SlimDispatcher\Response\StubResponse;
+use function Safe\json_encode;
 
 /**
  * Successful product lookup response.

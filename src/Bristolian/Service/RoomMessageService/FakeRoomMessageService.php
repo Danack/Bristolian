@@ -4,6 +4,7 @@ namespace Bristolian\Service\RoomMessageService;
 
 use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\Parameters\ChatMessageParam;
+use Safe\DateTimeImmutable;
 
 class FakeRoomMessageService implements RoomMessageService
 {
@@ -32,7 +33,7 @@ class FakeRoomMessageService implements RoomMessageService
             $chatMessageParam->room_id,
             $chatMessageParam->text,
             $chatMessageParam->message_reply_id,
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
 
         $this->chat_messages[] = $message;

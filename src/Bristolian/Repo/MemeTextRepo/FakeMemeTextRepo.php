@@ -8,6 +8,7 @@ use Bristolian\Model\Generated\MemeText;
 use Bristolian\Model\Generated\StoredMeme;
 use Bristolian\Model\Types\Meme;
 use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
+use Safe\DateTimeImmutable;
 
 /**
  * Fake implementation of MemeTextRepo for testing.
@@ -87,7 +88,7 @@ class FakeMemeTextRepo implements MemeTextRepo
         StoredMeme $storedMeme,
         string $found_text
     ): void {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         
         $memeText = new MemeText(
             id: $this->nextTextId++,
@@ -143,7 +144,7 @@ class FakeMemeTextRepo implements MemeTextRepo
      */
     public function updateMemeText(string $meme_id, string $text): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         
         if (isset($this->memeTexts[$meme_id])) {
             // Update existing - create new entry (immutable)

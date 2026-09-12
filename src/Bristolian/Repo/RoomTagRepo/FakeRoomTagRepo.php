@@ -8,6 +8,7 @@ use Bristolian\Exception\TooManyRoomTagsException;
 use Bristolian\Model\Generated\RoomTag;
 use Bristolian\Parameters\TagParams;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
 
 class FakeRoomTagRepo implements RoomTagRepo
 {
@@ -40,7 +41,7 @@ class FakeRoomTagRepo implements RoomTagRepo
             $room_id,
             $params->text,
             $params->description,
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
         $this->tags[] = $tag;
         return $tag;

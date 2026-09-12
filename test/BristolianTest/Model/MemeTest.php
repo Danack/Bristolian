@@ -4,6 +4,7 @@ namespace BristolianTest\Model;
 
 use Bristolian\Model\Types\Meme;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -21,7 +22,7 @@ class MemeTest extends BaseTestCase
         $originalFilename = 'Meme Image.jpg';
         $state = 'active';
         $size = 654321;
-        $createdAt = new \DateTimeImmutable();
+        $createdAt = new DateTimeImmutable();
 
         $meme = new Meme($id, $userId, $normalizedName, $originalFilename, $state, $size, $createdAt);
 
@@ -47,7 +48,7 @@ class MemeTest extends BaseTestCase
             'Original.jpg',
             'active',
             100,
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
 
         $array = $meme->toArray();

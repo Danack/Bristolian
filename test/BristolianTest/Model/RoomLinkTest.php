@@ -4,6 +4,7 @@ namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Model\Generated\RoomLink;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -22,7 +23,7 @@ class RoomLinkTest extends BaseTestCase
         $description = 'A test link';
         $roomId = 'room-789';
         $userId = 'user-012';
-        $createdAt = new \DateTimeImmutable();
+        $createdAt = new DateTimeImmutable();
 
         $roomLink = new RoomLink(
             $id,

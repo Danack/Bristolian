@@ -6,6 +6,7 @@ namespace BristolianTest\Model\Types;
 
 use Bristolian\Model\Types\UserDisplayName;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -21,7 +22,7 @@ class UserDisplayNameTest extends BaseTestCase
         $userId = 'user-123';
         $displayName = 'Test User';
         $version = 2;
-        $createdAt = new \DateTimeImmutable();
+        $createdAt = new DateTimeImmutable();
 
         $userDisplayName = new UserDisplayName($id, $userId, $displayName, $version, $createdAt);
 

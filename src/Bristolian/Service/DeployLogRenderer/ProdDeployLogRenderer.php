@@ -2,6 +2,9 @@
 
 namespace Bristolian\Service\DeployLogRenderer;
 
+use function Safe\fopen;
+use function Safe\fread;
+
 class ProdDeployLogRenderer implements DeployLogRenderer
 {
     public function render(): string
@@ -16,17 +19,9 @@ class ProdDeployLogRenderer implements DeployLogRenderer
         // I don't believe this code can be usefully unit tested
         $file = fopen($prod_log_filename, "r");
 
-        if ($file === false) {
-            return "Failed to open deploy log file.";
-        }
-
         fseek($file, -1000, SEEK_END);
 
         $contents = fread($file, 1000);
-
-        if ($contents === false) {
-            return "Deploy log opened, but failed to read contents.";
-        }
 
         $lines = explode("\n", $contents);
 

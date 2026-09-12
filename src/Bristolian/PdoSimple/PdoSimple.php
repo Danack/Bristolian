@@ -9,6 +9,7 @@ use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\Service\UuidGenerator\UuidGenerator;
 use PDO;
 use PDOException;
+use Safe\DateTimeImmutable;
 
 /**
  * @param  array<string, string|int|null> $row
@@ -35,7 +36,7 @@ function convertRowToDatetime(array $row): array
             $data[$key] = null;
         }
         else if (in_array($key, $time_columns)) {
-            $data[$key] = new \DateTimeImmutable($value);
+            $data[$key] = new DateTimeImmutable($value);
         }
         else {
             $data[$key] = $value;

@@ -6,6 +6,7 @@ namespace BristolianTest\Repo\WhatDoTheyKnowRequestEventRepo;
 
 use Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\FakeWhatDoTheyKnowRequestEventRepo;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -19,7 +20,7 @@ final class FakeWhatDoTheyKnowRequestEventRepoTest extends BaseTestCase
     public function test_insertNewRequestEvent_tracks_rows_and_rejects_duplicate_wdt_event_id(): void
     {
         $repo = new FakeWhatDoTheyKnowRequestEventRepo();
-        $occurredAt = new \DateTimeImmutable('2026-02-01 00:00:00', new \DateTimeZone('UTC'));
+        $occurredAt = new DateTimeImmutable('2026-02-01 00:00:00', new \DateTimeZone('UTC'));
 
         self::assertTrue($repo->insertNewRequestEvent(
             wdtEventId: 100,

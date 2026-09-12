@@ -6,6 +6,7 @@ namespace BristolianTest\Model\Types;
 
 use Bristolian\Model\Types\RoomLinkWithUrl;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -23,8 +24,8 @@ class RoomLinkWithUrlTest extends BaseTestCase
         $url = 'https://example.com/page';
         $title = 'Example title';
         $description = 'Example description';
-        $createdAt = new \DateTimeImmutable('2024-03-01 12:00:00');
-        $documentTimestamp = new \DateTimeImmutable('2024-03-02 09:30:00');
+        $createdAt = new DateTimeImmutable('2024-03-01 12:00:00');
+        $documentTimestamp = new DateTimeImmutable('2024-03-02 09:30:00');
 
         $row = new RoomLinkWithUrl(
             $id,
@@ -52,7 +53,7 @@ class RoomLinkWithUrlTest extends BaseTestCase
      */
     public function test_constructor_accepts_null_title_description_and_document_timestamp(): void
     {
-        $createdAt = new \DateTimeImmutable('2025-01-10 08:00:00');
+        $createdAt = new DateTimeImmutable('2025-01-10 08:00:00');
 
         $row = new RoomLinkWithUrl(
             'rl-2',

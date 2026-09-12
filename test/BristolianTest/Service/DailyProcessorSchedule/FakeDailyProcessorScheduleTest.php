@@ -6,6 +6,7 @@ namespace BristolianTest\Service\DailyProcessorSchedule;
 
 use Bristolian\Service\DailyProcessorSchedule\FakeDailyProcessorSchedule;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -30,9 +31,9 @@ class FakeDailyProcessorScheduleTest extends BaseTestCase
     public function test_isOverXHoursAgo_returns_configured_value(): void
     {
         $schedule = new FakeDailyProcessorSchedule();
-        $this->assertTrue($schedule->isOverXHoursAgo(24, new \DateTimeImmutable()));
+        $this->assertTrue($schedule->isOverXHoursAgo(24, new DateTimeImmutable()));
 
         $schedule->lastRunIsOverCooldownHoursAgo = false;
-        $this->assertFalse($schedule->isOverXHoursAgo(24, new \DateTimeImmutable()));
+        $this->assertFalse($schedule->isOverXHoursAgo(24, new DateTimeImmutable()));
     }
 }

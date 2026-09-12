@@ -7,6 +7,8 @@ namespace Bristolian\PdoSimple;
 use Bristolian\Cache\TableAccessRecorder;
 use Bristolian\Cache\UnknownQueryHandler;
 use Bristolian\Service\UuidGenerator\UuidGenerator;
+use function Safe\preg_match;
+use function Safe\preg_replace;
 
 class PdoSimpleWithTableTracking extends PdoSimple
 {

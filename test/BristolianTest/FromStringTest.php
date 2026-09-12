@@ -4,6 +4,7 @@ namespace BristolianTest;
 
 use Bristolian\FromString;
 use BristolianTest\BaseTestCase;
+use function Safe\json_encode;
 
 /**
  * Test class that uses the FromString trait with constructor

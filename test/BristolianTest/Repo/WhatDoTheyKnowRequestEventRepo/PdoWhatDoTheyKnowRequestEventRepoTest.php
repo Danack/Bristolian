@@ -9,6 +9,7 @@ use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\PdoWhatDoTheyKnowRequestEventRepo;
 use Bristolian\Service\UuidGenerator\UuidGenerator;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @group db
@@ -24,7 +25,7 @@ final class PdoWhatDoTheyKnowRequestEventRepoTest extends BaseTestCase
     {
         $repo = $this->injector->make(PdoWhatDoTheyKnowRequestEventRepo::class);
         $wdtEventId = random_int(900_000_000, 1_900_000_000);
-        $occurredAt = new \DateTimeImmutable('2026-01-15 12:00:00', new \DateTimeZone('UTC'));
+        $occurredAt = new DateTimeImmutable('2026-01-15 12:00:00', new \DateTimeZone('UTC'));
         $payload = '{"synthetic":true}';
 
         $insertedFirst = $repo->insertNewRequestEvent(
@@ -95,7 +96,7 @@ final class PdoWhatDoTheyKnowRequestEventRepoTest extends BaseTestCase
             wdtUserUrlName: 'synthetic_user',
             wdtUserDisplayName: 'Synthetic User',
             wdtPublicBodyId: 1011,
-            wdtEventOccurredAtUtc: new \DateTimeImmutable('2026-01-15 12:00:00', new \DateTimeZone('UTC'))
+            wdtEventOccurredAtUtc: new DateTimeImmutable('2026-01-15 12:00:00', new \DateTimeZone('UTC'))
         );
     }
 }

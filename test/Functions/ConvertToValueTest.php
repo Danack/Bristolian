@@ -12,6 +12,8 @@ use DataType\Exception\ValidationException;
 use function convertToValue;
 use function convertToValueSafe;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Safe\DateTime;
+use function Safe\fopen;
 
 /**
  * @coversNothing
@@ -24,7 +26,7 @@ class ConvertToValueTest extends BaseTestCase
         yield [123, 123];
 
         yield [
-            new \DateTime("2025-08-04 10:00:00"),
+            new DateTime("2025-08-04 10:00:00"),
             '2025-08-04T10:00:00+00:00'
         ];
 

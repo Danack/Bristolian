@@ -7,6 +7,7 @@ namespace BristolianTest\Cache;
 use Bristolian\Cache\QueryTagMapping;
 use PHPUnit\Framework\TestCase;
 use BristolianTest\BaseTestCase;
+use function Safe\preg_match;
 
 /**
  * @covers \Bristolian\Cache\QueryTagMapping

@@ -6,6 +6,7 @@ namespace BristolianTest\Model\Types;
 
 use Bristolian\Model\Types\UserProfile;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -20,8 +21,8 @@ class UserProfileTest extends BaseTestCase
         $userId = 'user-123';
         $avatarImageId = 'avatar-456';
         $aboutMe = 'About me text';
-        $createdAt = new \DateTimeImmutable();
-        $updatedAt = new \DateTimeImmutable('2024-02-15');
+        $createdAt = new DateTimeImmutable();
+        $updatedAt = new DateTimeImmutable('2024-02-15');
 
         $profile = new UserProfile($userId, $avatarImageId, $aboutMe, $createdAt, $updatedAt);
 

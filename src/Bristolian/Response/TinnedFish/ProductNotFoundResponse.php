@@ -6,6 +6,7 @@ namespace Bristolian\Response\TinnedFish;
 
 use Bristolian\Model\TinnedFish\ProductError;
 use SlimDispatcher\Response\StubResponse;
+use function Safe\json_encode;
 
 /**
  * 404 response when product is not found.

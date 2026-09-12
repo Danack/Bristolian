@@ -13,6 +13,10 @@ use BristolianTest\BaseTestCase;
 use Bristolian\UploadedFiles\UploadedFile;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\UnableToListContents;
+use function Safe\file_put_contents;
+use function Safe\mkdir;
+use function Safe\rmdir;
+use function Safe\unlink;
 
 /**
  * Adapter that throws UnableToListContents when listContents is iterated.

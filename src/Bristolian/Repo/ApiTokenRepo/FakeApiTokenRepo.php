@@ -7,6 +7,7 @@ namespace Bristolian\Repo\ApiTokenRepo;
 use Bristolian\Model\Types\ApiToken;
 use Bristolian\Service\SecureTokenGenerator\SecureTokenGenerator;
 use Bristolian\Service\SecureTokenGenerator\RandomBytesSecureTokenGenerator;
+use Safe\DateTimeImmutable;
 
 /**
  * Fake implementation of ApiTokenRepo for testing.
@@ -50,7 +51,7 @@ class FakeApiTokenRepo implements ApiTokenRepo
             }
 
             $id = uniqid('token_', true);
-            $now = new \DateTimeImmutable();
+            $now = new DateTimeImmutable();
 
             $apiToken = new ApiToken(
                 id: $id,
@@ -90,7 +91,7 @@ class FakeApiTokenRepo implements ApiTokenRepo
                     name: $apiToken->name,
                     created_at: $apiToken->created_at,
                     is_revoked: true,
-                    revoked_at: new \DateTimeImmutable()
+                    revoked_at: new DateTimeImmutable()
                 );
                 return;
             }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BristolianChatTest\Fixtures;
 
 use Psr\Http\Message\UriInterface;
+use function Safe\parse_url;
 
 /**
  * Minimal PSR-7 Uri for building Amp Request in tests.

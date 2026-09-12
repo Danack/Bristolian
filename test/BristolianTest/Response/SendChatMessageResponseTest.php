@@ -6,6 +6,8 @@ use Bristolian\Exception\DataEncodingException;
 use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\Response\SendChatMessageResponse;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\Response\SendChatMessageResponse
@@ -20,7 +22,7 @@ class SendChatMessageResponseTest extends BaseTestCase
             room_id: 'room-456',
             text: 'Hello world',
             reply_message_id: null,
-            created_at: new \DateTimeImmutable()
+            created_at: new DateTimeImmutable()
         );
         $response = new SendChatMessageResponse($chatMessage);
         
@@ -35,7 +37,7 @@ class SendChatMessageResponseTest extends BaseTestCase
             room_id: 'room-456',
             text: 'Hello world',
             reply_message_id: null,
-            created_at: new \DateTimeImmutable()
+            created_at: new DateTimeImmutable()
         );
         $response = new SendChatMessageResponse($chatMessage);
         $headers = $response->getHeaders();
@@ -46,7 +48,7 @@ class SendChatMessageResponseTest extends BaseTestCase
 
     public function testGetBodyReturnsChatMessage()
     {
-        $createdAt = new \DateTimeImmutable('2024-01-15 12:00:00');
+        $createdAt = new DateTimeImmutable('2024-01-15 12:00:00');
         $chatMessage = new UserChatMessage(
             id: 1,
             user_id: 'user-123',
@@ -69,7 +71,7 @@ class SendChatMessageResponseTest extends BaseTestCase
 
     public function testGetBodyWithReplyMessageId()
     {
-        $createdAt = new \DateTimeImmutable('2024-01-15 12:00:00');
+        $createdAt = new DateTimeImmutable('2024-01-15 12:00:00');
         $chatMessage = new UserChatMessage(
             id: 2,
             user_id: 'user-123',
@@ -97,7 +99,7 @@ class SendChatMessageResponseTest extends BaseTestCase
             room_id: 'room-456',
             text: $invalidUtf8Text,
             reply_message_id: null,
-            created_at: new \DateTimeImmutable()
+            created_at: new DateTimeImmutable()
         );
         
         // This will throw JsonException at json_encode_safe, not DataEncodingException

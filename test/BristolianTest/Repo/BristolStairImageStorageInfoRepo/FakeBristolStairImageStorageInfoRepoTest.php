@@ -9,6 +9,7 @@ use Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorag
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\FileState;
 use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
+use Safe\DateTimeImmutable;
 
 /**
  * Tests for FakeBristolStairImageStorageInfoRepo
@@ -294,12 +295,12 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
 
-        $before = new \DateTimeImmutable();
+        $before = new DateTimeImmutable();
         
         $uploadedFile = UploadedFile::fromFile(__FILE__);
         $file_id = $repo->storeFileInfo('user_1', 'file1.jpg', $uploadedFile);
         
-        $after = new \DateTimeImmutable();
+        $after = new DateTimeImmutable();
 
         $files = $repo->getStoredFileInfo();
         $storedFile = $files[$file_id];

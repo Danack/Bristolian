@@ -12,7 +12,7 @@ use Bristolian\Model\Types\BccTro;
 class FakeBccTroRepo implements BccTroRepo
 {
     /**
-     * @var array<string, mixed>
+     * @var list<BccTro[]>
      */
     private array $savedData = [];
 
@@ -32,10 +32,15 @@ class FakeBccTroRepo implements BccTroRepo
 
     public function getMostRecentData(): BccTro|null
     {
-        if (count($this->savedData[]) !== 0) {
-            return \end($this->savedData[]);
+        if ($this->savedData === []) {
+            return null;
         }
 
-        return null;
+        $last_batch = $this->savedData[array_key_last($this->savedData)];
+        if ($last_batch === []) {
+            return null;
+        }
+
+        return $last_batch[array_key_last($last_batch)];
     }
 }

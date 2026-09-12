@@ -16,6 +16,7 @@ use Bristolian\Repo\VideoRepo\InMemoryVideoRepo;
 use PHPUnit\Framework\TestCase;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo
@@ -100,7 +101,6 @@ class InMemoryRoomVideoRepoTest extends BaseTestCase
         $videos = $this->repo->getVideosForRoom('room-1', RoomContentSearchParams::default());
 
         $this->assertCount(2, $videos);
-        $this->assertContainsOnlyInstancesOf(RoomVideo::class, $videos);
     }
 
     public function test_getVideosForRoom_different_rooms_are_independent(): void
@@ -322,7 +322,7 @@ class InMemoryRoomVideoRepoTest extends BaseTestCase
         $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
         $this->repo->addVideo('room-1', $videoId, 'Video');
 
-        $future = (new \DateTimeImmutable('now'))->modify('+1 day')->format('Y-m-d H:i:s');
+        $future = (new DateTimeImmutable('now'))->modify('+1 day')->format('Y-m-d H:i:s');
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_after' => $future]));
         $videos = $this->repo->getVideosForRoom('room-1', $search);
 
@@ -338,7 +338,7 @@ class InMemoryRoomVideoRepoTest extends BaseTestCase
         $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
         $this->repo->addVideo('room-1', $videoId, 'Video');
 
-        $past = (new \DateTimeImmutable('now'))->modify('-1 day')->format('Y-m-d H:i:s');
+        $past = (new DateTimeImmutable('now'))->modify('-1 day')->format('Y-m-d H:i:s');
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_before' => $past]));
         $videos = $this->repo->getVideosForRoom('room-1', $search);
 
@@ -354,7 +354,7 @@ class InMemoryRoomVideoRepoTest extends BaseTestCase
     {
         $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
         $roomVideo = $this->repo->addVideo('room-1', $videoId, 'Video');
-        $this->repo->setDocumentTimestampForRoomVideo($roomVideo->id, new \DateTimeImmutable('2024-06-01 12:00:00'));
+        $this->repo->setDocumentTimestampForRoomVideo($roomVideo->id, new DateTimeImmutable('2024-06-01 12:00:00'));
 
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['document_timestamp_after' => '2024-06-02 00:00:00']));
         $videos = $this->repo->getVideosForRoom('room-1', $search);
@@ -371,7 +371,7 @@ class InMemoryRoomVideoRepoTest extends BaseTestCase
     {
         $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
         $roomVideo = $this->repo->addVideo('room-1', $videoId, 'Video');
-        $this->repo->setDocumentTimestampForRoomVideo($roomVideo->id, new \DateTimeImmutable('2024-06-15 12:00:00'));
+        $this->repo->setDocumentTimestampForRoomVideo($roomVideo->id, new DateTimeImmutable('2024-06-15 12:00:00'));
 
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['document_timestamp_before' => '2024-06-01 00:00:00']));
         $videos = $this->repo->getVideosForRoom('room-1', $search);

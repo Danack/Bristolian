@@ -12,6 +12,7 @@ use Bristolian\Service\CliOutput\CapturingCliOutput;
 use Bristolian\Service\DailyProcessorSchedule\FakeDailyProcessorSchedule;
 use Bristolian\Service\DailyProcessorSchedule\StandardDailyProcessorSchedule;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -129,7 +130,7 @@ class SystemInfoTest extends BaseTestCase
     public function test_schedule_isOverXHoursAgo_returns_true_when_datetime_is_older_than_x_hours(): void
     {
         $schedule = new StandardDailyProcessorSchedule();
-        $twentyTwoHoursAgo = new \DateTimeImmutable('-22 hours');
+        $twentyTwoHoursAgo = new DateTimeImmutable('-22 hours');
         $this->assertTrue($schedule->isOverXHoursAgo(21, $twentyTwoHoursAgo));
     }
 
@@ -139,7 +140,7 @@ class SystemInfoTest extends BaseTestCase
     public function test_schedule_isOverXHoursAgo_returns_false_when_datetime_is_less_than_x_hours_ago(): void
     {
         $schedule = new StandardDailyProcessorSchedule();
-        $twentyHoursAgo = new \DateTimeImmutable('-20 hours');
+        $twentyHoursAgo = new DateTimeImmutable('-20 hours');
         $this->assertFalse($schedule->isOverXHoursAgo(21, $twentyHoursAgo));
     }
 }

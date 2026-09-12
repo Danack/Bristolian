@@ -8,6 +8,7 @@ use Bristolian\Model\TinnedFish\Product;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * Abstract test class for TinnedFishProductRepo implementations.
@@ -63,7 +64,7 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $product = new Product(
             barcode: '1234567890123',
             name: 'Sardines in Olive Oil',
@@ -100,7 +101,7 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $product1 = new Product(
             barcode: '1234567890123',
             name: 'Original Name',
@@ -157,7 +158,7 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
     {
         $repo = $this->getTestInstance();
 
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $product = new Product(
             barcode: '1234567890123',
             name: 'Test Product',
@@ -208,7 +209,7 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
         $species2 = 'Tuna';
         $product_code2 = 'PROD-' . create_test_uniqid();
 
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $product1 = new Product(
             barcode: $barcode1,
             name: $name1,

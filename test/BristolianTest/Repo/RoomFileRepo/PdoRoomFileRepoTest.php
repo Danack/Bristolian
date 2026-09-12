@@ -16,6 +16,8 @@ use BristolianTest\Support\HasTestWorld;
 use Bristolian\Model\Generated\RoomFileObjectInfo;
 use Bristolian\Model\Generated\Room;
 use VarMap\ArrayVarMap;
+use Safe\DateTimeImmutable;
+use function Safe\filesize;
 
 /**
  * @group db
@@ -306,7 +308,7 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
         $roomFileRepo->addFileToRoom($fileId, $room->id);
 
-        $future = (new \DateTimeImmutable('now'))->modify('+1 day')->format('Y-m-d H:i:s');
+        $future = (new DateTimeImmutable('now'))->modify('+1 day')->format('Y-m-d H:i:s');
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_after' => $future]));
         $files = $roomFileRepo->getFilesForRoom($room->id, $search);
 
@@ -323,7 +325,7 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
         $roomFileRepo->addFileToRoom($fileId, $room->id);
 
-        $past = (new \DateTimeImmutable('now'))->modify('-1 day')->format('Y-m-d H:i:s');
+        $past = (new DateTimeImmutable('now'))->modify('-1 day')->format('Y-m-d H:i:s');
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_before' => $past]));
         $files = $roomFileRepo->getFilesForRoom($room->id, $search);
 
@@ -480,7 +482,7 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo->addFileToRoom($fileId, $room->id);
         $description = 'Desc ' . create_test_uniqid();
         $note = 'Note ' . create_test_uniqid();
-        $documentTimestamp = new \DateTimeImmutable('2021-11-20 14:00:00');
+        $documentTimestamp = new DateTimeImmutable('2021-11-20 14:00:00');
 
         $roomFileRepo->updateRoomFileDetails($room->id, $fileId, $description, $note, $documentTimestamp);
 

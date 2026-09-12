@@ -6,6 +6,7 @@ namespace Bristolian\Repo\EmailQueue;
 
 use Bristolian\CliController\Email as EmailController;
 use Bristolian\Model\Types\Email;
+use Safe\DateTimeImmutable;
 
 /**
  * Fake implementation of EmailQueue for testing.
@@ -27,7 +28,7 @@ class FakeEmailQueue implements EmailQueue
      */
     public function queueEmailToUsers(array $users, string $subject, string $body): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
 
         foreach ($users as $user) {
             $email = new Email(
@@ -48,7 +49,7 @@ class FakeEmailQueue implements EmailQueue
     public function clearQueue(): int
     {
         $count = 0;
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
 
         foreach ($this->emails as $id => $email) {
             if (in_array($email->status, [EmailController::STATE_INITIAL, EmailController::STATE_SENDING, EmailController::STATE_RETRY], true)) {
@@ -71,7 +72,7 @@ class FakeEmailQueue implements EmailQueue
 
     public function getEmailToSendAndUpdateState(): Email|null
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
 
         // Find first email with INITIAL or RETRY status
         foreach ($this->emails as $id => $email) {
@@ -103,7 +104,7 @@ class FakeEmailQueue implements EmailQueue
             return;
         }
 
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $current = $this->emails[$email->id];
 
         $this->emails[$email->id] = new Email(
@@ -124,7 +125,7 @@ class FakeEmailQueue implements EmailQueue
             return;
         }
 
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $current = $this->emails[$email->id];
 
         $this->emails[$email->id] = new Email(
@@ -145,7 +146,7 @@ class FakeEmailQueue implements EmailQueue
             return;
         }
 
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $current = $this->emails[$email->id];
 
         $this->emails[$email->id] = new Email(

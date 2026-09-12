@@ -5,6 +5,7 @@ namespace BristolianTest\Model;
 use BristolianTest\BaseTestCase;
 
 use Bristolian\Model\Generated\ProcessorRunRecord;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -17,8 +18,8 @@ class ProcessorRunRecordTest extends BaseTestCase
     public function testConstruct()
     {
         $id = 1;
-        $startTime = new \DateTimeImmutable();
-        $endTime = new \DateTimeImmutable('+1 hour');
+        $startTime = new DateTimeImmutable();
+        $endTime = new DateTimeImmutable('+1 hour');
         $status = 'completed';
         $debugInfo = 'Debug information';
         $processorType = 'email_processor';
@@ -49,7 +50,7 @@ class ProcessorRunRecordTest extends BaseTestCase
             1,
             'test_processor',
             'Still processing',
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
             'running',
             null,
         );
@@ -66,7 +67,7 @@ class ProcessorRunRecordTest extends BaseTestCase
             1,
             'test_processor',
             'Still processing',
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
             'running',
             null,
         );

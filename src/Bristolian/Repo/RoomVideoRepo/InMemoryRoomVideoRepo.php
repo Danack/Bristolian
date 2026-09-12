@@ -10,6 +10,7 @@ use Bristolian\Repo\RoomTagRepo\RoomTagRepo;
 use Bristolian\Repo\RoomVideoTagRepo\RoomVideoTagRepo;
 use Bristolian\Repo\VideoRepo\VideoRepo;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
 
 class InMemoryRoomVideoRepo implements RoomVideoRepo
 {
@@ -111,7 +112,7 @@ class InMemoryRoomVideoRepo implements RoomVideoRepo
             description: $description,
             start_seconds: null,
             end_seconds: null,
-            created_at: new \DateTimeImmutable(),
+            created_at: new DateTimeImmutable(),
             document_timestamp: null
         );
         $this->roomVideos[$id] = $roomVideo;
@@ -135,7 +136,7 @@ class InMemoryRoomVideoRepo implements RoomVideoRepo
             description: $description,
             start_seconds: $start_seconds,
             end_seconds: $end_seconds,
-            created_at: new \DateTimeImmutable(),
+            created_at: new DateTimeImmutable(),
             document_timestamp: null
         );
         $this->roomVideos[$id] = $roomVideo;

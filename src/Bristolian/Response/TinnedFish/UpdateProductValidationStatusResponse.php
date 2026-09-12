@@ -6,6 +6,7 @@ namespace Bristolian\Response\TinnedFish;
 
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use SlimDispatcher\Response\StubResponse;
+use function Safe\json_encode;
 
 /**
  * Response for updating product validation status.

@@ -10,6 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Bristolian\Session\FakeAppSessionManager;
+use function Safe\json_encode;
 
 /**
  * @covers \Bristolian\Middleware\AppSessionMiddleware

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;
+use function Safe\preg_match;
 
 /**
  * Parse TRO (Traffic Regulation Order) entries from Bristol City Council HTML page content.
@@ -203,7 +204,7 @@ function output_tro_list_to_output($tros): string
 
 /**
  * @param BccTro[] $tros
- * @return void
+ * @return string
  */
 function renderBccTrosAsMarkdown(array $tros): string
 {

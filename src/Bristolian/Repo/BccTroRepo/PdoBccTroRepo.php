@@ -5,6 +5,7 @@ namespace Bristolian\Repo\BccTroRepo;
 use Bristolian\Database\bcc_tro_information;
 use Bristolian\Model\Types\BccTro;
 use Bristolian\PdoSimple\PdoSimple;
+use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
 use Bristolian\Model\Generated\BccTroInformation;
 
@@ -34,6 +35,7 @@ class PdoBccTroRepo implements BccTroRepo
         );
     }
 
+    #[ReadsTable(bcc_tro_information::class)]
     public function getMostRecentData(): BccTro|null
     {
         $sql = bcc_tro_information::SELECT . " order by id desc";
@@ -48,6 +50,6 @@ class PdoBccTroRepo implements BccTroRepo
             return null;
         }
 
-        return BccTro::fromJson($latest_entry->tro_data);
+        return BccTro::createFromJson($latest_entry->tro_data);
     }
 }

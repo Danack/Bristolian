@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Bristolian\PHPStan;
 
+use function Safe\preg_match;
+use function Safe\preg_match_all;
+use function Safe\preg_replace;
+
 /**
  * Best-effort extraction of database table names from SQL strings.
  * @codeCoverageIgnore
@@ -20,7 +24,7 @@ class SqlTableReferenceExtractor
     public function extract(string $sql): array
     {
         $normalizedSql = preg_replace('/\s+/', ' ', trim($sql));
-        if ($normalizedSql === null || $normalizedSql === '') {
+        if ($normalizedSql === '') {
             return ['reads' => [], 'writes' => []];
         }
 
@@ -134,11 +138,9 @@ class SqlTableReferenceExtractor
      */
     private function matchTables(string $sql, string $pattern): array
     {
-        if (preg_match_all($pattern, $sql, $matches) !== false) {
-            return $matches[1];
-        }
+        preg_match_all($pattern, $sql, $matches);
 
-        return [];
+        return $matches[1];
     }
 
     /**

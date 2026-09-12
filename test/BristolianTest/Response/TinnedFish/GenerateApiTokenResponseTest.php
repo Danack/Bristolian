@@ -4,6 +4,8 @@ namespace BristolianTest\Response\TinnedFish;
 
 use Bristolian\Response\TinnedFish\GenerateApiTokenResponse;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\Response\TinnedFish\GenerateApiTokenResponse
@@ -12,7 +14,7 @@ class GenerateApiTokenResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns200()
     {
-        $createdAt = new \DateTimeImmutable('2024-01-15 12:00:00');
+        $createdAt = new DateTimeImmutable('2024-01-15 12:00:00');
         $response = new GenerateApiTokenResponse(
             'token-123',
             'My API Token',
@@ -25,7 +27,7 @@ class GenerateApiTokenResponseTest extends BaseTestCase
 
     public function testGetHeadersReturnsContentType()
     {
-        $createdAt = new \DateTimeImmutable('2024-01-15 12:00:00');
+        $createdAt = new DateTimeImmutable('2024-01-15 12:00:00');
         $response = new GenerateApiTokenResponse(
             'token-123',
             'My API Token',
@@ -40,7 +42,7 @@ class GenerateApiTokenResponseTest extends BaseTestCase
 
     public function testGetBodyReturnsTokenInfo()
     {
-        $createdAt = new \DateTimeImmutable('2024-01-15 12:00:00');
+        $createdAt = new DateTimeImmutable('2024-01-15 12:00:00');
         $response = new GenerateApiTokenResponse(
             'token-123',
             'My API Token',

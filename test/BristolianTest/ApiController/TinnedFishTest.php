@@ -21,6 +21,7 @@ use Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher;
 use Bristolian\Service\TinnedFish\OpenFoodFactsApiException;
 use Bristolian\Session\FakeUserSession;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @covers \Bristolian\ApiController\TinnedFish::getAllProducts
@@ -49,7 +50,7 @@ class TinnedFishTest extends BaseTestCase
 
     public function test_getAllProducts_returns_all_products(): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $product1 = new Product(
             barcode: '1234567890123',
             name: 'Sardines in Olive Oil',
@@ -124,7 +125,7 @@ class TinnedFishTest extends BaseTestCase
 
     public function test_getProductByBarcode_returns_product_from_canonical_database(): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $product = new Product(
             barcode: '3107761210000',
             name: 'Test Product',

@@ -8,6 +8,8 @@ use Bristolian\Service\MemoryWarningCheck\ProdMemoryWarningCheck;
 use Bristolian\Service\TooMuchMemoryNotifier\NullTooMuchMemoryNotifier;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
+use function Safe\ini_get;
+use function Safe\ini_set;
 
 /**
  * @coversNothing

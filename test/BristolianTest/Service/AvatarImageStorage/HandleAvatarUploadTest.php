@@ -18,6 +18,7 @@ use Bristolian\Service\AvatarImageStorage\FakeAvatarImageStorage;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use SlimDispatcher\Response\StubResponse;
+use function Safe\getimagesize;
 
 /**
  * @coversNothing
@@ -90,7 +91,7 @@ class HandleAvatarUploadTest extends BaseTestCase
         }
         $imageSize = @getimagesize($imagePath);
         $minSize = 512;
-        if ($imageSize === false || $imageSize[0] < $minSize || $imageSize[1] < $minSize) {
+        if ($imageSize === null || $imageSize[0] < $minSize || $imageSize[1] < $minSize) {
             $this->markTestSkipped("Fixture image must be at least {$minSize}x{$minSize} for this test");
         }
 

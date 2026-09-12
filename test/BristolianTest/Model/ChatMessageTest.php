@@ -5,6 +5,7 @@ namespace BristolianTest\Model;
 use Bristolian\Model\Chat\SystemChatMessage;
 use Bristolian\Model\Chat\UserChatMessage;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -20,7 +21,7 @@ class ChatMessageTest extends BaseTestCase
 //        $roomId = 'room-sys';
 //        $text = 'System message';
 //        $replyMessageId = 50;
-//        $createdAt = new \DateTimeImmutable('2024-02-15 10:00:00');
+//        $createdAt = new DateTimeImmutable('2024-02-15 10:00:00');
 //
 //        $message = new SystemChatMessage($id, $roomId, $text, $replyMessageId, $createdAt);
 //
@@ -41,7 +42,7 @@ class ChatMessageTest extends BaseTestCase
         $roomId = 'room-789';
         $text = 'Hello, world!';
         $messageReplyId = 100;
-        $createdAt = new \DateTimeImmutable();
+        $createdAt = new DateTimeImmutable();
 
         $chatMessage = new UserChatMessage(
             $id,
@@ -71,7 +72,7 @@ class ChatMessageTest extends BaseTestCase
             'room-id',
             'Message text',
             null,
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
 
         $this->assertNull($chatMessage->reply_message_id);
@@ -83,7 +84,7 @@ class ChatMessageTest extends BaseTestCase
      */
     public function testWithText_replaces_text_and_preserves_other_fields(): void
     {
-        $createdAt = new \DateTimeImmutable('2024-06-01 12:00:00');
+        $createdAt = new DateTimeImmutable('2024-06-01 12:00:00');
         $original = new UserChatMessage(
             42,
             'user-abc',
@@ -115,7 +116,7 @@ class ChatMessageTest extends BaseTestCase
             'room-id',
             'Test message',
             null,
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
 
         $array = $chatMessage->toArray();
@@ -131,7 +132,7 @@ class ChatMessageTest extends BaseTestCase
             'room-id',
             'Test message',
             null,
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
         $string = $chatMessage->toString();
 

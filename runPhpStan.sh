@@ -2,7 +2,7 @@
 
 set -e
 
-# docker-compose exec -T php_fpm sh -c "php phpstan.phar analyze -c ./phpstan.neon -l 7 lib"
+# docker-compose exec -T php_fpm sh -c "php vendor/bin/phpstan analyze -c ./phpstan.neon -l 7 lib"
 
 # --no-progress
-php phpstan.phar analyze -vvv -c ./phpstan.neon --error-format=llm "$@"
+php vendor/bin/phpstan analyze -vvv -c ./phpstan.neon --error-format=llm "$@"

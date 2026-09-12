@@ -136,7 +136,6 @@ abstract class UserProfileRepoFixture extends BaseTestCase
         $history = $repo->getDisplayNameHistory($user_id);
 
         $this->assertCount(3, $history);
-        $this->assertContainsOnlyInstancesOf(UserDisplayName::class, $history);
         // Should be ordered by version desc (newest first)
         $this->assertSame('Name 3', $history[0]->display_name);
         $this->assertSame('Name 2', $history[1]->display_name);

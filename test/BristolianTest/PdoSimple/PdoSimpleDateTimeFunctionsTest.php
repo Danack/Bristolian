@@ -8,6 +8,7 @@ use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Service\UuidGenerator\RamseyUuidGenerator;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
+use Safe\DateTimeImmutable;
 
 /**
  * @covers \Bristolian\PdoSimple\convertRowToDatetime
@@ -45,10 +46,10 @@ class PdoSimpleDateTimeFunctionsTest extends BaseTestCase
 
         $this->assertSame(1, $result['id']);
         $this->assertSame('test', $result['test_string']);
-        $this->assertInstanceOf(\DateTimeImmutable::class, $result['created_at']);
-        $this->assertInstanceOf(\DateTimeImmutable::class, $result['updated_at']);
-        $this->assertInstanceOf(\DateTimeImmutable::class, $result['start_time']);
-        $this->assertInstanceOf(\DateTimeImmutable::class, $result['end_time']);
+        $this->assertInstanceOf(DateTimeImmutable::class, $result['created_at']);
+        $this->assertInstanceOf(DateTimeImmutable::class, $result['updated_at']);
+        $this->assertInstanceOf(DateTimeImmutable::class, $result['start_time']);
+        $this->assertInstanceOf(DateTimeImmutable::class, $result['end_time']);
         
         $this->assertEquals('2023-01-01 12:00:00', $result['created_at']->format('Y-m-d H:i:s'));
         $this->assertEquals('2023-01-02 13:30:00', $result['updated_at']->format('Y-m-d H:i:s'));
@@ -72,9 +73,9 @@ class PdoSimpleDateTimeFunctionsTest extends BaseTestCase
         $this->assertSame(1, $result['id']);
         $this->assertSame('test', $result['test_string']);
         $this->assertNull($result['created_at']);
-        $this->assertInstanceOf(\DateTimeImmutable::class, $result['updated_at']);
+        $this->assertInstanceOf(DateTimeImmutable::class, $result['updated_at']);
         $this->assertNull($result['start_time']);
-        $this->assertInstanceOf(\DateTimeImmutable::class, $result['end_time']);
+        $this->assertInstanceOf(DateTimeImmutable::class, $result['end_time']);
     }
 
     public function test_convertRowToDatetime_without_time_columns()
@@ -105,7 +106,7 @@ class PdoSimpleDateTimeFunctionsTest extends BaseTestCase
 
     public function test_convertRowFromDatetime_with_datetime_objects()
     {
-        $now = new \DateTimeImmutable('2023-01-01 12:00:00');
+        $now = new DateTimeImmutable('2023-01-01 12:00:00');
         $row = [
             'id' => 1,
             'test_string' => 'test',
@@ -138,7 +139,7 @@ class PdoSimpleDateTimeFunctionsTest extends BaseTestCase
 
     public function test_convertRowFromDatetime_with_mixed_types()
     {
-        $now = new \DateTimeImmutable('2023-01-01 12:00:00');
+        $now = new DateTimeImmutable('2023-01-01 12:00:00');
         $row = [
             'id' => 1,
             'test_string' => 'test',
@@ -175,7 +176,7 @@ values (
 SQL;
 
         $test_string = $this->getTestString();
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $params = [
             ':test_string' => $test_string,
             ':test_int' => 8888,

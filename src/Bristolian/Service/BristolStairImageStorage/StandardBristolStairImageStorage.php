@@ -9,6 +9,8 @@ use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Service\ObjectStore\BristolianStairImageObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use function Safe\file_get_contents;
+use function Safe\tempnam;
 
 class StandardBristolStairImageStorage implements BristolStairImageStorage
 {
@@ -33,8 +35,9 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
         BristolStairsGpsParams $gpsParams
     ): BristolStairInfo|UploadError {
 
-        $contents = @file_get_contents($uploadedFile->getTmpName());
-        if ($contents === false) {
+        try {
+            $contents = file_get_contents($uploadedFile->getTmpName());
+        } catch (\Safe\Exceptions\FilesystemException $exception) {
             // @codeCoverageIgnoreStart
             return UploadError::uploadedFileUnreadable();
             // @codeCoverageIgnoreEnd
@@ -63,8 +66,9 @@ class StandardBristolStairImageStorage implements BristolStairImageStorage
 
             // This is duplication of start of function, and even more memory.
             $uploadedFile = UploadedFile::fromFile($temp_file_with_extension);
-            $contents = @file_get_contents($uploadedFile->getTmpName());
-            if ($contents === false) {
+            try {
+                $contents = file_get_contents($uploadedFile->getTmpName());
+            } catch (\Safe\Exceptions\FilesystemException $exception) {
                 // @codeCoverageIgnoreStart
                 return UploadError::uploadedFileUnreadable();
                 // @codeCoverageIgnoreEnd

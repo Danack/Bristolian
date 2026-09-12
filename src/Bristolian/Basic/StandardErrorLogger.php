@@ -2,6 +2,8 @@
 
 namespace Bristolian\Basic;
 
+use function Safe\error_log;
+
 class StandardErrorLogger implements ErrorLogger
 {
     /**
@@ -9,6 +11,6 @@ class StandardErrorLogger implements ErrorLogger
      */
     public function log(string $string): void
     {
-        \error_log($string);
+        error_log($string);
     }
 }

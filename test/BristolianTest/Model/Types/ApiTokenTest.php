@@ -6,6 +6,7 @@ namespace BristolianTest\Model\Types;
 
 use Bristolian\Model\Types\ApiToken;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -20,8 +21,8 @@ class ApiTokenTest extends BaseTestCase
         $id = 'token-id-123';
         $token = 'secret-token-abc';
         $name = 'Test Token';
-        $createdAt = new \DateTimeImmutable();
-        $revokedAt = new \DateTimeImmutable('2024-02-01');
+        $createdAt = new DateTimeImmutable();
+        $revokedAt = new DateTimeImmutable('2024-02-01');
 
         $apiToken = new ApiToken($id, $token, $name, $createdAt, true, $revokedAt);
 

@@ -6,6 +6,7 @@ use Bristolian\Model\Types\IncomingEmailParam;
 use Bristolian\Repo\EmailIncoming\PdoEmailIncoming;
 use Bristolian\Repo\EmailIncoming\EmailIncoming;
 use BristolianTest\Repo\TestPlaceholders;
+use function Safe\json_encode;
 
 /**
  * @group db

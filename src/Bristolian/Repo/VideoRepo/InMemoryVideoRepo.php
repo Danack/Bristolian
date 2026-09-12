@@ -5,6 +5,7 @@ namespace Bristolian\Repo\VideoRepo;
 use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Generated\Video;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
 
 class InMemoryVideoRepo implements VideoRepo
 {
@@ -18,7 +19,7 @@ class InMemoryVideoRepo implements VideoRepo
             id: $id,
             user_id: $user_id,
             youtube_video_id: $youtube_video_id,
-            created_at: new \DateTimeImmutable()
+            created_at: new DateTimeImmutable()
         );
         return $id;
     }

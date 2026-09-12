@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Bristolian\Service\ExplorerData;
 
+use function Safe\file_get_contents;
+use function Safe\json_decode;
+use function Safe\json_encode;
+use function Safe\preg_match;
+use function Safe\preg_replace;
+
 /**
  * Machine-readable provenance for auto-generation processes (CodeView / agents).
  *
@@ -90,8 +96,8 @@ class CodegenProvenance
         $currentLines = [];
 
         foreach (explode("\n", $docComment) as $line) {
-            $line = preg_replace('#\s*\*/\s*$#', '', $line) ?? $line;
-            $line = preg_replace('#^\s*/\*\*?\s*#', '', $line) ?? $line;
+            $line = preg_replace('#\s*\*/\s*$#', '', $line);
+            $line = preg_replace('#^\s*/\*\*?\s*#', '', $line);
 
             if (preg_match('#^\s*\* ?(.*)$#', $line, $matches) === 1) {
                 $content = rtrim($matches[1]);
@@ -164,9 +170,6 @@ class CodegenProvenance
         }
 
         $fileContents = file_get_contents($fileName);
-        if ($fileContents === false) {
-            throw new \RuntimeException('Could not read file for callable: ' . $generatorCallable);
-        }
 
         $lines = explode("\n", $fileContents);
         $methodStartLine = $reflectionMethod->getStartLine();
@@ -312,10 +315,6 @@ class CodegenProvenance
             $payload,
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
         );
-
-        if ($json === false) {
-            throw new \RuntimeException('Failed to encode codegen provenance payload as JSON.');
-        }
 
         $out = '// ' . self::BEGIN_MARKER . "\n";
         foreach (explode("\n", $json) as $line) {

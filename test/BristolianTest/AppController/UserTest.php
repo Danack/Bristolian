@@ -27,6 +27,7 @@ use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use VarMap\ArrayVarMap;
+use function Safe\json_decode;
 
 /**
  * @coversNothing

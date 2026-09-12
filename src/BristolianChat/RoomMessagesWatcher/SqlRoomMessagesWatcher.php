@@ -6,6 +6,7 @@ use Amp\Mysql\MysqlConnection;
 use Bristolian\Database\chat_message;
 use Bristolian\Model\Chat\UserChatMessage;
 use Monolog\Logger;
+use Safe\DateTimeImmutable;
 
 class SqlRoomMessagesWatcher implements RoomMessagesWatcher
 {
@@ -52,7 +53,7 @@ class SqlRoomMessagesWatcher implements RoomMessagesWatcher
     {
         $created_at = $row['created_at'];
         if (is_string($created_at)) {
-            $created_at = new \DateTimeImmutable($created_at);
+            $created_at = new DateTimeImmutable($created_at);
         }
         return new UserChatMessage(
             (int) $row['id'],

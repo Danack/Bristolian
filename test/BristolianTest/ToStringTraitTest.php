@@ -6,6 +6,7 @@ use Bristolian\ToString;
 use Bristolian\FromString;
 use Bristolian\Model\Chat\UserChatMessage;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Safe\DateTimeImmutable;
 
 /**
  * Tests all Model classes that use the ToString trait
@@ -72,7 +73,7 @@ class ToStringTraitTest extends BaseTestCase
 //                room_id: 'room-789',
 //                text: 'Hello, world! This is a test message.',
 //                reply_message_id: 100,
-//                created_at: new \DateTimeImmutable('2024-01-15 10:30:00')
+//                created_at: new DateTimeImmutable('2024-01-15 10:30:00')
 //            ),
 //            default => throw new \RuntimeException("No factory method defined for class: $className")
 //        };
@@ -182,7 +183,7 @@ class ToStringTraitTest extends BaseTestCase
                     room_id: 'room-456',
                     text: 'Message without reply',
                     reply_message_id: null,
-                    created_at: new \DateTimeImmutable('2024-01-15 12:00:00')
+                    created_at: new DateTimeImmutable('2024-01-15 12:00:00')
                 )
             ],
         ];
@@ -214,7 +215,7 @@ class ToStringTraitTest extends BaseTestCase
             room_id: 'room-xyz',
             text: 'Test array conversion',
             reply_message_id: null,
-            created_at: new \DateTimeImmutable('2024-01-15 14:30:00')
+            created_at: new DateTimeImmutable('2024-01-15 14:30:00')
         );
 
         $array = $chatMessage->toArray();

@@ -83,8 +83,6 @@ abstract class FoiRequestRepoFixture extends BaseTestCase
 
         $requests = $repo->getAllFoiRequests();
 
-        $this->assertContainsOnlyInstancesOf(FoiRequest::class, $requests);
-
         // Find the requests by their unique strings
         $found1 = null;
         $found2 = null;

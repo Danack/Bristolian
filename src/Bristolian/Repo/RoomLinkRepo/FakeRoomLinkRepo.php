@@ -9,6 +9,7 @@ use Bristolian\Parameters\LinkParam;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Repo\LinkRepo\LinkRepo;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
 
 class FakeRoomLinkRepo implements RoomLinkRepo
 {
@@ -75,7 +76,7 @@ class FakeRoomLinkRepo implements RoomLinkRepo
         $link_id = $this->linkRepo->store_link($user_id, $linkParam->url);
         $this->urlByLinkId[$link_id] = $linkParam->url;
 
-        $time = new \DateTimeImmutable("2010-01-28T15:00:00+02:00");
+        $time = new DateTimeImmutable("2010-01-28T15:00:00+02:00");
 
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();

@@ -6,6 +6,7 @@ use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Service\ObjectStore\FileObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use function Safe\file_get_contents;
 
 class StandardMemeStorageProcessor implements MemeStorageProcessor
 {
@@ -29,8 +30,9 @@ class StandardMemeStorageProcessor implements MemeStorageProcessor
         FileObjectStore $fileObjectStore
     ): ObjectStoredMeme|UploadError {
 
-        $contents = @file_get_contents($uploadedFile->getTmpName());
-        if ($contents === false) {
+        try {
+            $contents = file_get_contents($uploadedFile->getTmpName());
+        } catch (\Safe\Exceptions\FilesystemException $exception) {
             // @codeCoverageIgnoreStart
             return UploadError::uploadedFileUnreadable();
             // @codeCoverageIgnoreEnd

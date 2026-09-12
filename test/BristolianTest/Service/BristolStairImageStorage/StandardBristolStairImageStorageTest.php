@@ -14,6 +14,11 @@ use Bristolian\Service\ObjectStore\FakeBristolianStairImageObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use function Safe\chmod;
+use function Safe\file_get_contents;
+use function Safe\file_put_contents;
+use function Safe\tempnam;
+use function Safe\unlink;
 
 /**
  * @coversNothing
@@ -145,10 +150,12 @@ class StandardBristolStairImageStorageTest extends BaseTestCase
         \Safe\chmod($tempFile, 0o000);
 
         try {
-            if (@file_get_contents($tempFile) !== false) {
-                $this->markTestSkipped('chmod 0o000 does not prevent read in this environment');
-            }
+            file_get_contents($tempFile);
+            $this->markTestSkipped('chmod 0o000 does not prevent read in this environment');
+        } catch (\Safe\Exceptions\FilesystemException $exception) {
+        }
 
+        try {
             $storage = new StandardBristolStairImageStorage(
                 new FakeBristolStairImageStorageInfoRepo(),
                 new FakeBristolianStairImageObjectStore(),

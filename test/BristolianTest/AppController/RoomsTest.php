@@ -72,6 +72,14 @@ use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use VarMap\ArrayVarMap;
 use Bristolian\Service\YouTube\ThrowingTranscriptFetcher;
+use Safe\DateTimeImmutable;
+use function Safe\fclose;
+use function Safe\file_put_contents;
+use function Safe\json_decode;
+use function Safe\mkdir;
+use function Safe\rmdir;
+use function Safe\tmpfile;
+use function Safe\unlink;
 
 /**
  * @coversNothing
@@ -817,7 +825,7 @@ class RoomsTest extends BaseTestCase
         $files = $roomFileRepo->getFilesForRoom($this->roomId, RoomContentSearchParams::default());
         $fileId = $files[0]->id;
 
-        $documentTimestamp = new \DateTimeImmutable('2024-06-15 14:30:00');
+        $documentTimestamp = new DateTimeImmutable('2024-06-15 14:30:00');
         $jsonInput = new FakeJsonInput([
             'description' => 'Short list label for the file',
             'note' => 'Longer explanation of what this file contains.',

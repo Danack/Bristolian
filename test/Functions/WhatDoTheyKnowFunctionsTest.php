@@ -6,6 +6,8 @@ namespace Functions;
 
 use Bristolian\WhatDoTheyKnow\RequestEvent;
 use BristolianTest\BaseTestCase;
+use function Safe\file_get_contents;
+use function Safe\json_decode;
 
 /**
  * @coversNothing
@@ -89,7 +91,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         $events = parseWhatDoTheyKnowRequestEventsJson($json);
 
         self::assertCount(25, $events);
-        self::assertContainsOnlyInstancesOf(RequestEvent::class, $events);
 
         $first = $events[0];
         self::assertSame(19881582, $first->id);

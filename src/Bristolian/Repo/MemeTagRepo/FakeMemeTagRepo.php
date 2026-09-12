@@ -9,6 +9,7 @@ use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\MemeTagUpdateParams;
 use Bristolian\Repo\MemeStorageRepo\MemeFileState;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
 
 /**
  * Fake implementation of MemeTagRepo for testing.
@@ -16,7 +17,7 @@ use Ramsey\Uuid\Uuid;
 class FakeMemeTagRepo implements MemeTagRepo
 {
     /**
-     * @var array<string, array{id: string, user_id: string, meme_id: string, type: string, text: string, created_at: \DateTimeImmutable}>
+     * @var array<string, array{id: string, user_id: string, meme_id: string, type: string, text: string, created_at: DateTimeImmutable}>
      */
     private array $tags = [];
 
@@ -36,7 +37,7 @@ class FakeMemeTagRepo implements MemeTagRepo
     ): void {
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
 
         $this->tags[$id] = [
             'id' => $id,

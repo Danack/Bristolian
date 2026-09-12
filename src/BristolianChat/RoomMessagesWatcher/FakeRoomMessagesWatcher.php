@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BristolianChat\RoomMessagesWatcher;
 
 use Bristolian\Model\Chat\UserChatMessage;
+use Safe\DateTimeImmutable;
 
 /**
  * Fake implementation for tests. Configure initial max id and a queue of rows
@@ -49,7 +50,7 @@ class FakeRoomMessagesWatcher implements RoomMessagesWatcher
     {
         $created_at = $row['created_at'];
         if (is_string($created_at)) {
-            $created_at = new \DateTimeImmutable($created_at);
+            $created_at = new DateTimeImmutable($created_at);
         }
         return new UserChatMessage(
             (int) $row['id'],

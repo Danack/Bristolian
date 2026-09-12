@@ -8,6 +8,7 @@ use Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use Bristolian\Model\Generated\ProcessorRunRecord;
 use BristolianTest\Repo\DbTransactionIsolation;
+use Safe\DateTimeImmutable;
 
 /**
  * @group db
@@ -87,7 +88,7 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         $this->assertInstanceOf(\DateTimeInterface::class, $lastRun);
         
         // The last run should be very recent (within last few seconds)
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $diff = $now->getTimestamp() - $lastRun->getTimestamp();
         $this->assertLessThan(5, $diff, 'Last run should be very recent');
     }
@@ -332,9 +333,9 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
 
-        $before = new \DateTimeImmutable();
+        $before = new DateTimeImmutable();
         $id = $repo->startRun(ProcessType::email_send);
-        $after = new \DateTimeImmutable();
+        $after = new DateTimeImmutable();
 
         $records = $repo->getRunRecords(ProcessType::email_send);
         

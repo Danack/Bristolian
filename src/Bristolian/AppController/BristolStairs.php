@@ -28,6 +28,8 @@ use SlimDispatcher\Response\StubResponse;
 use VarMap\VarMap;
 use function Safe\realpath;
 use function Safe\json_encode;
+use function Safe\file_get_contents;
+use function Safe\json_decode;
 
 class BristolStairs
 {

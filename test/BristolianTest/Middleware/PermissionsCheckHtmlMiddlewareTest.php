@@ -10,6 +10,7 @@ use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequest;
 use Bristolian\Exception\InvalidPermissionsException;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Safe\DateTimeImmutable;
 
 /**
  * @covers \Bristolian\Middleware\PermissionsCheckHtmlMiddleware
@@ -94,7 +95,7 @@ class PermissionsCheckHtmlMiddlewareTest extends BaseTestCase
             id: 'token_id_1',
             token: $token,
             name: 'Test Token',
-            created_at: new \DateTimeImmutable(),
+            created_at: new DateTimeImmutable(),
             is_revoked: false,
             revoked_at: null
         );

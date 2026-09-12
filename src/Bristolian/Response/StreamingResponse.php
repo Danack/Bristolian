@@ -5,6 +5,7 @@ namespace Bristolian\Response;
 use Bristolian\Exception\BristolianResponseException;
 use Psr\Http\Message\StreamInterface;
 use SlimDispatcher\Response\ResponseException;
+use function Safe\fopen;
 
 class StreamingResponse
 {
@@ -13,7 +14,7 @@ class StreamingResponse
     private $headers;
 
     /**
-     * @var false|resource
+     * @var resource
      */
     private $filehandle;
 
@@ -38,9 +39,9 @@ class StreamingResponse
 
         $this->headers = array_merge($standardHeaders, $headers);
 
-        $this->filehandle = @fopen($filenameToServe, 'r');
-
-        if ($this->filehandle === false) {
+        try {
+            $this->filehandle = fopen($filenameToServe, 'r');
+        } catch (\Safe\Exceptions\FilesystemException $exception) {
             throw BristolianResponseException::failedToOpenFile($filenameToServe);
         }
 

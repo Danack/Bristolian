@@ -12,6 +12,7 @@ use Bristolian\Service\AvatarImageStorage\HandleAvatarUpload;
 use Bristolian\Session\UserSession;
 use SlimDispatcher\Response\JsonResponse;
 use user_repo\UserRepo\UserRepo;
+use function Safe\realpath;
 
 class Users
 {
@@ -121,15 +122,6 @@ class Users
 
         $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;
         $filenameToServe = realpath($localCacheFilename);
-
-        // Hard to test: realpath() only returns false if the file is missing or path invalid after cache write; would require simulating filesystem/permission failure.
-        if ($filenameToServe === false) {
-            // @codeCoverageIgnoreStart
-            throw new \Bristolian\Exception\BristolianException(
-                "Failed to retrieve avatar from object store [" . $normalized_name . "]."
-            );
-            // @codeCoverageIgnoreEnd
-        }
 
         return new \Bristolian\Response\StreamingResponse(
             $filenameToServe
@@ -272,15 +264,6 @@ HTML;
 
         $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;
         $filenameToServe = realpath($localCacheFilename);
-
-        // Hard to test: realpath() only returns false if the file is missing or path invalid after cache write; would require simulating filesystem/permission failure.
-        if ($filenameToServe === false) {
-            // @codeCoverageIgnoreStart
-            throw new \Bristolian\Exception\BristolianException(
-                "Failed to retrieve avatar from object store [" . $normalized_name . "]."
-            );
-            // @codeCoverageIgnoreEnd
-        }
 
         return new \Bristolian\Response\StreamingResponse(
             $filenameToServe

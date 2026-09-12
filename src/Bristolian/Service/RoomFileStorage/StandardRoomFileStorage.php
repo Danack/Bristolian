@@ -7,6 +7,7 @@ use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
 use Bristolian\Service\ObjectStore\RoomFileObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use function Safe\file_get_contents;
 
 /**
  * Stores files that have been uploaded for use in a Room.
@@ -35,8 +36,9 @@ class StandardRoomFileStorage implements RoomFileStorage
         UploadedFile $uploadedFile
     ): string|UploadError {
 
-        $contents = @file_get_contents($uploadedFile->getTmpName());
-        if ($contents === false) {
+        try {
+            $contents = file_get_contents($uploadedFile->getTmpName());
+        } catch (\Safe\Exceptions\FilesystemException $exception) {
             // @codeCoverageIgnoreStart
             return UploadError::uploadedFileUnreadable();
             // @codeCoverageIgnoreEnd

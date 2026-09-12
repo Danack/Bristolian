@@ -11,6 +11,8 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use SlimDispatcher\Response\JsonResponse;
 use VarMap\ArrayVarMap;
+use function Safe\file_get_contents;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\ApiController\MailgunEmailHandler::handleIncomingEmail

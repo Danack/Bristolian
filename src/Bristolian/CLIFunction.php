@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Bristolian;
 
+use function Safe\error_log;
+use function Safe\ob_end_clean;
+
 /**
  * Class CLIFunction
  * Set of utility functions for CLI applications.

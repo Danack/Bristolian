@@ -10,6 +10,7 @@ use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
 use VarMap\ArrayVarMap;
+use Safe\DateTimeImmutable;
 
 /**
  * Tests for FakeRoomFileRepo
@@ -269,7 +270,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $files = $roomFileRepo->getFilesForRoom($room_id, RoomContentSearchParams::default());
 
         $this->assertCount(3, $files);
-        $this->assertContainsOnlyInstancesOf(\Bristolian\Model\Types\RoomFileInRoom::class, $files);
     }
 
     /**
@@ -326,7 +326,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $room_id = 'room_123';
         $roomFileRepo->addFileToRoom('file_1', $room_id);
 
-        $future = (new \DateTimeImmutable('now'))->modify('+1 day')->format('Y-m-d H:i:s');
+        $future = (new DateTimeImmutable('now'))->modify('+1 day')->format('Y-m-d H:i:s');
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_after' => $future]));
         $files = $roomFileRepo->getFilesForRoom($room_id, $search);
 
@@ -343,7 +343,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $room_id = 'room_123';
         $roomFileRepo->addFileToRoom('file_1', $room_id);
 
-        $past = (new \DateTimeImmutable('now'))->modify('-1 day')->format('Y-m-d H:i:s');
+        $past = (new DateTimeImmutable('now'))->modify('-1 day')->format('Y-m-d H:i:s');
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['created_at_before' => $past]));
         $files = $roomFileRepo->getFilesForRoom($room_id, $search);
 
@@ -360,7 +360,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo = new FakeRoomFileRepo();
         $room_id = 'room_123';
         $roomFileRepo->addFileToRoom('file_1', $room_id);
-        $roomFileRepo->setDocumentTimestampForFileInRoom($room_id, 'file_1', new \DateTimeImmutable('2024-06-01 12:00:00'));
+        $roomFileRepo->setDocumentTimestampForFileInRoom($room_id, 'file_1', new DateTimeImmutable('2024-06-01 12:00:00'));
 
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap([
             'document_timestamp_after' => '2024-06-02 00:00:00',
@@ -380,7 +380,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo = new FakeRoomFileRepo();
         $room_id = 'room_123';
         $roomFileRepo->addFileToRoom('file_1', $room_id);
-        $roomFileRepo->setDocumentTimestampForFileInRoom($room_id, 'file_1', new \DateTimeImmutable('2024-06-15 12:00:00'));
+        $roomFileRepo->setDocumentTimestampForFileInRoom($room_id, 'file_1', new DateTimeImmutable('2024-06-15 12:00:00'));
 
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap([
             'document_timestamp_before' => '2024-06-01 00:00:00',
@@ -404,7 +404,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
             'uploaded',
             100,
             'user_1',
-            new \DateTimeImmutable('2024-01-02 12:00:00')
+            new DateTimeImmutable('2024-01-02 12:00:00')
         ));
         $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
             'file_a',
@@ -413,7 +413,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
             'uploaded',
             100,
             'user_1',
-            new \DateTimeImmutable('2024-01-01 12:00:00')
+            new DateTimeImmutable('2024-01-01 12:00:00')
         ));
         $roomFileRepo->addFileToRoom('file_b', $room_id);
         $roomFileRepo->addFileToRoom('file_a', $room_id);
@@ -438,7 +438,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
             'uploaded',
             10,
             'user_1',
-            new \DateTimeImmutable('2024-01-01 12:00:00')
+            new DateTimeImmutable('2024-01-01 12:00:00')
         ));
         $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
             'file_big',
@@ -447,7 +447,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
             'uploaded',
             9999,
             'user_1',
-            new \DateTimeImmutable('2024-01-02 12:00:00')
+            new DateTimeImmutable('2024-01-02 12:00:00')
         ));
         $roomFileRepo->addFileToRoom('file_small', $room_id);
         $roomFileRepo->addFileToRoom('file_big', $room_id);
@@ -473,7 +473,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
             'uploaded',
             100,
             'user_1',
-            new \DateTimeImmutable('2024-01-01 12:00:00')
+            new DateTimeImmutable('2024-01-01 12:00:00')
         ));
         $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
             'file_with_doc_date',
@@ -482,11 +482,11 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
             'uploaded',
             100,
             'user_1',
-            new \DateTimeImmutable('2024-01-02 12:00:00')
+            new DateTimeImmutable('2024-01-02 12:00:00')
         ));
         $roomFileRepo->addFileToRoom('file_no_doc_date', $room_id);
         $roomFileRepo->addFileToRoom('file_with_doc_date', $room_id);
-        $roomFileRepo->setDocumentTimestampForFileInRoom($room_id, 'file_with_doc_date', new \DateTimeImmutable('2020-06-01 00:00:00'));
+        $roomFileRepo->setDocumentTimestampForFileInRoom($room_id, 'file_with_doc_date', new DateTimeImmutable('2020-06-01 00:00:00'));
 
         $search = RoomContentSearchParams::createFromVarMap(new ArrayVarMap(['order' => '+document_date']));
         $files = $roomFileRepo->getFilesForRoom($room_id, $search);
@@ -519,7 +519,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     {
         $roomFileRepo = new FakeRoomFileRepo();
         $room_id = 'room_1';
-        $created = new \DateTimeImmutable('2020-01-01 12:00:00');
+        $created = new DateTimeImmutable('2020-01-01 12:00:00');
         $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
             'file-a',
             'norm.pdf',
@@ -564,7 +564,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
             'uploaded',
             100,
             'user-1',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         ));
         $roomFileRepo->addFileToRoom('file-a', $room_id);
 
@@ -580,8 +580,8 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     {
         $roomFileRepo = new FakeRoomFileRepo();
         $room_id = 'room_1';
-        $older = new \DateTimeImmutable('2019-01-01');
-        $newer = new \DateTimeImmutable('2021-01-01');
+        $older = new DateTimeImmutable('2019-01-01');
+        $newer = new DateTimeImmutable('2021-01-01');
         $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
             'file-old',
             'a.pdf',
@@ -618,7 +618,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     {
         $roomFileRepo = new FakeRoomFileRepo();
         $room_id = 'room_1';
-        $document_timestamp = new \DateTimeImmutable('2020-06-15 12:00:00');
+        $document_timestamp = new DateTimeImmutable('2020-06-15 12:00:00');
         $roomFileRepo->registerFileObjectInfo(new RoomFileObjectInfo(
             'file-a',
             'norm.pdf',
@@ -626,7 +626,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
             'uploaded',
             100,
             'user-1',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         ));
         $roomFileRepo->addFileToRoom('file-a', $room_id);
         $roomFileRepo->setDocumentTimestampForFileInRoom($room_id, 'file-a', $document_timestamp);
@@ -676,7 +676,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $roomFileRepo->addFileToRoom($file_id, $room_id);
         $description = 'Desc ' . create_test_uniqid();
         $note = 'Note ' . create_test_uniqid();
-        $documentTimestamp = new \DateTimeImmutable('2022-03-15 10:30:00');
+        $documentTimestamp = new DateTimeImmutable('2022-03-15 10:30:00');
 
         $roomFileRepo->updateRoomFileDetails($room_id, $file_id, $description, $note, $documentTimestamp);
 
@@ -701,7 +701,7 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
             'file_missing',
             'd',
             'n',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
     }
 }

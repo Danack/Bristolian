@@ -6,6 +6,7 @@ namespace BristolianTest\Model\Types;
 
 use Bristolian\Model\Types\RoomFileInRoom;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -23,8 +24,8 @@ class RoomFileInRoomTest extends BaseTestCase
         $state = 'uploaded';
         $size = 2048;
         $userId = 'user-456';
-        $createdAt = new \DateTimeImmutable('2024-01-15 10:00:00');
-        $documentTimestamp = new \DateTimeImmutable('2024-01-15 11:30:00');
+        $createdAt = new DateTimeImmutable('2024-01-15 10:00:00');
+        $documentTimestamp = new DateTimeImmutable('2024-01-15 11:30:00');
 
         $roomFile = new RoomFileInRoom(
             $id,
@@ -63,7 +64,7 @@ class RoomFileInRoomTest extends BaseTestCase
             'uploaded',
             1024,
             'user-1',
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
             null,
             null,
             null

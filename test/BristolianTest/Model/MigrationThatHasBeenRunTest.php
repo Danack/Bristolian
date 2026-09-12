@@ -4,6 +4,7 @@ namespace BristolianTest\Model;
 
 use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -18,7 +19,7 @@ class MigrationThatHasBeenRunTest extends BaseTestCase
         $id = 1;
         $description = 'Migration 1';
         $jsonEncodedQueries = '["CREATE TABLE test"]';
-        $createdAt = new \DateTimeImmutable();
+        $createdAt = new DateTimeImmutable();
 
         $migration = new MigrationThatHasBeenRun(
             $id,

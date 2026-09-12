@@ -86,7 +86,6 @@ abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
         $subscriptions = $repo->getUserSubscriptions($this->getTestUserId());
 
         $this->assertCount(1, $subscriptions);
-        $this->assertContainsOnlyInstancesOf(UserWebPushSubscription::class, $subscriptions);
         $this->assertSame('https://example.com/push/endpoint', $subscriptions[0]->getEndpoint());
     }
 

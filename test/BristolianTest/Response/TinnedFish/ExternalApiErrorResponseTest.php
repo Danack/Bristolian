@@ -5,6 +5,7 @@ namespace BristolianTest\Response\TinnedFish;
 use Bristolian\Model\TinnedFish\ProductError;
 use Bristolian\Response\TinnedFish\ExternalApiErrorResponse;
 use BristolianTest\BaseTestCase;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\Response\TinnedFish\ExternalApiErrorResponse

@@ -6,6 +6,9 @@ namespace BristolianTest\Service\ExplorerData;
 
 use Bristolian\Service\ExplorerData\CursorCommandsEntryTypeFinder;
 use BristolianTest\BaseTestCase;
+use function Safe\file_put_contents;
+use function Safe\json_encode;
+use function Safe\mkdir;
 
 /**
  * @coversNothing
@@ -341,7 +344,7 @@ class CursorCommandsEntryTypeFinderTest extends BaseTestCase
 
     /**
      * @param array<string, string> $markdownFiles
-     * @param array{commands: list<array<string, mixed>>} $meta
+     * @param array{commands: list<mixed>} $meta
      */
     private function createTemporaryCommandsDirectory(array $markdownFiles, array $meta): string
     {

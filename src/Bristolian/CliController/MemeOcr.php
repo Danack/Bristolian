@@ -14,6 +14,7 @@ use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use Bristolian\Service\CliOutput\CliOutput;
 use Bristolian\Service\MemeFileLocalCache\EnsureMemeFileCached;
 use Bristolian\Service\MemeImageOcr\MemeImageOcrRunner;
+use function Safe\realpath;
 
 class MemeOcr
 {
@@ -87,7 +88,7 @@ class MemeOcr
 
         try {
             $found_text = $this->memeImageOcrRunner->extractTextFromImageFile(
-                $filenameToServe !== false ? $filenameToServe : $localCacheFilename
+                $filenameToServe
             );
 
             if (strlen($found_text) >= self::MAX_MEME_TEXT_LENGTH) {

@@ -8,6 +8,8 @@ use Bristolian\Service\ExplorerData\CodegenProvenance;
 use Bristolian\Service\ExplorerData\GeneratedArtifactsEntryTypeFinder;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use function Safe\file;
+use function Safe\json_encode;
 
 /**
  * @coversNothing
@@ -218,7 +220,7 @@ class CodegenProvenanceTest extends BaseTestCase
         $fileLines = file(
             dirname(__DIR__, 4) . '/' . $assignment['file']
         );
-        $this->assertIsArray($fileLines);
+        $this->assertNotEmpty($fileLines);
         $snippet = implode(
             '',
             array_slice(
@@ -359,7 +361,7 @@ class CodegenProvenanceTest extends BaseTestCase
         ];
 
         $json = json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        $this->assertIsString($json);
+        $this->assertNotSame('', $json);
 
         $fileContents = "/*\n * " . CodegenProvenance::BEGIN_MARKER . "\n";
         foreach (explode("\n", $json) as $line) {

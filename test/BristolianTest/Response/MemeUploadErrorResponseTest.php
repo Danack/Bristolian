@@ -5,6 +5,7 @@ namespace BristolianTest\Response;
 use Bristolian\Response\MemeUploadErrorResponse;
 use Bristolian\Service\MemeStorageProcessor\UploadError;
 use BristolianTest\BaseTestCase;
+use function Safe\json_decode;
 
 /**
  * @coversNothing

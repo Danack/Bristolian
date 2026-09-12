@@ -4,6 +4,7 @@ namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Model\Generated\Room;
+use Safe\DateTime;
 
 /**
  * @coversNothing
@@ -19,7 +20,7 @@ class RoomTest extends BaseTestCase
         $ownerUserId = 'user-456';
         $name = 'Test Room';
         $purpose = 'A room for testing';
-        $created_at = new \DateTime();
+        $created_at = new DateTime();
 
         $room = new Room($id, $ownerUserId, $name, $purpose, $created_at);
 
@@ -35,7 +36,7 @@ class RoomTest extends BaseTestCase
      */
     public function testToArray()
     {
-        $created_at = new \DateTime();
+        $created_at = new DateTime();
 
         $room = new Room('id', 'owner', 'name', 'purpose', $created_at);
         $array = $room->toArray();

@@ -4,6 +4,7 @@ namespace BristolianTest\Response\TinnedFish;
 
 use Bristolian\Response\TinnedFish\ProductNotFoundResponse;
 use BristolianTest\BaseTestCase;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\Response\TinnedFish\ProductNotFoundResponse

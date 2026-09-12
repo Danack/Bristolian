@@ -6,6 +6,8 @@ use Bristolian\Exception\BristolianResponseException;
 use Bristolian\Response\StreamingResponse;
 use BristolianTest\BaseTestCase;
 use Psr\Http\Message\StreamInterface;
+use function Safe\file_put_contents;
+use function Safe\unlink;
 
 /**
  * @covers \Bristolian\Response\StreamingResponse

@@ -6,6 +6,8 @@ namespace BristolianTest;
 
 use Bristolian\Exception\BristolianException;
 use Bristolian\ToString;
+use Safe\DateTimeImmutable;
+use function Safe\json_decode;
 
 /**
  * Test class that uses the ToString trait with scalar and datetime properties.
@@ -63,7 +65,7 @@ class ToStringTest extends BaseTestCase
 {
     public function test_toArray_returns_properties_as_array(): void
     {
-        $createdAt = new \DateTimeImmutable('2024-01-15T10:30:00+00:00');
+        $createdAt = new DateTimeImmutable('2024-01-15T10:30:00+00:00');
         $object = new TestToStringClass('hello', 42, $createdAt);
 
         $result = $object->toArray();
@@ -95,7 +97,7 @@ class ToStringTest extends BaseTestCase
 
     public function test_toString_returns_valid_json_of_toArray(): void
     {
-        $createdAt = new \DateTimeImmutable('2024-01-15T10:30:00+00:00');
+        $createdAt = new DateTimeImmutable('2024-01-15T10:30:00+00:00');
         $object = new TestToStringClass('hello', 42, $createdAt);
 
         $string = $object->toString();

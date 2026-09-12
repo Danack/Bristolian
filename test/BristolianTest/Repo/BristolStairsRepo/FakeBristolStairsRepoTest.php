@@ -11,6 +11,7 @@ use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo;
 use Bristolian\Model\Generated\BristolStairInfo;
 use VarMap\ArrayVarMap;
+use Safe\DateTimeImmutable;
 
 /**
  * Tests for FakeBristolStairsRepo
@@ -216,7 +217,7 @@ class FakeBristolStairsRepoTest extends BristolStairsRepoFixture
     {
         $repo = new FakeBristolStairsRepo();
 
-        $before_creation = new \DateTimeImmutable();
+        $before_creation = new DateTimeImmutable();
         $new_stair = $repo->store_stairs_info(
             'test_image_id',
             'Test stairs',
@@ -224,7 +225,7 @@ class FakeBristolStairsRepoTest extends BristolStairsRepoFixture
             -2.6000,
             20
         );
-        $after_creation = new \DateTimeImmutable();
+        $after_creation = new DateTimeImmutable();
 
         $this->assertInstanceOf(\DateTimeInterface::class, $new_stair->created_at);
         $this->assertInstanceOf(\DateTimeInterface::class, $new_stair->updated_at);

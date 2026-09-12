@@ -6,6 +6,7 @@ namespace Bristolian\Repo\RoomRepo;
 
 use Bristolian\Model\Generated\Room;
 use Ramsey\Uuid\Uuid;
+use Safe\DateTimeImmutable;
 
 /**
  * Fake implementation of RoomRepo for testing.
@@ -21,7 +22,7 @@ class FakeRoomRepo implements RoomRepo
     {
         $uuid = Uuid::uuid7();
         $id = $uuid->toString();
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
 
         $room = new Room(
             id: $id,

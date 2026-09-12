@@ -11,6 +11,11 @@ use Bristolian\Service\RoomFileStorage\StandardRoomFileStorage;
 use Bristolian\Service\RoomFileStorage\UploadError;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
+use function Safe\chmod;
+use function Safe\file_get_contents;
+use function Safe\file_put_contents;
+use function Safe\tempnam;
+use function Safe\unlink;
 
 /**
  * @coversNothing
@@ -73,9 +78,12 @@ class StandardRoomFileStorageTest extends BaseTestCase
         file_put_contents($tempFile, 'content');
         \Safe\chmod($tempFile, 0o000);
         try {
-            if (@file_get_contents($tempFile) !== false) {
-                $this->markTestSkipped('chmod 0o000 does not prevent read in this environment');
-            }
+            file_get_contents($tempFile);
+            $this->markTestSkipped('chmod 0o000 does not prevent read in this environment');
+        } catch (\Safe\Exceptions\FilesystemException $exception) {
+        }
+
+        try {
             $fileObjectStore = new FakeRoomFileObjectStore();
             $roomFileObjectInfoRepo = new FakeRoomFileObjectInfoRepo();
             $roomFileRepo = new FakeRoomFileRepo();

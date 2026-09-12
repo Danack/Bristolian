@@ -10,6 +10,7 @@ use Bristolian\Service\EmailSender\FakeMailgunHttpClient;
 use Bristolian\Service\EmailSender\MailgunEmailClient;
 use Bristolian\Service\EmailSender\TestableMailgun;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -30,8 +31,8 @@ class MailgunEmailClientTest extends BaseTestCase
             retries: 0,
             status: 'pending',
             subject: 'Test subject',
-            created_at: new \DateTimeImmutable(),
-            updated_at: new \DateTimeImmutable()
+            created_at: new DateTimeImmutable(),
+            updated_at: new DateTimeImmutable()
         );
     }
 

@@ -6,6 +6,7 @@ namespace BristolianTest;
 
 use Bristolian\CLIFunction;
 use ErrorException;
+use function Safe\exec;
 
 /**
  * @coversNothing

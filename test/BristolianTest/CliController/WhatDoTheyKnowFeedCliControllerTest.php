@@ -11,6 +11,7 @@ use Bristolian\Service\CliOutput\CapturingCliOutput;
 use Bristolian\Service\RoomMessageService\FakeRoomMessageService;
 use Bristolian\Service\WhatDoTheyKnowFeedFetcher\FakeWhatDoTheyKnowFeedFetcherReturningJson;
 use BristolianTest\BaseTestCase;
+use function Safe\file_get_contents;
 
 /**
  * @coversNothing

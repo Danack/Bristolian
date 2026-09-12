@@ -11,6 +11,7 @@ use Bristolian\Service\CliOutput\CapturingCliOutput;
 use Bristolian\Service\RoomMessageService\FakeRoomMessageService;
 use Bristolian\Service\WhatDoTheyKnowFeedFetcher\FakeWhatDoTheyKnowFeedFetcherReturningJson;
 use BristolianTest\BaseTestCase;
+use function Safe\file_get_contents;
 
 /**
  * continualExecuteCallable() writes to stdout; BaseTestCase teardown forbids any output, so these tests use TestCase.

@@ -6,6 +6,7 @@ namespace BristolianTest\Model\Types;
 
 use Bristolian\Model\Types\AvatarImageFile;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -23,7 +24,7 @@ class AvatarImageFileTest extends BaseTestCase
         $originalFilename = 'Avatar Image.jpg';
         $size = 1024;
         $state = 'active';
-        $createdAt = new \DateTimeImmutable();
+        $createdAt = new DateTimeImmutable();
 
         $file = new AvatarImageFile($id, $userId, $normalizedName, $originalFilename, $size, $state, $createdAt);
 

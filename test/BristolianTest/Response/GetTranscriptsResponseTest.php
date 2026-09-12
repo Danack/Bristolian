@@ -8,6 +8,8 @@ use Bristolian\Model\Generated\RoomVideoTranscript;
 use Bristolian\Model\Types\RoomVideoTranscriptList;
 use Bristolian\Response\GetTranscriptsResponse;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
+use function Safe\json_decode;
 
 /**
  * @coversNothing
@@ -64,7 +66,7 @@ class GetTranscriptsResponseTest extends BaseTestCase
             transcript_number: 1,
             language: 'en',
             vtt_content: 'WEBVTT',
-            created_at: new \DateTimeImmutable('2024-01-01 12:00:00')
+            created_at: new DateTimeImmutable('2024-01-01 12:00:00')
         );
         $transcriptList = new RoomVideoTranscriptList([$transcript]);
         $response = new GetTranscriptsResponse($transcriptList);

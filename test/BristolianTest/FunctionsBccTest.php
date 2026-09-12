@@ -5,6 +5,7 @@ namespace BristolianTest;
 use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;
 use PHPUnit\Framework\Attributes\DataProvider;
+use function Safe\file_get_contents;
 
 /**
  * @coversNothing
@@ -107,9 +108,6 @@ class FunctionsBccTest extends BaseTestCase
     ): void {
         $exampleFile = $html_input_file;
         $htmlContent = file_get_contents($exampleFile);
-        if ($htmlContent === false) {
-            $this->fail("Could not read example file: $exampleFile");
-        }
 
         $tros = \parseTrosFromHtml($htmlContent);
 

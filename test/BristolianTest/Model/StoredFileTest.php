@@ -4,6 +4,7 @@ namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Model\Generated\RoomFileObjectInfo;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -21,7 +22,7 @@ class StoredFileTest extends BaseTestCase
         $state = 'active';
         $size = 1024;
         $userId = 'user-456';
-        $createdAt = new \DateTimeImmutable();
+        $createdAt = new DateTimeImmutable();
 
         $storedFile = new RoomFileObjectInfo(
             $id,

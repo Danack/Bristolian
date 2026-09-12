@@ -11,6 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Bristolian\Middleware\MiddlewareException;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\Middleware\ExceptionToJsonResponseMiddleware

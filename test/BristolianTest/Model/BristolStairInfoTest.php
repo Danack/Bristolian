@@ -4,6 +4,7 @@ namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Model\Generated\BristolStairInfo;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -22,8 +23,8 @@ class BristolStairInfoTest extends BaseTestCase
         $storedStairImageFileId = 'image-456';
         $steps = 42;
         $isDeleted = 0;
-        $createdAt = new \DateTimeImmutable();
-        $updatedAt = new \DateTimeImmutable();
+        $createdAt = new DateTimeImmutable();
+        $updatedAt = new DateTimeImmutable();
 
         $stairInfo = new BristolStairInfo(
             $id,

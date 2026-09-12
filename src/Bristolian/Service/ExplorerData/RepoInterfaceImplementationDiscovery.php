@@ -10,6 +10,9 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RegexIterator;
 use SplFileInfo;
+use function Safe\file_get_contents;
+use function Safe\glob;
+use function Safe\preg_match;
 
 /**
  * @codeCoverageIgnore
@@ -160,8 +163,9 @@ class RepoInterfaceImplementationDiscovery
                 continue;
             }
 
-            $fileContents = file_get_contents($phpFilePath);
-            if ($fileContents === false) {
+            try {
+                $fileContents = file_get_contents($phpFilePath);
+            } catch (\Safe\Exceptions\FilesystemException $exception) {
                 continue;
             }
 

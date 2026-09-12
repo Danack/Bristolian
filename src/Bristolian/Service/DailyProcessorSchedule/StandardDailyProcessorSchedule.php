@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Bristolian\Service\DailyProcessorSchedule;
 
+use Safe\DateTime;
+use Safe\DateTimeImmutable;
+
 /**
  * Production schedule: noon–3pm window; cooldown uses wall clock.
  */
@@ -11,7 +14,7 @@ final class StandardDailyProcessorSchedule implements DailyProcessorSchedule
 {
     public function isTimeToRunDailySystemInfo(): bool
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         $start = (clone $now)->setTime(12, 0);
         $end = (clone $now)->setTime(15, 0);
@@ -21,7 +24,7 @@ final class StandardDailyProcessorSchedule implements DailyProcessorSchedule
 
     public function isOverXHoursAgo(int $hours, \DateTimeInterface $datetime): bool
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $threshold = $now->sub(new \DateInterval(sprintf('PT%dH', $hours)));
 
         return $datetime < $threshold;

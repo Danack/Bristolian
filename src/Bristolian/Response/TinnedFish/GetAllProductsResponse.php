@@ -6,6 +6,7 @@ namespace Bristolian\Response\TinnedFish;
 
 use Bristolian\Model\TinnedFish\Product;
 use SlimDispatcher\Response\StubResponse;
+use function Safe\json_encode;
 
 /**
  * Response for getting all products from the canonical database.

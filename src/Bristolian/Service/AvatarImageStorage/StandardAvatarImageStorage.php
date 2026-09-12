@@ -6,6 +6,7 @@ use Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo;
 use Bristolian\Service\ObjectStore\AvatarImageObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use function Safe\file_get_contents;
 
 class StandardAvatarImageStorage implements AvatarImageStorage
 {
@@ -31,8 +32,9 @@ class StandardAvatarImageStorage implements AvatarImageStorage
         array $allowedExtensions
     ): string|UploadError {
 
-        $contents = @file_get_contents($uploadedFile->getTmpName());
-        if ($contents === false) {
+        try {
+            $contents = file_get_contents($uploadedFile->getTmpName());
+        } catch (\Safe\Exceptions\FilesystemException $exception) {
             return UploadError::uploadedFileUnreadable();
         }
 

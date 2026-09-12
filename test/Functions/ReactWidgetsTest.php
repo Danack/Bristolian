@@ -4,6 +4,9 @@ namespace Functions;
 
 use BristolianTest\BaseTestCase;
 use function Bristolian\createReactWidget;
+use Safe\DateTimeImmutable;
+use function Safe\json_decode;
+use function Safe\preg_match;
 
 /**
  * @coversNothing
@@ -43,7 +46,7 @@ class ReactWidgetsTest extends BaseTestCase
             ],
             'metadata' => [
                 'count' => 2,
-                'timestamp' => new \DateTimeImmutable('2024-01-15 12:00:00'),
+                'timestamp' => new DateTimeImmutable('2024-01-15 12:00:00'),
             ],
         ];
 
@@ -149,7 +152,7 @@ class ReactWidgetsTest extends BaseTestCase
     public function testWorks_with_datetime_objects()
     {
         $type = 'datetime_widget';
-        $datetime = new \DateTimeImmutable('2024-01-15 12:00:00');
+        $datetime = new DateTimeImmutable('2024-01-15 12:00:00');
         $data = [
             'created_at' => $datetime,
         ];

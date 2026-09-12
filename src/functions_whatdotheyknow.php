@@ -8,6 +8,7 @@ use Bristolian\WhatDoTheyKnow\PublicBodyRequestCounts;
 use Bristolian\WhatDoTheyKnow\PublicBodyTag;
 use Bristolian\WhatDoTheyKnow\RequestEvent;
 use Bristolian\WhatDoTheyKnow\RequestEventUser;
+use Safe\DateTimeImmutable;
 
 /**
  * Parse WhatDoTheyKnow JSON (array of request events, e.g. "requested from" feed).
@@ -270,9 +271,9 @@ function parseWhatDoTheyKnowRequestEventFromArray(array $data): RequestEvent
 /**
  * Normalise WhatDoTheyKnow's top-level event `created_at` to UTC for MySQL storage.
  */
-function whatDoTheyKnowWdtEventOccurredAtUtc(string $createdAtFromApi): \DateTimeImmutable
+function whatDoTheyKnowWdtEventOccurredAtUtc(string $createdAtFromApi): DateTimeImmutable
 {
-    return (new \DateTimeImmutable($createdAtFromApi))->setTimezone(new \DateTimeZone('UTC'));
+    return (new DateTimeImmutable($createdAtFromApi))->setTimezone(new \DateTimeZone('UTC'));
 }
 
 /**

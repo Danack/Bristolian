@@ -20,6 +20,9 @@ use OpenApi\OpenApiGenerator;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
 use function Bristolian\createReactWidget;
+use function Safe\exec;
+use function Safe\file_get_contents;
+use function Safe\file_put_contents;
 
 class System
 {
@@ -52,13 +55,7 @@ HTML;
 
         if (file_exists("/var/app/data/git_pull_error.log") === true) {
             // @codeCoverageIgnoreStart
-            $file_contents = file_get_contents("/var/app/data/git_pull_error.log");
-            if ($file_contents === false) {
-                $error_log = "Unable to read log file";
-            }
-            else {
-                $error_log = $file_contents;
-            }
+            $error_log = file_get_contents("/var/app/data/git_pull_error.log");
             // @codeCoverageIgnoreEnd
         }
 

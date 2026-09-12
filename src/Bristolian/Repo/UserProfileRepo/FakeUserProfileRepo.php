@@ -8,6 +8,7 @@ use Bristolian\Model\Generated\UserDisplayName;
 use Bristolian\Model\Generated\UserProfile;
 use Bristolian\Model\Types\UserProfileWithDisplayName;
 use Bristolian\Parameters\UserProfileUpdateParams;
+use Safe\DateTimeImmutable;
 
 /**
  * Fake implementation of UserProfileRepo for testing.
@@ -77,7 +78,7 @@ class FakeUserProfileRepo implements UserProfileRepo
      */
     public function updateProfile(string $user_id, UserProfileUpdateParams $params): UserProfileWithDisplayName
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
 
         // 1. Create new display name version
         if (!isset($this->displayNames[$user_id])) {
@@ -136,7 +137,7 @@ class FakeUserProfileRepo implements UserProfileRepo
      */
     public function updateAvatarImage(string $user_id, string $avatar_image_id): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
 
         $existingProfile = $this->profiles[$user_id] ?? null;
         if ($existingProfile !== null) {

@@ -7,6 +7,7 @@ namespace BristolianTest\Model\TinnedFish;
 use Bristolian\Model\TinnedFish\Product;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
@@ -18,8 +19,8 @@ class ProductTest extends BaseTestCase
      */
     public function test_construct(): void
     {
-        $createdAt = new \DateTimeImmutable('2024-01-15 10:00:00');
-        $updatedAt = new \DateTimeImmutable('2024-01-16 11:00:00');
+        $createdAt = new DateTimeImmutable('2024-01-15 10:00:00');
+        $updatedAt = new DateTimeImmutable('2024-01-16 11:00:00');
 
         $product = new Product(
             barcode: '1234567890123',
@@ -104,8 +105,8 @@ class ProductTest extends BaseTestCase
         $this->assertSame('https://example.com/anchovy.jpg', $product->image_url);
         $this->assertSame(ValidationStatus::VALIDATED_IS_FISH, $product->validation_status);
         $this->assertNull($product->raw_data);
-        $this->assertEquals(new \DateTimeImmutable('2024-02-01 09:00:00'), $product->created_at);
-        $this->assertEquals(new \DateTimeImmutable('2024-02-02 10:30:00'), $product->updated_at);
+        $this->assertEquals(new DateTimeImmutable('2024-02-01 09:00:00'), $product->created_at);
+        $this->assertEquals(new DateTimeImmutable('2024-02-02 10:30:00'), $product->updated_at);
     }
 
     /**

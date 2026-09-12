@@ -6,6 +6,8 @@ use Bristolian\Model\TinnedFish\Product;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use Bristolian\Response\TinnedFish\GetAllProductsResponse;
 use BristolianTest\BaseTestCase;
+use Safe\DateTimeImmutable;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\Response\TinnedFish\GetAllProductsResponse
@@ -43,7 +45,7 @@ class GetAllProductsResponseTest extends BaseTestCase
             image_url: 'https://example.com/image1.jpg',
             validation_status: ValidationStatus::VALIDATED_IS_FISH,
             raw_data: null,
-            created_at: new \DateTimeImmutable('2024-01-15 12:00:00'),
+            created_at: new DateTimeImmutable('2024-01-15 12:00:00'),
             updated_at: null
         );
         

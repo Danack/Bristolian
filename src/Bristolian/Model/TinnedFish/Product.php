@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Bristolian\Model\TinnedFish;
 
 use Bristolian\ToArray;
+use Safe\DateTimeImmutable;
 
 /**
  * Product information for a tinned fish product.
@@ -54,8 +55,8 @@ class Product
             image_url: $row['image_url'],
             validation_status: $validationStatus,
             raw_data: null,
-            created_at: new \DateTimeImmutable($row['created_at']),
-            updated_at: new \DateTimeImmutable($row['updated_at'])
+            created_at: new DateTimeImmutable($row['created_at']),
+            updated_at: new DateTimeImmutable($row['updated_at'])
         );
     }
 }

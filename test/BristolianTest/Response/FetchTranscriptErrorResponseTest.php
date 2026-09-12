@@ -6,6 +6,7 @@ namespace BristolianTest\Response;
 
 use Bristolian\Response\FetchTranscriptErrorResponse;
 use BristolianTest\BaseTestCase;
+use function Safe\json_decode;
 
 /**
  * @coversNothing

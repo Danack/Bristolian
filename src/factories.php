@@ -145,7 +145,7 @@ function createPDOForUser(Config $config)
 
     $running_in_docker = getenv("RUNNING_IN_DOCKER");
 
-    if ($running_in_docker === null || $running_in_docker !== "1") {
+    if ($running_in_docker !== "1") {
         $dsn_string = sprintf(
             'mysql:host=%s;dbname=%s',
             "127.0.0.1",
@@ -160,6 +160,7 @@ function createPDOForUser(Config $config)
 //        PDO::ATTR_PERSISTENT => true
     ];
 
+    // PHP 8.5 moved MYSQL_ATTR_FOUND_ROWS onto Pdo\Mysql.
     if (PHP_VERSION_ID < 80500) {
         $pdo_options[PDO::MYSQL_ATTR_FOUND_ROWS] = true;
     }

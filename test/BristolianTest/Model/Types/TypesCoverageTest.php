@@ -28,15 +28,16 @@ use Bristolian\Model\Types\WebPushNotification;
 use Bristolian\Parameters\FoiRequestParams;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use Safe\DateTimeImmutable;
 
 /**
  * @coversNothing
  */
 class TypesCoverageTest extends BaseTestCase
 {
-    private static function now(): \DateTimeImmutable
+    private static function now(): DateTimeImmutable
     {
-        return new \DateTimeImmutable();
+        return new DateTimeImmutable();
     }
 
     /**

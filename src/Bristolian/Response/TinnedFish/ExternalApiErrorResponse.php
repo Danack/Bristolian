@@ -6,6 +6,7 @@ namespace Bristolian\Response\TinnedFish;
 
 use Bristolian\Model\TinnedFish\ProductError;
 use SlimDispatcher\Response\StubResponse;
+use function Safe\json_encode;
 
 /**
  * 502 response when external API call fails.

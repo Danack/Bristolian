@@ -7,6 +7,8 @@ use BristolianChat\ClientHandler\ClientHandler;
 use Bristolian\Model\Chat\SystemChatMessage;
 use Bristolian\Model\Chat\UserChatMessage;
 use Monolog\Logger;
+use Safe\DateTimeImmutable;
+use function Safe\json_encode;
 
 function send_user_message_to_clients(
     UserChatMessage $chat_message,
@@ -41,13 +43,6 @@ function send_data_to_clients(
     }
 
     $json = json_encode($values);
-
-    if ($json === false) {
-        // @codeCoverageIgnoreStart
-        $logger->error("Failed to encode data to JSON for type" . $data->type->value);
-        return;
-        // @codeCoverageIgnoreEnd
-    }
 
     $logger->info("sending message to clients - $json");
 
@@ -116,7 +111,7 @@ function generateFakeChatMessage(): UserChatMessage
     }
 
     // Generate created_at timestamp
-    $created_at = new \DateTimeImmutable();
+    $created_at = new DateTimeImmutable();
 
     // Add this message ID to recent messages
     $recentMessageIds[] = $id;
