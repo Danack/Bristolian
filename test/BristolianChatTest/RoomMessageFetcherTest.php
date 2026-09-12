@@ -11,6 +11,7 @@ use BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher;
 use BristolianTest\BaseTestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use function Safe\json_decode;
 
 /**
  * @coversNothing

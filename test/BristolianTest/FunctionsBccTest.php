@@ -247,7 +247,7 @@ There are 1 TROs.## Proposed Zebra Crossing: Marsh Street, City Centre (Central 
 TEXT;
 
 
-        $bcc_tro = BccTro::fromJson($test_tro_test);
+        $bcc_tro = BccTro::createFromJson($test_tro_test);
 
         $output = renderBccTrosAsMarkdown([$bcc_tro]);
 

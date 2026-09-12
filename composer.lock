@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe586b7adb3f2d7b551e519dd0d13ff7",
+    "content-hash": "d55bd669a71f2e32696eb7c2b8d303b8",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.394.8",
+            "version": "3.394.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "9afa5f6652e7035a029369c98db68bc21279a3cf"
+                "reference": "0a16c43453b30b5ec4025293f33028e299cf448e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9afa5f6652e7035a029369c98db68bc21279a3cf",
-                "reference": "9afa5f6652e7035a029369c98db68bc21279a3cf",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0a16c43453b30b5ec4025293f33028e299cf448e",
+                "reference": "0a16c43453b30b5ec4025293f33028e299cf448e",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.394.8"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.394.11"
             },
-            "time": "2026-09-03T18:08:51+00:00"
+            "time": "2026-09-09T18:06:19+00:00"
         },
         {
             "name": "brick/math",
@@ -558,16 +558,16 @@
         },
         {
             "name": "danack/datatype",
-            "version": "0.9.1",
+            "version": "dev-tri_state_experiement",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Danack/DataType.git",
-                "reference": "b652e69ee6895266affdb9c3823f9349966bd630"
+                "reference": "4278d856ff7987bc7da63403009a250df779673c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Danack/DataType/zipball/b652e69ee6895266affdb9c3823f9349966bd630",
-                "reference": "b652e69ee6895266affdb9c3823f9349966bd630",
+                "url": "https://api.github.com/repos/Danack/DataType/zipball/4278d856ff7987bc7da63403009a250df779673c",
+                "reference": "4278d856ff7987bc7da63403009a250df779673c",
                 "shasum": ""
             },
             "require": {
@@ -577,7 +577,7 @@
                 "seld/jsonlint": "^1.9.0"
             },
             "require-dev": {
-                "danack/coding-standard": "0.3.0",
+                "danack/coding-standard": "0.4.0",
                 "danack/php-unit-helper": "dev-master#7e50284d762b816acde56919f82f3431a6bad4c5 as 0.5.0",
                 "laminas/laminas-diactoros": ">2.6",
                 "phpstan/phpstan": "2.1.45",
@@ -585,9 +585,9 @@
                 "phpunit/phpunit": ">=9.5.6",
                 "psr/http-message": "^1.0",
                 "respect/validation": "^1.1.31",
-                "slevomat/coding-standard": "^7.0.9",
+                "slevomat/coding-standard": "^8.0.0",
                 "squizlabs/php_codesniffer": "^3.6.0",
-                "yoast/yoastcs": "1.0"
+                "yoast/yoastcs": "^3.2.0"
             },
             "type": "library",
             "autoload": {
@@ -606,9 +606,9 @@
             "description": "A library that makes using data types easier",
             "support": {
                 "issues": "https://github.com/Danack/DataType/issues",
-                "source": "https://github.com/Danack/DataType/tree/0.9.1"
+                "source": "https://github.com/Danack/DataType/tree/tri_state_experiement"
             },
-            "time": "2026-04-01T23:50:30+00:00"
+            "time": "2026-09-10T16:34:11+00:00"
         },
         {
             "name": "danack/esprintf",
@@ -1723,16 +1723,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.10.0",
+            "version": "2.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "d2d1aa8b35e072966c89bc0c66cf926e56767dc4"
+                "reference": "9d489ab67a02960fd8ffe624d93f751daf95439e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/d2d1aa8b35e072966c89bc0c66cf926e56767dc4",
-                "reference": "d2d1aa8b35e072966c89bc0c66cf926e56767dc4",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/9d489ab67a02960fd8ffe624d93f751daf95439e",
+                "reference": "9d489ab67a02960fd8ffe624d93f751daf95439e",
                 "shasum": ""
             },
             "require": {
@@ -1826,7 +1826,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-11T16:06:25+00:00"
+            "time": "2026-09-07T13:44:26+00:00"
         },
         {
             "name": "league/config",
@@ -4519,16 +4519,16 @@
         },
         {
             "name": "spomky-labs/pki-framework",
-            "version": "1.6.1",
+            "version": "1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spomky-Labs/pki-framework.git",
-                "reference": "5d630ec371652229ad568337519f16e539e5f79d"
+                "reference": "8f333bebe104ea24f1a160a6fb69e2dead4f1882"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spomky-Labs/pki-framework/zipball/5d630ec371652229ad568337519f16e539e5f79d",
-                "reference": "5d630ec371652229ad568337519f16e539e5f79d",
+                "url": "https://api.github.com/repos/Spomky-Labs/pki-framework/zipball/8f333bebe104ea24f1a160a6fb69e2dead4f1882",
+                "reference": "8f333bebe104ea24f1a160a6fb69e2dead4f1882",
                 "shasum": ""
             },
             "require": {
@@ -4557,7 +4557,8 @@
             "suggest": {
                 "ext-bcmath": "For better performance (or GMP)",
                 "ext-gmp": "For better performance (or BCMath)",
-                "ext-openssl": "For OpenSSL based cyphering"
+                "ext-openssl": "For OpenSSL based cyphering",
+                "ext-sodium": "To verify Ed25519 signatures where the OpenSSL extension has no EdDSA"
             },
             "type": "library",
             "autoload": {
@@ -4612,7 +4613,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Spomky-Labs/pki-framework/issues",
-                "source": "https://github.com/Spomky-Labs/pki-framework/tree/1.6.1"
+                "source": "https://github.com/Spomky-Labs/pki-framework/tree/1.6.2"
             },
             "funding": [
                 {
@@ -4624,7 +4625,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-08-30T13:53:49+00:00"
+            "time": "2026-09-08T07:15:08+00:00"
         },
         {
             "name": "starkbank/ecdsa",
@@ -6543,22 +6544,23 @@
     "packages-dev": [
         {
             "name": "behat/behat",
-            "version": "v3.32.0",
+            "version": "v3.33.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Behat.git",
-                "reference": "b9b89cf7a3b24c04d6e2d2865ed51bc5e1700de9"
+                "reference": "a76fe078164e72d3183afc48224a6e8902dccaf0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Behat/zipball/b9b89cf7a3b24c04d6e2d2865ed51bc5e1700de9",
-                "reference": "b9b89cf7a3b24c04d6e2d2865ed51bc5e1700de9",
+                "url": "https://api.github.com/repos/Behat/Behat/zipball/a76fe078164e72d3183afc48224a6e8902dccaf0",
+                "reference": "a76fe078164e72d3183afc48224a6e8902dccaf0",
                 "shasum": ""
             },
             "require": {
                 "behat/gherkin": "^4.17.0",
                 "composer-runtime-api": "^2.2",
                 "composer/xdebug-handler": "^1.4 || ^2.0 || ^3.0",
+                "cucumber/tag-expressions": "^11.0",
                 "ext-mbstring": "*",
                 "nikic/php-parser": "^4.19.2 || ^5.2",
                 "php": ">=8.2 <8.6",
@@ -6627,7 +6629,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Behat/Behat/issues",
-                "source": "https://github.com/Behat/Behat/tree/v3.32.0"
+                "source": "https://github.com/Behat/Behat/tree/v3.33.0"
             },
             "funding": [
                 {
@@ -6643,7 +6645,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-06-20T08:34:52+00:00"
+            "time": "2026-09-07T14:37:47+00:00"
         },
         {
             "name": "behat/gherkin",
@@ -7099,6 +7101,49 @@
                 }
             ],
             "time": "2024-05-06T16:37:16+00:00"
+        },
+        {
+            "name": "cucumber/tag-expressions",
+            "version": "v11.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cucumber/tag-expressions-php.git",
+                "reference": "d88e12c03a2069b4336156dc7831a6b78cce5e1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cucumber/tag-expressions-php/zipball/d88e12c03a2069b4336156dc7831a6b78cce5e1d",
+                "reference": "d88e12c03a2069b4336156dc7831a6b78cce5e1d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.75",
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpunit/phpunit": "^10.5.46 || ^11.5 || ^13.0",
+                "symfony/yaml": "^6.4 || ^7.2 || ^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cucumber\\TagExpressions\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Cucumber Tag Expressions parser",
+            "homepage": "https://github.com/cucumber/tag-expressions",
+            "support": {
+                "issues": "https://github.com/cucumber/tag-expressions/issues",
+                "source": "https://github.com/cucumber/tag-expressions-php/tree/v11.0.1"
+            },
+            "time": "2026-03-24T10:42:49+00:00"
         },
         {
             "name": "danack/coding-standard",
@@ -7617,16 +7662,16 @@
         },
         {
             "name": "jasonmccreary/phpunit-tia",
-            "version": "dev-tia-debug-reason",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jasonmccreary/phpunit-tia.git",
-                "reference": "0695af7aba37a9634db2436f380ce846c7df7893"
+                "reference": "35d560bb382af12bb8ce8e42c4e7ef8ae858c0a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jasonmccreary/phpunit-tia/zipball/0695af7aba37a9634db2436f380ce846c7df7893",
-                "reference": "0695af7aba37a9634db2436f380ce846c7df7893",
+                "url": "https://api.github.com/repos/jasonmccreary/phpunit-tia/zipball/35d560bb382af12bb8ce8e42c4e7ef8ae858c0a4",
+                "reference": "35d560bb382af12bb8ce8e42c4e7ef8ae858c0a4",
                 "shasum": ""
             },
             "require": {
@@ -7641,6 +7686,7 @@
                 "laravel/pint": "~1.30",
                 "phpunit/phpunit": "^13.2.6"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -7671,10 +7717,10 @@
                 "tia"
             ],
             "support": {
-                "source": "https://github.com/jasonmccreary/phpunit-tia/tree/tia-debug-reason",
+                "source": "https://github.com/jasonmccreary/phpunit-tia/tree/main",
                 "issues": "https://github.com/jasonmccreary/phpunit-tia/issues"
             },
-            "time": "2026-09-03T13:19:06+00:00"
+            "time": "2026-09-08T13:02:31+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
@@ -8320,11 +8366,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.2.12",
+            "version": "2.2.13",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/174b0d88710f00a42598886504dd7a146f91ace5",
-                "reference": "174b0d88710f00a42598886504dd7a146f91ace5",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9ba9ac76ee9c5cf5b56d58eb5deec6315b7a0260",
+                "reference": "9ba9ac76ee9c5cf5b56d58eb5deec6315b7a0260",
                 "shasum": ""
             },
             "require": {
@@ -8380,7 +8426,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-08-31T19:09:43+00:00"
+            "time": "2026-09-03T20:38:19+00:00"
         },
         {
             "name": "phpstan/phpstan-strict-rules",
@@ -8436,16 +8482,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "14.3.1",
+            "version": "14.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "6ce313bb110384148d1dc7695a99175f59529069"
+                "reference": "93d62632fb675b76c9b941fdcfcfa10ffb9dea75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/6ce313bb110384148d1dc7695a99175f59529069",
-                "reference": "6ce313bb110384148d1dc7695a99175f59529069",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/93d62632fb675b76c9b941fdcfcfa10ffb9dea75",
+                "reference": "93d62632fb675b76c9b941fdcfcfa10ffb9dea75",
                 "shasum": ""
             },
             "require": {
@@ -8464,7 +8510,7 @@
                 "theseer/tokenizer": "^2.0.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.3.1"
+                "phpunit/phpunit": "^13.3.2"
             },
             "suggest": {
                 "ext-pcov": "PHP extension that provides line coverage",
@@ -8502,7 +8548,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.3.1"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.3.2"
             },
             "funding": [
                 {
@@ -8522,7 +8568,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-16T05:23:47+00:00"
+            "time": "2026-09-04T03:46:43+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -11518,6 +11564,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "danack/datatype": 20,
         "danack/slim-dispatcher": 20,
         "jasonmccreary/phpunit-tia": 20
     },

@@ -24,5 +24,3 @@ class LocalDevBccTroExecutionCheck implements BccTroExecutionCheck
         return $last_run_time < $one_hour_ago;
     }
 }
-
-

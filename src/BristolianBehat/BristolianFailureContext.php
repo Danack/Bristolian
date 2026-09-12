@@ -82,7 +82,8 @@ class BristolianFailureContext extends FailureContext
                         $currentScenario
                     );
                     $message = $this->rewriteScreenshotLinesInFailureMessage($message);
-                } else {
+                }
+                else {
                     $this->staticCaller->call(Output::class, 'setOption', ['url', false]);
                     $this->staticCaller->call(Output::class, 'setOption', ['status', false]);
                     $this->staticCaller->call(Output::class, 'setOption', ['screenshot', false]);

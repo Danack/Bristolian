@@ -8,6 +8,7 @@ use BristolianTest\BaseTestCase;
 use Bristolian\ApiController\Debug;
 use SlimDispatcher\Response\JsonResponse;
 use PHPUnit\Framework\Attributes\Group;
+use function Safe\json_decode;
 
 /**
  * @covers \Bristolian\ApiController\Debug

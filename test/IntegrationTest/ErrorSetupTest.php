@@ -8,11 +8,12 @@ use BristolianTest\BaseTestCase;
 use Bristolian\App;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  * @group needs_fixing
  */
+#[CoversNothing()]
 #[Group('needs_fixing')]
 class ErrorSetupTest extends BaseTestCase
 {

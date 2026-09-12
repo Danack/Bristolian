@@ -7,10 +7,12 @@ namespace IntegrationTest;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @coversNothing
  */
+#[CoversNothing()]
 #[Group('needs_fixing')]
 class VarnishTest extends BaseTestCase
 {

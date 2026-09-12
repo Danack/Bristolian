@@ -264,12 +264,15 @@ class RepoTableResourceCollector
             foreach ($encapsedNode->parts as $part) {
                 if ($part instanceof EncapsedStringPart) {
                     $literalParts[] = $part->value;
-                } elseif ($part instanceof String_) {
+                }
+                elseif ($part instanceof String_) {
                     $literalParts[] = $part->value;
-                } elseif (property_exists($part, 'value') && is_string($part->value)) {
+                }
+                elseif (property_exists($part, 'value') && is_string($part->value)) {
                     // PhpParser 5 InterpolatedStringPart (and similar)
                     $literalParts[] = $part->value;
-                } else {
+                }
+                else {
                     // Variable interpolation — leave a space so tokens do not glue together
                     $literalParts[] = ' ';
                 }

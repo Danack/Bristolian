@@ -32,8 +32,7 @@ class BccTroTest extends BaseTestCase
         );
 
         $json_string = $tro->toString();
-
-        $bcc_recreated = BccTro::fromJson($json_string);
+        $bcc_recreated = BccTro::createFromJson($json_string);
 
         $this->assertEquals($tro, $bcc_recreated);
     }

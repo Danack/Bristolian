@@ -1998,7 +1998,8 @@ SQL;
                         $content .= "{$indentStr}    if (options?.cacheBust) { endpoint += (endpoint.includes('?') ? '&' : '?') + '_=' + Date.now(); }\n";
                         $content .= "{$indentStr}    return apiCall<{$responseType}>(endpoint);\n";
                         $content .= "{$indentStr}  },\n";
-                    } else {
+                    }
+                    else {
                         $content .= "{$indentStr}  {$key}: (): Promise<{$responseType}> => {\n";
                         $content .= "{$indentStr}    return apiCall<{$responseType}>(`{$urlParts}`);\n";
                         $content .= "{$indentStr}  },\n";

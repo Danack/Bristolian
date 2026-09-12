@@ -39,15 +39,13 @@ function parseTrosFromHtml(string $html): array
         $nextElement = $h3->nextSibling;
 
         while ($nextElement !== null) {
-            if (
-                $nextElement instanceof \DOMElement
+            if ($nextElement instanceof \DOMElement
                 && strtolower($nextElement->tagName) === 'h3'
             ) {
                 break;
             }
 
-            if (
-                $nextElement instanceof \DOMElement
+            if ($nextElement instanceof \DOMElement
                 && strtolower($nextElement->tagName) === 'h4'
             ) {
                 $referenceCode = trim($nextElement->textContent);
@@ -74,15 +72,13 @@ function parseTrosFromHtml(string $html): array
         $node = $h3->nextSibling;
 
         while ($node !== null) {
-            if (
-                $node instanceof \DOMElement
+            if ($node instanceof \DOMElement
                 && strtolower($node->tagName) === 'h3'
             ) {
                 break;
             }
 
-            if (
-                $node instanceof \DOMElement
+            if ($node instanceof \DOMElement
                 && strtolower($node->tagName) === 'ul'
             ) {
                 $candidateDocuments = extractDocumentLinksFromUl(
@@ -90,8 +86,7 @@ function parseTrosFromHtml(string $html): array
                     $node
                 );
 
-                if (
-                    isset($candidateDocuments['statement_of_reasons'])
+                if (isset($candidateDocuments['statement_of_reasons'])
                     || isset($candidateDocuments['notice_of_proposal'])
                     || isset($candidateDocuments['proposed_plan'])
                 ) {

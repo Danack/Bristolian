@@ -162,7 +162,8 @@ function createPDOForUser(Config $config)
 
     if (PHP_VERSION_ID < 80500) {
         $pdo_options[PDO::MYSQL_ATTR_FOUND_ROWS] = true;
-     } else {
+    }
+    else {
         $pdo_options[\Pdo\Mysql::ATTR_FOUND_ROWS] = true;
     }
 
@@ -568,6 +569,3 @@ function createBccTroExecutionCheck(Config $config): \Bristolian\Service\DailyPr
 
     return new \Bristolian\Service\DailyProcessorSchedule\LocalDevBccTroExecutionCheck();
 }
-
-
-

@@ -826,8 +826,8 @@
         {
             "name": "Bristolian\\ApiController\\MailgunEmailHandler::handleIncomingEmail",
             "file": "src/Bristolian/ApiController/MailgunEmailHandler.php",
-            "line-start": 25,
-            "line-end": 46,
+            "line-start": 26,
+            "line-end": 47,
             "dependencies": [
                 "Bristolian\\Service\\Mailgun\\PayloadValidator",
                 "VarMap\\VarMap"
@@ -929,8 +929,8 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::getData",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 172,
-            "line-end": 177,
+            "line-start": 174,
+            "line-end": 179,
             "dependencies": [
                 "Bristolian\\Repo\\BristolStairsRepo\\BristolStairsRepo"
             ]
@@ -938,8 +938,8 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::getImage",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 138,
-            "line-end": 169,
+            "line-start": 140,
+            "line-end": 171,
             "dependencies": [
                 "Bristolian\\Filesystem\\BristolStairsFilesystem",
                 "Bristolian\\Filesystem\\LocalCacheFilesystem",
@@ -949,8 +949,8 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::getOpenmapNearby",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 184,
-            "line-end": 247,
+            "line-start": 186,
+            "line-end": 249,
             "dependencies": [
                 "Bristolian\\Parameters\\OpenmapNearbyParams",
                 "Bristolian\\Session\\UserSession"
@@ -959,8 +959,8 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::handleFileUpload",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 257,
-            "line-end": 291,
+            "line-start": 259,
+            "line-end": 293,
             "dependencies": [
                 "Bristolian\\Service\\BristolStairImageStorage\\BristolStairImageStorage",
                 "Bristolian\\Session\\UserSession",
@@ -971,8 +971,8 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::stairs_page",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 74,
-            "line-end": 81,
+            "line-start": 76,
+            "line-end": 83,
             "dependencies": [
                 "Bristolian\\Repo\\BristolStairsRepo\\BristolStairsRepo",
                 "Bristolian\\SiteHtml\\ExtraAssets"
@@ -981,8 +981,8 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::stairs_page_stair_selected",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 60,
-            "line-end": 72,
+            "line-start": 62,
+            "line-end": 74,
             "dependencies": [
                 "Bristolian\\Repo\\BristolStairsRepo\\BristolStairsRepo",
                 "Bristolian\\SiteHtml\\ExtraAssets"
@@ -991,8 +991,8 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::update_stairs_info",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 39,
-            "line-end": 47,
+            "line-start": 41,
+            "line-end": 49,
             "dependencies": [
                 "Bristolian\\Parameters\\BristolStairsInfoParams",
                 "Bristolian\\Repo\\BristolStairsRepo\\BristolStairsRepo",
@@ -1002,15 +1002,15 @@
         {
             "name": "Bristolian\\AppController\\BristolStairs::update_stairs_info_get",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 34,
-            "line-end": 37,
+            "line-start": 36,
+            "line-end": 39,
             "dependencies": []
         },
         {
             "name": "Bristolian\\AppController\\BristolStairs::update_stairs_position",
             "file": "src/Bristolian/AppController/BristolStairs.php",
-            "line-start": 49,
-            "line-end": 58,
+            "line-start": 51,
+            "line-end": 60,
             "dependencies": [
                 "Bristolian\\Parameters\\BristolStairsPositionParams",
                 "Bristolian\\Repo\\BristolStairsRepo\\BristolStairsRepo",
@@ -2383,7 +2383,7 @@
             "name": "Bristolian\\CliController\\GenerateFiles::generateWidgetPanels",
             "file": "src/Bristolian/CliController/GenerateFiles.php",
             "line-start": 2110,
-            "line-end": 2161,
+            "line-end": 2162,
             "dependencies": []
         },
         {

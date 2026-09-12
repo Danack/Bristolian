@@ -7,3 +7,7 @@
 
 
 PHPUNIT_TIA=0 php vendor/bin/paratest -c phpunit.xml --processes=auto
+
+# PHPUNIT_TIA_DEBUG=1 vendor/bin/paratest -c phpunit.xml --processes=auto
+
+# PHPUNIT_TIA_DEBUG=1 php vendor/bin/phpunit -c phpunit.xml "$@"

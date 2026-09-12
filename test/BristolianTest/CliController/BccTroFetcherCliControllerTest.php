@@ -328,7 +328,4 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
 //        $this->assertSame('Error fetching TRO data: network down', $records[0]->debug_info);
 //        $this->assertStringContainsString('Fin.', $cliOutput->getCapturedOutput());
 //    }
-
-
-
 }

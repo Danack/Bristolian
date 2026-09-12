@@ -8,11 +8,12 @@ use Bristolian\Cache\RedisLogUnknownQuery;
 use Bristolian\Keys\UnknownCacheQueryKey;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Bristolian\Cache\RedisLogUnknownQuery
  * @group db
  */
+#[CoversClass(\Bristolian\Cache\RedisLogUnknownQuery::class)]
 #[RequiresPhpExtension('redis')]
 class RedisLogUnknownQueryTest extends BaseTestCase
 {

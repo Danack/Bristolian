@@ -26,6 +26,8 @@ use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\StubResponse;
 use VarMap\VarMap;
+use function Safe\realpath;
+use function Safe\json_encode;
 
 class BristolStairs
 {
@@ -154,14 +156,14 @@ HTML;
         $localCacheFilename = $localCacheFilesystem->getFullPath() . "/" . $normalized_name;
         $filenameToServe = realpath($localCacheFilename);
 
-        // Difficult to test: requires cache adapter to not persist under getFullPath() (e.g. in-memory).
-        if ($filenameToServe === false) {
-            // @codeCoverageIgnoreStart
-            throw new BristolianException(
-                "Failed to retrieve file from object store [" . $normalized_name . "]."
-            );
-            // @codeCoverageIgnoreEnd
-        }
+//        // Difficult to test: requires cache adapter to not persist under getFullPath() (e.g. in-memory).
+//        if ($filenameToServe === false) {
+//            // @codeCoverageIgnoreStart
+//            throw new BristolianException(
+//                "Failed to retrieve file from object store [" . $normalized_name . "]."
+//            );
+//            // @codeCoverageIgnoreEnd
+//        }
 
         return new StreamingResponse(
             $filenameToServe

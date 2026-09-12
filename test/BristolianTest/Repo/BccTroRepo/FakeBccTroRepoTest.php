@@ -40,7 +40,4 @@ class FakeBccTroRepoTest extends BccTroRepoFixture
         $repo->saveData([$tro]);
         $this->addToAssertionCount(1);
     }
-
-
-
 }

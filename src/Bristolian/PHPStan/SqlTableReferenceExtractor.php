@@ -36,7 +36,8 @@ class SqlTableReferenceExtractor
             foreach ($this->extractFromAndJoinTables($normalizedSql) as $tableName) {
                 $reads[] = $tableName;
             }
-        } elseif ($statementType === 'update') {
+        }
+        elseif ($statementType === 'update') {
             $updateTables = $this->matchTables(
                 $normalizedSql,
                 '/\bUPDATE\s+(' . self::TABLE_NAME_PATTERN . ')\b/i'
@@ -53,7 +54,8 @@ class SqlTableReferenceExtractor
                     $reads[] = $tableName;
                 }
             }
-        } elseif ($statementType === 'delete') {
+        }
+        elseif ($statementType === 'delete') {
             // delete mt from meme_tag mt  OR  delete from meme_tag
             $deleteFromTables = $this->matchTables(
                 $normalizedSql,
@@ -65,7 +67,8 @@ class SqlTableReferenceExtractor
             foreach ($this->extractJoinTables($normalizedSql) as $tableName) {
                 $reads[] = $tableName;
             }
-        } else {
+        }
+        else {
             // SELECT and unknown: treat FROM/JOIN as reads
             foreach ($this->extractFromAndJoinTables($normalizedSql) as $tableName) {
                 $reads[] = $tableName;

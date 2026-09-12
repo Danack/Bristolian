@@ -10,7 +10,6 @@ use Bristolian\SiteHtml\HeaderLink;
 use Bristolian\SiteHtml\HeaderLinks;
 use Bristolian\Config\Config;
 
-
 function createPageHeaderHtml(/*HeaderLinks $headerLinks*/) : string
 {
     $headerLinks = new HeaderLinks([

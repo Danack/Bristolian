@@ -8,6 +8,7 @@ use Bristolian\Response\SuccessResponse;
 use Bristolian\Service\Mailgun\PayloadValidator;
 use SlimDispatcher\Response\JsonResponse;
 use VarMap\VarMap;
+use function Safe\json_decode;
 
 class MailgunEmailHandler
 {

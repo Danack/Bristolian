@@ -10,8 +10,6 @@ use Bristolian\Service\BccTroFetcher\BccTroFetcher;
 use Bristolian\Service\CliOutput\CliOutput;
 use Bristolian\Service\RoomMessageService\RoomMessageService;
 
-
-
 class StandardBccTroService implements BccTroService
 {
     public function __construct(

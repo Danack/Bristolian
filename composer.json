@@ -17,7 +17,7 @@
         "danack/looping-exec": "^0.3.0",
         "danack/json-safe": "^0.1.1",
         "danack/slim-dispatcher": "dev-dev",
-        "danack/datatype": "0.9.1",
+        "danack/datatype": "dev-tri_state_experiement",
         "hashids/hashids": "5.0.2",
         "ext-redis": "*",
         "justinrainbow/json-schema": "^5.2.7",
@@ -70,7 +70,7 @@
         "genesis/behat-fail-aid": "^3.7",
         "brianium/paratest": "^7.24.1",
         "nicksdot/phpstan-phpstorm-error-identifiers": "^0.3.1",
-      "jasonmccreary/phpunit-tia": "dev-tia-debug-reason",
+        "jasonmccreary/phpunit-tia": "dev-main#35d560bb382af12bb8ce8e42c4e7ef8ae858c0a4",
       "thecodingmachine/phpstan-safe-rule": "^1.4"
     },
     "autoload": {

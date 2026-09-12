@@ -15,9 +15,6 @@ use Bristolian\Service\RoomMessageService\RoomMessageService;
 use Bristolian\Service\DailyProcessorSchedule\BccTroExecutionCheck;
 use Bristolian\Service\BccTroService\BccTroService;
 
-
-
-
 class BccTroFetcherCliController
 {
     public function continual_bcc_tro_process(
