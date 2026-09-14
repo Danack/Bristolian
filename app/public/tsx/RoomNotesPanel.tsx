@@ -452,7 +452,7 @@ export class RoomNotesPanel extends Component<RoomNotesPanelProps, RoomNotesPane
             <table className="large_table">
                 <thead>
                     <tr>
-                        <th>Title</th>
+                        <th>Name</th>
                         <th>Added</th>
                         <th>Date</th>
                         <th>Tags</th>
@@ -490,7 +490,7 @@ export class RoomNotesPanel extends Component<RoomNotesPanelProps, RoomNotesPane
                         <tbody>
                             <tr>
                                 <td>
-                                    <label>Title</label>
+                                    <label>Name</label>
                                 </td>
                                 <td>
                                     <input
@@ -651,7 +651,7 @@ export class RoomNotesPanel extends Component<RoomNotesPanelProps, RoomNotesPane
                 <table>
                     <tbody>
                         <tr>
-                            <td><label htmlFor="room_note_create_title">Title</label></td>
+                            <td><label htmlFor="room_note_create_title">Name</label></td>
                             <td>
                                 <input
                                     id="room_note_create_title"
@@ -740,7 +740,8 @@ export class RoomNotesPanel extends Component<RoomNotesPanelProps, RoomNotesPane
                         limit={this.state.searchLimit}
                         roomTags={this.state.roomTags}
                         selectedTagIds={this.state.searchTagIds}
-                        titlePlaceholder="Filter by title"
+                        titleLabel="Name"
+                        titlePlaceholder="Filter by name"
                         onTitleChange={(value: string) =>
                             this.setState(
                                 { searchTitle: value, searchWaiting: true, searchInFlight: false },

@@ -18,6 +18,9 @@ export interface RoomContentSearchFormProps {
     /** Placeholder text for the title field (e.g. "Filter by name" vs "Filter by title"). */
     titlePlaceholder: string;
 
+    /** Visible label for the title/name search field. Defaults to "Title". */
+    titleLabel?: string;
+
     onTitleChange: (value: string) => void;
     onDescriptionChange: (value: string) => void;
     onCreatedAfterChange: (value: string) => void;
@@ -49,6 +52,7 @@ export function RoomContentSearchForm(props: RoomContentSearchFormProps) {
         roomTags,
         selectedTagIds,
         titlePlaceholder,
+        titleLabel = "Title",
         onTitleChange,
         onDescriptionChange,
         onCreatedAfterChange,
@@ -109,10 +113,10 @@ export function RoomContentSearchForm(props: RoomContentSearchFormProps) {
 
     return (
         <div className="room_content_search_form">
-            {/* Row 1: Title / Created after / Created before */}
+            {/* Row 1: Title or Name / Created after / Created before */}
             <label>
-                Title{" "}
-                <input
+                {titleLabel}{" "}
+                <input>
                     type="text"
                     value={title}
                     onInput={(e) => onTitleChange((e.target as HTMLInputElement).value)}
