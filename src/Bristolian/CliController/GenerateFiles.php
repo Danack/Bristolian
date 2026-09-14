@@ -1351,7 +1351,7 @@ SQL;
         $content .= "            'result' => 'success',\n";
         $content .= "            'data' => \$converted_data\n";
         $content .= "        ];\n\n";
-        $content .= "        \$this->body = json_encode(\$response_ok, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);\n";
+        $content .= "        \$this->body = json_encode_safe(\$response_ok, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);\n";
         $content .= "    }\n\n";
         
         // getStatus method

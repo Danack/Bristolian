@@ -135,7 +135,7 @@ abstract class RoomRepoFixture extends BaseTestCase
      * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getAllRooms
      * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::createRoom
      */
-    public function test_getAllRooms_returns_all_created_rooms(): void
+    public function test_getAllRooms_respects_default_limit(): void
     {
         $repo = $this->getTestInstance();
 
@@ -146,9 +146,33 @@ abstract class RoomRepoFixture extends BaseTestCase
         $rooms = $repo->getAllRooms();
 
         $this->assertGreaterThanOrEqual(2, count($rooms));
+        $this->assertLessThanOrEqual(RoomRepo::DEFAULT_LIST_LIMIT, count($rooms));
+    }
+
+    /**
+     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getLatestRoomsCreated
+     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::createRoom
+     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getLatestRoomsCreated
+     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::createRoom
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getLatestRoomsCreated
+     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::createRoom
+     */
+    public function test_getLatestRoomsCreated_includes_recently_created_rooms(): void
+    {
+        $repo = $this->getTestInstance();
+
+        $userId = $this->getValidUserId();
+        $room1 = $repo->createRoom($userId, 'Room 1', 'Purpose 1');
+        $room2 = $repo->createRoom($userId, 'Room 2', 'Purpose 2');
+
+        $rooms = $repo->getLatestRoomsCreated();
+
+        $this->assertGreaterThanOrEqual(2, count($rooms));
+        $this->assertLessThanOrEqual(RoomRepo::DEFAULT_LIST_LIMIT, count($rooms));
         $roomIds = array_map(fn(Room $r) => $r->id, $rooms);
         $this->assertContains($room1->id, $roomIds);
         $this->assertContains($room2->id, $roomIds);
+        $this->assertSame($room2->id, $rooms[0]->id);
     }
 
     /**

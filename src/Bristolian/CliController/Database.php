@@ -144,7 +144,7 @@ SQL;
  * @codeCoverageIgnore
  * @param int $max_migration_number
  * @return MigrationFromCode[]
- * @throws \DataType\Exception\ValidationException
+ * @throws \DataType\Exception\Runtime\ValidationException
  */
 function findWhichMigrationsNeedToBeRun(
     PdoSimple $pdoSimple,

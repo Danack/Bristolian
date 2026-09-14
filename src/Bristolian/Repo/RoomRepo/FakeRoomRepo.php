@@ -75,8 +75,22 @@ class FakeRoomRepo implements RoomRepo
     /**
      * @return Room[]
      */
-    public function getAllRooms(): array
+    public function getAllRooms(int $limit = RoomRepo::DEFAULT_LIST_LIMIT): array
     {
-        return array_values($this->rooms);
+        $rooms = array_values($this->rooms);
+        usort($rooms, fn (Room $left, Room $right) => strcmp($left->id, $right->id));
+
+        return array_slice($rooms, 0, $limit);
+    }
+
+    /**
+     * @return Room[]
+     */
+    public function getLatestRoomsCreated(int $limit = RoomRepo::DEFAULT_LIST_LIMIT): array
+    {
+        $rooms = array_values($this->rooms);
+        usort($rooms, fn (Room $left, Room $right) => strcmp($right->id, $left->id));
+
+        return array_slice($rooms, 0, $limit);
     }
 }

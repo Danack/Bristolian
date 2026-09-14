@@ -119,7 +119,7 @@ class AddVideoClipParamTest extends BaseTestCase
         try {
             AddVideoClipParam::createFromVarMap(new ArrayVarMap($input));
             $this->fail('Expected ValidationException');
-        } catch (\DataType\Exception\ValidationException $exception) {
+        } catch (\DataType\Exception\Runtime\ValidationException $exception) {
             $this->assertValidationProblems(
                 $exception->getValidationProblems(),
                 [$expected_error_path => $expected_error_message]

@@ -80,12 +80,11 @@ final class TestWorld
      */
     public function findRoomByName(string $name): ?\Bristolian\Model\Generated\Room
     {
-        $allRooms = $this->roomRepo->getAllRooms();
-        foreach ($allRooms as $room) {
-            if ($room->name === $name) {
-                return $room;
-            }
+        $rooms = $this->roomRepo->getRoomByName($name);
+        if (count($rooms) === 0) {
+            return null;
         }
-        return null;
+
+        return $rooms[0];
     }
 }

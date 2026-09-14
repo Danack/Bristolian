@@ -24,9 +24,17 @@ interface RoomRepo
     #[ReadsTable(room_table::class)]
     public function getRoomByName(string $name): array;
 
+    public const DEFAULT_LIST_LIMIT = 100;
+
     /**
-     * @return Room[]
+     * @return Room[] Up to $limit rooms, oldest id first.
      */
     #[ReadsTable(room_table::class)]
-    public function getAllRooms(): array;
+    public function getAllRooms(int $limit = self::DEFAULT_LIST_LIMIT): array;
+
+    /**
+     * @return Room[] Up to $limit rooms, newest id first (uuid7 ids are time-ordered).
+     */
+    #[ReadsTable(room_table::class)]
+    public function getLatestRoomsCreated(int $limit = self::DEFAULT_LIST_LIMIT): array;
 }

@@ -93,11 +93,29 @@ class PdoRoomRepo implements RoomRepo
      * @throws \Exception
      */
     #[ReadsTable(room_table::class)]
-    public function getAllRooms(): array
+    public function getAllRooms(int $limit = RoomRepo::DEFAULT_LIST_LIMIT): array
     {
+        $sql = room_table::SELECT . " order by id asc limit :limit";
+
         return $this->pdoSimple->fetchAllAsObjectConstructor(
-            room_table::SELECT,
-            [],
+            $sql,
+            ['limit' => $limit],
+            Room::class
+        );
+    }
+
+    /**
+     * @return Room[]
+     * @throws \Exception
+     */
+    #[ReadsTable(room_table::class)]
+    public function getLatestRoomsCreated(int $limit = RoomRepo::DEFAULT_LIST_LIMIT): array
+    {
+        $sql = room_table::SELECT . " order by id desc limit :limit";
+
+        return $this->pdoSimple->fetchAllAsObjectConstructor(
+            $sql,
+            ['limit' => $limit],
             Room::class
         );
     }

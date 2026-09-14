@@ -8,7 +8,7 @@ use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Response;
 use Bristolian\Parameters\LinkParam;
 use VarMap\ArrayVarMap;
-use DataType\Exception\ValidationException;
+use DataType\Exception\Runtime\ValidationException;
 use function convertToValue;
 use function convertToValueSafe;
 use PHPUnit\Framework\Attributes\DataProvider;

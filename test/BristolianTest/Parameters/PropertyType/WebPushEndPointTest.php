@@ -64,7 +64,7 @@ class WebPushEndPointTest extends BaseTestCase
             WebPushEndPointFixture::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
-        catch (\DataType\Exception\ValidationException $ve) {
+        catch (\DataType\Exception\Runtime\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
                 ['/endpoint_input' => $expectedErrorMessage]

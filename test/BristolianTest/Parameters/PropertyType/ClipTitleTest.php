@@ -62,7 +62,7 @@ class ClipTitleTest extends BaseTestCase
         try {
             ClipTitleFixture::createFromVarMap(new ArrayVarMap($input));
             $this->fail('Expected ValidationException was not thrown.');
-        } catch (\DataType\Exception\ValidationException $ve) {
+        } catch (\DataType\Exception\Runtime\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
                 ['/title_input' => $expectedErrorMessage]

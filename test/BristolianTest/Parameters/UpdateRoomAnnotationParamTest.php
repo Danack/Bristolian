@@ -116,7 +116,7 @@ class UpdateRoomAnnotationParamTest extends BaseTestCase
         try {
             UpdateRoomAnnotationParam::createFromArray($input);
             $this->fail('Expected ValidationException was not thrown.');
-        } catch (\DataType\Exception\ValidationException $exception) {
+        } catch (\DataType\Exception\Runtime\ValidationException $exception) {
             $this->assertValidationProblems(
                 $exception->getValidationProblems(),
                 [$expectedPath => $expectedMessage]

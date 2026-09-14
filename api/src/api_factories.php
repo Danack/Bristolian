@@ -20,7 +20,7 @@ use Bristolian\Middleware\ExceptionToJsonResponseMiddleware;
 function createExceptionMiddlewareForApi(\Di\Injector $injector): ExceptionToJsonResponseMiddleware
 {
     $exceptionHandlers = [
-        \DataType\Exception\ValidationException::class => 'convertValidationExceptionMapperApi',
+        \DataType\Exception\Runtime\ValidationException::class => 'convertValidationExceptionMapperApi',
         \Bristolian\Exception\InvalidPermissionsException::class => 'convertInvalidPermissionsExceptionToResponse',
         \Bristolian\Exception\TooManyRoomTagsException::class => 'convertTooManyRoomTagsExceptionToResponse',
         \Bristolian\Exception\ContentNotFoundException::class => 'convertContentNotFoundExceptionToResponse',

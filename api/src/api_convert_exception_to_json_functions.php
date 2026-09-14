@@ -8,7 +8,7 @@ declare(strict_types = 1);
 use Bristolian\App;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use DataType\Exception\ValidationException;
+use DataType\Exception\Runtime\ValidationException;
 use SlimDispatcher\Response\JsonResponse;
 
 /**

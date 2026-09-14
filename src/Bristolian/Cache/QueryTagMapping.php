@@ -817,7 +817,10 @@ SQL) => ['read' => [], 'write' => ['room_note']],
             trim(room::SELECT . " where id = :room_id")
                 => ['read' => ['room'], 'write' => []],
 
-            trim(room::SELECT)
+            trim(room::SELECT . " order by id asc limit :limit")
+                => ['read' => ['room'], 'write' => []],
+
+            trim(room::SELECT . " order by id desc limit :limit")
                 => ['read' => ['room'], 'write' => []],
 
             trim(room::SELECT . " where name = :name")

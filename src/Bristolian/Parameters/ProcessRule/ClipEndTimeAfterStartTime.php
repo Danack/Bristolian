@@ -10,7 +10,7 @@ use DataType\OpenApi\ParamDescription;
 use DataType\ProcessedValues;
 use DataType\ProcessRule\ProcessRule;
 use DataType\ValidationResult;
-use DataType\Exception\DataTypeLogicException;
+use Bristolian\Exception\ClipTimeTypeLogicException;
 
 /**
  * Ensures the end clip time (seconds) is strictly greater than another input already processed
@@ -43,11 +43,11 @@ class ClipEndTimeAfterStartTime implements ProcessRule
 
         $start_seconds = $processedValues->getValue($this->startTimeInputName);
         if (is_int($value) !== true) {
-            throw new DataTypeLogicException("end value must be integer");
+            throw ClipTimeTypeLogicException::endValueMustBeInteger();
         }
 
         if (is_int($start_seconds) !== true) {
-            throw new DataTypeLogicException("start value must be integer");
+            throw ClipTimeTypeLogicException::startValueMustBeInteger();
         }
 
         if ($value <= $start_seconds) {

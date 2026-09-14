@@ -3138,21 +3138,21 @@
             "name": "Bristolian\\Repo\\RoomRepo\\FakeRoomRepo",
             "file": "src/Bristolian/Repo/RoomRepo/FakeRoomRepo.php",
             "line-start": 14,
-            "line-end": 82,
+            "line-end": 96,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Repo\\RoomRepo\\PdoRoomRepo",
             "file": "src/Bristolian/Repo/RoomRepo/PdoRoomRepo.php",
             "line-start": 13,
-            "line-end": 104,
+            "line-end": 122,
             "dependencies": []
         },
         {
             "name": "Bristolian\\Repo\\RoomRepo\\RoomRepo",
             "file": "src/Bristolian/Repo/RoomRepo/RoomRepo.php",
             "line-start": 10,
-            "line-end": 32,
+            "line-end": 40,
             "dependencies": []
         },
         {
@@ -5975,6 +5975,16 @@
                 },
                 {
                     "name": "getAllRooms",
+                    "datasources": [
+                        {
+                            "path": "/datasources/room",
+                            "reads": true,
+                            "writes": false
+                        }
+                    ]
+                },
+                {
+                    "name": "getLatestRoomsCreated",
                     "datasources": [
                         {
                             "path": "/datasources/room",

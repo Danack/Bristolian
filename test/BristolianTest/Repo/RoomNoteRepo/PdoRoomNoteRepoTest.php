@@ -13,6 +13,7 @@ use Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
+use Safe\DateTimeImmutable;
 use VarMap\ArrayVarMap;
 
 /**
@@ -38,7 +39,7 @@ class PdoRoomNoteRepoTest extends BaseTestCase
         );
 
         $repo = $this->injector->make(PdoRoomNoteRepo::class);
-        $documentTimestamp = new \DateTimeImmutable('2021-05-06 07:08:09');
+        $documentTimestamp = new DateTimeImmutable('2021-05-06 07:08:09');
         $id = $repo->create(
             $user->getUserId(),
             $room->id,

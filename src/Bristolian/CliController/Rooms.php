@@ -20,8 +20,8 @@ use Bristolian\Service\CliOutput\CliOutput;
 use Bristolian\Service\RoomFileStorage\RoomFileStorage;
 use Bristolian\Service\RoomFileStorage\UploadError;
 use Bristolian\UploadedFiles\UploadedFile;
-use DataType\Exception\JsonDecodeException;
-use DataType\Exception\ValidationException;
+use DataType\Exception\Runtime\JsonDecodeException;
+use DataType\Exception\Runtime\ValidationException;
 use Bristolian\Exception\TooManyRoomTagsException;
 use VarMap\ArrayVarMap;
 

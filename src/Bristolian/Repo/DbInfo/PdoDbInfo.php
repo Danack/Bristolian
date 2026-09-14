@@ -19,7 +19,7 @@ class PdoDbInfo implements DbInfo
 
     /**
      * @return array|Table[]
-     * @throws \DataType\Exception\ValidationException
+     * @throws \DataType\Exception\Runtime\ValidationException
      */
     public function getTableInfo(): array
     {

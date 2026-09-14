@@ -286,7 +286,7 @@ function peak_memory(bool $real_usage = false): string
  * @param array<mixed> $data
  * @return T[]
  * @throws \Bristolian\Exception\BristolianException
- * @throws \DataType\Exception\ValidationException
+ * @throws \DataType\Exception\Runtime\ValidationException
  */
 function convertToArrayOfObjects(string $classname, array $data)
 {

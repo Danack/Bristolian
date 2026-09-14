@@ -23,7 +23,7 @@ class PdoUserSearchTest extends BaseTestCase
      * @return void
      * @throws \Bristolian\PdoSimple\PdoSimpleException
      * @throws \DI\InjectionException
-     * @throws \DataType\Exception\ValidationException
+     * @throws \DataType\Exception\Runtime\ValidationException
      * @throws \Random\RandomException
      */
     public function testWorks()

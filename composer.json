@@ -17,7 +17,7 @@
         "danack/looping-exec": "^0.3.0",
         "danack/json-safe": "^0.1.1",
         "danack/slim-dispatcher": "dev-dev",
-        "danack/datatype": "dev-tri_state_experiement",
+        "danack/datatype": "0.10.0",
         "hashids/hashids": "5.0.2",
         "ext-redis": "*",
         "justinrainbow/json-schema": "^5.2.7",

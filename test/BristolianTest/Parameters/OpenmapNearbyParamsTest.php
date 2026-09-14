@@ -83,7 +83,7 @@ class OpenmapNearbyParamsTest extends BaseTestCase
             OpenmapNearbyParams::createFromVarMap(new ArrayVarMap($input));
             $this->fail("Expected ValidationException was not thrown.");
         }
-        catch (\DataType\Exception\ValidationException $ve) {
+        catch (\DataType\Exception\Runtime\ValidationException $ve) {
             $this->assertValidationProblems(
                 $ve->getValidationProblems(),
                 [$errorPath => $expectedErrorMessage]

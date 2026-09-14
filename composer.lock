@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "81d4d8bfb53bc3bfcd3682299dd3211f",
+    "content-hash": "ea643831dff48f169e32bd62bd379e2b",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.395.0",
+            "version": "3.395.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c8f42d03b697a61b4910d162d753b13d2de297fc"
+                "reference": "f5eda89b1f2ecd4aea56eb04d58874bad12ef02e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c8f42d03b697a61b4910d162d753b13d2de297fc",
-                "reference": "c8f42d03b697a61b4910d162d753b13d2de297fc",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f5eda89b1f2ecd4aea56eb04d58874bad12ef02e",
+                "reference": "f5eda89b1f2ecd4aea56eb04d58874bad12ef02e",
                 "shasum": ""
             },
             "require": {
@@ -153,9 +153,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.395.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.395.1"
             },
-            "time": "2026-09-11T18:07:54+00:00"
+            "time": "2026-09-13T18:43:19+00:00"
         },
         {
             "name": "brick/math",
@@ -558,16 +558,16 @@
         },
         {
             "name": "danack/datatype",
-            "version": "dev-tri_state_experiement",
+            "version": "0.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Danack/DataType.git",
-                "reference": "4278d856ff7987bc7da63403009a250df779673c"
+                "reference": "1b5504c17e0211d69e9056b14b0b56fe4649cd3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Danack/DataType/zipball/4278d856ff7987bc7da63403009a250df779673c",
-                "reference": "4278d856ff7987bc7da63403009a250df779673c",
+                "url": "https://api.github.com/repos/Danack/DataType/zipball/1b5504c17e0211d69e9056b14b0b56fe4649cd3c",
+                "reference": "1b5504c17e0211d69e9056b14b0b56fe4649cd3c",
                 "shasum": ""
             },
             "require": {
@@ -606,9 +606,9 @@
             "description": "A library that makes using data types easier",
             "support": {
                 "issues": "https://github.com/Danack/DataType/issues",
-                "source": "https://github.com/Danack/DataType/tree/tri_state_experiement"
+                "source": "https://github.com/Danack/DataType/tree/0.10.0"
             },
-            "time": "2026-09-10T16:34:11+00:00"
+            "time": "2026-09-14T18:06:56+00:00"
         },
         {
             "name": "danack/esprintf",
@@ -4519,20 +4519,20 @@
         },
         {
             "name": "spomky-labs/pki-framework",
-            "version": "1.6.2",
+            "version": "1.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spomky-Labs/pki-framework.git",
-                "reference": "8f333bebe104ea24f1a160a6fb69e2dead4f1882"
+                "reference": "792e909d4e387adffe3c4f404451c7d57a3d2022"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spomky-Labs/pki-framework/zipball/8f333bebe104ea24f1a160a6fb69e2dead4f1882",
-                "reference": "8f333bebe104ea24f1a160a6fb69e2dead4f1882",
+                "url": "https://api.github.com/repos/Spomky-Labs/pki-framework/zipball/792e909d4e387adffe3c4f404451c7d57a3d2022",
+                "reference": "792e909d4e387adffe3c4f404451c7d57a3d2022",
                 "shasum": ""
             },
             "require": {
-                "brick/math": "^0.10|^0.11|^0.12|^0.13|^0.14|^0.15|^0.16|^0.17|^0.18|^0.19|^0.20",
+                "brick/math": "^0.10|^0.11|^0.12|^0.13|^0.14|^0.15|^0.16|^0.17|^0.18|^0.19|^0.20|^1.0",
                 "ext-mbstring": "*",
                 "php": ">=8.1"
             },
@@ -4613,7 +4613,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Spomky-Labs/pki-framework/issues",
-                "source": "https://github.com/Spomky-Labs/pki-framework/tree/1.6.2"
+                "source": "https://github.com/Spomky-Labs/pki-framework/tree/1.6.3"
             },
             "funding": [
                 {
@@ -4625,7 +4625,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-09-08T07:15:08+00:00"
+            "time": "2026-09-12T19:02:49+00:00"
         },
         {
             "name": "starkbank/ecdsa",
@@ -7891,16 +7891,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v5.8.0",
+            "version": "v5.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "044a6a392ff8ad0d61f14370a5fbbd0a0107152f"
+                "reference": "9e33da9553fe7786f0962b35f4e4ecf01be89def"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/044a6a392ff8ad0d61f14370a5fbbd0a0107152f",
-                "reference": "044a6a392ff8ad0d61f14370a5fbbd0a0107152f",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/9e33da9553fe7786f0962b35f4e4ecf01be89def",
+                "reference": "9e33da9553fe7786f0962b35f4e4ecf01be89def",
                 "shasum": ""
             },
             "require": {
@@ -7942,9 +7942,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v5.8.0"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.9.0"
             },
-            "time": "2026-07-04T14:30:18+00:00"
+            "time": "2026-09-13T18:51:52+00:00"
         },
         {
             "name": "pdepend/pdepend",
@@ -11564,7 +11564,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "danack/datatype": 20,
         "danack/slim-dispatcher": 20,
         "jasonmccreary/phpunit-tia": 20
     },

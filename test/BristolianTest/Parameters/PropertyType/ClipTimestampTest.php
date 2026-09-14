@@ -63,7 +63,7 @@ class ClipTimestampTest extends BaseTestCase
         try {
             ClipTimestampStandaloneFixture::createFromVarMap(new ArrayVarMap($input));
             $this->fail('Expected ValidationException was not thrown.');
-        } catch (\DataType\Exception\ValidationException $exception) {
+        } catch (\DataType\Exception\Runtime\ValidationException $exception) {
             $this->assertValidationProblems(
                 $exception->getValidationProblems(),
                 ['/ts' => $expectedErrorMessage]
@@ -95,7 +95,7 @@ class ClipTimestampTest extends BaseTestCase
                 'end_time' => '1:15',
             ]));
             $this->fail('Expected ValidationException was not thrown.');
-        } catch (\DataType\Exception\ValidationException $exception) {
+        } catch (\DataType\Exception\Runtime\ValidationException $exception) {
             $this->assertValidationProblems(
                 $exception->getValidationProblems(),
                 ['/end_time' => ClipEndTimeAfterStartTime::ERROR_END_NOT_AFTER_START]

@@ -7,7 +7,7 @@ use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Response;
 use Bristolian\Parameters\LinkParam;
 use VarMap\ArrayVarMap;
-use DataType\Exception\ValidationException;
+use DataType\Exception\Runtime\ValidationException;
 
 /**
  * @coversNothing

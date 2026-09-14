@@ -69,7 +69,7 @@ class OptionalRoomContentListOrderTest extends BaseTestCase
                 'order' => 'unknown',
             ]));
             $this->fail('Expected ValidationException was not thrown.');
-        } catch (\DataType\Exception\ValidationException $validationException) {
+        } catch (\DataType\Exception\Runtime\ValidationException $validationException) {
             $this->assertValidationProblems(
                 $validationException->getValidationProblems(),
                 [
