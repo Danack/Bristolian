@@ -85,8 +85,8 @@ class Rooms
     {
         $content = "<h1>List of rooms</h1>";
 
-        $rooms = $roomRepo->getLatestRoomsCreated();
-        $content .= sprintf("Showing %d most recently created rooms", count($rooms));
+        $rooms = $roomRepo->getAllRooms();
+        $content .= sprintf("Showing %d rooms", count($rooms));
 
         $content .= "<table><tbody>";
         $template = "<tr><td><a href='/rooms/:attr_room_id'>:html_name</a></td></tr>";

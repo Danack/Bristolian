@@ -1,24 +1,5 @@
 We are finishing a piece of work. All the code quality tools should be run. Any problems reported should be fixed.
 
-## PHPUnit: enable slow tests and HTML coverage first
-
-`phpunit.xml` sometimes has the `db` group excluded (and HTML coverage commented out) so day-to-day test runs stay fast. For **finalise_work** you want full coverage.
-
-**Before running PHPUnit / runAllTests.sh:** ensure slow tests and HTML coverage are **enabled** by running the restore script inside the `php_fpm` container (from the project root in the container):
-
-```bash
-docker exec bristolian-php_fpm-1 bash -c "php scripts/streamdeck/toggle_make_slow.php phpunit.xml"
-```
-
-That restores:
-- running the `@group db` tests (database-dependent tests)
-- HTML coverage report in `tmp/coverage`
-
-To disable them again (fast runs):
-
-```bash
-docker exec bristolian-php_fpm-1 bash -c "php scripts/streamdeck/toggle_make_fast.php phpunit.xml"
-```
 
 ## Code Quality Tools
 
