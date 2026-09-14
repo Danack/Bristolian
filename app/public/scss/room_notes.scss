@@ -8,6 +8,12 @@
     color: #2e7d32;
     border: 1px solid #c8e6c9;
     font-weight: 600;
+    opacity: 1;
+    transition: opacity 1s ease;
+  }
+
+  .room_note_add_success--fading {
+    opacity: 0;
   }
 }
 

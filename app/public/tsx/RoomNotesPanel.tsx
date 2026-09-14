@@ -41,6 +41,7 @@ interface RoomNotesPanelState {
     createInProgress: boolean;
     createError: string | null;
     createResult: string | null;
+    createResultFading: boolean;
     deleteInProgress: boolean;
 }
 
@@ -86,6 +87,7 @@ function getDefaultState(): RoomNotesPanelState {
         createInProgress: false,
         createError: null,
         createResult: null,
+        createResultFading: false,
         deleteInProgress: false,
     };
 }
@@ -95,6 +97,8 @@ export class RoomNotesPanel extends Component<RoomNotesPanelProps, RoomNotesPane
     message_listener: number | null = null;
     unsubscribe_logged_in: (() => void) | null = null;
     private searchTimeout: number | null = null;
+    private createResultFadeTimeout: number | null = null;
+    private createResultClearTimeout: number | null = null;
 
     constructor(props: RoomNotesPanelProps) {
         super(props);
@@ -135,6 +139,30 @@ export class RoomNotesPanel extends Component<RoomNotesPanelProps, RoomNotesPane
             clearTimeout(this.searchTimeout);
             this.searchTimeout = null;
         }
+        this.clearCreateResultTimers();
+    }
+
+    clearCreateResultTimers() {
+        if (this.createResultFadeTimeout !== null) {
+            clearTimeout(this.createResultFadeTimeout);
+            this.createResultFadeTimeout = null;
+        }
+        if (this.createResultClearTimeout !== null) {
+            clearTimeout(this.createResultClearTimeout);
+            this.createResultClearTimeout = null;
+        }
+    }
+
+    scheduleCreateResultFade() {
+        this.clearCreateResultTimers();
+        this.createResultFadeTimeout = window.setTimeout(() => {
+            this.setState({ createResultFading: true });
+            this.createResultClearTimeout = window.setTimeout(() => {
+                this.setState({ createResult: null, createResultFading: false });
+                this.createResultClearTimeout = null;
+            }, 1000);
+            this.createResultFadeTimeout = null;
+        }, 5000);
     }
 
     buildSearchParams(): RoomContentSearchParams {
@@ -347,7 +375,8 @@ export class RoomNotesPanel extends Component<RoomNotesPanelProps, RoomNotesPane
         if (this.state.createInProgress) {
             return;
         }
-        this.setState({ createInProgress: true, createError: null, createResult: null });
+        this.clearCreateResultTimers();
+        this.setState({ createInProgress: true, createError: null, createResult: null, createResultFading: false });
         fetch(`/api/rooms/${this.props.room_id}/notes`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -364,7 +393,8 @@ export class RoomNotesPanel extends Component<RoomNotesPanelProps, RoomNotesPane
                         createMarkdown: "",
                         createInProgress: false,
                         createResult: "Note added",
-                    });
+                        createResultFading: false,
+                    }, () => this.scheduleCreateResultFade());
                     sendMessage(PdfSelectionType.ROOM_NOTES_CHANGED, {});
                     this.refreshNotes(true);
                     return;
@@ -694,7 +724,15 @@ export class RoomNotesPanel extends Component<RoomNotesPanelProps, RoomNotesPane
                                     Add note
                                 </button>
                                 {this.state.createError ? <span className="error">{this.state.createError}</span> : null}
-                                {this.state.createResult ? <div className="room_note_add_success">{this.state.createResult}</div> : null}
+                                {this.state.createResult ? (
+                                    <div className={
+                                        this.state.createResultFading
+                                            ? "room_note_add_success room_note_add_success--fading"
+                                            : "room_note_add_success"
+                                    }>
+                                        {this.state.createResult}
+                                    </div>
+                                ) : null}
                             </td>
                         </tr>
                     </tbody>

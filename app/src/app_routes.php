@@ -52,27 +52,27 @@ function getAllAppRoutes()
         // Get QR auth token
         ['/qr/code/token', 'GET', '\Bristolian\AppController\QRCode::getToken'],
         // WECA active travel question
-        ['/questions/1_weca_active_travel', 'GET', '\Bristolian\AppController\Pages::weca_question_active_travel'],
+        ['/questions/1_weca_active_travel', 'GET', '\Bristolian\AppController\Questions::weca_question_active_travel'],
         // WECA tram question
-        ['/questions/2_weca_cumberland_basin_tram', 'GET', '\Bristolian\AppController\Pages::weca_question_tram'],
+        ['/questions/2_weca_cumberland_basin_tram', 'GET', '\Bristolian\AppController\Questions::weca_question_tram'],
         // Questions index
-        ['/questions', 'GET', '\Bristolian\AppController\Pages::questions'],
+        ['/questions', 'GET', '\Bristolian\AppController\Questions::index'],
         // BCC committee meetings
-        ['/bcc/committee_meetings', 'GET', '\Bristolian\AppController\Pages::bcc_committee_meetings'],
+        ['/bcc/committee_meetings', 'GET', '\Bristolian\AppController\Bcc::committee_meetings'],
         // Triangle Road complaint page
-        ['/complaints/triangle_road', 'GET', '\Bristolian\AppController\Pages::triangle_road'],
+        ['/complaints/triangle_road', 'GET', '\Bristolian\AppController\Explanations::triangle_road'],
         // Bristol Rovers explanation
-        ['/explanations/bristol_rovers', 'GET', '\Bristolian\AppController\Pages::bristol_rovers'],
+        ['/explanations/bristol_rovers', 'GET', '\Bristolian\AppController\Explanations::bristol_rovers'],
         // Avon Crescent explanation
-        ['/explanations/avon_crescent', 'GET', 'Bristolian\AppController\Pages::avon_crescent'],
+        ['/explanations/avon_crescent', 'GET', 'Bristolian\AppController\Explanations::avon_crescent'],
         // Advice for speaking at council
-        ['/explanations/advice_for_speaking_at_council', 'GET', 'Bristolian\AppController\Pages::advice_for_speaking_at_council'],
+        ['/explanations/advice_for_speaking_at_council', 'GET', 'Bristolian\AppController\Explanations::advice_for_speaking_at_council'],
         // Planning shenanigans explanation
-        ['/explanations/shenanigans_planning', 'GET', 'Bristolian\AppController\Pages::shenanigans_planning'],
+        ['/explanations/shenanigans_planning', 'GET', 'Bristolian\AppController\Explanations::shenanigans_planning'],
         // Monitoring officer notes
-        ['/explanations/monitoring_officer_notes', 'GET', 'Bristolian\AppController\Pages::monitoring_officer_notes'],
+        ['/explanations/monitoring_officer_notes', 'GET', 'Bristolian\AppController\Explanations::monitoring_officer_notes'],
         // Development committee rules
-        ['/explanations/development_committee_rules', 'GET', 'Bristolian\AppController\Pages::development_committee_rules'],
+        ['/explanations/development_committee_rules', 'GET', 'Bristolian\AppController\Explanations::development_committee_rules'],
 
         // Serve file in room (download/view)
         ['/rooms/{room_id}/file/{file_id}/{original_filename}', 'GET', 'Bristolian\AppController\Rooms::serveFileForRoom'],
@@ -94,11 +94,11 @@ function getAllAppRoutes()
         // Single room page (TODO: limit allowed chars for files)
         ['/rooms/{room_id:.*}', 'GET', 'Bristolian\AppController\Rooms::showRoom'],
         // Floating point demo
-        ['/tools/floating_point', 'GET', '\Bristolian\AppController\Pages::floating_point_page'],
+        ['/tools/floating_point', 'GET', '\Bristolian\AppController\Tools::floating_point_page'],
         // 8-bit floating point demo
-        ['/tools/floating_point_8_bit', 'GET', '\Bristolian\AppController\Pages::floating_point_page_8'],
+        ['/tools/floating_point_8_bit', 'GET', '\Bristolian\AppController\Tools::floating_point_page_8'],
         // Timeline tool
-        ['/tools/timeline', 'GET', '\Bristolian\AppController\Pages::timeline_page'],
+        ['/tools/timeline', 'GET', '\Bristolian\AppController\Tools::timeline_page'],
 
         // Bristol stairs – single stair
         ['/tools/bristol_stairs/{stair_id:.*}', 'GET', 'Bristolian\AppController\BristolStairs::stairs_page_stair_selected'],
@@ -110,17 +110,17 @@ function getAllAppRoutes()
         ['/tools/bristol_stairs', 'GET', 'Bristolian\AppController\BristolStairs::stairs_page'],
 
         // Notes tool
-        ['/tools/notes', 'GET', '\Bristolian\AppController\Pages::notes_page'],
+        ['/tools/notes', 'GET', '\Bristolian\AppController\Tools::notes_page'],
         // Twitter splitter tool
-        ['/tools/twitter_splitter', 'GET', '\Bristolian\AppController\Pages::twitter_splitter_page'],
+        ['/tools/twitter_splitter', 'GET', '\Bristolian\AppController\Tools::twitter_splitter_page'],
         // Committee seat allocation calculator
-        ['/tools/committee_seats', 'GET', '\Bristolian\AppController\Pages::committee_seats_page'],
+        ['/tools/committee_seats', 'GET', '\Bristolian\AppController\Tools::committee_seats_page'],
         // Teleprompter tool
-        ['/tools/teleprompter', 'GET', '\Bristolian\AppController\Pages::teleprompter_page'],
+        ['/tools/teleprompter', 'GET', '\Bristolian\AppController\Tools::teleprompter_page'],
         // Email link generator
-        ['/tools/email_link_generator', 'GET', '\Bristolian\AppController\Pages::email_link_generator_page'],
+        ['/tools/email_link_generator', 'GET', '\Bristolian\AppController\Tools::email_link_generator_page'],
         // QR code generator
-        ['/tools/qr_code_generator', 'GET', '\Bristolian\AppController\Pages::qr_code_generator_page'],
+        ['/tools/qr_code_generator', 'GET', '\Bristolian\AppController\Tools::qr_code_generator_page'],
 
         // System pages
         // CSP violation reports
