@@ -30,9 +30,6 @@ class Dispatcher implements DispatcherInterface
             $this->injector->defineParam($key, $value);
         }
 
-        // $routeParams = new RouteParams($routeArguments);
-        // $injector->share($routeParams);
-
         return $this->injector->execute($resolvedCallable);
     }
 
