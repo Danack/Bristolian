@@ -7,7 +7,7 @@ namespace Bristolian\ApiController;
 use Bristolian\Parameters\ProcessorRunRecordTypeParam;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
-use Bristolian\Response\Typed\GetLogProcessorRunRecordsResponse;
+use BristolianGenerated\Response\GetLogProcessorRunRecordsResponse;
 use SlimDispatcher\Response\JsonResponse;
 use VarMap\VarMap;
 

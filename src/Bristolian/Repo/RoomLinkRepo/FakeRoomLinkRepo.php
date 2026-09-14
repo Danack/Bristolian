@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\RoomLinkRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\RoomLink;
+use BristolianGenerated\Model\RoomLink;
 use Bristolian\Model\Types\RoomLinkWithUrl;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Parameters\RoomContentSearchParams;

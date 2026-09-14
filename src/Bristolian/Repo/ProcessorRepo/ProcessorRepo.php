@@ -4,7 +4,7 @@ namespace Bristolian\Repo\ProcessorRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\processor;
+use BristolianGenerated\Database\processor;
 use Bristolian\Model\Types\ProcessorState;
 
 interface ProcessorRepo

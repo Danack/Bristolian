@@ -4,7 +4,7 @@ namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
 
-use Bristolian\Model\Generated\ProcessorRunRecord;
+use BristolianGenerated\Model\ProcessorRunRecord;
 use Safe\DateTimeImmutable;
 
 /**
@@ -13,7 +13,7 @@ use Safe\DateTimeImmutable;
 class ProcessorRunRecordTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\Generated\ProcessorRunRecord
+     * @covers \BristolianGenerated\Model\ProcessorRunRecord
      */
     public function testConstruct()
     {
@@ -42,7 +42,7 @@ class ProcessorRunRecordTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\Generated\ProcessorRunRecord
+     * @covers \BristolianGenerated\Model\ProcessorRunRecord
      */
     public function testConstructWithNullEndTime()
     {
@@ -59,7 +59,7 @@ class ProcessorRunRecordTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\Generated\ProcessorRunRecord
+     * @covers \BristolianGenerated\Model\ProcessorRunRecord
      */
     public function testToArray()
     {

@@ -4,8 +4,8 @@ namespace Bristolian\Repo\ChatMessageRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\chat_message;
-use Bristolian\Database\user_ownership;
+use BristolianGenerated\Database\chat_message;
+use BristolianGenerated\Database\user_ownership;
 use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\Parameters\ChatMessageParam;
 

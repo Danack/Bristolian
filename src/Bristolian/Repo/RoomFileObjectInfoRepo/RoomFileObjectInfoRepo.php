@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\RoomFileObjectInfoRepo;
 
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\room_file_object_info;
+use BristolianGenerated\Database\room_file_object_info;
 use Bristolian\UploadedFiles\UploadedFile;
 
 /**

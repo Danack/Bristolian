@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\DbInfo;
 
 use Bristolian\Attribute\ReadsTable;
-use Bristolian\Database\migrations;
+use BristolianGenerated\Database\migrations;
 use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use Bristolian\Parameters\Table;
 

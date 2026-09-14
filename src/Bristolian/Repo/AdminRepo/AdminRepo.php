@@ -8,7 +8,7 @@ use Bristolian\Model\Types\AdminUser;
 use Bristolian\Parameters\CreateUserParams;
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\user_auth_email_password;
+use BristolianGenerated\Database\user_auth_email_password;
 
 /**
  * Allows admins to interact with the Admin repo.

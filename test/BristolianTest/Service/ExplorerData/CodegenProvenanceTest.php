@@ -158,9 +158,9 @@ class CodegenProvenanceTest extends BaseTestCase
         $this->assertArrayHasKey('app/public/tsx/generated/types.tsx', $byOutput);
         $this->assertArrayHasKey('app/public/tsx/generated/api_routes.tsx', $byOutput);
         $this->assertArrayHasKey('app/public/tsx/generated/widget_panels.tsx', $byOutput);
-        $this->assertArrayHasKey('src/Bristolian/Response/Typed/', $byOutput);
-        $this->assertArrayHasKey('src/Bristolian/Database/', $byOutput);
-        $this->assertArrayHasKey('src/Bristolian/Model/Generated/', $byOutput);
+        $this->assertArrayHasKey('src/BristolianGenerated/Response/', $byOutput);
+        $this->assertArrayHasKey('src/BristolianGenerated/Database/', $byOutput);
+        $this->assertArrayHasKey('src/BristolianGenerated/Model/', $byOutput);
 
         $constantsEntry = $byOutput['app/public/tsx/generated/constants.tsx'];
         $this->assertArrayHasKey('detail', $constantsEntry);
@@ -193,8 +193,8 @@ class CodegenProvenanceTest extends BaseTestCase
 
         $this->assertArrayNotHasKey('detail', $byOutput['app/public/tsx/generated/widget_panels.tsx']);
         $this->assertArrayNotHasKey('detail_source', $byOutput['app/public/tsx/generated/widget_panels.tsx']);
-        $this->assertArrayNotHasKey('detail', $byOutput['src/Bristolian/Response/Typed/']);
-        $this->assertArrayNotHasKey('detail_source', $byOutput['src/Bristolian/Response/Typed/']);
+        $this->assertArrayNotHasKey('detail', $byOutput['src/BristolianGenerated/Response/']);
+        $this->assertArrayNotHasKey('detail_source', $byOutput['src/BristolianGenerated/Response/']);
     }
 
     /**

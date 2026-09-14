@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\EmailIncoming;
 
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\email_incoming;
+use BristolianGenerated\Database\email_incoming;
 use Bristolian\Model\Types\IncomingEmailParam;
 
 interface EmailIncoming

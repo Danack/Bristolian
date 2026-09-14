@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Bristolian\Repo\WhatDoTheyKnowRequestEventRepo;
 
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\whatdotheyknow_request_event;
+use BristolianGenerated\Database\whatdotheyknow_request_event;
 
 interface WhatDoTheyKnowRequestEventRepo
 {

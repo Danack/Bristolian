@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace BristolianTest\Service\RoomMessageService;
 
 //use Bristolian\Keys\RoomMessageKey;
-use Bristolian\Model\Generated\UserOwnership;
+use BristolianGenerated\Model\UserOwnership;
 use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo;
 use Bristolian\Repo\UserRepo\UserRepo;

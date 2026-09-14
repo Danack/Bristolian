@@ -270,13 +270,13 @@ Styles live in `app/public/scss/`. Create a new SCSS file for your component:
 
 ### Using Database Helper Classes
 
-The project uses auto-generated helper classes for database operations. These are located in `src/Bristolian/Database/` and provide consistent SQL templates for each table.
+The project uses auto-generated helper classes for database operations. These are located in `src/BristolianGenerated/Database/` and provide consistent SQL templates for each table.
 
 **DO NOT write raw SQL directly in repository classes.** Instead, use the Database helper classes.
 
 **Pattern:**
 ```php
-use Bristolian\Database\user_display_name;
+use BristolianGenerated\Database\user_display_name;
 
 // SELECT - fetch single object or null
 $sql = user_display_name::SELECT;
@@ -322,7 +322,7 @@ Always use `fetchOneAsObjectOrNullConstructor()` or `fetchAllAsObjectConstructor
 **Do NOT** fetch as arrays (`fetchOneAsDataOrNull()`) and manually construct objects unless you have a specific reason. Let PDOSimple handle object construction.
 
 **Key Points:**
-- Each table has a corresponding helper class in `src/Bristolian/Database/`
+- Each table has a corresponding helper class in `src/BristolianGenerated/Database/`
 - Helper classes provide `INSERT`, `SELECT`, and `UPDATE` constants
 - Append WHERE, ORDER BY, LIMIT clauses to SELECT statements as needed
 - These files are auto-generated - **DO NOT edit them manually**

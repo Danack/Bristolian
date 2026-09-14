@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Model\Types;
 
-use Bristolian\Model\Generated\UserDisplayName;
-use Bristolian\Model\Generated\UserProfile;
+use BristolianGenerated\Model\UserDisplayName;
+use BristolianGenerated\Model\UserProfile;
 use Bristolian\Model\Types\UserProfileWithDisplayName;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;

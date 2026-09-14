@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\RoomFileObjectInfoRepo;
 
-use Bristolian\Model\Generated\RoomFileObjectInfo;
+use BristolianGenerated\Model\RoomFileObjectInfo;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
 use Safe\DateTimeImmutable;

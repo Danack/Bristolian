@@ -2,7 +2,7 @@
 
 namespace BristolianTest\Response;
 
-use Bristolian\Model\Generated\MemeText;
+use BristolianGenerated\Model\MemeText;
 use Bristolian\Response\GetMemeTextResponse;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;

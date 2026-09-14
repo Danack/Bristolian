@@ -6,7 +6,7 @@ use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
-use Bristolian\Model\Generated\ProcessorRunRecord;
+use BristolianGenerated\Model\ProcessorRunRecord;
 use BristolianTest\Repo\DbTransactionIsolation;
 use Safe\DateTimeImmutable;
 

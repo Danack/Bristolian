@@ -6,7 +6,7 @@ namespace Bristolian\Repo\RoomNoteTagRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\room_note_tag;
+use BristolianGenerated\Database\room_note_tag;
 
 interface RoomNoteTagRepo
 {

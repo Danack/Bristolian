@@ -4,9 +4,9 @@ namespace Bristolian\Repo\UserProfileRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\user_display_name;
-use Bristolian\Database\user_profile;
-use Bristolian\Model\Generated\UserDisplayName;
+use BristolianGenerated\Database\user_display_name;
+use BristolianGenerated\Database\user_profile;
+use BristolianGenerated\Model\UserDisplayName;
 use Bristolian\Model\Types\UserProfileWithDisplayName;
 
 interface UserProfileRepo

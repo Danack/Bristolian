@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\RoomVideoTagRepo;
 
-use Bristolian\Database\room_video_tag;
+use BristolianGenerated\Database\room_video_tag;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;

@@ -6,8 +6,8 @@ namespace Bristolian\Repo\RoomTagRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\room_tag;
-use Bristolian\Model\Generated\RoomTag;
+use BristolianGenerated\Database\room_tag;
+use BristolianGenerated\Model\RoomTag;
 use Bristolian\Parameters\TagParams;
 
 interface RoomTagRepo

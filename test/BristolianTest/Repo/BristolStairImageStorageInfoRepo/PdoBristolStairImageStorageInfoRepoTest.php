@@ -2,7 +2,7 @@
 
 namespace BristolianTest\Repo\BristolStairImageStorageInfoRepo;
 
-use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
+use BristolianGenerated\Model\StairImageObjectInfo as BristolStairImageFile;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\FileState;

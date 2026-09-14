@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo\RoomVideoRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\RoomVideo;
+use BristolianGenerated\Model\RoomVideo;
 use Bristolian\Model\Types\RoomVideoWithTags;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Parameters\TagParams;

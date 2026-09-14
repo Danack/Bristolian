@@ -19,7 +19,7 @@ class UnknownQueryException extends BristolianException
             . "Each entry maps a SQL string to the tables it reads from and writes to:\n"
             . "  trim(\$sql) => ['read' => ['table_name'], 'write' => []],\n"
             . "\n"
-            . "Use the generated Database constant classes (e.g. Bristolian\\Database\\table_name::SELECT)\n"
+            . "Use the generated Database constant classes (e.g. BristolianGenerated\\Database\\table_name::SELECT)\n"
             . "where possible so the mapping stays in sync with table helpers.\n"
             . "Whitespace differences are normalised at lookup time, so exact indentation does not matter.\n"
             . "For dynamic queries with variable IN clauses, add a regex pattern in getPatternMappings() instead.";

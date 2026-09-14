@@ -16,7 +16,7 @@ use Bristolian\Response\EndpointAccessedViaGetResponse;
 use Bristolian\Response\StoredFileErrorResponse;
 use Bristolian\Response\StreamingResponse;
 use Bristolian\Response\SuccessResponse;
-use Bristolian\Response\Typed\GetBristolStairsResponse;
+use BristolianGenerated\Response\GetBristolStairsResponse;
 use Bristolian\Response\UploadBristolStairsImageResponse;
 use Bristolian\Service\BristolStairImageStorage\BristolStairImageStorage;
 use Bristolian\Service\BristolStairImageStorage\UploadError;

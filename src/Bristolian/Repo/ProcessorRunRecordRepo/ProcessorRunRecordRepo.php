@@ -6,7 +6,7 @@ namespace Bristolian\Repo\ProcessorRunRecordRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\processor_run_record;
+use BristolianGenerated\Database\processor_run_record;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 
 interface ProcessorRunRecordRepo
@@ -25,7 +25,7 @@ interface ProcessorRunRecordRepo
 
     /**
      * @param ProcessType|null $processType
-     * @return \Bristolian\Model\Generated\ProcessorRunRecord[]
+     * @return \BristolianGenerated\Model\ProcessorRunRecord[]
      */
     #[ReadsTable(processor_run_record::class)]
     public function getRunRecords(ProcessType|null $processType): array;

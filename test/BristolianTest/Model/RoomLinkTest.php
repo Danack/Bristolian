@@ -3,7 +3,7 @@
 namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\Generated\RoomLink;
+use BristolianGenerated\Model\RoomLink;
 use Safe\DateTimeImmutable;
 
 /**
@@ -12,7 +12,7 @@ use Safe\DateTimeImmutable;
 class RoomLinkTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\Generated\RoomLink
+     * @covers \BristolianGenerated\Model\RoomLink
      */
     public function testConstruct()
     {

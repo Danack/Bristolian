@@ -3,7 +3,7 @@
 namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\Generated\User;
+use BristolianGenerated\Model\User;
 use Safe\DateTimeImmutable;
 
 /**
@@ -12,7 +12,7 @@ use Safe\DateTimeImmutable;
 class UserTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\Generated\User
+     * @covers \BristolianGenerated\Model\User
      */
     public function testConstruct()
     {

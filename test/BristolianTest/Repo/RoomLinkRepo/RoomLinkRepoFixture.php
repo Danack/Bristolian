@@ -6,7 +6,7 @@ namespace BristolianTest\Repo\RoomLinkRepo;
 
 use Bristolian\Exception\BristolianException;
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\RoomLink;
+use BristolianGenerated\Model\RoomLink;
 use Bristolian\Model\Types\RoomLinkWithUrl;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;

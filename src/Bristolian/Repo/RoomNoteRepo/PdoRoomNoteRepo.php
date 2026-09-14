@@ -6,10 +6,10 @@ namespace Bristolian\Repo\RoomNoteRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\room_note;
-use Bristolian\Database\room_note_tag;
+use BristolianGenerated\Database\room_note;
+use BristolianGenerated\Database\room_note_tag;
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\RoomNote;
+use BristolianGenerated\Model\RoomNote;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;

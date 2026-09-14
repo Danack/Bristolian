@@ -7983,11 +7983,11 @@
             "method": "GET",
             "controller": "Bristolian\\AppController\\BristolStairs::getData",
             "return_types": [
-                "Bristolian\\Response\\Typed\\GetBristolStairsResponse"
+                "BristolianGenerated\\Response\\GetBristolStairsResponse"
             ],
             "response_mappers": [
                 {
-                    "return_type": "Bristolian\\Response\\Typed\\GetBristolStairsResponse",
+                    "return_type": "BristolianGenerated\\Response\\GetBristolStairsResponse",
                     "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
                 }
             ]
@@ -8044,12 +8044,12 @@
             "method": "GET",
             "controller": "Bristolian\\ApiController\\Log::get_processor_run_records",
             "return_types": [
-                "Bristolian\\Response\\Typed\\GetLogProcessorRunRecordsResponse",
+                "BristolianGenerated\\Response\\GetLogProcessorRunRecordsResponse",
                 "SlimDispatcher\\Response\\JsonResponse"
             ],
             "response_mappers": [
                 {
-                    "return_type": "Bristolian\\Response\\Typed\\GetLogProcessorRunRecordsResponse",
+                    "return_type": "BristolianGenerated\\Response\\GetLogProcessorRunRecordsResponse",
                     "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
                 },
                 {
@@ -8203,11 +8203,11 @@
             "method": "GET",
             "controller": "Bristolian\\AppController\\User::searchMemes",
             "return_types": [
-                "Bristolian\\Response\\Typed\\GetMemesResponse"
+                "BristolianGenerated\\Response\\GetMemesResponse"
             ],
             "response_mappers": [
                 {
-                    "return_type": "Bristolian\\Response\\Typed\\GetMemesResponse",
+                    "return_type": "BristolianGenerated\\Response\\GetMemesResponse",
                     "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
                 }
             ]
@@ -8217,11 +8217,11 @@
             "method": "GET",
             "controller": "Bristolian\\AppController\\User::listUntaggedMemes",
             "return_types": [
-                "Bristolian\\Response\\Typed\\GetMemesResponse"
+                "BristolianGenerated\\Response\\GetMemesResponse"
             ],
             "response_mappers": [
                 {
-                    "return_type": "Bristolian\\Response\\Typed\\GetMemesResponse",
+                    "return_type": "BristolianGenerated\\Response\\GetMemesResponse",
                     "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
                 }
             ]
@@ -8231,11 +8231,11 @@
             "method": "GET",
             "controller": "Bristolian\\AppController\\User::getTagsForMeme",
             "return_types": [
-                "Bristolian\\Response\\Typed\\GetMemesTagsResponse"
+                "BristolianGenerated\\Response\\GetMemesTagsResponse"
             ],
             "response_mappers": [
                 {
-                    "return_type": "Bristolian\\Response\\Typed\\GetMemesTagsResponse",
+                    "return_type": "BristolianGenerated\\Response\\GetMemesTagsResponse",
                     "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
                 }
             ]
@@ -8343,11 +8343,11 @@
             "method": "GET",
             "controller": "Bristolian\\AppController\\Rooms::getFiles",
             "return_types": [
-                "Bristolian\\Response\\Typed\\GetRoomsFilesResponse"
+                "BristolianGenerated\\Response\\GetRoomsFilesResponse"
             ],
             "response_mappers": [
                 {
-                    "return_type": "Bristolian\\Response\\Typed\\GetRoomsFilesResponse",
+                    "return_type": "BristolianGenerated\\Response\\GetRoomsFilesResponse",
                     "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
                 }
             ]
@@ -8357,11 +8357,11 @@
             "method": "GET",
             "controller": "Bristolian\\AppController\\Rooms::getRoomDetails",
             "return_types": [
-                "Bristolian\\Response\\Typed\\GetRoomsDetailsResponse"
+                "BristolianGenerated\\Response\\GetRoomsDetailsResponse"
             ],
             "response_mappers": [
                 {
-                    "return_type": "Bristolian\\Response\\Typed\\GetRoomsDetailsResponse",
+                    "return_type": "BristolianGenerated\\Response\\GetRoomsDetailsResponse",
                     "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
                 }
             ]
@@ -8500,11 +8500,11 @@
             "method": "GET",
             "controller": "Bristolian\\AppController\\Rooms::getLinks",
             "return_types": [
-                "Bristolian\\Response\\Typed\\GetRoomsLinksResponse"
+                "BristolianGenerated\\Response\\GetRoomsLinksResponse"
             ],
             "response_mappers": [
                 {
-                    "return_type": "Bristolian\\Response\\Typed\\GetRoomsLinksResponse",
+                    "return_type": "BristolianGenerated\\Response\\GetRoomsLinksResponse",
                     "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
                 }
             ]
@@ -8529,11 +8529,11 @@
             "method": "GET",
             "controller": "Bristolian\\AppController\\Rooms::getNotes",
             "return_types": [
-                "Bristolian\\Response\\Typed\\GetRoomsNotesResponse"
+                "BristolianGenerated\\Response\\GetRoomsNotesResponse"
             ],
             "response_mappers": [
                 {
-                    "return_type": "Bristolian\\Response\\Typed\\GetRoomsNotesResponse",
+                    "return_type": "BristolianGenerated\\Response\\GetRoomsNotesResponse",
                     "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
                 }
             ]
@@ -8602,11 +8602,11 @@
             "method": "GET",
             "controller": "Bristolian\\AppController\\Rooms::getVideos",
             "return_types": [
-                "Bristolian\\Response\\Typed\\GetRoomsVideosResponse"
+                "BristolianGenerated\\Response\\GetRoomsVideosResponse"
             ],
             "response_mappers": [
                 {
-                    "return_type": "Bristolian\\Response\\Typed\\GetRoomsVideosResponse",
+                    "return_type": "BristolianGenerated\\Response\\GetRoomsVideosResponse",
                     "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
                 }
             ]
@@ -8733,11 +8733,11 @@
             "method": "GET",
             "controller": "Bristolian\\AppController\\Rooms::getAnnotationsForFile",
             "return_types": [
-                "Bristolian\\Response\\Typed\\GetRoomsFileAnnotationsResponse"
+                "BristolianGenerated\\Response\\GetRoomsFileAnnotationsResponse"
             ],
             "response_mappers": [
                 {
-                    "return_type": "Bristolian\\Response\\Typed\\GetRoomsFileAnnotationsResponse",
+                    "return_type": "BristolianGenerated\\Response\\GetRoomsFileAnnotationsResponse",
                     "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
                 }
             ]
@@ -8747,11 +8747,11 @@
             "method": "GET",
             "controller": "Bristolian\\AppController\\Rooms::getAnnotations",
             "return_types": [
-                "Bristolian\\Response\\Typed\\GetRoomsAnnotationsResponse"
+                "BristolianGenerated\\Response\\GetRoomsAnnotationsResponse"
             ],
             "response_mappers": [
                 {
-                    "return_type": "Bristolian\\Response\\Typed\\GetRoomsAnnotationsResponse",
+                    "return_type": "BristolianGenerated\\Response\\GetRoomsAnnotationsResponse",
                     "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
                 }
             ]
@@ -8821,11 +8821,11 @@
             "method": "GET",
             "controller": "Bristolian\\AppController\\Rooms::getTags",
             "return_types": [
-                "Bristolian\\Response\\Typed\\GetRoomsTagsResponse"
+                "BristolianGenerated\\Response\\GetRoomsTagsResponse"
             ],
             "response_mappers": [
                 {
-                    "return_type": "Bristolian\\Response\\Typed\\GetRoomsTagsResponse",
+                    "return_type": "BristolianGenerated\\Response\\GetRoomsTagsResponse",
                     "mapper": "SlimDispatcher\\mapStubResponseToPsr7"
                 }
             ]
@@ -9493,7 +9493,7 @@
             "generator_callable": "Bristolian\\CliController\\GenerateFiles::generateJavaScriptTypes",
             "output_file": "app/public/tsx/generated/types.tsx",
             "description": "Generate TypeScript interfaces and enums from selected PHP model / enum classes into app/public/tsx/generated/types.tsx for shared front/backend shapes.",
-            "detail": "$types = [\n            \\Bristolian\\Model\\Generated\\BristolStairInfo::class,\n            \\Bristolian\\Model\\Chat\\UserChatMessage::class,\n            \\Bristolian\\Model\\Generated\\EmailIncoming::class,\n            \\Bristolian\\Model\\Generated\\StoredMeme::class,\n            \\Bristolian\\Model\\Generated\\MemeTag::class,\n            \\Bristolian\\Model\\Generated\\ProcessorRunRecord::class,\n            \\Bristolian\\Model\\Generated\\RoomLink::class,\n            \\Bristolian\\Model\\Generated\\RoomAnnotation::class,\n            \\Bristolian\\Model\\Generated\\RoomTag::class,\n            \\Bristolian\\Model\\Generated\\Room::class,\n            \\Bristolian\\Model\\Generated\\RoomFileObjectInfo::class,\n            \\Bristolian\\Model\\Types\\RoomAnnotationView::class,\n            \\Bristolian\\Model\\Types\\RoomFileWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomLinkWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomNoteWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomAnnotationWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomVideoWithTags::class,\n            \\Bristolian\\Model\\Types\\UserProfile::class,\n            \\Bristolian\\Model\\Types\\UserDisplayName::class,\n            \\Bristolian\\Model\\Types\\UserProfileWithDisplayName::class,\n            \\Bristolian\\Model\\TinnedFish\\Product::class,\n        ];\n\n$enums = [\n            \\Bristolian\\ChatMessage\\ChatType::class,\n            \\Bristolian\\Repo\\ProcessorRepo\\ProcessType::class,\n            \\Bristolian\\Model\\TinnedFish\\ValidationStatus::class,\n        ];",
+            "detail": "$types = [\n            \\BristolianGenerated\\Model\\BristolStairInfo::class,\n            \\Bristolian\\Model\\Chat\\UserChatMessage::class,\n            \\BristolianGenerated\\Model\\EmailIncoming::class,\n            \\BristolianGenerated\\Model\\StoredMeme::class,\n            \\BristolianGenerated\\Model\\MemeTag::class,\n            \\BristolianGenerated\\Model\\ProcessorRunRecord::class,\n            \\BristolianGenerated\\Model\\RoomLink::class,\n            \\BristolianGenerated\\Model\\RoomAnnotation::class,\n            \\BristolianGenerated\\Model\\RoomTag::class,\n            \\BristolianGenerated\\Model\\Room::class,\n            \\BristolianGenerated\\Model\\RoomFileObjectInfo::class,\n            \\Bristolian\\Model\\Types\\RoomAnnotationView::class,\n            \\Bristolian\\Model\\Types\\RoomFileWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomLinkWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomNoteWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomAnnotationWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomVideoWithTags::class,\n            \\Bristolian\\Model\\Types\\UserProfile::class,\n            \\Bristolian\\Model\\Types\\UserDisplayName::class,\n            \\Bristolian\\Model\\Types\\UserProfileWithDisplayName::class,\n            \\Bristolian\\Model\\TinnedFish\\Product::class,\n        ];\n\n$enums = [\n            \\Bristolian\\ChatMessage\\ChatType::class,\n            \\Bristolian\\Repo\\ProcessorRepo\\ProcessType::class,\n            \\Bristolian\\Model\\TinnedFish\\ValidationStatus::class,\n        ];",
             "detail_source": {
                 "file": "src/Bristolian/CliController/GenerateFiles.php",
                 "line-start": 760,
@@ -9515,25 +9515,25 @@
             "description": "Generate TypeScript widget panel registration from WidgetRegistry into app/public/tsx/generated/widget_panels.tsx (panels + WIDGET_API_CALLS)."
         },
         {
-            "name": "src/Bristolian/Response/Typed/",
+            "name": "src/BristolianGenerated/Response/",
             "generator": "generate:php_response_types",
             "generator_callable": "Bristolian\\CliController\\GenerateFiles::generatePhpResponseTypes",
-            "output_file": "src/Bristolian/Response/Typed/",
-            "description": "Generate PHP response type classes under src/Bristolian/Response/Typed/ from API routes that declare type_info in api/src/api_routes.php."
+            "output_file": "src/BristolianGenerated/Response/",
+            "description": "Generate PHP response type classes under src/BristolianGenerated/Response/ from API routes that declare type_info in api/src/api_routes.php."
         },
         {
-            "name": "src/Bristolian/Database/",
+            "name": "src/BristolianGenerated/Database/",
             "generator": "generate:php_table_helper_classes",
             "generator_callable": "Bristolian\\CliController\\GenerateFiles::generateTableHelperClasses",
-            "output_file": "src/Bristolian/Database/",
-            "description": "Generate SQL INSERT/SELECT/UPDATE helper classes under src/Bristolian/Database/ from the live database schema (one class per table)."
+            "output_file": "src/BristolianGenerated/Database/",
+            "description": "Generate SQL INSERT/SELECT/UPDATE helper classes under src/BristolianGenerated/Database/ from the live database schema (one class per table)."
         },
         {
-            "name": "src/Bristolian/Model/Generated/",
+            "name": "src/BristolianGenerated/Model/",
             "generator": "generate:model_classes",
             "generator_callable": "Bristolian\\CliController\\GenerateFiles::generateModelClasses",
-            "output_file": "src/Bristolian/Model/Generated/",
-            "description": "Generate model classes under src/Bristolian/Model/Generated/ from the live database schema (one class per table that is not hand-written)."
+            "output_file": "src/BristolianGenerated/Model/",
+            "description": "Generate model classes under src/BristolianGenerated/Model/ from the live database schema (one class per table that is not hand-written)."
         }
     ],
     "cursor_commands": [

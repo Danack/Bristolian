@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\Repo\ProcessorRunRecordRepo;
 
-use Bristolian\Model\Generated\ProcessorRunRecord;
+use BristolianGenerated\Model\ProcessorRunRecord;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Safe\DateTimeImmutable;
 

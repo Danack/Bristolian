@@ -2,12 +2,12 @@
 
 namespace Bristolian\Repo\BccTroRepo;
 
-use Bristolian\Database\bcc_tro_information;
+use BristolianGenerated\Database\bcc_tro_information;
 use Bristolian\Model\Types\BccTro;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Model\Generated\BccTroInformation;
+use BristolianGenerated\Model\BccTroInformation;
 
 class PdoBccTroRepo implements BccTroRepo
 {

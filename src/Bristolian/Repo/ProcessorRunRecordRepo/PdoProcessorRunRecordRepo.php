@@ -2,8 +2,8 @@
 
 namespace Bristolian\Repo\ProcessorRunRecordRepo;
 
-use Bristolian\Database\processor_run_record;
-use Bristolian\Model\Generated\ProcessorRunRecord;
+use BristolianGenerated\Database\processor_run_record;
+use BristolianGenerated\Model\ProcessorRunRecord;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Attribute\ReadsTable;
@@ -87,7 +87,7 @@ SQL;
 
     /**
      * @param ProcessType|null $processType
-     * @return \Bristolian\Model\Generated\ProcessorRunRecord[]
+     * @return \BristolianGenerated\Model\ProcessorRunRecord[]
      */
     #[ReadsTable(processor_run_record::class)]
     public function getRunRecords(ProcessType|null $processType): array

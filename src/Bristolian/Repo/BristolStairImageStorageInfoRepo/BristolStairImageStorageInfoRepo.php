@@ -4,8 +4,8 @@ namespace Bristolian\Repo\BristolStairImageStorageInfoRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\stair_image_object_info;
-use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
+use BristolianGenerated\Database\stair_image_object_info;
+use BristolianGenerated\Model\StairImageObjectInfo as BristolStairImageFile;
 use Bristolian\UploadedFiles\UploadedFile;
 
 //use BristolStairImageFile;

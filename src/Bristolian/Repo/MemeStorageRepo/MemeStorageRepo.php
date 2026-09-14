@@ -4,8 +4,8 @@ namespace Bristolian\Repo\MemeStorageRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\meme_tag;
-use Bristolian\Database\stored_meme;
+use BristolianGenerated\Database\meme_tag;
+use BristolianGenerated\Database\stored_meme;
 use Bristolian\Model\Types\Meme;
 use Bristolian\UploadedFiles\UploadedFile;
 

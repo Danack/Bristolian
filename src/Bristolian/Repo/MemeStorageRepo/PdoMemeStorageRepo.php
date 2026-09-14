@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\MemeStorageRepo;
 
-use Bristolian\Database\stored_meme;
+use BristolianGenerated\Database\stored_meme;
 use Bristolian\Model\Types\Meme;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
@@ -13,7 +13,7 @@ use Bristolian\Service\UuidGenerator\UuidGenerator;
 use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\meme_tag;
+use BristolianGenerated\Database\meme_tag;
 
 class PdoMemeStorageRepo implements MemeStorageRepo
 {

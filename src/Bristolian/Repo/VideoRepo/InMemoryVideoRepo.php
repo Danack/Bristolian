@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\VideoRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\Video;
+use BristolianGenerated\Model\Video;
 use Ramsey\Uuid\Uuid;
 use Safe\DateTimeImmutable;
 

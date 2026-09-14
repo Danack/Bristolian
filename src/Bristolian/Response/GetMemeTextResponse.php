@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\Response;
 
-use Bristolian\Model\Generated\MemeText;
+use BristolianGenerated\Model\MemeText;
 use SlimDispatcher\Response\StubResponse;
 
 class GetMemeTextResponse implements StubResponse

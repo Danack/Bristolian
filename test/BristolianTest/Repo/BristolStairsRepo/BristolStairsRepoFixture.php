@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo\BristolStairsRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\BristolStairInfo;
+use BristolianGenerated\Model\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;

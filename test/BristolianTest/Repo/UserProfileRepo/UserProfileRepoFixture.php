@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\UserProfileRepo;
 
-use Bristolian\Model\Generated\UserDisplayName;
+use BristolianGenerated\Model\UserDisplayName;
 use Bristolian\Model\Types\UserProfileWithDisplayName;
 use Bristolian\Parameters\UserProfileUpdateParams;
 use Bristolian\Repo\UserProfileRepo\UserProfileRepo;

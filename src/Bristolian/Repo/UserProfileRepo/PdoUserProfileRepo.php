@@ -2,10 +2,10 @@
 
 namespace Bristolian\Repo\UserProfileRepo;
 
-use Bristolian\Database\user_display_name;
-use Bristolian\Database\user_profile;
-use Bristolian\Model\Generated\UserDisplayName;
-use Bristolian\Model\Generated\UserProfile;
+use BristolianGenerated\Database\user_display_name;
+use BristolianGenerated\Database\user_profile;
+use BristolianGenerated\Model\UserDisplayName;
+use BristolianGenerated\Model\UserProfile;
 use Bristolian\Model\Types\UserProfileWithDisplayName;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Attribute\ReadsTable;

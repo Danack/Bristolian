@@ -4,7 +4,7 @@ namespace Bristolian\Repo\WebPushSubscriptionRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\user_webpush_subscription;
+use BristolianGenerated\Database\user_webpush_subscription;
 use Bristolian\Parameters\WebPushSubscriptionParams;
 
 interface WebPushSubscriptionRepo

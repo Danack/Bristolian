@@ -24,7 +24,7 @@ use ReflectionMethod;
  */
 class RepoTableResourceCollector
 {
-    public const DATABASE_NAMESPACE_PREFIX = 'Bristolian\\Database\\';
+    public const DATABASE_NAMESPACE_PREFIX = 'BristolianGenerated\\Database\\';
 
     private const READ_CONSTANTS = ['SELECT'];
 

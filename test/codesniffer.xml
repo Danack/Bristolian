@@ -30,7 +30,7 @@
 
     <!-- Database helper files are allowed to be camel caps -->
     <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps">
-        <exclude-pattern>*Bristolian/Database/*.php</exclude-pattern>
+        <exclude-pattern>*BristolianGenerated/Database/*.php</exclude-pattern>
     </rule>
 
     <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">

@@ -312,7 +312,7 @@ TEXT;
      */
     public function test_getRouteForStoredFile_returns_esprintf_route(): void
     {
-        $storedFile = new \Bristolian\Model\Generated\RoomFileObjectInfo(
+        $storedFile = new \BristolianGenerated\Model\RoomFileObjectInfo(
             'file-id-123',
             'normalized.pdf',
             'Original Name.pdf',
@@ -899,7 +899,7 @@ TEXT;
     public function test_createBlankUserProfileForUserId(): void
     {
         $profile = createBlankUserProfileForUserId('user_123');
-        $this->assertInstanceOf(\Bristolian\Model\Generated\UserProfile::class, $profile);
+        $this->assertInstanceOf(\BristolianGenerated\Model\UserProfile::class, $profile);
         $this->assertSame('user_123', $profile->user_id);
         $this->assertNull($profile->avatar_image_id);
         $this->assertNull($profile->about_me);

@@ -6,7 +6,7 @@ namespace Bristolian\Repo\RoomLinkTagRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\room_link_tag;
+use BristolianGenerated\Database\room_link_tag;
 
 interface RoomLinkTagRepo
 {

@@ -3,7 +3,7 @@
 namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\Generated\RoomFileObjectInfo;
+use BristolianGenerated\Model\RoomFileObjectInfo;
 use Safe\DateTimeImmutable;
 
 /**
@@ -12,7 +12,7 @@ use Safe\DateTimeImmutable;
 class StoredFileTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\Generated\RoomFileObjectInfo
+     * @covers \BristolianGenerated\Model\RoomFileObjectInfo
      */
     public function testConstruct()
     {

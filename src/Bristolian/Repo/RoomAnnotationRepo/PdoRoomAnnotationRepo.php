@@ -2,8 +2,8 @@
 
 namespace Bristolian\Repo\RoomAnnotationRepo;
 
-use Bristolian\Database\annotation;
-use Bristolian\Database\room_annotation;
+use BristolianGenerated\Database\annotation;
+use BristolianGenerated\Database\room_annotation;
 use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Types\RoomAnnotationView;
 use Bristolian\Parameters\AnnotationParam;

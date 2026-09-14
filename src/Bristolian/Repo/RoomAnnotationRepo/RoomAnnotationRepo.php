@@ -4,8 +4,8 @@ namespace Bristolian\Repo\RoomAnnotationRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\annotation;
-use Bristolian\Database\room_annotation;
+use BristolianGenerated\Database\annotation;
+use BristolianGenerated\Database\room_annotation;
 use Bristolian\Model\Types\RoomAnnotationView;
 use Bristolian\Parameters\AnnotationParam;
 

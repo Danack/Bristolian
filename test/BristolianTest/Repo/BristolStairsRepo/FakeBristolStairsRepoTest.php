@@ -9,7 +9,7 @@ use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo;
-use Bristolian\Model\Generated\BristolStairInfo;
+use BristolianGenerated\Model\BristolStairInfo;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
 

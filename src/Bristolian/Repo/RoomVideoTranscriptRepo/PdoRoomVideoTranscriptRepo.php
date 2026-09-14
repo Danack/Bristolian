@@ -2,9 +2,9 @@
 
 namespace Bristolian\Repo\RoomVideoTranscriptRepo;
 
-use Bristolian\Database\room_video_transcript;
+use BristolianGenerated\Database\room_video_transcript;
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\RoomVideoTranscript;
+use BristolianGenerated\Model\RoomVideoTranscript;
 use Bristolian\Model\Types\RoomVideoTranscriptList;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;

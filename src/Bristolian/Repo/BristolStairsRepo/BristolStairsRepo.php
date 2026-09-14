@@ -4,8 +4,8 @@ namespace Bristolian\Repo\BristolStairsRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\bristol_stair_info;
-use Bristolian\Model\Generated\BristolStairInfo;
+use BristolianGenerated\Database\bristol_stair_info;
+use BristolianGenerated\Model\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsInfoParams;
 use Bristolian\Parameters\BristolStairsPositionParams;
 

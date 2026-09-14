@@ -10,7 +10,7 @@ use Attribute;
 class WritesTable
 {
     /**
-     * @param class-string $tableHelperClass Fully-qualified Bristolian\Database\* helper class
+     * @param class-string $tableHelperClass Fully-qualified BristolianGenerated\Database\* helper class
      */
     public function __construct(
         public readonly string $tableHelperClass

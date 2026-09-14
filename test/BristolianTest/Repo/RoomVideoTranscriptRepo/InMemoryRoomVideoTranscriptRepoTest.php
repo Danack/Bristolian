@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo\RoomVideoTranscriptRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\RoomVideoTranscript;
+use BristolianGenerated\Model\RoomVideoTranscript;
 use Bristolian\Model\Types\RoomVideoTranscriptList;
 use Bristolian\Repo\RoomVideoTranscriptRepo\InMemoryRoomVideoTranscriptRepo;
 use PHPUnit\Framework\TestCase;

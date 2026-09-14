@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\Response;
 
-use Bristolian\Model\Generated\BristolStairInfo;
+use BristolianGenerated\Model\BristolStairInfo;
 use SlimDispatcher\Response\StubResponse;
 
 class UploadBristolStairsImageResponse implements StubResponse

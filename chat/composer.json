@@ -22,10 +22,11 @@
         "psr-0": {
             "Bristolian\\": "../src/",
             "BristolianChat\\": "../src/",
-            "BristolianChatTest\\": "../test/"
+            "BristolianChatTest\\": "../test/",
+            "BristolianGenerated\\": "../src/"
         },
         "psr-4": {
-            "Bristolian\\Database\\": "../src/Bristolian/Database"
+            "BristolianGenerated\\Database\\": "../src/BristolianGenerated/Database"
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Bristolian\Repo\TinnedFishProductRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\tinned_fish_product;
+use BristolianGenerated\Database\tinned_fish_product;
 use Bristolian\Model\TinnedFish\Product;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 

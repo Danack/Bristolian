@@ -3,8 +3,8 @@
 namespace Bristolian\Repo\RoomRepo;
 
 use Bristolian\Exception\BristolianException;
-use Bristolian\Database\room as room_table;
-use Bristolian\Model\Generated\Room;
+use BristolianGenerated\Database\room as room_table;
+use BristolianGenerated\Model\Room;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 use Bristolian\Attribute\ReadsTable;

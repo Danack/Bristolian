@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bristolian\Model\Types;
 
-use Bristolian\Model\Generated\RoomTag;
+use BristolianGenerated\Model\RoomTag;
 use Bristolian\ToArray;
 
 /**

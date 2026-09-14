@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace BristolianTest\CliController;
 
 use Bristolian\CliController\Rooms;
-use Bristolian\Model\Generated\RoomFileObjectInfo;
+use BristolianGenerated\Model\RoomFileObjectInfo;
 use Bristolian\Parameters\AnnotationParam;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Parameters\TagParams;

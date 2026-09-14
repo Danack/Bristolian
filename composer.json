@@ -79,12 +79,13 @@
             "Asm\\": "asm_in_project/lib/",
             "Bristolian\\": "src/",
             "BristolianBehat\\": "src/",
+            "BristolianGenerated\\": "src/",
             "Key\\": "src/",
             "OpenApi\\": "src/",
             "UrlFetcher\\": "src/"
         },
         "psr-4": {
-            "Bristolian\\Database\\": "src/Bristolian/Database"
+            "BristolianGenerated\\Database\\": "src/BristolianGenerated/Database"
         },
         "files": [
             "src/functions.php",

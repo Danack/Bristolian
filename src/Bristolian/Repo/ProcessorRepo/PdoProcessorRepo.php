@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\ProcessorRepo;
 
-use Bristolian\Database\processor;
+use BristolianGenerated\Database\processor;
 use Bristolian\Model\Types\ProcessorState;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Attribute\ReadsTable;

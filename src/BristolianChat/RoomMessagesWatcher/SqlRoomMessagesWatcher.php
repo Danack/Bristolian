@@ -3,7 +3,7 @@
 namespace BristolianChat\RoomMessagesWatcher;
 
 use Amp\Mysql\MysqlConnection;
-use Bristolian\Database\chat_message;
+use BristolianGenerated\Database\chat_message;
 use Bristolian\Model\Chat\UserChatMessage;
 use Monolog\Logger;
 use Safe\DateTimeImmutable;

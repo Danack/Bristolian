@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\MemeTextRepo;
 
-use Bristolian\Model\Generated\StoredMeme;
+use BristolianGenerated\Model\StoredMeme;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Repo\MemeTextRepo\MemeTextRepo;

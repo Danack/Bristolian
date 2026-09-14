@@ -1017,7 +1017,7 @@ function get_readable_variable_type(mixed $value): string
 
 function getRouteForStoredFile(
     string $room_id,
-    Bristolian\Model\Generated\RoomFileObjectInfo $storedFile
+    BristolianGenerated\Model\RoomFileObjectInfo $storedFile
 ): string {
     $template = '/rooms/:uri_room_id/file/:uri_file_id/:uri_filename';
     $params = [
@@ -1284,10 +1284,10 @@ function banVarnishByTag(string $table): bool
 }
 
 
-function createBlankUserProfileForUserId(string $user_id): \Bristolian\Model\Generated\UserProfile
+function createBlankUserProfileForUserId(string $user_id): \BristolianGenerated\Model\UserProfile
 {
     $now = new DateTimeImmutable();
-    return new \Bristolian\Model\Generated\UserProfile(
+    return new \BristolianGenerated\Model\UserProfile(
         user_id: $user_id,
         avatar_image_id: null,
         about_me: null,

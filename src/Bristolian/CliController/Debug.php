@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Bristolian\CliController;
 
 use Bristolian\App;
-use Bristolian\Database\stored_meme;
-use Bristolian\Model\Generated\StoredMeme;
+use BristolianGenerated\Database\stored_meme;
+use BristolianGenerated\Model\StoredMeme;
 use Bristolian\Model\Types\WebPushNotification;
 use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\Parameters\MemeTagParams;

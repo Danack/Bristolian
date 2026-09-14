@@ -2,14 +2,14 @@
 
 namespace Bristolian\Repo\RoomVideoRepo;
 
-use Bristolian\Database\room_tag;
-use Bristolian\Database\room_video;
-use Bristolian\Database\room_video_tag;
-use Bristolian\Database\video as videoTable;
+use BristolianGenerated\Database\room_tag;
+use BristolianGenerated\Database\room_video;
+use BristolianGenerated\Database\room_video_tag;
+use BristolianGenerated\Database\video as videoTable;
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\RoomTag;
-use Bristolian\Model\Generated\RoomVideo;
-use Bristolian\Model\Generated\Video;
+use BristolianGenerated\Model\RoomTag;
+use BristolianGenerated\Model\RoomVideo;
+use BristolianGenerated\Model\Video;
 use Bristolian\Model\Types\RoomVideoWithTags;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\PdoSimple\PdoSimple;

@@ -16,7 +16,7 @@ use Bristolian\Session\UserSession;
 use Bristolian\UploadedFiles\UploadedFile;
 use DI\ConfigException;
 use DI\InjectionException;
-use Bristolian\Model\Generated\Room;
+use BristolianGenerated\Model\Room;
 use function Safe\file_get_contents;
 use function Safe\json_decode;
 

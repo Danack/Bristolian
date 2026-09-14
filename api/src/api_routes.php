@@ -84,7 +84,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\BristolStairs::getData',
             [
-                ['stair_infos', \Bristolian\Model\Generated\BristolStairInfo::class, true]
+                ['stair_infos', \BristolianGenerated\Model\BristolStairInfo::class, true]
             ],
         ],
 
@@ -115,7 +115,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\ApiController\Log::get_processor_run_records',
             [
-                ['run_records', \Bristolian\Model\Generated\ProcessorRunRecord::class, true]
+                ['run_records', \BristolianGenerated\Model\ProcessorRunRecord::class, true]
             ],
         ],
         [
@@ -144,7 +144,7 @@ function getAllApiRoutes()
             'POST',
             'Bristolian\AppController\User::handleMemeTagAdd',
             [
-                ['meme_tags', \Bristolian\Model\Generated\MemeTag::class, true]
+                ['meme_tags', \BristolianGenerated\Model\MemeTag::class, true]
             ]
         ],
 
@@ -174,7 +174,7 @@ function getAllApiRoutes()
             'POST',
             'Bristolian\AppController\User::handleMemeTagDelete',
             [
-                ['meme_tags', \Bristolian\Model\Generated\MemeTag::class, true]
+                ['meme_tags', \BristolianGenerated\Model\MemeTag::class, true]
             ]
         ],
 
@@ -190,7 +190,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\User::listMemes',
             [
-                ['memes', \Bristolian\Model\Generated\StoredMeme::class, true],
+                ['memes', \BristolianGenerated\Model\StoredMeme::class, true],
                 ['truncated', null, false, 'bool']
             ],
         ],
@@ -200,7 +200,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\User::searchMemes',
             [
-                ['memes', \Bristolian\Model\Generated\StoredMeme::class, true],
+                ['memes', \BristolianGenerated\Model\StoredMeme::class, true],
                 ['truncated', null, false, 'bool']
             ],
         ], // Search memes by tag text and/or tag type
@@ -210,7 +210,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\User::listUntaggedMemes',
             [
-                ['memes', \Bristolian\Model\Generated\StoredMeme::class, true],
+                ['memes', \BristolianGenerated\Model\StoredMeme::class, true],
                 ['truncated', null, false, 'bool']
             ],
         ], // Memes with no user tags (so user can add some)
@@ -220,7 +220,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\User::getTagsForMeme',
             [
-                ['meme_tags', \Bristolian\Model\Generated\MemeTag::class, true]
+                ['meme_tags', \BristolianGenerated\Model\MemeTag::class, true]
             ]
         ], // GetMemeTagsResponse
 
@@ -291,7 +291,7 @@ function getAllApiRoutes()
             'GET',
             'Bristolian\AppController\Rooms::getRoomDetails',
             [
-                ['room', \Bristolian\Model\Generated\Room::class, false]
+                ['room', \BristolianGenerated\Model\Room::class, false]
             ],
         ],
 
@@ -339,7 +339,7 @@ function getAllApiRoutes()
             'POST',
             'Bristolian\AppController\BristolStairs::handleFileUpload',
             [
-                ['stair_info', \Bristolian\Model\Generated\BristolStairInfo::class, false]
+                ['stair_info', \BristolianGenerated\Model\BristolStairInfo::class, false]
             ],
         ], // UploadBristolStairsImageResponse
 
@@ -556,7 +556,7 @@ function getAllApiRoutes()
             'GET',
             '\Bristolian\AppController\Rooms::getTags',
             [
-                ['tags', \Bristolian\Model\Generated\RoomTag::class, true]
+                ['tags', \BristolianGenerated\Model\RoomTag::class, true]
             ],
         ],
 

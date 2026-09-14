@@ -47,17 +47,17 @@ class GeneratedArtifactsEntryTypeFinder implements EntryTypeFinder
         [
             'generator' => 'generate:php_response_types',
             'generator_callable' => 'Bristolian\\CliController\\GenerateFiles::generatePhpResponseTypes',
-            'output_file' => 'src/Bristolian/Response/Typed/',
+            'output_file' => 'src/BristolianGenerated/Response/',
         ],
         [
             'generator' => 'generate:php_table_helper_classes',
             'generator_callable' => 'Bristolian\\CliController\\GenerateFiles::generateTableHelperClasses',
-            'output_file' => 'src/Bristolian/Database/',
+            'output_file' => 'src/BristolianGenerated/Database/',
         ],
         [
             'generator' => 'generate:model_classes',
             'generator_callable' => 'Bristolian\\CliController\\GenerateFiles::generateModelClasses',
-            'output_file' => 'src/Bristolian/Model/Generated/',
+            'output_file' => 'src/BristolianGenerated/Model/',
         ],
     ];
 

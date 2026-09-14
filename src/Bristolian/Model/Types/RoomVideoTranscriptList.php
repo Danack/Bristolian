@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bristolian\Model\Types;
 
-use Bristolian\Model\Generated\RoomVideoTranscript;
+use BristolianGenerated\Model\RoomVideoTranscript;
 
 /**
  * Immutable list of transcripts for a room video (returned by RoomVideoTranscriptRepo::getTranscriptsForRoomVideo).

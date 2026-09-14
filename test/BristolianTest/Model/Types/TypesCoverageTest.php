@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace BristolianTest\Model\Types;
 
 use Bristolian\Exception\BristolianException;
-use Bristolian\Model\Generated\RoomTag;
-use Bristolian\Model\Generated\RoomVideoTranscript;
+use BristolianGenerated\Model\RoomTag;
+use BristolianGenerated\Model\RoomVideoTranscript;
 use Bristolian\Model\Types\AdminUser;
 use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;

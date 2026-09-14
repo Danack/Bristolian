@@ -11,7 +11,7 @@ use Bristolian\Service\SecureTokenGenerator\SecureTokenGenerator;
 use Ramsey\Uuid\Uuid;
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\api_token;
+use BristolianGenerated\Database\api_token;
 
 /**
  * PDO-based implementation of ApiTokenRepo.

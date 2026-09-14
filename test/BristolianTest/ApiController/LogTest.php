@@ -8,7 +8,7 @@ use Bristolian\ApiController\Log;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo;
-use Bristolian\Response\Typed\GetLogProcessorRunRecordsResponse;
+use BristolianGenerated\Response\GetLogProcessorRunRecordsResponse;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
 

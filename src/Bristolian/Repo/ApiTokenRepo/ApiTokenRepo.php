@@ -6,7 +6,7 @@ namespace Bristolian\Repo\ApiTokenRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\api_token;
+use BristolianGenerated\Database\api_token;
 use Bristolian\Model\Types\ApiToken;
 
 /**

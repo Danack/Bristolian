@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\FoiRequestRepo;
 
-use Bristolian\Database\foi_requests;
+use BristolianGenerated\Database\foi_requests;
 use Bristolian\Model\Types\FoiRequest;
 use Bristolian\Parameters\FoiRequestParams;
 use Bristolian\PdoSimple\PdoSimple;

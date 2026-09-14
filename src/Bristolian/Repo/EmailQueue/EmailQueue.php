@@ -4,7 +4,7 @@ namespace Bristolian\Repo\EmailQueue;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\email_send_queue;
+use BristolianGenerated\Database\email_send_queue;
 use Bristolian\Model\Types\Email;
 
 interface EmailQueue

@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\LinkRepo;
 
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\link;
+use BristolianGenerated\Database\link;
 
 interface LinkRepo
 {

@@ -4,7 +4,7 @@ namespace Bristolian\Repo\AvatarImageStorageInfoRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\avatar_image_object_info;
+use BristolianGenerated\Database\avatar_image_object_info;
 use Bristolian\Model\Types\AvatarImageFile;
 use Bristolian\UploadedFiles\UploadedFile;
 

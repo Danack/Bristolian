@@ -4,7 +4,7 @@ namespace Bristolian\Repo\FoiRequestRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\foi_requests;
+use BristolianGenerated\Database\foi_requests;
 use Bristolian\Model\Types\FoiRequest;
 use Bristolian\Parameters\FoiRequestParams;
 

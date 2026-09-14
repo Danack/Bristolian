@@ -4,9 +4,9 @@ namespace Bristolian\Repo\VideoRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\video as videoTable;
+use BristolianGenerated\Database\video as videoTable;
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\Video;
+use BristolianGenerated\Model\Video;
 
 interface VideoRepo
 {

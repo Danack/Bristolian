@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bristolian\Repo\WhatDoTheyKnowRequestEventRepo;
 
-use Bristolian\Database\whatdotheyknow_request_event;
+use BristolianGenerated\Database\whatdotheyknow_request_event;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Attribute\WritesTable;

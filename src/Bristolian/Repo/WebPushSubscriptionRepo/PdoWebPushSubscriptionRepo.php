@@ -8,7 +8,7 @@ use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\user_webpush_subscription;
+use BristolianGenerated\Database\user_webpush_subscription;
 
 //use Bristolian\Model\User;
 

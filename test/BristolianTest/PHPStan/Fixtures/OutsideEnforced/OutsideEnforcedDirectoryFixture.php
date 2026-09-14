@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\PHPStan\Fixtures\OutsideEnforced;
 
-use Bristolian\Database\user;
+use BristolianGenerated\Database\user;
 
 /**
  * Lives outside src/Bristolian/Repo — should not be enforced by default config.

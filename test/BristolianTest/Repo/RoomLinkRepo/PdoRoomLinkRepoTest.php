@@ -16,7 +16,7 @@ use Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo;
 use Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
-use Bristolian\Model\Generated\RoomLink;
+use BristolianGenerated\Model\RoomLink;
 use Bristolian\Model\Types\RoomLinkWithUrl;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;

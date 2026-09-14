@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\RoomFileObjectInfoRepo;
 
-use Bristolian\Database\room_file_object_info;
+use BristolianGenerated\Database\room_file_object_info;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;

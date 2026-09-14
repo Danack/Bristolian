@@ -4,9 +4,9 @@ namespace Bristolian\Repo\MemeTagRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\meme_tag;
-use Bristolian\Database\stored_meme;
-use Bristolian\Model\Generated\MemeTag;
+use BristolianGenerated\Database\meme_tag;
+use BristolianGenerated\Database\stored_meme;
+use BristolianGenerated\Model\MemeTag;
 use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\MemeTagUpdateParams;
 use Bristolian\PdoSimple\PdoSimple;

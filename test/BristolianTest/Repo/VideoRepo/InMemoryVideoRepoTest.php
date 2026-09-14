@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo\VideoRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\Video;
+use BristolianGenerated\Model\Video;
 use Bristolian\Repo\VideoRepo\InMemoryVideoRepo;
 use PHPUnit\Framework\TestCase;
 use BristolianTest\BaseTestCase;

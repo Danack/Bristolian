@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Support;
 
-use Bristolian\Model\Generated\Room;
+use BristolianGenerated\Model\Room;
 use Bristolian\Parameters\CreateUserParams;
 use Bristolian\Parameters\AnnotationParam;
 use Bristolian\UploadedFiles\UploadedFile;

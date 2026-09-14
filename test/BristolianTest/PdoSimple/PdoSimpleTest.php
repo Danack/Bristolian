@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\PdoSimple;
 
-use Bristolian\Database\user;
+use BristolianGenerated\Database\user;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleException;
 use Bristolian\Service\UuidGenerator\FixedUuidGenerator;
@@ -14,7 +14,7 @@ use BristolianTest\Service\UuidGenerator\QueueUuidGenerator;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
-use Bristolian\Database\pdo_simple_test;
+use BristolianGenerated\Database\pdo_simple_test;
 use Bristolian\PdoSimple\RowNotFoundException;
 use BristolianTest\PdoSimple\PdoSimpleTestObjectConstructor;
 use Ramsey\Uuid\Uuid;

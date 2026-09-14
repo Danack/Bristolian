@@ -3,7 +3,7 @@
 namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\Generated\Room;
+use BristolianGenerated\Model\Room;
 use Safe\DateTime;
 
 /**
@@ -12,7 +12,7 @@ use Safe\DateTime;
 class RoomTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\Generated\Room
+     * @covers \BristolianGenerated\Model\Room
      */
     public function testConstruct()
     {
@@ -32,7 +32,7 @@ class RoomTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Model\Generated\Room
+     * @covers \BristolianGenerated\Model\Room
      */
     public function testToArray()
     {

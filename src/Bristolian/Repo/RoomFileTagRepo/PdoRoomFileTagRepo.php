@@ -7,7 +7,7 @@ namespace Bristolian\Repo\RoomFileTagRepo;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\room_file_tag;
+use BristolianGenerated\Database\room_file_tag;
 
 class PdoRoomFileTagRepo implements RoomFileTagRepo
 {

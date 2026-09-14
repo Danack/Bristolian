@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo\RoomTagRepo;
 
 use Bristolian\Exception\TooManyRoomTagsException;
-use Bristolian\Model\Generated\RoomTag;
+use BristolianGenerated\Model\RoomTag;
 use Bristolian\Parameters\TagParams;
 use Bristolian\Repo\RoomTagRepo\RoomTagRepo;
 use BristolianTest\BaseTestCase;

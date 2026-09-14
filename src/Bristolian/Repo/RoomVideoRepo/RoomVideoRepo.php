@@ -4,11 +4,11 @@ namespace Bristolian\Repo\RoomVideoRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\room_tag;
-use Bristolian\Database\room_video;
-use Bristolian\Database\room_video_tag;
+use BristolianGenerated\Database\room_tag;
+use BristolianGenerated\Database\room_video;
+use BristolianGenerated\Database\room_video_tag;
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\RoomVideo;
+use BristolianGenerated\Model\RoomVideo;
 use Bristolian\Model\Types\RoomVideoWithTags;
 use Bristolian\Parameters\RoomContentSearchParams;
 

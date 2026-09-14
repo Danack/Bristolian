@@ -4,9 +4,9 @@ namespace Bristolian\Repo\MemeTextRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\meme_text;
-use Bristolian\Database\stored_meme;
-use Bristolian\Model\Generated\StoredMeme;
+use BristolianGenerated\Database\meme_text;
+use BristolianGenerated\Database\stored_meme;
+use BristolianGenerated\Model\StoredMeme;
 
 interface MemeTextRepo
 {
@@ -38,10 +38,10 @@ interface MemeTextRepo
      * Gets the text for a meme (returns the most recent entry if multiple exist).
      *
      * @param string $meme_id
-     * @return \Bristolian\Model\Generated\MemeText|null
+     * @return \BristolianGenerated\Model\MemeText|null
      */
     #[ReadsTable(meme_text::class)]
-    public function getMemeText(string $meme_id): \Bristolian\Model\Generated\MemeText|null;
+    public function getMemeText(string $meme_id): \BristolianGenerated\Model\MemeText|null;
 
     /**
      * Updates the text for a meme. If text exists, updates it; if not, inserts it.

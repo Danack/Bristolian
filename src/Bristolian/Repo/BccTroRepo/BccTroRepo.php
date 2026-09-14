@@ -4,7 +4,7 @@ namespace Bristolian\Repo\BccTroRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\bcc_tro_information;
+use BristolianGenerated\Database\bcc_tro_information;
 use Bristolian\Model\Types\BccTro;
 
 interface BccTroRepo

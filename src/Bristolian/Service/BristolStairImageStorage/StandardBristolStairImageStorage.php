@@ -2,7 +2,7 @@
 
 namespace Bristolian\Service\BristolStairImageStorage;
 
-use Bristolian\Model\Generated\BristolStairInfo;
+use BristolianGenerated\Model\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsGpsParams;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;

@@ -106,7 +106,7 @@ class RepoTableAttributesRule implements Rule
             ) as $tableHelperClass) {
                 if (!$this->collector->isValidDatabaseTableHelperClass($tableHelperClass)) {
                     $errors[] = RuleErrorBuilder::message(sprintf(
-                        '%s::%s: table attribute target %s must be a Bristolian\\Database\\* helper class.',
+                        '%s::%s: table attribute target %s must be a BristolianGenerated\\Database\\* helper class.',
                         $classReflection->getName(),
                         $methodName,
                         $tableHelperClass

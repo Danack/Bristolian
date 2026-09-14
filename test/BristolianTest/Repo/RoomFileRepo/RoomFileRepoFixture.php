@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\RoomFileRepo;
 
-use Bristolian\Model\Generated\RoomFileObjectInfo;
+use BristolianGenerated\Model\RoomFileObjectInfo;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
 use BristolianTest\BaseTestCase;

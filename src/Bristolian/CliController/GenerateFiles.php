@@ -146,13 +146,13 @@ function map_column_to_php_type(array $column): string
 }
 
 /**
- * Tables for which `Bristolian\Model\Generated\{TableClass}` is not written. The mapped class must
+ * Tables for which `BristolianGenerated\Model\{TableClass}` is not written. The mapped class must
  * expose the same constructor promoted properties as the generator would (names and compatible types).
  *
  * Key: database table name (e.g. chat_message).
  * Value: FQCN of the hand-written model (e.g. Bristolian\Model\Chat\UserChatMessage).
  *
- * The omitted generated class would be `Bristolian\Model\Generated\` . table_name_to_class_name($table).
+ * The omitted generated class would be `BristolianGenerated\Model\` . table_name_to_class_name($table).
  *
  * @return array<string, class-string>
  *
@@ -263,7 +263,7 @@ function assert_hand_written_model_matches_table_schema(
         throw new BristolianException("Hand-written model {$className} must have a constructor.");
     }
 
-    $generatedFqcn = 'Bristolian\\Model\\Generated\\' . table_name_to_class_name($tableName);
+    $generatedFqcn = 'BristolianGenerated\\Model\\' . table_name_to_class_name($tableName);
 
     foreach ($constructor->getParameters() as $param) {
         $name = $param->getName();
@@ -325,11 +325,11 @@ function generate_model_class(string $tableName, array $columns_info, string $ou
         CodegenProvenance::buildPayload(
             'generate:model_classes',
             'Bristolian\\CliController\\GenerateFiles::generateModelClasses',
-            'src/Bristolian/Model/Generated/'
+            'src/BristolianGenerated/Model/'
         )
     );
     $contents .= "\n";
-    $contents .= "namespace Bristolian\\Model\\Generated;\n\n";
+    $contents .= "namespace BristolianGenerated\\Model;\n\n";
     $contents .= "use Bristolian\\FromArray;\n";
     $contents .= "use Bristolian\\ToString;\n\n";
     $contents .= "class $className\n";
@@ -362,7 +362,7 @@ function generate_model_class(string $tableName, array $columns_info, string $ou
  */
 function generate_table_helper_class(string $tableName, array $columns_info): void
 {
-    $output_filename = __DIR__ . "/../../Bristolian/Database/" . $tableName . ".php";
+    $output_filename = __DIR__ . "/../../BristolianGenerated/Database/" . $tableName . ".php";
 
     $contents = "<?php\n\n";
     $contents .= "// Auto-generated file do not edit\n\n";
@@ -373,11 +373,11 @@ function generate_table_helper_class(string $tableName, array $columns_info): vo
         CodegenProvenance::buildPayload(
             'generate:php_table_helper_classes',
             'Bristolian\\CliController\\GenerateFiles::generateTableHelperClasses',
-            'src/Bristolian/Database/'
+            'src/BristolianGenerated/Database/'
         )
     );
     $contents .= "\n";
-    $contents .= "namespace Bristolian\\Database;\n\n";
+    $contents .= "namespace BristolianGenerated\\Database;\n\n";
 
     $columns_separated_by_comma_new_line = "";
     $values_names_separated_by_comma_new_line = "";
@@ -418,6 +418,12 @@ function generate_table_helper_class(string $tableName, array $columns_info): vo
     [$columns_separated_by_comma_new_line, $values_names_separated_by_comma_new_line]
         = generate_table_strings($sorted_column_names_insert);
 
+    $contents .= "/**\n";
+    $contents .= " * SQL templates for the `{$tableName}` table.\n";
+    $contents .= " *\n";
+    $contents .= " * Use INSERT, SELECT, and UPDATE from repository code instead of writing raw SQL.\n";
+    $contents .= " * Append WHERE / ORDER BY / LIMIT (and bind parameters) as needed.\n";
+    $contents .= " */\n";
     $contents .= "class $tableName\n";
     $contents .= "{\n";
     $contents .= "    const INSERT = <<< SQL\n";
@@ -758,17 +764,17 @@ class GenerateFiles
         $generatorCallable = 'Bristolian\\CliController\\GenerateFiles::generateJavaScriptTypes';
 
         $types = [
-            \Bristolian\Model\Generated\BristolStairInfo::class,
+            \BristolianGenerated\Model\BristolStairInfo::class,
             \Bristolian\Model\Chat\UserChatMessage::class,
-            \Bristolian\Model\Generated\EmailIncoming::class,
-            \Bristolian\Model\Generated\StoredMeme::class,
-            \Bristolian\Model\Generated\MemeTag::class,
-            \Bristolian\Model\Generated\ProcessorRunRecord::class,
-            \Bristolian\Model\Generated\RoomLink::class,
-            \Bristolian\Model\Generated\RoomAnnotation::class,
-            \Bristolian\Model\Generated\RoomTag::class,
-            \Bristolian\Model\Generated\Room::class,
-            \Bristolian\Model\Generated\RoomFileObjectInfo::class,
+            \BristolianGenerated\Model\EmailIncoming::class,
+            \BristolianGenerated\Model\StoredMeme::class,
+            \BristolianGenerated\Model\MemeTag::class,
+            \BristolianGenerated\Model\ProcessorRunRecord::class,
+            \BristolianGenerated\Model\RoomLink::class,
+            \BristolianGenerated\Model\RoomAnnotation::class,
+            \BristolianGenerated\Model\RoomTag::class,
+            \BristolianGenerated\Model\Room::class,
+            \BristolianGenerated\Model\RoomFileObjectInfo::class,
             \Bristolian\Model\Types\RoomAnnotationView::class,
             \Bristolian\Model\Types\RoomFileWithTags::class,
             \Bristolian\Model\Types\RoomLinkWithTags::class,
@@ -1001,7 +1007,7 @@ TEMPLATE;
     }
 
     /**
-     * Generate SQL INSERT/SELECT/UPDATE helper classes under src/Bristolian/Database/
+     * Generate SQL INSERT/SELECT/UPDATE helper classes under src/BristolianGenerated/Database/
      * from the live database schema (one class per table).
      */
     public function generateTableHelperClasses(
@@ -1039,7 +1045,7 @@ SQL;
     }
 
     /**
-     * Generate PHP response type classes under src/Bristolian/Response/Typed/
+     * Generate PHP response type classes under src/BristolianGenerated/Response/
      * from API routes that declare type_info in api/src/api_routes.php.
      *
      * @codeCoverageIgnore
@@ -1049,7 +1055,7 @@ SQL;
         require_once __DIR__ . "/../../../api/src/api_routes.php";
         
         $routes = getAllApiRoutes();
-        $output_directory = __DIR__ . "/../../Bristolian/Response/Typed";
+        $output_directory = __DIR__ . "/../../BristolianGenerated/Response";
         
         // Ensure the directory exists
         if (!is_dir($output_directory)) {
@@ -1072,7 +1078,7 @@ SQL;
             
             // Generate class name from route path
             $className = $this->generateClassNameFromRoute($path, $method);
-            $namespace = "Bristolian\\Response\\Typed";
+            $namespace = "BristolianGenerated\\Response";
             
             // Generate the PHP class content
 
@@ -1180,7 +1186,7 @@ SQL;
             CodegenProvenance::buildPayload(
                 'generate:php_response_types',
                 $generatorCallable,
-                'src/Bristolian/Response/Typed/'
+                'src/BristolianGenerated/Response/'
             )
         );
         $content .= "\n";
@@ -2059,7 +2065,7 @@ SQL;
     }
 
     /**
-     * Generate model classes under src/Bristolian/Model/Generated/ from the live
+     * Generate model classes under src/BristolianGenerated/Model/ from the live
      * database schema (one class per table that is not hand-written).
      *
      * @codeCoverageIgnore
@@ -2089,7 +2095,7 @@ SELECT *
   ORDER BY ORDINAL_POSITION;
 SQL;
 
-        $output_directory = __DIR__ . "/../../Bristolian/Model/Generated";
+        $output_directory = __DIR__ . "/../../BristolianGenerated/Model";
         
         // Ensure the directory exists
         if (!is_dir($output_directory)) {

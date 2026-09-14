@@ -4,9 +4,9 @@ namespace Bristolian\Repo\UserRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\user;
-use Bristolian\Database\user_ownership;
-use Bristolian\Model\Generated\UserOwnership;
+use BristolianGenerated\Database\user;
+use BristolianGenerated\Database\user_ownership;
+use BristolianGenerated\Model\UserOwnership;
 
 interface UserRepo
 {

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\Repo\RoomRepo;
 
-use Bristolian\Model\Generated\Room;
+use BristolianGenerated\Model\Room;
 use Ramsey\Uuid\Uuid;
 use Safe\DateTimeImmutable;
 

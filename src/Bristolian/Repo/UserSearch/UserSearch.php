@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\UserSearch;
 
 use Bristolian\Attribute\ReadsTable;
-use Bristolian\Database\user_auth_email_password;
+use BristolianGenerated\Database\user_auth_email_password;
 
 interface UserSearch
 {

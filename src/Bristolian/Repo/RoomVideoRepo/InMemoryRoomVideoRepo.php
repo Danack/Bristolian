@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\RoomVideoRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\RoomVideo;
+use BristolianGenerated\Model\RoomVideo;
 use Bristolian\Model\Types\RoomVideoWithTags;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Repo\RoomTagRepo\RoomTagRepo;

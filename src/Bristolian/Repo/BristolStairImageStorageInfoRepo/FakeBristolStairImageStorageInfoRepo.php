@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\BristolStairImageStorageInfoRepo;
 
-use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
+use BristolianGenerated\Model\StairImageObjectInfo as BristolStairImageFile;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
 use Safe\DateTimeImmutable;

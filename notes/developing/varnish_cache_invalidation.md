@@ -18,7 +18,7 @@ The lookup in `PdoSimpleWithTableTracking` normalizes all whitespace before matc
 
 When a new repo method introduces a SQL query, it must be added to the mapping. In local dev and tests, `ThrowOnUnknownQuery` will throw a `RuntimeException` with instructions on how to fix it.
 
-- **Static queries**: Add an entry to `QueryTagMapping::getExactMappings()`. Use the generated Database constant classes (e.g. `Bristolian\Database\table_name::SELECT`) where possible.
+- **Static queries**: Add an entry to `QueryTagMapping::getExactMappings()`. Use the generated Database constant classes (e.g. `BristolianGenerated\Database\table_name::SELECT`) where possible.
 - **Dynamic queries** (e.g. variable IN clauses): Add a regex pattern to `QueryTagMapping::getPatternMappings()`.
 - **Production**: Unmapped queries are logged to Redis via `RedisLogUnknownQuery`. The admin page at `/admin/unknown_cache_queries` shows these.
 

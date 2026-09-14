@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace BristolianTest\PHPStan\Fixtures;
 
 use Bristolian\Attribute\ReadsTable;
-use Bristolian\Database\user;
+use BristolianGenerated\Database\user;
 
 /**
  * Declares ReadsTable but only writes.

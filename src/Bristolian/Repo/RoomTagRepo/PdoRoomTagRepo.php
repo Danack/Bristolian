@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Bristolian\Repo\RoomTagRepo;
 
-use Bristolian\Database\room_tag;
+use BristolianGenerated\Database\room_tag;
 use Bristolian\Exception\TooManyRoomTagsException;
-use Bristolian\Model\Generated\RoomTag;
+use BristolianGenerated\Model\RoomTag;
 use Bristolian\Parameters\TagParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;

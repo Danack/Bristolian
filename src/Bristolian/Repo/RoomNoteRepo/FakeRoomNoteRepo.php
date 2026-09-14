@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Bristolian\Repo\RoomNoteRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\RoomNote;
+use BristolianGenerated\Model\RoomNote;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Ramsey\Uuid\Uuid;
 use Safe\DateTimeImmutable;

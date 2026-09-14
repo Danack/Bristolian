@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\LinkRepo;
 
-use Bristolian\Model\Generated\Link;
+use BristolianGenerated\Model\Link;
 use Ramsey\Uuid\Uuid;
 use Safe\DateTimeImmutable;
 

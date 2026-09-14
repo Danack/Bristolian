@@ -3,7 +3,7 @@
 namespace BristolianTest\Model\Types;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\Generated\StairImageObjectInfo;
+use BristolianGenerated\Model\StairImageObjectInfo;
 use Safe\DateTimeImmutable;
 
 /**
@@ -12,7 +12,7 @@ use Safe\DateTimeImmutable;
 class BristolStairImageFileTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\Generated\StairImageObjectInfo
+     * @covers \BristolianGenerated\Model\StairImageObjectInfo
      */
     public function testConstruct()
     {

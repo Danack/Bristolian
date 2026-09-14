@@ -4,8 +4,8 @@ namespace Bristolian\Repo\RoomVideoTranscriptRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\room_video_transcript;
-use Bristolian\Model\Generated\RoomVideoTranscript;
+use BristolianGenerated\Database\room_video_transcript;
+use BristolianGenerated\Model\RoomVideoTranscript;
 use Bristolian\Model\Types\RoomVideoTranscriptList;
 
 interface RoomVideoTranscriptRepo

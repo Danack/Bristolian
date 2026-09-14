@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\ProcessorRunRecordRepo;
 
-use Bristolian\Model\Generated\ProcessorRunRecord;
+use BristolianGenerated\Model\ProcessorRunRecord;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use BristolianTest\BaseTestCase;

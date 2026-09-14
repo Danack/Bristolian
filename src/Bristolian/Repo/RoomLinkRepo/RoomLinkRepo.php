@@ -4,10 +4,10 @@ namespace Bristolian\Repo\RoomLinkRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\link;
-use Bristolian\Database\room_link;
-use Bristolian\Database\room_link_tag;
-use Bristolian\Model\Generated\RoomLink;
+use BristolianGenerated\Database\link;
+use BristolianGenerated\Database\room_link;
+use BristolianGenerated\Database\room_link_tag;
+use BristolianGenerated\Model\RoomLink;
 use Bristolian\Model\Types\RoomLinkWithUrl;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Parameters\RoomContentSearchParams;

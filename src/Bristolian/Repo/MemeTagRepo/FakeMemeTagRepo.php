@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\Repo\MemeTagRepo;
 
-use Bristolian\Model\Generated\MemeTag;
+use BristolianGenerated\Model\MemeTag;
 use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\MemeTagUpdateParams;
 use Bristolian\Repo\MemeStorageRepo\MemeFileState;

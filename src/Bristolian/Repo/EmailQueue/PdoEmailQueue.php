@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\EmailQueue;
 
 use Bristolian\CliController\Email as EmailController;
-use Bristolian\Database\email_send_queue;
+use BristolianGenerated\Database\email_send_queue;
 use Bristolian\Model\Types\Email;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Attribute\ReadsTable;

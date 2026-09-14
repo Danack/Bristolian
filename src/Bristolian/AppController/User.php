@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\AppController;
 
-use Bristolian\Model\Generated\StoredMeme;
+use BristolianGenerated\Model\StoredMeme;
 use Bristolian\Parameters\MemeSearchParams;
 use Bristolian\Parameters\MemeTagDeleteParams;
 use Bristolian\Parameters\MemeTagParams;
@@ -17,10 +17,10 @@ use Bristolian\Response\EndpointAccessedViaGetResponse;
 use Bristolian\Response\GetMemeTagSuggestionsResponse;
 use Bristolian\Response\GetMemeTextResponse;
 use Bristolian\Response\SuccessResponse;
-use Bristolian\Response\Typed\GetMemesResponse;
-use Bristolian\Response\Typed\GetMemesTagsResponse;
-use Bristolian\Response\Typed\PostMemetagaddResponse;
-use Bristolian\Response\Typed\PostMemetagdeleteResponse;
+use BristolianGenerated\Response\GetMemesResponse;
+use BristolianGenerated\Response\GetMemesTagsResponse;
+use BristolianGenerated\Response\PostMemetagaddResponse;
+use BristolianGenerated\Response\PostMemetagdeleteResponse;
 use Bristolian\Session\AppSessionManagerInterface;
 use Bristolian\Session\UserSession;
 use Psr\Http\Message\ServerRequestInterface as Request;

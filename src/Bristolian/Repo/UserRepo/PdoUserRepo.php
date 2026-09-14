@@ -3,9 +3,9 @@
 namespace Bristolian\Repo\UserRepo;
 
 use Bristolian\PdoSimple\PdoSimple;
-use Bristolian\Model\Generated\UserOwnership;
-use Bristolian\Database\user;
-use Bristolian\Database\user_ownership;
+use BristolianGenerated\Model\UserOwnership;
+use BristolianGenerated\Database\user;
+use BristolianGenerated\Database\user_ownership;
 use Ramsey\Uuid\Uuid;
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;

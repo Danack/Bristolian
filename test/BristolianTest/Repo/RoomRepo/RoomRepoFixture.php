@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\RoomRepo;
 
-use Bristolian\Model\Generated\Room;
+use BristolianGenerated\Model\Room;
 use Bristolian\Repo\RoomRepo\RoomRepo;
 use BristolianTest\BaseTestCase;
 
@@ -123,7 +123,7 @@ abstract class RoomRepoFixture extends BaseTestCase
 
         // Note: PDO tests may have existing data, so we don't assert empty
         foreach ($rooms as $room) {
-            $this->assertInstanceOf(\Bristolian\Model\Generated\Room::class, $room);
+            $this->assertInstanceOf(\BristolianGenerated\Model\Room::class, $room);
         }
     }
 

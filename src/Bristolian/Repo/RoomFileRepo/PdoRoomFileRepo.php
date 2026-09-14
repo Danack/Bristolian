@@ -3,15 +3,15 @@
 namespace Bristolian\Repo\RoomFileRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\RoomFileObjectInfo;
+use BristolianGenerated\Model\RoomFileObjectInfo;
 use Bristolian\Model\Types\RoomFileInRoom;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\room_file;
-use Bristolian\Database\room_file_object_info;
-use Bristolian\Database\room_file_tag;
+use BristolianGenerated\Database\room_file;
+use BristolianGenerated\Database\room_file_object_info;
+use BristolianGenerated\Database\room_file_tag;
 
 class PdoRoomFileRepo implements RoomFileRepo
 {

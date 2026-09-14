@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\Response;
 
-use Bristolian\Model\Generated\RoomVideoTranscript;
+use BristolianGenerated\Model\RoomVideoTranscript;
 use Bristolian\Model\Types\RoomVideoTranscriptList;
 use Bristolian\Response\GetTranscriptsResponse;
 use BristolianTest\BaseTestCase;

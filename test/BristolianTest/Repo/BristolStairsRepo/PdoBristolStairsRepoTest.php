@@ -10,7 +10,7 @@ use Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo;
 use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\Repo\BristolStairsRepo\BristolStairsRepo;
 use BristolianTest\Repo\TestPlaceholders;
-use Bristolian\Model\Generated\BristolStairInfo;
+use BristolianGenerated\Model\BristolStairInfo;
 use Ramsey\Uuid\Uuid;
 use VarMap\ArrayVarMap;
 

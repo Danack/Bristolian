@@ -3,7 +3,7 @@
 namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\Generated\Link;
+use BristolianGenerated\Model\Link;
 use Safe\DateTimeImmutable;
 
 /**
@@ -12,7 +12,7 @@ use Safe\DateTimeImmutable;
 class LinkTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Model\Generated\Link
+     * @covers \BristolianGenerated\Model\Link
      */
     public function testConstruct()
     {

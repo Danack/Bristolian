@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\PHPStan\Fixtures;
 
-use Bristolian\Database\user;
+use BristolianGenerated\Database\user;
 
 /**
  * Missing WritesTable for INSERT usage — used only as a parse fixture.

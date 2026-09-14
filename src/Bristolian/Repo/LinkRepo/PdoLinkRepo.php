@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\LinkRepo;
 
-use Bristolian\Database\link;
+use BristolianGenerated\Database\link;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;

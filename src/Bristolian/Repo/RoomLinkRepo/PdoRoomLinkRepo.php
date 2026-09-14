@@ -2,10 +2,10 @@
 
 namespace Bristolian\Repo\RoomLinkRepo;
 
-use Bristolian\Database\room_link;
+use BristolianGenerated\Database\room_link;
 use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Exception\BristolianException;
-use Bristolian\Model\Generated\RoomLink;
+use BristolianGenerated\Model\RoomLink;
 use Bristolian\Model\Types\RoomLinkWithUrl;
 use Bristolian\Parameters\LinkParam;
 use Bristolian\Parameters\RoomContentSearchParams;
@@ -14,8 +14,8 @@ use Bristolian\Repo\LinkRepo\LinkRepo;
 use Ramsey\Uuid\Uuid;
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\link;
-use Bristolian\Database\room_link_tag;
+use BristolianGenerated\Database\link;
+use BristolianGenerated\Database\room_link_tag;
 
 class PdoRoomLinkRepo implements RoomLinkRepo
 {

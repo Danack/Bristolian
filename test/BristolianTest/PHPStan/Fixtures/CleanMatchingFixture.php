@@ -6,8 +6,8 @@ namespace BristolianTest\PHPStan\Fixtures;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\user;
-use Bristolian\Database\user_ownership;
+use BristolianGenerated\Database\user;
+use BristolianGenerated\Database\user_ownership;
 
 #[ReadsTable(user_ownership::class)]
 #[WritesTable(user::class)]

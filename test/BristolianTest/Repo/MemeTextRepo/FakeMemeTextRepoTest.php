@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\MemeTextRepo;
 
-use Bristolian\Model\Generated\StoredMeme;
+use BristolianGenerated\Model\StoredMeme;
 use Bristolian\Model\Types\Meme;
 use Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo;
 use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;

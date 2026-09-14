@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace BristolianTest\PHPStan;
 
-use Bristolian\Database\meme_tag;
-use Bristolian\Database\stored_meme;
-use Bristolian\Database\user;
-use Bristolian\Database\user_ownership;
+use BristolianGenerated\Database\meme_tag;
+use BristolianGenerated\Database\stored_meme;
+use BristolianGenerated\Database\user;
+use BristolianGenerated\Database\user_ownership;
 use Bristolian\PHPStan\RepoTableResourceCollector;
 use Bristolian\PHPStan\SqlTableReferenceExtractor;
 use BristolianTest\BaseTestCase;

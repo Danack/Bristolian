@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\RoomFileRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\RoomFileObjectInfo;
+use BristolianGenerated\Model\RoomFileObjectInfo;
 use Bristolian\Model\Types\RoomFileInRoom;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Safe\DateTimeImmutable;

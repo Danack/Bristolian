@@ -8,7 +8,7 @@ use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInf
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\FileState;
 use Bristolian\UploadedFiles\UploadedFile;
-use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
+use BristolianGenerated\Model\StairImageObjectInfo as BristolStairImageFile;
 use Safe\DateTimeImmutable;
 
 /**

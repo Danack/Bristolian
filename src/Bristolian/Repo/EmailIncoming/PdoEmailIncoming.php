@@ -2,7 +2,7 @@
 
 namespace Bristolian\Repo\EmailIncoming;
 
-use Bristolian\Database\email_incoming;
+use BristolianGenerated\Database\email_incoming;
 use Bristolian\Model\Types\IncomingEmailParam;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Attribute\WritesTable;

@@ -51,9 +51,9 @@ screenshot
 # Generated files
 /app/public/tsx/generated/constants.tsx
 /app/public/tsx/generated/types.tsx
-/src/Bristolian/Database/*.php
-src/Bristolian/Model/Generated
-src/Bristolian/Response/Typed
+/src/BristolianGenerated/Database/*.php
+/src/BristolianGenerated/Model/
+/src/BristolianGenerated/Response/
 api_routes.tsx
 /clover.xml
 /clover_chat.xml

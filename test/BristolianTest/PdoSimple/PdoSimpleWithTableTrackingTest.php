@@ -8,7 +8,7 @@ use Bristolian\Cache\TestTableAccessRecorder;
 use Bristolian\Cache\ThrowOnUnknownQuery;
 use Bristolian\Cache\UnknownQueryException;
 use Bristolian\Cache\UnknownQueryHandler;
-use Bristolian\Database\pdo_simple_test;
+use BristolianGenerated\Database\pdo_simple_test;
 use Bristolian\PdoSimple\PdoSimpleWithTableTracking;
 use BristolianTest\BaseTestCase;
 use Bristolian\Service\UuidGenerator\RamseyUuidGenerator;

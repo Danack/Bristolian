@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\Service\BristolStairImageStorage;
 
-use Bristolian\Model\Generated\BristolStairInfo;
+use BristolianGenerated\Model\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsGpsParams;
 use Bristolian\Service\BristolStairImageStorage\FakeWorksBristolStairImageStorage;
 use Bristolian\UploadedFiles\UploadedFile;

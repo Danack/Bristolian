@@ -3,7 +3,7 @@
 namespace Bristolian\Repo\RoomVideoTranscriptRepo;
 
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\RoomVideoTranscript;
+use BristolianGenerated\Model\RoomVideoTranscript;
 use Bristolian\Model\Types\RoomVideoTranscriptList;
 use Ramsey\Uuid\Uuid;
 use Safe\DateTimeImmutable;

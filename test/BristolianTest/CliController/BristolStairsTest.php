@@ -6,7 +6,7 @@ namespace BristolianTest\CliController;
 
 use Bristolian\CliController\BristolStairs;
 use Bristolian\Filesystem\BristolStairsFilesystem;
-use Bristolian\Model\Generated\StairImageObjectInfo;
+use BristolianGenerated\Model\StairImageObjectInfo;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\FileState;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo;

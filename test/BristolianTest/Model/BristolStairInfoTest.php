@@ -3,7 +3,7 @@
 namespace BristolianTest\Model;
 
 use BristolianTest\BaseTestCase;
-use Bristolian\Model\Generated\BristolStairInfo;
+use BristolianGenerated\Model\BristolStairInfo;
 use Safe\DateTimeImmutable;
 
 /**
@@ -12,7 +12,7 @@ use Safe\DateTimeImmutable;
 class BristolStairInfoTest extends BaseTestCase
 {
     /**
-     * @covers Bristolian\Model\Generated\BristolStairInfo
+     * @covers BristolianGenerated\Model\BristolStairInfo
      */
     public function testConstruct()
     {

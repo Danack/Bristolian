@@ -4,8 +4,8 @@ namespace Bristolian\Repo\RoomRepo;
 
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\room as room_table;
-use Bristolian\Model\Generated\Room;
+use BristolianGenerated\Database\room as room_table;
+use BristolianGenerated\Model\Room;
 
 interface RoomRepo
 {

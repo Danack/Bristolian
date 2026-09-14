@@ -78,7 +78,7 @@ final class TestWorld
      * Find a room by name.
      * Returns null if the room doesn't exist.
      */
-    public function findRoomByName(string $name): ?\Bristolian\Model\Generated\Room
+    public function findRoomByName(string $name): ?\BristolianGenerated\Model\Room
     {
         $rooms = $this->roomRepo->getRoomByName($name);
         if (count($rooms) === 0) {

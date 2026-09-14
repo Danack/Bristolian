@@ -10,7 +10,7 @@ use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
-use Bristolian\Database\user_auth_email_password;
+use BristolianGenerated\Database\user_auth_email_password;
 
 class PdoAdminRepo implements AdminRepo
 {

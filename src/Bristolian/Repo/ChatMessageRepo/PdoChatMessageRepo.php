@@ -2,10 +2,10 @@
 
 namespace Bristolian\Repo\ChatMessageRepo;
 
-use Bristolian\Database\chat_message;
-use Bristolian\Database\user_ownership;
+use BristolianGenerated\Database\chat_message;
+use BristolianGenerated\Database\user_ownership;
 use Bristolian\Model\Chat\UserChatMessage;
-use Bristolian\Model\Generated\UserOwnership;
+use BristolianGenerated\Model\UserOwnership;
 use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Attribute\ReadsTable;

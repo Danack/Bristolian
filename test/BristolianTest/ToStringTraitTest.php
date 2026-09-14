@@ -23,7 +23,7 @@ class ToStringTraitTest extends BaseTestCase
 //     */
 //    private static function getModelClassesWithToStringTrait(): array
 //    {
-//        $modelDir = __DIR__ . '/../../src/Bristolian/Model/Generated';
+//        $modelDir = __DIR__ . '/../../src/BristolianGenerated/Model';
 //        $classes = [];
 //
 //        if (!is_dir($modelDir)) {
@@ -40,7 +40,7 @@ class ToStringTraitTest extends BaseTestCase
 //                continue;
 //            }
 //
-//            $className = 'Bristolian\\Model\\Generated\\' . pathinfo($file, PATHINFO_FILENAME);
+//            $className = 'BristolianGenerated\\Model\\' . pathinfo($file, PATHINFO_FILENAME);
 //
 //            if (!class_exists($className)) {
 //                continue;

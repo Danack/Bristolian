@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Bristolian\Repo\TinnedFishProductRepo;
 
-use Bristolian\Database\tinned_fish_product;
+use BristolianGenerated\Database\tinned_fish_product;
 use Bristolian\Model\TinnedFish\Product;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use Bristolian\PdoSimple\PdoSimple;

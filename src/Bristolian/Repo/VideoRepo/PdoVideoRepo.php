@@ -2,9 +2,9 @@
 
 namespace Bristolian\Repo\VideoRepo;
 
-use Bristolian\Database\video as videoTable;
+use BristolianGenerated\Database\video as videoTable;
 use Bristolian\Exception\ContentNotFoundException;
-use Bristolian\Model\Generated\Video;
+use BristolianGenerated\Model\Video;
 use Bristolian\PdoSimple\PdoSimple;
 use Ramsey\Uuid\Uuid;
 use Bristolian\Attribute\ReadsTable;

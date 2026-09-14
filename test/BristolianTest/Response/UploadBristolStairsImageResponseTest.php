@@ -2,7 +2,7 @@
 
 namespace BristolianTest\Response;
 
-use Bristolian\Model\Generated\BristolStairInfo;
+use BristolianGenerated\Model\BristolStairInfo;
 use Bristolian\Response\UploadBristolStairsImageResponse;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;

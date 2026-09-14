@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\BristolStairImageStorageInfoRepo;
 
-use Bristolian\Model\Generated\StairImageObjectInfo as BristolStairImageFile;
+use BristolianGenerated\Model\StairImageObjectInfo as BristolStairImageFile;
 use Bristolian\Repo\BristolStairImageStorageInfoRepo\BristolStairImageStorageInfoRepo;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
