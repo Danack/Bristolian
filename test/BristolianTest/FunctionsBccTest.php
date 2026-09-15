@@ -6,10 +6,9 @@ use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;
 use PHPUnit\Framework\Attributes\DataProvider;
 use function Safe\file_get_contents;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FunctionsBccTest extends BaseTestCase
 {
     /**

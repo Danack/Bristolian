@@ -13,10 +13,9 @@ use Bristolian\Response\EndpointAccessedViaGetResponse;
 use Bristolian\Response\SuccessResponse;
 use Bristolian\Response\ValidationErrorResponse;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class NotificationsTest extends BaseTestCase
 {
     public function setup(): void

@@ -5,10 +5,9 @@ namespace BristolianTest\Response;
 use Bristolian\Response\GetMemeTagSuggestionsResponse;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\GetMemeTagSuggestionsResponse
- */
+#[CoversClass(\Bristolian\Response\GetMemeTagSuggestionsResponse::class)]
 class GetMemeTagSuggestionsResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns200()

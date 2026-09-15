@@ -7,10 +7,9 @@ namespace UrlFetcherTest;
 use BristolianTest\BaseTestCase;
 use UrlFetcher\FakeUrlFetcher;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeUrlFetcherTest extends BaseTestCase
 {
     /**

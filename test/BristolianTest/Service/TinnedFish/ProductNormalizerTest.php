@@ -7,15 +7,16 @@ use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use function isValidBarcode;
 use function normalizeOpenFoodFactsData;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * Tests for tinned fish normalization functions
  *
- * @covers \isValidBarcode
  * @covers \normalizeOpenFoodFactsData
  * @covers \parseTinnedFishWeight
  * @covers \extractTinnedFishSpecies
  */
+#[CoversNothing]
 class ProductNormalizerTest extends BaseTestCase
 {
     /**

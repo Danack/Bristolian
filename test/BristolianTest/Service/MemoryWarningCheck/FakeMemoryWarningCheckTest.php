@@ -7,10 +7,9 @@ namespace BristolianTest\Service\MemoryWarningCheck;
 use Bristolian\Service\MemoryWarningCheck\FakeMemoryWarningCheck;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeMemoryWarningCheckTest extends BaseTestCase
 {
     /**

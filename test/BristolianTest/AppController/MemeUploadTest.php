@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\AppController;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Bristolian\AppController\MemeUpload;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
 use Bristolian\Response\MemeUploadErrorResponse;
@@ -36,9 +37,7 @@ final class MemeStorageProcessorReturningUploadError implements MemeStorageProce
     }
 }
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class MemeUploadTest extends BaseTestCase
 {
     public function setup(): void

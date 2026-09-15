@@ -7,11 +7,12 @@ namespace BristolianTest\Repo\RoomVideoTagRepo;
 use Bristolian\Repo\RoomVideoTagRepo\InMemoryRoomVideoTagRepo;
 use PHPUnit\Framework\TestCase;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Bristolian\Repo\RoomVideoTagRepo\InMemoryRoomVideoTagRepo
  * @group standard_repo
  */
+#[CoversClass(\Bristolian\Repo\RoomVideoTagRepo\InMemoryRoomVideoTagRepo::class)]
 class InMemoryRoomVideoTagRepoTest extends BaseTestCase
 {
     public function test_getTagIds_returns_empty_initially(): void

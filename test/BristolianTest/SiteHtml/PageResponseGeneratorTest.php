@@ -8,10 +8,9 @@ use Bristolian\SiteHtml\ExtraAssets;
 use Bristolian\SiteHtml\PageResponseGenerator;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ResponseFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\SiteHtml\PageResponseGenerator
- */
+#[CoversClass(\Bristolian\SiteHtml\PageResponseGenerator::class)]
 class PageResponseGeneratorTest extends BaseTestCase
 {
     public function testCreatePageWithStatusCode200()

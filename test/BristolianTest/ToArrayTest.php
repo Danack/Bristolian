@@ -3,7 +3,6 @@
 namespace BristolianTest;
 
 /**
- * @coversNothing
  *
  *
  */
@@ -15,10 +14,11 @@ use BristolianTest\TestFixtures\ToArrayClassWithSkippedProperty;
 use BristolianTest\TestFixtures\ToArrayClassWithUnsupportedProperty;
 use Bristolian\Exception\BristolianException;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  */
+#[CoversNothing]
 class ToArrayTest extends BaseTestCase
 {
     /**

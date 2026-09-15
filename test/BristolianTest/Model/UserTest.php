@@ -5,10 +5,9 @@ namespace BristolianTest\Model;
 use BristolianTest\BaseTestCase;
 use BristolianGenerated\Model\User;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class UserTest extends BaseTestCase
 {
     /**

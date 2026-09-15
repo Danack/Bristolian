@@ -19,10 +19,9 @@ use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use SlimDispatcher\Response\StubResponse;
 use function Safe\getimagesize;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class HandleAvatarUploadTest extends BaseTestCase
 {
     /**

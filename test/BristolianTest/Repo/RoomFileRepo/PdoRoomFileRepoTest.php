@@ -18,11 +18,12 @@ use BristolianGenerated\Model\Room;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
 use function Safe\filesize;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoRoomFileRepoTest extends RoomFileRepoFixture
 {
     use HasTestWorld;

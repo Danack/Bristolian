@@ -5,10 +5,9 @@ namespace BristolianTest\Basic;
 use Bristolian\Basic\FakeErrorLogger;
 
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeErrorLoggerTest extends BaseTestCase
 {
     /**

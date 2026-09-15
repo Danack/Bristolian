@@ -11,10 +11,9 @@ use BristolianTest\BaseTestCase;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class UserSessionFileUploadHandlerTest extends BaseTestCase
 {
     /**

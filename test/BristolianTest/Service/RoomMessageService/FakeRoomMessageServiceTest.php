@@ -8,10 +8,9 @@ use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\Service\RoomMessageService\FakeRoomMessageService;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeRoomMessageServiceTest extends BaseTestCase
 {
     /**

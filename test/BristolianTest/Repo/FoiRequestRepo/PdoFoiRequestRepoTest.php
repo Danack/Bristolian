@@ -9,11 +9,12 @@ use Bristolian\Parameters\FoiRequestParams;
 use Bristolian\Repo\FoiRequestRepo\FoiRequestRepo;
 use Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoFoiRequestRepoTest extends FoiRequestRepoFixture
 {
     public function getTestInstance(): FoiRequestRepo

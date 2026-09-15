@@ -7,10 +7,9 @@ use BristolianTest\BaseTestCase;
 use Bristolian\Parameters\ProcessRule\RandomPasswordIfNullOrEmpty;
 use DataType\DataStorage\TestArrayDataStorage;
 use DataType\ProcessedValues;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class RandomPasswordIfNullOrEmptyTest extends BaseTestCase
 {
     /**

@@ -4,12 +4,13 @@ namespace BristolianTest\Model\TinnedFish;
 
 use Bristolian\Model\TinnedFish\Copyright;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Tests for Copyright model
  *
- * @covers \Bristolian\Model\TinnedFish\Copyright
  */
+#[CoversClass(\Bristolian\Model\TinnedFish\Copyright::class)]
 class CopyrightTest extends BaseTestCase
 {
     /**

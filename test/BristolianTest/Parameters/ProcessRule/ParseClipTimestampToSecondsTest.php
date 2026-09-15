@@ -9,10 +9,9 @@ use DataType\DataStorage\TestArrayDataStorage;
 use DataType\ProcessedValues;
 use Bristolian\Parameters\ProcessRule\ParseClipTimestampToSeconds;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ParseClipTimestampToSecondsTest extends BaseTestCase
 {
     public static function provides_valid_time_inputs(): \Generator

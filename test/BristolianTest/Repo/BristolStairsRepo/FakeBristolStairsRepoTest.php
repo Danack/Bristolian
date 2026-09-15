@@ -12,14 +12,15 @@ use Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo;
 use BristolianGenerated\Model\BristolStairInfo;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * Tests for FakeBristolStairsRepo
  *
  * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo
  * @group standard_repo
- * @coversNothing
  */
+#[CoversNothing]
 class FakeBristolStairsRepoTest extends BristolStairsRepoFixture
 {
     /**

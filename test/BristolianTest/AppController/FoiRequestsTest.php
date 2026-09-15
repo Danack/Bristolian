@@ -12,10 +12,9 @@ use BristolianTest\BaseTestCase;
 use SlimDispatcher\Response\RedirectResponse;
 use VarMap\ArrayVarMap;
 use VarMap\VarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FoiRequestsTest extends BaseTestCase
 {
     public function setup(): void

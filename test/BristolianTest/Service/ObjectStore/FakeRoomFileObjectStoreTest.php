@@ -5,10 +5,9 @@ namespace BristolianTest\Service\ObjectStore;
 use BristolianTest\BaseTestCase;
 use Bristolian\Service\ObjectStore\FakeRoomFileObjectStore;
 use BristolianTest\Repo\TestPlaceholders;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeRoomFileObjectStoreTest extends BaseTestCase
 {
     use TestPlaceholders;

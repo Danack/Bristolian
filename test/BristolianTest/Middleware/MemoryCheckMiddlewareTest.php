@@ -6,10 +6,9 @@ use BristolianTest\BaseTestCase;
 use Bristolian\Middleware\MemoryCheckMiddleware;
 use Bristolian\Service\MemoryWarningCheck\FakeMemoryWarningCheck;
 use Laminas\Diactoros\ServerRequest;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class MemoryCheckMiddlewareTest extends BaseTestCase
 {
     /**

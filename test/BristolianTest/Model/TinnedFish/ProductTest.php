@@ -8,10 +8,9 @@ use Bristolian\Model\TinnedFish\Product;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ProductTest extends BaseTestCase
 {
     /**

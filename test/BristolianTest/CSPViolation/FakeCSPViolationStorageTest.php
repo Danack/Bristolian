@@ -6,10 +6,9 @@ use BristolianTest\BaseTestCase;
 use Bristolian\CSPViolation\FakeCSPViolationStorage;
 use BristolianTest\Repo\TestPlaceholders;
 use Bristolian\CSPViolation\CSPViolationStorage;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\CSPViolation\FakeCSPViolationStorage
- */
+#[CoversClass(\Bristolian\CSPViolation\FakeCSPViolationStorage::class)]
 class FakeCSPViolationStorageTest extends BaseTestCase
 {
     use TestPlaceholders;

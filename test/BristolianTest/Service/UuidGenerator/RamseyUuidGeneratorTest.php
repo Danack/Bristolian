@@ -6,10 +6,9 @@ namespace BristolianTest\Service\UuidGenerator;
 
 use Bristolian\Service\UuidGenerator\RamseyUuidGenerator;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class RamseyUuidGeneratorTest extends BaseTestCase
 {
     /**

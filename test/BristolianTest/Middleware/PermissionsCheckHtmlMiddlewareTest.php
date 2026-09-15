@@ -11,10 +11,9 @@ use Laminas\Diactoros\ServerRequest;
 use Bristolian\Exception\InvalidPermissionsException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Middleware\PermissionsCheckHtmlMiddleware
- */
+#[CoversClass(\Bristolian\Middleware\PermissionsCheckHtmlMiddleware::class)]
 class PermissionsCheckHtmlMiddlewareTest extends BaseTestCase
 {
     public function testWorks_standard_get()

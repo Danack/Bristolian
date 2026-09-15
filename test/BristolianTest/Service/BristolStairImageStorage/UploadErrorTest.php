@@ -6,10 +6,9 @@ namespace BristolianTest\Service\BristolStairImageStorage;
 
 use Bristolian\Service\BristolStairImageStorage\UploadError;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class UploadErrorTest extends BaseTestCase
 {
     /**

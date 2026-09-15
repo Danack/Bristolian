@@ -11,11 +11,12 @@ use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\Service\UuidGenerator\FixedUuidGenerator;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoRoomFileObjectInfoRepoTest extends RoomFileObjectInfoRepoFixture
 {
     public function getTestInstance(): RoomFileObjectInfoRepo

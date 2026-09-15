@@ -8,10 +8,9 @@ use Bristolian\AppController\Docs;
 use Bristolian\Session\UserSession;
 use Bristolian\Session\FakeUserSession;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class DocsTest extends BaseTestCase
 {
     /**

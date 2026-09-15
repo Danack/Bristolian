@@ -8,10 +8,9 @@ use Bristolian\Parameters\ProcessRule\PhpEnum;
 use DataType\DataStorage\TestArrayDataStorage;
 use DataType\Messages;
 use DataType\ProcessedValues;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class PhpEnumTest extends BaseTestCase
 {
     /**

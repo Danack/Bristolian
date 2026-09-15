@@ -8,10 +8,9 @@ use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Repo\RoomNoteRepo\FakeRoomNoteRepo;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeRoomNoteRepoTest extends BaseTestCase
 {
     /**

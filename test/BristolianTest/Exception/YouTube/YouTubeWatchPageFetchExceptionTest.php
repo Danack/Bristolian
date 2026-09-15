@@ -7,10 +7,9 @@ namespace BristolianTest\Exception\YouTube;
 use Bristolian\Exception\BristolianException;
 use Bristolian\Exception\YouTube\YouTubeWatchPageFetchException;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Exception\YouTube\YouTubeWatchPageFetchException
- */
+#[CoversClass(\Bristolian\Exception\YouTube\YouTubeWatchPageFetchException::class)]
 class YouTubeWatchPageFetchExceptionTest extends BaseTestCase
 {
     public function test_fromUrlFailure_returns_exception_with_message_and_previous(): void

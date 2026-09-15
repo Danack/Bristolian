@@ -5,10 +5,9 @@ namespace BristolianTest\Response\TinnedFish;
 use Bristolian\Response\TinnedFish\ProductNotFoundResponse;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\TinnedFish\ProductNotFoundResponse
- */
+#[CoversClass(\Bristolian\Response\TinnedFish\ProductNotFoundResponse::class)]
 class ProductNotFoundResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns404()

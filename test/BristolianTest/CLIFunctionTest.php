@@ -7,10 +7,9 @@ namespace BristolianTest;
 use Bristolian\CLIFunction;
 use ErrorException;
 use function Safe\exec;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class CLIFunctionTest extends BaseTestCase
 {
     /**

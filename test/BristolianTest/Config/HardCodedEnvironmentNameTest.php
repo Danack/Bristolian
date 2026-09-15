@@ -4,10 +4,9 @@ namespace BristolianTest\Config;
 
 use Bristolian\Config\HardCodedEnvironmentName;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Config\HardCodedEnvironmentName
- */
+#[CoversClass(\Bristolian\Config\HardCodedEnvironmentName::class)]
 class HardCodedEnvironmentNameTest extends BaseTestCase
 {
     public function test_returns_environment_name_for_email_subject(): void

@@ -8,10 +8,9 @@ use BristolianTest\Repo\TestPlaceholders;
 use VarMap\ArrayVarMap;
 use Bristolian\CSPViolation\CSPViolationStorage;
 use Bristolian\CSPViolation\FakeCSPViolationStorage;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\ApiController\Csp
- */
+#[CoversClass(\Bristolian\ApiController\Csp::class)]
 class CspTest extends BaseTestCase
 {
     use TestPlaceholders;

@@ -6,10 +6,9 @@ namespace UrlFetcherTest;
 
 use BristolianTest\BaseTestCase;
 use UrlFetcher\UrlFetcherException;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class UrlFetcherExceptionTest extends BaseTestCase
 {
     /**

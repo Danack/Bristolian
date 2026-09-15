@@ -6,10 +6,9 @@ use BristolianTest\BaseTestCase;
 use Bristolian\Config\Config;
 use Bristolian\Data\DatabaseUserConfig;
 use Bristolian\Config\RedisConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Config\Config
- */
+#[CoversClass(\Bristolian\Config\Config::class)]
 class ConfigTest extends BaseTestCase
 {
     public function testWorks()

@@ -5,11 +5,12 @@ namespace BristolianTest\Repo\MoonAlertRunTimeRecorder;
 use Bristolian\Repo\RunTimeRecorderRepo\PdoMoonAlertRunTimeRecorder;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  * @group db
  */
+#[CoversNothing]
 class PdoMoonAlertRunTimeRecorderTest extends BaseTestCase
 {
     use TestPlaceholders;

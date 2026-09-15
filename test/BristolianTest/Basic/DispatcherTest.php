@@ -7,10 +7,9 @@ use Bristolian\Basic\Dispatcher;
 use DI\Injector;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Response;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class DispatcherTest extends BaseTestCase
 {
     /**

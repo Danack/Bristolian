@@ -5,10 +5,9 @@ namespace BristolianTest\Response\TinnedFish;
 use Bristolian\Response\TinnedFish\InvalidBarcodeResponse;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\TinnedFish\InvalidBarcodeResponse
- */
+#[CoversClass(\Bristolian\Response\TinnedFish\InvalidBarcodeResponse::class)]
 class InvalidBarcodeResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns400()

@@ -9,10 +9,9 @@ use Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme;
 use Bristolian\Service\MemeStorageProcessor\UploadError;
 use Bristolian\Service\MemeStorageProcessor\UploadMemeResult;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class UploadMemeResultTest extends BaseTestCase
 {
     /**

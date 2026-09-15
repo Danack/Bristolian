@@ -7,10 +7,9 @@ namespace BristolianTest\Parameters;
 use Bristolian\Parameters\CreateRoomNoteParam;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class CreateRoomNoteParamTest extends BaseTestCase
 {
     /**

@@ -6,10 +6,9 @@ namespace BristolianTest\Parameters;
 
 use Bristolian\Parameters\SupervisordProgramParams;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class SupervisordProgramParamsTest extends BaseTestCase
 {
     /**

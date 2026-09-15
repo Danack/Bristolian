@@ -8,10 +8,9 @@ use Bristolian\Service\AvatarImageStorage\FakeAvatarImageStorage;
 use Bristolian\Service\AvatarImageStorage\UploadError;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeAvatarImageStorageTest extends BaseTestCase
 {
     /**

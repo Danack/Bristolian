@@ -16,10 +16,9 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Session\FakeAsmSession;
 use VarMap\ArrayVarMap;
 use VarMap\VarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ChatTest extends BaseTestCase
 {
     public function setup(): void

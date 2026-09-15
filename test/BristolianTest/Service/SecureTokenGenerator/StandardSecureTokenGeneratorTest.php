@@ -6,10 +6,9 @@ namespace BristolianTest\Service\SecureTokenGenerator;
 
 use Bristolian\Service\SecureTokenGenerator\RandomBytesSecureTokenGenerator;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class StandardSecureTokenGeneratorTest extends BaseTestCase
 {
     /**

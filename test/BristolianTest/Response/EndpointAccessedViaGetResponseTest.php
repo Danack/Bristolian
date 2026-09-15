@@ -4,10 +4,9 @@ namespace BristolianTest\Response;
 
 use Bristolian\Response\EndpointAccessedViaGetResponse;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\EndpointAccessedViaGetResponse
- */
+#[CoversClass(\Bristolian\Response\EndpointAccessedViaGetResponse::class)]
 class EndpointAccessedViaGetResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns405()

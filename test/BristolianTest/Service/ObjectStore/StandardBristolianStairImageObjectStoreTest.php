@@ -12,12 +12,13 @@ use function Safe\file_get_contents;
 use function Safe\mkdir;
 use function Safe\rmdir;
 use function Safe\unlink;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * Unit test for StandardBristolianStairImageObjectStore using a local filesystem (no external storage).
  *
- * @coversNothing
  */
+#[CoversNothing]
 class StandardBristolianStairImageObjectStoreTest extends BaseTestCase
 {
     private ?string $testDir = null;

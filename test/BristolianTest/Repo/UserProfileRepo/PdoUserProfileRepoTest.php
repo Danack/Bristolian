@@ -9,11 +9,12 @@ use Bristolian\Parameters\UserProfileUpdateParams;
 use Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo;
 use Bristolian\Repo\UserProfileRepo\UserProfileRepo;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoUserProfileRepoTest extends UserProfileRepoFixture
 {
     private ?string $cachedTestUserId = null;

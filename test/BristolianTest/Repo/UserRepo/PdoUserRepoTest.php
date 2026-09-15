@@ -10,11 +10,12 @@ use Bristolian\Repo\UserRepo\UserRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use PDO;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 final class PdoUserRepoTest extends BaseTestCase
 {
     use TestPlaceholders;

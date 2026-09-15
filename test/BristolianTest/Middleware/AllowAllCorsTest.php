@@ -5,10 +5,9 @@ namespace BristolianTest\Middleware;
 use BristolianTest\BaseTestCase;
 use Bristolian\Middleware\AllowAllCors;
 use Laminas\Diactoros\ServerRequest;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class AllowAllCorsTest extends BaseTestCase
 {
     /**

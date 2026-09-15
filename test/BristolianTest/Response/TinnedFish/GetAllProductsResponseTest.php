@@ -8,10 +8,9 @@ use Bristolian\Response\TinnedFish\GetAllProductsResponse;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\TinnedFish\GetAllProductsResponse
- */
+#[CoversClass(\Bristolian\Response\TinnedFish\GetAllProductsResponse::class)]
 class GetAllProductsResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns200()

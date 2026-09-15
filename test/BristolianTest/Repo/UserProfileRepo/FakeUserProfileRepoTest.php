@@ -8,11 +8,12 @@ use Bristolian\Parameters\UserProfileUpdateParams;
 use Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo;
 use Bristolian\Repo\UserProfileRepo\UserProfileRepo;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group standard_repo
- * @coversNothing
  */
+#[CoversNothing]
 class FakeUserProfileRepoTest extends UserProfileRepoFixture
 {
     public function getTestInstance(): UserProfileRepo

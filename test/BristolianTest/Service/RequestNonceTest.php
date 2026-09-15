@@ -4,10 +4,9 @@ namespace BristolianTest\Service;
 
 use Bristolian\Service\RequestNonce;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Service\RequestNonce
- */
+#[CoversClass(\Bristolian\Service\RequestNonce::class)]
 class RequestNonceTest extends BaseTestCase
 {
     public function testWorks()

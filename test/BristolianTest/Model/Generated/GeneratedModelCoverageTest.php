@@ -47,12 +47,13 @@ use Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo;
 use function createBlankUserProfileForUserId;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * Minimal coverage tests for auto-generated Model classes.
  *
- * @coversNothing
  */
+#[CoversNothing]
 class GeneratedModelCoverageTest extends BaseTestCase
 {
     private static function now(): DateTimeImmutable

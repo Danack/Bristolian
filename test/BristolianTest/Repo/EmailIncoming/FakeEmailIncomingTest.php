@@ -8,11 +8,12 @@ use Bristolian\Model\Types\IncomingEmailParam;
 use Bristolian\Repo\EmailIncoming\EmailIncoming;
 use Bristolian\Repo\EmailIncoming\FakeEmailIncoming;
 use function Safe\json_encode;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  * @group standard_repo
  */
+#[CoversNothing]
 class FakeEmailIncomingTest extends EmailIncomingFixture
 {
     public function getTestInstance(): EmailIncoming

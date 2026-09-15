@@ -7,10 +7,9 @@ namespace BristolianTest\Parameters;
 use Bristolian\Parameters\FoiRequestParams;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FoiRequestParamTest extends BaseTestCase
 {
     /**

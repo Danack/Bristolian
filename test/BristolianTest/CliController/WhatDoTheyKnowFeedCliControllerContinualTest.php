@@ -12,12 +12,13 @@ use Bristolian\Service\RoomMessageService\FakeRoomMessageService;
 use Bristolian\Service\WhatDoTheyKnowFeedFetcher\FakeWhatDoTheyKnowFeedFetcherReturningJson;
 use BristolianTest\BaseTestCase;
 use function Safe\file_get_contents;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * continualExecuteCallable() writes to stdout; BaseTestCase teardown forbids any output, so these tests use TestCase.
  *
- * @coversNothing
  */
+#[CoversNothing]
 final class WhatDoTheyKnowFeedCliControllerContinualTest extends BaseTestCase
 {
     private function expectContinuallyExecuteCallableStdout(): void

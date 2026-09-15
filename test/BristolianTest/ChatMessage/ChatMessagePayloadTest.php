@@ -10,10 +10,9 @@ use Bristolian\Model\Chat\SystemChatMessage;
 use Bristolian\Model\Chat\UserChatMessage;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ChatMessagePayloadTest extends BaseTestCase
 {
     /**

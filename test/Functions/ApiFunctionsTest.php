@@ -8,10 +8,9 @@ use Laminas\Diactoros\Response;
 use Bristolian\Parameters\LinkParam;
 use VarMap\ArrayVarMap;
 use DataType\Exception\Runtime\ValidationException;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ApiFunctionsTest extends BaseTestCase
 {
 

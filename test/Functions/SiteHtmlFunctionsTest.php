@@ -3,11 +3,12 @@
 namespace Functions;
 
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  * @TODO - these tests could really do with some assertions.
  */
+#[CoversNothing]
 class SiteHtmlFunctionsTest extends BaseTestCase
 {
     /**

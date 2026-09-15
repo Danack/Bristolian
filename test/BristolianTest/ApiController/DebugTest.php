@@ -9,10 +9,9 @@ use Bristolian\ApiController\Debug;
 use SlimDispatcher\Response\JsonResponse;
 use PHPUnit\Framework\Attributes\Group;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\ApiController\Debug
- */
+#[CoversClass(\Bristolian\ApiController\Debug::class)]
 class DebugTest extends BaseTestCase
 {
     public function testWorks()

@@ -17,10 +17,9 @@ use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
 use BristolianTest\BaseTestCase;
 use SlimDispatcher\Response\StubResponse;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class HandleRoomFileUploadTest extends BaseTestCase
 {
     /**

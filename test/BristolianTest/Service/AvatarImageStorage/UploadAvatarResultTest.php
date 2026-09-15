@@ -8,10 +8,9 @@ use Bristolian\Response\UploadAvatarErrorResponse;
 use Bristolian\Service\AvatarImageStorage\UploadAvatarResult;
 use Bristolian\Service\AvatarImageStorage\UploadError;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class UploadAvatarResultTest extends BaseTestCase
 {
     /**

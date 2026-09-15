@@ -4,10 +4,9 @@ namespace BristolianTest\Service\MemeStorageProcessor;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme
- */
+#[CoversClass(\Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme::class)]
 class ObjectStoredMemeTest extends BaseTestCase
 {
     public function testWorks()

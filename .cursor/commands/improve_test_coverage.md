@@ -51,7 +51,7 @@ Create test files following the project's testing guidelines:
 - Follow existing test patterns and structure
 - Use real objects, not mocks (per project guidelines)
 - Test all uncovered methods and code paths
-- Include `@covers` annotations, preferably coversNothing for the test class, with individual covers per test method.
+- Include a class-level `#[CoversNothing]` (or `#[CoversClass(...)]` when intentional). Optional method-level `@covers` for precise attribution.
 
 ### Step 6: Verify Coverage Improvement
 

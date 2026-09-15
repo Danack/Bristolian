@@ -7,10 +7,9 @@ namespace BristolianTest\Service\TinnedFish;
 use Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher;
 use Bristolian\Service\TinnedFish\OpenFoodFactsApiException;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeOpenFoodFactsFetcherTest extends BaseTestCase
 {
     /**

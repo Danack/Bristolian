@@ -435,14 +435,14 @@ Production CLI binds **`EchoCliOutput`** in `cli/cli_injection_params.php`. Test
 
 ### PHPUnit Coverage Annotations
 
-- **Test class:** Use `@coversNothing` on the class docblock. This prevents coverage from being attributed to the class as a whole.
-- **Each test method:** Add specific `@covers` annotations listing the classes/methods that test exercises. This ensures coverage is attributed correctly when tests run.
-- **Constructor coverage:** Always include coverage for the class constructor in the first test of the class. Add `@covers \Full\Class\Name::__construct` to that test’s docblock so the constructor is included in coverage. Example: `test/BristolianTest/Service/BccTroFetcher/StandardBccTroFetcherTest.php` (first test covers `StandardBccTroFetcher::__construct`).
+- **Test class (required):** Declare a class-level PHPUnit coverage attribute. Prefer `#[CoversNothing]` so coverage is not attributed by accident. Use `#[CoversClass(...)]` (or another `Covers*` attribute) only when the whole class intentionally covers specific code. Enforced by PHPStan (`TestClassRequiresCoversAttributeRule`).
+- **Test methods (optional):** Add `@covers` docblocks or method-level coverage attributes for the classes/methods a test exercises when you want precise coverage attribution.
+- **Constructor coverage:** When using method-level covers, include the class constructor in the first test (`@covers \Full\Class\Name::__construct`). Example: `test/BristolianTest/Service/BccTroFetcher/StandardBccTroFetcherTest.php`.
 - **Example:**
   ```php
-  /**
-   * @coversNothing
-   */
+  use PHPUnit\Framework\Attributes\CoversNothing;
+
+  #[CoversNothing]
   class BarcodeLookupParamsTest extends BaseTestCase
   {
       /**

@@ -9,10 +9,9 @@ use Bristolian\Service\ChatMessageService\StandardChatMessageService;
 use Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class StandardChatMessageServiceTest extends BaseTestCase
 {
     /**

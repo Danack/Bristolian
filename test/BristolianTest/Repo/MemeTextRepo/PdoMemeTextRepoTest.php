@@ -11,11 +11,12 @@ use Bristolian\Repo\MemeTextRepo\MemeTextRepo;
 use Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo;
 use BristolianTest\Repo\DbTransactionIsolation;
 use Bristolian\UploadedFiles\UploadedFile;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoMemeTextRepoTest extends MemeTextRepoFixture
 {
 //    use DbTransactionIsolation;

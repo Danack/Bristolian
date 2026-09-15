@@ -4,10 +4,9 @@ namespace BristolianTest;
 
 use Bristolian\Page;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class PageTest extends BaseTestCase
 {
     private const DEFAULT_QR_MESSAGE = "Show this QR code to someone, and they can scan it with the camera in their device";

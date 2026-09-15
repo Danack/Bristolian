@@ -2,6 +2,7 @@
 
 namespace Functions;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Bristolian\App;
 use Bristolian\Config\Config;
 use Bristolian\Data\DatabaseUserConfig;
@@ -69,9 +70,7 @@ class AppSessionManagerReturnsSession extends \Bristolian\Session\AppSessionMana
     }
 }
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FactoriesFunctionsTest extends BaseTestCase
 {
     /**

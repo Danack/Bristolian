@@ -7,10 +7,9 @@ namespace BristolianTest\Exception;
 use Bristolian\Exception\BristolianException;
 use Bristolian\Exception\UnauthorisedException;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Exception\UnauthorisedException
- */
+#[CoversClass(\Bristolian\Exception\UnauthorisedException::class)]
 class UnauthorisedExceptionTest extends BaseTestCase
 {
     public function test_extends_bristolian_exception_and_carries_message(): void

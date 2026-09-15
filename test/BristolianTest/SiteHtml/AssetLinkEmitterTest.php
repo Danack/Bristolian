@@ -5,10 +5,9 @@ namespace BristolianTest\SiteHtml;
 use Bristolian\SiteHtml\AssetLinkEmitter;
 use Bristolian\Config\HardCodedAssetLinkConfig;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class AssetLinkEmitterTest extends BaseTestCase
 {
     /**

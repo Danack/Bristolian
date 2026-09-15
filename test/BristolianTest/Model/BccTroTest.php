@@ -5,10 +5,9 @@ namespace BristolianTest\Model;
 use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Model\Types\BccTro
- */
+#[CoversClass(\Bristolian\Model\Types\BccTro::class)]
 class BccTroTest extends BaseTestCase
 {
     public function testConstruct(): void

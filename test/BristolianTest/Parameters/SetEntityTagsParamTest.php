@@ -7,10 +7,9 @@ namespace BristolianTest\Parameters;
 use Bristolian\Parameters\SetEntityTagsParam;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class SetEntityTagsParamTest extends BaseTestCase
 {
     /**

@@ -17,10 +17,9 @@ use Bristolian\Repo\DbInfo\FakeDbInfo;
 use Bristolian\CSPViolation\CSPViolationStorage;
 use Bristolian\CSPViolation\FakeCSPViolationStorage;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class SystemTest extends BaseTestCase
 {
     /**

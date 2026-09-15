@@ -8,11 +8,12 @@ use Bristolian\Model\Types\AvatarImageFile;
 use Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo;
 use Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo;
 use Bristolian\UploadedFiles\UploadedFile;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group standard_repo
- * @coversNothing
  */
+#[CoversNothing]
 class FakeAvatarImageStorageInfoRepoTest extends AvatarImageStorageInfoRepoFixture
 {
     public function getTestInstance(): AvatarImageStorageInfoRepo

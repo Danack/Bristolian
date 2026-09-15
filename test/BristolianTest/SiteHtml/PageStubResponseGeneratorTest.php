@@ -8,10 +8,9 @@ use Bristolian\SiteHtml\ExtraAssets;
 use Bristolian\SiteHtml\PageStubResponseGenerator;
 use BristolianTest\BaseTestCase;
 use SlimDispatcher\Response\HtmlResponse;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\SiteHtml\PageStubResponseGenerator
- */
+#[CoversClass(\Bristolian\SiteHtml\PageStubResponseGenerator::class)]
 class PageStubResponseGeneratorTest extends BaseTestCase
 {
     public function testCreate404Page()

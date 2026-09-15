@@ -11,10 +11,9 @@ use Laminas\Diactoros\Request;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class StringToHtmlPageConverterTest extends BaseTestCase
 {
     /**

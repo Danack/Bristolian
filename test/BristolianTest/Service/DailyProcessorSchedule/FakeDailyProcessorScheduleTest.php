@@ -7,10 +7,9 @@ namespace BristolianTest\Service\DailyProcessorSchedule;
 use Bristolian\Service\DailyProcessorSchedule\FakeDailyProcessorSchedule;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeDailyProcessorScheduleTest extends BaseTestCase
 {
     /**

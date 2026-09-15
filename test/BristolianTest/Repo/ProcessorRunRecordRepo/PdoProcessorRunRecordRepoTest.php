@@ -9,11 +9,12 @@ use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use BristolianGenerated\Model\ProcessorRunRecord;
 use BristolianTest\Repo\DbTransactionIsolation;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
 {
 //    use DbTransactionIsolation;

@@ -5,10 +5,9 @@ namespace BristolianTest\Response;
 use Bristolian\Response\SuccessResponse;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\SuccessResponse
- */
+#[CoversClass(\Bristolian\Response\SuccessResponse::class)]
 class SuccessResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns200()

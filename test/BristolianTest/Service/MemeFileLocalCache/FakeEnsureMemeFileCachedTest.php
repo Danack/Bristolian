@@ -16,10 +16,9 @@ use function Safe\mkdir;
 use function Safe\rmdir;
 use function Safe\scandir;
 use function Safe\unlink;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeEnsureMemeFileCachedTest extends BaseTestCase
 {
     /**

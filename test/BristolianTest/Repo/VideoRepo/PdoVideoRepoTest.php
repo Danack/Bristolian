@@ -10,11 +10,12 @@ use Bristolian\Repo\VideoRepo\PdoVideoRepo;
 use Bristolian\Repo\VideoRepo\VideoRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Support\HasTestWorld;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoVideoRepoTest extends BaseTestCase
 {
     use HasTestWorld;

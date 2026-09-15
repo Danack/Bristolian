@@ -7,10 +7,9 @@ use Bristolian\Response\GetChatRoomMessagesResponse;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\GetChatRoomMessagesResponse
- */
+#[CoversClass(\Bristolian\Response\GetChatRoomMessagesResponse::class)]
 class GetChatRoomMessagesResponseTest extends BaseTestCase
 {
     private static function message(int $id, string $text, string $userId = 'user-1', string $roomId = 'room-1', ?int $replyMessageId = null): UserChatMessage

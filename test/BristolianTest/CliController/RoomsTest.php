@@ -29,10 +29,9 @@ use Bristolian\Service\RoomFileStorage\UploadError;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class RoomsTest extends BaseTestCase
 {
     private function adminUserForCli(): AdminUser

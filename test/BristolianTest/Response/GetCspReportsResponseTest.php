@@ -6,10 +6,9 @@ use Bristolian\Exception\DataEncodingException;
 use Bristolian\Response\GetCspReportsResponse;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\GetCspReportsResponse
- */
+#[CoversClass(\Bristolian\Response\GetCspReportsResponse::class)]
 class GetCspReportsResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns200()

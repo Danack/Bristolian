@@ -4,10 +4,9 @@ namespace BristolianTest\Service\FileStorageProcessor;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Service\FileStorageProcessor\ObjectStoredFileInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Service\FileStorageProcessor\ObjectStoredFileInfo
- */
+#[CoversClass(\Bristolian\Service\FileStorageProcessor\ObjectStoredFileInfo::class)]
 class ObjectStoredFileInfoTest extends BaseTestCase
 {
     public function testWorks()

@@ -6,10 +6,9 @@ use Bristolian\Response\ValidationErrorResponse;
 use BristolianTest\BaseTestCase;
 use DataType\ValidationProblem;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\ValidationErrorResponse
- */
+#[CoversClass(\Bristolian\Response\ValidationErrorResponse::class)]
 class ValidationErrorResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns400()

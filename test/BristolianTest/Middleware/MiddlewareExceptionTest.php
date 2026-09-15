@@ -5,10 +5,9 @@ namespace BristolianTest\Middleware;
 use BristolianTest\BaseTestCase;
 use Bristolian\Middleware\MiddlewareException;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class MiddlewareExceptionTest extends BaseTestCase
 {
     public static function provides_works()

@@ -8,11 +8,12 @@ use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;
 use Bristolian\Repo\BccTroRepo\BccTroRepo;
 use Bristolian\Repo\BccTroRepo\FakeBccTroRepo;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group standard_repo
- * @coversNothing
  */
+#[CoversNothing]
 class FakeBccTroRepoTest extends BccTroRepoFixture
 {
     public function getTestInstance(): BccTroRepo

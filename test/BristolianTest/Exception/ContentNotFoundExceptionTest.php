@@ -4,10 +4,9 @@ namespace BristolianTest\Exception;
 
 use Bristolian\Exception\ContentNotFoundException;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ContentNotFoundExceptionTest extends BaseTestCase
 {
     /**

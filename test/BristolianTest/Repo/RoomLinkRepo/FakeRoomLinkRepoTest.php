@@ -14,11 +14,12 @@ use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group standard_repo
- * @coversNothing
  */
+#[CoversNothing]
 class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
 {
     use TestPlaceholders;

@@ -6,10 +6,9 @@ namespace BristolianTest\Repo\RoomNoteTagRepo;
 
 use Bristolian\Repo\RoomNoteTagRepo\FakeRoomNoteTagRepo;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeRoomNoteTagRepoTest extends BaseTestCase
 {
     /**

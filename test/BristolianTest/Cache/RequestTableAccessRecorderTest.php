@@ -7,10 +7,9 @@ namespace BristolianTest\Cache;
 use Bristolian\Cache\RequestTableAccessRecorder;
 use PHPUnit\Framework\TestCase;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Cache\RequestTableAccessRecorder
- */
+#[CoversClass(\Bristolian\Cache\RequestTableAccessRecorder::class)]
 class RequestTableAccessRecorderTest extends BaseTestCase
 {
     public function testRecordTablesReadSingle(): void

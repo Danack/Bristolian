@@ -5,10 +5,9 @@ namespace BristolianTest\Session;
 use BristolianTest\BaseTestCase;
 use Bristolian\Session\StandardOptionalUserSession;
 use Bristolian\Session\AppSession;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Session\StandardOptionalUserSession
- */
+#[CoversClass(\Bristolian\Session\StandardOptionalUserSession::class)]
 class StandardOptionalUserSessionTest extends BaseTestCase
 {
     // Technically, I don't like mocks, but also, I am lazy.

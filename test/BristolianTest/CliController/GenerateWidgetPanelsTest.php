@@ -7,10 +7,9 @@ namespace BristolianTest\CliController;
 use Bristolian\CliController\GenerateFiles;
 use BristolianTest\BaseTestCase;
 use function Safe\file_get_contents;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class GenerateWidgetPanelsTest extends BaseTestCase
 {
     /**

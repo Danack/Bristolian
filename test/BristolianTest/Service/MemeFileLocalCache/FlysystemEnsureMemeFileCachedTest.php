@@ -18,10 +18,9 @@ use function Safe\mkdir;
 use function Safe\rmdir;
 use function Safe\scandir;
 use function Safe\unlink;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Service\MemeFileLocalCache\FlysystemEnsureMemeFileCached
- */
+#[CoversClass(\Bristolian\Service\MemeFileLocalCache\FlysystemEnsureMemeFileCached::class)]
 class FlysystemEnsureMemeFileCachedTest extends BaseTestCase
 {
     public function test_success_when_file_already_in_cache(): void

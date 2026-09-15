@@ -10,11 +10,12 @@ use Bristolian\Model\Types\Email;
 use Bristolian\Repo\EmailQueue\EmailQueue;
 use Bristolian\Repo\EmailQueue\FakeEmailQueue;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  * @group standard_repo
  */
+#[CoversNothing]
 class FakeEmailQueueTest extends EmailQueueFixture
 {
     public function getTestInstance(EnvironmentName $environmentName): EmailQueue

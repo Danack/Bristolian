@@ -6,10 +6,9 @@ namespace BristolianChatTest\ClientHandler;
 
 use BristolianChat\ClientHandler\FakeClientHandler;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeClientHandlerTest extends BaseTestCase
 {
     /**

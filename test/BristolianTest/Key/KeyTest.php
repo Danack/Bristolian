@@ -3,7 +3,9 @@
 namespace BristolianTest\Key;
 
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
+#[CoversNothing]
 class KeyTest extends BaseTestCase
 {
     /**

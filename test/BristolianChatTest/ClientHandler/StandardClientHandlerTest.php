@@ -13,10 +13,9 @@ use BristolianChatTest\Fixtures\Psr7UriForTests;
 use BristolianTest\BaseTestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class StandardClientHandlerTest extends BaseTestCase
 {
     /**

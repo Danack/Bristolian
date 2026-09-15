@@ -8,10 +8,9 @@ use Bristolian\Response\RoomFileUploadErrorResponse;
 use Bristolian\Service\RoomFileStorage\UploadError;
 use Bristolian\Service\RoomFileStorage\UploadRoomFileResult;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class UploadRoomFileResultTest extends BaseTestCase
 {
     /**

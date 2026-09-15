@@ -9,11 +9,12 @@ use BristolianGenerated\Model\Video;
 use Bristolian\Repo\VideoRepo\InMemoryVideoRepo;
 use PHPUnit\Framework\TestCase;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Bristolian\Repo\VideoRepo\InMemoryVideoRepo
  * @group standard_repo
  */
+#[CoversClass(\Bristolian\Repo\VideoRepo\InMemoryVideoRepo::class)]
 class InMemoryVideoRepoTest extends BaseTestCase
 {
     public function test_create_returns_id(): void

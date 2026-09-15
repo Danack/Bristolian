@@ -7,10 +7,9 @@ namespace BristolianTest\Exception\YouTube;
 use Bristolian\Exception\BristolianException;
 use Bristolian\Exception\YouTube\YouTubeNoCaptionTracksException;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Exception\YouTube\YouTubeNoCaptionTracksException
- */
+#[CoversClass(\Bristolian\Exception\YouTube\YouTubeNoCaptionTracksException::class)]
 class YouTubeNoCaptionTracksExceptionTest extends BaseTestCase
 {
     public function test_forVideo_returns_exception_with_expected_message(): void

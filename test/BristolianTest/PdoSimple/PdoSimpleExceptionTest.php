@@ -8,12 +8,13 @@ use Bristolian\PdoSimple\PdoSimpleWithPreviousException;
 use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\BaseTestCase;
 use Bristolian\PdoSimple\PdoSimpleException;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Bristolian\PdoSimple\PdoSimpleException
  * @covers \Bristolian\PdoSimple\PdoSimpleWithPreviousException
  * @group db
  */
+#[CoversClass(\Bristolian\PdoSimple\PdoSimpleException::class)]
 class PdoSimpleExceptionTest extends BaseTestCase
 {
     use TestPlaceholders;

@@ -18,10 +18,9 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Session\FakeAsmSession;
 use Laminas\Diactoros\ServerRequest;
 use SlimDispatcher\Response\RedirectResponse;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class LoginTest extends BaseTestCase
 {
     private function createSessionManager(FakeAsmDriver|null $driver = null): SessionManager

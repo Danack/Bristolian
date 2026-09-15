@@ -4,10 +4,9 @@ namespace BristolianTest\Session;
 
 use Bristolian\Session\FakeUserSession;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeUserSessionTest extends BaseTestCase
 {
     /**

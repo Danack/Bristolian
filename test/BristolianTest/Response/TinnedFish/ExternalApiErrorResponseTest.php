@@ -6,10 +6,9 @@ use Bristolian\Model\TinnedFish\ProductError;
 use Bristolian\Response\TinnedFish\ExternalApiErrorResponse;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\TinnedFish\ExternalApiErrorResponse
- */
+#[CoversClass(\Bristolian\Response\TinnedFish\ExternalApiErrorResponse::class)]
 class ExternalApiErrorResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns502()

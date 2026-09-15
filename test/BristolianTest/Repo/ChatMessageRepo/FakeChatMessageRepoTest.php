@@ -9,11 +9,12 @@ use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\Repo\ChatMessageRepo\ChatMessageRepo;
 use Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group standard_repo
- * @coversNothing
  */
+#[CoversNothing]
 class FakeChatMessageRepoTest extends ChatMessageRepoFixture
 {
     public function getTestInstance(): ChatMessageRepo

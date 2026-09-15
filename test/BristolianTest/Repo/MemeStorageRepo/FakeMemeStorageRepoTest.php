@@ -8,11 +8,12 @@ use Bristolian\Exception\BristolianException;
 use Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo;
 use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\UploadedFiles\UploadedFile;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group standard_repo
- * @coversNothing
  */
+#[CoversNothing]
 class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
 {
     /**

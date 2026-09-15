@@ -8,11 +8,12 @@ use BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher;
 use BristolianTest\BaseTestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  * @group db
  */
+#[CoversNothing]
 class SqlRoomMessagesWatcherTest extends BaseTestCase
 {
     /**

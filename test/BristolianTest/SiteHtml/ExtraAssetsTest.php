@@ -4,10 +4,9 @@ namespace BristolianTest\SiteHtml;
 
 use Bristolian\SiteHtml\ExtraAssets;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\SiteHtml\ExtraAssets
- */
+#[CoversClass(\Bristolian\SiteHtml\ExtraAssets::class)]
 class ExtraAssetsTest extends BaseTestCase
 {
     public function testAddCSS()

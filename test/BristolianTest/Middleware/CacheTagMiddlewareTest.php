@@ -13,10 +13,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\RequiresEnvironmentVariable;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Middleware\CacheTagMiddleware
- */
+#[CoversClass(\Bristolian\Middleware\CacheTagMiddleware::class)]
 class CacheTagMiddlewareTest extends BaseTestCase
 {
     private RequestTableAccessRecorder $recorder;

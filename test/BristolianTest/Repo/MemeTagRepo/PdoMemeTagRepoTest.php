@@ -11,11 +11,12 @@ use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\MemeTagUpdateParams;
 use Bristolian\UploadedFiles\UploadedFile;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoMemeTagRepoTest extends MemeTagRepoFixture
 {
     private ?string $testUserId = null;

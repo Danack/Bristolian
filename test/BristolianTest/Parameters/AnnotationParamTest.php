@@ -9,10 +9,9 @@ use Bristolian\Parameters\AnnotationParam;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class AnnotationParamTest extends BaseTestCase
 {
     /**

@@ -7,11 +7,12 @@ use Bristolian\Repo\EmailIncoming\PdoEmailIncoming;
 use Bristolian\Repo\EmailIncoming\EmailIncoming;
 use BristolianTest\Repo\TestPlaceholders;
 use function Safe\json_encode;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoEmailIncomingTest extends EmailIncomingFixture
 {
     use TestPlaceholders;

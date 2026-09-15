@@ -7,10 +7,9 @@ namespace BristolianTest\Parameters;
 use Bristolian\Parameters\CreateUserParams;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class CreateUserParamsTest extends BaseTestCase
 {
     /**

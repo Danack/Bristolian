@@ -6,10 +6,9 @@ namespace BristolianChatTest\RoomMessagesWatcher;
 
 use BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ThrowingRoomMessagesWatcherTest extends BaseTestCase
 {
     /**

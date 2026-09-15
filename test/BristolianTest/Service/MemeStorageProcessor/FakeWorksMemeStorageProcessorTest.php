@@ -9,10 +9,9 @@ use Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme;
 use Bristolian\Service\ObjectStore\FakeMemeObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeWorksMemeStorageProcessorTest extends BaseTestCase
 {
     /**

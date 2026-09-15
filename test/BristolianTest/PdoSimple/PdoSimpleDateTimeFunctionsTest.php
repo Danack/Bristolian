@@ -9,12 +9,13 @@ use Bristolian\Service\UuidGenerator\RamseyUuidGenerator;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @covers \Bristolian\PdoSimple\convertRowToDatetime
  * @covers \Bristolian\PdoSimple\convertRowFromDatetime
  * @group db
  */
+#[CoversNothing]
 class PdoSimpleDateTimeFunctionsTest extends BaseTestCase
 {
     use TestPlaceholders;

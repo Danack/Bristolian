@@ -17,11 +17,12 @@ use PHPUnit\Framework\TestCase;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo
  * @group standard_repo
  */
+#[CoversClass(\Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::class)]
 class InMemoryRoomVideoRepoTest extends BaseTestCase
 {
     private InMemoryRoomVideoTagRepo $roomVideoTagRepo;

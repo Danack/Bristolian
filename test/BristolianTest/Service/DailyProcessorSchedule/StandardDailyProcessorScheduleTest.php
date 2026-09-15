@@ -8,10 +8,9 @@ use Bristolian\Service\DailyProcessorSchedule\StandardDailyProcessorSchedule;
 use BristolianTest\BaseTestCase;
 use Safe\DateTime;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class StandardDailyProcessorScheduleTest extends BaseTestCase
 {
     /**

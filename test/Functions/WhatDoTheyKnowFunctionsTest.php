@@ -8,10 +8,11 @@ use Bristolian\WhatDoTheyKnow\RequestEvent;
 use BristolianTest\BaseTestCase;
 use function Safe\file_get_contents;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  */
+#[CoversNothing]
 final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
 {
     /**

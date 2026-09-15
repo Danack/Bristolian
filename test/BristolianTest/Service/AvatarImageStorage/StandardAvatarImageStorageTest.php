@@ -12,10 +12,9 @@ use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use function Safe\getimagesize;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class StandardAvatarImageStorageTest extends BaseTestCase
 {
     /**

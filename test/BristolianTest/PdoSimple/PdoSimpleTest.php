@@ -20,11 +20,12 @@ use BristolianTest\PdoSimple\PdoSimpleTestObjectConstructor;
 use Ramsey\Uuid\Uuid;
 use Safe\DateTimeImmutable;
 use function Safe\mktime;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Bristolian\PdoSimple\PdoSimple
  * @group db
  */
+#[CoversClass(\Bristolian\PdoSimple\PdoSimple::class)]
 class PdoSimpleTest extends BaseTestCase
 {
     use TestPlaceholders;

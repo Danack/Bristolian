@@ -9,10 +9,9 @@ use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
 use function Safe\file_get_contents;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class IncomingEmailTest extends BaseTestCase
 {
     /**

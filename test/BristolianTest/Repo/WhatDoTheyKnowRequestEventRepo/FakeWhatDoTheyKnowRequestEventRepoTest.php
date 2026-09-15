@@ -7,10 +7,11 @@ namespace BristolianTest\Repo\WhatDoTheyKnowRequestEventRepo;
 use Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\FakeWhatDoTheyKnowRequestEventRepo;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  */
+#[CoversNothing]
 final class FakeWhatDoTheyKnowRequestEventRepoTest extends BaseTestCase
 {
     /**

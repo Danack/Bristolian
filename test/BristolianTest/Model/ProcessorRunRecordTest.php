@@ -6,10 +6,9 @@ use BristolianTest\BaseTestCase;
 
 use BristolianGenerated\Model\ProcessorRunRecord;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ProcessorRunRecordTest extends BaseTestCase
 {
     /**

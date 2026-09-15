@@ -10,13 +10,14 @@ use Bristolian\Repo\BristolStairImageStorageInfoRepo\FileState;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianGenerated\Model\StairImageObjectInfo as BristolStairImageFile;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Tests for FakeBristolStairImageStorageInfoRepo
  *
- * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
  * @group standard_repo
  */
+#[CoversClass(\Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo::class)]
 class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageInfoRepoFixture
 {
     /**

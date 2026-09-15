@@ -9,10 +9,9 @@ use BristolianTest\BaseTestCase;
 use DataType\DataStorage\TestArrayDataStorage;
 use DataType\ProcessedValues;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ExtractYoutubeVideoIdTest extends BaseTestCase
 {
     public static function provides_valid_youtube_inputs(): \Generator

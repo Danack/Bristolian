@@ -20,11 +20,12 @@ use BristolianGenerated\Model\RoomLink;
 use Bristolian\Model\Types\RoomLinkWithUrl;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
 {
     use HasTestWorld;

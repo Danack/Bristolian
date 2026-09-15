@@ -6,10 +6,9 @@ use Bristolian\Response\TinnedFish\GenerateApiTokenResponse;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\TinnedFish\GenerateApiTokenResponse
- */
+#[CoversClass(\Bristolian\Response\TinnedFish\GenerateApiTokenResponse::class)]
 class GenerateApiTokenResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns200()

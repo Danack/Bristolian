@@ -7,10 +7,11 @@ namespace BristolianTest\Service\WhatDoTheyKnowFeedFetcher;
 use Bristolian\Service\HttpFetcher\FakeHttpFetcherWithFixedResponse;
 use Bristolian\Service\WhatDoTheyKnowFeedFetcher\StandardWhatDoTheyKnowFeedFetcher;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  */
+#[CoversNothing]
 final class StandardWhatDoTheyKnowFeedFetcherTest extends BaseTestCase
 {
     /**

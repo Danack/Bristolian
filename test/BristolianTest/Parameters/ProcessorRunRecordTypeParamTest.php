@@ -10,10 +10,9 @@ use Bristolian\Repo\ProcessorRepo\ProcessType;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ProcessorRunRecordTypeParamTest extends BaseTestCase
 {
     /**

@@ -12,10 +12,11 @@ use Bristolian\Service\RoomMessageService\FakeRoomMessageService;
 use Bristolian\Service\WhatDoTheyKnowFeedFetcher\FakeWhatDoTheyKnowFeedFetcherReturningJson;
 use BristolianTest\BaseTestCase;
 use function Safe\file_get_contents;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  */
+#[CoversNothing]
 final class WhatDoTheyKnowFeedCliControllerTest extends BaseTestCase
 {
     /**

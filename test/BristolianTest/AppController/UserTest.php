@@ -28,10 +28,9 @@ use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use VarMap\ArrayVarMap;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class UserTest extends BaseTestCase
 {
     public function setup(): void

@@ -7,10 +7,9 @@ namespace BristolianTest\Model\Types;
 use Bristolian\Model\Types\UserDisplayName;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class UserDisplayNameTest extends BaseTestCase
 {
     /**

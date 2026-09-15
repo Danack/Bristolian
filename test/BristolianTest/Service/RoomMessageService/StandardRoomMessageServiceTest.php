@@ -12,11 +12,12 @@ use Bristolian\Repo\UserRepo\UserRepo;
 use Bristolian\Service\RoomMessageService\StandardRoomMessageService;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  * @group db
  */
+#[CoversNothing]
 class StandardRoomMessageServiceTest extends BaseTestCase
 {
     /**

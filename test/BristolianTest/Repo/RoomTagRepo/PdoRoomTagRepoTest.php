@@ -11,11 +11,12 @@ use Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo;
 use Bristolian\Repo\RoomTagRepo\RoomTagRepo;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoRoomTagRepoTest extends RoomTagRepoFixture
 {
     use HasTestWorld;

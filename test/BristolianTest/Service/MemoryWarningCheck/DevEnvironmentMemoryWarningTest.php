@@ -9,10 +9,9 @@ use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
 use function Safe\ini_get;
 use function Safe\ini_set;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class DevEnvironmentMemoryWarningTest extends BaseTestCase
 {
     /**

@@ -6,10 +6,9 @@ use Bristolian\Response\UploadAvatarErrorResponse;
 use Bristolian\Service\AvatarImageStorage\UploadError;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class UploadAvatarErrorResponseTest extends BaseTestCase
 {
     /**

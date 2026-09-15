@@ -4,10 +4,9 @@ namespace BristolianTest\Service\FileStorageProcessor;
 
 use Bristolian\Service\RoomFileStorage\UploadError;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Service\RoomFileStorage\UploadError
- */
+#[CoversClass(\Bristolian\Service\RoomFileStorage\UploadError::class)]
 class UploadErrorTest extends BaseTestCase
 {
     public function testWorks()

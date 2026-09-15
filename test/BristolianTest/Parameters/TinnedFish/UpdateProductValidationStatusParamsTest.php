@@ -10,12 +10,13 @@ use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * Tests for UpdateProductValidationStatusParams
  *
- * @coversNothing
  */
+#[CoversNothing]
 class UpdateProductValidationStatusParamsTest extends BaseTestCase
 {
     /**

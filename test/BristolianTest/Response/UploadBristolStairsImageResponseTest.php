@@ -7,10 +7,9 @@ use Bristolian\Response\UploadBristolStairsImageResponse;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\UploadBristolStairsImageResponse
- */
+#[CoversClass(\Bristolian\Response\UploadBristolStairsImageResponse::class)]
 class UploadBristolStairsImageResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns200()

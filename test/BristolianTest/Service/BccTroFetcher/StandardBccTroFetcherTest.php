@@ -10,10 +10,9 @@ use Bristolian\Service\HttpFetcher\FakeHttpFetcherWithFixedResponse;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use function Safe\file_get_contents;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class StandardBccTroFetcherTest extends BaseTestCase
 {
     /**

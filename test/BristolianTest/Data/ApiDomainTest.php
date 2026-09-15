@@ -6,10 +6,9 @@ namespace BristolianTest\Data;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Data\ApiDomain;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ApiDomainTest extends BaseTestCase
 {
     /**

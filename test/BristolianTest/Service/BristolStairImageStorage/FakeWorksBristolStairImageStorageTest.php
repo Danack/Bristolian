@@ -10,10 +10,9 @@ use Bristolian\Service\BristolStairImageStorage\FakeWorksBristolStairImageStorag
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeWorksBristolStairImageStorageTest extends BaseTestCase
 {
     /**

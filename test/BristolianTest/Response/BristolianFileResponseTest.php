@@ -5,10 +5,9 @@ namespace BristolianTest\Response;
 use Bristolian\Response\BristolianFileResponse;
 use BristolianTest\BaseTestCase;
 use Bristolian\Exception\BristolianResponseException;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\BristolianFileResponse
- */
+#[CoversClass(\Bristolian\Response\BristolianFileResponse::class)]
 class BristolianFileResponseTest extends BaseTestCase
 {
     public function testWorksCorrectlyWithDefaults()

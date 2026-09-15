@@ -6,10 +6,9 @@ use DataType\Basic\BasicString;
 use BristolianTest\BaseTestCase;
 use Bristolian\Parameters\MemeTagDeleteParams;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Parameters\MemeTagDeleteParams
- */
+#[CoversClass(\Bristolian\Parameters\MemeTagDeleteParams::class)]
 class MemeTagDeleteParamTest extends BaseTestCase
 {
     public function testWorks()

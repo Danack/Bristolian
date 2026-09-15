@@ -11,11 +11,12 @@ use Bristolian\Repo\RoomVideoTagRepo\RoomVideoTagRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoRoomVideoTagRepoTest extends BaseTestCase
 {
     use HasTestWorld;

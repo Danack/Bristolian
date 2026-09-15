@@ -6,10 +6,9 @@ namespace BristolianTest\PHPStan;
 
 use Bristolian\PHPStan\SqlTableReferenceExtractor;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\PHPStan\SqlTableReferenceExtractor
- */
+#[CoversClass(\Bristolian\PHPStan\SqlTableReferenceExtractor::class)]
 class SqlTableReferenceExtractorTest extends BaseTestCase
 {
     private SqlTableReferenceExtractor $extractor;

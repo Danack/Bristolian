@@ -83,10 +83,9 @@ use function Safe\mkdir;
 use function Safe\rmdir;
 use function Safe\tmpfile;
 use function Safe\unlink;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class RoomsTest extends BaseTestCase
 {
     private string $roomId;

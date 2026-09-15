@@ -6,11 +6,12 @@ use Bristolian\Model\Types\ProcessorState;
 use Bristolian\Repo\ProcessorRepo\PdoProcessorRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoProcessorRepoTest extends ProcessorRepoFixture
 {
     public function getTestInstance(): ProcessorRepo

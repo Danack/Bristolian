@@ -8,10 +8,9 @@ use BristolianTest\BaseTestCase;
 use Psr\Http\Message\StreamInterface;
 use function Safe\file_put_contents;
 use function Safe\unlink;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\StreamingResponse
- */
+#[CoversClass(\Bristolian\Response\StreamingResponse::class)]
 class StreamingResponseTest extends BaseTestCase
 {
     public function testWorksWithValidPdfFile()

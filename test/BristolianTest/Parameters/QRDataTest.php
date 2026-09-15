@@ -7,10 +7,9 @@ use Bristolian\Parameters\QRParams;
 use DataType\Create\CreateFromArray;
 use Safe\DateTimeImmutable;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Parameters\QRParams
- */
+#[CoversClass(\Bristolian\Parameters\QRParams::class)]
 class QRDataTest extends BaseTestCase
 {
     public function testWorks()

@@ -36,10 +36,9 @@ use VarMap\ArrayVarMap;
 use function Safe\file_put_contents;
 use function Safe\json_decode;
 use function Safe\mkdir;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class UsersTest extends BaseTestCase
 {
     public function setup(): void

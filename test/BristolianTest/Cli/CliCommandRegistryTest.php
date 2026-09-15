@@ -10,10 +10,9 @@ use BristolianTest\BaseTestCase;
 use Danack\Console\Application;
 use Danack\Console\Command\Command;
 use Danack\Console\Input\InputArgument;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class CliCommandRegistryTest extends BaseTestCase
 {
     /**

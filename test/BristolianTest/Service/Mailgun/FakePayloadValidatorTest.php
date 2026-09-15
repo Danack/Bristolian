@@ -7,10 +7,9 @@ namespace BristolianTest\Service\Mailgun;
 use Bristolian\Service\Mailgun\FakePayloadValidator;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakePayloadValidatorTest extends BaseTestCase
 {
     /**

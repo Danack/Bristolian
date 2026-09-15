@@ -12,10 +12,9 @@ use function Bristolian\Repo\RoomFileRepo\compare_room_file_document_timestamp;
 use function Bristolian\Repo\RoomFileRepo\compare_room_files_for_list_sort;
 use function Bristolian\Repo\RoomFileRepo\room_files_sql_order_by_clause;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FunctionsSearchingTest extends BaseTestCase
 {
     /**

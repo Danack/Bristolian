@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\CliController;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Bristolian\CliController\Meme;
 use Bristolian\Filesystem\MemeFilesystem;
 use Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo;
@@ -34,9 +35,7 @@ final class MemeTestThrowingListAdapter extends LocalFilesystemAdapter
     }
 }
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class MemeTest extends BaseTestCase
 {
     private ?string $testFsDir = null;

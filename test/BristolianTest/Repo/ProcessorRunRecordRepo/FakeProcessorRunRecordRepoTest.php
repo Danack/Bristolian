@@ -7,11 +7,12 @@ namespace BristolianTest\Repo\ProcessorRunRecordRepo;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group standard_repo
- * @coversNothing
  */
+#[CoversNothing]
 class FakeProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
 {
     public function getTestInstance(): ProcessorRunRecordRepo

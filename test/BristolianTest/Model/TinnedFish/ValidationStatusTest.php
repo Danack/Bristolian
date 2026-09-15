@@ -7,10 +7,9 @@ namespace BristolianTest\Model\TinnedFish;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ValidationStatusTest extends BaseTestCase
 {
     /**

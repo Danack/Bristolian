@@ -5,10 +5,9 @@ namespace BristolianTest\Response;
 use Bristolian\Response\StoredFileErrorResponse;
 use BristolianTest\BaseTestCase;
 use SlimDispatcher\Response\StubResponse;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\StoredFileErrorResponse
- */
+#[CoversClass(\Bristolian\Response\StoredFileErrorResponse::class)]
 class StoredFileErrorResponseTest extends BaseTestCase
 {
     public function testReturns500StatusCode()

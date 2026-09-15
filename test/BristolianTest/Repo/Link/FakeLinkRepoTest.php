@@ -6,11 +6,12 @@ namespace BristolianTest\Repo\Link;
 
 use Bristolian\Repo\LinkRepo\FakeLinkRepo;
 use Bristolian\Repo\LinkRepo\LinkRepo;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group standard_repo
- * @coversNothing
  */
+#[CoversNothing]
 class FakeLinkRepoTest extends LinkRepoFixture
 {
     /**

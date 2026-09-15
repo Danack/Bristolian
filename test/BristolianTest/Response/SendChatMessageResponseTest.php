@@ -8,10 +8,9 @@ use Bristolian\Response\SendChatMessageResponse;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\SendChatMessageResponse
- */
+#[CoversClass(\Bristolian\Response\SendChatMessageResponse::class)]
 class SendChatMessageResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns200()

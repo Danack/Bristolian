@@ -5,10 +5,9 @@ namespace BristolianTest\Response;
 use Bristolian\Response\UpdateUserProfileResponse;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\UpdateUserProfileResponse
- */
+#[CoversClass(\Bristolian\Response\UpdateUserProfileResponse::class)]
 class UpdateUserProfileResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns200()

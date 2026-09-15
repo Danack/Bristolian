@@ -8,11 +8,12 @@ use Bristolian\Repo\UserSearch\InMemoryUserSearch;
 use Bristolian\Repo\UserSearch\UserSearch;
 use PHPUnit\Framework\TestCase;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Bristolian\Repo\UserSearch\InMemoryUserSearch
  * @group standard_repo
  */
+#[CoversClass(\Bristolian\Repo\UserSearch\InMemoryUserSearch::class)]
 class InMemoryUserSearchTest extends BaseTestCase
 {
     public function test_empty_repo_returns_no_results(): void

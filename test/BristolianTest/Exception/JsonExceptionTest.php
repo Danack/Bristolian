@@ -6,10 +6,9 @@ namespace BristolianTest\Exception;
 
 use Bristolian\Exception\JsonException;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Exception\JsonException
- */
+#[CoversClass(\Bristolian\Exception\JsonException::class)]
 class JsonExceptionTest extends BaseTestCase
 {
     public function test_extends_exception_and_carries_message(): void

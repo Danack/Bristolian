@@ -7,10 +7,9 @@ namespace BristolianTest\Session;
 use Bristolian\Model\Types\AdminUser;
 use Bristolian\Session\AppSession;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class AppSessionTest extends BaseTestCase
 {
     /**

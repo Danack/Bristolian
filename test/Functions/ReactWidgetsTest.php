@@ -7,10 +7,9 @@ use function Bristolian\createReactWidget;
 use Safe\DateTimeImmutable;
 use function Safe\json_decode;
 use function Safe\preg_match;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ReactWidgetsTest extends BaseTestCase
 {
     /**

@@ -6,10 +6,9 @@ namespace BristolianTest\MarkdownRenderer;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\MarkdownRenderer\MarkdownRendererException;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class MarkdownRendererExceptionTest extends BaseTestCase
 {
     /**

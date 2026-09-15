@@ -6,12 +6,13 @@ use Bristolian\Parameters\TinnedFish\BarcodeLookupParams;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * Tests for BarcodeLookupParams
  *
- * @coversNothing
  */
+#[CoversNothing]
 class BarcodeLookupParamsTest extends BaseTestCase
 {
     /**

@@ -13,11 +13,12 @@ use Bristolian\Repo\RoomVideoTranscriptRepo\RoomVideoTranscriptRepo;
 use Bristolian\Repo\VideoRepo\PdoVideoRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Support\HasTestWorld;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoRoomVideoTranscriptRepoTest extends BaseTestCase
 {
     use HasTestWorld;

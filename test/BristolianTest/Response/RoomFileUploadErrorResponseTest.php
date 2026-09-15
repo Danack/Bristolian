@@ -6,10 +6,9 @@ use Bristolian\Response\RoomFileUploadErrorResponse;
 use Bristolian\Service\RoomFileStorage\UploadError;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class RoomFileUploadErrorResponseTest extends BaseTestCase
 {
     /**

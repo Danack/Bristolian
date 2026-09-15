@@ -14,10 +14,9 @@ use BristolianTest\BaseTestCase;
 use SlimDispatcher\Response\HtmlResponse;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\TextResponse;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ContentSecurityPolicyTest extends BaseTestCase
 {
     public function setup(): void

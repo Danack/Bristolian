@@ -10,10 +10,9 @@ use Bristolian\Session\OptionalUserSession;
 use Bristolian\Session\StandardOptionalUserSession;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Session\FakeAsmSession;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ToolsTest extends BaseTestCase
 {
     /**

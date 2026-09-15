@@ -4,10 +4,9 @@ namespace BristolianTest\Response;
 
 use Bristolian\Response\IframeHtmlResponse;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\IframeHtmlResponse
- */
+#[CoversClass(\Bristolian\Response\IframeHtmlResponse::class)]
 class IframeHtmlResponseTest extends BaseTestCase
 {
     public function testWorksCorrectlyWithDefaults()

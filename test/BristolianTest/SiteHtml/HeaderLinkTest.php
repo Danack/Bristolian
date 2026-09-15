@@ -4,10 +4,9 @@ namespace BristolianTest\SiteHtml;
 
 use Bristolian\SiteHtml\HeaderLink;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\SiteHtml\HeaderLink
- */
+#[CoversClass(\Bristolian\SiteHtml\HeaderLink::class)]
 class HeaderLinkTest extends BaseTestCase
 {
     public function testWorks()

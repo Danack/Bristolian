@@ -12,11 +12,12 @@ use BristolianGenerated\Database\pdo_simple_test;
 use Bristolian\PdoSimple\PdoSimpleWithTableTracking;
 use BristolianTest\BaseTestCase;
 use Bristolian\Service\UuidGenerator\RamseyUuidGenerator;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Bristolian\PdoSimple\PdoSimpleWithTableTracking
  * @group db
  */
+#[CoversClass(\Bristolian\PdoSimple\PdoSimpleWithTableTracking::class)]
 class PdoSimpleWithTableTrackingTest extends BaseTestCase
 {
     private TestTableAccessRecorder $recorder;

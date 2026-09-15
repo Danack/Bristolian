@@ -11,11 +11,12 @@ use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo;
 use Bristolian\Repo\MemeTextRepo\MemeTextRepo;
 use Bristolian\UploadedFiles\UploadedFile;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group standard_repo
- * @coversNothing
  */
+#[CoversNothing]
 class FakeMemeTextRepoTest extends MemeTextRepoFixture
 {
     private ?FakeMemeStorageRepo $memeStorageRepo = null;
@@ -167,7 +168,6 @@ class FakeMemeTextRepoTest extends MemeTextRepoFixture
  * MemeStorageRepo implementation without getStoredMeme() - used to test FakeMemeTextRepo's defensive path.
  *
  * @internal
- * @coversNothing
  */
 class MemeStorageRepoStubWithoutGetStoredMeme implements MemeStorageRepo
 {

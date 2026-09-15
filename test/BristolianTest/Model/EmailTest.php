@@ -5,10 +5,9 @@ namespace BristolianTest\Model;
 use Bristolian\Model\Types\Email;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class EmailTest extends BaseTestCase
 {
     /**

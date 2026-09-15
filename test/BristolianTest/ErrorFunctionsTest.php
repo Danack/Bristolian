@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace BristolianTest;
 
-/**
- * @coversNothing
- */
+use PHPUnit\Framework\Attributes\CoversNothing;
+
+#[CoversNothing]
 class ErrorFunctionsTest extends BaseTestCase
 {
     /**

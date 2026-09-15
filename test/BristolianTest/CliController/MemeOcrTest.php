@@ -18,10 +18,9 @@ use Bristolian\Service\MemeImageOcr\FakeMemeImageOcrRunner;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class MemeOcrTest extends BaseTestCase
 {
     /**

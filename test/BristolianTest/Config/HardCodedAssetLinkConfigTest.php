@@ -4,10 +4,9 @@ namespace BristolianTest\Config;
 
 use Bristolian\Config\HardCodedAssetLinkConfig;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Config\HardCodedAssetLinkConfig
- */
+#[CoversClass(\Bristolian\Config\HardCodedAssetLinkConfig::class)]
 class HardCodedAssetLinkConfigTest extends BaseTestCase
 {
     public function testWorks()

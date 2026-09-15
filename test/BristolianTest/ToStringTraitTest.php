@@ -7,13 +7,14 @@ use Bristolian\FromString;
 use Bristolian\Model\Chat\UserChatMessage;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * Tests all Model classes that use the ToString trait
  * to ensure they can be serialized and deserialized correctly.
  *
- * @coversNothing
  */
+#[CoversNothing]
 class ToStringTraitTest extends BaseTestCase
 {
 //    /**

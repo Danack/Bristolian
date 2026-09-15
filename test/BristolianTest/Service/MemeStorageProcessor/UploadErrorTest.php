@@ -6,10 +6,9 @@ namespace BristolianTest\Service\MemeStorageProcessor;
 
 use Bristolian\Service\MemeStorageProcessor\UploadError;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class UploadErrorTest extends BaseTestCase
 {
     /**

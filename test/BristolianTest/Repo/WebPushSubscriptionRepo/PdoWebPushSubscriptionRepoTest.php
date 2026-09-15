@@ -14,11 +14,12 @@ use VarMap\ArrayVarMap;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoWebPushSubscriptionRepoTest extends WebPushSubscriptionRepoFixture
 {
     use TestPlaceholders;

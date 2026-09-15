@@ -6,10 +6,9 @@ namespace BristolianTest\Service\UuidGenerator;
 
 use Bristolian\Service\UuidGenerator\FixedUuidGenerator;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FixedUuidGeneratorTest extends BaseTestCase
 {
     /**

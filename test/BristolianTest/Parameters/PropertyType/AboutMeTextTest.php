@@ -10,10 +10,9 @@ use DataType\GetInputTypesFromAttributes;
 use DataType\Messages;
 use PHPUnit\Framework\Attributes\DataProvider;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class AboutMeTextTest extends BaseTestCase
 {
 

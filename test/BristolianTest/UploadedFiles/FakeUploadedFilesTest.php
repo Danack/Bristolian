@@ -5,10 +5,9 @@ namespace BristolianTest\UploadedFiles;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use Bristolian\UploadedFiles\FakeUploadedFiles;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeUploadedFilesTest extends BaseTestCase
 {
     /**

@@ -14,10 +14,9 @@ use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use SlimDispatcher\Response\StubResponse;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class PagesTest extends BaseTestCase
 {
     public function setup(): void

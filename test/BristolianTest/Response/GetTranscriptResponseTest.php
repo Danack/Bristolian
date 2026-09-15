@@ -7,10 +7,9 @@ namespace BristolianTest\Response;
 use Bristolian\Response\GetTranscriptResponse;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class GetTranscriptResponseTest extends BaseTestCase
 {
     /**

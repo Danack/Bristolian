@@ -12,10 +12,9 @@ use DataType\InputType;
 use DataType\ProcessedValue;
 use DataType\ProcessedValues;
 use Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ClipEndTimeAfterStartTimeTest extends BaseTestCase
 {
     /**

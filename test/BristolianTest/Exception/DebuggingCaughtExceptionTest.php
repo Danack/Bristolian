@@ -6,10 +6,9 @@ namespace BristolianTest\Exception;
 
 use Bristolian\Exception\DebuggingCaughtException;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Exception\DebuggingCaughtException
- */
+#[CoversClass(\Bristolian\Exception\DebuggingCaughtException::class)]
 class DebuggingCaughtExceptionTest extends BaseTestCase
 {
     public function test_extends_exception_and_carries_message(): void

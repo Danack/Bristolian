@@ -10,10 +10,9 @@ use Asm\SessionConfig;
 use Asm\SessionManager;
 use Bristolian\Session\FakeAsmDriver;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeAsmDriverTest extends BaseTestCase
 {
     private FakeAsmDriver $driver;

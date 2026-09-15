@@ -9,10 +9,9 @@ use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use function Safe\file;
 use function Safe\json_encode;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class CodegenProvenanceTest extends BaseTestCase
 {
     /**

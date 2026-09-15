@@ -6,10 +6,9 @@ namespace BristolianTest\Service\MemeImageOcr;
 
 use Bristolian\Service\MemeImageOcr\FakeMemeImageOcrRunner;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeMemeImageOcrRunnerTest extends BaseTestCase
 {
     /**

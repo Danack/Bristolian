@@ -4,10 +4,9 @@ namespace BristolianTest\Service\DeployLogRenderer;
 
 use Bristolian\Service\DeployLogRenderer\ProdDeployLogRenderer;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Service\DeployLogRenderer\ProdDeployLogRenderer
- */
+#[CoversClass(\Bristolian\Service\DeployLogRenderer\ProdDeployLogRenderer::class)]
 class ProdDeployLogRendererTest extends BaseTestCase
 {
     public function testWorks()

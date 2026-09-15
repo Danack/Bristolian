@@ -6,10 +6,9 @@ namespace BristolianTest\Exception;
 
 use Bristolian\Exception\InvalidPermissionsException;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Exception\InvalidPermissionsException
- */
+#[CoversClass(\Bristolian\Exception\InvalidPermissionsException::class)]
 class InvalidPermissionsExceptionTest extends BaseTestCase
 {
     public function test_extends_exception_and_carries_message(): void

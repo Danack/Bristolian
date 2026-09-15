@@ -12,10 +12,9 @@ use Monolog\Logger;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Safe\DateTimeImmutable;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FunctionsChatTest extends BaseTestCase
 {
 

@@ -11,10 +11,9 @@ use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Parameters\AddVideoClipParam
- */
+#[CoversClass(\Bristolian\Parameters\AddVideoClipParam::class)]
 class AddVideoClipParamTest extends BaseTestCase
 {
     /**

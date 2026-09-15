@@ -13,10 +13,9 @@ use Bristolian\Service\DailyProcessorSchedule\FakeDailyProcessorSchedule;
 use Bristolian\Service\DailyProcessorSchedule\StandardDailyProcessorSchedule;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class SystemInfoTest extends BaseTestCase
 {
     /**

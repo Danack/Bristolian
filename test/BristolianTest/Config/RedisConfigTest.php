@@ -4,10 +4,9 @@ namespace BristolianTest\Config;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Config\RedisConfig;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class RedisConfigTest extends BaseTestCase
 {
     /**

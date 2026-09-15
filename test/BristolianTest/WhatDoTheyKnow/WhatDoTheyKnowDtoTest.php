@@ -11,10 +11,11 @@ use Bristolian\WhatDoTheyKnow\PublicBodyTag;
 use Bristolian\WhatDoTheyKnow\RequestEvent;
 use Bristolian\WhatDoTheyKnow\RequestEventUser;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  */
+#[CoversNothing]
 final class WhatDoTheyKnowDtoTest extends BaseTestCase
 {
     /**

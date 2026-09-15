@@ -4,10 +4,9 @@ namespace BristolianTest\Service\HttpFetcher;
 
 use Bristolian\Service\HttpFetcher\FakeHttpFetcherReturning404;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeHttpFetcherReturning404Test extends BaseTestCase
 {
     /**

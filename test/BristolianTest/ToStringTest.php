@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Bristolian\Exception\BristolianException;
 use Bristolian\ToString;
 use Safe\DateTimeImmutable;
@@ -61,6 +62,7 @@ class TestToStringClassWithUnsupportedProperty
 /**
  * @covers \Bristolian\ToString
  */
+#[CoversNothing]
 class ToStringTest extends BaseTestCase
 {
     public function test_toArray_returns_properties_as_array(): void

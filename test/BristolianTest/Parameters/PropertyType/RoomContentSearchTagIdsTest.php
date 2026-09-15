@@ -12,11 +12,12 @@ use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Bristolian\Parameters\PropertyType\RoomContentSearchTagIds
  * @covers \Bristolian\Parameters\ProcessRule\OptionalStringToRoomSearchTagIds
  */
+#[CoversClass(\Bristolian\Parameters\PropertyType\RoomContentSearchTagIds::class)]
 class RoomContentSearchTagIdsTest extends BaseTestCase
 {
     /**

@@ -7,10 +7,9 @@ namespace BristolianTest\Service\CliOutput;
 use Bristolian\Service\CliOutput\CapturingCliOutput;
 use Bristolian\Service\CliOutput\CliExitRequestedException;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class CapturingCliOutputTest extends BaseTestCase
 {
     /**

@@ -12,10 +12,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Bristolian\Middleware\MiddlewareException;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Middleware\ExceptionToJsonResponseMiddleware
- */
+#[CoversClass(\Bristolian\Middleware\ExceptionToJsonResponseMiddleware::class)]
 class ExceptionToJsonResponseMiddlewareTest extends BaseTestCase
 {
     public function testWorks_no_exception()

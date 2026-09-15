@@ -11,13 +11,14 @@ use Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * Tests for FakeRoomFileRepo
  *
- * @coversNothing
  * @group standard_repo
  */
+#[CoversNothing]
 class FakeRoomFileRepoTest extends RoomFileRepoFixture
 {
     /**

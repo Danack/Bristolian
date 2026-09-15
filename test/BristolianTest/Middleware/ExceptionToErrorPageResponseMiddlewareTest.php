@@ -14,10 +14,9 @@ use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware
- */
+#[CoversClass(\Bristolian\Middleware\ExceptionToErrorPageResponseMiddleware::class)]
 class ExceptionToErrorPageResponseMiddlewareTest extends BaseTestCase
 {
     public function testWorks_no_exception()

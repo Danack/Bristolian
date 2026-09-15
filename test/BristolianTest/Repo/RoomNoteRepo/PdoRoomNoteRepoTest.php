@@ -15,11 +15,12 @@ use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
 use Safe\DateTimeImmutable;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoRoomNoteRepoTest extends BaseTestCase
 {
     use HasTestWorld;

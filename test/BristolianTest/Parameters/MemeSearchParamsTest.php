@@ -8,10 +8,9 @@ use Bristolian\Parameters\MemeSearchParams;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class MemeSearchParamsTest extends BaseTestCase
 {
     /**

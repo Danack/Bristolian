@@ -10,7 +10,6 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  */
 #[CoversNothing()]
 #[Group('needs_fixing')]

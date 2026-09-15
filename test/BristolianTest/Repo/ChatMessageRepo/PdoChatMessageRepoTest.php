@@ -14,11 +14,12 @@ use Bristolian\Repo\UserRepo\PdoUserRepo;
 use BristolianTest\Repo\DbTransactionIsolation;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoChatMessageRepoTest extends ChatMessageRepoFixture
 {
 //    use DbTransactionIsolation;

@@ -4,10 +4,9 @@ namespace BristolianTest\Service\HttpFetcher;
 
 use Bristolian\Service\HttpFetcher\FakeHttpFetcherWithFixedResponse;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeHttpFetcherWithFixedResponseTest extends BaseTestCase
 {
     /**

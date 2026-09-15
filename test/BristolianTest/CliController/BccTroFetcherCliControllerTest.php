@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\CliController;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Bristolian\CliController\BccTroFetcherCliController;
 use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;
@@ -68,9 +69,7 @@ final class BccTroFetcherThatThrows implements BccTroFetcher
     }
 }
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class BccTroFetcherCliControllerTest extends BaseTestCase
 {
     public function setUp(): void

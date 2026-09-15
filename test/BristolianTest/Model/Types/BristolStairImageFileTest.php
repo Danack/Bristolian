@@ -5,10 +5,9 @@ namespace BristolianTest\Model\Types;
 use BristolianTest\BaseTestCase;
 use BristolianGenerated\Model\StairImageObjectInfo;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class BristolStairImageFileTest extends BaseTestCase
 {
     /**

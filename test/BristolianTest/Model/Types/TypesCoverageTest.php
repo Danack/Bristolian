@@ -30,10 +30,9 @@ use Bristolian\Parameters\FoiRequestParams;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class TypesCoverageTest extends BaseTestCase
 {
     private static function now(): DateTimeImmutable

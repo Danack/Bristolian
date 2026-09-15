@@ -7,10 +7,9 @@ namespace BristolianTest\Response;
 use Bristolian\Response\CreateClipResponse;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class CreateClipResponseTest extends BaseTestCase
 {
     /**

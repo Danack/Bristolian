@@ -4,10 +4,9 @@ namespace BristolianTest\Filesystem;
 
 use Bristolian\Filesystem\LocalCacheFilesystem;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Filesystem\LocalCacheFilesystem
- */
+#[CoversClass(\Bristolian\Filesystem\LocalCacheFilesystem::class)]
 class LocalCacheFilesystemTest extends BaseTestCase
 {
     public function testWorks()

@@ -6,10 +6,9 @@ namespace BristolianTest\JsonInput;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\JsonInput\FakeJsonInput;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeJsonInputTest extends BaseTestCase
 {
     /**

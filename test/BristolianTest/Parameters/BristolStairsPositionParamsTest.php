@@ -9,10 +9,9 @@ use Bristolian\Parameters\BristolStairsPositionParams;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class BristolStairsPositionParamsTest extends BaseTestCase
 {
     /**

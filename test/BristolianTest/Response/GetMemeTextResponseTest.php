@@ -7,10 +7,9 @@ use Bristolian\Response\GetMemeTextResponse;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\GetMemeTextResponse
- */
+#[CoversClass(\Bristolian\Response\GetMemeTextResponse::class)]
 class GetMemeTextResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns200()

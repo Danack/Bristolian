@@ -6,10 +6,11 @@ namespace BristolianTest\Service\WhatDoTheyKnowFeedFetcher;
 
 use Bristolian\Service\WhatDoTheyKnowFeedFetcher\FakeWhatDoTheyKnowFeedFetcherReturningJson;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  */
+#[CoversNothing]
 final class FakeWhatDoTheyKnowFeedFetcherReturningJsonTest extends BaseTestCase
 {
     /**

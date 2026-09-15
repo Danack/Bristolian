@@ -4,10 +4,9 @@ namespace BristolianTest\Parameters;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Parameters\Table;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Parameters\Table
- */
+#[CoversClass(\Bristolian\Parameters\Table::class)]
 class TableTest extends BaseTestCase
 {
     public function testWorks()

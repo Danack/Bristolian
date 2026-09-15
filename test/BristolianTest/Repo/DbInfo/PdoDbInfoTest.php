@@ -6,11 +6,12 @@ use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use Bristolian\Repo\DbInfo\PdoDbInfo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  * @group db
  */
+#[CoversNothing]
 class PdoDbInfoTest extends BaseTestCase
 {
     use TestPlaceholders;

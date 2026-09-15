@@ -6,11 +6,12 @@ namespace BristolianTest\Repo\RoomRepo;
 
 use Bristolian\Repo\RoomRepo\FakeRoomRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group standard_repo
- * @coversNothing
  */
+#[CoversNothing]
 class FakeRoomRepoTest extends RoomRepoFixture
 {
     public function getTestInstance(): RoomRepo

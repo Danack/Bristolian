@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\AppController;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Bristolian\AppController\BristolStairs;
 use Bristolian\Filesystem\BristolStairsFilesystem;
 use Bristolian\Filesystem\LocalCacheFilesystem;
@@ -54,9 +55,7 @@ final class BristolStairImageStorageReturningUploadError implements BristolStair
     }
 }
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class BristolStairsTest extends BaseTestCase
 {
     public function setup(): void

@@ -4,10 +4,9 @@ namespace BristolianTest\Model;
 
 use Bristolian\Model\Types\WebPushNotification;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class WebPushNotificationTest extends BaseTestCase
 {
     /**

@@ -8,10 +8,9 @@ use Bristolian\Cache\QueryTagMapping;
 use PHPUnit\Framework\TestCase;
 use BristolianTest\BaseTestCase;
 use function Safe\preg_match;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Cache\QueryTagMapping
- */
+#[CoversClass(\Bristolian\Cache\QueryTagMapping::class)]
 class QueryTagMappingTest extends BaseTestCase
 {
     public function testGetExactMappingsReturnsNonEmptyArray(): void

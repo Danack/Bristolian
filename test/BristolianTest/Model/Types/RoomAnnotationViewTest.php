@@ -6,10 +6,9 @@ namespace BristolianTest\Model\Types;
 
 use Bristolian\Model\Types\RoomAnnotationView;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class RoomAnnotationViewTest extends BaseTestCase
 {
     /**

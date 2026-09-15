@@ -4,12 +4,13 @@ namespace BristolianTest\Model\TinnedFish;
 
 use Bristolian\Model\TinnedFish\ProductError;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Tests for ProductError model
  *
- * @covers \Bristolian\Model\TinnedFish\ProductError
  */
+#[CoversClass(\Bristolian\Model\TinnedFish\ProductError::class)]
 class ProductErrorTest extends BaseTestCase
 {
     /**

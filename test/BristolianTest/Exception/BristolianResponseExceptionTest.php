@@ -6,10 +6,9 @@ namespace BristolianTest\Exception;
 
 use Bristolian\Exception\BristolianResponseException;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class BristolianResponseExceptionTest extends BaseTestCase
 {
     /**

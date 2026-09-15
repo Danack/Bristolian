@@ -5,10 +5,9 @@ namespace BristolianTest\Response;
 use Bristolian\Response\UploadAvatarResponse;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\UploadAvatarResponse
- */
+#[CoversClass(\Bristolian\Response\UploadAvatarResponse::class)]
 class UploadAvatarResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns200()

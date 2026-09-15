@@ -8,10 +8,9 @@ use Bristolian\Parameters\LinkParam;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class LinkParamTest extends BaseTestCase
 {
 

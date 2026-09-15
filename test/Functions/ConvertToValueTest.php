@@ -14,10 +14,9 @@ use function convertToValueSafe;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Safe\DateTime;
 use function Safe\fopen;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ConvertToValueTest extends BaseTestCase
 {
 

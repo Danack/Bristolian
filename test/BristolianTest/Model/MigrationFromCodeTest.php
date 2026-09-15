@@ -4,10 +4,9 @@ namespace BristolianTest\Model;
 
 use Bristolian\Model\Types\MigrationFromCode;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class MigrationFromCodeTest extends BaseTestCase
 {
     /**

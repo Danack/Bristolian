@@ -13,11 +13,12 @@ use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\Repo\TestPlaceholders;
 use Ramsey\Uuid\Uuid;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageInfoRepoFixture
 {
     use TestPlaceholders;

@@ -8,10 +8,9 @@ use Bristolian\MarkdownRenderer\CommonMarkRenderer;
 use BristolianTest\BaseTestCase;
 use UrlFetcher\FakeUrlFetcher;
 use Bristolian\ExternalMarkdownRenderer\StandardExternalMarkdownRenderer;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ExternalMarkdownRendererTest extends BaseTestCase
 {
     /**

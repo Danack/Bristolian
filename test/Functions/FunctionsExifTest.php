@@ -9,10 +9,9 @@ use function get_image_gps;
 use function getGps;
 use function gps2Num;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FunctionsExifTest extends BaseTestCase
 {
     private const STAIRS_WITH_GPS = __DIR__ . '/../fixtures/stairs/stairs_test_a_8.jpeg';

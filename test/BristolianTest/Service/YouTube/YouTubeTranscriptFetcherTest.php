@@ -11,10 +11,9 @@ use Bristolian\Service\YouTube\YouTubeTranscriptFetcher;
 use BristolianTest\BaseTestCase;
 use UrlFetcher\UrlFetcher;
 use UrlFetcher\UrlNotOkException;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Service\YouTube\YouTubeTranscriptFetcher
- */
+#[CoversClass(\Bristolian\Service\YouTube\YouTubeTranscriptFetcher::class)]
 class YouTubeTranscriptFetcherTest extends BaseTestCase
 {
     /**
@@ -291,7 +290,6 @@ class YouTubeTranscriptFetcherTest extends BaseTestCase
 /**
  * UrlFetcher that returns fixed content per URL; throws UrlNotOkException for missing or null URLs.
  * Used to drive YouTubeTranscriptFetcher without network.
- * @coversNothing
  */
 final class MapUrlFetcher implements UrlFetcher
 {

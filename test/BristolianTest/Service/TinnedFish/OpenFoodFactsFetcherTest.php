@@ -8,10 +8,9 @@ use Bristolian\Service\HttpFetcher\HttpFetcher;
 use Bristolian\Service\TinnedFish\OpenFoodFactsApiException;
 use Bristolian\Service\TinnedFish\OpenFoodFactsFetcher;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class OpenFoodFactsFetcherTest extends BaseTestCase
 {
     /**
@@ -123,7 +122,6 @@ class OpenFoodFactsFetcherTest extends BaseTestCase
 /**
  * HttpFetcher that returns fixed [statusCode, body, headers] per URL.
  * Used to test OpenFoodFactsFetcher without network.
- * @coversNothing
  * @internal
  */
 final class MapHttpFetcher implements HttpFetcher

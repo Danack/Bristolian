@@ -13,10 +13,9 @@ use Bristolian\Session\AppSessionManager;
 use Bristolian\Session\FakeAsmDriver;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class AppSessionManagerTest extends BaseTestCase
 {
     private function createSessionManager(FakeAsmDriver|null $driver = null): SessionManager

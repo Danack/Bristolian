@@ -14,10 +14,9 @@ use Bristolian\Parameters\PropertyType\PasswordOrRandom;
 use Bristolian\Parameters\QRParams;
 use Bristolian\Parameters\Table;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class CoverageTest extends BaseTestCase
 {
     /**

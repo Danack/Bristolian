@@ -9,11 +9,12 @@ use Bristolian\Repo\ApiTokenRepo\ApiTokenRepo;
 use Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo;
 use Bristolian\Service\SecureTokenGenerator\FixedSecureTokenGenerator;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group standard_repo
- * @coversNothing
  */
+#[CoversNothing]
 class FakeApiTokenRepoTest extends ApiTokenRepoFixture
 {
     /**

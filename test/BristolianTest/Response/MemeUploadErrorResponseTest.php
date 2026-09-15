@@ -6,10 +6,9 @@ use Bristolian\Response\MemeUploadErrorResponse;
 use Bristolian\Service\MemeStorageProcessor\UploadError;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class MemeUploadErrorResponseTest extends BaseTestCase
 {
     /**

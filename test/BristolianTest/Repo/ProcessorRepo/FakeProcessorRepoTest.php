@@ -6,11 +6,12 @@ namespace BristolianTest\Repo\ProcessorRepo;
 
 use Bristolian\Repo\ProcessorRepo\FakeProcessorRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group standard_repo
- * @coversNothing
  */
+#[CoversNothing]
 class FakeProcessorRepoTest extends ProcessorRepoFixture
 {
     public function getTestInstance(): ProcessorRepo

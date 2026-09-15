@@ -9,11 +9,12 @@ use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\Service\UuidGenerator\FixedUuidGenerator;
 use BristolianTest\Repo\TestPlaceholders;
 use Ramsey\Uuid\Uuid;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoLinkRepoTest extends LinkRepoFixture
 {
     use TestPlaceholders;

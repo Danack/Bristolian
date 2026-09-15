@@ -6,10 +6,9 @@ use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use Bristolian\Repo\DbInfo\FakeDbInfo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeDbInfoTest extends BaseTestCase
 {
     use TestPlaceholders;

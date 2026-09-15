@@ -6,11 +6,12 @@ namespace BristolianTest\Repo\TinnedFishProductRepo;
 
 use Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo;
 use Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoTinnedFishProductRepoTest extends TinnedFishProductRepoFixture
 {
     public function getTestInstance(): TinnedFishProductRepo

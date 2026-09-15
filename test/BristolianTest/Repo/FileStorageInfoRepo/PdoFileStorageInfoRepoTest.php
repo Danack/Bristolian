@@ -7,11 +7,12 @@ use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use Ramsey\Uuid\Uuid;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  * @group db
  */
+#[CoversNothing]
 class PdoFileStorageInfoRepoTest extends BaseTestCase
 {
     use TestPlaceholders;

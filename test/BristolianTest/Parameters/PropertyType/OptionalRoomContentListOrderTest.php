@@ -17,10 +17,9 @@ use DataType\ProcessRule\SkipIfNull;
 use DataType\Value\Ordering;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class OptionalRoomContentListOrderTest extends BaseTestCase
 {
     /**

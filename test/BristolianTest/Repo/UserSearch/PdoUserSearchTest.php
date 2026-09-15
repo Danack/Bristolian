@@ -9,11 +9,12 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use Bristolian\Repo\UserSearch\PdoUserSearch;
 use Bristolian\Repo\UserSearch\UserSearch;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
  * @group db
  */
+#[CoversNothing]
 class PdoUserSearchTest extends BaseTestCase
 {
     use TestPlaceholders;

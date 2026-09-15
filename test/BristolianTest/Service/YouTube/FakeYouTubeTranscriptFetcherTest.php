@@ -6,10 +6,9 @@ namespace BristolianTest\Service\YouTube;
 
 use Bristolian\Service\YouTube\FakeYouTubeTranscriptFetcher;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeYouTubeTranscriptFetcherTest extends BaseTestCase
 {
     /**

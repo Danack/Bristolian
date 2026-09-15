@@ -7,10 +7,9 @@ namespace BristolianTest\Keys;
 use Bristolian\Keys\UnknownCacheQueryKey;
 use PHPUnit\Framework\TestCase;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Keys\UnknownCacheQueryKey
- */
+#[CoversClass(\Bristolian\Keys\UnknownCacheQueryKey::class)]
 class UnknownCacheQueryKeyTest extends BaseTestCase
 {
     public function testSetKeyConstant(): void

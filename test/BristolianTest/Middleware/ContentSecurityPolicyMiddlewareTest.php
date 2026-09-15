@@ -14,10 +14,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Bristolian\Middleware\ContentSecurityPolicyMiddleware;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Middleware\ContentSecurityPolicyMiddleware
- */
+#[CoversClass(\Bristolian\Middleware\ContentSecurityPolicyMiddleware::class)]
 class ContentSecurityPolicyMiddlewareTest extends BaseTestCase
 {
     public function testWorks()

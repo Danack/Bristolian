@@ -6,10 +6,9 @@ namespace BristolianTest\Service\MemeFileLocalCache;
 
 use Bristolian\Service\MemeFileLocalCache\EnsureMemeFileCachedResult;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class EnsureMemeFileCachedResultTest extends BaseTestCase
 {
     /**

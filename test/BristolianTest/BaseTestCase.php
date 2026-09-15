@@ -12,13 +12,12 @@ use Danack\PHPUnitHelper\StringTemplateMatching;
 use JMac\Testing\PhpUnit\Tia\Traits\RunWithTia;
 use function \Danack\PHPUnitHelper\templateStringToRegExp;
 use function Safe\preg_match;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
- * @coversNothing
- *
  * Allows checking that no code has output characters, or left the output buffer in a bad state.
- *
  */
+#[CoversNothing]
 class BaseTestCase extends TestCase
 {
     use StringTemplateMatching;

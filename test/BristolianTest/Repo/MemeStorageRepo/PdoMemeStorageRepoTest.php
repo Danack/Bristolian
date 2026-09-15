@@ -18,11 +18,12 @@ use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
 use Ramsey\Uuid\Uuid;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
 {
     use HasTestWorld;

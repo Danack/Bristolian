@@ -11,10 +11,9 @@ use Bristolian\Response\SVGResponse;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class QRCodeTest extends BaseTestCase
 {
     /**

@@ -9,10 +9,9 @@ use Bristolian\MarkdownRenderer\CommonMarkRenderer;
 use Bristolian\MarkdownRenderer\FakeMarkdownRenderer;
 use Bristolian\MarkdownRenderer\MarkdownRenderer;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ExplanationsTest extends BaseTestCase
 {
     public function setup(): void

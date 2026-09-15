@@ -10,11 +10,12 @@ use Bristolian\Model\Types\RoomVideoTranscriptList;
 use Bristolian\Repo\RoomVideoTranscriptRepo\InMemoryRoomVideoTranscriptRepo;
 use PHPUnit\Framework\TestCase;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Bristolian\Repo\RoomVideoTranscriptRepo\InMemoryRoomVideoTranscriptRepo
  * @group standard_repo
  */
+#[CoversClass(\Bristolian\Repo\RoomVideoTranscriptRepo\InMemoryRoomVideoTranscriptRepo::class)]
 class InMemoryRoomVideoTranscriptRepoTest extends BaseTestCase
 {
     public function test_getTranscripts_returns_empty_list_initially(): void

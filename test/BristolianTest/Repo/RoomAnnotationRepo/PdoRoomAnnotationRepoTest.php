@@ -8,11 +8,12 @@ use Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo;
 use Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\Support\HasTestWorld;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoRoomAnnotationRepoTest extends RoomAnnotationRepoFixture
 {
     use HasTestWorld;

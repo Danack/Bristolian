@@ -7,10 +7,9 @@ namespace BristolianTest\Service\TooMuchMemoryNotifier;
 use Bristolian\Service\TooMuchMemoryNotifier\NullTooMuchMemoryNotifier;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class NullTooMuchMemoryNotifierTest extends BaseTestCase
 {
     /**

@@ -7,10 +7,9 @@ namespace BristolianTest\Service\ExplorerData;
 use Bristolian\Service\ExplorerData\ControllerCallableCodeLocator;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ControllerCallableCodeLocatorTest extends BaseTestCase
 {
     /**

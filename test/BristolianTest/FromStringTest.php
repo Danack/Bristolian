@@ -2,6 +2,7 @@
 
 namespace BristolianTest;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Bristolian\FromString;
 use BristolianTest\BaseTestCase;
 use function Safe\json_encode;
@@ -34,9 +35,7 @@ class TestFromStringNoConstructorClass
     use FromString;
 }
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FromStringTest extends BaseTestCase
 {
     /**

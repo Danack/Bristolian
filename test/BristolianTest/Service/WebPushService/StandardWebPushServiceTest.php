@@ -9,10 +9,9 @@ use Bristolian\Model\Types\WebPushNotification;
 use Bristolian\Service\WebPushService\StandardWebPushService;
 use BristolianTest\BaseTestCase;
 use Minishlink\WebPush\SubscriptionInterface;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class StandardWebPushServiceTest extends BaseTestCase
 {
 

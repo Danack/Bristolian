@@ -9,10 +9,9 @@ use Bristolian\Service\TooMuchMemoryNotifier\LoggingTooMuchMemoryNotifier;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Uri;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class LoggingTooMuchMemoryNotifierTest extends BaseTestCase
 {
     /**

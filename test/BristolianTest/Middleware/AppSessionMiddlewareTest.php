@@ -11,10 +11,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Bristolian\Session\FakeAppSessionManager;
 use function Safe\json_encode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Middleware\AppSessionMiddleware
- */
+#[CoversClass(\Bristolian\Middleware\AppSessionMiddleware::class)]
 class AppSessionMiddlewareTest extends BaseTestCase
 {
     public function testWorks()

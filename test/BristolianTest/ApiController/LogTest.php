@@ -11,10 +11,9 @@ use Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo;
 use BristolianGenerated\Response\GetLogProcessorRunRecordsResponse;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @covers \Bristolian\ApiController\Log::get_processor_run_records
- */
+#[CoversNothing]
 class LogTest extends BaseTestCase
 {
     public function test_get_processor_run_records_returns_empty_list_when_no_records(): void

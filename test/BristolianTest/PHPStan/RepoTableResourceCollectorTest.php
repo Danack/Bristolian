@@ -15,10 +15,9 @@ use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Namespace_;
 use PhpParser\ParserFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\PHPStan\RepoTableResourceCollector
- */
+#[CoversClass(\Bristolian\PHPStan\RepoTableResourceCollector::class)]
 class RepoTableResourceCollectorTest extends BaseTestCase
 {
     private RepoTableResourceCollector $collector;

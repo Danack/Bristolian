@@ -10,10 +10,9 @@ use BristolianChat\FallbackHandler;
 use BristolianChatTest\Fixtures\FakeHttpClient;
 use BristolianChatTest\Fixtures\Psr7UriForTests;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \BristolianChat\FallbackHandler
- */
+#[CoversClass(\BristolianChat\FallbackHandler::class)]
 class FallbackHandlerTest extends BaseTestCase
 {
     public function test_handleRequest_returns_200_with_expected_body(): void

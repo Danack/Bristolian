@@ -11,10 +11,9 @@ use Bristolian\Service\EmailSender\MailgunEmailClient;
 use Bristolian\Service\EmailSender\TestableMailgun;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class MailgunEmailClientTest extends BaseTestCase
 {
     private function createMailgunWithFakeClient(FakeMailgunHttpClient $fakeClient): TestableMailgun

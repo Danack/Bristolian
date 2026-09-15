@@ -10,11 +10,12 @@ use Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\PdoWhatDoTheyKnowRequestEvent
 use Bristolian\Service\UuidGenerator\UuidGenerator;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 final class PdoWhatDoTheyKnowRequestEventRepoTest extends BaseTestCase
 {
     /**

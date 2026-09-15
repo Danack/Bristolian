@@ -6,10 +6,9 @@ namespace BristolianTest\AppController;
 
 use Bristolian\AppController\Topics;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class TopicsTest extends BaseTestCase
 {
     /**

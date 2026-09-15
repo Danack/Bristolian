@@ -9,11 +9,12 @@ use Bristolian\Repo\ApiTokenRepo\ApiTokenCreateFailedException;
 use Bristolian\Repo\ApiTokenRepo\ApiTokenRepo;
 use Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo;
 use Bristolian\Service\SecureTokenGenerator\FixedSecureTokenGenerator;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoApiTokenRepoTest extends ApiTokenRepoFixture
 {
     /**

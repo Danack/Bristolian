@@ -5,10 +5,9 @@ namespace BristolianTest\ApiController;
 use BristolianTest\BaseTestCase;
 use Bristolian\ApiController\HealthCheck;
 use SlimDispatcher\Response\JsonResponse;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\ApiController\HealthCheck
- */
+#[CoversClass(\Bristolian\ApiController\HealthCheck::class)]
 class HealthCheckTest extends BaseTestCase
 {
     public function testWorks()

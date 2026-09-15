@@ -4,10 +4,9 @@ namespace BristolianTest\Exception;
 
 use Bristolian\Exception\DataEncodingException;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class DataEncodingExceptionTest extends BaseTestCase
 {
     /**

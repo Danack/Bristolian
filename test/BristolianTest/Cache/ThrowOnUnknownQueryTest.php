@@ -8,10 +8,9 @@ use Bristolian\Cache\ThrowOnUnknownQuery;
 use Bristolian\Cache\UnknownQueryException;
 use PHPUnit\Framework\TestCase;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Cache\ThrowOnUnknownQuery
- */
+#[CoversClass(\Bristolian\Cache\ThrowOnUnknownQuery::class)]
 class ThrowOnUnknownQueryTest extends BaseTestCase
 {
     public function testThrowsUnknownQueryException(): void

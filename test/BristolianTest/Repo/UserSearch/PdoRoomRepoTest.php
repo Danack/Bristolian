@@ -7,11 +7,12 @@ namespace BristolianTest\Repo\RoomRepo;
 use Bristolian\Repo\RoomRepo\PdoRoomRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
 use BristolianTest\Support\HasTestWorld;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoRoomRepoTest extends RoomRepoFixture
 {
     use HasTestWorld;

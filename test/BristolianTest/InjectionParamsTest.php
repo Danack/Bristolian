@@ -5,10 +5,9 @@ namespace BristolianTest;
 use Bristolian\InjectionParams;
 use BristolianTest\BaseTestCase;
 use DI\Injector;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class InjectionParamsTest extends BaseTestCase
 {
     /**

@@ -6,10 +6,9 @@ use DataType\Basic\BasicString;
 use BristolianTest\BaseTestCase;
 use Bristolian\Parameters\MemeTagParams;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Parameters\MemeTagParams
- */
+#[CoversClass(\Bristolian\Parameters\MemeTagParams::class)]
 class MemeTagParamTest extends BaseTestCase
 {
     public function testWorks()

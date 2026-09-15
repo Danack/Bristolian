@@ -5,10 +5,9 @@ namespace BristolianTest\Response;
 use Bristolian\Response\RoomFileUploadSuccessResponse;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class RoomFileUploadSuccessResponseTest extends BaseTestCase
 {
     /**

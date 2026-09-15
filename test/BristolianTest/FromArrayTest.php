@@ -2,6 +2,7 @@
 
 namespace BristolianTest;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Bristolian\FromArray;
 use BristolianTest\BaseTestCase;
 
@@ -22,9 +23,7 @@ class TestFromArrayClass
     public $active;
 }
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FromArrayTest extends BaseTestCase
 {
     /**

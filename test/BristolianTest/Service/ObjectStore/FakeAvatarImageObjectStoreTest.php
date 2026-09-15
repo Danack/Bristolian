@@ -6,10 +6,9 @@ namespace BristolianTest\Service\ObjectStore;
 
 use Bristolian\Service\ObjectStore\FakeAvatarImageObjectStore;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class FakeAvatarImageObjectStoreTest extends BaseTestCase
 {
     /**

@@ -8,10 +8,9 @@ use Bristolian\Model\TinnedFish\ValidationStatus;
 use Bristolian\Response\TinnedFish\ProductLookupResponse;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\TinnedFish\ProductLookupResponse
- */
+#[CoversClass(\Bristolian\Response\TinnedFish\ProductLookupResponse::class)]
 class ProductLookupResponseTest extends BaseTestCase
 {
     public function testGetStatusReturns200()

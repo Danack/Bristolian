@@ -13,11 +13,12 @@ use BristolianTest\Repo\TestPlaceholders;
 use BristolianGenerated\Model\BristolStairInfo;
 use Ramsey\Uuid\Uuid;
 use VarMap\ArrayVarMap;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * @group db
- * @coversNothing
  */
+#[CoversNothing]
 class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
 {
     use TestPlaceholders;

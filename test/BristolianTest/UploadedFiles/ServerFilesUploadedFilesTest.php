@@ -6,10 +6,9 @@ use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\UploadedFiles\UploadedFiles;
 use BristolianTest\BaseTestCase;
 use Bristolian\UploadedFiles\ServerFilesUploadedFiles;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\UploadedFiles\ServerFilesUploadedFiles
- */
+#[CoversClass(\Bristolian\UploadedFiles\ServerFilesUploadedFiles::class)]
 class ServerFilesUploadedFilesTest extends BaseTestCase
 {
     /**

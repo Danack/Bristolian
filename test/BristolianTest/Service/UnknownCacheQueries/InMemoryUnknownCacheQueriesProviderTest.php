@@ -6,10 +6,9 @@ namespace BristolianTest\Service\UnknownCacheQueries;
 
 use Bristolian\Service\UnknownCacheQueries\InMemoryUnknownCacheQueriesProvider;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class InMemoryUnknownCacheQueriesProviderTest extends BaseTestCase
 {
     /**

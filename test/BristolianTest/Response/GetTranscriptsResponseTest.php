@@ -10,10 +10,9 @@ use Bristolian\Response\GetTranscriptsResponse;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
 use function Safe\json_decode;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class GetTranscriptsResponseTest extends BaseTestCase
 {
     /**

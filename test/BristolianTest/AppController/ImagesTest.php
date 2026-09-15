@@ -16,10 +16,9 @@ use League\Flysystem\Local\LocalFilesystemAdapter;
 use SlimDispatcher\Response\ImageResponse;
 use function Safe\file_put_contents;
 use function Safe\mkdir;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class ImagesTest extends BaseTestCase
 {
     private string $tempRoot;

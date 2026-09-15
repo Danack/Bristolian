@@ -4,10 +4,9 @@ namespace BristolianTest\Parameters;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Parameters\WebPushSubscriptionParams;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Parameters\WebPushSubscriptionParams
- */
+#[CoversClass(\Bristolian\Parameters\WebPushSubscriptionParams::class)]
 class WebPushSubscriptionParamTest extends BaseTestCase
 {
     public function testWorksWithNull()

@@ -4,10 +4,9 @@ namespace BristolianTest\Response;
 
 use Bristolian\Response\SVGResponse;
 use BristolianTest\BaseTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Response\SVGResponse
- */
+#[CoversClass(\Bristolian\Response\SVGResponse::class)]
 class SVGResponseTest extends BaseTestCase
 {
     public function testWorksCorrectlyWithDefaults()
