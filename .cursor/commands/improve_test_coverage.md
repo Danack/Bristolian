@@ -25,38 +25,15 @@ docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh --no-progress"
 
 ### Step 3: Find Coverage Gaps
 
-Use `report_missing_coverage.php` for a single-step summary of overall coverage and which files need more tests:
+Use `list_uncovered_lines.php` to list uncovered statements from `clover.xml` as `path:line` or `path:start-end`:
 
 ```bash
-# Whole project summary + files/directories with gaps
-docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php"
+# Whole project
+docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php"
 
 # Focus on one area
-docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php --filter=Bristolian/Response"
-
-# Top gaps only, with uncovered line numbers
-docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php --limit=20 --lines"
-
-# Machine-readable JSON
-docker exec bristolian-php_fpm-1 bash -c "php report_missing_coverage.php --json"
+docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php | grep Bristolian/Response"
 ```
-
-Every successful run also writes cache files beside the script:
-
-- `report_missing_coverage.php.output.json`
-- `report_missing_coverage.php.output.llm`
-
-Exit **0** means the report was produced (gaps are data in those files, not a failure). Exit **2** is for real errors. Read the cache/JSON for gaps; do not infer coverage status from the exit code.
-
-CodeView and agents can read these instead of re-running the tool when inputs have not changed.
-
-For a raw `path:line` dump (e.g. scripting), `list_uncovered_lines.php` is still available:
-
-```bash
-docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_lines.php clover.xml | grep Bristolian/Response"
-```
-
-Prefer `report_missing_coverage.php` when deciding where to work next.
 
 ### Step 4: Analyze Existing Tests
 
@@ -72,7 +49,7 @@ Create test files following the project's testing guidelines:
 - Follow existing test patterns and structure
 - Use real objects, not mocks (per project guidelines)
 - Test all uncovered methods and code paths
-- Include `@covers` annotations
+- Include `@covers` annotations, preferably coversNothing for the test class, with individual covers per test method.
 
 ### Step 6: Verify Coverage Improvement
 
