@@ -334,7 +334,35 @@ docker exec bristolian-js_builder-1 node <script>
 docker exec bristolian-js_builder-1 npm <command>
 ```
 
+## Behat and frontend coverage
 
+Behat runs browser acceptance tests (`features/`, `behat.yml`). From the host:
+
+```bash
+docker exec bristolian-php_fpm-1 bash -c "sh runBehat.sh"
+docker exec bristolian-php_fpm-1 bash -c "sh runBehat.sh features/chat"
+```
+
+Frontend line coverage is collected during Behat when the JS bundle is Istanbul-instrumented. Flow:
+
+1. Build instrumented bundle (`js_builder`):
+   ```bash
+   docker exec bristolian-js_builder-1 bash -c "cd app && npm run js:build:coverage"
+   ```
+2. Run Behat (`php_fpm`):
+   ```bash
+   docker exec bristolian-php_fpm-1 bash -c "sh runBehat.sh"
+   ```
+3. Generate the report (`js_builder`):
+   ```bash
+   docker exec bristolian-js_builder-1 bash -c "cd app && npm run js:coverage:report"
+   ```
+
+Clover output: `tmp/behat-js-coverage-report/clover.xml`. List uncovered frontend lines:
+
+```bash
+docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_frontend_lines.php tmp/behat-js-coverage-report/clover.xml"
+```
 
 ### Running Chat (WebSocket) PHPUnit Tests
 

@@ -13,15 +13,17 @@ You can either:
 
 ### Step 1: Read Testing Guidelines
 
-Read `notes/developing/testing_guidelines.md` before doing any of the steps below. It defines PHPUnit coverage annotations, data providers, the no-mocks rule, use of test fixtures, and other patterns you must follow when writing tests.
+Read `notes/developing/development_setup.md` before doing any of the steps below (Code quality and testing Guidelines). It defines PHPUnit coverage annotations, data providers, the no-mocks rule, use of test fixtures, and other patterns you must follow when writing tests.
 
 ### Step 2: Generate Coverage Report
 
-Run the unit tests to generate a coverage report:
+Run the unit tests inside the container to generate a coverage report (`clover.xml`):
 
 ```bash
-docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh --no-progress"
+docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh"
 ```
+
+`runUnitTests.sh` does not forward extra flags. For a specific test, invoke PHPUnit directly (see `development_setup.md`).
 
 ### Step 3: Find Coverage Gaps
 
@@ -69,7 +71,7 @@ After creating tests, run the tests again to verify:
 **User:** `@improve_test_coverage Bristolian/Response`
 
 **What I do:**
-1. Read testing guidelines
+1. Read `notes/developing/development_setup.md`
 2. Run tests to generate coverage
 3. Find all uncovered lines in `Bristolian/Response` namespace
 4. Review existing Response test files
@@ -81,7 +83,7 @@ After creating tests, run the tests again to verify:
 **User:** `@improve_test_coverage suggest`
 
 **What I do:**
-1. Read testing guidelines
+1. Read `notes/developing/development_setup.md`
 2. Run tests to generate coverage
 3. Analyze coverage across different namespaces
 4. Identify which namespace has the most uncovered lines
@@ -93,7 +95,7 @@ After creating tests, run the tests again to verify:
 **User:** `@improve_test_coverage src/Bristolian/Model`
 
 **What I do:**
-1. Read testing guidelines
+1. Read `notes/developing/development_setup.md`
 2. Run tests to generate coverage
 3. Find all uncovered lines in that directory
 4. Review existing Model test files
@@ -105,7 +107,7 @@ After creating tests, run the tests again to verify:
 **User:** `@improve_test_coverage get everything back to 100%`
 
 **What I do:**
-1. Read testing guidelines
+1. Read `notes/developing/development_setup.md`
 2. Run the full test suite to generate a fresh coverage report
 3. Inspect uncovered lines across the whole project from `clover.xml` and `list_uncovered_lines.php`
 4. Review the affected code and nearby tests

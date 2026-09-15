@@ -12,9 +12,9 @@ You can either:
 
 ## How It Works
 
-### Step 1: Read Behat and Frontend Coverage Notes
+### Step 1: Read Development Setup
 
-Read `notes/developing/behat_testing_notes.md` before doing any of the steps below. It describes how to run Behat, how frontend coverage is collected, and where reports (including the Clover file) are produced.
+Read `notes/developing/development_setup.md` before doing any of the steps below (Behat and frontend coverage section). It describes how to run Behat, how frontend coverage is collected, and where reports (including the Clover file) are produced.
 
 ### Step 2: Generate Frontend Coverage Report
 
@@ -45,14 +45,11 @@ The Clover file is written to **`tmp/behat-js-coverage-report/clover.xml`** at t
 Use the same tool as for PHP coverage: **`list_uncovered_frontend_lines.php`** (project root). It reads any Clover XML and prints uncovered statement lines as `path:LINE`. Point it at the frontend Clover file and optionally filter by path:
 
 ```bash
-# From project root (e.g. in php_fpm container)
-php list_uncovered_frontend_lines.php tmp/behat-js-coverage-report/clover.xml | grep app/public/tsx
+# Whole frontend (or pipe through grep for a focus area)
+docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_frontend_lines.php tmp/behat-js-coverage-report/clover.xml | grep app/public/tsx"
 
 # For a specific file (e.g. RoomFilesPanel.tsx)
 docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_frontend_lines.php tmp/behat-js-coverage-report/clover.xml | grep RoomFilesPanel"
-
-# For a directory (e.g. all frontend tsx)
-docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_frontend_lines.php tmp/behat-js-coverage-report/clover.xml | grep app/public/tsx"
 ```
 
 - **Clover location**: `tmp/behat-js-coverage-report/clover.xml` at project root. Paths in the output are typically under `app/public/tsx/` for frontend sources.
@@ -91,7 +88,7 @@ Re-run the full frontend coverage flow and confirm:
 **User:** `@improve_frontend_test_coverage app/public/tsx/RoomFilesPanel.tsx`
 
 **What I do:**
-1. Read Behat and frontend coverage notes
+1. Read `notes/developing/development_setup.md`
 2. Ensure coverage report exists (build instrumented bundle → Behat → report)
 3. From `tmp/behat-js-coverage-report/clover.xml`, find uncovered lines for `RoomFilesPanel.tsx`
 4. Review existing room/chat features and steps that load the files panel
@@ -103,7 +100,7 @@ Re-run the full frontend coverage flow and confirm:
 **User:** `@improve_frontend_test_coverage suggest`
 
 **What I do:**
-1. Read Behat and frontend coverage notes
+1. Read `notes/developing/development_setup.md`
 2. Ensure coverage report exists
 3. Parse or analyze `tmp/behat-js-coverage-report/clover.xml` to find files (e.g. under `app/public/tsx/`) with the most uncovered lines
 4. Suggest that file or directory for improvement
@@ -114,7 +111,7 @@ Re-run the full frontend coverage flow and confirm:
 **User:** `@improve_frontend_test_coverage app/public/tsx/`
 
 **What I do:**
-1. Read Behat and frontend coverage notes
+1. Read `notes/developing/development_setup.md`
 2. Ensure coverage report exists
 3. From the Clover file, find all uncovered lines for files under `app/public/tsx/`
 4. Review existing features and steps

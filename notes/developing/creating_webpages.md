@@ -1052,7 +1052,7 @@ let panels: WidgetClassBinding[] = [
 ## Related Documentation
 
 - [Development Setup](development_setup.md) - How to set up the development environment
-- [Testing Guidelines](testing_guidelines.md) - How to test your components
+- [Testing Guidelines](development_setup.md) - How to test your components (Code quality and testing Guidelines)
 - [API Documentation](api_documentation.md) - API endpoint conventions
 - [Project Layout](project_layout.md) - Overview of the project structure
 

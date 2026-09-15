@@ -32,13 +32,14 @@ PHPUnit runs unit tests to verify code functionality.
 docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh"
 ```
 
-**Additional flags:** You can pass extra flags to PHPUnit:
+`runUnitTests.sh` does not forward extra flags. For a specific test or PHPUnit option, invoke PHPUnit directly:
+
 ```bash
-docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh --filter TestClassName"
-docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh --stop-on-failure"
+docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c phpunit.xml --filter TestClassName"
+docker exec bristolian-php_fpm-1 bash -c "php vendor/bin/phpunit -c phpunit.xml --stop-on-failure"
 ```
 
-**What it does:** Runs all PHPUnit tests defined in `test/` directory using the configuration in `phpunit.xml`.
+**What it does:** `runUnitTests.sh` runs the full PHPUnit suite (via ParaTest) using `phpunit.xml`.
 
 ### 3. CodeSniffer - Code Style Checking
 
@@ -84,10 +85,11 @@ docker exec bristolian-php_fpm-1 bash -c "sh runAllTests.sh"
 **What it runs:**
 1. CodeSniffer (code style checking)
 2. PHPStan (static analysis)
-3. PHPUnit (unit tests)
-4. Behat is commented out by default (uncomment if needed)
+3. PHPUnit (unit tests via `runUnitTests.sh`)
+4. Chat PHPUnit (`runChatUnitTests.sh`)
+5. Behat is commented out by default (uncomment if needed)
 
-**Note:** This is the recommended command to run before finalizing work, as it checks code style, static analysis, and unit tests all at once.
+**Note:** This is the recommended command to run before finalizing work, as it checks code style, static analysis, and unit tests (including chat) all at once.
 
 ### 6. Test code: review anonymous classes
 
