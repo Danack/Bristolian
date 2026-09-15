@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace BristolianTest\Service\ExplorerData;
 
 use Bristolian\Service\ExplorerData\CodegenProvenance;
-use Bristolian\Service\ExplorerData\GeneratedArtifactsEntryTypeFinder;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use function Safe\file;
@@ -119,82 +118,6 @@ class CodegenProvenanceTest extends BaseTestCase
         $this->assertNull(
             CodegenProvenance::parseFromFileContents("// just a normal comment\n")
         );
-    }
-
-    /**
-     * @covers \Bristolian\Service\ExplorerData\GeneratedArtifactsEntryTypeFinder::getEntryTypeKey
-     * @covers \Bristolian\Service\ExplorerData\GeneratedArtifactsEntryTypeFinder::findEntries
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::buildPayload
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::descriptionForCallable
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignment
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignments
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::projectRelativePath
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::flushDescriptionBlock
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::normalizeFqcn
-     */
-    public function test_finder_returns_one_entry_per_generation_process(): void
-    {
-        $finder = new GeneratedArtifactsEntryTypeFinder();
-        $this->assertSame('generated_artifacts', $finder->getEntryTypeKey());
-
-        $entries = $finder->findEntries();
-        $this->assertCount(7, $entries);
-
-        $byOutput = [];
-        foreach ($entries as $entry) {
-            $this->assertArrayHasKey('name', $entry);
-            $this->assertArrayHasKey('generator', $entry);
-            $this->assertArrayHasKey('generator_callable', $entry);
-            $this->assertArrayHasKey('output_file', $entry);
-            $this->assertArrayHasKey('description', $entry);
-            $this->assertArrayNotHasKey('sources', $entry);
-            $this->assertArrayNotHasKey('mappings', $entry);
-            $this->assertNotSame('', $entry['description']);
-            $byOutput[$entry['output_file']] = $entry;
-        }
-
-        $this->assertArrayHasKey('app/public/tsx/generated/constants.tsx', $byOutput);
-        $this->assertArrayHasKey('app/public/tsx/generated/types.tsx', $byOutput);
-        $this->assertArrayHasKey('app/public/tsx/generated/api_routes.tsx', $byOutput);
-        $this->assertArrayHasKey('app/public/tsx/generated/widget_panels.tsx', $byOutput);
-        $this->assertArrayHasKey('src/BristolianGenerated/Response/', $byOutput);
-        $this->assertArrayHasKey('src/BristolianGenerated/Database/', $byOutput);
-        $this->assertArrayHasKey('src/BristolianGenerated/Model/', $byOutput);
-
-        $constantsEntry = $byOutput['app/public/tsx/generated/constants.tsx'];
-        $this->assertArrayHasKey('detail', $constantsEntry);
-        $this->assertStringContainsString('$constantDefinitions = [', $constantsEntry['detail']);
-        $this->assertArrayHasKey('detail_source', $constantsEntry);
-        $this->assertSame(
-            'src/Bristolian/CliController/GenerateFiles.php',
-            $constantsEntry['detail_source']['file']
-        );
-        $this->assertIsInt($constantsEntry['detail_source']['line-start']);
-        $this->assertIsInt($constantsEntry['detail_source']['line-end']);
-        $this->assertGreaterThan(
-            $constantsEntry['detail_source']['line-start'],
-            $constantsEntry['detail_source']['line-end']
-        );
-
-        $typesEntry = $byOutput['app/public/tsx/generated/types.tsx'];
-        $this->assertArrayHasKey('detail', $typesEntry);
-        $this->assertStringContainsString('$types = [', $typesEntry['detail']);
-        $this->assertStringContainsString('$enums = [', $typesEntry['detail']);
-        $this->assertArrayHasKey('detail_source', $typesEntry);
-        $this->assertSame(
-            'src/Bristolian/CliController/GenerateFiles.php',
-            $typesEntry['detail_source']['file']
-        );
-        $this->assertGreaterThanOrEqual(
-            $typesEntry['detail_source']['line-start'],
-            $typesEntry['detail_source']['line-end']
-        );
-
-        $this->assertArrayNotHasKey('detail', $byOutput['app/public/tsx/generated/widget_panels.tsx']);
-        $this->assertArrayNotHasKey('detail_source', $byOutput['app/public/tsx/generated/widget_panels.tsx']);
-        $this->assertArrayNotHasKey('detail', $byOutput['src/BristolianGenerated/Response/']);
-        $this->assertArrayNotHasKey('detail_source', $byOutput['src/BristolianGenerated/Response/']);
     }
 
     /**

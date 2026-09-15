@@ -253,11 +253,6 @@ final class CliCommandRegistry
                 'Bristolian\CliController\GenerateFiles::generateWidgetPanels',
                 'Generate TypeScript widget panels registration from WidgetRegistry.'
             ),
-            new CliCommandDefinition(
-                'generate:codeview-data',
-                'Bristolian\CliController\GenerateExplorerData::generateExplorerData',
-                'Generate project codeview data JSON for bounded-context navigation.'
-            ),
         ];
     }
 
