@@ -35,6 +35,33 @@ class PdoBccTroRepo implements BccTroRepo
         );
     }
 
+    /**
+     * @param BccTro[] $tros
+     */
+    #[ReadsTable(bcc_tro_information::class)]
+    #[WritesTable(bcc_tro_information::class)]
+    public function saveDataIfNew(array $tros): int|null
+    {
+        [$error, $newData] = convertToValue($tros);
+
+        if ($error !== null) {
+            throw new \Exception($error);
+        }
+
+        $sql = bcc_tro_information::SELECT . " order by id desc limit 1";
+
+        $latestEntry = $this->pdo_simple->fetchOneAsDataOrNull($sql, []);
+
+        if ($latestEntry !== null) {
+            $previousData = json_decode_safe($latestEntry['tro_data']);
+            if (bccTroDataEquals($previousData, $newData)) {
+                return null;
+            }
+        }
+
+        return $this->saveData($tros);
+    }
+
     #[ReadsTable(bcc_tro_information::class)]
     public function getMostRecentData(): BccTro|null
     {

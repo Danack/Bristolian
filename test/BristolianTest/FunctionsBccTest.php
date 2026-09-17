@@ -40,17 +40,17 @@ class FunctionsBccTest extends BaseTestCase
 
         $statement_of_reasons_1 = new BccTroDocument(
             '(1) Statement of Reasons Hengrove Promenade',
-            '/files/documents/10060-1-statement-of-reasons-hengrove-promenade',
+            'https://www.bristol.gov.uk/files/documents/10060-1-statement-of-reasons-hengrove-promenade',
             '10060'
         );
         $notice_of_proposal_1 = new BccTroDocument(
             '(2) Notice Hengrove Promenade Parallel and Zebra crossings',
-            '/files/documents/10061-2-notice-hengrove-promenade-parallel-and-zebra-crossings',
+            'https://www.bristol.gov.uk/files/documents/10061-2-notice-hengrove-promenade-parallel-and-zebra-crossings',
             '10061'
         );
         $proposed_plan_1 = new BccTroDocument(
             '(3) Plan Hengrove Promenade Parallel and Zebra',
-            '/files/documents/10062-3-plan-hengrove-promenade-parallel-and-zebra',
+            'https://www.bristol.gov.uk/files/documents/10062-3-plan-hengrove-promenade-parallel-and-zebra',
             '10062',
         );
 
@@ -98,6 +98,8 @@ class FunctionsBccTest extends BaseTestCase
 
     /**
      * @covers \parseTrosFromHtml
+     * @covers \extractDocumentLinksFromUl
+     * @covers \resolveBccDocumentHref
      * @group tro_wip
      */
     #[DataProvider('provides_ParseTrosFromHtmlParsesExampleFile')]
@@ -160,6 +162,7 @@ class FunctionsBccTest extends BaseTestCase
     /**
      * @covers \parseTrosFromHtml
      * @covers \extractDocumentLinksFromUl
+     * @covers \resolveBccDocumentHref
      */
     public function testParseTrosFromHtmlExtractsIdFromHrefWhenDataIdMissing(): void
     {
@@ -171,12 +174,95 @@ class FunctionsBccTest extends BaseTestCase
 
         $this->assertCount(1, $tros);
         $this->assertSame('999', $tros[0]->statement_of_reasons->id);
-        $this->assertSame('/files/999-statement-of-reasons', $tros[0]->statement_of_reasons->href);
+        $this->assertSame(
+            'https://www.bristol.gov.uk/files/999-statement-of-reasons',
+            $tros[0]->statement_of_reasons->href
+        );
         $this->assertSame('Statement of Reasons', $tros[0]->statement_of_reasons->title);
     }
 
     /**
+     * @return \Generator<string, array{string, string, string}>
+     */
+    public static function provides_resolve_bcc_document_href_cases(): \Generator
+    {
+        $baseUrl = 'https://www.bristol.gov.uk/residents/streets-travel/make-a-comment-on-traffic-regulation-orders-tros';
+
+        yield 'empty' => ['', $baseUrl, ''];
+        yield 'already absolute https' => [
+            'https://www.bristol.gov.uk/files/documents/1-foo',
+            $baseUrl,
+            'https://www.bristol.gov.uk/files/documents/1-foo',
+        ];
+        yield 'root-relative' => [
+            '/files/documents/1-foo',
+            $baseUrl,
+            'https://www.bristol.gov.uk/files/documents/1-foo',
+        ];
+        yield 'protocol-relative' => [
+            '//cdn.example.com/doc.pdf',
+            $baseUrl,
+            'https://cdn.example.com/doc.pdf',
+        ];
+        yield 'path-relative' => [
+            'documents/1-foo',
+            $baseUrl,
+            'https://www.bristol.gov.uk/residents/streets-travel/documents/1-foo',
+        ];
+    }
+
+    /**
+     * @covers \resolveBccDocumentHref
+     * @dataProvider provides_resolve_bcc_document_href_cases
+     */
+    #[DataProvider('provides_resolve_bcc_document_href_cases')]
+    public function test_resolve_bcc_document_href(
+        string $href,
+        string $baseUrl,
+        string $expected
+    ): void {
+        $this->assertSame($expected, \resolveBccDocumentHref($href, $baseUrl));
+    }
+
+    /**
+     * @return \Generator<string, array{array, array, bool}>
+     */
+    public static function provides_bcc_tro_data_equals_cases(): \Generator
+    {
+        yield 'same structure same key order' => [
+            [['title' => 'A', 'reference_code' => 'R']],
+            [['title' => 'A', 'reference_code' => 'R']],
+            true,
+        ];
+        yield 'same structure different key order' => [
+            [['title' => 'A', 'reference_code' => 'R']],
+            [['reference_code' => 'R', 'title' => 'A']],
+            true,
+        ];
+        yield 'different values' => [
+            [['title' => 'A', 'reference_code' => 'R']],
+            [['title' => 'B', 'reference_code' => 'R']],
+            false,
+        ];
+    }
+
+    /**
+     * @covers \bccTroDataEquals
+     * @covers \sortArrayKeysRecursive
+     * @dataProvider provides_bcc_tro_data_equals_cases
+     */
+    #[DataProvider('provides_bcc_tro_data_equals_cases')]
+    public function test_bcc_tro_data_equals(
+        array $left,
+        array $right,
+        bool $expectedEqual
+    ): void {
+        $this->assertSame($expectedEqual, bccTroDataEquals($left, $right));
+    }
+
+    /**
      * @covers \extractDocumentLinksFromUl
+     * @covers \resolveBccDocumentHref
      */
     public function testExtractDocumentLinksFromUlReturnsAllThreeDocumentTypes(): void
     {
@@ -197,13 +283,26 @@ class FunctionsBccTest extends BaseTestCase
         $this->assertArrayHasKey('notice_of_proposal', $documents);
         $this->assertArrayHasKey('proposed_plan', $documents);
         $this->assertSame('SOR', $documents['statement_of_reasons']->title);
+        $this->assertSame(
+            'https://www.bristol.gov.uk/sor',
+            $documents['statement_of_reasons']->href
+        );
         $this->assertSame('1', $documents['statement_of_reasons']->id);
         $this->assertSame('Notice', $documents['notice_of_proposal']->title);
+        $this->assertSame(
+            'https://www.bristol.gov.uk/notice',
+            $documents['notice_of_proposal']->href
+        );
         $this->assertSame('Plan', $documents['proposed_plan']->title);
+        $this->assertSame(
+            'https://www.bristol.gov.uk/plan',
+            $documents['proposed_plan']->href
+        );
     }
 
     /**
      * @covers \extractDocumentLinksFromUl
+     * @covers \resolveBccDocumentHref
      */
     public function testExtractDocumentLinksFromUlUsesLinkTextWhenDataTitleMissing(): void
     {

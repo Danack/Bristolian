@@ -21,7 +21,7 @@ class StandardBccTroFetcher implements BccTroFetcher
     {
         $htmlContent = $this->fetchHtmlContent();
 
-        return \parseTrosFromHtml($htmlContent);
+        return \parseTrosFromHtml($htmlContent, self::SOURCE_URL);
     }
 
 

@@ -17,7 +17,7 @@ use DataType\ExtractRule\GetType;
 use DataType\ExtractRule\GetTypeOrNull;
 use DataType\InputType\GetDataType;
 
-class BccTro implements DataType //, StaticFactory
+class BccTro implements DataType
 {
     use ToString;
 

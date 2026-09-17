@@ -20,7 +20,8 @@ class BccTroFetcherCliController
     public function continual_bcc_tro_process(
         BccTroExecutionCheck $bccTroExecutionCheck,
         ProcessorRunRecordRepo $processorRunRecordRepo,
-        BccTroService $bccTroSerice,
+        BccTroFetcher $bccTroFetcher,
+        BccTroRepo $bccTroRepo,
         CliOutput $cliOutput
     ): void {
         // @codeCoverageIgnoreStart
@@ -29,13 +30,15 @@ class BccTroFetcherCliController
         $callable = function () use (
             $bccTroExecutionCheck,
             $processorRunRecordRepo,
-            $bccTroSerice,
+            $bccTroFetcher,
+            $bccTroRepo,
             $cliOutput
         ) {
             $this->single_bcc_tro_process(
                 $bccTroExecutionCheck,
                 $processorRunRecordRepo,
-                $bccTroSerice,
+                $bccTroFetcher,
+                $bccTroRepo,
                 $cliOutput
             );
         };
@@ -52,7 +55,8 @@ class BccTroFetcherCliController
     public function single_bcc_tro_process(
         BccTroExecutionCheck $bccTroExecutionCheck,
         ProcessorRunRecordRepo $processorRunRecordRepo,
-        BccTroService $bccTroSerice,
+        BccTroFetcher $bccTroFetcher,
+        BccTroRepo $bccTroRepo,
         CliOutput $cliOutput,
     ): void {
         $cliOutput->write("I am the daily_bcc_tro processor\n");
@@ -71,10 +75,15 @@ class BccTroFetcherCliController
         );
 
         try {
-            $bccTroSerice->do_the_needful();
+            $new_tros = $bccTroFetcher->fetchTros();
+
+            $save_id_or_null = $bccTroRepo->saveDataIfNew($new_tros);
+
+            $message = "BccTro save_id_or_null is " . var_export($save_id_or_null, true) . "\n";
+            $cliOutput->write($message);
             $processorRunRecordRepo->setRunFinished(
                 $run_id,
-                ""
+                $message
             );
         }
         catch (\Exception $exception) {

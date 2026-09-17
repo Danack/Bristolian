@@ -23,47 +23,52 @@ class StandardBccTroService implements BccTroService
 
     public function do_the_needful(): void
     {
-        $tros = $this->bccTroFetcher->fetchTros();
-        $save_id = $this->bccTroRepo->saveData($tros);
-        $this->cliOutput->write("save id is $save_id\n");
+        $new_tros = $this->bccTroFetcher->fetchTros();
 
-        if (count($tros) === 0) {
-            $tro_info = "There were no TROs found";
-        }
-        else {
-            $tro_info = "There were " . count($tros) . " TROs found. The saved data has ID " . $save_id;
-            $tro_info .= output_tro_list_to_output($tros);
-        }
+        $save_id = $this->bccTroRepo->saveData($new_tros);
 
-        $this->cliOutput->write($tro_info);
+        // Compare the
 
-        $this->cliOutput->write("TROs retrieved.\n");
 
-        $transport_room_name = "Transport";
-        $rooms = $this->roomRepo->getRoomByName($transport_room_name);
+//        $save_id = $this->bccTroRepo->saveData($tros);
+//        $this->cliOutput->write("save id is $save_id\n");
+//
+//        if (count($tros) === 0) {
+//            $tro_info = "There were no TROs found";
+//        }
+//        else {
+//            $tro_info = "There were " . count($tros) . " TROs found. The saved data has ID " . $save_id;
+//            $tro_info .= output_tro_list_to_output($tros);
+//        }
+//
+//        $this->cliOutput->write($tro_info);
+//
+//        $this->cliOutput->write("TROs retrieved.\n");
+//
+//        $transport_room_name = "Transport";
+//        $rooms = $this->roomRepo->getRoomByName($transport_room_name);
+//
+//        if (count($rooms) === 0) {
+//            $this->cliOutput->write("Failed to find '$transport_room_name'.");
+//            return;
+//        }
+//
+//        $this->cliOutput->write("room found.\n");
+//
+//        $markdown_text = renderBccTrosAsMarkdown($tros);
+//
+//        $params = [
+////            'text' => "BCC TRO has been updated: " . $tro_info,
+//            'text' => $markdown_text,
+//            'room_id' => ($rooms[0])->id,
+//        ];
+//
+//        $messageParams = ChatMessageParam::createFromArray($params);
+//        $chat_message = $this->roomMessageService->sendRoomMessage($messageParams);
+//
+//        $this->cliOutput->write("message sent to room.\n");
+//
+//        $this->cliOutput->write("$markdown_text\n");
 
-        if (count($rooms) === 0) {
-            $this->cliOutput->write("Failed to find '$transport_room_name'.");
-            return;
-        }
-
-        $this->cliOutput->write("room found.\n");
-
-        $markdown_text = renderBccTrosAsMarkdown($tros);
-
-        $params = [
-//            'text' => "BCC TRO has been updated: " . $tro_info,
-            'text' => $markdown_text,
-            'room_id' => ($rooms[0])->id,
-        ];
-
-        $messageParams = ChatMessageParam::createFromArray($params);
-        $chat_message = $this->roomMessageService->sendRoomMessage($messageParams);
-
-        $this->cliOutput->write("message sent to room.\n");
-
-        $this->cliOutput->write("$markdown_text\n");
-
-        $this->cliOutput->write("wat\n");
     }
 }

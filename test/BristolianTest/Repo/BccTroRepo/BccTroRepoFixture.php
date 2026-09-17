@@ -61,4 +61,89 @@ abstract class BccTroRepoFixture extends BaseTestCase
         // Should not throw exception
         $repo->saveData([]);
     }
+
+    /**
+     * @covers \Bristolian\Repo\BccTroRepo\BccTroRepo::saveDataIfNew
+     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveDataIfNew
+     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveData
+     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveDataIfNew
+     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveData
+     */
+    public function test_saveDataIfNew_saves_when_no_previous_data(): void
+    {
+        $repo = $this->getTestInstance();
+        $tro = $this->createUniqueTro('first-save');
+
+        $saveId = $repo->saveDataIfNew([$tro]);
+
+        $this->assertNotNull($saveId);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\BccTroRepo\BccTroRepo::saveDataIfNew
+     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveDataIfNew
+     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveData
+     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveDataIfNew
+     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveData
+     */
+    public function test_saveDataIfNew_returns_null_when_data_unchanged(): void
+    {
+        $repo = $this->getTestInstance();
+        $tro = $this->createUniqueTro('unchanged');
+
+        $firstSaveId = $repo->saveDataIfNew([$tro]);
+        $this->assertNotNull($firstSaveId);
+
+        $secondSaveId = $repo->saveDataIfNew([$tro]);
+        $this->assertNull($secondSaveId);
+    }
+
+    /**
+     * @covers \Bristolian\Repo\BccTroRepo\BccTroRepo::saveDataIfNew
+     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveDataIfNew
+     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveData
+     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveDataIfNew
+     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveData
+     */
+    public function test_saveDataIfNew_saves_when_data_differs(): void
+    {
+        $repo = $this->getTestInstance();
+        $firstTro = $this->createUniqueTro('before-change');
+        $secondTro = $this->createUniqueTro('after-change');
+
+        $firstSaveId = $repo->saveDataIfNew([$firstTro]);
+        $this->assertNotNull($firstSaveId);
+
+        $secondSaveId = $repo->saveDataIfNew([$secondTro]);
+        $this->assertNotNull($secondSaveId);
+        $this->assertNotSame($firstSaveId, $secondSaveId);
+    }
+
+    private function createUniqueTro(string $label): BccTro
+    {
+        $unique = create_test_uniqid();
+        $statement = new \Bristolian\Model\Types\BccTroDocument(
+            'Statement ' . $label . ' ' . $unique,
+            'https://www.bristol.gov.uk/files/' . $unique . '-statement',
+            'doc-' . $unique . '-1'
+        );
+        $notice = new \Bristolian\Model\Types\BccTroDocument(
+            'Notice ' . $label . ' ' . $unique,
+            'https://www.bristol.gov.uk/files/' . $unique . '-notice',
+            'doc-' . $unique . '-2'
+        );
+        $plan = new \Bristolian\Model\Types\BccTroDocument(
+            'Plan ' . $label . ' ' . $unique,
+            'https://www.bristol.gov.uk/files/' . $unique . '-plan',
+            'doc-' . $unique . '-3'
+        );
+
+        return new BccTro(
+            title: 'TRO ' . $label . ' ' . $unique,
+            reference_code: 'REF-' . $unique,
+            statement_of_reasons: $statement,
+            notice_of_proposal: $notice,
+            proposed_plan: $plan
+        );
+    }
 }

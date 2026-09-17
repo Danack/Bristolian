@@ -71,7 +71,21 @@
 
 
       <!-- toggle_slow begin <html outputDirectory="tmp/coverage" lowUpperBound="90" highLowerBound="100"/> -->
-<html outputDirectory="tmp/coverage" lowUpperBound="90" highLowerBound="100"/>
+    <html
+      outputDirectory="tmp/coverage"
+      lowUpperBound="90"
+      highLowerBound="100"
+      colorSuccessHigh="#8cd5a8"
+      colorSuccessLow="#d6f2e0"
+      colorSuccessMedium="#b3e8c8"
+      colorSuccessBar="#1a9b5c"
+      colorDanger="#f2d6d6"
+      colorDangerBar="#c94a4a"
+      colorDangerDark="#3a1a1a"
+      colorDangerBarDark="#a33a3a"
+    />
+
+
 <!-- toggle_slow end-->
 
     </report>

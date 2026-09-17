@@ -152,6 +152,12 @@ SQL) => ['read' => [], 'write' => ['avatar_image_object_info']],
             trim(bcc_tro_information::INSERT)
                 => ['read' => [], 'write' => ['bcc_tro_information']],
 
+            trim(bcc_tro_information::SELECT . " order by id desc")
+                => ['read' => ['bcc_tro_information'], 'write' => []],
+
+            trim(bcc_tro_information::SELECT . " order by id desc limit 1")
+                => ['read' => ['bcc_tro_information'], 'write' => []],
+
             // ===== WhatDoTheyKnowRequestEventRepo =====
             trim(whatdotheyknow_request_event::INSERT)
                 => ['read' => [], 'write' => ['whatdotheyknow_request_event']],
@@ -1008,15 +1014,6 @@ values (
 )
 SQL) => ['read' => [], 'write' => ['user_webpush_subscription']],
 
-
-        trim(<<<SQL
-select
-    id,
-    tro_data,
-    created_at
-from
-  bcc_tro_information  order by id desc
-SQL) => ['read' => ['bcc_tro_information'], 'write' => []],
 
          ];
     }

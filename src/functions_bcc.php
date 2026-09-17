@@ -5,13 +5,19 @@ declare(strict_types=1);
 use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;
 use function Safe\preg_match;
+use function Safe\parse_url;
 
 /**
  * Parse TRO (Traffic Regulation Order) entries from Bristol City Council HTML page content.
  *
+ * Relative document hrefs are resolved against $baseUrl so stored links are absolute.
+ *
  * @return BccTro[]
  */
-function parseTrosFromHtml(string $html): array
+function parseTrosFromHtml(
+    string $html,
+    string $baseUrl = 'https://www.bristol.gov.uk'
+): array
 {
     if (empty(trim($html))) {
         return [];
@@ -84,7 +90,8 @@ function parseTrosFromHtml(string $html): array
             ) {
                 $candidateDocuments = extractDocumentLinksFromUl(
                     $xpath,
-                    $node
+                    $node,
+                    $baseUrl
                 );
 
                 if (isset($candidateDocuments['statement_of_reasons'])
@@ -117,11 +124,55 @@ function parseTrosFromHtml(string $html): array
 }
 
 /**
+ * Turn a document href from BCC HTML into an absolute URL.
+ *
+ * Already-absolute http(s) hrefs are left unchanged. Root-relative paths
+ * (e.g. /files/documents/...) and protocol-relative hrefs are resolved
+ * against the scheme/host of $baseUrl.
+ */
+function resolveBccDocumentHref(string $href, string $baseUrl): string
+{
+    $href = trim($href);
+    if ($href === '') {
+        return '';
+    }
+
+    if (preg_match('#^https?://#i', $href) === 1) {
+        return $href;
+    }
+
+    $baseParts = parse_url($baseUrl);
+    $scheme = $baseParts['scheme'] ?? 'https';
+    $host = $baseParts['host'] ?? 'www.bristol.gov.uk';
+    $origin = $scheme . '://' . $host;
+
+    if (str_starts_with($href, '//')) {
+        return $scheme . ':' . $href;
+    }
+
+    if (str_starts_with($href, '/')) {
+        return $origin . $href;
+    }
+
+    $basePath = $baseParts['path'] ?? '/';
+    $directory = rtrim(str_replace('\\', '/', dirname($basePath)), '/');
+    if ($directory === '' || $directory === '.') {
+        $directory = '';
+    }
+
+    return $origin . $directory . '/' . $href;
+}
+
+/**
  * Extract document links from a UL element (statement of reasons, notice, plan).
  *
  * @return array<string, BccTroDocument>
  */
-function extractDocumentLinksFromUl(\DOMXPath $xpath, \DOMElement $ulElement): array
+function extractDocumentLinksFromUl(
+    \DOMXPath $xpath,
+    \DOMElement $ulElement,
+    string $baseUrl = 'https://www.bristol.gov.uk'
+): array
 {
     $documents = [];
 
@@ -134,7 +185,7 @@ function extractDocumentLinksFromUl(\DOMXPath $xpath, \DOMElement $ulElement): a
             // @codeCoverageIgnoreEnd
         }
         $link = $linkNode;
-        $href = $link->getAttribute('href');
+        $href = resolveBccDocumentHref($link->getAttribute('href'), $baseUrl);
         $linkText = trim($link->textContent);
 
         $id = $link->getAttribute('data-id');
@@ -161,6 +212,40 @@ function extractDocumentLinksFromUl(\DOMXPath $xpath, \DOMElement $ulElement): a
     }
 
     return $documents;
+}
+
+
+/**
+ * Compare two TRO data arrays for equality, ignoring JSON object key order
+ * (MySQL JSON columns may reorder keys on store/retrieve).
+ */
+function bccTroDataEquals(array $left, array $right): bool
+{
+    return json_encode_safe(sortArrayKeysRecursive($left))
+        === json_encode_safe(sortArrayKeysRecursive($right));
+}
+
+/**
+ * @param mixed $value
+ * @return mixed
+ */
+function sortArrayKeysRecursive(mixed $value): mixed
+{
+    if (is_array($value) !== true) {
+        return $value;
+    }
+
+    $isList = array_is_list($value);
+    $sorted = [];
+    foreach ($value as $key => $item) {
+        $sorted[$key] = sortArrayKeysRecursive($item);
+    }
+
+    if ($isList !== true) {
+        ksort($sorted);
+    }
+
+    return $sorted;
 }
 
 
