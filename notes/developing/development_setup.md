@@ -332,35 +332,31 @@ docker exec bristolian-js_builder-1 node <script>
 docker exec bristolian-js_builder-1 npm <command>
 ```
 
-## Behat and frontend coverage
+## Playwright browser tests
 
-Behat runs browser acceptance tests (`features/`, `behat.yml`). From the host:
-
-```bash
-docker exec bristolian-php_fpm-1 bash -c "sh runBehat.sh"
-docker exec bristolian-php_fpm-1 bash -c "sh runBehat.sh features/chat"
-```
-
-Frontend line coverage is collected during Behat when the JS bundle is Istanbul-instrumented. Flow:
-
-1. Build instrumented bundle (`js_builder`):
-   ```bash
-   docker exec bristolian-js_builder-1 bash -c "cd app && npm run js:build:coverage"
-   ```
-2. Run Behat (`php_fpm`):
-   ```bash
-   docker exec bristolian-php_fpm-1 bash -c "sh runBehat.sh"
-   ```
-3. Generate the report (`js_builder`):
-   ```bash
-   docker exec bristolian-js_builder-1 bash -c "cd app && npm run js:coverage:report"
-   ```
-
-Clover output: `tmp/behat-js-coverage-report/clover.xml`. List uncovered frontend lines:
+Playwright runs browser acceptance tests (`app/e2e/`, `app/playwright.config.ts`). From the host:
 
 ```bash
-docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_frontend_lines.php tmp/behat-js-coverage-report/clover.xml"
+sh runPlaywright.sh
+sh runPlaywright.sh e2e/chat
+sh runPlaywright.sh e2e/bristol-stairs.spec.ts
 ```
+
+Inside `js_builder`:
+
+```bash
+docker exec bristolian-js_builder-1 bash -c "cd /var/app/app && npm run test:e2e"
+```
+
+### Deferred: frontend coverage during browser tests
+
+Previously, Behat collected Istanbul `window.__coverage__` after each scenario. That flow is **not** wired to Playwright yet. The old tooling still exists if we want to restore it later:
+
+1. Build instrumented bundle (`js_builder`): `npm run js:build:coverage`
+2. Run browser tests that dump `__coverage__` (needs Playwright `afterEach` wiring)
+3. Report (`js_builder`): `npm run js:coverage:report`
+
+Clover was at `tmp/behat-js-coverage-report/clover.xml`. Helper: `php list_uncovered_frontend_lines.php …`. See also `.cursor/commands/improve_frontend_test_coverage.md` (still describes the old Behat flow; deferred until Playwright coverage is restored).
 
 ### Chat (WebSocket) PHPUnit Tests
 

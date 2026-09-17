@@ -54,7 +54,6 @@
         "psr-0": {
             "Asm\\": "asm_in_project/lib/",
             "Bristolian\\": "src/",
-            "BristolianBehat\\": "src/",
             "BristolianGenerated\\": "src/",
             "Key\\": "src/",
             "OpenApi\\": "src/",

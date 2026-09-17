@@ -12,14 +12,11 @@ This project uses Docker containers for development. **All commands, scripts, an
 
 ### PHP Commands (php_fpm container)
 
-All PHP-related commands (tests, Behat, PHPUnit, Composer, etc.) must run inside the `php_fpm` container:
+All PHP-related commands (tests, PHPUnit, Composer, etc.) must run inside the `php_fpm` container:
 
 ```bash
 # Run PHP unit tests
 docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh"
-
-# Run Behat browser tests
-docker exec bristolian-php_fpm-1 bash -c "sh runBehat.sh"
 
 # Run PHPStan
 docker exec bristolian-php_fpm-1 bash -c "sh runPhpStan.sh"
@@ -43,7 +40,6 @@ docker exec -it bristolian-php_fpm-1 bash
 
 # Then run commands directly:
 sh runUnitTests.sh
-sh runBehat.sh
 composer install
 ```
 
@@ -58,6 +54,12 @@ docker exec bristolian-js_builder-1 bash -c "npm run test"
 # Run all Jest tests including slow Bristol assignment fixtures (JEST_RUN_SLOW_TESTS=1)
 docker exec bristolian-js_builder-1 bash -c "npm run test:all"
 
+# Run Playwright browser e2e tests
+docker exec bristolian-js_builder-1 bash -c "cd /var/app/app && npm run test:e2e"
+
+# Or from the host:
+# sh runPlaywright.sh
+
 # Run npm commands
 docker exec bristolian-js_builder-1 bash -c "npm install"
 docker exec bristolian-js_builder-1 bash -c "npm run build"
@@ -68,7 +70,7 @@ docker logs bristolian-js_builder-1 --tail 100
 
 ### Script Files
 
-Script files in the project root (e.g., `runBehat.sh`, `runUnitTests.sh`) are designed to be executed **inside** the container, not on the host. They contain the actual commands without docker-compose exec calls.
+Script files in the project root (e.g., `runUnitTests.sh`, `runPhpStan.sh`) are designed to be executed **inside** the container, not on the host. They contain the actual commands without docker-compose exec calls. Exception: `runPlaywright.sh` is a host wrapper that `docker exec`s into `js_builder`.
 
 ## Container Names
 
@@ -145,6 +147,6 @@ docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh"
 # 3. Or get interactive shell and run commands
 docker exec -it bristolian-php_fpm-1 bash
 # Inside container:
-sh runBehat.sh
+sh runUnitTests.sh
 ```
 

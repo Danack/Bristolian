@@ -10,6 +10,9 @@ use Amp\Websocket\Server\WebsocketGateway;
 use Amp\Websocket\WebsocketClient;
 use Monolog\Logger;
 
+/**
+ * Production client handler: accepts websocket connections and broadcasts text via Amp's gateway.
+ */
 class StandardClientHandler implements ClientHandler, WebsocketClientHandler
 {
     public function __construct(

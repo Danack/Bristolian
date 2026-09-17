@@ -9,24 +9,6 @@ services:
     networks:
       app_network:
     restart: always
-  chrome_headless:
-    # build: containers/chrome_gaaaaaaah
-    image: chromedp/headless-shell
-    ports:
-      - "9222:9222"
-      - "9223:9223"
-    cap_add:
-      - SYS_ADMIN
-    environment:
-      - CHROME_OPTS=--window-size="1024,800"
-    networks:
-      app_network:
-    security_opt:
-      - seccomp:unconfined
-    volumes:
-      # We share the app directory so that file uploads can work. The mink driver sends a message
-      # to upload a file from a path, not the file itself.
-      - .:/var/app
   mediawiki:
     image: mediawiki:latest
     container_name: mediawiki
@@ -85,6 +67,11 @@ services:
       - .:/var/app
   js_builder:
     build: containers/js_builder
+    extra_hosts:
+      - "local.bristolian.org:host-gateway"
+      - "local.api.bristolian.org:host-gateway"
+    environment:
+      - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
     volumes:
       - .:/var/app
   sass_dev_builder:
@@ -106,7 +93,7 @@ services:
    environment:
       - COMPOSER_CACHE_DIR=/var/app/var/cache/composer
       - COMPOSER_ALLOW_SUPERUSER=1
-      # Absolute path to this repo on your machine (see .env). Maps /var/app for Behat fail-aid file:// links.
+      - # Absolute path to this repo on your machine (see .env). Optional host path mapping for debug links.
       - BRISTOLIAN_HOST_PATH=${BRISTOLIAN_HOST_PATH}
       - RUNNING_IN_DOCKER=1
    networks:

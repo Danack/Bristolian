@@ -8,6 +8,9 @@ use Bristolian\Model\Chat\UserChatMessage;
 use Monolog\Logger;
 use Safe\DateTimeImmutable;
 
+/**
+ * Loads chat messages from MySQL for the websocket poller.
+ */
 class SqlRoomMessagesWatcher implements RoomMessagesWatcher
 {
     public function __construct(

@@ -28,6 +28,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getOpenApiCommandDefinitions')]
 #[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getRoomCommandDefinitions')]
 #[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getSeedCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getStorageCommandDefinitions')]
 #[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getTestCommandDefinitions')]
 #[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getWhatDoTheyKnowCommandDefinitions')]
 #[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'registerCommand')]
@@ -45,6 +46,25 @@ class CliCommandRegistryTest extends BaseTestCase
 
         $this->assertContains('debug:hello', $commandNames);
         $this->assertContains('debug:send_webpush', $commandNames);
+    }
+
+    public function test_getStorageCommandDefinitions_includes_bucket_commands(): void
+    {
+        $definitions = CliCommandRegistry::getStorageCommandDefinitions();
+        $commandNames = array_map(
+            static fn ($definition) => $definition->commandName,
+            $definitions
+        );
+
+        $this->assertContains('storage:buckets_clear_dev', $commandNames);
+        $this->assertContains('storage:buckets_archive_production', $commandNames);
+
+        $console = new Application();
+        CliCommandRegistry::registerCommands($console, $definitions);
+        $clearCommand = $console->get('storage:buckets_clear_dev');
+        $this->assertTrue($clearCommand->getDefinition()->hasArgument('mode'));
+        $archiveCommand = $console->get('storage:buckets_archive_production');
+        $this->assertTrue($archiveCommand->getDefinition()->hasArgument('mode'));
     }
 
     public function test_getAllDefinitions_has_unique_command_names(): void

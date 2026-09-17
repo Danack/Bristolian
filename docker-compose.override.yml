@@ -31,6 +31,10 @@ services:
   js_builder:
     environment:
       - BRISTOLIAN_API_BASE_URL=http://local.api.bristolian.org
+      - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+    extra_hosts:
+      - "local.bristolian.org:host-gateway"
+      - "local.api.bristolian.org:host-gateway"
     ports:
       - "8888:8888"
 #  php_fpm:

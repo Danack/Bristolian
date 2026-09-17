@@ -5,6 +5,7 @@ node_modules/
 vendor/
 var/
 config.generated.php
+/archive
 .idea/
 containers/nginx/config/nginx.conf
 containers/varnish/config/default.vcl
@@ -75,6 +76,10 @@ api_routes.tsx
 /chat_previous_days_buttons.png
 tmp/behat-js-coverage
 tmp/behat-js-coverage-report
+/app/test-results/
+/app/playwright-report/
+/app/blob-report/
+/app/playwright/.cache/
 
 # Notice review tool (standalone in purchases/)
 purchases/notice_progress.json

@@ -57,21 +57,24 @@ docker exec bristolian-php_fpm-1 bash -c "sh runCodeSniffer.sh"
 
 **Note:** This script will automatically fix many style issues, but may report remaining violations that need manual fixes.
 
-### 4. Behat - Browser/Acceptance Tests
+### 4. Playwright - Browser/Acceptance Tests
 
-Behat runs browser-based acceptance tests using Gherkin feature files.
+Playwright runs browser-based acceptance tests (TypeScript specs under `app/e2e/`).
 
-**Command:**
+**Command (from host):**
 ```bash
-docker exec bristolian-php_fpm-1 bash -c "sh runBehat.sh"
+sh runPlaywright.sh
 ```
 
-**Run specific features:**
+**Run a subset:**
 ```bash
-docker exec bristolian-php_fpm-1 bash -c "sh runBehat.sh features/chat"
+sh runPlaywright.sh e2e/chat
+sh runPlaywright.sh e2e/bristol-stairs.spec.ts
 ```
 
-**What it does:** Runs Behat tests defined in `features/` directory using the configuration in `behat.yml`. Tests run in a browser environment and verify end-to-end functionality.
+**What it does:** Runs Playwright against `http://local.bristolian.org` inside the `js_builder` container (Playwright-managed Chromium). Specs live in `app/e2e/`.
+
+**Note:** Frontend Istanbul/`window.__coverage__` collection during browser tests is deferred; the old Behat coverage scripts remain but are unused until rewired for Playwright.
 
 ### 5. Run All Tests (Recommended)
 
@@ -83,12 +86,10 @@ docker exec bristolian-php_fpm-1 bash -c "sh runAllTests.sh"
 ```
 
 **What it runs:**
-1. CodeSniffer (code style checking)
-2. PHPStan (static analysis)
-3. PHPUnit (unit tests via `runUnitTests.sh`, including chat/WebSocket tests)
-4. Behat is commented out by default (uncomment if needed)
+1. PHPStan (static analysis)
+2. PHPUnit (unit tests via `runUnitTests.sh`, including chat/WebSocket tests)
 
-**Note:** This is the recommended command to run before finalizing work, as it checks code style, static analysis, and unit tests (including chat) all at once.
+Browser e2e is separate: `sh runPlaywright.sh` from the host.
 
 ### 6. Test code: review anonymous classes
 
@@ -111,7 +112,7 @@ docker exec bristolian-php_fpm-1 bash -c "sh runAllTests.sh"
 docker exec bristolian-php_fpm-1 bash -c "sh runCodeSniffer.sh"
 docker exec bristolian-php_fpm-1 bash -c "sh runPhpStan.sh"
 docker exec bristolian-php_fpm-1 bash -c "sh runUnitTests.sh"
-docker exec bristolian-php_fpm-1 bash -c "sh runBehat.sh"  # Optional, if browser tests are needed
+sh runPlaywright.sh  # Browser e2e (from host; runs in js_builder)
 ```
 
-**Important:** All commands must be run inside the `php_fpm` container. Never run these scripts directly on the host machine.
+**Important:** PHP/Composer scripts must be run inside the `php_fpm` container. Playwright is run from the host via `runPlaywright.sh` (exec into `js_builder`). Never run PHP scripts directly on the host machine.

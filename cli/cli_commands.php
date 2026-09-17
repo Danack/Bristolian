@@ -26,6 +26,7 @@ function add_console_commands(Application $console)
     addMoonCommands($console);
     addBccTroCommands($console);
     addWhatDoTheyKnowCommands($console);
+    addStorageCommands($console);
 }
 
 function addEmailCommands(Application $console)
@@ -104,4 +105,9 @@ function addBccTroCommands(Application $console)
 function addWhatDoTheyKnowCommands(Application $console): void
 {
     CliCommandRegistry::registerCommands($console, CliCommandRegistry::getWhatDoTheyKnowCommandDefinitions());
+}
+
+function addStorageCommands(Application $console): void
+{
+    CliCommandRegistry::registerCommands($console, CliCommandRegistry::getStorageCommandDefinitions());
 }

@@ -449,6 +449,112 @@ function createRoomFileFilesystem(Config $config): \Bristolian\Filesystem\RoomFi
     return $filesystem;
 }
 
+/**
+ * Create a Flysystem filesystem for a Scaleway bucket that must be a -dev bucket.
+ * Used by destructive CLI cleanup so production buckets cannot be targeted.
+ *
+ * @throws \InvalidArgumentException when the bucket name does not end with -dev
+ */
+function createDevOnlyObjectFilesystem(string $bucketName): \League\Flysystem\Filesystem
+{
+    if (str_ends_with($bucketName, '-dev') !== true) {
+        throw new \InvalidArgumentException(
+            "Refusing to create filesystem for non-dev bucket: {$bucketName}"
+        );
+    }
+
+    $client = new S3Client([
+        'credentials' => [
+            'key' => getScalewayApiKey(),
+            'secret' => getScalewayApiSecret(),
+        ],
+        'region' => 'nl-ams',
+        'endpoint' => 'https://s3.nl-ams.scw.cloud',
+        'http' => [
+            'timeout' => 15,
+            'connect_timeout' => 4,
+        ],
+    ]);
+
+    $adapter = new AwsS3V3Adapter(
+        $client,
+        $bucketName,
+        '',
+        new PortableVisibilityConverter(
+            Visibility::PRIVATE
+        )
+    );
+
+    return new \League\Flysystem\Filesystem($adapter, []);
+}
+
+/**
+ * Create a read-only Flysystem filesystem for a Scaleway production bucket.
+ * Used by the archive CLI so production buckets cannot be written or deleted through this handle.
+ *
+ * @throws \InvalidArgumentException when the bucket name ends with -dev
+ */
+function createProductionOnlyObjectFilesystem(string $bucketName): \League\Flysystem\Filesystem
+{
+    if (str_ends_with($bucketName, '-dev') === true) {
+        throw new \InvalidArgumentException(
+            "Refusing to create production filesystem for -dev bucket: {$bucketName}"
+        );
+    }
+
+    $client = new S3Client([
+        'credentials' => [
+            'key' => getScalewayApiKey(),
+            'secret' => getScalewayApiSecret(),
+        ],
+        'region' => 'nl-ams',
+        'endpoint' => 'https://s3.nl-ams.scw.cloud',
+        'http' => [
+            'timeout' => 15,
+            'connect_timeout' => 4,
+        ],
+    ]);
+
+    $adapter = new AwsS3V3Adapter(
+        $client,
+        $bucketName,
+        '',
+        new PortableVisibilityConverter(
+            Visibility::PRIVATE
+        )
+    );
+
+    $readOnlyAdapter = new \League\Flysystem\ReadOnly\ReadOnlyFilesystemAdapter($adapter);
+
+    return new \League\Flysystem\Filesystem($readOnlyAdapter, []);
+}
+
+/**
+ * Local Flysystem rooted at the project archive/ directory (often a symlink).
+ *
+ * @throws \RuntimeException when archive/ is missing or not writable
+ */
+function createArchiveLocalFilesystem(): \League\Flysystem\Filesystem
+{
+    $archiveRoot = __DIR__ . '/../archive';
+
+    if (is_dir($archiveRoot) !== true) {
+        throw new \RuntimeException(
+            "Archive directory does not exist: {$archiveRoot}"
+        );
+    }
+
+    if (is_writable($archiveRoot) !== true) {
+        throw new \RuntimeException(
+            "Archive directory is not writable: {$archiveRoot}"
+        );
+    }
+
+    $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter($archiveRoot);
+
+    return new \League\Flysystem\Filesystem($adapter, []);
+}
+
 
 
 

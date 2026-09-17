@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Bristolian\Cli;
 
+use Bristolian\CliController\BucketManagementDev;
+use Bristolian\CliController\BucketManagementProd;
 use Danack\Console\Application;
 use Danack\Console\Command\Command;
 use Danack\Console\Input\InputArgument;
@@ -34,6 +36,7 @@ final class CliCommandRegistry
             self::getMoonCommandDefinitions(),
             self::getBccTroCommandDefinitions(),
             self::getWhatDoTheyKnowCommandDefinitions(),
+            self::getStorageCommandDefinitions(),
         );
     }
 
@@ -528,6 +531,41 @@ final class CliCommandRegistry
                 'service:whatdotheyknow_requested:continual',
                 'Bristolian\CliController\WhatDoTheyKnowFeedCliController::syncRequestedFromBristolContinual',
                 'Poll WhatDoTheyKnow Bristol feed on an interval (supervisord)'
+            ),
+        ];
+    }
+
+    /**
+     * @return list<CliCommandDefinition>
+     */
+    public static function getStorageCommandDefinitions(): array
+    {
+        return [
+            new CliCommandDefinition(
+                'storage:buckets_clear_dev',
+                'Bristolian\CliController\BucketManagementDev::clear',
+                'List or delete all files in Scaleway -dev object-storage buckets (memes, stairs, avatars, documents, room files). Defaults to dry-run.',
+                static function (Command $command): void {
+                    $command->addArgument(
+                        'mode',
+                        InputArgument::OPTIONAL,
+                        "Either '" . BucketManagementDev::MODE_DRY_RUN . "' (list files that would be deleted) or '" . BucketManagementDev::MODE_DELETE . "' (remove them). Defaults to dry-run.",
+                        BucketManagementDev::MODE_DRY_RUN
+                    );
+                }
+            ),
+            new CliCommandDefinition(
+                'storage:buckets_archive_production',
+                'Bristolian\CliController\BucketManagementProd::archive',
+                'Incrementally archive Scaleway production object-storage buckets into archive/<bucket>/ (host). Defaults to dry-run; skips local files with matching size.',
+                static function (Command $command): void {
+                    $command->addArgument(
+                        'mode',
+                        InputArgument::OPTIONAL,
+                        "Either '" . BucketManagementProd::MODE_DRY_RUN . "' (list files that would be downloaded) or '" . BucketManagementProd::MODE_DOWNLOAD . "' (copy them). Defaults to dry-run.",
+                        BucketManagementProd::MODE_DRY_RUN
+                    );
+                }
             ),
         ];
     }

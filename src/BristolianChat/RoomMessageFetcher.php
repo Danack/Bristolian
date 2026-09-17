@@ -8,6 +8,9 @@ use BristolianChat\RoomMessagesWatcher\RoomMessagesWatcher;
 use Monolog\Logger;
 use Bristolian\MarkdownRenderer\MarkdownRenderer;
 
+/**
+ * Polls for new chat messages, renders their markdown, and broadcasts them to clients.
+ */
 class RoomMessageFetcher
 {
     private int|null $previous_id = null;

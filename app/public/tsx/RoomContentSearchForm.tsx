@@ -116,7 +116,7 @@ export function RoomContentSearchForm(props: RoomContentSearchFormProps) {
             {/* Row 1: Title or Name / Created after / Created before */}
             <label>
                 {titleLabel}{" "}
-                <input>
+                <input
                     type="text"
                     value={title}
                     onInput={(e) => onTitleChange((e.target as HTMLInputElement).value)}
