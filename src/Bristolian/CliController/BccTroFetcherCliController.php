@@ -13,7 +13,6 @@ use Bristolian\Service\CliOutput\CliOutput;
 use Bristolian\Service\DailyProcessorSchedule\DailyProcessorSchedule;
 use Bristolian\Service\RoomMessageService\RoomMessageService;
 use Bristolian\Service\DailyProcessorSchedule\BccTroExecutionCheck;
-use Bristolian\Service\BccTroService\BccTroService;
 
 class BccTroFetcherCliController
 {

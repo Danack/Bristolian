@@ -71,6 +71,28 @@ class RepoTableAttributesRule implements Rule
 
         $errors = [];
 
+        $resolveClassName = static fn (Name $name): string => $scope->resolveName($name);
+        $isKnownDatabaseHelper = fn (string $helperClass): bool => $this->reflectionProvider->hasClass($helperClass);
+
+        $directUsedByMethod = [];
+        $thisMethodCallsByMethod = [];
+        foreach ($originalNode->getMethods() as $classMethod) {
+            $methodName = $classMethod->name->toString();
+            $directUsedByMethod[$methodName] = $this->collector->collectUsedFromMethodNode(
+                $classMethod,
+                $resolveClassName,
+                $isKnownDatabaseHelper
+            );
+            $thisMethodCallsByMethod[$methodName] = $this->collector->collectThisMethodCallNames(
+                $classMethod
+            );
+        }
+
+        $usedByMethod = $this->collector->bubbleUsedThroughThisCalls(
+            $directUsedByMethod,
+            $thisMethodCallsByMethod
+        );
+
         foreach ($originalNode->getMethods() as $classMethod) {
             if (!$classMethod->isPublic()) {
                 continue;
@@ -114,11 +136,7 @@ class RepoTableAttributesRule implements Rule
                 }
             }
 
-            $used = $this->collector->collectUsedFromMethodNode(
-                $classMethod,
-                static fn (Name $name): string => $scope->resolveName($name),
-                fn (string $helperClass): bool => $this->reflectionProvider->hasClass($helperClass)
-            );
+            $used = $usedByMethod[$methodName] ?? ['reads' => [], 'writes' => []];
 
             $implementationMethodLabel = sprintf('%s::%s', $classReflection->getName(), $methodName);
             $interfaceMethodLabel = sprintf(

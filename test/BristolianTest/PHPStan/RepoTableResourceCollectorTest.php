@@ -102,6 +102,55 @@ PHP;
         $this->assertSame([], $used['writes']);
     }
 
+    public function test_collect_this_method_call_names(): void
+    {
+        $code = <<<'PHP'
+<?php
+namespace Test;
+class Example {
+    public function saveDataIfNew(): void {
+        $this->saveData();
+        $other->saveData();
+        $this->saveData();
+    }
+    public function saveData(): void {}
+}
+PHP;
+
+        $classMethod = $this->parseFirstMethod($code);
+        $this->assertSame(
+            ['saveData'],
+            $this->collector->collectThisMethodCallNames($classMethod)
+        );
+    }
+
+    public function test_bubble_used_through_this_calls_includes_callee_writes(): void
+    {
+        $directUsedByMethod = [
+            'saveDataIfNew' => [
+                'reads' => [meme_tag::class],
+                'writes' => [],
+            ],
+            'saveData' => [
+                'reads' => [],
+                'writes' => [stored_meme::class],
+            ],
+        ];
+        $thisMethodCallsByMethod = [
+            'saveDataIfNew' => ['saveData'],
+            'saveData' => [],
+        ];
+
+        $bubbled = $this->collector->bubbleUsedThroughThisCalls(
+            $directUsedByMethod,
+            $thisMethodCallsByMethod
+        );
+
+        $this->assertSame([meme_tag::class], $bubbled['saveDataIfNew']['reads']);
+        $this->assertSame([stored_meme::class], $bubbled['saveDataIfNew']['writes']);
+        $this->assertSame([stored_meme::class], $bubbled['saveData']['writes']);
+    }
+
     public function test_path_enforcement(): void
     {
         $this->assertTrue(

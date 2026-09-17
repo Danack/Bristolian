@@ -206,7 +206,7 @@ class FunctionsBccTest extends BaseTestCase
     }
 
     /**
-     * @return \Generator<string, array{array, array, bool}>
+     * @return \Generator<string, array{array<mixed>, array<mixed>, bool}>
      */
     public static function provides_bcc_tro_data_equals_cases(): \Generator
     {
@@ -228,6 +228,8 @@ class FunctionsBccTest extends BaseTestCase
     }
 
     /**
+     * @param array<mixed> $left
+     * @param array<mixed> $right
      * @dataProvider provides_bcc_tro_data_equals_cases
      */
     #[DataProvider('provides_bcc_tro_data_equals_cases')]

@@ -7,6 +7,8 @@ namespace Bristolian\PHPStan;
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
 use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use PhpParser\Node\Scalar\Encapsed;
@@ -289,6 +291,116 @@ class RepoTableResourceCollector
             'reads' => $this->normalizeClassList($reads),
             'writes' => $this->normalizeClassList($writes),
         ];
+    }
+
+    /**
+     * Method names invoked as $this->name(...) in the method body.
+     *
+     * @return list<string>
+     */
+    public function collectThisMethodCallNames(ClassMethod $classMethod): array
+    {
+        $nodeFinder = new NodeFinder();
+        $methodNames = [];
+
+        /** @var list<MethodCall> $methodCalls */
+        $methodCalls = $nodeFinder->findInstanceOf($classMethod, MethodCall::class);
+        foreach ($methodCalls as $methodCall) {
+            if (!$methodCall->var instanceof Variable) {
+                continue;
+            }
+            if ($methodCall->var->name !== 'this') {
+                continue;
+            }
+            if (!$methodCall->name instanceof Identifier) {
+                continue;
+            }
+
+            $methodNames[] = $methodCall->name->toString();
+        }
+
+        $methodNames = array_values(array_unique($methodNames));
+        sort($methodNames);
+
+        return $methodNames;
+    }
+
+    /**
+     * Expand direct table usage with usage from same-class $this->method() callees.
+     *
+     * @param array<string, array{reads: list<string>, writes: list<string>}> $directUsedByMethod
+     * @param array<string, list<string>> $thisMethodCallsByMethod
+     * @return array<string, array{reads: list<string>, writes: list<string>}>
+     */
+    public function bubbleUsedThroughThisCalls(
+        array $directUsedByMethod,
+        array $thisMethodCallsByMethod
+    ): array {
+        $bubbled = [];
+
+        foreach (array_keys($directUsedByMethod) as $methodName) {
+            $reads = [];
+            $writes = [];
+            $this->collectBubbledUsed(
+                $methodName,
+                $directUsedByMethod,
+                $thisMethodCallsByMethod,
+                [],
+                $reads,
+                $writes
+            );
+            $bubbled[$methodName] = [
+                'reads' => $this->normalizeClassList($reads),
+                'writes' => $this->normalizeClassList($writes),
+            ];
+        }
+
+        return $bubbled;
+    }
+
+    /**
+     * @param array<string, array{reads: list<string>, writes: list<string>}> $directUsedByMethod
+     * @param array<string, list<string>> $thisMethodCallsByMethod
+     * @param list<string> $visitedMethodNames
+     * @param list<string> $reads
+     * @param list<string> $writes
+     */
+    private function collectBubbledUsed(
+        string $methodName,
+        array $directUsedByMethod,
+        array $thisMethodCallsByMethod,
+        array $visitedMethodNames,
+        array &$reads,
+        array &$writes
+    ): void {
+        if (in_array($methodName, $visitedMethodNames, true)) {
+            return;
+        }
+
+        if (!isset($directUsedByMethod[$methodName])) {
+            return;
+        }
+
+        $visitedMethodNames[] = $methodName;
+
+        foreach ($directUsedByMethod[$methodName]['reads'] as $tableHelperClass) {
+            $reads[] = $tableHelperClass;
+        }
+        foreach ($directUsedByMethod[$methodName]['writes'] as $tableHelperClass) {
+            $writes[] = $tableHelperClass;
+        }
+
+        $calleeNames = $thisMethodCallsByMethod[$methodName] ?? [];
+        foreach ($calleeNames as $calleeName) {
+            $this->collectBubbledUsed(
+                $calleeName,
+                $directUsedByMethod,
+                $thisMethodCallsByMethod,
+                $visitedMethodNames,
+                $reads,
+                $writes
+            );
+        }
     }
 
     /**

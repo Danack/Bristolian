@@ -216,6 +216,9 @@ function extractDocumentLinksFromUl(
 /**
  * Compare two TRO data arrays for equality, ignoring JSON object key order
  * (MySQL JSON columns may reorder keys on store/retrieve).
+ *
+ * @param array<mixed> $left
+ * @param array<mixed> $right
  */
 function bccTroDataEquals(array $left, array $right): bool
 {
