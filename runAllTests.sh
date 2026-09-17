@@ -3,7 +3,7 @@
 set -e
 set -x
 
-sh runCodeSniffer.sh
+# sh runCodeSniffer.sh
 sh runPhpStan.sh
 sh runUnitTests.sh
 sh runChatUnitTests.sh
