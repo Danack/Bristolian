@@ -21,7 +21,6 @@ parameters:
     bootstrapFiles:
         - config.generated.php
         - credentials.php
-        - chat/vendor/autoload.php
         - api/src/api_convert_exception_to_json_functions.php
         - api/src/api_factories.php
         - api/src/api_functions.php

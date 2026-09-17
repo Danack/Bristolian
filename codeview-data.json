@@ -927,6 +927,13 @@
             ]
         },
         {
+            "name": "Bristolian\\AppController\\Bcc::committee_meetings",
+            "file": "src/Bristolian/AppController/Bcc.php",
+            "line-start": 9,
+            "line-end": 121,
+            "dependencies": []
+        },
+        {
             "name": "Bristolian\\AppController\\BristolStairs::getData",
             "file": "src/Bristolian/AppController/BristolStairs.php",
             "line-start": 176,
@@ -1122,6 +1129,69 @@
             ]
         },
         {
+            "name": "Bristolian\\AppController\\Explanations::advice_for_speaking_at_council",
+            "file": "src/Bristolian/AppController/Explanations.php",
+            "line-start": 38,
+            "line-end": 49,
+            "dependencies": [
+                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
+            ]
+        },
+        {
+            "name": "Bristolian\\AppController\\Explanations::avon_crescent",
+            "file": "src/Bristolian/AppController/Explanations.php",
+            "line-start": 51,
+            "line-end": 62,
+            "dependencies": [
+                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
+            ]
+        },
+        {
+            "name": "Bristolian\\AppController\\Explanations::bristol_rovers",
+            "file": "src/Bristolian/AppController/Explanations.php",
+            "line-start": 25,
+            "line-end": 36,
+            "dependencies": [
+                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
+            ]
+        },
+        {
+            "name": "Bristolian\\AppController\\Explanations::development_committee_rules",
+            "file": "src/Bristolian/AppController/Explanations.php",
+            "line-start": 90,
+            "line-end": 101,
+            "dependencies": [
+                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
+            ]
+        },
+        {
+            "name": "Bristolian\\AppController\\Explanations::monitoring_officer_notes",
+            "file": "src/Bristolian/AppController/Explanations.php",
+            "line-start": 77,
+            "line-end": 88,
+            "dependencies": [
+                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
+            ]
+        },
+        {
+            "name": "Bristolian\\AppController\\Explanations::shenanigans_planning",
+            "file": "src/Bristolian/AppController/Explanations.php",
+            "line-start": 64,
+            "line-end": 75,
+            "dependencies": [
+                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
+            ]
+        },
+        {
+            "name": "Bristolian\\AppController\\Explanations::triangle_road",
+            "file": "src/Bristolian/AppController/Explanations.php",
+            "line-start": 12,
+            "line-end": 23,
+            "dependencies": [
+                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
+            ]
+        },
+        {
             "name": "Bristolian\\AppController\\FoiRequests::edit",
             "file": "src/Bristolian/AppController/FoiRequests.php",
             "line-start": 68,
@@ -1233,95 +1303,24 @@
         {
             "name": "Bristolian\\AppController\\Pages::about",
             "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 291,
-            "line-end": 295,
+            "line-start": 81,
+            "line-end": 85,
             "dependencies": [
                 "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
             ]
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::advice_for_speaking_at_council",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 324,
-            "line-end": 335,
-            "dependencies": [
-                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
-            ]
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::avon_crescent",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 337,
-            "line-end": 348,
-            "dependencies": [
-                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
-            ]
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::bcc_committee_meetings",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 70,
-            "line-end": 182,
-            "dependencies": []
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::bristol_rovers",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 310,
-            "line-end": 321,
-            "dependencies": [
-                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
-            ]
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::committee_seats_page",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 267,
-            "line-end": 274,
-            "dependencies": []
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::development_committee_rules",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 378,
-            "line-end": 389,
-            "dependencies": [
-                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
-            ]
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::email_link_generator_page",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 224,
-            "line-end": 233,
-            "dependencies": []
         },
         {
             "name": "Bristolian\\AppController\\Pages::experimental",
             "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 430,
-            "line-end": 455,
-            "dependencies": []
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::floating_point_page",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 185,
-            "line-end": 192,
-            "dependencies": []
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::floating_point_page_8",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 194,
-            "line-end": 201,
+            "line-start": 92,
+            "line-end": 117,
             "dependencies": []
         },
         {
             "name": "Bristolian\\AppController\\Pages::get404Page",
             "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 281,
-            "line-end": 289,
+            "line-start": 71,
+            "line-end": 79,
             "dependencies": [
                 "Bristolian\\SiteHtml\\ExtraAssets",
                 "Bristolian\\SiteHtml\\PageStubResponseGenerator",
@@ -1331,96 +1330,9 @@
         {
             "name": "Bristolian\\AppController\\Pages::index",
             "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 17,
-            "line-end": 65,
+            "line-start": 16,
+            "line-end": 64,
             "dependencies": []
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::monitoring_officer_notes",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 364,
-            "line-end": 375,
-            "dependencies": [
-                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
-            ]
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::notes_page",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 247,
-            "line-end": 254,
-            "dependencies": []
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::qr_code_generator_page",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 235,
-            "line-end": 242,
-            "dependencies": []
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::questions",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 391,
-            "line-end": 408,
-            "dependencies": []
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::shenanigans_planning",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 351,
-            "line-end": 362,
-            "dependencies": [
-                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
-            ]
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::teleprompter_page",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 215,
-            "line-end": 222,
-            "dependencies": []
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::timeline_page",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 205,
-            "line-end": 211,
-            "dependencies": []
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::triangle_road",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 297,
-            "line-end": 308,
-            "dependencies": [
-                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
-            ]
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::twitter_splitter_page",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 256,
-            "line-end": 265,
-            "dependencies": []
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::weca_question_active_travel",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 411,
-            "line-end": 416,
-            "dependencies": [
-                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
-            ]
-        },
-        {
-            "name": "Bristolian\\AppController\\Pages::weca_question_tram",
-            "file": "src/Bristolian/AppController/Pages.php",
-            "line-start": 418,
-            "line-end": 423,
-            "dependencies": [
-                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
-            ]
         },
         {
             "name": "Bristolian\\AppController\\QRCode::get",
@@ -1438,6 +1350,31 @@
             "line-end": 106,
             "dependencies": [
                 "Bristolian\\Parameters\\QRTokenParams"
+            ]
+        },
+        {
+            "name": "Bristolian\\AppController\\Questions::index",
+            "file": "src/Bristolian/AppController/Questions.php",
+            "line-start": 11,
+            "line-end": 28,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\AppController\\Questions::weca_question_active_travel",
+            "file": "src/Bristolian/AppController/Questions.php",
+            "line-start": 30,
+            "line-end": 35,
+            "dependencies": [
+                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
+            ]
+        },
+        {
+            "name": "Bristolian\\AppController\\Questions::weca_question_tram",
+            "file": "src/Bristolian/AppController/Questions.php",
+            "line-start": 37,
+            "line-end": 42,
+            "dependencies": [
+                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
             ]
         },
         {
@@ -1924,13 +1861,76 @@
             ]
         },
         {
+            "name": "Bristolian\\AppController\\Tools::committee_seats_page",
+            "file": "src/Bristolian/AppController/Tools.php",
+            "line-start": 114,
+            "line-end": 121,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\AppController\\Tools::email_link_generator_page",
+            "file": "src/Bristolian/AppController/Tools.php",
+            "line-start": 74,
+            "line-end": 83,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\AppController\\Tools::floating_point_page",
+            "file": "src/Bristolian/AppController/Tools.php",
+            "line-start": 39,
+            "line-end": 46,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\AppController\\Tools::floating_point_page_8",
+            "file": "src/Bristolian/AppController/Tools.php",
+            "line-start": 48,
+            "line-end": 55,
+            "dependencies": []
+        },
+        {
             "name": "Bristolian\\AppController\\Tools::index",
             "file": "src/Bristolian/AppController/Tools.php",
-            "line-start": 9,
-            "line-end": 35,
+            "line-start": 11,
+            "line-end": 37,
             "dependencies": [
                 "Bristolian\\Session\\OptionalUserSession"
             ]
+        },
+        {
+            "name": "Bristolian\\AppController\\Tools::notes_page",
+            "file": "src/Bristolian/AppController/Tools.php",
+            "line-start": 94,
+            "line-end": 101,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\AppController\\Tools::qr_code_generator_page",
+            "file": "src/Bristolian/AppController/Tools.php",
+            "line-start": 85,
+            "line-end": 92,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\AppController\\Tools::teleprompter_page",
+            "file": "src/Bristolian/AppController/Tools.php",
+            "line-start": 65,
+            "line-end": 72,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\AppController\\Tools::timeline_page",
+            "file": "src/Bristolian/AppController/Tools.php",
+            "line-start": 57,
+            "line-end": 63,
+            "dependencies": []
+        },
+        {
+            "name": "Bristolian\\AppController\\Tools::twitter_splitter_page",
+            "file": "src/Bristolian/AppController/Tools.php",
+            "line-start": 103,
+            "line-end": 112,
+            "dependencies": []
         },
         {
             "name": "Bristolian\\AppController\\Topics::index",
@@ -2406,15 +2406,15 @@
         {
             "name": "Bristolian\\CliController\\GenerateFiles::generateAllJavaScriptFiles",
             "file": "src/Bristolian/CliController/GenerateFiles.php",
-            "line-start": 741,
-            "line-end": 747,
+            "line-start": 747,
+            "line-end": 753,
             "dependencies": []
         },
         {
             "name": "Bristolian\\CliController\\GenerateFiles::generateModelClasses",
             "file": "src/Bristolian/CliController/GenerateFiles.php",
-            "line-start": 2067,
-            "line-end": 2118,
+            "line-start": 2073,
+            "line-end": 2124,
             "dependencies": [
                 "Bristolian\\Config\\Config",
                 "PDO"
@@ -2423,15 +2423,15 @@
         {
             "name": "Bristolian\\CliController\\GenerateFiles::generatePhpResponseTypes",
             "file": "src/Bristolian/CliController/GenerateFiles.php",
-            "line-start": 1047,
-            "line-end": 1094,
+            "line-start": 1053,
+            "line-end": 1100,
             "dependencies": []
         },
         {
             "name": "Bristolian\\CliController\\GenerateFiles::generateTableHelperClasses",
             "file": "src/Bristolian/CliController/GenerateFiles.php",
-            "line-start": 1007,
-            "line-end": 1039,
+            "line-start": 1013,
+            "line-end": 1045,
             "dependencies": [
                 "Bristolian\\Config\\Config",
                 "PDO"
@@ -2440,15 +2440,15 @@
         {
             "name": "Bristolian\\CliController\\GenerateFiles::generateTypeScriptApiRoutes",
             "file": "src/Bristolian/CliController/GenerateFiles.php",
-            "line-start": 1475,
-            "line-end": 1623,
+            "line-start": 1481,
+            "line-end": 1629,
             "dependencies": []
         },
         {
             "name": "Bristolian\\CliController\\GenerateFiles::generateWidgetPanels",
             "file": "src/Bristolian/CliController/GenerateFiles.php",
-            "line-start": 2124,
-            "line-end": 2176,
+            "line-start": 2130,
+            "line-end": 2182,
             "dependencies": []
         },
         {
@@ -4307,6 +4307,10 @@
             ]
         },
         {
+            "name": "Bristolian\\AppController\\Bcc",
+            "dependencies": []
+        },
+        {
             "name": "Bristolian\\AppController\\BristolStairs",
             "dependencies": [
                 "Bristolian\\Filesystem\\BristolStairsFilesystem",
@@ -4350,6 +4354,12 @@
             "name": "Bristolian\\AppController\\Docs",
             "dependencies": [
                 "Bristolian\\Session\\UserSession"
+            ]
+        },
+        {
+            "name": "Bristolian\\AppController\\Explanations",
+            "dependencies": [
+                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
             ]
         },
         {
@@ -4403,6 +4413,12 @@
             "dependencies": [
                 "Bristolian\\Parameters\\QRParams",
                 "Bristolian\\Parameters\\QRTokenParams"
+            ]
+        },
+        {
+            "name": "Bristolian\\AppController\\Questions",
+            "dependencies": [
+                "Bristolian\\MarkdownRenderer\\MarkdownRenderer"
             ]
         },
         {
@@ -6947,7 +6963,7 @@
         {
             "path": "/questions/1_weca_active_travel",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::weca_question_active_travel",
+            "controller": "Bristolian\\AppController\\Questions::weca_question_active_travel",
             "return_types": [
                 "string"
             ],
@@ -6961,7 +6977,7 @@
         {
             "path": "/questions/2_weca_cumberland_basin_tram",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::weca_question_tram",
+            "controller": "Bristolian\\AppController\\Questions::weca_question_tram",
             "return_types": [
                 "string"
             ],
@@ -6975,7 +6991,7 @@
         {
             "path": "/questions",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::questions",
+            "controller": "Bristolian\\AppController\\Questions::index",
             "return_types": [
                 "string"
             ],
@@ -6989,7 +7005,7 @@
         {
             "path": "/bcc/committee_meetings",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::bcc_committee_meetings",
+            "controller": "Bristolian\\AppController\\Bcc::committee_meetings",
             "return_types": [
                 "string"
             ],
@@ -7003,7 +7019,7 @@
         {
             "path": "/complaints/triangle_road",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::triangle_road",
+            "controller": "Bristolian\\AppController\\Explanations::triangle_road",
             "return_types": [
                 "string"
             ],
@@ -7017,7 +7033,7 @@
         {
             "path": "/explanations/bristol_rovers",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::bristol_rovers",
+            "controller": "Bristolian\\AppController\\Explanations::bristol_rovers",
             "return_types": [
                 "string"
             ],
@@ -7031,7 +7047,7 @@
         {
             "path": "/explanations/avon_crescent",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::avon_crescent",
+            "controller": "Bristolian\\AppController\\Explanations::avon_crescent",
             "return_types": [
                 "string"
             ],
@@ -7045,7 +7061,7 @@
         {
             "path": "/explanations/advice_for_speaking_at_council",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::advice_for_speaking_at_council",
+            "controller": "Bristolian\\AppController\\Explanations::advice_for_speaking_at_council",
             "return_types": [
                 "string"
             ],
@@ -7059,7 +7075,7 @@
         {
             "path": "/explanations/shenanigans_planning",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::shenanigans_planning",
+            "controller": "Bristolian\\AppController\\Explanations::shenanigans_planning",
             "return_types": [
                 "string"
             ],
@@ -7073,7 +7089,7 @@
         {
             "path": "/explanations/monitoring_officer_notes",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::monitoring_officer_notes",
+            "controller": "Bristolian\\AppController\\Explanations::monitoring_officer_notes",
             "return_types": [
                 "string"
             ],
@@ -7087,7 +7103,7 @@
         {
             "path": "/explanations/development_committee_rules",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::development_committee_rules",
+            "controller": "Bristolian\\AppController\\Explanations::development_committee_rules",
             "return_types": [
                 "string"
             ],
@@ -7223,7 +7239,7 @@
         {
             "path": "/tools/floating_point",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::floating_point_page",
+            "controller": "Bristolian\\AppController\\Tools::floating_point_page",
             "return_types": [
                 "string"
             ],
@@ -7237,7 +7253,7 @@
         {
             "path": "/tools/floating_point_8_bit",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::floating_point_page_8",
+            "controller": "Bristolian\\AppController\\Tools::floating_point_page_8",
             "return_types": [
                 "string"
             ],
@@ -7251,7 +7267,7 @@
         {
             "path": "/tools/timeline",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::timeline_page",
+            "controller": "Bristolian\\AppController\\Tools::timeline_page",
             "return_types": [
                 "string"
             ],
@@ -7331,7 +7347,7 @@
         {
             "path": "/tools/notes",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::notes_page",
+            "controller": "Bristolian\\AppController\\Tools::notes_page",
             "return_types": [
                 "string"
             ],
@@ -7345,7 +7361,7 @@
         {
             "path": "/tools/twitter_splitter",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::twitter_splitter_page",
+            "controller": "Bristolian\\AppController\\Tools::twitter_splitter_page",
             "return_types": [
                 "string"
             ],
@@ -7359,7 +7375,7 @@
         {
             "path": "/tools/committee_seats",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::committee_seats_page",
+            "controller": "Bristolian\\AppController\\Tools::committee_seats_page",
             "return_types": [
                 "string"
             ],
@@ -7373,7 +7389,7 @@
         {
             "path": "/tools/teleprompter",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::teleprompter_page",
+            "controller": "Bristolian\\AppController\\Tools::teleprompter_page",
             "return_types": [
                 "string"
             ],
@@ -7387,7 +7403,7 @@
         {
             "path": "/tools/email_link_generator",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::email_link_generator_page",
+            "controller": "Bristolian\\AppController\\Tools::email_link_generator_page",
             "return_types": [
                 "string"
             ],
@@ -7401,7 +7417,7 @@
         {
             "path": "/tools/qr_code_generator",
             "method": "GET",
-            "controller": "Bristolian\\AppController\\Pages::qr_code_generator_page",
+            "controller": "Bristolian\\AppController\\Tools::qr_code_generator_page",
             "return_types": [
                 "string"
             ],
@@ -9483,8 +9499,8 @@
             "detail": "$constantDefinitions = [\n            'MEME_FILE_UPLOAD_FORM_NAME' => [\n                \\Bristolian\\AppController\\MemeUpload::class,\n                'MEME_FILE_UPLOAD_FORM_NAME',\n            ],\n            'ROOM_FILE_UPLOAD_FORM_NAME' => [\n                \\Bristolian\\AppController\\Rooms::class,\n                'ROOM_FILE_UPLOAD_FORM_NAME',\n            ],\n            'BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME' => [\n                \\Bristolian\\AppController\\BristolStairs::class,\n                'BRISTOL_STAIRS_FILE_UPLOAD_FORM_NAME',\n            ],\n            'ANNOTATION_JSON_MINIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationHighlightsJson::class,\n                'MINIMUM_LENGTH',\n            ],\n            'ANNOTATION_JSON_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationHighlightsJson::class,\n                'MAXIMUM_LENGTH',\n            ],\n            'ANNOTATION_TITLE_MINIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationTitle::class,\n                'MINIMUM_LENGTH',\n            ],\n            'ANNOTATION_TITLE_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationTitle::class,\n                'MAXIMUM_LENGTH',\n            ],\n            'ANNOTATION_TEXT_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationText::class,\n                'MAXIMUM_LENGTH',\n            ],\n            'ANNOTATION_MAX_PAGES' => [\n                \\Bristolian\\Parameters\\PropertyType\\AnnotationPage::class,\n                'MAX_PAGES',\n            ],\n            'MINIMUM_DISPLAY_NAME_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\DisplayName::class,\n                'MINIMUM_DISPLAY_NAME_LENGTH',\n            ],\n            'MAXIMUM_DISPLAY_NAME_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\DisplayName::class,\n                'MAXIMUM_DISPLAY_NAME_LENGTH',\n            ],\n            'MINIMUM_ABOUT_ME_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AboutMeText::class,\n                'MINIMUM_ABOUT_ME_LENGTH',\n            ],\n            'MAXIMUM_ABOUT_ME_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\AboutMeText::class,\n                'MAXIMUM_ABOUT_ME_LENGTH',\n            ],\n            'DUPLICATE_FILENAME' => [\n                \\Bristolian\\Service\\MemeStorageProcessor\\UploadError::class,\n                'DUPLICATE_FILENAME',\n            ],\n            'MEMES_DISPLAY_LIMIT' => [\n                \\Bristolian\\AppController\\User::class,\n                'MEMES_DISPLAY_LIMIT',\n            ],\n            'MAX_TAGS_PER_ROOM' => [\n                \\Bristolian\\Repo\\RoomTagRepo\\RoomTagRepo::class,\n                'MAX_TAGS_PER_ROOM',\n            ],\n            'CLIP_TITLE_MINIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\ClipTitle::class,\n                'TITLE_MINIMUM_LENGTH',\n            ],\n            'CLIP_TITLE_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\ClipTitle::class,\n                'TITLE_MAXIMUM_LENGTH',\n            ],\n            'ROOM_CONTENT_LIST_DEFAULT_LIMIT' => [\n                \\Bristolian\\Parameters\\RoomContentSearchParams::class,\n                'DEFAULT_LIMIT',\n            ],\n            'ROOM_NOTE_TITLE_MINIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\RoomNoteTitle::class,\n                'MINIMUM_LENGTH',\n            ],\n            'ROOM_NOTE_TITLE_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\RoomNoteTitle::class,\n                'MAXIMUM_LENGTH',\n            ],\n            'ROOM_NOTE_MARKDOWN_MAXIMUM_LENGTH' => [\n                \\Bristolian\\Parameters\\PropertyType\\RoomNoteMarkdown::class,\n                'MAXIMUM_LENGTH',\n            ],\n        ];",
             "detail_source": {
                 "file": "src/Bristolian/CliController/GenerateFiles.php",
-                "line-start": 862,
-                "line-end": 951
+                "line-start": 868,
+                "line-end": 957
             }
         },
         {
@@ -9496,8 +9512,8 @@
             "detail": "$types = [\n            \\BristolianGenerated\\Model\\BristolStairInfo::class,\n            \\Bristolian\\Model\\Chat\\UserChatMessage::class,\n            \\BristolianGenerated\\Model\\EmailIncoming::class,\n            \\BristolianGenerated\\Model\\StoredMeme::class,\n            \\BristolianGenerated\\Model\\MemeTag::class,\n            \\BristolianGenerated\\Model\\ProcessorRunRecord::class,\n            \\BristolianGenerated\\Model\\RoomLink::class,\n            \\BristolianGenerated\\Model\\RoomAnnotation::class,\n            \\BristolianGenerated\\Model\\RoomTag::class,\n            \\BristolianGenerated\\Model\\Room::class,\n            \\BristolianGenerated\\Model\\RoomFileObjectInfo::class,\n            \\Bristolian\\Model\\Types\\RoomAnnotationView::class,\n            \\Bristolian\\Model\\Types\\RoomFileWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomLinkWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomNoteWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomAnnotationWithTags::class,\n            \\Bristolian\\Model\\Types\\RoomVideoWithTags::class,\n            \\Bristolian\\Model\\Types\\UserProfile::class,\n            \\Bristolian\\Model\\Types\\UserDisplayName::class,\n            \\Bristolian\\Model\\Types\\UserProfileWithDisplayName::class,\n            \\Bristolian\\Model\\TinnedFish\\Product::class,\n        ];\n\n$enums = [\n            \\Bristolian\\ChatMessage\\ChatType::class,\n            \\Bristolian\\Repo\\ProcessorRepo\\ProcessType::class,\n            \\Bristolian\\Model\\TinnedFish\\ValidationStatus::class,\n        ];",
             "detail_source": {
                 "file": "src/Bristolian/CliController/GenerateFiles.php",
-                "line-start": 760,
-                "line-end": 791
+                "line-start": 766,
+                "line-end": 797
             }
         },
         {

@@ -62,12 +62,4 @@ php cli.php generate:php_response_types
 php cli.php generate:typescript_api_routes
 php cli.php generate:javascript_constants
 
-cd /var/app/chat
-
-if [ "${COMPOSER_TYPE}" = "update" ]; then
-    php ../composer.phar update
-else
-    php ../composer.phar install
-fi
-
 echo "Installer is finished."

@@ -44,7 +44,6 @@ This file contains everything an LLM needs to know about the project.
 
 - **`/chat/src`** - Websocket backend PHP code
     - Real-time chat functionality using Amp/Websocket
-    - Uses separate Composer dependencies (amphp/websocket-server, etc.)
     - Files: `index.php` (main entry point), `something_to_ask.php`
     - Handles websocket connections and Redis integration
 
@@ -101,10 +100,9 @@ This file contains everything an LLM needs to know about the project.
 
 ## Supporting Directories (Not Core Code)
 
-- **`/vendor`** - Composer dependencies (main web/CLI app)
-- **`/chat/vendor`** - Composer dependencies for the chat/websocket app (includes amphp packages)
+- **`/vendor`** - Composer dependencies (web, CLI, and websocket/chat)
 
-When you need to inspect how a PHP dependency works (e.g. Amp interfaces, method signatures), **check the local vendor code** in `vendor/` or `chat/vendor/` rather than relying on online search. The installed package source is the authority for the version you are using.
+When you need to inspect how a PHP dependency works (e.g. Amp interfaces, method signatures), **check the local vendor code** in `vendor/` rather than relying on online search. The installed package source is the authority for the version you are using.
 
 - **`/node_modules`** - NPM dependencies
 - **`/data`** - Runtime data and cache
@@ -246,7 +244,7 @@ docker-compose logs -f [service_name]
 
 - **PHP Backend**: `/src` (main), `/app/src` (app), `/api/src` (API)
 - **Frontend**: `/app/public/tsx` (TypeScript), `/app/public/scss` (Sass)
-- **Websocket**: `/chat/src` (separate Composer dependencies)
+- **Websocket**: `/chat/src`
 - **Database**: `/db/migrations` (schema changes)
 - **Tests**: `/test` (PHP), `/app/public/tsx` (Jest)
 - **Docker**: `/containers` (service configurations)
@@ -366,12 +364,7 @@ docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_frontend_lines.php 
 
 ### Running Chat (WebSocket) PHPUnit Tests
 
-The project has two PHP codebases that share code but use different `composer.json` files:
-
-- **Web + CLI** – HTTP-based web app and CLI tools; uses root `composer.json`
-- **WebSocket server** – `BristolianChat` and `src/functions_chat.php`; uses `chat/composer.json`
-
-Shared code (e.g. `ChatMessagePayload`, `functions_chat.php`) can be used by both. The difference is which libraries are available via each `composer.json`.
+Chat/WebSocket code (`BristolianChat`, `src/functions_chat.php`) uses the same root `composer.json` and `vendor/` as the web and CLI apps.
 
 Chat tests run in the same container as the main tests:
 

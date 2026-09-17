@@ -4,7 +4,7 @@ The container runs the chat server automatically with a file watcher. The watche
 
 Watched paths (restart on change):
 - src/BristolianChat/
-- chat/ (excluding vendor)
+- chat/src/
 - src/functions.php, src/functions_chat.php, src/functions_common.php
 
 Config files are not watched; config changes are handled by restarting the containers.

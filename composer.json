@@ -10,6 +10,16 @@
   ],
 
     "require": {
+        "amphp/amp": "^v3.1.1",
+        "amphp/http-client": "^5.3",
+        "amphp/http-server": "^3.4",
+        "amphp/http-server-router": "^2.0.0",
+        "amphp/http-server-static-content": "^2.0.0",
+        "amphp/log": "^2.0",
+        "amphp/mysql": "^3.0.0",
+        "amphp/redis": "^2.0",
+        "amphp/socket": "^2.3",
+        "amphp/websocket-server": "^4.0.0",
         "danack/configurator": "1.1.1",
         "danack/console": "^2.7.2",
         "danack/esprintf": "^2.0.0",
@@ -30,6 +40,7 @@
         "ext-json": "*",
         "ext-curl": "*",
         "michelf/php-markdown": "^1.9",
+        "monolog/monolog": "^3.7",
         "thecodingmachine/safe": "^v3.4.0",
         "league/commonmark": "^2.4.0",
         "ext-posix": "*",
@@ -79,6 +90,7 @@
             "Asm\\": "asm_in_project/lib/",
             "Bristolian\\": "src/",
             "BristolianBehat\\": "src/",
+            "BristolianChat\\": "src/",
             "BristolianGenerated\\": "src/",
             "Key\\": "src/",
             "OpenApi\\": "src/",
@@ -99,6 +111,7 @@
     },
     "autoload-dev": {
         "psr-0": {
+            "BristolianChatTest\\": "test/",
             "BristolianTest\\": "test/",
             "IntegrationTest\\": "test/"
         }

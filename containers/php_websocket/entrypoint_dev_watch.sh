@@ -9,7 +9,7 @@ echo "starting entrypoint_dev_watch.sh"
 COMPOSER_TYPE=$(php /var/app/src/check_composer_command.php)
 echo "composer type is ${COMPOSER_TYPE}";
 
-cd /var/app/chat
+cd /var/app
 
 if [ "${COMPOSER_TYPE}" = "update" ]; then
     php /var/app/composer.phar update
@@ -18,7 +18,7 @@ else
 fi
 
 
-# Watch BristolianChat, chat (excluding vendor), and the three functions_*.php files.
+# Watch BristolianChat, chat entrypoints, and the three functions_*.php files.
 # Poll file mtimes every POLL_INTERVAL seconds; restart the server when any watched file changes.
 # (Polling is used because inotify often doesn't work over Docker volume mounts on Mac.)
 WATCH_DIRS="/var/app/src/BristolianChat /var/app/chat/src"
@@ -28,7 +28,7 @@ POLL_INTERVAL=10
 echo "[chat-watch] Polling every ${POLL_INTERVAL}s (no inotify):"
 for p in $WATCH_DIRS $WATCH_FILES; do echo "  $p"; done
 
-# Output the latest mtime (epoch) among all watched files. Excludes chat/vendor by only scanning WATCH_DIRS + WATCH_FILES.
+# Output the latest mtime (epoch) among all watched files.
 get_max_mtime() {
 	m=$( { find $WATCH_DIRS -type f 2>/dev/null | xargs stat -c '%Y' 2>/dev/null; stat -c '%Y' $WATCH_FILES 2>/dev/null; } 2>/dev/null | sort -n | tail -1 )
 	echo "${m:-0}"
