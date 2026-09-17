@@ -362,17 +362,9 @@ Clover output: `tmp/behat-js-coverage-report/clover.xml`. List uncovered fronten
 docker exec bristolian-php_fpm-1 bash -c "php list_uncovered_frontend_lines.php tmp/behat-js-coverage-report/clover.xml"
 ```
 
-### Running Chat (WebSocket) PHPUnit Tests
+### Chat (WebSocket) PHPUnit Tests
 
-Chat/WebSocket code (`BristolianChat`, `src/functions_chat.php`) uses the same root `composer.json` and `vendor/` as the web and CLI apps.
-
-Chat tests run in the same container as the main tests:
-
-```bash
-docker exec bristolian-php_fpm-1 bash -c "sh runChatUnitTests.sh"
-```
-
-This uses `phpunit_chat.xml` and tests under `test/BristolianChatTest`, with coverage for `src/BristolianChat` and `src/functions_chat.php`. To run specific chat tests, pass `-c phpunit_chat.xml` instead of `-c phpunit.xml` to PHPUnit.
+Chat/WebSocket tests live under `test/BristolianChatTest` and run with the main suite via `sh runUnitTests.sh` (same `phpunit.xml` and root `vendor/`). Covered code includes `src/BristolianChat` and `src/functions_chat.php`.
 
 
 ## DataType Parameter Classes Testing

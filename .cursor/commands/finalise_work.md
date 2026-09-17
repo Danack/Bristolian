@@ -85,9 +85,8 @@ docker exec bristolian-php_fpm-1 bash -c "sh runAllTests.sh"
 **What it runs:**
 1. CodeSniffer (code style checking)
 2. PHPStan (static analysis)
-3. PHPUnit (unit tests via `runUnitTests.sh`)
-4. Chat PHPUnit (`runChatUnitTests.sh`)
-5. Behat is commented out by default (uncomment if needed)
+3. PHPUnit (unit tests via `runUnitTests.sh`, including chat/WebSocket tests)
+4. Behat is commented out by default (uncomment if needed)
 
 **Note:** This is the recommended command to run before finalizing work, as it checks code style, static analysis, and unit tests (including chat) all at once.
 

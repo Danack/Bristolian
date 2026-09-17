@@ -6,7 +6,6 @@ set -x
 # sh runCodeSniffer.sh
 sh runPhpStan.sh
 sh runUnitTests.sh
-sh runChatUnitTests.sh
 # sh runBehat.sh
 
 # php test/check_site.php

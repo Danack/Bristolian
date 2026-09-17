@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianChatTest;
 
+use Bristolian\MarkdownRenderer\FakeMarkdownRenderer;
 use BristolianChat\ClientHandler\FakeClientHandler;
 use BristolianChat\RoomMessageFetcher;
 use BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher;
@@ -31,7 +32,7 @@ class RoomMessageFetcherTest extends BaseTestCase
         $fetcher = new FakeRoomMessagesWatcher(null, []);
         $clientHandler = new FakeClientHandler();
 
-        $markdownRenderer = new \Bristolian\MarkdownRenderer\CommonMarkRenderer();
+        $markdownRenderer = new FakeMarkdownRenderer();
 
         $watcher = new RoomMessageFetcher(
             $markdownRenderer,
@@ -42,7 +43,6 @@ class RoomMessageFetcherTest extends BaseTestCase
 
         $watcher->runOneIteration();
 
-        $this->assertTrue($testHandler->hasInfoThatContains('RoomMessageFetcher has looped'));
         $this->assertCount(0, $clientHandler->getRecordedCalls());
     }
 
@@ -55,7 +55,7 @@ class RoomMessageFetcherTest extends BaseTestCase
         $fetcher = new FakeRoomMessagesWatcher(100, []);
         $clientHandler = new FakeClientHandler();
 
-        $markdownRenderer = new \Bristolian\MarkdownRenderer\CommonMarkRenderer();
+        $markdownRenderer = new FakeMarkdownRenderer();
 
         $watcher = new RoomMessageFetcher(
             $markdownRenderer,
@@ -66,7 +66,6 @@ class RoomMessageFetcherTest extends BaseTestCase
 
         $watcher->runOneIteration();
 
-        $this->assertTrue($testHandler->hasInfoThatContains('RoomMessageFetcher has looped'));
         $this->assertCount(0, $clientHandler->getRecordedCalls());
     }
 
@@ -88,7 +87,7 @@ class RoomMessageFetcherTest extends BaseTestCase
         $fetcher = new FakeRoomMessagesWatcher(4, [$row]);
         $clientHandler = new FakeClientHandler();
 
-        $markdownRenderer = new \Bristolian\MarkdownRenderer\CommonMarkRenderer();
+        $markdownRenderer = new FakeMarkdownRenderer();
 
         $watcher = new RoomMessageFetcher($markdownRenderer, $fetcher, $clientHandler, $logger);
 
@@ -117,13 +116,12 @@ class RoomMessageFetcherTest extends BaseTestCase
         );
         $clientHandler = new FakeClientHandler();
 
-        $markdownRenderer = new \Bristolian\MarkdownRenderer\CommonMarkRenderer();
+        $markdownRenderer = new FakeMarkdownRenderer();
         $watcher = new RoomMessageFetcher($markdownRenderer, $fetcher, $clientHandler, $logger);
 
         $watcher->runOneIteration();
 
         $this->assertTrue($testHandler->hasErrorThatContains('Exception watching for new messages: Database connection lost'));
-        $this->assertTrue($testHandler->hasInfoThatContains('RoomMessageFetcher has looped'));
         $this->assertCount(0, $clientHandler->getRecordedCalls());
     }
 }

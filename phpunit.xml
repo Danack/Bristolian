@@ -44,7 +44,6 @@
   <testsuites>
     <testsuite name="default">
       <directory>test</directory>
-      <exclude>test/BristolianChatTest</exclude>
     </testsuite>
   </testsuites>
 
@@ -53,9 +52,7 @@
       <directory>src</directory>
     </include>
     <exclude>
-      <directory>src/BristolianChat</directory>
       <directory>src/BristolianBehat</directory>
-      <file>src/functions_chat.php</file>
 
       <directory>src/TypeSpec/OpenApi</directory>
       <file>src/TypeSpec/OpenApi/OpenApiV300Description.php</file>
@@ -95,7 +92,6 @@
 
   <groups>
     <exclude>
-      <group>chat_only</group>
       <group>needs_fixing</group>
       <group>external</group>
       <group>xdebug</group>

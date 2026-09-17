@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 use Bristolian\ChatMessage\ChatMessagePayload;
 use BristolianChat\ClientHandler\ClientHandler;
-use Bristolian\Model\Chat\SystemChatMessage;
 use Bristolian\Model\Chat\UserChatMessage;
 use Monolog\Logger;
 use Safe\DateTimeImmutable;

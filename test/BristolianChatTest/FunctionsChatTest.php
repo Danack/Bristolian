@@ -16,7 +16,6 @@ use function Safe\json_decode;
 
 #[CoversFunction('generateFakeChatMessage')]
 #[CoversFunction('send_data_to_clients')]
-#[CoversFunction('send_system_message_to_clients')]
 #[CoversFunction('send_user_message_to_clients')]
 
 class FunctionsChatTest extends BaseTestCase
@@ -120,69 +119,4 @@ class FunctionsChatTest extends BaseTestCase
         $this->assertSame($expectedReplyMessageId, $decoded['chat_message']['reply_message_id'] ?? null);
     }
 
-//    /**
-//     */
-//    public function test_send_system_message_to_clients_broadcasts_to_handler_and_logs(): void
-//    {
-//        $testHandler = new TestHandler();
-//        $logger = new Logger('test');
-//        $logger->pushHandler($testHandler);
-//
-//        $fakeClientHandler = new FakeClientHandler();
-//
-//        $systemMessage = new SystemChatMessage(
-//            7,
-//            'room_789',
-//            'System notification',
-//            null,
-//            new DateTimeImmutable('2025-01-20 14:00:00')
-//        );
-//
-//        send_system_message_to_clients($systemMessage, $logger, $fakeClientHandler);
-//
-//        $this->assertTrue(
-//            $testHandler->hasInfoThatContains('sending message to clients')
-//        );
-//
-//        $recordedCalls = $fakeClientHandler->getRecordedCalls();
-//        $this->assertCount(1, $recordedCalls);
-//        $this->assertSame([], $recordedCalls[0]['excludedClientIds']);
-//
-//        $decoded = json_decode($recordedCalls[0]['data'], true);
-//        $this->assertIsArray($decoded);
-//        $this->assertSame('system_message', $decoded['type']);
-//        $this->assertSame(7, $decoded['system_message']['id']);
-//        $this->assertSame('room_789', $decoded['system_message']['room_id']);
-//        $this->assertSame('System notification', $decoded['system_message']['text']);
-//    }
-
-//    /**
-//     */
-//    public function test_send_system_message_to_clients_includes_reply_message_id_when_set(): void
-//    {
-//        $testHandler = new TestHandler();
-//        $logger = new Logger('test');
-//        $logger->pushHandler($testHandler);
-//
-//        $fakeClientHandler = new FakeClientHandler();
-//
-//        $systemMessage = new SystemChatMessage(
-//            15,
-//            'room_abc',
-//            'System reply',
-//            3,
-//            new DateTimeImmutable('2025-02-10 09:00:00')
-//        );
-//
-//        send_system_message_to_clients($systemMessage, $logger, $fakeClientHandler);
-//
-//        $recordedCalls = $fakeClientHandler->getRecordedCalls();
-//        $this->assertCount(1, $recordedCalls);
-//
-//        $decoded = json_decode($recordedCalls[0]['data'], true);
-//        $this->assertSame('system_message', $decoded['type']);
-//        $this->assertSame(15, $decoded['system_message']['id']);
-//        $this->assertSame(3, $decoded['system_message']['reply_message_id']);
-//        $this->assertSame('System reply', $decoded['system_message']['text']);
-//    }
 }
