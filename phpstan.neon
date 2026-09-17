@@ -63,8 +63,4 @@ services:
             enforcedDirectories: %bristolian.tableAttributes.enforcedDirectories%
         tags:
             - phpstan.rules.rule
-    -
-        class: Bristolian\PHPStan\Rules\TestClassRequiresCoversAttributeRule
-        tags:
-            - phpstan.rules.rule
 
