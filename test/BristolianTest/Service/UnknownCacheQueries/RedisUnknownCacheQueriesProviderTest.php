@@ -8,13 +8,17 @@ use Bristolian\Keys\UnknownCacheQueryKey;
 use Bristolian\Service\UnknownCacheQueries\RedisUnknownCacheQueriesProvider;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
 #[RequiresPhpExtension('redis')]
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Service\UnknownCacheQueries\RedisUnknownCacheQueriesProvider::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\UnknownCacheQueries\RedisUnknownCacheQueriesProvider::class, 'getMemberKeys')]
+#[CoversMethod(\Bristolian\Service\UnknownCacheQueries\RedisUnknownCacheQueriesProvider::class, 'getQuery')]
+
 class RedisUnknownCacheQueriesProviderTest extends BaseTestCase
 {
     private \Redis $redis;
@@ -31,11 +35,6 @@ class RedisUnknownCacheQueriesProviderTest extends BaseTestCase
         $this->redis->sRem(UnknownCacheQueryKey::SET_KEY, $absoluteKey);
     }
 
-    /**
-     * @covers \Bristolian\Service\UnknownCacheQueries\RedisUnknownCacheQueriesProvider::__construct
-     * @covers \Bristolian\Service\UnknownCacheQueries\RedisUnknownCacheQueriesProvider::getMemberKeys
-     * @covers \Bristolian\Service\UnknownCacheQueries\RedisUnknownCacheQueriesProvider::getQuery
-     */
     public function test_getMemberKeys_and_getQuery_return_seeded_data(): void
     {
         $query = 'SELECT test_provider_' . time() . '_' . random_int(1000, 9999);
@@ -56,9 +55,6 @@ class RedisUnknownCacheQueriesProviderTest extends BaseTestCase
         $this->cleanupKey($absoluteKey);
     }
 
-    /**
-     * @covers \Bristolian\Service\UnknownCacheQueries\RedisUnknownCacheQueriesProvider::getQuery
-     */
     public function test_getQuery_returns_false_for_missing_key(): void
     {
         $provider = new RedisUnknownCacheQueriesProvider($this->redis);

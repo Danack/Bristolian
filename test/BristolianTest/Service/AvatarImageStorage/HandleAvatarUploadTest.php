@@ -17,17 +17,15 @@ use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
 use Bristolian\Service\AvatarImageStorage\FakeAvatarImageStorage;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use SlimDispatcher\Response\StubResponse;
 use function Safe\getimagesize;
-use PHPUnit\Framework\Attributes\CoversNothing;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\AvatarImageStorage\HandleAvatarUpload::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\AvatarImageStorage\HandleAvatarUpload::class, 'handle')]
+
 class HandleAvatarUploadTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\HandleAvatarUpload::__construct
-     * @covers \Bristolian\Service\AvatarImageStorage\HandleAvatarUpload::handle
-     */
     public function test_handle_returns_failureResponse_when_upload_handler_returns_stub_response(): void
     {
         $userSession = new FakeUserSession(false, '', '');
@@ -47,9 +45,6 @@ class HandleAvatarUploadTest extends BaseTestCase
         $this->assertInstanceOf(StubResponse::class, $result->errorResponse);
     }
 
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\HandleAvatarUpload::handle
-     */
     #[RequiresPhpExtension('Imagick')]
     public function test_handle_returns_failure_when_storage_returns_upload_error(): void
     {
@@ -78,9 +73,6 @@ class HandleAvatarUploadTest extends BaseTestCase
         $this->assertNull($result->errorResponse);
     }
 
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\HandleAvatarUpload::handle
-     */
     #[RequiresPhpExtension('Imagick')]
     public function test_handle_returns_success_and_updates_profile_when_storage_succeeds(): void
     {

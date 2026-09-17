@@ -5,14 +5,12 @@ namespace BristolianTest\Model;
 use BristolianTest\BaseTestCase;
 use BristolianGenerated\Model\Room;
 use Safe\DateTime;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\BristolianGenerated\Model\Room::class)]
+
 class RoomTest extends BaseTestCase
 {
-    /**
-     * @covers \BristolianGenerated\Model\Room
-     */
     public function testConstruct()
     {
         $id = 'room-123';
@@ -30,9 +28,6 @@ class RoomTest extends BaseTestCase
         $this->assertSame($created_at, $room->created_at);
     }
 
-    /**
-     * @covers \BristolianGenerated\Model\Room
-     */
     public function testToArray()
     {
         $created_at = new DateTime();

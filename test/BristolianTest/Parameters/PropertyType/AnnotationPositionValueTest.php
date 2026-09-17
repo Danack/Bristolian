@@ -10,9 +10,10 @@ use DataType\GetInputTypesFromAttributes;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\PropertyType\AnnotationPositionValue::class)]
+
 class AnnotationPositionValueTest extends BaseTestCase
 {
     /**
@@ -27,7 +28,6 @@ class AnnotationPositionValueTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\AnnotationPositionValue
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -50,7 +50,6 @@ class AnnotationPositionValueTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\AnnotationPositionValue
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]
@@ -68,9 +67,6 @@ class AnnotationPositionValueTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\AnnotationPositionValue
-     */
     public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new AnnotationPositionValue('test_name');

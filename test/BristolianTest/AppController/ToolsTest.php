@@ -10,14 +10,21 @@ use Bristolian\Session\OptionalUserSession;
 use Bristolian\Session\StandardOptionalUserSession;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Session\FakeAsmSession;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\Tools::class, 'committee_seats_page')]
+#[CoversMethod(\Bristolian\AppController\Tools::class, 'email_link_generator_page')]
+#[CoversMethod(\Bristolian\AppController\Tools::class, 'floating_point_page')]
+#[CoversMethod(\Bristolian\AppController\Tools::class, 'floating_point_page_8')]
+#[CoversMethod(\Bristolian\AppController\Tools::class, 'index')]
+#[CoversMethod(\Bristolian\AppController\Tools::class, 'notes_page')]
+#[CoversMethod(\Bristolian\AppController\Tools::class, 'qr_code_generator_page')]
+#[CoversMethod(\Bristolian\AppController\Tools::class, 'teleprompter_page')]
+#[CoversMethod(\Bristolian\AppController\Tools::class, 'timeline_page')]
+#[CoversMethod(\Bristolian\AppController\Tools::class, 'twitter_splitter_page')]
+
 class ToolsTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\AppController\Tools::index
-     */
     public function test_index_not_logged_in(): void
     {
         $optionalSession = new StandardOptionalUserSession(null);
@@ -30,9 +37,6 @@ class ToolsTest extends BaseTestCase
         $this->assertStringContainsString('Tools page', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Tools::index
-     */
     public function test_index_logged_in(): void
     {
         $rawSession = new FakeAsmSession();
@@ -51,9 +55,6 @@ class ToolsTest extends BaseTestCase
         $this->assertStringNotContainsString('not logged in', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Tools::floating_point_page
-     */
     public function test_floating_point_page(): void
     {
         $result = $this->injector->execute([Tools::class, 'floating_point_page']);
@@ -61,9 +62,6 @@ class ToolsTest extends BaseTestCase
         $this->assertStringContainsString('floating_point_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Tools::floating_point_page_8
-     */
     public function test_floating_point_page_8(): void
     {
         $result = $this->injector->execute([Tools::class, 'floating_point_page_8']);
@@ -71,9 +69,6 @@ class ToolsTest extends BaseTestCase
         $this->assertStringContainsString('floating_point_8_bit_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Tools::timeline_page
-     */
     public function test_timeline_page(): void
     {
         $result = $this->injector->execute([Tools::class, 'timeline_page']);
@@ -81,9 +76,6 @@ class ToolsTest extends BaseTestCase
         $this->assertStringContainsString('time_line_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Tools::teleprompter_page
-     */
     public function test_teleprompter_page(): void
     {
         $result = $this->injector->execute([Tools::class, 'teleprompter_page']);
@@ -91,9 +83,6 @@ class ToolsTest extends BaseTestCase
         $this->assertStringContainsString('teleprompter_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Tools::email_link_generator_page
-     */
     public function test_email_link_generator_page(): void
     {
         $result = $this->injector->execute([Tools::class, 'email_link_generator_page']);
@@ -101,9 +90,6 @@ class ToolsTest extends BaseTestCase
         $this->assertStringContainsString('email_link_generator_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Tools::qr_code_generator_page
-     */
     public function test_qr_code_generator_page(): void
     {
         $result = $this->injector->execute([Tools::class, 'qr_code_generator_page']);
@@ -111,9 +97,6 @@ class ToolsTest extends BaseTestCase
         $this->assertStringContainsString('qr_code_generator_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Tools::notes_page
-     */
     public function test_notes_page(): void
     {
         $result = $this->injector->execute([Tools::class, 'notes_page']);
@@ -121,9 +104,6 @@ class ToolsTest extends BaseTestCase
         $this->assertStringContainsString('notes_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Tools::twitter_splitter_page
-     */
     public function test_twitter_splitter_page(): void
     {
         $result = $this->injector->execute([Tools::class, 'twitter_splitter_page']);
@@ -131,9 +111,6 @@ class ToolsTest extends BaseTestCase
         $this->assertStringContainsString('twitter_splitter_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Tools::committee_seats_page
-     */
     public function test_committee_seats_page(): void
     {
         $result = $this->injector->execute([Tools::class, 'committee_seats_page']);

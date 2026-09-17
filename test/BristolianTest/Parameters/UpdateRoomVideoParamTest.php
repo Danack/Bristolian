@@ -10,10 +10,8 @@ use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Parameters\UpdateRoomVideoParam::__construct
- */
 #[CoversClass(\Bristolian\Parameters\UpdateRoomVideoParam::class)]
+
 class UpdateRoomVideoParamTest extends BaseTestCase
 {
     /**

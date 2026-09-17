@@ -4,17 +4,15 @@ namespace BristolianTest\Session;
 
 use Bristolian\Session\FakeUserSession;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Session\FakeUserSession::class, '__construct')]
+#[CoversMethod(\Bristolian\Session\FakeUserSession::class, 'getUserId')]
+#[CoversMethod(\Bristolian\Session\FakeUserSession::class, 'getUsername')]
+#[CoversMethod(\Bristolian\Session\FakeUserSession::class, 'isLoggedIn')]
+
 class FakeUserSessionTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Session\FakeUserSession::__construct
-     * @covers \Bristolian\Session\FakeUserSession::isLoggedIn
-     * @covers \Bristolian\Session\FakeUserSession::getUserId
-     * @covers \Bristolian\Session\FakeUserSession::getUsername
-     */
     public function test_all_getters(): void
     {
         $session = new FakeUserSession(

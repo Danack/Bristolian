@@ -9,12 +9,14 @@ use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use BristolianGenerated\Model\ProcessorRunRecord;
 use BristolianTest\Repo\DbTransactionIsolation;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::class)]
+
 class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
 {
 //    use DbTransactionIsolation;
@@ -42,9 +44,6 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         return $this->injector->make(PdoProcessorRunRecordRepo::class);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
     public function test_startRun_creates_record(): void
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
@@ -54,9 +53,6 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         $this->assertNotEmpty($id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
     public function test_getLastRunDateTime_returns_null_when_no_runs(): void
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
@@ -69,9 +65,6 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         $this->assertTrue($lastRun === null || $lastRun instanceof \DateTimeInterface);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
     public function test_getLastRunDateTime_returns_most_recent(): void
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
@@ -94,9 +87,6 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         $this->assertLessThan(5, $diff, 'Last run should be very recent');
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
     public function test_setRunFinished_marks_run_complete(): void
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
@@ -126,9 +116,6 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         $this->assertInstanceOf(\DateTimeInterface::class, $foundRecord->end_time);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
     public function test_getRunRecords_without_filter(): void
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
@@ -148,9 +135,6 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         }
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
     public function test_getRunRecords_with_filter(): void
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
@@ -171,9 +155,6 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         }
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
     public function test_processor_run_record_properties(): void
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
@@ -201,9 +182,6 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         $this->assertSame(ProcessType::moon_alert->value, $foundRecord->processor_type);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
     public function test_multiple_runs_for_same_processor(): void
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
@@ -226,9 +204,6 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         $this->assertContains((int)$id3, $foundIds);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
     public function test_records_ordered_by_id_desc(): void
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
@@ -250,9 +225,6 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         }
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
     public function test_complete_workflow(): void
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
@@ -288,9 +260,6 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         );
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
     public function test_different_process_types_independent(): void
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
@@ -327,9 +296,6 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         }
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
     public function test_start_time_is_recent(): void
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
@@ -361,9 +327,6 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         );
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
     public function test_initial_run_has_no_end_time(): void
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);
@@ -385,9 +348,6 @@ class PdoProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         $this->assertSame(ProcessorRunRecordRepo::STATE_INITIAL, $foundRecord->status);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo
-     */
     public function test_getRunRecords_respects_limit(): void
     {
         $repo = $this->injector->make(PdoProcessorRunRecordRepo::class);

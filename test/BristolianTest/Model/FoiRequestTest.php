@@ -7,14 +7,12 @@ use Bristolian\Parameters\FoiRequestParams;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Types\FoiRequest::class)]
+
 class FoiRequestTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\FoiRequest
-     */
     public function testCreate(): void
     {
         $foiRequestId = 'foi-123';
@@ -32,9 +30,6 @@ class FoiRequestTest extends BaseTestCase
         $this->assertSame($createdAt, $foiRequest->getCreatedAt());
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\FoiRequest
-     */
     public function testFromParam(): void
     {
         $uuid = 'foi-uuid-456';

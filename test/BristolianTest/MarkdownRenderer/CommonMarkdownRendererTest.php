@@ -7,14 +7,12 @@ namespace BristolianTest\MarkdownRenderer;
 use BristolianTest\BaseTestCase;
 use Bristolian\MarkdownRenderer\CommonMarkRenderer;
 use Bristolian\MarkdownRenderer\MarkdownRendererException;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\MarkdownRenderer\CommonMarkRenderer::class)]
+
 class CommonMarkdownRendererTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\MarkdownRenderer\CommonMarkRenderer
-     */
     public function testWorks(): void
     {
         $commonMarkRenderer = new CommonMarkRenderer();
@@ -25,9 +23,6 @@ class CommonMarkdownRendererTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\MarkdownRenderer\CommonMarkRenderer
-     */
     public function testFileWorks(): void
     {
         $commonMarkRenderer = new CommonMarkRenderer();
@@ -38,9 +33,6 @@ class CommonMarkdownRendererTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\MarkdownRenderer\CommonMarkRenderer
-     */
     public function testFileException(): void
     {
         $commonMarkRenderer = new CommonMarkRenderer();

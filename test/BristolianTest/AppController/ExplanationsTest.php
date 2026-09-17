@@ -9,9 +9,16 @@ use Bristolian\MarkdownRenderer\CommonMarkRenderer;
 use Bristolian\MarkdownRenderer\FakeMarkdownRenderer;
 use Bristolian\MarkdownRenderer\MarkdownRenderer;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\Explanations::class, 'advice_for_speaking_at_council')]
+#[CoversMethod(\Bristolian\AppController\Explanations::class, 'avon_crescent')]
+#[CoversMethod(\Bristolian\AppController\Explanations::class, 'bristol_rovers')]
+#[CoversMethod(\Bristolian\AppController\Explanations::class, 'development_committee_rules')]
+#[CoversMethod(\Bristolian\AppController\Explanations::class, 'monitoring_officer_notes')]
+#[CoversMethod(\Bristolian\AppController\Explanations::class, 'shenanigans_planning')]
+#[CoversMethod(\Bristolian\AppController\Explanations::class, 'triangle_road')]
+
 class ExplanationsTest extends BaseTestCase
 {
     public function setup(): void
@@ -20,9 +27,6 @@ class ExplanationsTest extends BaseTestCase
         $this->injector->alias(MarkdownRenderer::class, CommonMarkRenderer::class);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Explanations::triangle_road
-     */
     public function test_triangle_road(): void
     {
         $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRenderer::class);
@@ -35,9 +39,6 @@ class ExplanationsTest extends BaseTestCase
         $this->assertMatchesRegularExpression('/share|qr|QR/', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Explanations::bristol_rovers
-     */
     public function test_bristol_rovers(): void
     {
         $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRenderer::class);
@@ -50,9 +51,6 @@ class ExplanationsTest extends BaseTestCase
         $this->assertMatchesRegularExpression('/share|qr|QR/', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Explanations::avon_crescent
-     */
     public function test_avon_crescent(): void
     {
         $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRenderer::class);
@@ -65,36 +63,24 @@ class ExplanationsTest extends BaseTestCase
         $this->assertMatchesRegularExpression('/share|qr|QR/', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Explanations::advice_for_speaking_at_council
-     */
     public function test_advice_for_speaking_at_council(): void
     {
         $result = $this->injector->execute([Explanations::class, 'advice_for_speaking_at_council']);
         $this->assertIsString($result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Explanations::shenanigans_planning
-     */
     public function test_shenanigans_planning(): void
     {
         $result = $this->injector->execute([Explanations::class, 'shenanigans_planning']);
         $this->assertIsString($result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Explanations::monitoring_officer_notes
-     */
     public function test_monitoring_officer_notes(): void
     {
         $result = $this->injector->execute([Explanations::class, 'monitoring_officer_notes']);
         $this->assertIsString($result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Explanations::development_committee_rules
-     */
     public function test_development_committee_rules(): void
     {
         $result = $this->injector->execute([Explanations::class, 'development_committee_rules']);

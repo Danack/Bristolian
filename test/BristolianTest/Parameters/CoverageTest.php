@@ -14,22 +14,20 @@ use Bristolian\Parameters\PropertyType\PasswordOrRandom;
 use Bristolian\Parameters\QRParams;
 use Bristolian\Parameters\Table;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\PropertyType\AnnotationPositionValue::class)]
+#[CoversClass(\Bristolian\Parameters\PropertyType\EmailAddress::class)]
+#[CoversClass(\Bristolian\Parameters\PropertyType\LinkDescription::class)]
+#[CoversClass(\Bristolian\Parameters\PropertyType\LinkTitle::class)]
+#[CoversClass(\Bristolian\Parameters\PropertyType\PasswordOrRandom::class)]
+#[CoversClass(\Bristolian\Parameters\PropertyType\Url::class)]
+#[CoversClass(\Bristolian\Parameters\PropertyType\Username::class)]
+#[CoversClass(\Bristolian\Parameters\PropertyType\WebPushEndPoint::class)]
+#[CoversClass(\Bristolian\Parameters\PropertyType\WebPushExpirationTime::class)]
+
 class CoverageTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\AnnotationPositionValue
-     * @covers \Bristolian\Parameters\PropertyType\EmailAddress
-     * @covers \Bristolian\Parameters\PropertyType\LinkDescription
-     * @covers \Bristolian\Parameters\PropertyType\LinkTitle
-     * @covers \Bristolian\Parameters\PropertyType\Url
-     * @covers \Bristolian\Parameters\PropertyType\Username
-     * @covers \Bristolian\Parameters\PropertyType\WebPushEndPoint
-     * @covers \Bristolian\Parameters\PropertyType\WebPushExpirationTime
-     * @covers \Bristolian\Parameters\PropertyType\PasswordOrRandom
-     */
     public function testWorks()
     {
         $integer = 4;
@@ -46,9 +44,6 @@ class CoverageTest extends BaseTestCase
         $web_push_expiration_time = "Some time";
 
         $passwordOrRandom = "some_unguessable_password";
-
-
-
 
         $data = [
             'string' => $string,

@@ -14,12 +14,16 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo::class, 'getTagIdsForRoomLink')]
+#[CoversMethod(\Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo::class, 'setTagsForRoomLink')]
+
 class PdoRoomLinkTagRepoTest extends BaseTestCase
 {
     use HasTestWorld;
@@ -59,10 +63,6 @@ class PdoRoomLinkTagRepoTest extends BaseTestCase
         return $this->injector->make(PdoRoomLinkTagRepo::class);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo::__construct
-     * @covers \Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo::getTagIdsForRoomLink
-     */
     public function test_getTagIdsForRoomLink_returns_empty_before_set(): void
     {
         $repo = $this->getRepo();
@@ -70,10 +70,6 @@ class PdoRoomLinkTagRepoTest extends BaseTestCase
         $this->assertSame([], $repo->getTagIdsForRoomLink($this->roomLinkId));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo::setTagsForRoomLink
-     * @covers \Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo::getTagIdsForRoomLink
-     */
     public function test_setTagsForRoomLink_and_getTagIdsForRoomLink_roundtrip(): void
     {
         $repo = $this->getRepo();
@@ -85,10 +81,6 @@ class PdoRoomLinkTagRepoTest extends BaseTestCase
         $this->assertContains($this->tagId2, $ids);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo::setTagsForRoomLink
-     * @covers \Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo::getTagIdsForRoomLink
-     */
     public function test_setTagsForRoomLink_replaces_existing(): void
     {
         $repo = $this->getRepo();

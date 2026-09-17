@@ -18,9 +18,12 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Session\FakeAsmSession;
 use Laminas\Diactoros\ServerRequest;
 use SlimDispatcher\Response\RedirectResponse;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\Login::class, 'logout')]
+#[CoversMethod(\Bristolian\AppController\Login::class, 'processLoginPage')]
+#[CoversMethod(\Bristolian\AppController\Login::class, 'showLoginPage')]
+
 class LoginTest extends BaseTestCase
 {
     private function createSessionManager(FakeAsmDriver|null $driver = null): SessionManager
@@ -41,9 +44,6 @@ class LoginTest extends BaseTestCase
         return (new ServerRequest())->withCookieParams($cookies);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Login::logout
-     */
     public function test_logout(): void
     {
         $sessionManager = $this->createSessionManager();
@@ -56,9 +56,6 @@ class LoginTest extends BaseTestCase
         $this->assertInstanceOf(RedirectResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Login::showLoginPage
-     */
     public function test_showLoginPage_when_not_logged_in_returns_form(): void
     {
         $sessionManager = $this->createSessionManager();
@@ -74,9 +71,6 @@ class LoginTest extends BaseTestCase
         $this->assertStringContainsString('name="password"', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Login::showLoginPage
-     */
     public function test_showLoginPage_when_logged_in_redirects(): void
     {
         $existingSession = new FakeAsmSession('sess-loggedin');
@@ -98,7 +92,6 @@ class LoginTest extends BaseTestCase
 
     /**
      * @group slow
-     * @covers \Bristolian\AppController\Login::processLoginPage
      */
     public function test_processLoginPage_success_redirects_to_tools(): void
     {
@@ -125,9 +118,6 @@ class LoginTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\AppController\Login::processLoginPage
-     */
     public function test_processLoginPage_missing_username_redirects_to_login(): void
     {
         $adminRepo = new FakeAdminRepo([]);
@@ -149,9 +139,6 @@ class LoginTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\AppController\Login::processLoginPage
-     */
     public function test_processLoginPage_missing_password_redirects_to_login(): void
     {
         $adminRepo = new FakeAdminRepo([]);
@@ -175,7 +162,6 @@ class LoginTest extends BaseTestCase
 
     /**
      * @group slow
-     * @covers \Bristolian\AppController\Login::processLoginPage
      */
     public function test_processLoginPage_wrong_credentials_redirects_to_login(): void
     {

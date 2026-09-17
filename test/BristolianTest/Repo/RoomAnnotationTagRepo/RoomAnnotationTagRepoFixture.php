@@ -10,15 +10,12 @@ use BristolianTest\BaseTestCase;
 /**
  * Abstract test class for RoomAnnotationTagRepo implementations.
  *
- * @coversNothing
  */
+
 abstract class RoomAnnotationTagRepoFixture extends BaseTestCase
 {
     abstract public function getTestInstance(): RoomAnnotationTagRepo;
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo::getTagIdsForRoomAnnotation
-     */
     public function test_getTagIdsForRoomAnnotation_returns_empty_initially(): void
     {
         $repo = $this->getTestInstance();
@@ -26,10 +23,6 @@ abstract class RoomAnnotationTagRepoFixture extends BaseTestCase
         $this->assertSame([], $ids);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo::getTagIdsForRoomAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo::setTagsForRoomAnnotation
-     */
     public function test_setTagsForRoomAnnotation_and_getTagIdsForRoomAnnotation_roundtrip(): void
     {
         $repo = $this->getTestInstance();
@@ -39,9 +32,6 @@ abstract class RoomAnnotationTagRepoFixture extends BaseTestCase
         $this->assertEquals($tag_ids, $repo->getTagIdsForRoomAnnotation($ann_id));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo::setTagsForRoomAnnotation
-     */
     public function test_setTagsForRoomAnnotation_replaces_existing(): void
     {
         $repo = $this->getTestInstance();

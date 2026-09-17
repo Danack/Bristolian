@@ -4,13 +4,13 @@ namespace BristolianTest\Service\HttpFetcher;
 
 use Bristolian\Service\HttpFetcher\FetchUriHttpFetcher;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\HttpFetcher\FetchUriHttpFetcher::class, 'fetch')]
+
 class FetchUriHttpFetcherTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Service\HttpFetcher\FetchUriHttpFetcher::fetch
      * @group slow
      */
     public function testFetchReturnsThreeElementArray(): void

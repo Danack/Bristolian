@@ -7,9 +7,10 @@ namespace BristolianTest\Model\TinnedFish;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Model\TinnedFish\ValidationStatus::class, 'getDisplayName')]
+
 class ValidationStatusTest extends BaseTestCase
 {
     /**
@@ -22,9 +23,6 @@ class ValidationStatusTest extends BaseTestCase
         yield 'validated is fish' => [ValidationStatus::VALIDATED_IS_FISH, 'Validated - Is a Tinned Fish Product'];
     }
 
-    /**
-     * @covers \Bristolian\Model\TinnedFish\ValidationStatus::getDisplayName
-     */
     #[DataProvider('provides_status_and_display_name')]
     public function test_getDisplayName_returns_expected_string(ValidationStatus $status, string $expectedDisplayName): void
     {

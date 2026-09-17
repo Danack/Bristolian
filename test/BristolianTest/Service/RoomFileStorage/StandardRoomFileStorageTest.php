@@ -16,15 +16,13 @@ use function Safe\file_get_contents;
 use function Safe\file_put_contents;
 use function Safe\tempnam;
 use function Safe\unlink;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::class, 'storeFileForRoomAndUser')]
+
 class StandardRoomFileStorageTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::__construct
-     * @covers \Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::storeFileForRoomAndUser
-     */
     public function test_storeFileForRoomAndUser_returns_file_id_and_uploads_to_object_store(): void
     {
         $imagePath = __DIR__ . '/../../../fixtures/images/invalid_avatar.jpg';
@@ -51,9 +49,6 @@ class StandardRoomFileStorageTest extends BaseTestCase
         $this->assertCount(1, $filesInRoom);
     }
 
-    /**
-     * @covers \Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::storeFileForRoomAndUser
-     */
     public function test_storeFileForRoomAndUser_returns_uploadError_when_extension_not_allowed(): void
     {
         $fileObjectStore = new FakeRoomFileObjectStore();
@@ -68,9 +63,6 @@ class StandardRoomFileStorageTest extends BaseTestCase
         $this->assertSame(UploadError::UNSUPPORTED_FILE_TYPE, $result->error_message);
     }
 
-    /**
-     * @covers \Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::storeFileForRoomAndUser
-     */
     public function test_storeFileForRoomAndUser_returns_uploadError_when_file_unreadable(): void
     {
         $tempFile = tempnam(sys_get_temp_dir(), 'roomfile_test_') . '.txt';

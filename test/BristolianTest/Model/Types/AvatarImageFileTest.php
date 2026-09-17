@@ -7,14 +7,12 @@ namespace BristolianTest\Model\Types;
 use Bristolian\Model\Types\AvatarImageFile;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Types\AvatarImageFile::class)]
+
 class AvatarImageFileTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\AvatarImageFile
-     */
     public function test_construct(): void
     {
         $id = 'avatar-id-123';

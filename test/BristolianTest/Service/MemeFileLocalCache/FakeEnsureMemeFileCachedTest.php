@@ -16,15 +16,13 @@ use function Safe\mkdir;
 use function Safe\rmdir;
 use function Safe\scandir;
 use function Safe\unlink;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\MemeFileLocalCache\FakeEnsureMemeFileCached::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\MemeFileLocalCache\FakeEnsureMemeFileCached::class, 'ensureMemeFileCached')]
+
 class FakeEnsureMemeFileCachedTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\MemeFileLocalCache\FakeEnsureMemeFileCached::__construct
-     * @covers \Bristolian\Service\MemeFileLocalCache\FakeEnsureMemeFileCached::ensureMemeFileCached
-     */
     public function test_ensureMemeFileCached_returns_success_when_configured_to_succeed(): void
     {
         $cacheDir = sys_get_temp_dir() . '/fake_cache_' . uniqid();
@@ -50,9 +48,6 @@ class FakeEnsureMemeFileCachedTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Service\MemeFileLocalCache\FakeEnsureMemeFileCached::ensureMemeFileCached
-     */
     public function test_ensureMemeFileCached_writes_to_cli_and_returns_failure_when_configured_to_fail(): void
     {
         $cacheDir = sys_get_temp_dir() . '/fake_cache2_' . uniqid();

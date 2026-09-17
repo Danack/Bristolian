@@ -9,9 +9,11 @@ use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\MemeTagUpdateParams::class)]
+#[CoversClass(\Bristolian\Parameters\PropertyType\TagString::class)]
+
 class MemeTagUpdateParamsTest extends BaseTestCase
 {
     /**
@@ -30,8 +32,6 @@ class MemeTagUpdateParamsTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\MemeTagUpdateParams
-     * @covers \Bristolian\Parameters\PropertyType\TagString
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -76,7 +76,6 @@ class MemeTagUpdateParamsTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\MemeTagUpdateParams
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]

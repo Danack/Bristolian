@@ -11,12 +11,16 @@ use Bristolian\Repo\RoomVideoTagRepo\RoomVideoTagRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::class, 'getTagIdsForRoomVideo')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::class, 'setTagsForRoomVideo')]
+
 class PdoRoomVideoTagRepoTest extends BaseTestCase
 {
     use HasTestWorld;
@@ -63,10 +67,6 @@ class PdoRoomVideoTagRepoTest extends BaseTestCase
         return $this->injector->make(\Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::class);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::__construct
-     * @covers \Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::getTagIdsForRoomVideo
-     */
     public function test_getTagIdsForRoomVideo_returns_empty_before_set(): void
     {
         $repo = $this->getRepo();
@@ -76,10 +76,6 @@ class PdoRoomVideoTagRepoTest extends BaseTestCase
         $this->assertSame([], $tagIds);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::setTagsForRoomVideo
-     * @covers \Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::getTagIdsForRoomVideo
-     */
     public function test_setTagsForRoomVideo_and_getTagIdsForRoomVideo(): void
     {
         $repo = $this->getRepo();
@@ -93,10 +89,6 @@ class PdoRoomVideoTagRepoTest extends BaseTestCase
         $this->assertContains($this->tagId2, $tagIds);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::setTagsForRoomVideo
-     * @covers \Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::getTagIdsForRoomVideo
-     */
     public function test_setTagsForRoomVideo_replaces_existing(): void
     {
         $repo = $this->getRepo();

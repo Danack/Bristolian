@@ -8,9 +8,10 @@ use Bristolian\Service\Mailgun\StandardPayloadValidator;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\Mailgun\StandardPayloadValidator::class, 'validate')]
+
 class StandardPayloadValidatorTest extends BaseTestCase
 {
     /**
@@ -24,7 +25,6 @@ class StandardPayloadValidatorTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Service\Mailgun\StandardPayloadValidator::validate
      * @param array<string, string> $payloadData
      */
     #[DataProvider('provides_validate_returns_false_when_required_key_missing')]
@@ -35,9 +35,6 @@ class StandardPayloadValidatorTest extends BaseTestCase
         $this->assertFalse($validator->validate($payload));
     }
 
-    /**
-     * @covers \Bristolian\Service\Mailgun\StandardPayloadValidator::validate
-     */
     public function test_validate_returns_false_when_signature_does_not_match(): void
     {
         $payload = new ArrayVarMap([
@@ -49,9 +46,6 @@ class StandardPayloadValidatorTest extends BaseTestCase
         $this->assertFalse($validator->validate($payload));
     }
 
-    /**
-     * @covers \Bristolian\Service\Mailgun\StandardPayloadValidator::validate
-     */
     public function test_validate_returns_true_when_signature_matches(): void
     {
         $timestamp = '1234567890';

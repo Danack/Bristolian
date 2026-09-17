@@ -5,14 +5,12 @@ namespace BristolianTest\Model;
 use BristolianTest\BaseTestCase;
 use BristolianGenerated\Model\Link;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\BristolianGenerated\Model\Link::class)]
+
 class LinkTest extends BaseTestCase
 {
-    /**
-     * @covers \BristolianGenerated\Model\Link
-     */
     public function testConstruct()
     {
         $id = 'link-123';

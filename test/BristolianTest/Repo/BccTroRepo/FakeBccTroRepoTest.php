@@ -8,12 +8,16 @@ use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;
 use Bristolian\Repo\BccTroRepo\BccTroRepo;
 use Bristolian\Repo\BccTroRepo\FakeBccTroRepo;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'getSavedBatches')]
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'saveData')]
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'saveDataIfNew')]
+
 class FakeBccTroRepoTest extends BccTroRepoFixture
 {
     public function getTestInstance(): BccTroRepo
@@ -21,9 +25,6 @@ class FakeBccTroRepoTest extends BccTroRepoFixture
         return new FakeBccTroRepo();
     }
 
-    /**
-     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveData
-     */
     public function test_fake_saveData_stores_tros(): void
     {
         $repo = new FakeBccTroRepo();
@@ -42,11 +43,6 @@ class FakeBccTroRepoTest extends BccTroRepoFixture
         $this->addToAssertionCount(1);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveDataIfNew
-     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveData
-     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::getSavedBatches
-     */
     public function test_fake_saveDataIfNew_does_not_append_duplicate_batch(): void
     {
         $repo = new FakeBccTroRepo();

@@ -5,23 +5,22 @@ namespace BristolianTest\Service\TinnedFish;
 use Bristolian\Model\TinnedFish\Product;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversFunction;
 use function isValidBarcode;
 use function normalizeOpenFoodFactsData;
-use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * Tests for tinned fish normalization functions
  *
- * @covers \normalizeOpenFoodFactsData
- * @covers \parseTinnedFishWeight
- * @covers \extractTinnedFishSpecies
  */
-#[CoversNothing]
+
+#[CoversFunction('extractTinnedFishSpecies')]
+#[CoversFunction('isValidBarcode')]
+#[CoversFunction('normalizeOpenFoodFactsData')]
+#[CoversFunction('parseTinnedFishWeight')]
+
 class ProductNormalizerTest extends BaseTestCase
 {
-    /**
-     * @covers \isValidBarcode
-     */
     #[DataProvider('provides_isValidBarcode')]
     public function test_isValidBarcode(string $barcode, bool $expected): void
     {
@@ -63,7 +62,6 @@ class ProductNormalizerTest extends BaseTestCase
     }
 
     /**
-     * @covers \normalizeOpenFoodFactsData
      * @param array<string, mixed> $rawData
      * @param array<string, mixed> $expected
      */
@@ -104,9 +102,6 @@ class ProductNormalizerTest extends BaseTestCase
         ];
     }
 
-    /**
-     * @covers \normalizeOpenFoodFactsData
-     */
     #[DataProvider('provides_parses_weight_with_drained_weight')]
     public function test_parses_weight_with_drained_weight(
         string $quantity,
@@ -138,9 +133,6 @@ class ProductNormalizerTest extends BaseTestCase
         yield 'small weight' => ['50 g', 50.0];
     }
 
-    /**
-     * @covers \normalizeOpenFoodFactsData
-     */
     #[DataProvider('provides_parses_weight_formats')]
     public function test_parses_weight_formats(string $quantity, float $expectedWeight): void
     {
@@ -175,9 +167,6 @@ class ProductNormalizerTest extends BaseTestCase
         yield 'French maquereau (mackerel)' => ['Filets de maquereau', 'Mackerel'];
     }
 
-    /**
-     * @covers \normalizeOpenFoodFactsData
-     */
     #[DataProvider('provides_extracts_species_from_product_name')]
     public function test_extracts_species_from_product_name(
         string $productName,
@@ -216,7 +205,6 @@ class ProductNormalizerTest extends BaseTestCase
     }
 
     /**
-     * @covers \normalizeOpenFoodFactsData
      * @dataProvider provides_extracts_species_from_categories
      */
     #[DataProvider('provides_extracts_species_from_categories')]
@@ -246,9 +234,6 @@ class ProductNormalizerTest extends BaseTestCase
         yield 'empty name' => [''];
     }
 
-    /**
-     * @covers \normalizeOpenFoodFactsData
-     */
     #[DataProvider('provides_returns_null_species_when_not_found')]
     public function test_returns_null_species_when_not_found(string $productName): void
     {
@@ -296,7 +281,6 @@ class ProductNormalizerTest extends BaseTestCase
     }
 
     /**
-     * @covers \normalizeOpenFoodFactsData
      * @param array<string, mixed> $rawData
      * @param array<string, mixed> $expected
      */
@@ -370,7 +354,6 @@ class ProductNormalizerTest extends BaseTestCase
     }
 
     /**
-     * @covers \normalizeOpenFoodFactsData
      * @param array<string, mixed> $rawData
      */
     #[DataProvider('provides_uses_fallback_fields')]

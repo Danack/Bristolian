@@ -9,9 +9,11 @@ use DataType\DataStorage\TestArrayDataStorage;
 use DataType\ProcessedValues;
 use Bristolian\Parameters\ProcessRule\ParseClipTimestampToSeconds;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Parameters\ProcessRule\ParseClipTimestampToSeconds::class, 'process')]
+#[CoversMethod(\Bristolian\Parameters\ProcessRule\ParseClipTimestampToSeconds::class, 'updateParamDescription')]
+
 class ParseClipTimestampToSecondsTest extends BaseTestCase
 {
     public static function provides_valid_time_inputs(): \Generator
@@ -22,7 +24,6 @@ class ParseClipTimestampToSecondsTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\ProcessRule\ParseClipTimestampToSeconds::process
      * @dataProvider provides_valid_time_inputs
      */
     #[DataProvider('provides_valid_time_inputs')]
@@ -39,9 +40,6 @@ class ParseClipTimestampToSecondsTest extends BaseTestCase
         $this->assertSame($expected_seconds, $result->getValue());
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\ParseClipTimestampToSeconds::process
-     */
     public function test_process_returns_error_for_empty_string(): void
     {
         $rule = new ParseClipTimestampToSeconds();
@@ -59,9 +57,6 @@ class ParseClipTimestampToSecondsTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\ParseClipTimestampToSeconds::updateParamDescription
-     */
     public function test_updateParamDescription_sets_description(): void
     {
         $rule = new ParseClipTimestampToSeconds();

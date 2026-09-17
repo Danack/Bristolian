@@ -10,12 +10,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
  * Tests for Copyright model
  *
  */
+
 #[CoversClass(\Bristolian\Model\TinnedFish\Copyright::class)]
+
 class CopyrightTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\TinnedFish\Copyright::openFoodFacts
-     */
     public function test_openFoodFacts_creates_correct_attribution(): void
     {
         $copyright = Copyright::openFoodFacts();
@@ -27,9 +26,6 @@ class CopyrightTest extends BaseTestCase
         $this->assertTrue($copyright->attribution_required);
     }
 
-    /**
-     * @covers \Bristolian\Model\TinnedFish\Copyright::__construct
-     */
     public function test_constructor_sets_all_fields(): void
     {
         $copyright = new Copyright(
@@ -47,9 +43,6 @@ class CopyrightTest extends BaseTestCase
         $this->assertFalse($copyright->attribution_required);
     }
 
-    /**
-     * @covers \Bristolian\Model\TinnedFish\Copyright::__construct
-     */
     public function test_constructor_allows_null_license(): void
     {
         $copyright = new Copyright(

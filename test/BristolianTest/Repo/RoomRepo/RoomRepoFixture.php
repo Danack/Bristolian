@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\RoomRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use BristolianGenerated\Model\Room;
 use Bristolian\Repo\RoomRepo\RoomRepo;
 use BristolianTest\BaseTestCase;
@@ -13,8 +14,22 @@ use BristolianTest\BaseTestCase;
  *
  * Scenario data (user id) is provided by concrete tests via getValidUserId().
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\RoomRepo\FakeRoomRepo::class, 'createRoom')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\FakeRoomRepo::class, 'getAllRooms')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\FakeRoomRepo::class, 'getLatestRoomsCreated')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\FakeRoomRepo::class, 'getRoomById')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\FakeRoomRepo::class, 'getRoomByName')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\FakeRoomRepo::class, 'updateRoomNameAndPurpose')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\PdoRoomRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\PdoRoomRepo::class, 'createRoom')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\PdoRoomRepo::class, 'getAllRooms')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\PdoRoomRepo::class, 'getLatestRoomsCreated')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\PdoRoomRepo::class, 'getRoomById')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\PdoRoomRepo::class, 'getRoomByName')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\PdoRoomRepo::class, 'updateRoomNameAndPurpose')]
+
 abstract class RoomRepoFixture extends BaseTestCase
 {
     /**
@@ -29,12 +44,6 @@ abstract class RoomRepoFixture extends BaseTestCase
      */
     abstract protected function getValidUserId(): string;
 
-    /**
-     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::createRoom
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::createRoom
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::__construct
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::createRoom
-     */
     public function test_createRoom_creates_room(): void
     {
         $repo = $this->getTestInstance();
@@ -51,11 +60,6 @@ abstract class RoomRepoFixture extends BaseTestCase
         $this->assertSame($purpose, $room->purpose);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getRoomById
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getRoomById
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getRoomById
-     */
     public function test_getRoomById_returns_null_initially(): void
     {
         $repo = $this->getTestInstance();
@@ -65,14 +69,6 @@ abstract class RoomRepoFixture extends BaseTestCase
         $this->assertNull($room);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getRoomById
-     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::createRoom
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getRoomById
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::createRoom
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getRoomById
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::createRoom
-     */
     public function test_getRoomById_returns_created_room(): void
     {
         $repo = $this->getTestInstance();
@@ -89,11 +85,6 @@ abstract class RoomRepoFixture extends BaseTestCase
         $this->assertSame($name, $retrievedRoom->name);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::updateRoomNameAndPurpose
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::updateRoomNameAndPurpose
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::updateRoomNameAndPurpose
-     */
     public function test_updateRoomNameAndPurpose_updates_stored_room(): void
     {
         $repo = $this->getTestInstance();
@@ -110,11 +101,6 @@ abstract class RoomRepoFixture extends BaseTestCase
         $this->assertSame($createdRoom->owner_user_id, $updated->owner_user_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getAllRooms
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getAllRooms
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getAllRooms
-     */
     public function test_getAllRooms_returns_array(): void
     {
         $repo = $this->getTestInstance();
@@ -127,14 +113,6 @@ abstract class RoomRepoFixture extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getAllRooms
-     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::createRoom
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getAllRooms
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::createRoom
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getAllRooms
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::createRoom
-     */
     public function test_getAllRooms_respects_default_limit(): void
     {
         $repo = $this->getTestInstance();
@@ -149,14 +127,6 @@ abstract class RoomRepoFixture extends BaseTestCase
         $this->assertLessThanOrEqual(RoomRepo::DEFAULT_LIST_LIMIT, count($rooms));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getLatestRoomsCreated
-     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::createRoom
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getLatestRoomsCreated
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::createRoom
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getLatestRoomsCreated
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::createRoom
-     */
     public function test_getLatestRoomsCreated_includes_recently_created_rooms(): void
     {
         $repo = $this->getTestInstance();
@@ -175,11 +145,6 @@ abstract class RoomRepoFixture extends BaseTestCase
         $this->assertSame($room2->id, $rooms[0]->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getRoomByName
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getRoomByName
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getRoomByName
-     */
     public function test_getRoomByName_returns_empty_when_no_match(): void
     {
         $repo = $this->getTestInstance();
@@ -189,14 +154,6 @@ abstract class RoomRepoFixture extends BaseTestCase
         $this->assertSame([], $rooms);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::getRoomByName
-     * @covers \Bristolian\Repo\RoomRepo\RoomRepo::createRoom
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getRoomByName
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::createRoom
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::getRoomByName
-     * @covers \Bristolian\Repo\RoomRepo\PdoRoomRepo::createRoom
-     */
     public function test_getRoomByName_returns_all_rooms_with_that_name(): void
     {
         $repo = $this->getTestInstance();

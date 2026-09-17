@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\EmailIncoming;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Model\Types\IncomingEmailParam;
 use Bristolian\Repo\EmailIncoming\EmailIncoming;
 use BristolianTest\BaseTestCase;
@@ -12,8 +13,12 @@ use function Safe\json_encode;
 /**
  * Abstract test class for EmailIncoming implementations.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\EmailIncoming\FakeEmailIncoming::class, 'saveEmail')]
+#[CoversMethod(\Bristolian\Repo\EmailIncoming\PdoEmailIncoming::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\EmailIncoming\PdoEmailIncoming::class, 'saveEmail')]
+
 abstract class EmailIncomingFixture extends BaseTestCase
 {
     /**
@@ -23,13 +28,6 @@ abstract class EmailIncomingFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): EmailIncoming;
 
-
-    /**
-     * @covers \Bristolian\Repo\EmailIncoming\EmailIncoming::saveEmail
-     * @covers \Bristolian\Repo\EmailIncoming\FakeEmailIncoming::saveEmail
-     * @covers \Bristolian\Repo\EmailIncoming\PdoEmailIncoming::__construct
-     * @covers \Bristolian\Repo\EmailIncoming\PdoEmailIncoming::saveEmail
-     */
     public function test_saveEmail_stores_email(): void
     {
         $repo = $this->getTestInstance();
@@ -51,12 +49,6 @@ abstract class EmailIncomingFixture extends BaseTestCase
         $repo->saveEmail($emailParam);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\EmailIncoming\EmailIncoming::saveEmail
-     * @covers \Bristolian\Repo\EmailIncoming\FakeEmailIncoming::saveEmail
-     * @covers \Bristolian\Repo\EmailIncoming\PdoEmailIncoming::saveEmail
-     */
     public function test_saveEmail_can_save_multiple_emails(): void
     {
         $repo = $this->getTestInstance();

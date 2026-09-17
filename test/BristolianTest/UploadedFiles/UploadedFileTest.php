@@ -4,14 +4,12 @@ namespace BristolianTest\UploadedFiles;
 
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\UploadedFiles\UploadedFile::class)]
+
 class UploadedFileTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\UploadedFiles\UploadedFile
-     */
     public function testWorks()
     {
         $original_name = 'test.php';
@@ -28,16 +26,11 @@ class UploadedFileTest extends BaseTestCase
         $this->assertSame(\Safe\filesize(__FILE__), $file1->getSize());
         $this->assertSame(0, $file1->getErrorCode());
 
-
         $error_message = $file1->getErrorMessage();
         $this->assertSame(
             'There is no error, the file uploaded with success',
             $error_message
         );
-
-
-
-
 
         // static constructor
         $file2 = UploadedFile::fromFile(__FILE__);

@@ -22,7 +22,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 /**
  * @group standard_repo
  */
+
 #[CoversClass(\Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::class)]
+
 class InMemoryRoomVideoRepoTest extends BaseTestCase
 {
     private InMemoryRoomVideoTagRepo $roomVideoTagRepo;
@@ -280,10 +282,6 @@ class InMemoryRoomVideoRepoTest extends BaseTestCase
         $this->repo->updateTitleAndDescription('room-1', 'nonexistent-id', 'Title', null);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::getVideosForRoom
-     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::filterVideosBySearch
-     */
     public function test_getVideosForRoom_filters_by_title(): void
     {
         $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
@@ -297,10 +295,6 @@ class InMemoryRoomVideoRepoTest extends BaseTestCase
         $this->assertSame('Report with unique slug here', $videos[0]->title);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::getVideosForRoom
-     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::filterVideosBySearch
-     */
     public function test_getVideosForRoom_filters_by_description(): void
     {
         $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
@@ -314,10 +308,6 @@ class InMemoryRoomVideoRepoTest extends BaseTestCase
         $this->assertSame('Report with unique desc slug here', $videos[0]->description);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::getVideosForRoom
-     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::filterVideosBySearch
-     */
     public function test_getVideosForRoom_filters_by_created_at_after(): void
     {
         $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
@@ -330,10 +320,6 @@ class InMemoryRoomVideoRepoTest extends BaseTestCase
         $this->assertCount(0, $videos);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::getVideosForRoom
-     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::filterVideosBySearch
-     */
     public function test_getVideosForRoom_filters_by_created_at_before(): void
     {
         $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
@@ -346,11 +332,6 @@ class InMemoryRoomVideoRepoTest extends BaseTestCase
         $this->assertCount(0, $videos);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::getVideosForRoom
-     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::filterVideosBySearch
-     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::setDocumentTimestampForRoomVideo
-     */
     public function test_getVideosForRoom_filters_by_document_timestamp_after(): void
     {
         $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');
@@ -363,11 +344,6 @@ class InMemoryRoomVideoRepoTest extends BaseTestCase
         $this->assertCount(0, $videos);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::getVideosForRoom
-     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::filterVideosBySearch
-     * @covers \Bristolian\Repo\RoomVideoRepo\InMemoryRoomVideoRepo::setDocumentTimestampForRoomVideo
-     */
     public function test_getVideosForRoom_filters_by_document_timestamp_before(): void
     {
         $videoId = $this->videoRepo->create('user-1', 'dQw4w9WgXcQ');

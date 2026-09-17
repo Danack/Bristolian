@@ -6,15 +6,14 @@ namespace BristolianChatTest\RoomMessagesWatcher;
 
 use BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher::class, '__construct')]
+#[CoversMethod(\BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher::class, 'getInitialPreviousId')]
+#[CoversMethod(\BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher::class, 'getNextChatMessageAfter')]
+
 class ThrowingRoomMessagesWatcherTest extends BaseTestCase
 {
-    /**
-     * @covers \BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher::__construct
-     * @covers \BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher::getInitialPreviousId
-     */
     public function test_getInitialPreviousId_returns_default(): void
     {
         $fetcher = new ThrowingRoomMessagesWatcher();
@@ -22,9 +21,6 @@ class ThrowingRoomMessagesWatcherTest extends BaseTestCase
         $this->assertSame(1, $fetcher->getInitialPreviousId());
     }
 
-    /**
-     * @covers \BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher::getInitialPreviousId
-     */
     public function test_getInitialPreviousId_returns_configured_value(): void
     {
         $fetcher = new ThrowingRoomMessagesWatcher(initialPreviousId: 99);
@@ -32,9 +28,6 @@ class ThrowingRoomMessagesWatcherTest extends BaseTestCase
         $this->assertSame(99, $fetcher->getInitialPreviousId());
     }
 
-    /**
-     * @covers \BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher::getNextChatMessageAfter
-     */
     public function test_getNextChatMessageAfter_throws_configured_exception(): void
     {
         $exception = new \RuntimeException('Database connection lost');
@@ -46,9 +39,6 @@ class ThrowingRoomMessagesWatcherTest extends BaseTestCase
         $fetcher->getNextChatMessageAfter(1);
     }
 
-    /**
-     * @covers \BristolianChat\RoomMessagesWatcher\ThrowingRoomMessagesWatcher::getNextChatMessageAfter
-     */
     public function test_getNextChatMessageAfter_throws_custom_exception(): void
     {
         $exception = new \InvalidArgumentException('Invalid previous_id');

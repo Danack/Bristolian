@@ -18,15 +18,13 @@ use Bristolian\Service\MemeImageOcr\FakeMemeImageOcrRunner;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\CliController\MemeOcr::class, '__construct')]
+#[CoversMethod(\Bristolian\CliController\MemeOcr::class, 'runInternal')]
+
 class MemeOcrTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\CliController\MemeOcr::__construct
-     * @covers \Bristolian\CliController\MemeOcr::runInternal
-     */
     public function test_runInternal_writes_when_processor_disabled(): void
     {
         $root = sys_get_temp_dir();
@@ -49,9 +47,6 @@ class MemeOcrTest extends BaseTestCase
         $this->assertStringContainsString('not enabled', $cliOutput->getCapturedOutput());
     }
 
-    /**
-     * @covers \Bristolian\CliController\MemeOcr::runInternal
-     */
     public function test_runInternal_writes_when_no_meme_to_ocr(): void
     {
         $root = sys_get_temp_dir();
@@ -75,7 +70,6 @@ class MemeOcrTest extends BaseTestCase
     }
 
 //    /**
-//     * @covers \Bristolian\CliController\MemeOcr::runInternal
 //     */
 //    public function test_runInternal_saves_text_when_ocr_succeeds(): void
 //    {
@@ -107,7 +101,6 @@ class MemeOcrTest extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\CliController\MemeOcr::runInternal
 //     */
 //    public function test_runInternal_truncates_long_text(): void
 //    {
@@ -142,7 +135,6 @@ class MemeOcrTest extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\CliController\MemeOcr::runInternal
 //     */
 //    public function test_runInternal_writes_failure_when_ocr_throws(): void
 //    {
@@ -169,9 +161,6 @@ class MemeOcrTest extends BaseTestCase
 //        $this->assertStringContainsString('ocr failed', $cliOutput->getCapturedOutput());
 //    }
 
-    /**
-     * @covers \Bristolian\CliController\MemeOcr::runInternal
-     */
     public function test_runInternal_finishes_when_cache_fails(): void
     {
         $root = sys_get_temp_dir();

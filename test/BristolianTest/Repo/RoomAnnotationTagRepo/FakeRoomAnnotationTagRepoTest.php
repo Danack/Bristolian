@@ -6,9 +6,11 @@ namespace BristolianTest\Repo\RoomAnnotationTagRepo;
 
 use Bristolian\Repo\RoomAnnotationTagRepo\FakeRoomAnnotationTagRepo;
 use Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationTagRepo\FakeRoomAnnotationTagRepo::class, 'getTagIdsForRoomAnnotation')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationTagRepo\FakeRoomAnnotationTagRepo::class, 'setTagsForRoomAnnotation')]
+
 class FakeRoomAnnotationTagRepoTest extends RoomAnnotationTagRepoFixture
 {
     public function getTestInstance(): RoomAnnotationTagRepo
@@ -16,10 +18,6 @@ class FakeRoomAnnotationTagRepoTest extends RoomAnnotationTagRepoFixture
         return new FakeRoomAnnotationTagRepo();
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationTagRepo\FakeRoomAnnotationTagRepo::getTagIdsForRoomAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationTagRepo\FakeRoomAnnotationTagRepo::setTagsForRoomAnnotation
-     */
     public function test_fake_setTags_and_getTagIds_roundtrip(): void
     {
         $repo = new FakeRoomAnnotationTagRepo();

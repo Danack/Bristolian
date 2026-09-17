@@ -13,15 +13,14 @@ use BristolianChatTest\Fixtures\Psr7UriForTests;
 use BristolianTest\BaseTestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\BristolianChat\ClientHandler\StandardClientHandler::class, '__construct')]
+#[CoversMethod(\BristolianChat\ClientHandler\StandardClientHandler::class, 'broadcastText')]
+#[CoversMethod(\BristolianChat\ClientHandler\StandardClientHandler::class, 'handleClient')]
+
 class StandardClientHandlerTest extends BaseTestCase
 {
-    /**
-     * @covers \BristolianChat\ClientHandler\StandardClientHandler::__construct
-     * @covers \BristolianChat\ClientHandler\StandardClientHandler::broadcastText
-     */
     public function test_broadcastText_can_be_called_without_connected_clients(): void
     {
         $testHandler = new TestHandler();
@@ -35,9 +34,6 @@ class StandardClientHandlerTest extends BaseTestCase
         $this->addToAssertionCount(1);
     }
 
-    /**
-     * @covers \BristolianChat\ClientHandler\StandardClientHandler::handleClient
-     */
     public function test_handleClient_adds_client_logs_and_processes_messages(): void
     {
         $testHandler = new TestHandler();

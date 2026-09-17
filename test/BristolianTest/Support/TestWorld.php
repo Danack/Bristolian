@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Support;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo;
 use Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo;
@@ -20,8 +21,10 @@ use DI\Injector;
  *
  * Uses PDO implementations directly so we don't depend on injector aliases.
  *
- * @coversNothing
  */
+
+#[CoversNothing]
+
 final class TestWorld
 {
     private PdoAdminRepo $adminRepo;

@@ -10,18 +10,17 @@ use Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\PdoWhatDoTheyKnowRequestEvent
 use Bristolian\Service\UuidGenerator\UuidGenerator;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\PdoWhatDoTheyKnowRequestEventRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\PdoWhatDoTheyKnowRequestEventRepo::class, 'insertNewRequestEvent')]
+
 final class PdoWhatDoTheyKnowRequestEventRepoTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\PdoWhatDoTheyKnowRequestEventRepo::__construct
-     * @covers \Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\PdoWhatDoTheyKnowRequestEventRepo::insertNewRequestEvent
-     */
     public function test_insertNewRequestEvent_returns_true_then_false_on_duplicate_wdt_event_id(): void
     {
         $repo = $this->injector->make(PdoWhatDoTheyKnowRequestEventRepo::class);
@@ -58,9 +57,6 @@ final class PdoWhatDoTheyKnowRequestEventRepoTest extends BaseTestCase
         self::assertFalse($insertedSecond);
     }
 
-    /**
-     * @covers \Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\PdoWhatDoTheyKnowRequestEventRepo::insertNewRequestEvent
-     */
     public function test_insertNewRequestEvent_rethrows_non_duplicate_pdo_simple_exception(): void
     {
         $pdoException = new \PDOException('synthetic failure');

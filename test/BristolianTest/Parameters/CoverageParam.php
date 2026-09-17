@@ -2,6 +2,7 @@
 
 namespace BristolianTest\Parameters;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use DataType\DataType;
 use DataType\Create\CreateFromVarMap;
 use DataType\GetInputTypesFromAttributes;
@@ -22,8 +23,10 @@ use Bristolian\Parameters\PropertyType\PasswordOrRandom;
  * This is a class solely used for adding coverage to
  * InputTypes.
  *
- * @coversNothing
  */
+
+#[CoversNothing]
+
 class CoverageParam implements DataType
 {
     use CreateFromVarMap;

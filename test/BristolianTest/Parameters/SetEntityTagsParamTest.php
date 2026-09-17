@@ -7,9 +7,10 @@ namespace BristolianTest\Parameters;
 use Bristolian\Parameters\SetEntityTagsParam;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\SetEntityTagsParam::class)]
+
 class SetEntityTagsParamTest extends BaseTestCase
 {
     /**
@@ -29,9 +30,6 @@ class SetEntityTagsParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\SetEntityTagsParam
-     * @covers \Bristolian\Parameters\SetEntityTagsParam::__construct
-     * @covers \Bristolian\Parameters\SetEntityTagsParam::fromArray
      * @dataProvider provides_valid_input_and_expected_tag_ids
      * @param array<string, mixed> $input
      * @param string[] $expectedTagIds

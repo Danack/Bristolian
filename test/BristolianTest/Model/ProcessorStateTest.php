@@ -5,14 +5,12 @@ namespace BristolianTest\Model;
 use Bristolian\Model\Types\ProcessorState;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Types\ProcessorState::class)]
+
 class ProcessorStateTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\ProcessorState
-     */
     public function testConstruct()
     {
         $id = 'processor-123';
@@ -28,9 +26,6 @@ class ProcessorStateTest extends BaseTestCase
         $this->assertSame($updatedAt, $state->updated_at);
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\ProcessorState
-     */
     public function testConstructWithDisabled()
     {
         $state = new ProcessorState(

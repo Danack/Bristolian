@@ -12,15 +12,16 @@ use Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo;
 use BristolianGenerated\Model\BristolStairInfo;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Tests for FakeBristolStairsRepo
  *
- * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::class)]
+
 class FakeBristolStairsRepoTest extends BristolStairsRepoFixture
 {
     /**
@@ -311,7 +312,6 @@ class FakeBristolStairsRepoTest extends BristolStairsRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::updateStairInfo
      * Test updateStairInfo throws exception for non-existent ID
      */
     public function test_updateStairInfo_throws_exception_for_nonexistent_id(): void
@@ -426,7 +426,6 @@ class FakeBristolStairsRepoTest extends BristolStairsRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::updateStairPosition
      * Test updateStairPosition throws exception for non-existent ID
      */
     public function test_updateStairPosition_throws_exception_for_nonexistent_id(): void

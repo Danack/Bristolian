@@ -7,14 +7,12 @@ namespace BristolianTest\Model\Types;
 use Bristolian\Model\Types\RoomFileInRoom;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Model\Types\RoomFileInRoom::class, '__construct')]
+
 class RoomFileInRoomTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\RoomFileInRoom::__construct
-     */
     public function test_constructor_sets_all_properties(): void
     {
         $id = 'file-id-123';
@@ -51,9 +49,6 @@ class RoomFileInRoomTest extends BaseTestCase
         $this->assertSame('A longer note.', $roomFile->note);
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\RoomFileInRoom::__construct
-     */
     public function test_constructor_accepts_null_document_timestamp(): void
     {
         $roomFile = new RoomFileInRoom(

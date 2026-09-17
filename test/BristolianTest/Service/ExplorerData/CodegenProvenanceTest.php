@@ -7,23 +7,25 @@ namespace BristolianTest\Service\ExplorerData;
 use Bristolian\Service\ExplorerData\CodegenProvenance;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use function Safe\file;
 use function Safe\json_encode;
-use PHPUnit\Framework\Attributes\CoversNothing;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\ExplorerData\CodegenProvenance::class, 'buildPayload')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\CodegenProvenance::class, 'descriptionForCallable')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\CodegenProvenance::class, 'extractAssignment')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\CodegenProvenance::class, 'extractAssignmentSource')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\CodegenProvenance::class, 'extractAssignments')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\CodegenProvenance::class, 'flushDescriptionBlock')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\CodegenProvenance::class, 'formatLineComment')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\CodegenProvenance::class, 'parseCallable')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\CodegenProvenance::class, 'parseFromFileContents')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\CodegenProvenance::class, 'projectRelativePath')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\CodegenProvenance::class, 'typescriptHumanPreamble')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::class, 'normalizeFqcn')]
+
 class CodegenProvenanceTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::formatLineComment
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseFromFileContents
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::buildPayload
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::descriptionForCallable
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::typescriptHumanPreamble
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::flushDescriptionBlock
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::normalizeFqcn
-     */
     public function test_format_and_parse_round_trip(): void
     {
         $payload = CodegenProvenance::buildPayload(
@@ -64,11 +66,6 @@ class CodegenProvenanceTest extends BaseTestCase
         $this->assertArrayNotHasKey('mappings', $parsed);
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::descriptionForCallable
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::flushDescriptionBlock
-     */
     public function test_description_preserves_indented_structure_as_newlines(): void
     {
         $description = CodegenProvenance::descriptionForCallable(
@@ -91,12 +88,6 @@ class CodegenProvenanceTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignmentSource
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignment
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::projectRelativePath
-     */
     public function test_extract_assignment_source_reads_constant_definitions(): void
     {
         $source = CodegenProvenance::extractAssignmentSource(
@@ -109,9 +100,6 @@ class CodegenProvenanceTest extends BaseTestCase
         $this->assertStringEndsWith(';', $source);
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseFromFileContents
-     */
     public function test_parse_returns_null_when_markers_missing(): void
     {
         $this->assertNull(
@@ -119,11 +107,6 @@ class CodegenProvenanceTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignment
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::projectRelativePath
-     */
     public function test_extract_assignment_includes_source_map(): void
     {
         $assignment = CodegenProvenance::extractAssignment(
@@ -155,12 +138,6 @@ class CodegenProvenanceTest extends BaseTestCase
         $this->assertStringContainsString('MEME_FILE_UPLOAD_FORM_NAME', $snippet);
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignments
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignment
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::projectRelativePath
-     */
     public function test_extract_assignments_joins_multiple_variables(): void
     {
         $assignment = CodegenProvenance::extractAssignments(
@@ -181,13 +158,6 @@ class CodegenProvenanceTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::buildPayload
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::descriptionForCallable
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::flushDescriptionBlock
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::normalizeFqcn
-     */
     public function test_buildPayload_includes_detail_source(): void
     {
         $payload = CodegenProvenance::buildPayload(
@@ -213,10 +183,6 @@ class CodegenProvenanceTest extends BaseTestCase
         $this->assertSame('$constantDefinitions = [];', $payload['detail']);
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignment
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
-     */
     public function test_extract_assignment_throws_when_variable_missing(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -227,9 +193,6 @@ class CodegenProvenanceTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::extractAssignments
-     */
     public function test_extract_assignments_throws_when_variable_list_empty(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -240,11 +203,6 @@ class CodegenProvenanceTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::descriptionForCallable
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseCallable
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::normalizeFqcn
-     */
     public function test_descriptionForCallable_rejects_invalid_callable(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -252,9 +210,6 @@ class CodegenProvenanceTest extends BaseTestCase
         CodegenProvenance::descriptionForCallable('NotAValidCallable');
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::projectRelativePath
-     */
     public function test_projectRelativePath_returns_normalized_absolute_when_outside_root(): void
     {
         $this->assertSame(
@@ -263,10 +218,6 @@ class CodegenProvenanceTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseFromFileContents
-     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::formatLineComment
-     */
     public function test_parse_reads_star_prefixed_comment_lines_and_detail_source(): void
     {
         $payload = [
@@ -320,7 +271,6 @@ class CodegenProvenanceTest extends BaseTestCase
 //    }
 //
 //    /**
-//     * @covers \Bristolian\Service\ExplorerData\CodegenProvenance::parseFromFileContents
 //     */
 //    #[DataProvider('provides_parseFromFileContents_invalid_payloads')]
 //    public function test_parse_returns_null_for_invalid_payloads(string $contents): void

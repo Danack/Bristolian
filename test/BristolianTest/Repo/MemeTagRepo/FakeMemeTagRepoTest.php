@@ -12,12 +12,19 @@ use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\MemeTagUpdateParams;
 use Bristolian\UploadedFiles\UploadedFile;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::class, 'deleteTagForUser')]
+#[CoversMethod(\Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::class, 'getMostCommonTags')]
+#[CoversMethod(\Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::class, 'getMostCommonTagsForMemes')]
+#[CoversMethod(\Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::class, 'getUserTagsForMeme')]
+#[CoversMethod(\Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::class, 'updateTagForUser')]
+
 class FakeMemeTagRepoTest extends MemeTagRepoFixture
 {
     public function getTestInstance(): MemeTagRepo
@@ -25,9 +32,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         return new FakeMemeTagRepo();
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::__construct
-     */
     public function test_fake_construct_accepts_null_or_storage_repo(): void
     {
         $repoNull = new FakeMemeTagRepo(null);
@@ -36,9 +40,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame([], $repoWithStorage->getUserTagsForMeme('u', 'm'));
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getUserTagsForMeme
-     */
     public function test_getUserTagsForMeme_returns_empty_when_meme_not_in_storage(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -52,9 +53,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame([], $tags);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getUserTagsForMeme
-     */
     public function test_getUserTagsForMeme_returns_empty_when_meme_belongs_to_other_user(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -69,9 +67,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame([], $tags);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::updateTagForUser
-     */
     public function test_updateTagForUser_returns_zero_for_nonexistent_tag(): void
     {
         $repo = new FakeMemeTagRepo();
@@ -83,9 +78,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame(0, $count);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::updateTagForUser
-     */
     public function test_updateTagForUser_returns_zero_when_tag_type_is_not_user_tag(): void
     {
         $repo = new FakeMemeTagRepo();
@@ -106,9 +98,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame(0, $count);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::updateTagForUser
-     */
     public function test_updateTagForUser_updates_when_tag_is_user_tag(): void
     {
         $repo = new FakeMemeTagRepo();
@@ -130,9 +119,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame('updated_text', $tagsAfter[0]->text);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::deleteTagForUser
-     */
     public function test_deleteTagForUser_returns_zero_for_nonexistent_tag(): void
     {
         $repo = new FakeMemeTagRepo();
@@ -140,9 +126,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame(0, $count);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::deleteTagForUser
-     */
     public function test_deleteTagForUser_returns_zero_when_tag_type_is_not_user_tag(): void
     {
         $repo = new FakeMemeTagRepo();
@@ -158,9 +141,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame(0, $count);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::deleteTagForUser
-     */
     public function test_deleteTagForUser_removes_tag_when_tag_is_user_tag(): void
     {
         $repo = new FakeMemeTagRepo();
@@ -177,9 +157,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame([], $repo->getUserTagsForMeme($this->getTestUserId(), $meme_id));
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTags
-     */
     public function test_getMostCommonTags_returns_tags_sorted_by_count_without_storage(): void
     {
         $repo = new FakeMemeTagRepo();
@@ -207,9 +184,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame(1, $result[1]['count']);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTags
-     */
     public function test_getMostCommonTags_only_counts_uploaded_memes_when_storage_set(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -226,9 +200,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame('uploaded-tag', $result[0]['text']);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTags
-     */
     public function test_getMostCommonTags_excludes_non_uploaded_memes_when_storage_set(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -243,9 +214,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame([], $result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTags
-     */
     public function test_getMostCommonTags_skips_tag_when_storage_says_meme_not_uploaded(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -268,18 +236,12 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame('on-uploaded', $result[0]['text']);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTagsForMemes
-     */
     public function test_getMostCommonTagsForMemes_returns_empty_when_meme_ids_empty(): void
     {
         $repo = new FakeMemeTagRepo();
         $this->assertSame([], $repo->getMostCommonTagsForMemes($this->getTestUserId(), [], 10));
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTagsForMemes
-     */
     public function test_getMostCommonTagsForMemes_returns_common_tags_for_specified_memes(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -311,9 +273,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame(1, $result[1]['count']);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTagsForMemes
-     */
     public function test_getMostCommonTagsForMemes_skips_tag_when_meme_not_uploaded(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -336,9 +295,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame('on-uploaded', $result[0]['text']);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTagsForMemes
-     */
     public function test_getMostCommonTagsForMemes_skips_tag_when_type_not_user_tag(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -354,9 +310,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame([], $result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTags
-     */
     public function test_getMostCommonTags_skips_non_user_tag_when_storage_set(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -372,9 +325,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame([], $result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTags
-     */
     public function test_getMostCommonTags_skips_tag_when_meme_not_in_storage(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -388,9 +338,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame([], $result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTagsForMemes
-     */
     public function test_getMostCommonTagsForMemes_skips_tag_when_meme_not_in_storage(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -404,9 +351,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame([], $result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::getMostCommonTagsForMemes
-     */
     public function test_getMostCommonTagsForMemes_skips_tag_when_meme_id_not_in_requested_list(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -430,9 +374,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame('on-m1', $result[0]['text']);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::updateTagForUser
-     */
     public function test_updateTagForUser_returns_zero_when_meme_not_owned_by_user(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -454,9 +395,6 @@ class FakeMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame(0, $count);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::deleteTagForUser
-     */
     public function test_deleteTagForUser_returns_zero_when_meme_not_owned_by_user(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();

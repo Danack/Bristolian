@@ -4,14 +4,12 @@ namespace BristolianTest\Exception;
 
 use Bristolian\Exception\DataEncodingException;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Exception\DataEncodingException::class)]
+
 class DataEncodingExceptionTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Exception\DataEncodingException
-     */
     public function testWorks()
     {
         $message = "Failed to encode data";

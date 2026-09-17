@@ -7,14 +7,12 @@ namespace BristolianTest\Parameters;
 use Bristolian\Parameters\UpdateRoomNoteParam;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\UpdateRoomNoteParam::class)]
+
 class UpdateRoomNoteParamTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Parameters\UpdateRoomNoteParam
-     */
     public function testWorks(): void
     {
         $param = UpdateRoomNoteParam::createFromVarMap(new ArrayVarMap([

@@ -10,12 +10,16 @@ use Bristolian\Repo\VideoRepo\PdoVideoRepo;
 use Bristolian\Repo\VideoRepo\VideoRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Support\HasTestWorld;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\VideoRepo\PdoVideoRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\VideoRepo\PdoVideoRepo::class, 'create')]
+#[CoversMethod(\Bristolian\Repo\VideoRepo\PdoVideoRepo::class, 'getById')]
+
 class PdoVideoRepoTest extends BaseTestCase
 {
     use HasTestWorld;
@@ -37,10 +41,6 @@ class PdoVideoRepoTest extends BaseTestCase
         return $this->injector->make(PdoVideoRepo::class);
     }
 
-    /**
-     * @covers \Bristolian\Repo\VideoRepo\PdoVideoRepo::__construct
-     * @covers \Bristolian\Repo\VideoRepo\PdoVideoRepo::create
-     */
     public function test_create_returns_video_id(): void
     {
         $repo = $this->getRepo();
@@ -50,9 +50,6 @@ class PdoVideoRepoTest extends BaseTestCase
         $this->assertNotEquals($this->videoId, $id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\VideoRepo\PdoVideoRepo::getById
-     */
     public function test_getById_returns_video(): void
     {
         $repo = $this->getRepo();
@@ -63,9 +60,6 @@ class PdoVideoRepoTest extends BaseTestCase
         $this->assertSame('dQw4w9WgXcQ', $video->youtube_video_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\VideoRepo\PdoVideoRepo::getById
-     */
     public function test_getById_throws_for_nonexistent_id(): void
     {
         $repo = $this->getRepo();

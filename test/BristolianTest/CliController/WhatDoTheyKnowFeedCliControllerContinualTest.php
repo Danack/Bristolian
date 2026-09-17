@@ -12,13 +12,15 @@ use Bristolian\Service\RoomMessageService\FakeRoomMessageService;
 use Bristolian\Service\WhatDoTheyKnowFeedFetcher\FakeWhatDoTheyKnowFeedFetcherReturningJson;
 use BristolianTest\BaseTestCase;
 use function Safe\file_get_contents;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * continualExecuteCallable() writes to stdout; BaseTestCase teardown forbids any output, so these tests use TestCase.
  *
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\CliController\WhatDoTheyKnowFeedCliController::class, 'syncRequestedFromBristolContinual')]
+
 final class WhatDoTheyKnowFeedCliControllerContinualTest extends BaseTestCase
 {
     private function expectContinuallyExecuteCallableStdout(): void
@@ -30,9 +32,6 @@ final class WhatDoTheyKnowFeedCliControllerContinualTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\CliController\WhatDoTheyKnowFeedCliController::syncRequestedFromBristolContinual
-     */
     public function test_syncRequestedFromBristolContinual_runs_sync_with_tight_timing_parameters(): void
     {
         $this->expectContinuallyExecuteCallableStdout();
@@ -63,9 +62,6 @@ final class WhatDoTheyKnowFeedCliControllerContinualTest extends BaseTestCase
         self::assertGreaterThan(0, count($repo->getInsertedRows()));
     }
 
-    /**
-     * @covers \Bristolian\CliController\WhatDoTheyKnowFeedCliController::syncRequestedFromBristolContinual
-     */
     public function test_syncRequestedFromBristolContinual_catches_sync_throwable_and_writes_error(): void
     {
         $this->expectContinuallyExecuteCallableStdout();

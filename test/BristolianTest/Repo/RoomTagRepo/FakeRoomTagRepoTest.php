@@ -10,12 +10,15 @@ use Bristolian\Parameters\TagParams;
 use Bristolian\Repo\RoomTagRepo\FakeRoomTagRepo;
 use Bristolian\Repo\RoomTagRepo\RoomTagRepo;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\RoomTagRepo\FakeRoomTagRepo::class, 'createTag')]
+#[CoversMethod(\Bristolian\Repo\RoomTagRepo\FakeRoomTagRepo::class, 'getTagsForRoom')]
+
 class FakeRoomTagRepoTest extends RoomTagRepoFixture
 {
     private const FAKE_ROOM_ID = 'test-room-id-123';
@@ -30,10 +33,6 @@ class FakeRoomTagRepoTest extends RoomTagRepoFixture
         return self::FAKE_ROOM_ID;
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomTagRepo\FakeRoomTagRepo::getTagsForRoom
-     * @covers \Bristolian\Repo\RoomTagRepo\FakeRoomTagRepo::createTag
-     */
     public function test_getTagsForRoom_and_createTag(): void
     {
         $repo = new FakeRoomTagRepo();
@@ -52,9 +51,6 @@ class FakeRoomTagRepoTest extends RoomTagRepoFixture
         $this->assertSame('tag-a', $tags[0]->text);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomTagRepo\FakeRoomTagRepo::createTag
-     */
     public function test_createTag_throws_when_limit_reached(): void
     {
         $repo = new FakeRoomTagRepo();

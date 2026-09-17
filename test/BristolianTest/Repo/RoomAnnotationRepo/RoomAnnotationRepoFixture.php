@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\RoomAnnotationRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Model\Types\RoomAnnotationView;
 use Bristolian\Parameters\AnnotationParam;
@@ -17,8 +18,20 @@ use VarMap\ArrayVarMap;
  * Scenario data (user id, room id, file id) is provided by concrete tests.
  * See notes/refactoring/default_test_scenarios_and_worlds.md § Abstract repo fixtures.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::class, 'addAnnotation')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::class, 'getAnnotationsForRoom')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::class, 'getAnnotationsForRoomAndFile')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::class, 'getAnnotationsForRoomAndTitle')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::class, 'updateTitleAndText')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::class, 'addAnnotation')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::class, 'getAnnotationsForRoom')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::class, 'getAnnotationsForRoomAndFile')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::class, 'getAnnotationsForRoomAndTitle')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::class, 'updateTitleAndText')]
+
 abstract class RoomAnnotationRepoFixture extends BaseTestCase
 {
     /**
@@ -53,12 +66,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
      */
     abstract protected function getValidFileId2(): string;
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::__construct
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
-     */
     public function test_addAnnotation_returns_room_annotation_id(): void
     {
         $repo = $this->getTestInstance();
@@ -79,11 +86,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         $this->assertNotEmpty($room_annotation_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
-     */
     public function test_addAnnotation_creates_unique_ids(): void
     {
         $repo = $this->getTestInstance();
@@ -100,14 +102,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         $this->assertNotSame($id1, $id2);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::getAnnotationsForRoom
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoom
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::getAnnotationsForRoom
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
-     */
     public function test_getAnnotationsForRoom_returns_links_for_room(): void
     {
         $repo = $this->getTestInstance();
@@ -128,14 +122,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         $this->assertSame('Test text content', $links[0]->text);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::getAnnotationsForRoom
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoom
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::getAnnotationsForRoom
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
-     */
     public function test_getAnnotationsForRoom_returns_only_links_for_specified_room(): void
     {
         $repo = $this->getTestInstance();
@@ -162,14 +148,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         $this->assertSame('Link 1 Title That Is Long Enough', $links[0]->title);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::getAnnotationsForRoomAndFile
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoomAndFile
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::getAnnotationsForRoomAndFile
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
-     */
     public function test_getAnnotationsForRoomAndFile_returns_links_matching_both_room_and_file(): void
     {
         $repo = $this->getTestInstance();
@@ -190,14 +168,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         $this->assertSame($fileId, $links[0]->file_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::getAnnotationsForRoomAndFile
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoomAndFile
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::getAnnotationsForRoomAndFile
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
-     */
     public function test_getAnnotationsForRoomAndFile_filters_by_both_room_and_file(): void
     {
         $repo = $this->getTestInstance();
@@ -226,14 +196,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         $this->assertSame($fileId1, $links[0]->file_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::getAnnotationsForRoomAndFile
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoomAndFile
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::getAnnotationsForRoomAndFile
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
-     */
     public function test_getAnnotationsForRoomAndFile_returns_empty_when_room_mismatches(): void
     {
         $repo = $this->getTestInstance();
@@ -253,14 +215,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         $this->assertEmpty($links);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::getAnnotationsForRoomAndFile
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoomAndFile
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::getAnnotationsForRoomAndFile
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
-     */
     public function test_getAnnotationsForRoomAndFile_returns_empty_when_file_mismatches(): void
     {
         $repo = $this->getTestInstance();
@@ -280,14 +234,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         $this->assertEmpty($links);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::getAnnotationsForRoomAndTitle
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoomAndTitle
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::getAnnotationsForRoomAndTitle
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
-     */
     public function test_getAnnotationsForRoomAndTitle_returns_matching_annotation(): void
     {
         $repo = $this->getTestInstance();
@@ -307,14 +253,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         $this->assertSame('Body text one', $matches[0]->text);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::getAnnotationsForRoomAndTitle
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoomAndTitle
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::getAnnotationsForRoomAndTitle
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
-     */
     public function test_getAnnotationsForRoomAndTitle_filters_by_title(): void
     {
         $repo = $this->getTestInstance();
@@ -340,17 +278,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         $this->assertSame('Alpha text', $matches[0]->text);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::updateTitleAndText
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::getAnnotationsForRoom
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::updateTitleAndText
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoom
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::updateTitleAndText
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::getAnnotationsForRoom
-     */
     public function test_updateTitleAndText_updates_title_and_text(): void
     {
         $repo = $this->getTestInstance();
@@ -384,11 +311,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         $this->assertSame($newText, $found->text);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::updateTitleAndText
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::updateTitleAndText
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::updateTitleAndText
-     */
     public function test_updateTitleAndText_throws_when_room_annotation_not_found(): void
     {
         $repo = $this->getTestInstance();
@@ -402,14 +324,6 @@ abstract class RoomAnnotationRepoFixture extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::updateTitleAndText
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::updateTitleAndText
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::addAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::updateTitleAndText
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\PdoRoomAnnotationRepo::addAnnotation
-     */
     public function test_updateTitleAndText_throws_when_room_mismatches(): void
     {
         $repo = $this->getTestInstance();

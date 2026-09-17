@@ -6,14 +6,12 @@ namespace BristolianTest\Service\UuidGenerator;
 
 use Bristolian\Service\UuidGenerator\RamseyUuidGenerator;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\UuidGenerator\RamseyUuidGenerator::class, 'generate')]
+
 class RamseyUuidGeneratorTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\UuidGenerator\RamseyUuidGenerator::generate
-     */
     public function test_generate_returns_valid_uuid7_format(): void
     {
         $generator = new RamseyUuidGenerator();
@@ -28,9 +26,6 @@ class RamseyUuidGeneratorTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Service\UuidGenerator\RamseyUuidGenerator::generate
-     */
     public function test_generate_returns_different_values_each_call(): void
     {
         $generator = new RamseyUuidGenerator();

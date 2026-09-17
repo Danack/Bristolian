@@ -8,9 +8,10 @@ use Bristolian\Parameters\LinkParam;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\LinkParam::class)]
+
 class LinkParamTest extends BaseTestCase
 {
 
@@ -33,9 +34,6 @@ class LinkParamTest extends BaseTestCase
         yield [$title, $url, $description,];
     }
 
-    /**
-     * @covers \Bristolian\Parameters\LinkParam
-     */
     #[DataProvider('provides_test_works')]
     public function testWorks(string $title, string $url, string|null $description,)
     {

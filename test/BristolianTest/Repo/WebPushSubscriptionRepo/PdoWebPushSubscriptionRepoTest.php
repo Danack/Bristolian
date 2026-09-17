@@ -14,12 +14,14 @@ use VarMap\ArrayVarMap;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::class)]
+
 class PdoWebPushSubscriptionRepoTest extends WebPushSubscriptionRepoFixture
 {
     use TestPlaceholders;
@@ -51,7 +53,6 @@ class PdoWebPushSubscriptionRepoTest extends WebPushSubscriptionRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo
      * @group db
      */
     public function testWorks(): void
@@ -82,9 +83,6 @@ class PdoWebPushSubscriptionRepoTest extends WebPushSubscriptionRepoFixture
         $webpush_repo->save('invalid_user_id', $webPushSubParams, $raw);
     }
 
-    /**
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::save
-     */
     public function testExceptionOnInvalidUser(): void
     {
         $webpush_repo = $this->injector->make(PdoWebPushSubscriptionRepo::class);

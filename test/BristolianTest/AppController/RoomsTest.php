@@ -83,9 +83,49 @@ use function Safe\mkdir;
 use function Safe\rmdir;
 use function Safe\tmpfile;
 use function Safe\unlink;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'addLink')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'addNote')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'addTag')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'addVideo')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'annotate_file')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'createClip')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'deleteNote')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'fetchTranscript')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getAnnotations')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getAnnotationsForFile')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getFiles')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getLinks')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getNotes')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getRoomDetails')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getTags')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getTranscript')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getTranscripts')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getVideos')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'handleAddAnnotation')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'handleFileUpload')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'handleFileUpload_get')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'iframe_show_file')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'index')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'render_annotate_file')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'resolveTagIdsToTags')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'serveFileForRoom')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'setAnnotationTags')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'setFileTags')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'setLinkTags')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'setNoteTags')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'setVideoTags')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'showNote')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'showRoom')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'updateAnnotation')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'updateLink')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'updateNote')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'updateRoomDetails')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'updateRoomFile')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'updateVideo')]
+#[CoversMethod(\Bristolian\AppController\Rooms::class, 'viewAnnotation')]
+
 class RoomsTest extends BaseTestCase
 {
     private string $roomId;
@@ -103,9 +143,6 @@ class RoomsTest extends BaseTestCase
         $this->injector->share(RoomContentSearchParams::default());
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::index
-     */
     public function test_index(): void
     {
         $result = $this->injector->execute([Rooms::class, 'index']);
@@ -113,18 +150,12 @@ class RoomsTest extends BaseTestCase
         $this->assertStringContainsString('Test Room', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::handleFileUpload_get
-     */
     public function test_handleFileUpload_get(): void
     {
         $result = $this->injector->execute([Rooms::class, 'handleFileUpload_get']);
         $this->assertInstanceOf(EndpointAccessedViaGetResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::handleFileUpload
-     */
     public function test_handleFileUpload_returns_error_response_when_upload_handler_returns_response(): void
     {
         $uploadedFiles = new FakeUploadedFiles([]);
@@ -140,9 +171,6 @@ class RoomsTest extends BaseTestCase
         $this->assertSame(500, $result->getStatus());
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::handleFileUpload
-     */
     public function test_handleFileUpload_returns_RoomFileUploadErrorResponse_when_storage_returns_error(): void
     {
         $storage = new FakeRoomFileStorage(RoomFileUploadError::unsupportedFileType());
@@ -165,9 +193,6 @@ class RoomsTest extends BaseTestCase
         fclose($tmpFile);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::handleFileUpload
-     */
     public function test_handleFileUpload_returns_RoomFileUploadSuccessResponse_on_success(): void
     {
         $storage = new FakeRoomFileStorage('uploaded-file-id-123');
@@ -192,37 +217,24 @@ class RoomsTest extends BaseTestCase
         fclose($tmpFile);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getFiles
-     */
     public function test_getFiles(): void
     {
         $result = $this->injector->execute([Rooms::class, 'getFiles']);
         $this->assertInstanceOf(GetRoomsFilesResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getLinks
-     */
     public function test_getLinks(): void
     {
         $result = $this->injector->execute([Rooms::class, 'getLinks']);
         $this->assertInstanceOf(GetRoomsLinksResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getNotes
-     */
     public function test_getNotes(): void
     {
         $result = $this->injector->execute([Rooms::class, 'getNotes']);
         $this->assertInstanceOf(GetRoomsNotesResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getFiles
-     * @covers \Bristolian\AppController\Rooms::resolveTagIdsToTags
-     */
     public function test_getFiles_with_files_and_tags_resolves_tags(): void
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
@@ -248,10 +260,6 @@ class RoomsTest extends BaseTestCase
         $this->assertSame('important', $data['data']['files'][0]['tags'][0]['text']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getLinks
-     * @covers \Bristolian\AppController\Rooms::resolveTagIdsToTags
-     */
     public function test_getLinks_with_links_and_tags_resolves_tags(): void
     {
         $linkParam = LinkParam::createFromVarMap(new ArrayVarMap([
@@ -280,18 +288,12 @@ class RoomsTest extends BaseTestCase
         $this->assertSame('reference', $data['data']['links'][0]['tags'][0]['text']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getVideos
-     */
     public function test_getVideos(): void
     {
         $result = $this->injector->execute([Rooms::class, 'getVideos']);
         $this->assertInstanceOf(GetRoomsVideosResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::addVideo
-     */
     public function test_addVideo(): void
     {
         $jsonInput = new FakeJsonInput([
@@ -306,9 +308,6 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(SuccessResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::createClip
-     */
     public function test_createClip(): void
     {
         $videoRepo = $this->injector->make(InMemoryVideoRepo::class);
@@ -330,9 +329,6 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(CreateClipResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getTranscripts
-     */
     public function test_getTranscripts(): void
     {
         $this->injector->defineParam('room_video_id', 'fake-room-video-id');
@@ -340,9 +336,6 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(GetTranscriptsResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getTranscript
-     */
     public function test_getTranscript(): void
     {
         $transcriptRepo = $this->injector->make(InMemoryRoomVideoTranscriptRepo::class);
@@ -354,9 +347,6 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(GetTranscriptResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::fetchTranscript
-     */
     public function test_fetchTranscript(): void
     {
         $videoRepo = $this->injector->make(InMemoryVideoRepo::class);
@@ -373,9 +363,6 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(FetchTranscriptSuccessResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::fetchTranscript
-     */
     public function test_fetchTranscript_returns_error_when_fetcher_throws(): void
     {
         $videoRepo = $this->injector->make(InMemoryVideoRepo::class);
@@ -393,18 +380,12 @@ class RoomsTest extends BaseTestCase
         $this->assertStringContainsString('No caption tracks found for this video', $result->getBody());
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getTags
-     */
     public function test_getTags(): void
     {
         $result = $this->injector->execute([Rooms::class, 'getTags']);
         $this->assertInstanceOf(GetRoomsTagsResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getRoomDetails
-     */
     public function test_getRoomDetails(): void
     {
         $result = $this->injector->execute([Rooms::class, 'getRoomDetails']);
@@ -414,9 +395,6 @@ class RoomsTest extends BaseTestCase
         $this->assertSame('A room for testing', $data['data']['room']['purpose']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getRoomDetails
-     */
     public function test_getRoomDetails_throws_when_room_missing(): void
     {
         $this->injector->defineParam('room_id', '00000000-0000-0000-0000-000000000000');
@@ -424,9 +402,6 @@ class RoomsTest extends BaseTestCase
         $this->injector->execute([Rooms::class, 'getRoomDetails']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::updateRoomDetails
-     */
     public function test_updateRoomDetails(): void
     {
         $jsonInput = new FakeJsonInput([
@@ -446,9 +421,6 @@ class RoomsTest extends BaseTestCase
         $this->assertSame('Updated purpose text', $room->purpose);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::updateRoomDetails
-     */
     public function test_updateRoomDetails_throws_when_room_missing(): void
     {
         $jsonInput = new FakeJsonInput([
@@ -462,9 +434,6 @@ class RoomsTest extends BaseTestCase
         $this->injector->execute([Rooms::class, 'updateRoomDetails']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::addTag
-     */
     public function test_addTag(): void
     {
         $tagParam = TagParams::createFromVarMap(new ArrayVarMap([
@@ -477,19 +446,12 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(SuccessResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getAnnotations
-     */
     public function test_getAnnotations(): void
     {
         $result = $this->injector->execute([Rooms::class, 'getAnnotations']);
         $this->assertInstanceOf(GetRoomsAnnotationsResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getAnnotations
-     * @covers \Bristolian\AppController\Rooms::resolveTagIdsToTags
-     */
     public function test_getAnnotations_with_annotations_and_tags_returns_annotations_with_resolved_tags(): void
     {
         $annotationRepo = $this->injector->make(FakeRoomAnnotationRepo::class);
@@ -523,9 +485,6 @@ class RoomsTest extends BaseTestCase
         $this->assertSame('annotation-tag', $data['data']['annotations'][0]['tags'][0]['text']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getAnnotationsForFile
-     */
     public function test_getAnnotationsForFile(): void
     {
         $this->injector->defineParam('file_id', 'fake-file-id');
@@ -533,10 +492,6 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(GetRoomsFileAnnotationsResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getAnnotationsForFile
-     * @covers \Bristolian\AppController\Rooms::resolveTagIdsToTags
-     */
     public function test_getAnnotationsForFile_with_annotations_and_tags_returns_annotations_with_resolved_tags(): void
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
@@ -576,9 +531,6 @@ class RoomsTest extends BaseTestCase
         $this->assertSame('file-annotation-tag', $data['data']['annotations'][0]['tags'][0]['text']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::showRoom
-     */
     public function test_showRoom(): void
     {
         $result = $this->injector->execute([Rooms::class, 'showRoom']);
@@ -586,9 +538,6 @@ class RoomsTest extends BaseTestCase
         $this->assertStringContainsString('Test Room', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::showRoom
-     */
     public function test_showRoom_not_found(): void
     {
         $this->injector->defineParam('room_id', 'nonexistent-room-id');
@@ -597,9 +546,6 @@ class RoomsTest extends BaseTestCase
         $this->assertStringContainsString('Room not found', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::addLink
-     */
     public function test_addLink(): void
     {
         $linkParam = LinkParam::createFromVarMap(new ArrayVarMap([
@@ -613,9 +559,6 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(SuccessResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::setVideoTags
-     */
     public function test_setVideoTags(): void
     {
         $videoRepo = $this->injector->make(InMemoryVideoRepo::class);
@@ -638,9 +581,6 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(SuccessResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::setVideoTags
-     */
     public function test_setVideoTags_throws_when_room_video_not_in_room(): void
     {
         $jsonInput = new FakeJsonInput(['tag_ids' => []]);
@@ -653,9 +593,6 @@ class RoomsTest extends BaseTestCase
         $this->injector->execute([Rooms::class, 'setVideoTags']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::updateVideo
-     */
     public function test_updateVideo(): void
     {
         $videoRepo = $this->injector->make(InMemoryVideoRepo::class);
@@ -681,9 +618,6 @@ class RoomsTest extends BaseTestCase
         $this->assertSame('Updated description', $fetched->description);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::updateAnnotation
-     */
     public function test_updateAnnotation(): void
     {
         $annotationRepo = $this->injector->make(FakeRoomAnnotationRepo::class);
@@ -717,9 +651,6 @@ class RoomsTest extends BaseTestCase
         $this->assertSame('Updated description text for the annotation', $views[0]->text);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::updateAnnotation
-     */
     public function test_updateAnnotation_throws_when_annotation_not_in_room(): void
     {
         $jsonInput = new FakeJsonInput([
@@ -736,9 +667,6 @@ class RoomsTest extends BaseTestCase
         $this->injector->execute([Rooms::class, 'updateAnnotation']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::setAnnotationTags
-     */
     public function test_setAnnotationTags(): void
     {
         $annotationRepo = $this->injector->make(FakeRoomAnnotationRepo::class);
@@ -769,9 +697,6 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(SuccessResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::setAnnotationTags
-     */
     public function test_setAnnotationTags_throws_when_annotation_not_found(): void
     {
         $jsonInput = new FakeJsonInput(['tag_ids' => []]);
@@ -785,9 +710,6 @@ class RoomsTest extends BaseTestCase
         $this->injector->execute([Rooms::class, 'setAnnotationTags']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::setFileTags
-     */
     public function test_setFileTags_throws_when_file_not_in_room(): void
     {
         $jsonInput = new FakeJsonInput(['tag_ids' => []]);
@@ -801,9 +723,6 @@ class RoomsTest extends BaseTestCase
         $this->injector->execute([Rooms::class, 'setFileTags']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::setFileTags
-     */
     public function test_setFileTags_success(): void
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
@@ -826,9 +745,6 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(SuccessResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::updateRoomFile
-     */
     public function test_updateRoomFile(): void
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
@@ -860,9 +776,6 @@ class RoomsTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::updateRoomFile
-     */
     public function test_updateRoomFile_throws_when_file_not_in_room(): void
     {
         $jsonInput = new FakeJsonInput([
@@ -879,9 +792,6 @@ class RoomsTest extends BaseTestCase
         $this->injector->execute([Rooms::class, 'updateRoomFile']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::setLinkTags
-     */
     public function test_setLinkTags_throws_when_link_not_found(): void
     {
         $jsonInput = new FakeJsonInput(['tag_ids' => []]);
@@ -895,9 +805,6 @@ class RoomsTest extends BaseTestCase
         $this->injector->execute([Rooms::class, 'setLinkTags']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::setLinkTags
-     */
     public function test_setLinkTags_success(): void
     {
         $linkParam = LinkParam::createFromVarMap(new ArrayVarMap([
@@ -923,9 +830,6 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(SuccessResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::updateLink
-     */
     public function test_updateLink(): void
     {
         $linkParam = LinkParam::createFromVarMap(new ArrayVarMap([
@@ -954,9 +858,6 @@ class RoomsTest extends BaseTestCase
         $this->assertSame('Updated link description that is also long enough', $updated->description);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::addNote
-     */
     public function test_addNote(): void
     {
         $jsonInput = new FakeJsonInput([
@@ -970,10 +871,6 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(SuccessResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::getNotes
-     * @covers \Bristolian\AppController\Rooms::resolveTagIdsToTags
-     */
     public function test_getNotes_with_notes_and_tags_resolves_tags(): void
     {
         $roomNoteRepo = $this->injector->make(FakeRoomNoteRepo::class);
@@ -996,9 +893,6 @@ class RoomsTest extends BaseTestCase
         $this->assertSame('note-tag', $data['data']['notes'][0]['tags'][0]['text']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::updateNote
-     */
     public function test_updateNote(): void
     {
         $roomNoteRepo = $this->injector->make(FakeRoomNoteRepo::class);
@@ -1021,9 +915,6 @@ class RoomsTest extends BaseTestCase
         $this->assertSame('new body', $updated->markdown);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::updateNote
-     */
     public function test_updateNote_throws_when_note_not_found(): void
     {
         $jsonInput = new FakeJsonInput([
@@ -1038,9 +929,6 @@ class RoomsTest extends BaseTestCase
         $this->injector->execute([Rooms::class, 'updateNote']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::deleteNote
-     */
     public function test_deleteNote(): void
     {
         $roomNoteRepo = $this->injector->make(FakeRoomNoteRepo::class);
@@ -1054,9 +942,6 @@ class RoomsTest extends BaseTestCase
         $roomNoteRepo->getNote($this->roomId, $noteId);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::setNoteTags
-     */
     public function test_setNoteTags_success(): void
     {
         $roomNoteRepo = $this->injector->make(FakeRoomNoteRepo::class);
@@ -1077,9 +962,6 @@ class RoomsTest extends BaseTestCase
         $this->assertInstanceOf(SuccessResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::setNoteTags
-     */
     public function test_setNoteTags_throws_when_note_not_found(): void
     {
         $jsonInput = new FakeJsonInput(['tag_ids' => []]);
@@ -1091,9 +973,6 @@ class RoomsTest extends BaseTestCase
         $this->injector->execute([Rooms::class, 'setNoteTags']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::showNote
-     */
     public function test_showNote(): void
     {
         $roomNoteRepo = $this->injector->make(FakeRoomNoteRepo::class);
@@ -1107,9 +986,6 @@ class RoomsTest extends BaseTestCase
         $this->assertStringContainsString('#notes', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::showNote
-     */
     public function test_showNote_room_not_found(): void
     {
         $this->injector->defineParam('room_id', 'nonexistent-room-id');
@@ -1119,9 +995,6 @@ class RoomsTest extends BaseTestCase
         $this->assertStringContainsString('Room not found', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::updateLink
-     */
     public function test_updateLink_throws_when_link_not_found(): void
     {
         $jsonInput = new FakeJsonInput([
@@ -1138,9 +1011,6 @@ class RoomsTest extends BaseTestCase
         $this->injector->execute([Rooms::class, 'updateLink']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::handleAddAnnotation
-     */
     public function test_handleAddAnnotation(): void
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
@@ -1165,9 +1035,6 @@ class RoomsTest extends BaseTestCase
         $this->assertArrayHasKey('room_annotation_id', $body['data']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::handleAddAnnotation
-     */
     public function test_handleAddAnnotation_returns_error_when_highlights_invalid(): void
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
@@ -1191,10 +1058,6 @@ class RoomsTest extends BaseTestCase
         $this->assertStringContainsString('"errors"', $body);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::annotate_file
-     * @covers \Bristolian\AppController\Rooms::render_annotate_file
-     */
     public function test_annotate_file(): void
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
@@ -1209,10 +1072,6 @@ class RoomsTest extends BaseTestCase
         $this->assertStringContainsString('annotation_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::annotate_file
-     * @covers \Bristolian\AppController\Rooms::render_annotate_file
-     */
     public function test_annotate_file_throws_when_file_not_in_room(): void
     {
         $this->injector->defineParam('file_id', 'nonexistent-file-id');
@@ -1223,10 +1082,6 @@ class RoomsTest extends BaseTestCase
         $this->injector->execute([Rooms::class, 'annotate_file']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::viewAnnotation
-     * @covers \Bristolian\AppController\Rooms::render_annotate_file
-     */
     public function test_viewAnnotation(): void
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
@@ -1243,9 +1098,6 @@ class RoomsTest extends BaseTestCase
         $this->assertStringContainsString($selectedAnnotationId, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::iframe_show_file
-     */
     public function test_iframe_show_file_returns_string_when_file_not_found(): void
     {
         $this->injector->share(new RequestNonce());
@@ -1258,9 +1110,6 @@ class RoomsTest extends BaseTestCase
         $this->assertSame('File not found.', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::iframe_show_file
-     */
     public function test_iframe_show_file_returns_response_when_file_found(): void
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
@@ -1278,9 +1127,6 @@ class RoomsTest extends BaseTestCase
         $this->assertStringContainsString('pdf_view.js', $result->getBody());
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::serveFileForRoom
-     */
     public function test_serveFileForRoom_throws_when_file_not_found(): void
     {
         $roomTempDir = sys_get_temp_dir() . '/bristolian_room_fs_' . uniqid();
@@ -1302,9 +1148,6 @@ class RoomsTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::serveFileForRoom
-     */
     public function test_serveFileForRoom_returns_StoredFileErrorResponse_when_file_unreadable(): void
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);
@@ -1335,9 +1178,6 @@ class RoomsTest extends BaseTestCase
         rmdir($cacheTempDir);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Rooms::serveFileForRoom
-     */
     public function test_serveFileForRoom_returns_StreamingResponse_when_file_available(): void
     {
         $roomFileRepo = $this->injector->make(FakeRoomFileRepo::class);

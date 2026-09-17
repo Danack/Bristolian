@@ -17,6 +17,8 @@
          failOnPhpunitDeprecation="false"
          failOnRisky="true"
          failOnWarning="true"
+         failOnNotice="true"
+         failOnPhpunitNotice="true"
          processIsolation="false">
 
     <!--         requireCoverageMetadata="true"-->

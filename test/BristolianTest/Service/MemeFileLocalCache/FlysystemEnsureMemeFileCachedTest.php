@@ -21,6 +21,7 @@ use function Safe\unlink;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(\Bristolian\Service\MemeFileLocalCache\FlysystemEnsureMemeFileCached::class)]
+
 class FlysystemEnsureMemeFileCachedTest extends BaseTestCase
 {
     public function test_success_when_file_already_in_cache(): void
@@ -93,9 +94,6 @@ class FlysystemEnsureMemeFileCachedTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Service\MemeFileLocalCache\FlysystemEnsureMemeFileCached::ensureMemeFileCached
-     */
     public function test_failure_with_non_s3_previous_writes_previous_type_and_message(): void
     {
         $cacheDir = sys_get_temp_dir() . '/fly_cache_non_s3_' . uniqid();

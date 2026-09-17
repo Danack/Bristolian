@@ -18,12 +18,19 @@ use BristolianGenerated\Model\Room;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
 use function Safe\filesize;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class, 'addFileToRoom')]
+#[CoversMethod(\Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class, 'getFileDetails')]
+#[CoversMethod(\Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class, 'getFilesForRoom')]
+#[CoversMethod(\Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class, 'getFilesInRoomByOriginalFilename')]
+#[CoversMethod(\Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class, 'updateRoomFileDetails')]
+
 class PdoRoomFileRepoTest extends RoomFileRepoFixture
 {
     use HasTestWorld;
@@ -55,11 +62,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         return $fileId;
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
-     */
     public function test_addFileToRoom_and_getFilesForRoom(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -81,10 +83,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertEmpty($files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
-     */
     public function test_getFilesForRoom_returns_empty_for_nonexistent_room(): void
     {
         $roomFileRepo = $this->injector->make(PdoRoomFileRepo::class);
@@ -95,11 +93,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertEmpty($files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
-     */
     public function test_addFileToRoom_multiple_files(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -119,11 +112,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertContainsOnlyInstancesOf(\Bristolian\Model\Types\RoomFileInRoom::class, $files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
-     */
     public function test_files_in_different_rooms(): void
     {
         [$room1, $user] = $this->createTestUserAndRoom();
@@ -147,11 +135,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($file_id_2, $room2_files[0]->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
-     */
     public function test_stored_file_properties(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -166,11 +149,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertInstanceOf(\DateTimeInterface::class, $file->created_at);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFileDetails
-     */
     public function test_getFileDetails_returns_file(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -185,10 +163,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($file_id, $fileDetails->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFileDetails
-     */
     public function test_getFileDetails_returns_null_for_nonexistent_file(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -199,11 +173,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertNull($fileDetails);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFileDetails
-     */
     public function test_getFileDetails_returns_null_for_file_in_different_room(): void
     {
         [$room1, $user] = $this->createTestUserAndRoom();
@@ -221,12 +190,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertNull($fileDetails);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFileDetails
-     */
     public function test_getFileDetails_properties_match_getFilesForRoom(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -249,11 +212,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($file_from_list->user_id, $file_details->user_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
-     */
     public function test_same_file_can_be_in_multiple_rooms(): void
     {
         [$room1, $user] = $this->createTestUserAndRoom();
@@ -275,9 +233,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($file_id, $room2_files[0]->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
-     */
     public function test_getFilesForRoom_filters_by_title(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -299,9 +254,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($fileId, $files[0]->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
-     */
     public function test_getFilesForRoom_filters_by_created_at_after(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -316,9 +268,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertCount(0, $files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
-     */
     public function test_getFilesForRoom_filters_by_created_at_before(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -333,9 +282,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertCount(0, $files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
-     */
     public function test_getFilesForRoom_filters_by_document_timestamp_after(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -361,9 +307,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertCount(0, $files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
-     */
     public function test_getFilesForRoom_filters_by_document_timestamp_before(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -389,9 +332,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertCount(0, $files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
-     */
     public function test_getFilesForRoom_filters_by_tag_ids(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -414,9 +354,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($fileId, $files[0]->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesForRoom
-     */
     public function test_getFilesForRoom_orders_by_original_filename_asc_when_order_plus_name(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -448,9 +385,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertStringStartsWith('z_order_', $files[1]->original_filename);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::getFilesInRoomByOriginalFilename
-     */
     public function test_getFilesInRoomByOriginalFilename_returns_matching_file(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -472,9 +406,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($uniqueOriginal, $byName[0]->original_filename);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::updateRoomFileDetails
-     */
     public function test_updateRoomFileDetails_updates_description_note_and_document_timestamp(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();
@@ -495,9 +426,6 @@ class PdoRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($documentTimestamp->format('Y-m-d H:i'), $files[0]->document_timestamp->format('Y-m-d H:i'));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::updateRoomFileDetails
-     */
     public function test_updateRoomFileDetails_throws_when_file_not_in_room(): void
     {
         [$room, $user] = $this->createTestUserAndRoom();

@@ -8,14 +8,12 @@ use Bristolian\Exception\ContentNotFoundException;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Repo\RoomNoteRepo\FakeRoomNoteRepo;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Repo\RoomNoteRepo\FakeRoomNoteRepo::class)]
+
 class FakeRoomNoteRepoTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Repo\RoomNoteRepo\FakeRoomNoteRepo
-     */
     public function test_create_get_update_delete(): void
     {
         $repo = new FakeRoomNoteRepo();
@@ -38,9 +36,6 @@ class FakeRoomNoteRepoTest extends BaseTestCase
         $repo->getNote('room-1', $id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomNoteRepo\FakeRoomNoteRepo::getNotesForRoom
-     */
     public function test_search_by_title_and_markdown(): void
     {
         $repo = new FakeRoomNoteRepo();

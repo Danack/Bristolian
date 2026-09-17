@@ -5,9 +5,10 @@ namespace BristolianTest\Middleware;
 use BristolianTest\BaseTestCase;
 use Bristolian\Middleware\MiddlewareException;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Middleware\MiddlewareException::class)]
+
 class MiddlewareExceptionTest extends BaseTestCase
 {
     public static function provides_works()
@@ -16,9 +17,6 @@ class MiddlewareExceptionTest extends BaseTestCase
         yield [new \StdClass, "an object of type [stdClass]"];
     }
 
-    /**
-     * @covers \Bristolian\Middleware\MiddlewareException
-     */
     #[DataProvider('provides_works')]
     public function testWorks(mixed $value, string $expected_contents)
     {

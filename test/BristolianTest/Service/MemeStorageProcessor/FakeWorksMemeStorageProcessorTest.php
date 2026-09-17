@@ -9,14 +9,12 @@ use Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme;
 use Bristolian\Service\ObjectStore\FakeMemeObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\FakeWorksMemeStorageProcessor::class, 'storeMemeForUser')]
+
 class FakeWorksMemeStorageProcessorTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\MemeStorageProcessor\FakeWorksMemeStorageProcessor::storeMemeForUser
-     */
     public function test_storeMemeForUser_returns_ObjectStoredMeme(): void
     {
         $storageProcessor = new FakeWorksMemeStorageProcessor();

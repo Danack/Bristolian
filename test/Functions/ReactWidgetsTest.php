@@ -7,14 +7,12 @@ use function Bristolian\createReactWidget;
 use Safe\DateTimeImmutable;
 use function Safe\json_decode;
 use function Safe\preg_match;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversFunction;
 
-#[CoversNothing]
+#[CoversFunction('Bristolian\createReactWidget')]
+
 class ReactWidgetsTest extends BaseTestCase
 {
-    /**
-     * @covers ::Bristolian\createReactWidget
-     */
     public function testWorks_with_simple_data()
     {
         $type = 'test_widget';
@@ -32,9 +30,6 @@ class ReactWidgetsTest extends BaseTestCase
         $this->assertStringContainsString('<!-- Hello, I am a react widget. -->', $result);
     }
 
-    /**
-     * @covers ::Bristolian\createReactWidget
-     */
     public function testWorks_with_complex_data()
     {
         $type = 'complex_widget';
@@ -66,9 +61,6 @@ class ReactWidgetsTest extends BaseTestCase
         $this->assertCount(2, $decoded['initial_json_data']['items']);
     }
 
-    /**
-     * @covers ::Bristolian\createReactWidget
-     */
     public function testWorks_with_empty_data()
     {
         $type = 'empty_widget';
@@ -90,9 +82,6 @@ class ReactWidgetsTest extends BaseTestCase
         $this->assertEmpty($decoded['initial_json_data']);
     }
 
-    /**
-     * @covers ::Bristolian\createReactWidget
-     */
     public function testWorks_html_escaping()
     {
         $type = 'html_widget';
@@ -119,9 +108,6 @@ class ReactWidgetsTest extends BaseTestCase
         $this->assertSame("It's a test", $decoded['initial_json_data']['apostrophe']);
     }
 
-    /**
-     * @covers ::Bristolian\createReactWidget
-     */
     public function testWorks_with_nested_arrays()
     {
         $type = 'nested_widget';
@@ -145,9 +131,6 @@ class ReactWidgetsTest extends BaseTestCase
         $this->assertSame('deep value', $decoded['initial_json_data']['level1']['level2']['level3']);
     }
 
-    /**
-     * @covers ::Bristolian\createReactWidget
-     */
     public function testWorks_with_datetime_objects()
     {
         $type = 'datetime_widget';

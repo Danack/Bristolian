@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\AvatarImageStorageInfoRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Model\Types\AvatarImageFile;
 use Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo;
 use Bristolian\UploadedFiles\UploadedFile;
@@ -14,8 +15,18 @@ use BristolianTest\Repo\TestPlaceholders;
  * Abstract test class for AvatarImageStorageInfoRepo implementations.
  *
  * @internal
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::class, 'getById')]
+#[CoversMethod(\Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::class, 'getByNormalizedName')]
+#[CoversMethod(\Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::class, 'setUploaded')]
+#[CoversMethod(\Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::class, 'storeFileInfo')]
+#[CoversMethod(\Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::class, 'getById')]
+#[CoversMethod(\Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::class, 'getByNormalizedName')]
+#[CoversMethod(\Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::class, 'setUploaded')]
+#[CoversMethod(\Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::class, 'storeFileInfo')]
+
 abstract class AvatarImageStorageInfoRepoFixture extends BaseTestCase
 {
     use TestPlaceholders;
@@ -35,12 +46,6 @@ abstract class AvatarImageStorageInfoRepoFixture extends BaseTestCase
         return 'user_123';
     }
 
-    /**
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::storeFileInfo
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::storeFileInfo
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::__construct
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::storeFileInfo
-     */
     public function test_storeFileInfo(): void
     {
         $repo = $this->getTestInstance();
@@ -65,12 +70,6 @@ abstract class AvatarImageStorageInfoRepoFixture extends BaseTestCase
         $this->assertIsString($file_id);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::getById
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::getById
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::getById
-     */
     public function test_getById_returns_null_for_nonexistent_id(): void
     {
         $repo = $this->getTestInstance();
@@ -79,15 +78,6 @@ abstract class AvatarImageStorageInfoRepoFixture extends BaseTestCase
         $this->assertNull($file);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::getById
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::storeFileInfo
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::getById
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::storeFileInfo
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::getById
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::storeFileInfo
-     */
     public function test_getById_returns_file_after_storing(): void
     {
         $repo = $this->getTestInstance();
@@ -113,12 +103,6 @@ abstract class AvatarImageStorageInfoRepoFixture extends BaseTestCase
         $this->assertSame($file_id, $file->id);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::getByNormalizedName
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::getByNormalizedName
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::getByNormalizedName
-     */
     public function test_getByNormalizedName_returns_null_for_nonexistent_name(): void
     {
         $repo = $this->getTestInstance();
@@ -127,15 +111,6 @@ abstract class AvatarImageStorageInfoRepoFixture extends BaseTestCase
         $this->assertNull($file);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::getByNormalizedName
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::storeFileInfo
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::getByNormalizedName
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::storeFileInfo
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::getByNormalizedName
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::storeFileInfo
-     */
     public function test_getByNormalizedName_returns_file_after_storing(): void
     {
         $repo = $this->getTestInstance();
@@ -162,15 +137,6 @@ abstract class AvatarImageStorageInfoRepoFixture extends BaseTestCase
         $this->assertSame($normalized_filename, $file->normalized_name);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::setUploaded
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo::storeFileInfo
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::setUploaded
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::storeFileInfo
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::setUploaded
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::storeFileInfo
-     */
     public function test_setUploaded(): void
     {
         $repo = $this->getTestInstance();

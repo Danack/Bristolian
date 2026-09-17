@@ -9,18 +9,19 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use Bristolian\Repo\UserSearch\PdoUserSearch;
 use Bristolian\Repo\UserSearch\UserSearch;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\UserSearch\PdoUserSearch::class)]
+
 class PdoUserSearchTest extends BaseTestCase
 {
     use TestPlaceholders;
 
     /**
-     * @covers \Bristolian\Repo\UserSearch\PdoUserSearch
      * @return void
      * @throws \Bristolian\PdoSimple\PdoSimpleException
      * @throws \DI\InjectionException

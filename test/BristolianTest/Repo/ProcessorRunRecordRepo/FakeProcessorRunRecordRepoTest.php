@@ -7,12 +7,16 @@ namespace BristolianTest\Repo\ProcessorRunRecordRepo;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::class, 'getLastRunDateTime')]
+#[CoversMethod(\Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::class, 'getRunRecords')]
+#[CoversMethod(\Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::class, 'setRunFinished')]
+
 class FakeProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
 {
     public function getTestInstance(): ProcessorRunRecordRepo
@@ -20,10 +24,6 @@ class FakeProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         return new FakeProcessorRunRecordRepo();
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::getLastRunDateTime
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::getRunRecords
-     */
     public function test_getLastRunDateTime_returns_start_time_when_records_exist(): void
     {
         $repo = new FakeProcessorRunRecordRepo();
@@ -32,10 +32,6 @@ class FakeProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         $this->assertNotNull($lastRun);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::setRunFinished
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::getRunRecords
-     */
     public function test_setRunFinished_and_getRunRecords(): void
     {
         $repo = new FakeProcessorRunRecordRepo();
@@ -46,9 +42,6 @@ class FakeProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
         $this->assertSame('debug', $records[0]->debug_info);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::getRunRecords
-     */
     public function test_getRunRecords_returns_records_sorted_by_id_desc(): void
     {
         $repo = new FakeProcessorRunRecordRepo();

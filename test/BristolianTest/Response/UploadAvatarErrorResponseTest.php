@@ -6,15 +6,15 @@ use Bristolian\Response\UploadAvatarErrorResponse;
 use Bristolian\Service\AvatarImageStorage\UploadError;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Response\UploadAvatarErrorResponse::class, '__construct')]
+#[CoversMethod(\Bristolian\Response\UploadAvatarErrorResponse::class, 'getBody')]
+#[CoversMethod(\Bristolian\Response\UploadAvatarErrorResponse::class, 'getHeaders')]
+#[CoversMethod(\Bristolian\Response\UploadAvatarErrorResponse::class, 'getStatus')]
+
 class UploadAvatarErrorResponseTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Response\UploadAvatarErrorResponse::__construct
-     * @covers \Bristolian\Response\UploadAvatarErrorResponse::getStatus
-     */
     public function testGetStatusReturns400(): void
     {
         $error = UploadError::uploadedFileUnreadable();
@@ -23,9 +23,6 @@ class UploadAvatarErrorResponseTest extends BaseTestCase
         $this->assertSame(400, $response->getStatus());
     }
 
-    /**
-     * @covers \Bristolian\Response\UploadAvatarErrorResponse::getHeaders
-     */
     public function testGetHeadersReturnsContentType(): void
     {
         $error = UploadError::uploadedFileUnreadable();
@@ -36,9 +33,6 @@ class UploadAvatarErrorResponseTest extends BaseTestCase
         $this->assertSame('application/json', $headers['Content-Type']);
     }
 
-    /**
-     * @covers \Bristolian\Response\UploadAvatarErrorResponse::getBody
-     */
     public function testGetBodyReturnsErrorJson(): void
     {
         $error = UploadError::extensionNotAllowed('exe');

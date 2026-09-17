@@ -9,10 +9,11 @@ use DataType\DataType;
 use DataType\GetInputTypesFromAttributes;
 use DataType\Messages;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\PropertyType\AboutMeText::class)]
+
 class AboutMeTextTest extends BaseTestCase
 {
 
@@ -27,7 +28,6 @@ class AboutMeTextTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\AboutMeText
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -48,7 +48,6 @@ class AboutMeTextTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\AboutMeText
      * @dataProvider provides_invalid_input_and_expected_error
      * @param array<string, mixed> $input
      */
@@ -67,9 +66,6 @@ class AboutMeTextTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\AboutMeText
-     */
     public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new AboutMeText('test_name');

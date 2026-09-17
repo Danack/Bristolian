@@ -7,14 +7,12 @@ namespace BristolianTest\Parameters;
 use Bristolian\Parameters\TagParams;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\TagParams::class)]
+
 class TagParamTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Parameters\TagParams
-     */
     public function testWorks()
     {
         $unique = date("Ymdhis").uniqid();

@@ -6,18 +6,16 @@ namespace BristolianTest\Service\ObjectStore;
 
 use Bristolian\Service\ObjectStore\FakeMemeObjectStore;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\ObjectStore\FakeMemeObjectStore::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\ObjectStore\FakeMemeObjectStore::class, 'getFileContents')]
+#[CoversMethod(\Bristolian\Service\ObjectStore\FakeMemeObjectStore::class, 'getStoredFiles')]
+#[CoversMethod(\Bristolian\Service\ObjectStore\FakeMemeObjectStore::class, 'hasFile')]
+#[CoversMethod(\Bristolian\Service\ObjectStore\FakeMemeObjectStore::class, 'upload')]
+
 class FakeMemeObjectStoreTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\ObjectStore\FakeMemeObjectStore::__construct
-     * @covers \Bristolian\Service\ObjectStore\FakeMemeObjectStore::upload
-     * @covers \Bristolian\Service\ObjectStore\FakeMemeObjectStore::hasFile
-     * @covers \Bristolian\Service\ObjectStore\FakeMemeObjectStore::getFileContents
-     * @covers \Bristolian\Service\ObjectStore\FakeMemeObjectStore::getStoredFiles
-     */
     public function test_upload_stores_content_and_hasFile_getFileContents_getStoredFiles_work(): void
     {
         $store = new FakeMemeObjectStore();
@@ -34,9 +32,6 @@ class FakeMemeObjectStoreTest extends BaseTestCase
         $this->assertSame($contents, $stored[$filename]);
     }
 
-    /**
-     * @covers \Bristolian\Service\ObjectStore\FakeMemeObjectStore::hasFile
-     */
     public function test_hasFile_returns_false_for_missing_file(): void
     {
         $store = new FakeMemeObjectStore();

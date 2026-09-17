@@ -11,14 +11,12 @@ use BristolianTest\BaseTestCase;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\StubResponse;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\UserUploadedFile\UserSessionFileUploadHandler::class)]
+
 class UserSessionFileUploadHandlerTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\UserUploadedFile\UserSessionFileUploadHandler
-     */
     public function testWorks_not_logged_in()
     {
         $userSession = new FakeUserSession(false, '', '');
@@ -33,9 +31,6 @@ class UserSessionFileUploadHandlerTest extends BaseTestCase
         $this->assertSame(400, $result->getStatus());
     }
 
-    /**
-     * @covers \Bristolian\UserUploadedFile\UserSessionFileUploadHandler
-     */
     public function testWorks_uploaded_file_not_found()
     {
         $userSession = new FakeUserSession(true, 'user123', 'testuser');
@@ -50,9 +45,6 @@ class UserSessionFileUploadHandlerTest extends BaseTestCase
         $this->assertSame(500, $result->getStatus());
     }
 
-    /**
-     * @covers \Bristolian\UserUploadedFile\UserSessionFileUploadHandler
-     */
     public function testWorks_file_does_not_exist()
     {
         $userSession = new FakeUserSession(true, 'user123', 'testuser');
@@ -69,9 +61,6 @@ class UserSessionFileUploadHandlerTest extends BaseTestCase
         $this->assertSame(500, $result->getStatus());
     }
 
-    /**
-     * @covers \Bristolian\UserUploadedFile\UserSessionFileUploadHandler
-     */
     public function testWorks_file_too_large()
     {
         $userSession = new FakeUserSession(true, 'user123', 'testuser');
@@ -89,9 +78,6 @@ class UserSessionFileUploadHandlerTest extends BaseTestCase
         $this->assertSame(406, $result->getStatus());
     }
 
-    /**
-     * @covers \Bristolian\UserUploadedFile\UserSessionFileUploadHandler
-     */
     public function testWorks_success()
     {
         $userSession = new FakeUserSession(true, 'user123', 'testuser');

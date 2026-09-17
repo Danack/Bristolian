@@ -8,14 +8,14 @@ use Bristolian\AppController\Docs;
 use Bristolian\Session\UserSession;
 use Bristolian\Session\FakeUserSession;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\Docs::class, 'files')]
+#[CoversMethod(\Bristolian\AppController\Docs::class, 'index')]
+#[CoversMethod(\Bristolian\AppController\Docs::class, 'memes')]
+
 class DocsTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\AppController\Docs::index
-     */
     public function test_index(): void
     {
         $result = $this->injector->execute([Docs::class, 'index']);
@@ -23,9 +23,6 @@ class DocsTest extends BaseTestCase
         $this->assertStringContainsString('Docs', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Docs::files
-     */
     public function test_files(): void
     {
         $result = $this->injector->execute([Docs::class, 'files']);
@@ -33,9 +30,6 @@ class DocsTest extends BaseTestCase
         $this->assertStringContainsString('Files', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Docs::memes
-     */
     public function test_memes_logged_in(): void
     {
         $this->setupFakeUserSession();
@@ -45,9 +39,6 @@ class DocsTest extends BaseTestCase
         $this->assertStringContainsString('meme_upload_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Docs::memes
-     */
     public function test_memes_not_logged_in(): void
     {
         $session = new FakeUserSession(false, '', '');

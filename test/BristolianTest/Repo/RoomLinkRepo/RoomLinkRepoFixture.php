@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\RoomLinkRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Exception\BristolianException;
 use Bristolian\Exception\ContentNotFoundException;
 use BristolianGenerated\Model\RoomLink;
@@ -19,8 +20,15 @@ use Bristolian\Repo\LinkRepo\LinkRepo;
  * Scenario data (user id, room id) is provided by concrete tests via getValidUserId()
  * and getValidRoomId(). See notes/refactoring/default_test_scenarios_and_worlds.md.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::class, 'addLinkToRoomFromParam')]
+#[CoversMethod(\Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::class, 'getRoomLink')]
+#[CoversMethod(\Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::class, 'updateTitleAndDescription')]
+#[CoversMethod(\Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::class, 'addLinkToRoomFromParam')]
+#[CoversMethod(\Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::class, 'getRoomLink')]
+#[CoversMethod(\Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::class, 'updateTitleAndDescription')]
+
 abstract class RoomLinkRepoFixture extends BaseTestCase
 {
     /**
@@ -45,11 +53,6 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
      */
     abstract protected function getValidRoomId(): string;
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::addLinkToRoomFromParam
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::addLinkToRoomFromParam
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::addLinkToRoomFromParam
-     */
     public function test_addLinkToRoomFromParam(): void
     {
         $repo = $this->getTestInstance($this->getLinkRepo());
@@ -67,10 +70,6 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
         $this->assertNotEmpty($roomLinkId);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::getLinksForRoom
-     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::addLinkToRoomFromParam
-     */
     public function test_getLinksForRoom_returns_links_after_adding(): void
     {
         $repo = $this->getTestInstance($this->getLinkRepo());
@@ -89,9 +88,6 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
         $this->assertNotEmpty($links);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::getRoomLink
-     */
     public function test_getRoomLink_returns_null_for_nonexistent_id(): void
     {
         $repo = $this->getTestInstance($this->getLinkRepo());
@@ -105,10 +101,6 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::getRoomLink
-     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::addLinkToRoomFromParam
-     */
     public function test_getRoomLink_returns_link_after_adding(): void
     {
         $repo = $this->getTestInstance($this->getLinkRepo());
@@ -129,17 +121,6 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
         $this->assertSame($room_id, $roomLink->room_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::updateTitleAndDescription
-     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::addLinkToRoomFromParam
-     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::getRoomLink
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::updateTitleAndDescription
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::addLinkToRoomFromParam
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getRoomLink
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::updateTitleAndDescription
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::addLinkToRoomFromParam
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getRoomLink
-     */
     public function test_updateTitleAndDescription_updates_fields(): void
     {
         $repo = $this->getTestInstance($this->getLinkRepo());
@@ -161,11 +142,6 @@ abstract class RoomLinkRepoFixture extends BaseTestCase
         $this->assertSame($newDescription, $updated->description);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\RoomLinkRepo::updateTitleAndDescription
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::updateTitleAndDescription
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::updateTitleAndDescription
-     */
     public function test_updateTitleAndDescription_throws_when_link_id_unknown(): void
     {
         $repo = $this->getTestInstance($this->getLinkRepo());

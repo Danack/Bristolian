@@ -12,17 +12,16 @@ use BristolianTest\BaseTestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use function Safe\json_decode;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\BristolianChat\RoomMessageFetcher::class, '__construct')]
+#[CoversMethod(\BristolianChat\RoomMessageFetcher::class, 'getMessage')]
+#[CoversMethod(\BristolianChat\RoomMessageFetcher::class, 'initialize_previous_id')]
+#[CoversMethod(\BristolianChat\RoomMessageFetcher::class, 'runOneIteration')]
+#[CoversMethod(\BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher::class, 'getInitialPreviousId')]
+
 class RoomMessageFetcherTest extends BaseTestCase
 {
-    /**
-     * @covers \BristolianChat\RoomMessageFetcher::__construct
-     * @covers \BristolianChat\RoomMessageFetcher::runOneIteration
-     * @covers \BristolianChat\RoomMessageFetcher::initialize_previous_id
-     * @covers \BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher::getInitialPreviousId
-     */
     public function test_runOneIteration_initializes_previous_id_to_zero_when_no_messages(): void
     {
         $testHandler = new TestHandler();
@@ -47,11 +46,6 @@ class RoomMessageFetcherTest extends BaseTestCase
         $this->assertCount(0, $clientHandler->getRecordedCalls());
     }
 
-    /**
-     * @covers \BristolianChat\RoomMessageFetcher::runOneIteration
-     * @covers \BristolianChat\RoomMessageFetcher::initialize_previous_id
-     * @covers \BristolianChat\RoomMessageFetcher::getMessage
-     */
     public function test_runOneIteration_when_no_next_message_does_not_send(): void
     {
         $testHandler = new TestHandler();
@@ -76,10 +70,6 @@ class RoomMessageFetcherTest extends BaseTestCase
         $this->assertCount(0, $clientHandler->getRecordedCalls());
     }
 
-    /**
-     * @covers \BristolianChat\RoomMessageFetcher::runOneIteration
-     * @covers \BristolianChat\RoomMessageFetcher::getMessage
-     */
     public function test_runOneIteration_fetches_message_and_sends_to_clients(): void
     {
         $testHandler = new TestHandler();
@@ -115,9 +105,6 @@ class RoomMessageFetcherTest extends BaseTestCase
         $this->assertSame('Hello from test', $decoded['chat_message']['text']);
     }
 
-    /**
-     * @covers \BristolianChat\RoomMessageFetcher::runOneIteration
-     */
     public function test_runOneIteration_logs_error_when_exception_thrown(): void
     {
         $testHandler = new TestHandler();

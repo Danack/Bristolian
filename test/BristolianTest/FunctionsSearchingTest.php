@@ -8,13 +8,16 @@ use Bristolian\Model\Types\RoomFileInRoom;
 use DataType\Value\OrderElement;
 use DataType\Value\Ordering;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversFunction;
 use function Bristolian\Repo\RoomFileRepo\compare_room_file_document_timestamp;
 use function Bristolian\Repo\RoomFileRepo\compare_room_files_for_list_sort;
 use function Bristolian\Repo\RoomFileRepo\room_files_sql_order_by_clause;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
 
-#[CoversNothing]
+#[CoversFunction('Bristolian\Repo\RoomFileRepo\compare_room_file_document_timestamp')]
+#[CoversFunction('Bristolian\Repo\RoomFileRepo\compare_room_files_for_list_sort')]
+#[CoversFunction('Bristolian\Repo\RoomFileRepo\room_files_sql_order_by_clause')]
+
 class FunctionsSearchingTest extends BaseTestCase
 {
     /**
@@ -34,9 +37,6 @@ class FunctionsSearchingTest extends BaseTestCase
         yield 'unknown ordering falls back to default' => [new Ordering([new OrderElement('unknown', Ordering::ASC)]), 'sf.created_at desc'];
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\room_files_sql_order_by_clause
-     */
     #[DataProvider('provides_room_files_sql_order_by_clause_and_expected_sql')]
     public function test_room_files_sql_order_by_clause_returns_expected_sql(
         ?Ordering $list_ordering,
@@ -45,9 +45,6 @@ class FunctionsSearchingTest extends BaseTestCase
         $this->assertSame($expectedSql, room_files_sql_order_by_clause($list_ordering));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\compare_room_files_for_list_sort
-     */
     public function test_compare_room_files_for_list_sort_uses_newest_first_when_ordering_is_null_or_empty(): void
     {
         $older = $this->createRoomFileInRoom('older', 'b.pdf', 100, '2024-01-01 00:00:00');
@@ -57,9 +54,6 @@ class FunctionsSearchingTest extends BaseTestCase
         $this->assertSame(1, compare_room_files_for_list_sort($older, $newer, new Ordering([])));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\compare_room_files_for_list_sort
-     */
     public function test_compare_room_files_for_list_sort_supports_name_size_and_added_ordering(): void
     {
         $alpha = $this->createRoomFileInRoom('file_a', 'alpha.pdf', 10, '2024-01-01 00:00:00');
@@ -93,10 +87,6 @@ class FunctionsSearchingTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\compare_room_files_for_list_sort
-     * @covers \Bristolian\Repo\RoomFileRepo\compare_room_file_document_timestamp
-     */
     public function test_compare_room_files_for_list_sort_handles_document_date_sorting_and_stable_id_tiebreak(): void
     {
         $withoutDate = $this->createRoomFileInRoom('file_z', 'z.pdf', 10, '2024-01-01 00:00:00');
@@ -122,9 +112,6 @@ class FunctionsSearchingTest extends BaseTestCase
         $this->assertGreaterThan(0, compare_room_files_for_list_sort($older, $newer, $unknownOrdering));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\compare_room_file_document_timestamp
-     */
     public function test_compare_room_file_document_timestamp_sorts_nulls_last_and_compares_real_dates(): void
     {
         $withoutDateOne = $this->createRoomFileInRoom('file_1', 'a.pdf', 10, '2024-01-01 00:00:00');

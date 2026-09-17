@@ -9,12 +9,16 @@ use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\Repo\ChatMessageRepo\ChatMessageRepo;
 use Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::class, 'getMessagesForRoom')]
+#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::class, 'storeChatMessageForSystem')]
+#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::class, 'storeChatMessageForUser')]
+
 class FakeChatMessageRepoTest extends ChatMessageRepoFixture
 {
     public function getTestInstance(): ChatMessageRepo
@@ -22,9 +26,6 @@ class FakeChatMessageRepoTest extends ChatMessageRepoFixture
         return new FakeChatMessageRepo();
     }
 
-    /**
-     * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::storeChatMessageForUser
-     */
     public function test_fake_storeChatMessageForUser_stores_and_returns_message(): void
     {
         $repo = new FakeChatMessageRepo();
@@ -41,10 +42,6 @@ class FakeChatMessageRepoTest extends ChatMessageRepoFixture
         $this->assertGreaterThan(0, $message->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::storeChatMessageForSystem
-     * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::storeChatMessageForSystem
-     */
     public function test_fake_storeChatMessageForSystem_uses_fixture_system_user_id(): void
     {
         $repo = new FakeChatMessageRepo();
@@ -60,9 +57,6 @@ class FakeChatMessageRepoTest extends ChatMessageRepoFixture
         $this->assertSame('room-system', $message->room_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::getMessagesForRoom
-     */
     public function test_fake_getMessagesForRoom_returns_only_room_messages_sorted_newest_first(): void
     {
         $repo = new FakeChatMessageRepo();
@@ -86,10 +80,6 @@ class FakeChatMessageRepoTest extends ChatMessageRepoFixture
         $this->assertGreaterThanOrEqual($messages[1]->id, $messages[0]->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::getMessagesForRoom
-     * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::storeChatMessageForUser
-     */
     public function test_getMessagesForRoom_returns_messages_for_room_sorted_newest_first(): void
     {
         $repo = new FakeChatMessageRepo();

@@ -9,9 +9,10 @@ use Bristolian\Parameters\AnnotationParam;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\AnnotationParam::class)]
+
 class AnnotationParamTest extends BaseTestCase
 {
     /**
@@ -32,7 +33,6 @@ class AnnotationParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\AnnotationParam
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -82,7 +82,6 @@ class AnnotationParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\AnnotationParam
      * @param array<string, mixed> $input
      * @param array<string, string> $expectedProblems
      */
@@ -98,8 +97,6 @@ class AnnotationParamTest extends BaseTestCase
         }
     }
 
-    /**
-     */
     public function test_parses_valid_json_input_to_expected_output(): void
     {
 

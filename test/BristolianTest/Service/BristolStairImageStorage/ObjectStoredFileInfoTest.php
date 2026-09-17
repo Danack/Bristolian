@@ -6,14 +6,12 @@ namespace BristolianTest\Service\BristolStairImageStorage;
 
 use Bristolian\Service\BristolStairImageStorage\ObjectStoredFileInfo;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\BristolStairImageStorage\ObjectStoredFileInfo::class, '__construct')]
+
 class ObjectStoredFileInfoTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\BristolStairImageStorage\ObjectStoredFileInfo::__construct
-     */
     public function test_construct_stores_normalized_filename_and_file_storage_id(): void
     {
         $normalizedFilename = 'uuid-123.jpg';

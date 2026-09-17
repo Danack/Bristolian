@@ -14,11 +14,6 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 class ApiFunctionsTest extends BaseTestCase
 {
 
-
-
-    /**
-     * @covers ::fillJsonResponseData
-     */
     public function test_fillJsonResponseData_works()
     {
         $response = new Response();
@@ -37,10 +32,6 @@ class ApiFunctionsTest extends BaseTestCase
         $this->assertSame($expectedResult, $result);
     }
 
-
-    /**
-     * @covers ::convertValidationExceptionMapperApi
-     */
     public function test_convertValidationExceptionMapperApi()
     {
 

@@ -13,14 +13,14 @@ use Bristolian\Service\DailyProcessorSchedule\FakeDailyProcessorSchedule;
 use Bristolian\Service\DailyProcessorSchedule\StandardDailyProcessorSchedule;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\CliController\SystemInfo::class, '__construct')]
+#[CoversMethod(\Bristolian\CliController\SystemInfo::class, 'runInternal')]
+#[CoversMethod(\Bristolian\Service\DailyProcessorSchedule\StandardDailyProcessorSchedule::class, 'isOverXHoursAgo')]
+
 class SystemInfoTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\CliController\SystemInfo::__construct
-     */
     public function test_construct(): void
     {
         $systemInfo = new SystemInfo(
@@ -32,9 +32,6 @@ class SystemInfoTest extends BaseTestCase
         $this->assertInstanceOf(SystemInfo::class, $systemInfo);
     }
 
-    /**
-     * @covers \Bristolian\CliController\SystemInfo::runInternal
-     */
     public function test_runInternal_writes_skip_when_not_in_daily_window(): void
     {
         $schedule = new FakeDailyProcessorSchedule();
@@ -52,9 +49,6 @@ class SystemInfoTest extends BaseTestCase
         $this->assertStringContainsString('Skipping, not currently time', $text);
     }
 
-    /**
-     * @covers \Bristolian\CliController\SystemInfo::runInternal
-     */
     public function test_runInternal_writes_skip_when_last_run_within_cooldown(): void
     {
         $schedule = new FakeDailyProcessorSchedule();
@@ -73,9 +67,6 @@ class SystemInfoTest extends BaseTestCase
         $this->assertStringContainsString('within the last 21 hours', $cliOutput->getCapturedOutput());
     }
 
-    /**
-     * @covers \Bristolian\CliController\SystemInfo::runInternal
-     */
     public function test_runInternal_queues_email_and_finishes_when_no_prior_run(): void
     {
         $schedule = new FakeDailyProcessorSchedule();
@@ -99,9 +90,6 @@ class SystemInfoTest extends BaseTestCase
         $this->assertSame(FakeProcessorRunRecordRepo::STATE_FINISHED, $records[0]->status);
     }
 
-    /**
-     * @covers \Bristolian\CliController\SystemInfo::runInternal
-     */
     public function test_runInternal_runs_again_when_schedule_says_cooldown_passed(): void
     {
         $schedule = new FakeDailyProcessorSchedule();
@@ -123,9 +111,6 @@ class SystemInfoTest extends BaseTestCase
         $this->assertNotEmpty($emailQueue->getAllEmails());
     }
 
-    /**
-     * @covers \Bristolian\Service\DailyProcessorSchedule\StandardDailyProcessorSchedule::isOverXHoursAgo
-     */
     public function test_schedule_isOverXHoursAgo_returns_true_when_datetime_is_older_than_x_hours(): void
     {
         $schedule = new StandardDailyProcessorSchedule();
@@ -133,9 +118,6 @@ class SystemInfoTest extends BaseTestCase
         $this->assertTrue($schedule->isOverXHoursAgo(21, $twentyTwoHoursAgo));
     }
 
-    /**
-     * @covers \Bristolian\Service\DailyProcessorSchedule\StandardDailyProcessorSchedule::isOverXHoursAgo
-     */
     public function test_schedule_isOverXHoursAgo_returns_false_when_datetime_is_less_than_x_hours_ago(): void
     {
         $schedule = new StandardDailyProcessorSchedule();

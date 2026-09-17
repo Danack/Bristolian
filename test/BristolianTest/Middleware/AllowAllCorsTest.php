@@ -5,14 +5,12 @@ namespace BristolianTest\Middleware;
 use BristolianTest\BaseTestCase;
 use Bristolian\Middleware\AllowAllCors;
 use Laminas\Diactoros\ServerRequest;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Middleware\AllowAllCors::class)]
+
 class AllowAllCorsTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Middleware\AllowAllCors
-     */
     public function testWorks()
     {
         $request = new ServerRequest();
@@ -27,9 +25,6 @@ class AllowAllCorsTest extends BaseTestCase
         $this->assertTrue($response->hasHeader('Access-Control-Allow-Headers'));
     }
 
-    /**
-     * @covers \Bristolian\Middleware\AllowAllCors
-     */
     public function testWorks_with_OPTIONS_request()
     {
         $request = new ServerRequest(method: 'OPTIONS');

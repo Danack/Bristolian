@@ -4,14 +4,21 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\BccTroRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Model\Types\BccTro;
 use Bristolian\Repo\BccTroRepo\BccTroRepo;
 use BristolianTest\BaseTestCase;
 
 /**
  * @internal
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'saveData')]
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'saveDataIfNew')]
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class, 'saveData')]
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class, 'saveDataIfNew')]
+
 abstract class BccTroRepoFixture extends BaseTestCase
 {
     /**
@@ -21,13 +28,6 @@ abstract class BccTroRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): BccTroRepo;
 
-
-    /**
-     * @covers \Bristolian\Repo\BccTroRepo\BccTroRepo::saveData
-     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveData
-     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::__construct
-     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveData
-     */
     public function test_saveData_stores_data(): void
     {
         $repo = $this->getTestInstance();
@@ -48,12 +48,6 @@ abstract class BccTroRepoFixture extends BaseTestCase
         $repo->saveData([$tro1]);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\BccTroRepo\BccTroRepo::saveData
-     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveData
-     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveData
-     */
     public function test_saveData_accepts_empty_array(): void
     {
         $repo = $this->getTestInstance();
@@ -62,13 +56,6 @@ abstract class BccTroRepoFixture extends BaseTestCase
         $repo->saveData([]);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BccTroRepo\BccTroRepo::saveDataIfNew
-     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveDataIfNew
-     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveData
-     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveDataIfNew
-     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveData
-     */
     public function test_saveDataIfNew_saves_when_no_previous_data(): void
     {
         $repo = $this->getTestInstance();
@@ -79,13 +66,6 @@ abstract class BccTroRepoFixture extends BaseTestCase
         $this->assertNotNull($saveId);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BccTroRepo\BccTroRepo::saveDataIfNew
-     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveDataIfNew
-     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveData
-     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveDataIfNew
-     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveData
-     */
     public function test_saveDataIfNew_returns_null_when_data_unchanged(): void
     {
         $repo = $this->getTestInstance();
@@ -98,13 +78,6 @@ abstract class BccTroRepoFixture extends BaseTestCase
         $this->assertNull($secondSaveId);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BccTroRepo\BccTroRepo::saveDataIfNew
-     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveDataIfNew
-     * @covers \Bristolian\Repo\BccTroRepo\FakeBccTroRepo::saveData
-     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveDataIfNew
-     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveData
-     */
     public function test_saveDataIfNew_saves_when_data_differs(): void
     {
         $repo = $this->getTestInstance();

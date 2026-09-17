@@ -4,14 +4,12 @@ namespace BristolianTest\Exception;
 
 use Bristolian\Exception\ContentNotFoundException;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Exception\ContentNotFoundException::class)]
+
 class ContentNotFoundExceptionTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Exception\ContentNotFoundException
-     */
     public function testWorks_stairs_id_not_found()
     {
         $stairs_id = "stairs_123";
@@ -23,9 +21,6 @@ class ContentNotFoundExceptionTest extends BaseTestCase
         $this->assertStringContainsString("stairs with id", $exception->getMessage());
     }
 
-    /**
-     * @covers \Bristolian\Exception\ContentNotFoundException
-     */
     public function testWorks_meme_id_not_found()
     {
         $meme_id = "meme_456";
@@ -37,9 +32,6 @@ class ContentNotFoundExceptionTest extends BaseTestCase
         $this->assertStringContainsString("meme with id", $exception->getMessage());
     }
 
-    /**
-     * @covers \Bristolian\Exception\ContentNotFoundException
-     */
     public function testWorks_file_not_found()
     {
         $room_id = "room_abc";
@@ -53,9 +45,6 @@ class ContentNotFoundExceptionTest extends BaseTestCase
         $this->assertStringContainsString("file with id", $exception->getMessage());
     }
 
-    /**
-     * @covers \Bristolian\Exception\ContentNotFoundException
-     */
     public function testWorks_room_video_not_found()
     {
         $room_id = "room_xyz";
@@ -69,9 +58,6 @@ class ContentNotFoundExceptionTest extends BaseTestCase
         $this->assertStringContainsString("room video with id", $exception->getMessage());
     }
 
-    /**
-     * @covers \Bristolian\Exception\ContentNotFoundException
-     */
     public function testWorks_video_not_found()
     {
         $video_id = "video_999";
@@ -83,9 +69,6 @@ class ContentNotFoundExceptionTest extends BaseTestCase
         $this->assertStringContainsString("video with id", $exception->getMessage());
     }
 
-    /**
-     * @covers \Bristolian\Exception\ContentNotFoundException::room_video_not_found_by_id
-     */
     public function test_room_video_not_found_by_id(): void
     {
         $roomVideoId = "rv_456";
@@ -95,9 +78,6 @@ class ContentNotFoundExceptionTest extends BaseTestCase
         $this->assertStringContainsString("room video with id", $exception->getMessage());
     }
 
-    /**
-     * @covers \Bristolian\Exception\ContentNotFoundException::transcript_not_found
-     */
     public function test_transcript_not_found(): void
     {
         $exception = ContentNotFoundException::transcript_not_found("trans_123");
@@ -105,9 +85,6 @@ class ContentNotFoundExceptionTest extends BaseTestCase
         $this->assertSame("Transcript not found", $exception->getMessage());
     }
 
-    /**
-     * @covers \Bristolian\Exception\ContentNotFoundException::room_note_not_found
-     */
     public function test_room_note_not_found(): void
     {
         $exception = ContentNotFoundException::room_note_not_found('room_1', 'note_1');

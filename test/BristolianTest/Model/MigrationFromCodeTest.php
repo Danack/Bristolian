@@ -4,14 +4,12 @@ namespace BristolianTest\Model;
 
 use Bristolian\Model\Types\MigrationFromCode;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Types\MigrationFromCode::class)]
+
 class MigrationFromCodeTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\MigrationFromCode
-     */
     public function testConstruct()
     {
         $id = 1;

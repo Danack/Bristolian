@@ -7,15 +7,14 @@ use Bristolian\Basic\Dispatcher;
 use DI\Injector;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Response;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Basic\Dispatcher::class, '__construct')]
+#[CoversMethod(\Bristolian\Basic\Dispatcher::class, 'convert_response_to_html')]
+#[CoversMethod(\Bristolian\Basic\Dispatcher::class, 'dispatch_route')]
+
 class DispatcherTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Basic\Dispatcher::dispatch_route
-     * @covers \Bristolian\Basic\Dispatcher::__construct
-     */
     public function testWorks_dispatch_route()
     {
         $injector = new Injector;
@@ -42,9 +41,6 @@ class DispatcherTest extends BaseTestCase
         $this->assertSame($value, $passed_value);
     }
 
-    /**
-     * @covers \Bristolian\Basic\Dispatcher::convert_response_to_html
-     */
     public function testWorks_convert_response_to_html()
     {
         $injector = new Injector;

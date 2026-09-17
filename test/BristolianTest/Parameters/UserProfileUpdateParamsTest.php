@@ -9,9 +9,12 @@ use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\PropertyType\AboutMeText::class)]
+#[CoversClass(\Bristolian\Parameters\PropertyType\DisplayName::class)]
+#[CoversClass(\Bristolian\Parameters\UserProfileUpdateParams::class)]
+
 class UserProfileUpdateParamsTest extends BaseTestCase
 {
     /**
@@ -30,9 +33,6 @@ class UserProfileUpdateParamsTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\UserProfileUpdateParams
-     * @covers \Bristolian\Parameters\PropertyType\DisplayName
-     * @covers \Bristolian\Parameters\PropertyType\AboutMeText
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -75,7 +75,6 @@ class UserProfileUpdateParamsTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\UserProfileUpdateParams
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]

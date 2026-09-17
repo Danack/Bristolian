@@ -7,14 +7,12 @@ namespace BristolianTest\Parameters;
 use Bristolian\Parameters\FoiRequestParams;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\FoiRequestParams::class)]
+
 class FoiRequestParamTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Parameters\FoiRequestParams
-     */
     public function testWorks()
     {
         $unique = date("Ymdhis").uniqid();

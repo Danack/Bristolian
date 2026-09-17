@@ -11,9 +11,12 @@ use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\PropertyType\AboutMeText::class)]
+#[CoversClass(\Bristolian\Parameters\PropertyType\RoomName::class)]
+#[CoversClass(\Bristolian\Parameters\UpdateRoomDetailsParam::class)]
+
 class UpdateRoomDetailsParamTest extends BaseTestCase
 {
     private static function validName(): string
@@ -41,10 +44,6 @@ class UpdateRoomDetailsParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\UpdateRoomDetailsParam
-     * @covers \Bristolian\Parameters\UpdateRoomDetailsParam::__construct
-     * @covers \Bristolian\Parameters\PropertyType\RoomName
-     * @covers \Bristolian\Parameters\PropertyType\AboutMeText
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -60,9 +59,6 @@ class UpdateRoomDetailsParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\UpdateRoomDetailsParam
-     * @covers \Bristolian\Parameters\PropertyType\RoomName
-     * @covers \Bristolian\Parameters\PropertyType\AboutMeText
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -112,9 +108,6 @@ class UpdateRoomDetailsParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\UpdateRoomDetailsParam
-     * @covers \Bristolian\Parameters\PropertyType\RoomName
-     * @covers \Bristolian\Parameters\PropertyType\AboutMeText
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]

@@ -6,15 +6,14 @@ namespace BristolianTest\Service\MemeFileLocalCache;
 
 use Bristolian\Service\MemeFileLocalCache\EnsureMemeFileCachedResult;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\MemeFileLocalCache\EnsureMemeFileCachedResult::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\MemeFileLocalCache\EnsureMemeFileCachedResult::class, 'failure')]
+#[CoversMethod(\Bristolian\Service\MemeFileLocalCache\EnsureMemeFileCachedResult::class, 'success')]
+
 class EnsureMemeFileCachedResultTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\MemeFileLocalCache\EnsureMemeFileCachedResult::__construct
-     * @covers \Bristolian\Service\MemeFileLocalCache\EnsureMemeFileCachedResult::success
-     */
     public function test_success_returns_succeeded_true_and_null_debug_info(): void
     {
         $result = EnsureMemeFileCachedResult::success();
@@ -22,9 +21,6 @@ class EnsureMemeFileCachedResultTest extends BaseTestCase
         $this->assertNull($result->failureDebugInfo);
     }
 
-    /**
-     * @covers \Bristolian\Service\MemeFileLocalCache\EnsureMemeFileCachedResult::failure
-     */
     public function test_failure_returns_succeeded_false_and_debug_info(): void
     {
         $debugInfo = 'file not found in bucket';

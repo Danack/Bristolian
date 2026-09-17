@@ -11,10 +11,12 @@ use Bristolian\PdoSimple\PdoSimpleException;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Bristolian\PdoSimple\PdoSimpleWithPreviousException
  * @group db
  */
+
 #[CoversClass(\Bristolian\PdoSimple\PdoSimpleException::class)]
+#[CoversClass(\Bristolian\PdoSimple\PdoSimpleWithPreviousException::class)]
+
 class PdoSimpleExceptionTest extends BaseTestCase
 {
     use TestPlaceholders;

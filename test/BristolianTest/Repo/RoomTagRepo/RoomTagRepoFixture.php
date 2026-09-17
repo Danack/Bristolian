@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\RoomTagRepo;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use Bristolian\Exception\TooManyRoomTagsException;
 use BristolianGenerated\Model\RoomTag;
 use Bristolian\Parameters\TagParams;
@@ -14,8 +15,10 @@ use VarMap\ArrayVarMap;
 /**
  * Abstract test class for RoomTagRepo implementations.
  *
- * @coversNothing
  */
+
+#[CoversClass(\Bristolian\Exception\TooManyRoomTagsException::class)]
+
 abstract class RoomTagRepoFixture extends BaseTestCase
 {
     abstract public function getTestInstance(): RoomTagRepo;
@@ -25,9 +28,6 @@ abstract class RoomTagRepoFixture extends BaseTestCase
      */
     abstract protected function getTestRoomId(): string;
 
-    /**
-     * @covers \Bristolian\Repo\RoomTagRepo\RoomTagRepo::getTagsForRoom
-     */
     public function test_getTagsForRoom_returns_array(): void
     {
         $repo = $this->getTestInstance();
@@ -39,10 +39,6 @@ abstract class RoomTagRepoFixture extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomTagRepo\RoomTagRepo::getTagsForRoom
-     * @covers \Bristolian\Repo\RoomTagRepo\RoomTagRepo::createTag
-     */
     public function test_getTagsForRoom_returns_tags_created_for_that_room(): void
     {
         $repo = $this->getTestInstance();
@@ -71,8 +67,6 @@ abstract class RoomTagRepoFixture extends BaseTestCase
     /**
      *
      * @group production_test
-     * @covers \Bristolian\Repo\RoomTagRepo\RoomTagRepo::createTag
-     * @covers \Bristolian\Exception\TooManyRoomTagsException
      */
     public function test_createTag_throws_when_limit_reached(): void
     {

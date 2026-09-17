@@ -9,9 +9,12 @@ use Bristolian\MarkdownRenderer\CommonMarkRenderer;
 use Bristolian\MarkdownRenderer\FakeMarkdownRenderer;
 use Bristolian\MarkdownRenderer\MarkdownRenderer;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\Questions::class, 'index')]
+#[CoversMethod(\Bristolian\AppController\Questions::class, 'weca_question_active_travel')]
+#[CoversMethod(\Bristolian\AppController\Questions::class, 'weca_question_tram')]
+
 class QuestionsTest extends BaseTestCase
 {
     public function setup(): void
@@ -20,9 +23,6 @@ class QuestionsTest extends BaseTestCase
         $this->injector->alias(MarkdownRenderer::class, CommonMarkRenderer::class);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Questions::index
-     */
     public function test_index(): void
     {
         $result = $this->injector->execute([Questions::class, 'index']);
@@ -30,9 +30,6 @@ class QuestionsTest extends BaseTestCase
         $this->assertStringContainsString('Questions for WECA', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Questions::weca_question_active_travel
-     */
     public function test_weca_question_active_travel(): void
     {
         $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRenderer::class);
@@ -43,9 +40,6 @@ class QuestionsTest extends BaseTestCase
         $this->assertStringContainsString('Rendered content from 1_active_travel_weca.md', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Questions::weca_question_tram
-     */
     public function test_weca_question_tram(): void
     {
         $this->injector->alias(MarkdownRenderer::class, FakeMarkdownRenderer::class);

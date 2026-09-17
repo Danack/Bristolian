@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\ProcessorRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Model\Types\ProcessorState;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRepo\ProcessorRepo;
@@ -12,8 +13,16 @@ use BristolianTest\BaseTestCase;
 /**
  * Abstract test class for ProcessorRepo implementations.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::class, 'getProcessorEnabled')]
+#[CoversMethod(\Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::class, 'getProcessorsStates')]
+#[CoversMethod(\Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::class, 'setProcessorEnabled')]
+#[CoversMethod(\Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::class, 'getProcessorEnabled')]
+#[CoversMethod(\Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::class, 'getProcessorsStates')]
+#[CoversMethod(\Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::class, 'setProcessorEnabled')]
+
 abstract class ProcessorRepoFixture extends BaseTestCase
 {
     /**
@@ -24,7 +33,6 @@ abstract class ProcessorRepoFixture extends BaseTestCase
     abstract public function getTestInstance(): ProcessorRepo;
 
 //    /**
-//     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::getProcessorEnabled
 //     */
 //    public function test_getProcessorEnabled_returns_false_initially(): void
 //    {
@@ -35,15 +43,6 @@ abstract class ProcessorRepoFixture extends BaseTestCase
 //        $this->assertFalse($enabled);
 //    }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::setProcessorEnabled
-     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::getProcessorEnabled
-     * @covers \Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::setProcessorEnabled
-     * @covers \Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::getProcessorEnabled
-     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::__construct
-     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::setProcessorEnabled
-     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::getProcessorEnabled
-     */
     public function test_setProcessorEnabled_and_getProcessorEnabled_work_together(): void
     {
         $repo = $this->getTestInstance();
@@ -62,14 +61,6 @@ abstract class ProcessorRepoFixture extends BaseTestCase
         $this->assertFalse($repo->getProcessorEnabled($processor));
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::setProcessorEnabled
-     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::getProcessorEnabled
-     * @covers \Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::setProcessorEnabled
-     * @covers \Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::getProcessorEnabled
-     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::setProcessorEnabled
-     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::getProcessorEnabled
-     */
     public function test_setProcessorEnabled_works_for_different_processors_independently(): void
     {
         $repo = $this->getTestInstance();
@@ -92,14 +83,6 @@ abstract class ProcessorRepoFixture extends BaseTestCase
         $this->assertTrue($repo->getProcessorEnabled($processor2));
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::getProcessorsStates
-     * @covers \Bristolian\Repo\ProcessorRepo\ProcessorRepo::setProcessorEnabled
-     * @covers \Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::getProcessorsStates
-     * @covers \Bristolian\Repo\ProcessorRepo\FakeProcessorRepo::setProcessorEnabled
-     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::getProcessorsStates
-     * @covers \Bristolian\Repo\ProcessorRepo\PdoProcessorRepo::setProcessorEnabled
-     */
     public function test_getProcessorsStates_returns_states_for_all_processors(): void
     {
         $repo = $this->getTestInstance();

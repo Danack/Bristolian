@@ -4,15 +4,13 @@ namespace BristolianTest\Service\HttpFetcher;
 
 use Bristolian\Service\HttpFetcher\FakeHttpFetcherWithFixedResponse;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\HttpFetcher\FakeHttpFetcherWithFixedResponse::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\HttpFetcher\FakeHttpFetcherWithFixedResponse::class, 'fetch')]
+
 class FakeHttpFetcherWithFixedResponseTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\HttpFetcher\FakeHttpFetcherWithFixedResponse::__construct
-     * @covers \Bristolian\Service\HttpFetcher\FakeHttpFetcherWithFixedResponse::fetch
-     */
     public function testFetchReturnsFixedResponseRegardlessOfRequest(): void
     {
         $fetcher = new FakeHttpFetcherWithFixedResponse(200, '<html>body</html>', ['X-Custom: value']);

@@ -7,14 +7,12 @@ namespace UrlFetcherTest;
 use BristolianTest\BaseTestCase;
 use UrlFetcher\FakeUrlFetcher;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\UrlFetcher\FakeUrlFetcher::class)]
+
 class FakeUrlFetcherTest extends BaseTestCase
 {
-    /**
-     * @covers \UrlFetcher\FakeUrlFetcher
-     */
     #[Group('wip')]
     public function testBasic(): void
     {

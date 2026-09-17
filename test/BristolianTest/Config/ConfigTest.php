@@ -9,6 +9,7 @@ use Bristolian\Config\RedisConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(\Bristolian\Config\Config::class)]
+
 class ConfigTest extends BaseTestCase
 {
     public function testWorks()
@@ -22,8 +23,6 @@ class ConfigTest extends BaseTestCase
         $config->getCommitSha();
         $config->getMailgunApiKey();
 
-
-
         $dbConfig = $config->getDatabaseUserConfig();
         $this->assertInstanceOf(DatabaseUserConfig::class, $dbConfig);
 
@@ -34,9 +33,6 @@ class ConfigTest extends BaseTestCase
         $this->assertInstanceOf(RedisConfig::class, $redisConfig);
     }
 
-    /**
-     * @covers \Bristolian\Config\Config::getEnvironmentNameForEmailSubject
-     */
     public function test_getEnvironmentNameForEmailSubject(): void
     {
         $config = new Config();

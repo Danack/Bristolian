@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\RoomFileObjectInfoRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
@@ -12,8 +13,14 @@ use BristolianTest\Repo\TestPlaceholders;
 /**
  * Abstract test class for RoomFileObjectInfoRepo implementations.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\RoomFileObjectInfoRepo\FakeRoomFileObjectInfoRepo::class, 'createRoomFileObjectInfo')]
+#[CoversMethod(\Bristolian\Repo\RoomFileObjectInfoRepo\FakeRoomFileObjectInfoRepo::class, 'setRoomFileObjectUploaded')]
+#[CoversMethod(\Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::class, 'createRoomFileObjectInfo')]
+#[CoversMethod(\Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::class, 'setRoomFileObjectUploaded')]
+
 abstract class RoomFileObjectInfoRepoFixture extends BaseTestCase
 {
     use TestPlaceholders;
@@ -33,12 +40,6 @@ abstract class RoomFileObjectInfoRepoFixture extends BaseTestCase
         return 'user_123';
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo::createRoomFileObjectInfo
-     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\FakeRoomFileObjectInfoRepo::createRoomFileObjectInfo
-     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::__construct
-     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::createRoomFileObjectInfo
-     */
     public function test_createRoomFileObjectInfo(): void
     {
         $repo = $this->getTestInstance();
@@ -56,14 +57,6 @@ abstract class RoomFileObjectInfoRepoFixture extends BaseTestCase
         $this->assertNotEmpty($file_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo::setRoomFileObjectUploaded
-     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo::createRoomFileObjectInfo
-     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\FakeRoomFileObjectInfoRepo::setRoomFileObjectUploaded
-     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\FakeRoomFileObjectInfoRepo::createRoomFileObjectInfo
-     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::setRoomFileObjectUploaded
-     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::createRoomFileObjectInfo
-     */
     public function test_setRoomFileObjectUploaded(): void
     {
         $repo = $this->getTestInstance();

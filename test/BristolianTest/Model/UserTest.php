@@ -5,14 +5,12 @@ namespace BristolianTest\Model;
 use BristolianTest\BaseTestCase;
 use BristolianGenerated\Model\User;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\BristolianGenerated\Model\User::class)]
+
 class UserTest extends BaseTestCase
 {
-    /**
-     * @covers \BristolianGenerated\Model\User
-     */
     public function testConstruct()
     {
         // User constructor takes: id (string), created_at (DateTimeInterface)

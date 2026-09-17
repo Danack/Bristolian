@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\ApiTokenRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Model\Types\ApiToken;
 use Bristolian\Repo\ApiTokenRepo\ApiTokenRepo;
 use BristolianTest\BaseTestCase;
@@ -12,8 +13,16 @@ use BristolianTest\BaseTestCase;
  * Abstract test class for ApiTokenRepo implementations.
  *
  * @internal
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::class, 'createToken')]
+#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::class, 'getByToken')]
+#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::class, 'revokeToken')]
+#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::class, 'createToken')]
+#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::class, 'getByToken')]
+#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::class, 'revokeToken')]
+
 abstract class ApiTokenRepoFixture extends BaseTestCase
 {
     /**
@@ -23,13 +32,6 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): ApiTokenRepo;
 
-
-    /**
-     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::createToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::createToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::__construct
-     * @covers \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::createToken
-     */
     public function test_createToken(): void
     {
         $repo = $this->getTestInstance();
@@ -44,12 +46,6 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
         $this->assertFalse($apiToken->is_revoked);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::getByToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::getByToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::getByToken
-     */
     public function test_getByToken_returns_null_for_nonexistent_token(): void
     {
         $repo = $this->getTestInstance();
@@ -58,14 +54,6 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::getByToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::createToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::getByToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::createToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::getByToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::createToken
-     */
     public function test_getByToken_returns_token_after_creation(): void
     {
         $repo = $this->getTestInstance();
@@ -82,17 +70,6 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
         $this->assertSame($createdToken->token, $foundToken->token);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::getByToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::createToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::revokeToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::getByToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::createToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::revokeToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::getByToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::createToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::revokeToken
-     */
     public function test_getByToken_returns_null_for_revoked_token(): void
     {
         $repo = $this->getTestInstance();
@@ -106,18 +83,6 @@ abstract class ApiTokenRepoFixture extends BaseTestCase
         $this->assertNull($foundToken);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::revokeToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::createToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenRepo::getByToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::revokeToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::createToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::getByToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::revokeToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::createToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::getByToken
-     */
     public function test_revokeToken(): void
     {
         $repo = $this->getTestInstance();

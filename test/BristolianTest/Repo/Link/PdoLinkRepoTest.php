@@ -9,12 +9,14 @@ use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\Service\UuidGenerator\FixedUuidGenerator;
 use BristolianTest\Repo\TestPlaceholders;
 use Ramsey\Uuid\Uuid;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\LinkRepo\PdoLinkRepo::class)]
+
 class PdoLinkRepoTest extends LinkRepoFixture
 {
     use TestPlaceholders;
@@ -27,7 +29,6 @@ class PdoLinkRepoTest extends LinkRepoFixture
     /**
      * Duplicate id triggers constraint violation (23000); repo throws UserConstraintFailedException.
      *
-     * @covers \Bristolian\Repo\LinkRepo\PdoLinkRepo::store_link
      */
     public function test_store_link_throws_UserConstraintFailedException_on_duplicate_id(): void
     {
@@ -44,9 +45,6 @@ class PdoLinkRepoTest extends LinkRepoFixture
         $repo->store_link($testUser->getUserId(), 'https://example.com/second');
     }
 
-    /**
-     * @covers \Bristolian\Repo\LinkRepo\PdoLinkRepo
-     */
     public function test_createEntry(): void
     {
         $pdoLinkRepo = $this->injector->make(PdoLinkRepo::class);

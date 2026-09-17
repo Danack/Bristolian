@@ -6,15 +6,15 @@ use Bristolian\Response\MemeUploadSuccessResponse;
 use Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Response\MemeUploadSuccessResponse::class, '__construct')]
+#[CoversMethod(\Bristolian\Response\MemeUploadSuccessResponse::class, 'getBody')]
+#[CoversMethod(\Bristolian\Response\MemeUploadSuccessResponse::class, 'getHeaders')]
+#[CoversMethod(\Bristolian\Response\MemeUploadSuccessResponse::class, 'getStatus')]
+
 class MemeUploadSuccessResponseTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Response\MemeUploadSuccessResponse::__construct
-     * @covers \Bristolian\Response\MemeUploadSuccessResponse::getStatus
-     */
     public function testGetStatusReturns200(): void
     {
         $meme = new ObjectStoredMeme('normalized.jpg', 'meme-123');
@@ -23,9 +23,6 @@ class MemeUploadSuccessResponseTest extends BaseTestCase
         $this->assertSame(200, $response->getStatus());
     }
 
-    /**
-     * @covers \Bristolian\Response\MemeUploadSuccessResponse::getHeaders
-     */
     public function testGetHeadersReturnsContentType(): void
     {
         $meme = new ObjectStoredMeme('normalized.jpg', 'meme-123');
@@ -36,9 +33,6 @@ class MemeUploadSuccessResponseTest extends BaseTestCase
         $this->assertSame('application/json', $headers['Content-Type']);
     }
 
-    /**
-     * @covers \Bristolian\Response\MemeUploadSuccessResponse::getBody
-     */
     public function testGetBodyReturnsSuccessJsonWithMemeId(): void
     {
         $meme = new ObjectStoredMeme('normalized.jpg', 'meme-456');

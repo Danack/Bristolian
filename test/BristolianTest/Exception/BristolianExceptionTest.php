@@ -6,14 +6,13 @@ namespace BristolianTest\Exception;
 
 use Bristolian\Exception\BristolianException;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Exception\BristolianException::class, 'cannot_instantiate')]
+#[CoversMethod(\Bristolian\Exception\BristolianException::class, 'env_variable_is_not_string')]
+
 class BristolianExceptionTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Exception\BristolianException::cannot_instantiate
-     */
     public function test_cannot_instantiate_returns_exception_with_constant_message(): void
     {
         $exception = BristolianException::cannot_instantiate();
@@ -21,9 +20,6 @@ class BristolianExceptionTest extends BaseTestCase
         $this->assertSame(BristolianException::CANNOT_INSTANTIATE, $exception->getMessage());
     }
 
-    /**
-     * @covers \Bristolian\Exception\BristolianException::env_variable_is_not_string
-     */
     public function test_env_variable_is_not_string_includes_name_and_value_in_message(): void
     {
         $name = "foo";

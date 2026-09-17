@@ -12,15 +12,14 @@ use DataType\InputType;
 use DataType\ProcessedValue;
 use DataType\ProcessedValues;
 use Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime::class, '__construct')]
+#[CoversMethod(\Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime::class, 'process')]
+#[CoversMethod(\Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime::class, 'updateParamDescription')]
+
 class ClipEndTimeAfterStartTimeTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime::process
-     * @covers \Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime::__construct
-     */
     public function test_process_works(): void
     {
         $inputParameter = new InputType(
@@ -46,9 +45,6 @@ class ClipEndTimeAfterStartTimeTest extends BaseTestCase
         $this->assertSame(60, $result->getValue());
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime::process
-     */
     public function test_process_returns_error_missing_previous(): void
     {
         $rule = new ClipEndTimeAfterStartTime('start');
@@ -66,11 +62,6 @@ class ClipEndTimeAfterStartTimeTest extends BaseTestCase
         );
     }
 
-
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime::process
-     * @covers \Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime::__construct
-     */
     public function test_process_errors(): void
     {
         $inputParameter = new InputType(
@@ -102,9 +93,6 @@ class ClipEndTimeAfterStartTimeTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime::process
-     */
     public function test_process_invalid_start_not_integer(): void
     {
         $inputParameter = new InputType(
@@ -126,13 +114,6 @@ class ClipEndTimeAfterStartTimeTest extends BaseTestCase
         $result = $rule->process(60, $processedValues, $dataStorage);
     }
 
-
-
-
-
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime::process
-     */
     public function test_process_invalid_end_not_integer(): void
     {
         $inputParameter = new InputType(
@@ -154,13 +135,6 @@ class ClipEndTimeAfterStartTimeTest extends BaseTestCase
         $result = $rule->process("foo", $processedValues, $dataStorage);
     }
 
-
-
-
-
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\ClipEndTimeAfterStartTime::updateParamDescription
-     */
     public function test_updateParamDescription_sets_description(): void
     {
         $rule = new ClipEndTimeAfterStartTime('start');

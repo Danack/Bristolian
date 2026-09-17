@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\AppController;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\AppController\MemeUpload;
 use Bristolian\Response\EndpointAccessedViaGetResponse;
 use Bristolian\Response\MemeUploadErrorResponse;
@@ -23,7 +23,6 @@ use function Safe\tmpfile;
 /**
  * MemeStorageProcessor that always returns UploadError for coverage of error path.
  *
- * @coversNothing
  */
 final class MemeStorageProcessorReturningUploadError implements MemeStorageProcessor
 {
@@ -37,7 +36,9 @@ final class MemeStorageProcessorReturningUploadError implements MemeStorageProce
     }
 }
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\MemeUpload::class, 'handleMemeUpload')]
+#[CoversMethod(\Bristolian\AppController\MemeUpload::class, 'handleMemeUpload_get')]
+
 class MemeUploadTest extends BaseTestCase
 {
     public function setup(): void
@@ -49,18 +50,12 @@ class MemeUploadTest extends BaseTestCase
         $this->injector->share($memeObjectStore);
     }
 
-    /**
-     * @covers \Bristolian\AppController\MemeUpload::handleMemeUpload_get
-     */
     public function test_handleMemeUpload_get(): void
     {
         $result = $this->injector->execute([MemeUpload::class, 'handleMemeUpload_get']);
         $this->assertInstanceOf(EndpointAccessedViaGetResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\MemeUpload::handleMemeUpload
-     */
     public function test_handleMemeUpload_returns_error_when_no_file_uploaded(): void
     {
         $this->setupFakeUserSession();
@@ -73,9 +68,6 @@ class MemeUploadTest extends BaseTestCase
         $this->assertInstanceOf(StubResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\MemeUpload::handleMemeUpload
-     */
     public function test_handleMemeUpload_returns_success_when_file_uploaded(): void
     {
         $this->setupFakeUserSession();
@@ -94,9 +86,6 @@ class MemeUploadTest extends BaseTestCase
         fclose($tmpFile);
     }
 
-    /**
-     * @covers \Bristolian\AppController\MemeUpload::handleMemeUpload
-     */
     public function test_handleMemeUpload_returns_MemeUploadErrorResponse_when_storage_returns_error(): void
     {
         $this->setupFakeUserSession();

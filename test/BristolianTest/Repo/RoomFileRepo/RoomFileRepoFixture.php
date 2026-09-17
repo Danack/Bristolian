@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\RoomFileRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use BristolianGenerated\Model\RoomFileObjectInfo;
 use Bristolian\Parameters\RoomContentSearchParams;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
@@ -16,8 +17,12 @@ use BristolianTest\BaseTestCase;
  * and getValidFileId() so the fixture stays schema-agnostic. See
  * notes/refactoring/default_test_scenarios_and_worlds.md § Abstract repo fixtures.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::class, 'addFileToRoom')]
+#[CoversMethod(\Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class, 'addFileToRoom')]
+
 abstract class RoomFileRepoFixture extends BaseTestCase
 {
     /**
@@ -37,12 +42,6 @@ abstract class RoomFileRepoFixture extends BaseTestCase
      */
     abstract protected function getValidFileId(): string;
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\RoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::__construct
-     * @covers \Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::addFileToRoom
-     */
     public function test_addFileToRoom(): void
     {
         $repo = $this->getTestInstance();
@@ -54,10 +53,6 @@ abstract class RoomFileRepoFixture extends BaseTestCase
         $repo->addFileToRoom($fileStorageId, $room_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\RoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\RoomFileRepo::addFileToRoom
-     */
     public function test_getFilesForRoom_returns_files_after_adding(): void
     {
         $repo = $this->getTestInstance();
@@ -71,9 +66,6 @@ abstract class RoomFileRepoFixture extends BaseTestCase
         $this->assertNotEmpty($files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\RoomFileRepo::getFileDetails
-     */
     public function test_getFileDetails_returns_null_for_nonexistent_file(): void
     {
         $repo = $this->getTestInstance();
@@ -85,10 +77,6 @@ abstract class RoomFileRepoFixture extends BaseTestCase
         $this->assertNull($fileDetails);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\RoomFileRepo::getFileDetails
-     * @covers \Bristolian\Repo\RoomFileRepo\RoomFileRepo::addFileToRoom
-     */
     public function test_getFileDetails_returns_file_after_adding(): void
     {
         $repo = $this->getTestInstance();

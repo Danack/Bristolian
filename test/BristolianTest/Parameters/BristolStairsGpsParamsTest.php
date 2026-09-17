@@ -9,9 +9,10 @@ use Bristolian\Parameters\BristolStairsGpsParams;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\BristolStairsGpsParams::class)]
+
 class BristolStairsGpsParamsTest extends BaseTestCase
 {
     /**
@@ -30,7 +31,6 @@ class BristolStairsGpsParamsTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\BristolStairsGpsParams
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -66,7 +66,6 @@ class BristolStairsGpsParamsTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\BristolStairsGpsParams
      * @param array<string, mixed> $input
      * @param array<string, string> $expectedProblems
      */

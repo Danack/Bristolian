@@ -11,12 +11,14 @@ use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\Service\UuidGenerator\FixedUuidGenerator;
 use Bristolian\UploadedFiles\UploadedFile;
 use Ramsey\Uuid\Uuid;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::class, 'createRoomFileObjectInfo')]
+
 class PdoRoomFileObjectInfoRepoTest extends RoomFileObjectInfoRepoFixture
 {
     public function getTestInstance(): RoomFileObjectInfoRepo
@@ -33,7 +35,6 @@ class PdoRoomFileObjectInfoRepoTest extends RoomFileObjectInfoRepoFixture
     /**
      * Duplicate id triggers constraint violation (23000); repo throws UserConstraintFailedException.
      *
-     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::createRoomFileObjectInfo
      */
     public function test_createRoomFileObjectInfo_throws_UserConstraintFailedException_on_duplicate_id(): void
     {

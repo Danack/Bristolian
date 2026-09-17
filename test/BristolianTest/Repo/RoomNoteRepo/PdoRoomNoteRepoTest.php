@@ -15,20 +15,19 @@ use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
 use Safe\DateTimeImmutable;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\RoomNoteRepo\PdoRoomNoteRepo::class)]
+
 class PdoRoomNoteRepoTest extends BaseTestCase
 {
     use HasTestWorld;
     use TestPlaceholders;
 
-    /**
-     * @covers \Bristolian\Repo\RoomNoteRepo\PdoRoomNoteRepo
-     */
     public function test_create_get_update_delete_and_search(): void
     {
         $this->ensureStandardSetup();
@@ -96,9 +95,6 @@ class PdoRoomNoteRepoTest extends BaseTestCase
         $repo->getNote($otherRoom->id, $id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomNoteRepo\PdoRoomNoteRepo::delete
-     */
     public function test_delete_removes_note(): void
     {
         $this->ensureStandardSetup();
@@ -111,9 +107,6 @@ class PdoRoomNoteRepoTest extends BaseTestCase
         $repo->getNote($room->id, $id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomNoteRepo\PdoRoomNoteRepo::update
-     */
     public function test_update_throws_when_missing(): void
     {
         $this->ensureStandardSetup();

@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace BristolianTest;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversFunction;
 
-#[CoversNothing]
+#[CoversFunction('formatTraceLine')]
+#[CoversFunction('getExceptionStackAsArray')]
+#[CoversFunction('getExceptionText')]
+#[CoversFunction('getFormattedException')]
+#[CoversFunction('getStacktraceForException')]
+#[CoversFunction('getTextForException')]
+#[CoversFunction('purgeExceptionMessage')]
+#[CoversFunction('saneErrorHandler')]
+
 class ErrorFunctionsTest extends BaseTestCase
 {
-    /**
-     * @covers ::getExceptionText
-     */
     public function test_getExceptionText_returns_class_message_and_trace_for_single_exception(): void
     {
         $exception = new \RuntimeException('Something broke');
@@ -21,9 +26,6 @@ class ErrorFunctionsTest extends BaseTestCase
         $this->assertStringContainsString('#0', $text);
     }
 
-    /**
-     * @covers ::getExceptionText
-     */
     public function test_getExceptionText_includes_previous_exception(): void
     {
         $previous = new \InvalidArgumentException('Root cause');
@@ -35,18 +37,12 @@ class ErrorFunctionsTest extends BaseTestCase
         $this->assertStringContainsString('Root cause', $text);
     }
 
-    /**
-     * @covers ::purgeExceptionMessage
-     */
     public function test_purgeExceptionMessage_returns_message_unchanged_when_no_phrase(): void
     {
         $exception = new \Exception('Plain message');
         $this->assertSame('Plain message', purgeExceptionMessage($exception));
     }
 
-    /**
-     * @covers ::purgeExceptionMessage
-     */
     public function test_purgeExceptionMessage_truncates_at_with_params_and_appends_purged(): void
     {
         $exception = new \Exception('Something with params and more secret data');
@@ -56,9 +52,6 @@ class ErrorFunctionsTest extends BaseTestCase
         $this->assertStringNotContainsString('more secret data', $result);
     }
 
-    /**
-     * @covers ::getTextForException
-     */
     public function test_getTextForException_includes_type_message_and_file(): void
     {
         $exception = new \DomainException('Test message');
@@ -71,9 +64,6 @@ class ErrorFunctionsTest extends BaseTestCase
         $this->assertStringContainsString('Stack trace', $text);
     }
 
-    /**
-     * @covers ::getTextForException
-     */
     public function test_getTextForException_uses_purgeExceptionMessage(): void
     {
         $exception = new \Exception('Sensitive with params hidden');
@@ -81,9 +71,6 @@ class ErrorFunctionsTest extends BaseTestCase
         $this->assertStringContainsString('**PURGED**', $text);
     }
 
-    /**
-     * @covers ::getStacktraceForException
-     */
     public function test_getStacktraceForException_returns_formatted_lines(): void
     {
         $exception = new \Exception('Trace test');
@@ -92,9 +79,6 @@ class ErrorFunctionsTest extends BaseTestCase
         $this->assertNotEmpty($result);
     }
 
-    /**
-     * @covers ::formatTraceLine
-     */
     public function test_formatTraceLine_with_file_and_line(): void
     {
         $trace = ['file' => '/var/app/src/foo.php', 'line' => 42, 'function' => 'bar'];
@@ -105,9 +89,6 @@ class ErrorFunctionsTest extends BaseTestCase
         $this->assertStringContainsString('bar', $result);
     }
 
-    /**
-     * @covers ::formatTraceLine
-     */
     public function test_formatTraceLine_with_file_only(): void
     {
         $trace = ['file' => '/var/app/src/foo.php', 'function' => 'baz'];
@@ -118,9 +99,6 @@ class ErrorFunctionsTest extends BaseTestCase
         $this->assertStringContainsString('baz', $result);
     }
 
-    /**
-     * @covers ::formatTraceLine
-     */
     public function test_formatTraceLine_with_class_type_and_function(): void
     {
         $trace = [
@@ -135,9 +113,6 @@ class ErrorFunctionsTest extends BaseTestCase
         $this->assertStringContainsString('MyClass::staticMethod', $result);
     }
 
-    /**
-     * @covers ::formatTraceLine
-     */
     public function test_formatTraceLine_with_class_and_function_no_type(): void
     {
         $trace = [
@@ -150,9 +125,6 @@ class ErrorFunctionsTest extends BaseTestCase
         $this->assertStringContainsString('Foo_method', $result);
     }
 
-    /**
-     * @covers ::formatTraceLine
-     */
     public function test_formatTraceLine_with_no_file_uses_question_marks(): void
     {
         $trace = ['function' => 'anonymous'];
@@ -161,9 +133,6 @@ class ErrorFunctionsTest extends BaseTestCase
         $this->assertStringContainsString('anonymous', $result);
     }
 
-    /**
-     * @covers ::formatTraceLine
-     */
     public function test_formatTraceLine_with_no_function_key_uses_weird_message(): void
     {
         $trace = ['file' => '/some/file.php', 'line' => 1];
@@ -171,9 +140,6 @@ class ErrorFunctionsTest extends BaseTestCase
         $this->assertStringContainsString('Function is weird:', $result);
     }
 
-    /**
-     * @covers ::getFormattedException
-     */
     public function test_getFormattedException_returns_trace_lines(): void
     {
         $exception = new \Exception('Formatted');
@@ -182,9 +148,6 @@ class ErrorFunctionsTest extends BaseTestCase
         $this->assertStringContainsString('#0', $output);
     }
 
-    /**
-     * @covers ::getFormattedException
-     */
     public function test_getFormattedException_includes_previous_exception_traces(): void
     {
         $previous = new \LogicException('Inner');
@@ -193,9 +156,6 @@ class ErrorFunctionsTest extends BaseTestCase
         $this->assertNotEmpty($output);
     }
 
-    /**
-     * @covers ::getExceptionStackAsArray
-     */
     public function test_getExceptionStackAsArray_returns_array_of_trace_lines(): void
     {
         $exception = new \Exception('Stack array');
@@ -206,36 +166,24 @@ class ErrorFunctionsTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers ::saneErrorHandler
-     */
     public function test_saneErrorHandler_returns_false_for_E_DEPRECATED(): void
     {
         $result = saneErrorHandler(E_DEPRECATED, 'deprecated thing', '/path/file.php', 1);
         $this->assertFalse($result);
     }
 
-    /**
-     * @covers ::saneErrorHandler
-     */
     public function test_saneErrorHandler_returns_false_for_E_ERROR(): void
     {
         $result = saneErrorHandler(E_ERROR, 'Fatal', '/path/file.php', 1);
         $this->assertFalse($result);
     }
 
-    /**
-     * @covers ::saneErrorHandler
-     */
     public function test_saneErrorHandler_returns_false_for_E_CORE_ERROR(): void
     {
         $result = saneErrorHandler(E_CORE_ERROR, 'Core fatal', '/path/file.php', 1);
         $this->assertFalse($result);
     }
 
-    /**
-     * @covers ::saneErrorHandler
-     */
     public function test_saneErrorHandler_throws_for_other_errors(): void
     {
         $this->expectException(\Exception::class);
@@ -244,9 +192,6 @@ class ErrorFunctionsTest extends BaseTestCase
         saneErrorHandler(E_WARNING, 'Something went wrong', '/path/file.php', 10);
     }
 
-    /**
-     * @covers ::saneErrorHandler
-     */
     public function test_saneErrorHandler_returns_true_when_reporting_suppressed_and_not_user_deprecated(): void
     {
         $previous = error_reporting(0);

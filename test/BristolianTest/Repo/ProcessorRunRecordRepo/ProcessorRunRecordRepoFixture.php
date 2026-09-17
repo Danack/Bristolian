@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\ProcessorRunRecordRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use BristolianGenerated\Model\ProcessorRunRecord;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
@@ -12,8 +13,16 @@ use BristolianTest\BaseTestCase;
 /**
  * Abstract test class for ProcessorRunRecordRepo implementations.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::class, 'getLastRunDateTime')]
+#[CoversMethod(\Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::class, 'setRunFinished')]
+#[CoversMethod(\Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::class, 'startRun')]
+#[CoversMethod(\Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::class, 'getLastRunDateTime')]
+#[CoversMethod(\Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::class, 'setRunFinished')]
+#[CoversMethod(\Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::class, 'startRun')]
+
 abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
 {
     /**
@@ -23,12 +32,6 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): ProcessorRunRecordRepo;
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::getLastRunDateTime
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::getLastRunDateTime
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::__construct
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::getLastRunDateTime
-     */
     public function test_getLastRunDateTime_returns_null_when_no_runs(): void
     {
         $repo = $this->getTestInstance();
@@ -38,11 +41,6 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::startRun
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::startRun
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::startRun
-     */
     public function test_startRun_creates_record_and_returns_id(): void
     {
         $repo = $this->getTestInstance();
@@ -52,11 +50,6 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
         $this->assertNotEmpty($id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::startRun
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::startRun
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::startRun
-     */
     public function test_startRun_creates_multiple_records_with_different_ids(): void
     {
         $repo = $this->getTestInstance();
@@ -68,9 +61,6 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
     }
 
 //    /**
-//     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::getLastRunDateTime
-//     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::startRun
-//     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::getRunRecords
 //     */
 //    public function test_getLastRunDateTime_returns_most_recent_start_time(): void
 //    {
@@ -92,14 +82,6 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
 //        $this->assertEquals($lastRun, $records[0]->start_time);
 //    }
 
-    /**
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::setRunFinished
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::startRun
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::setRunFinished
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::startRun
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::setRunFinished
-     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\PdoProcessorRunRecordRepo::startRun
-     */
     public function test_setRunFinished_updates_record_status(): void
     {
         $repo = $this->getTestInstance();
@@ -111,8 +93,6 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
     }
 
 //    /**
-//     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::getRunRecords
-//     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::startRun
 //     */
 //    public function test_getRunRecords_returns_all_records_when_processType_is_null(): void
 //    {
@@ -129,8 +109,6 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::getRunRecords
-//     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::startRun
 //     */
 //    public function test_getRunRecords_filters_by_processType(): void
 //    {
@@ -149,8 +127,6 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::getRunRecords
-//     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::startRun
 //     */
 //    public function test_getRunRecords_returns_ordered_by_id_desc(): void
 //    {
@@ -169,10 +145,6 @@ abstract class ProcessorRunRecordRepoFixture extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::startRun
-//     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::getLastRunDateTime
-//     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::setRunFinished
-//     * @covers \Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo::getRunRecords
 //     */
 //    public function test_full_lifecycle(): void
 //    {

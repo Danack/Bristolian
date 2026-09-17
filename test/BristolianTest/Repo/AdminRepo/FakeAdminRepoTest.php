@@ -8,12 +8,14 @@ use Bristolian\Model\Types\AdminUser;
 use Bristolian\Parameters\CreateUserParams;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\AdminRepo\FakeAdminRepo;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\AdminRepo\FakeAdminRepo::class)]
+
 class FakeAdminRepoTest extends FakeAdminRepoFixture
 {
     public function getTestInstance(): AdminRepo
@@ -25,7 +27,6 @@ class FakeAdminRepoTest extends FakeAdminRepoFixture
      * Explicitly cover FakeAdminRepo so coverage is attributed when running this class.
      *
      * @group slow
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo
      */
     public function test_fake_admin_repo_add_get_and_get_id(): void
     {

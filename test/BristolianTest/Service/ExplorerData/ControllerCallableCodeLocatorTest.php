@@ -7,14 +7,18 @@ namespace BristolianTest\Service\ExplorerData;
 use Bristolian\Service\ExplorerData\ControllerCallableCodeLocator;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::class, 'classTypeNamesFromParameters')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::class, 'collectDependenciesForCallable')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::class, 'locate')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::class, 'locateClass')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::class, 'normalizeFqcn')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::class, 'parseControllerCallable')]
+#[CoversMethod(\Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::class, 'pathRelativeToProjectRoot')]
+
 class ControllerCallableCodeLocatorTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::normalizeFqcn
-     */
     public function test_normalizeFqcn_strips_leading_backslash(): void
     {
         $this->assertSame(
@@ -27,13 +31,6 @@ class ControllerCallableCodeLocatorTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::locate
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::pathRelativeToProjectRoot
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::collectDependenciesForCallable
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::classTypeNamesFromParameters
-     */
     public function test_locate_resolves_debug_hello_method(): void
     {
         $projectRoot = dirname(__DIR__, 4);
@@ -50,13 +47,6 @@ class ControllerCallableCodeLocatorTest extends BaseTestCase
         $this->assertSame([], $location['dependencies']);
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::locate
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::pathRelativeToProjectRoot
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::collectDependenciesForCallable
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::classTypeNamesFromParameters
-     */
     public function test_locate_includes_method_dependencies(): void
     {
         $projectRoot = dirname(__DIR__, 4);
@@ -74,13 +64,6 @@ class ControllerCallableCodeLocatorTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::locate
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::pathRelativeToProjectRoot
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::collectDependenciesForCallable
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::classTypeNamesFromParameters
-     */
     public function test_locate_accepts_leading_backslash_on_class_name(): void
     {
         $projectRoot = dirname(__DIR__, 4);
@@ -97,10 +80,6 @@ class ControllerCallableCodeLocatorTest extends BaseTestCase
         $this->assertArrayHasKey('dependencies', $location);
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::locateClass
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::pathRelativeToProjectRoot
-     */
     public function test_locateClass_resolves_repo_interface(): void
     {
         $projectRoot = dirname(__DIR__, 4);
@@ -127,9 +106,6 @@ class ControllerCallableCodeLocatorTest extends BaseTestCase
         yield 'empty method' => ['Bristolian\\CliController\\Debug::'];
     }
 
-    /**
-     * @covers \Bristolian\Service\ExplorerData\ControllerCallableCodeLocator::parseControllerCallable
-     */
     #[DataProvider('provides_parseControllerCallable_invalid_forms')]
     public function test_parseControllerCallable_rejects_invalid_forms(string $controllerCallable): void
     {

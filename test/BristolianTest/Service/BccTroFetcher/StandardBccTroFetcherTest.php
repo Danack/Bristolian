@@ -9,17 +9,15 @@ use Bristolian\Service\HttpFetcher\FakeHttpFetcherReturning404;
 use Bristolian\Service\HttpFetcher\FakeHttpFetcherWithFixedResponse;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use function Safe\file_get_contents;
-use PHPUnit\Framework\Attributes\CoversNothing;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::class, 'fetchHtmlContent')]
+#[CoversMethod(\Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::class, 'fetchTros')]
+
 class StandardBccTroFetcherTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::__construct
-     * @covers \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::fetchTros
-     * @covers \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::fetchHtmlContent
-     */
     public function testFetchTrosThrowsWhenHttpReturns404(): void
     {
         $httpFetcher = new FakeHttpFetcherReturning404();
@@ -31,7 +29,6 @@ class StandardBccTroFetcherTest extends BaseTestCase
 
         $fetcher->fetchTros();
     }
-
 
     public static function provides_FetchTrosReturnsParsedTrosWhenHttpReturns200WithExampleHtml()
     {
@@ -63,11 +60,6 @@ class StandardBccTroFetcherTest extends BaseTestCase
         yield [__DIR__ . '/example_1.html', $bccTro];
     }
 
-
-    /**
-     * @covers \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::fetchTros
-     * @covers \Bristolian\Service\BccTroFetcher\StandardBccTroFetcher::fetchHtmlContent
-     */
     #[DataProvider('provides_FetchTrosReturnsParsedTrosWhenHttpReturns200WithExampleHtml')]
     public function testFetchTrosReturnsParsedTrosWhenHttpReturns200WithExampleHtml(
         string $html_input_file,

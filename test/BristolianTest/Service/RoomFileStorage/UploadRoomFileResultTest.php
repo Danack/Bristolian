@@ -8,15 +8,15 @@ use Bristolian\Response\RoomFileUploadErrorResponse;
 use Bristolian\Service\RoomFileStorage\UploadError;
 use Bristolian\Service\RoomFileStorage\UploadRoomFileResult;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\RoomFileStorage\UploadRoomFileResult::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\RoomFileStorage\UploadRoomFileResult::class, 'failure')]
+#[CoversMethod(\Bristolian\Service\RoomFileStorage\UploadRoomFileResult::class, 'failureResponse')]
+#[CoversMethod(\Bristolian\Service\RoomFileStorage\UploadRoomFileResult::class, 'success')]
+
 class UploadRoomFileResultTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\RoomFileStorage\UploadRoomFileResult::__construct
-     * @covers \Bristolian\Service\RoomFileStorage\UploadRoomFileResult::success
-     */
     public function test_success_returns_ok_with_file_id(): void
     {
         $fileId = 'roomfile_789';
@@ -27,9 +27,6 @@ class UploadRoomFileResultTest extends BaseTestCase
         $this->assertNull($result->errorResponse);
     }
 
-    /**
-     * @covers \Bristolian\Service\RoomFileStorage\UploadRoomFileResult::failure
-     */
     public function test_failure_returns_not_ok_with_error(): void
     {
         $error = UploadError::unsupportedFileType();
@@ -40,9 +37,6 @@ class UploadRoomFileResultTest extends BaseTestCase
         $this->assertNull($result->errorResponse);
     }
 
-    /**
-     * @covers \Bristolian\Service\RoomFileStorage\UploadRoomFileResult::failureResponse
-     */
     public function test_failureResponse_returns_not_ok_with_response(): void
     {
         $error = UploadError::uploadedFileUnreadable();

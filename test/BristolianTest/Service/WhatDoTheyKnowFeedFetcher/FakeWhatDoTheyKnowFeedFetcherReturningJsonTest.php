@@ -6,17 +6,13 @@ namespace BristolianTest\Service\WhatDoTheyKnowFeedFetcher;
 
 use Bristolian\Service\WhatDoTheyKnowFeedFetcher\FakeWhatDoTheyKnowFeedFetcherReturningJson;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-/**
- */
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\WhatDoTheyKnowFeedFetcher\FakeWhatDoTheyKnowFeedFetcherReturningJson::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\WhatDoTheyKnowFeedFetcher\FakeWhatDoTheyKnowFeedFetcherReturningJson::class, 'fetchRequestedFromBristolCityCouncilJson')]
+
 final class FakeWhatDoTheyKnowFeedFetcherReturningJsonTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\WhatDoTheyKnowFeedFetcher\FakeWhatDoTheyKnowFeedFetcherReturningJson::__construct
-     * @covers \Bristolian\Service\WhatDoTheyKnowFeedFetcher\FakeWhatDoTheyKnowFeedFetcherReturningJson::fetchRequestedFromBristolCityCouncilJson
-     */
     public function test_fetchRequestedFromBristolCityCouncilJson_returns_configured_json_body(): void
     {
         $jsonBody = '{"ok":true,"items":[1,2,3]}';

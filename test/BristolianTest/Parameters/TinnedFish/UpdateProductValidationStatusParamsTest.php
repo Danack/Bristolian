@@ -10,13 +10,16 @@ use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Tests for UpdateProductValidationStatusParams
  *
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Parameters\PropertyType\BasicPhpEnumType::class)]
+#[CoversClass(\Bristolian\Parameters\TinnedFish\UpdateProductValidationStatusParams::class)]
+
 class UpdateProductValidationStatusParamsTest extends BaseTestCase
 {
     /**
@@ -39,8 +42,6 @@ class UpdateProductValidationStatusParamsTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\TinnedFish\UpdateProductValidationStatusParams
-     * @covers \Bristolian\Parameters\PropertyType\BasicPhpEnumType
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -76,8 +77,6 @@ class UpdateProductValidationStatusParamsTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\TinnedFish\UpdateProductValidationStatusParams
-     * @covers \Bristolian\Parameters\PropertyType\BasicPhpEnumType
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]

@@ -11,9 +11,11 @@ use Bristolian\Response\SVGResponse;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\QRCode::class, 'get')]
+#[CoversMethod(\Bristolian\AppController\QRCode::class, 'getToken')]
+
 class QRCodeTest extends BaseTestCase
 {
     /**
@@ -28,9 +30,6 @@ class QRCodeTest extends BaseTestCase
         ];
     }
 
-    /**
-     * @covers \Bristolian\AppController\QRCode::get
-     */
     #[DataProvider('provides_get')]
     public function test_get(string $url): void
     {
@@ -43,9 +42,6 @@ class QRCodeTest extends BaseTestCase
         $this->assertInstanceOf(SVGResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\QRCode::getToken
-     */
     public function test_getToken(): void
     {
         $qrParams = QRTokenParams::createFromVarMap(new ArrayVarMap([

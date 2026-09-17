@@ -10,15 +10,12 @@ use BristolianTest\BaseTestCase;
 /**
  * Abstract test class for RoomLinkTagRepo implementations.
  *
- * @coversNothing
  */
+
 abstract class RoomLinkTagRepoFixture extends BaseTestCase
 {
     abstract public function getTestInstance(): RoomLinkTagRepo;
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkTagRepo\RoomLinkTagRepo::getTagIdsForRoomLink
-     */
     public function test_getTagIdsForRoomLink_returns_empty_initially(): void
     {
         $repo = $this->getTestInstance();
@@ -26,10 +23,6 @@ abstract class RoomLinkTagRepoFixture extends BaseTestCase
         $this->assertSame([], $ids);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkTagRepo\RoomLinkTagRepo::getTagIdsForRoomLink
-     * @covers \Bristolian\Repo\RoomLinkTagRepo\RoomLinkTagRepo::setTagsForRoomLink
-     */
     public function test_setTagsForRoomLink_and_getTagIdsForRoomLink_roundtrip(): void
     {
         $repo = $this->getTestInstance();
@@ -39,9 +32,6 @@ abstract class RoomLinkTagRepoFixture extends BaseTestCase
         $this->assertEquals($tag_ids, $repo->getTagIdsForRoomLink($link_id));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkTagRepo\RoomLinkTagRepo::setTagsForRoomLink
-     */
     public function test_setTagsForRoomLink_replaces_existing(): void
     {
         $repo = $this->getTestInstance();

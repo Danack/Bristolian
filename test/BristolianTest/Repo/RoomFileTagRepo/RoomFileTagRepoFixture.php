@@ -10,16 +10,12 @@ use BristolianTest\BaseTestCase;
 /**
  * Abstract test class for RoomFileTagRepo implementations.
  *
- * @coversNothing
  */
+
 abstract class RoomFileTagRepoFixture extends BaseTestCase
 {
     abstract public function getTestInstance(): RoomFileTagRepo;
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileTagRepo\RoomFileTagRepo::getTagIdsForRoomFile
-     * @covers \Bristolian\Repo\RoomFileTagRepo\RoomFileTagRepo::setTagsForRoomFile
-     */
     public function test_getTagIdsForRoomFile_returns_empty_initially(): void
     {
         $repo = $this->getTestInstance();
@@ -27,10 +23,6 @@ abstract class RoomFileTagRepoFixture extends BaseTestCase
         $this->assertSame([], $ids);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileTagRepo\RoomFileTagRepo::getTagIdsForRoomFile
-     * @covers \Bristolian\Repo\RoomFileTagRepo\RoomFileTagRepo::setTagsForRoomFile
-     */
     public function test_setTagsForRoomFile_and_getTagIdsForRoomFile_roundtrip(): void
     {
         $repo = $this->getTestInstance();
@@ -41,9 +33,6 @@ abstract class RoomFileTagRepoFixture extends BaseTestCase
         $this->assertEquals($tag_ids, $repo->getTagIdsForRoomFile($room_id, $file_id));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileTagRepo\RoomFileTagRepo::setTagsForRoomFile
-     */
     public function test_setTagsForRoomFile_replaces_existing(): void
     {
         $repo = $this->getTestInstance();

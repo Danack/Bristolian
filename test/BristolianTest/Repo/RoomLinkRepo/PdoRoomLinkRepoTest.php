@@ -20,12 +20,14 @@ use BristolianGenerated\Model\RoomLink;
 use Bristolian\Model\Types\RoomLinkWithUrl;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::class)]
+
 class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
 {
     use HasTestWorld;
@@ -65,9 +67,6 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         return $this->standardTestData()->getHousingRoom()->id;
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo
-     */
     public function testAddLinkToRoom(): void
     {
         $this->initPdoTestObjects();
@@ -91,9 +90,6 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertNull($room_link->description);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo
-     */
     public function testAddLinkToRoomWithTitleAndDescription(): void
     {
         $this->initPdoTestObjects();
@@ -123,9 +119,6 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertInstanceOf(\DateTimeInterface::class, $room_link->created_at);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo
-     */
     public function testGetLinksForRoom(): void
     {
         $this->initPdoTestObjects();
@@ -179,9 +172,6 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertSame($title2, $link2->title);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo
-     */
     public function testGetLinksForRoomReturnsEmptyArrayForNonExistentRoom(): void
     {
         $this->initPdoTestObjects();
@@ -193,9 +183,6 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertEmpty($roomLinks);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo
-     */
     public function testGetRoomLinkThrowsExceptionForNonExistentLink(): void
     {
         $this->initPdoTestObjects();
@@ -207,9 +194,6 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $roomLinkRepo->getRoomLink('non-existent-link-id');
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo
-     */
     public function testMultipleLinksFromDifferentUsers(): void
     {
         $this->initPdoTestObjects();
@@ -250,9 +234,6 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertCount(2, $roomLinks);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
-     */
     public function test_getLinksForRoom_filters_by_title(): void
     {
         $this->initPdoTestObjects();
@@ -269,9 +250,6 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertCount(1, $links);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
-     */
     public function test_getLinksForRoom_filters_by_description(): void
     {
         $this->initPdoTestObjects();
@@ -289,9 +267,6 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertCount(1, $links);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
-     */
     public function test_getLinksForRoom_filters_by_created_at_after(): void
     {
         $this->initPdoTestObjects();
@@ -306,9 +281,6 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertCount(0, $links);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
-     */
     public function test_getLinksForRoom_filters_by_created_at_before(): void
     {
         $this->initPdoTestObjects();
@@ -323,9 +295,6 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertCount(0, $links);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
-     */
     public function test_getLinksForRoom_filters_by_document_timestamp_after(): void
     {
         $this->initPdoTestObjects();
@@ -345,9 +314,6 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertCount(0, $links);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
-     */
     public function test_getLinksForRoom_filters_by_document_timestamp_before(): void
     {
         $this->initPdoTestObjects();
@@ -367,9 +333,6 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertCount(0, $links);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::getLinksForRoom
-     */
     public function test_getLinksForRoom_filters_by_tag_ids(): void
     {
         $this->initPdoTestObjects();
@@ -392,9 +355,6 @@ class PdoRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertSame($roomLinkId, $links[0]->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\PdoRoomLinkRepo::updateTitleAndDescription
-     */
     public function test_updateTitleAndDescription_throws_when_room_mismatches(): void
     {
         $this->initPdoTestObjects();

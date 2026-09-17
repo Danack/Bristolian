@@ -20,12 +20,24 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'addClip')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'addVideo')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'fetchTagIdsForRoomVideo')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'fetchVideoById')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'getRoomVideo')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'getRoomVideoForRoom')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'getVideosForRoom')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'getVideosForRoomWithTags')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'resolveTagIdsToTags')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'updateTitleAndDescription')]
+
 class PdoRoomVideoRepoTest extends BaseTestCase
 {
     use HasTestWorld;
@@ -53,10 +65,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         return $this->injector->make(PdoRoomVideoRepo::class);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::__construct
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getVideosForRoom
-     */
     public function test_getVideosForRoom_returns_empty_then_created_videos(): void
     {
         $repo = $this->getRepo();
@@ -73,10 +81,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertSame($this->roomId, $videos[0]->room_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::addVideo
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getRoomVideo
-     */
     public function test_addVideo_and_getRoomVideo(): void
     {
         $repo = $this->getRepo();
@@ -90,9 +94,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertSame($roomVideo->id, $fetched->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getRoomVideo
-     */
     public function test_getRoomVideo_throws_for_nonexistent_id(): void
     {
         $repo = $this->getRepo();
@@ -103,9 +104,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $repo->getRoomVideo('00000000-0000-0000-0000-000000000000');
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getRoomVideoForRoom
-     */
     public function test_getRoomVideoForRoom_returns_video_when_in_room(): void
     {
         $repo = $this->getRepo();
@@ -117,9 +115,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertSame($roomVideo->id, $fetched->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getRoomVideoForRoom
-     */
     public function test_getRoomVideoForRoom_throws_when_video_in_different_room(): void
     {
         $repo = $this->getRepo();
@@ -139,9 +134,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $repo->getRoomVideoForRoom($otherRoom->id, $roomVideo->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getVideosForRoomWithTags
-     */
     public function test_getVideosForRoomWithTags_returns_videos_with_tags_structure(): void
     {
         $repo = $this->getRepo();
@@ -159,7 +151,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
      * getVideosForRoomWithTags with room tags and room-video tags: covers fetchTagIdsForRoomVideo,
      * resolveTagIdsToTags, and roomTagsById build.
      *
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getVideosForRoomWithTags
      */
     public function test_getVideosForRoomWithTags_includes_room_video_tags(): void
     {
@@ -184,9 +175,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertSame($tag->tag_id, $withTags[0]->tags[0]->tag_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::addClip
-     */
     public function test_addClip_creates_clip_with_start_end_seconds(): void
     {
         $repo = $this->getRepo();
@@ -207,9 +195,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertSame(70, $clip->end_seconds);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::fetchTagIdsForRoomVideo
-     */
     public function test_fetchTagIdsForRoomVideo_returns_empty_when_no_tags(): void
     {
         $repo = $this->injector->make(PdoRoomVideoRepo::class);
@@ -221,9 +206,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertSame([], $tagIds);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::fetchTagIdsForRoomVideo
-     */
     public function test_fetchTagIdsForRoomVideo_returns_tag_ids_when_tags_set(): void
     {
         $repo = $this->injector->make(PdoRoomVideoRepo::class);
@@ -242,9 +224,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertSame([$tag->tag_id], $tagIds);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::resolveTagIdsToTags
-     */
     public function test_resolveTagIdsToTags_returns_matching_tags_skips_missing_ids(): void
     {
         $repo = $this->injector->make(PdoRoomVideoRepo::class);
@@ -269,9 +248,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertSame($tag->tag_id, $tags[0]->tag_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::updateTitleAndDescription
-     */
     public function test_updateTitleAndDescription_updates_both_fields(): void
     {
         $repo = $this->getRepo();
@@ -291,9 +267,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertSame('New description', $updated->description);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::updateTitleAndDescription
-     */
     public function test_updateTitleAndDescription_keeps_existing_when_null_passed(): void
     {
         $repo = $this->getRepo();
@@ -313,9 +286,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertSame('Keep description', $updated->description);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::fetchVideoById
-     */
     public function test_fetchVideoById_returns_video_for_valid_id(): void
     {
         $repo = $this->injector->make(PdoRoomVideoRepo::class);
@@ -327,9 +297,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertSame('dQw4w9WgXcQ', $video->youtube_video_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::fetchVideoById
-     */
     public function test_fetchVideoById_throws_for_nonexistent_id(): void
     {
         $repo = $this->injector->make(PdoRoomVideoRepo::class);
@@ -340,9 +307,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $repo->fetchVideoById('00000000-0000-0000-0000-000000000000');
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getVideosForRoom
-     */
     public function test_getVideosForRoom_filters_by_title(): void
     {
         $repo = $this->getRepo();
@@ -356,9 +320,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertCount(1, $videos);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getVideosForRoom
-     */
     public function test_getVideosForRoom_filters_by_description(): void
     {
         $repo = $this->getRepo();
@@ -372,9 +333,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertCount(1, $videos);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getVideosForRoom
-     */
     public function test_getVideosForRoom_filters_by_created_at_after(): void
     {
         $repo = $this->getRepo();
@@ -389,9 +347,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertCount(0, $videos);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getVideosForRoom
-     */
     public function test_getVideosForRoom_filters_by_created_at_before(): void
     {
         $repo = $this->getRepo();
@@ -406,9 +361,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertCount(0, $videos);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getVideosForRoom
-     */
     public function test_getVideosForRoom_filters_by_document_timestamp_after(): void
     {
         $repo = $this->getRepo();
@@ -428,9 +380,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertCount(0, $videos);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getVideosForRoom
-     */
     public function test_getVideosForRoom_filters_by_document_timestamp_before(): void
     {
         $repo = $this->getRepo();
@@ -450,9 +399,6 @@ class PdoRoomVideoRepoTest extends BaseTestCase
         $this->assertCount(0, $videos);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::getVideosForRoom
-     */
     public function test_getVideosForRoom_filters_by_tag_ids(): void
     {
         $repo = $this->getRepo();

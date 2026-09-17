@@ -6,14 +6,12 @@ namespace BristolianTest\Data;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Data\ApiDomain;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Data\ApiDomain::class)]
+
 class ApiDomainTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Data\ApiDomain
-     */
     public function testBasic(): void
     {
         $domain = 'www.example.com';

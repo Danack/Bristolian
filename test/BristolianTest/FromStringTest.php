@@ -2,7 +2,7 @@
 
 namespace BristolianTest;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use Bristolian\FromString;
 use BristolianTest\BaseTestCase;
 use function Safe\json_encode;
@@ -10,7 +10,6 @@ use function Safe\json_encode;
 /**
  * Test class that uses the FromString trait with constructor
  *
- * @coversNothing
  */
 class TestFromStringClass
 {
@@ -28,19 +27,16 @@ class TestFromStringClass
 /**
  * Test class that uses the FromString trait without constructor
  *
- * @coversNothing
  */
 class TestFromStringNoConstructorClass
 {
     use FromString;
 }
 
-#[CoversNothing]
+#[CoversTrait(\Bristolian\FromString::class)]
+
 class FromStringTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\FromString
-     */
     public function testWorks_fromArray_with_all_parameters()
     {
         $data = [
@@ -57,9 +53,6 @@ class FromStringTest extends BaseTestCase
         $this->assertTrue($instance->active);
     }
 
-    /**
-     * @covers \Bristolian\FromString
-     */
     public function testWorks_fromArray_with_default_values()
     {
         $data = [
@@ -75,9 +68,6 @@ class FromStringTest extends BaseTestCase
         $this->assertFalse($instance->active); // default value
     }
 
-    /**
-     * @covers \Bristolian\FromString
-     */
     public function testWorks_fromArray_with_datetime_conversion()
     {
         $data = [
@@ -93,9 +83,6 @@ class FromStringTest extends BaseTestCase
         $this->assertSame('2024-01-15 12:00:00', $instance->created_at->format('Y-m-d H:i:s'));
     }
 
-    /**
-     * @covers \Bristolian\FromString
-     */
     public function testWorks_fromArray_without_constructor()
     {
         $data = [];
@@ -105,9 +92,6 @@ class FromStringTest extends BaseTestCase
         $this->assertInstanceOf(TestFromStringNoConstructorClass::class, $instance);
     }
 
-    /**
-     * @covers \Bristolian\FromString
-     */
     public function testWorks_fromArray_fails_with_missing_required_parameter()
     {
         $data = [
@@ -121,9 +105,6 @@ class FromStringTest extends BaseTestCase
         TestFromStringClass::fromArray($data);
     }
 
-    /**
-     * @covers \Bristolian\FromString
-     */
     public function testWorks_fromArray_fails_with_invalid_datetime()
     {
         $data = [
@@ -138,9 +119,6 @@ class FromStringTest extends BaseTestCase
         TestFromStringClass::fromArray($data);
     }
 
-    /**
-     * @covers \Bristolian\FromString
-     */
     public function testWorks_fromString()
     {
         $json = json_encode([

@@ -14,12 +14,17 @@ use Bristolian\Repo\UserRepo\PdoUserRepo;
 use BristolianTest\Repo\DbTransactionIsolation;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class, 'getMessagesForRoom')]
+#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class, 'storeChatMessageForSystem')]
+#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class, 'storeChatMessageForUser')]
+
 class PdoChatMessageRepoTest extends ChatMessageRepoFixture
 {
 //    use DbTransactionIsolation;
@@ -66,10 +71,6 @@ class PdoChatMessageRepoTest extends ChatMessageRepoFixture
         return $this->standardTestData()->getOffTopicRoom()->id;
     }
 
-    /**
-     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::__construct
-     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::storeChatMessageForUser
-     */
     public function test_pdo_storeChatMessageForUser_persists_and_returns_message(): void
     {
         $repo = $this->injector->make(PdoChatMessageRepo::class);
@@ -88,9 +89,6 @@ class PdoChatMessageRepoTest extends ChatMessageRepoFixture
         $this->assertSame($roomId, $message->room_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::getMessagesForRoom
-     */
     public function test_pdo_getMessagesForRoom_returns_only_messages_for_room_ordered_desc(): void
     {
         $repo = $this->injector->make(PdoChatMessageRepo::class);
@@ -120,9 +118,6 @@ class PdoChatMessageRepoTest extends ChatMessageRepoFixture
         $this->assertGreaterThanOrEqual($messages[1]->id, $messages[0]->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::storeChatMessageForSystem
-     */
     public function test_pdo_storeChatMessageForSystem_uses_system_ownership_user_id(): void
     {
         $this->ensureStandardSetup();

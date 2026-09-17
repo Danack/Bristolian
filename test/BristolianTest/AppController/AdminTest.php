@@ -18,9 +18,17 @@ use SlimDispatcher\Response\JsonResponse;
 use SlimDispatcher\Response\RedirectResponse;
 use VarMap\ArrayVarMap;
 use VarMap\VarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\Admin::class, 'renderProcessorLogWidget')]
+#[CoversMethod(\Bristolian\AppController\Admin::class, 'search_users')]
+#[CoversMethod(\Bristolian\AppController\Admin::class, 'showAdminPage')]
+#[CoversMethod(\Bristolian\AppController\Admin::class, 'showEmailPage')]
+#[CoversMethod(\Bristolian\AppController\Admin::class, 'showNotificationTestPage')]
+#[CoversMethod(\Bristolian\AppController\Admin::class, 'showProcessorsPage')]
+#[CoversMethod(\Bristolian\AppController\Admin::class, 'showUnknownCacheQueries')]
+#[CoversMethod(\Bristolian\AppController\Admin::class, 'updateProcessors')]
+
 class AdminTest extends BaseTestCase
 {
     public function setup(): void
@@ -38,9 +46,6 @@ class AdminTest extends BaseTestCase
         $this->injector->share(InMemoryUnknownCacheQueriesProvider::class);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::showNotificationTestPage
-     */
     public function test_showNotificationTestPage(): void
     {
         $result = $this->injector->execute([Admin::class, 'showNotificationTestPage']);
@@ -48,9 +53,6 @@ class AdminTest extends BaseTestCase
         $this->assertStringContainsString('notification_test_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::showAdminPage
-     */
     public function test_showAdminPage(): void
     {
         $result = $this->injector->execute([Admin::class, 'showAdminPage']);
@@ -58,9 +60,6 @@ class AdminTest extends BaseTestCase
         $this->assertStringContainsString('Admin page', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::showEmailPage
-     */
     public function test_showEmailPage(): void
     {
         $result = $this->injector->execute([Admin::class, 'showEmailPage']);
@@ -68,20 +67,12 @@ class AdminTest extends BaseTestCase
         $this->assertStringContainsString('admin_email_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::showProcessorsPage
-     * @covers \Bristolian\AppController\Admin::renderProcessorLogWidget
-     */
     public function test_showProcessorsPage(): void
     {
         $result = $this->injector->execute([Admin::class, 'showProcessorsPage']);
         $this->assertInstanceOf(HtmlNoCacheResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::showProcessorsPage
-     * @covers \Bristolian\AppController\Admin::renderProcessorLogWidget
-     */
     public function test_showProcessorsPage_with_enabled_processor_shows_enabled_state(): void
     {
         $processorRepo = $this->injector->make(FakeProcessorRepo::class);
@@ -94,9 +85,6 @@ class AdminTest extends BaseTestCase
         $this->assertStringContainsString('disable', $result->getBody());
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::updateProcessors
-     */
     public function test_updateProcessors_enable(): void
     {
         $varMap = new ArrayVarMap([
@@ -111,9 +99,6 @@ class AdminTest extends BaseTestCase
         $this->assertInstanceOf(RedirectResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::updateProcessors
-     */
     public function test_updateProcessors_no_processor(): void
     {
         $varMap = new ArrayVarMap([]);
@@ -125,9 +110,6 @@ class AdminTest extends BaseTestCase
         $this->assertInstanceOf(RedirectResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::updateProcessors
-     */
     public function test_updateProcessors_invalid_processor(): void
     {
         $reflectionClass = new \ReflectionClass(Admin::class);
@@ -159,9 +141,6 @@ class AdminTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::updateProcessors
-     */
     public function test_updateProcessors_no_action(): void
     {
         $varMap = new ArrayVarMap([
@@ -175,9 +154,6 @@ class AdminTest extends BaseTestCase
         $this->assertInstanceOf(RedirectResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::updateProcessors
-     */
     public function test_updateProcessors_invalid_action(): void
     {
         $varMap = new ArrayVarMap([
@@ -192,9 +168,6 @@ class AdminTest extends BaseTestCase
         $this->assertInstanceOf(RedirectResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::updateProcessors
-     */
     public function test_updateProcessors_disable(): void
     {
         $varMap = new ArrayVarMap([
@@ -210,9 +183,6 @@ class AdminTest extends BaseTestCase
         $this->assertInstanceOf(RedirectResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::search_users
-     */
     public function test_search_users(): void
     {
         $userSearch = $this->injector->make(InMemoryUserSearch::class);
@@ -227,9 +197,6 @@ class AdminTest extends BaseTestCase
         $this->assertInstanceOf(JsonResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::search_users
-     */
     public function test_search_users_no_query(): void
     {
         $varMap = new ArrayVarMap([]);
@@ -240,9 +207,6 @@ class AdminTest extends BaseTestCase
         $this->assertInstanceOf(JsonResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::showUnknownCacheQueries
-     */
     public function test_showUnknownCacheQueries(): void
     {
         $result = $this->injector->execute([Admin::class, 'showUnknownCacheQueries']);
@@ -251,9 +215,6 @@ class AdminTest extends BaseTestCase
         $this->assertStringContainsString('No unknown queries logged.', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::showUnknownCacheQueries
-     */
     public function test_showUnknownCacheQueries_with_queries_shows_table(): void
     {
         $provider = new InMemoryUnknownCacheQueriesProvider();
@@ -271,9 +232,6 @@ class AdminTest extends BaseTestCase
         $this->assertStringContainsString('SELECT * FROM rooms', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Admin::showUnknownCacheQueries
-     */
     public function test_showUnknownCacheQueries_skips_key_with_no_query(): void
     {
         $provider = new InMemoryUnknownCacheQueriesProvider();

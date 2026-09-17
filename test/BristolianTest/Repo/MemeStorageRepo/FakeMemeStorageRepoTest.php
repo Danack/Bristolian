@@ -8,12 +8,25 @@ use Bristolian\Exception\BristolianException;
 use Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo;
 use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\UploadedFiles\UploadedFile;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'getByNormalizedName')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'getMeme')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'getMemeByOriginalFilename')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'getStoredMeme')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'listAllMemes')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'listMemesForUser')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'listMemesForUserWithNoTags')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'markAsDeleted')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'searchMemesByExactTags')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'searchMemesForUser')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'setUploaded')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'storeMeme')]
+
 class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
 {
     /**
@@ -29,9 +42,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         return 'user_123';
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::setUploaded
-     */
     public function test_setUploaded_updates_state(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -42,9 +52,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertSame(\Bristolian\Repo\MemeStorageRepo\MemeFileState::UPLOADED->value, $meme->state);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::markAsDeleted
-     */
     public function test_markAsDeleted_updates_meme(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -55,9 +62,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertTrue($meme->deleted);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::listAllMemes
-     */
     public function test_listAllMemes_returns_non_deleted_memes(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -68,9 +72,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertCount(2, $all);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::listMemesForUserWithNoTags
-     */
     public function test_listMemesForUserWithNoTags_delegates_to_listMemesForUser(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -80,9 +81,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertCount(1, $memes);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::searchMemesForUser
-     */
     public function test_searchMemesForUser_returns_memes_for_user(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -92,9 +90,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertCount(1, $memes);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::searchMemesByExactTags
-     */
     public function test_searchMemesByExactTags_empty_returns_listMemesForUser(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -104,9 +99,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertCount(1, $memes);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::searchMemesByExactTags
-     */
     public function test_searchMemesByExactTags_with_tags_returns_user_memes(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -116,9 +108,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertCount(1, $memes);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getStoredMeme
-     */
     public function test_getStoredMeme_returns_all_stored(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -128,9 +117,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertCount(1, $stored);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::setUploaded
-     */
     public function test_setUploaded_throws_when_meme_not_found(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -141,9 +127,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $repo->setUploaded('nonexistent-id');
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::markAsDeleted
-     */
     public function test_markAsDeleted_throws_when_meme_not_found(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -154,9 +137,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $repo->markAsDeleted('nonexistent-id');
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getMeme
-     */
     public function test_getMeme_returns_stored_meme(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -167,9 +147,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertSame($meme_id, $meme->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getByNormalizedName
-     */
     public function test_getByNormalizedName_returns_meme_when_found(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -180,9 +157,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertSame('normalized.jpg', $meme->normalized_name);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getByNormalizedName
-     */
     public function test_getByNormalizedName_returns_null_when_not_found(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -191,9 +165,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertNull($repo->getByNormalizedName('nonexistent.jpg'));
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::storeMeme
-     */
     public function test_storeMeme_creates_meme_and_returns_id(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -205,9 +176,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertSame('stored.jpg', $meme->normalized_name);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::listMemesForUser
-     */
     public function test_listMemesForUser_returns_only_that_users_memes(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -219,9 +187,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertCount(2, $memes);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::listAllMemes
-     */
     public function test_listAllMemes_excludes_deleted(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -233,9 +198,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertCount(1, $all);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getMemeByOriginalFilename
-     */
     public function test_getMemeByOriginalFilename_returns_meme_when_found(): void
     {
         $repo = new FakeMemeStorageRepo();
@@ -246,9 +208,6 @@ class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertNotNull($meme);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::getMemeByOriginalFilename
-     */
     public function test_getMemeByOriginalFilename_returns_null_when_not_found(): void
     {
         $repo = new FakeMemeStorageRepo();

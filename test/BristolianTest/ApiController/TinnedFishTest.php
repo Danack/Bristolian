@@ -22,13 +22,11 @@ use Bristolian\Service\TinnedFish\OpenFoodFactsApiException;
 use Bristolian\Session\FakeUserSession;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-/**
- * @covers \Bristolian\ApiController\TinnedFish::getProductByBarcode
- * @covers \Bristolian\ApiController\TinnedFish::generateApiToken
- */
-#[CoversNothing]
+#[CoversMethod(\Bristolian\ApiController\TinnedFish::class, 'generateApiToken')]
+#[CoversMethod(\Bristolian\ApiController\TinnedFish::class, 'getProductByBarcode')]
+
 class TinnedFishTest extends BaseTestCase
 {
     public function test_getAllProducts_returns_empty_array_when_no_products(): void

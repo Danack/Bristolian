@@ -9,16 +9,14 @@ use Bristolian\Model\Types\WebPushNotification;
 use Bristolian\Service\WebPushService\StandardWebPushService;
 use BristolianTest\BaseTestCase;
 use Minishlink\WebPush\SubscriptionInterface;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\WebPushService\StandardWebPushService::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\WebPushService\StandardWebPushService::class, 'sendWebPushToSubscriptions')]
+
 class StandardWebPushServiceTest extends BaseTestCase
 {
 
-    /**
-     * @covers \Bristolian\Service\WebPushService\StandardWebPushService::__construct
-     * @covers \Bristolian\Service\WebPushService\StandardWebPushService::sendWebPushToSubscriptions
-     */
     public function test_sendWebPushToSubscriptions_sends_notifications_and_returns_empty_array_on_success(): void
     {
         $fakeWebPush = new FakeWebPush();
@@ -65,9 +63,6 @@ class StandardWebPushServiceTest extends BaseTestCase
         $this->assertStringContainsString('Test body', $payload);
     }
 
-    /**
-     * @covers \Bristolian\Service\WebPushService\StandardWebPushService::sendWebPushToSubscriptions
-     */
     public function test_sendWebPushToSubscriptions_returns_failed_subscriptions_on_error(): void
     {
         $fakeWebPush = new FakeWebPush();

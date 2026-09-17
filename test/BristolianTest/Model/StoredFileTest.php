@@ -5,14 +5,12 @@ namespace BristolianTest\Model;
 use BristolianTest\BaseTestCase;
 use BristolianGenerated\Model\RoomFileObjectInfo;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\BristolianGenerated\Model\RoomFileObjectInfo::class)]
+
 class StoredFileTest extends BaseTestCase
 {
-    /**
-     * @covers \BristolianGenerated\Model\RoomFileObjectInfo
-     */
     public function testConstruct()
     {
         $id = 'file-123';

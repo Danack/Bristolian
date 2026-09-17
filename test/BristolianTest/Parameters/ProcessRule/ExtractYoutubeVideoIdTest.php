@@ -9,9 +9,11 @@ use BristolianTest\BaseTestCase;
 use DataType\DataStorage\TestArrayDataStorage;
 use DataType\ProcessedValues;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Parameters\ProcessRule\ExtractYoutubeVideoId::class, 'process')]
+#[CoversMethod(\Bristolian\Parameters\ProcessRule\ExtractYoutubeVideoId::class, 'updateParamDescription')]
+
 class ExtractYoutubeVideoIdTest extends BaseTestCase
 {
     public static function provides_valid_youtube_inputs(): \Generator
@@ -23,7 +25,6 @@ class ExtractYoutubeVideoIdTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\ProcessRule\ExtractYoutubeVideoId::process
      * @dataProvider provides_valid_youtube_inputs
      */
     #[DataProvider('provides_valid_youtube_inputs')]
@@ -39,9 +40,6 @@ class ExtractYoutubeVideoIdTest extends BaseTestCase
         $this->assertSame($expectedId, $result->getValue());
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\ExtractYoutubeVideoId::process
-     */
     public function test_process_returns_error_for_empty_string(): void
     {
         $rule = new ExtractYoutubeVideoId();
@@ -59,9 +57,6 @@ class ExtractYoutubeVideoIdTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\ExtractYoutubeVideoId::process
-     */
     public function test_process_returns_error_for_invalid_url(): void
     {
         $rule = new ExtractYoutubeVideoId();
@@ -79,9 +74,6 @@ class ExtractYoutubeVideoIdTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\ExtractYoutubeVideoId::updateParamDescription
-     */
     public function test_updateParamDescription_sets_description(): void
     {
         $rule = new ExtractYoutubeVideoId();

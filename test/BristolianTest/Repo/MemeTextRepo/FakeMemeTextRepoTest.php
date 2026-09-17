@@ -11,12 +11,16 @@ use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo;
 use Bristolian\Repo\MemeTextRepo\MemeTextRepo;
 use Bristolian\UploadedFiles\UploadedFile;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::class, 'getNextMemeToOCR')]
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::class, 'searchMemeIdsByText')]
+
 class FakeMemeTextRepoTest extends MemeTextRepoFixture
 {
     private ?FakeMemeStorageRepo $memeStorageRepo = null;
@@ -34,27 +38,18 @@ class FakeMemeTextRepoTest extends MemeTextRepoFixture
         return $this->memeStorageRepo;
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::getNextMemeToOCR
-     */
     public function test_getNextMemeToOCR_returns_null_when_no_memes(): void
     {
         $repo = new FakeMemeTextRepo(new FakeMemeStorageRepo());
         $this->assertNull($repo->getNextMemeToOCR());
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::getNextMemeToOCR
-     */
     public function test_getNextMemeToOCR_returns_null_when_storage_has_no_getStoredMeme(): void
     {
         $repo = new FakeMemeTextRepo(new MemeStorageRepoStubWithoutGetStoredMeme());
         $this->assertNull($repo->getNextMemeToOCR());
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::getNextMemeToOCR
-     */
     public function test_getNextMemeToOCR_returns_meme_when_meme_exists_without_text(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -68,9 +63,6 @@ class FakeMemeTextRepoTest extends MemeTextRepoFixture
         $this->assertSame($meme_id, $result->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::getNextMemeToOCR
-     */
     public function test_getNextMemeToOCR_returns_oldest_first(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -87,9 +79,6 @@ class FakeMemeTextRepoTest extends MemeTextRepoFixture
         $this->assertSame($meme_id1, $result->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::getNextMemeToOCR
-     */
     public function test_getNextMemeToOCR_excludes_deleted_memes(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -101,9 +90,6 @@ class FakeMemeTextRepoTest extends MemeTextRepoFixture
         $this->assertNull($repo->getNextMemeToOCR());
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::getNextMemeToOCR
-     */
     public function test_getNextMemeToOCR_excludes_memes_with_existing_text(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -126,9 +112,6 @@ class FakeMemeTextRepoTest extends MemeTextRepoFixture
         $this->assertNull($repo->getNextMemeToOCR());
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::__construct
-     */
     public function test_fake_construct_accepts_meme_storage_repo(): void
     {
         $storageRepo = new FakeMemeStorageRepo();
@@ -136,9 +119,6 @@ class FakeMemeTextRepoTest extends MemeTextRepoFixture
         $this->assertNull($repo->getNextMemeToOCR());
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::searchMemeIdsByText
-     */
     public function test_searchMemeIdsByText_excludes_deleted_memes(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();

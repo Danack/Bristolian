@@ -2,14 +2,13 @@
 
 namespace BristolianTest;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use Bristolian\FromArray;
 use BristolianTest\BaseTestCase;
 
 /**
  * Test class that uses the FromArray trait
  *
- * @coversNothing
  */
 class TestFromArrayClass
 {
@@ -23,12 +22,10 @@ class TestFromArrayClass
     public $active;
 }
 
-#[CoversNothing]
+#[CoversTrait(\Bristolian\FromArray::class)]
+
 class FromArrayTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\FromArray
-     */
     public function testWorks()
     {
         $data = [

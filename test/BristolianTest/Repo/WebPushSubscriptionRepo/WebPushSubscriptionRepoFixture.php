@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\WebPushSubscriptionRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Model\Types\UserWebPushSubscription;
 use Bristolian\Parameters\WebPushSubscriptionParams;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
@@ -14,8 +15,14 @@ use VarMap\ArrayVarMap;
 /**
  * Abstract test class for WebPushSubscriptionRepo implementations.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::class, 'getUserSubscriptions')]
+#[CoversMethod(\Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::class, 'save')]
+#[CoversMethod(\Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::class, 'getUserSubscriptions')]
+#[CoversMethod(\Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::class, 'save')]
+
 abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
 {
     use TestPlaceholders;
@@ -43,12 +50,6 @@ abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
         return 'user-456';
     }
 
-    /**
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::save
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::save
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::__construct
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::save
-     */
     public function test_save_stores_subscription(): void
     {
         $repo = $this->getTestInstance();
@@ -63,14 +64,6 @@ abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
         $repo->save($this->getTestUserId(), $webPushSubscriptionParam, '{"raw": "subscription data"}');
     }
 
-    /**
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::getUserSubscriptions
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::save
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::getUserSubscriptions
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::save
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::getUserSubscriptions
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::save
-     */
     public function test_getUserSubscriptions_returns_saved_subscriptions(): void
     {
         $repo = $this->getTestInstance();
@@ -89,14 +82,6 @@ abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
         $this->assertSame('https://example.com/push/endpoint', $subscriptions[0]->getEndpoint());
     }
 
-    /**
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::getUserSubscriptions
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::save
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::getUserSubscriptions
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::save
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::getUserSubscriptions
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::save
-     */
     public function test_getUserSubscriptions_returns_only_subscriptions_for_specified_user(): void
     {
         $repo = $this->getTestInstance();
@@ -121,14 +106,6 @@ abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
         $this->assertSame('https://example.com/push/endpoint1', $subscriptions[0]->getEndpoint());
     }
 
-    /**
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::getUserSubscriptions
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::save
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::getUserSubscriptions
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::save
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::getUserSubscriptions
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::save
-     */
     public function test_getUserSubscriptions_returns_multiple_subscriptions_for_user(): void
     {
         $repo = $this->getTestInstance();
@@ -152,11 +129,6 @@ abstract class WebPushSubscriptionRepoFixture extends BaseTestCase
         $this->assertCount(2, $subscriptions);
     }
 
-    /**
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo::save
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::save
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\PdoWebPushSubscriptionRepo::save
-     */
     public function test_save_with_expiration_time(): void
     {
         $repo = $this->getTestInstance();

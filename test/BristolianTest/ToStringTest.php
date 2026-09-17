@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use Bristolian\Exception\BristolianException;
 use Bristolian\ToString;
 use Safe\DateTimeImmutable;
@@ -13,7 +13,6 @@ use function Safe\json_decode;
 /**
  * Test class that uses the ToString trait with scalar and datetime properties.
  *
- * @coversNothing
  */
 class TestToStringClass
 {
@@ -30,7 +29,6 @@ class TestToStringClass
 /**
  * Test class with __-prefixed property (should be omitted from toArray/toString).
  *
- * @coversNothing
  */
 class TestToStringClassWithSkippedProperty
 {
@@ -46,7 +44,6 @@ class TestToStringClassWithSkippedProperty
 /**
  * Test class with unsupported property type (should throw when converting).
  *
- * @coversNothing
  */
 class TestToStringClassWithUnsupportedProperty
 {
@@ -59,10 +56,8 @@ class TestToStringClassWithUnsupportedProperty
     }
 }
 
-/**
- * @covers \Bristolian\ToString
- */
-#[CoversNothing]
+#[CoversTrait(\Bristolian\ToString::class)]
+
 class ToStringTest extends BaseTestCase
 {
     public function test_toArray_returns_properties_as_array(): void

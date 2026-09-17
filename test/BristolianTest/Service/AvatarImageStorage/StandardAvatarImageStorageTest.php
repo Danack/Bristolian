@@ -11,16 +11,14 @@ use Bristolian\Service\ObjectStore\FakeAvatarImageObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use function Safe\getimagesize;
-use PHPUnit\Framework\Attributes\CoversNothing;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::class, 'storeAvatarForUser')]
+
 class StandardAvatarImageStorageTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::__construct
-     * @covers \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::storeAvatarForUser
-     */
     public function test_storeAvatarForUser_returns_extensionNotAllowed_when_extension_not_in_list(): void
     {
         $infoRepo = new FakeAvatarImageStorageInfoRepo();
@@ -39,9 +37,6 @@ class StandardAvatarImageStorageTest extends BaseTestCase
         $this->assertEmpty($objectStore->getStoredFiles());
     }
 
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::storeAvatarForUser
-     */
     #[RequiresPhpExtension('Imagick')]
     public function test_storeAvatarForUser_returns_imageTooSmall_when_image_smaller_than_512(): void
     {
@@ -62,9 +57,6 @@ class StandardAvatarImageStorageTest extends BaseTestCase
         $this->assertEmpty($objectStore->getStoredFiles());
     }
 
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::storeAvatarForUser
-     */
     #[RequiresPhpExtension('Imagick')]
     public function test_storeAvatarForUser_returns_avatar_image_id_and_uploads_to_object_store(): void
     {
@@ -99,9 +91,6 @@ class StandardAvatarImageStorageTest extends BaseTestCase
         $this->assertStringStartsWith("\xff\xd8\xff", $contents, 'Resized output should be JPEG');
     }
 
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::storeAvatarForUser
-     */
     #[RequiresPhpExtension('Imagick')]
     public function test_storeAvatarForUser_returns_uploadedFileUnreadable_when_file_cannot_be_read(): void
     {
@@ -121,9 +110,6 @@ class StandardAvatarImageStorageTest extends BaseTestCase
         $this->assertEmpty($objectStore->getStoredFiles());
     }
 
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::storeAvatarForUser
-     */
     #[RequiresPhpExtension('Imagick')]
     public function test_storeAvatarForUser_returns_uploadedFileUnreadable_when_imagick_fails(): void
     {

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\AdminRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Parameters\CreateUserParams;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use BristolianTest\BaseTestCase;
@@ -13,8 +14,16 @@ use BristolianTest\Repo\TestPlaceholders;
  * Abstract test class for AdminRepo implementations.
  *
  * @internal
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\AdminRepo\FakeAdminRepo::class, 'addUser')]
+#[CoversMethod(\Bristolian\Repo\AdminRepo\FakeAdminRepo::class, 'getAdminUser')]
+#[CoversMethod(\Bristolian\Repo\AdminRepo\FakeAdminRepo::class, 'getAdminUserId')]
+#[CoversMethod(\Bristolian\Repo\AdminRepo\PdoAdminRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\AdminRepo\PdoAdminRepo::class, 'addUser')]
+#[CoversMethod(\Bristolian\Repo\AdminRepo\PdoAdminRepo::class, 'getAdminUser')]
+#[CoversMethod(\Bristolian\Repo\AdminRepo\PdoAdminRepo::class, 'getAdminUserId')]
+
 abstract class AdminRepoFixture extends BaseTestCase
 {
     use TestPlaceholders;
@@ -26,13 +35,8 @@ abstract class AdminRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): AdminRepo;
 
-
     /**
      * @group slow
-     * @covers \Bristolian\Repo\AdminRepo\AdminRepo::addUser
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::addUser
-     * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo::__construct
-     * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo::addUser
      */
     public function test_addUser(): void
     {
@@ -54,15 +58,8 @@ abstract class AdminRepoFixture extends BaseTestCase
         );
     }
 
-
     /**
      * @group slow
-     * @covers \Bristolian\Repo\AdminRepo\AdminRepo::getAdminUser
-     * @covers \Bristolian\Repo\AdminRepo\AdminRepo::addUser
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::getAdminUser
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::addUser
-     * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo::getAdminUser
-     * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo::addUser
      */
     public function test_getAdminUser_returns_user_with_correct_credentials(): void
     {
@@ -86,12 +83,6 @@ abstract class AdminRepoFixture extends BaseTestCase
         );
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\AdminRepo\AdminRepo::getAdminUser
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::getAdminUser
-     * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo::getAdminUser
-     */
     public function test_getAdminUser_returns_null_for_nonexistent_user(): void
     {
         $repo = $this->getTestInstance();
@@ -100,14 +91,8 @@ abstract class AdminRepoFixture extends BaseTestCase
         $this->assertNull($nonExistentUser);
     }
 
-
     /**
      * @group slow
-     * @covers \Bristolian\Repo\AdminRepo\AdminRepo::getAdminUser
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::getAdminUser
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::addUser
-     * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo::getAdminUser
-     * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo::addUser
      */
     public function test_getAdminUser_returns_null_for_wrong_password(): void
     {
@@ -127,16 +112,8 @@ abstract class AdminRepoFixture extends BaseTestCase
         $this->assertNull($wrongPasswordUser);
     }
 
-
     /**
      * @group slow
-     * @covers \Bristolian\Repo\AdminRepo\AdminRepo::getAdminUserId
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::getAdminUserId
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::addUser
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::getAdminUser
-     * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo::getAdminUserId
-     * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo::addUser
-     * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo::getAdminUser
      */
     public function test_getAdminUserId_returns_user_id_for_existing_user(): void
     {
@@ -161,12 +138,6 @@ abstract class AdminRepoFixture extends BaseTestCase
         );
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\AdminRepo\AdminRepo::getAdminUserId
-     * @covers \Bristolian\Repo\AdminRepo\FakeAdminRepo::getAdminUserId
-     * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo::getAdminUserId
-     */
     public function test_getAdminUserId_returns_null_for_nonexistent_user(): void
     {
         $repo = $this->getTestInstance();

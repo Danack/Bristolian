@@ -10,15 +10,31 @@ use BristolianTest\BaseTestCase;
 use Danack\Console\Application;
 use Danack\Console\Command\Command;
 use Danack\Console\Input\InputArgument;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Cli\CliCommandDefinition::class, '__construct')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getAdminAccountCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getAllDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getBccTroCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getBristolStairsCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getControllerCallableForCommandName')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getDatabaseCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getDebugCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getEmailCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getGenerateCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getMemeCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getMiscCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getMoonCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getOpenApiCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getRoomCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getSeedCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getTestCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'getWhatDoTheyKnowCommandDefinitions')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'registerCommand')]
+#[CoversMethod(\Bristolian\Cli\CliCommandRegistry::class, 'registerCommands')]
+
 class CliCommandRegistryTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Cli\CliCommandDefinition::__construct
-     * @covers \Bristolian\Cli\CliCommandRegistry::getDebugCommandDefinitions
-     */
     public function test_getDebugCommandDefinitions_includes_hello_and_send_webpush(): void
     {
         $definitions = CliCommandRegistry::getDebugCommandDefinitions();
@@ -31,25 +47,6 @@ class CliCommandRegistryTest extends BaseTestCase
         $this->assertContains('debug:send_webpush', $commandNames);
     }
 
-    /**
-     * @covers \Bristolian\Cli\CliCommandDefinition::__construct
-     * @covers \Bristolian\Cli\CliCommandRegistry::getAllDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getDebugCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getSeedCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getDatabaseCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getAdminAccountCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getMiscCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getTestCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getRoomCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getEmailCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getGenerateCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getBristolStairsCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getMemeCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getOpenApiCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getMoonCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getBccTroCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getWhatDoTheyKnowCommandDefinitions
-     */
     public function test_getAllDefinitions_has_unique_command_names(): void
     {
         $definitions = CliCommandRegistry::getAllDefinitions();
@@ -62,26 +59,6 @@ class CliCommandRegistryTest extends BaseTestCase
         $this->assertSame(count($commandNames), count(array_unique($commandNames)));
     }
 
-    /**
-     * @covers \Bristolian\Cli\CliCommandRegistry::getControllerCallableForCommandName
-     * @covers \Bristolian\Cli\CliCommandRegistry::getAllDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getDebugCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getSeedCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getDatabaseCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getAdminAccountCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getMiscCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getTestCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getRoomCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getEmailCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getGenerateCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getBristolStairsCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getMemeCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getOpenApiCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getMoonCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getBccTroCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getWhatDoTheyKnowCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandDefinition::__construct
-     */
     public function test_getControllerCallableForCommandName_returns_callable_or_null(): void
     {
         $this->assertSame(
@@ -93,27 +70,6 @@ class CliCommandRegistryTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Cli\CliCommandRegistry::registerCommands
-     * @covers \Bristolian\Cli\CliCommandRegistry::registerCommand
-     * @covers \Bristolian\Cli\CliCommandRegistry::getAllDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getDebugCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getSeedCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getDatabaseCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getAdminAccountCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getMiscCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getTestCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getRoomCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getEmailCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getGenerateCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getBristolStairsCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getMemeCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getOpenApiCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getMoonCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getBccTroCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandRegistry::getWhatDoTheyKnowCommandDefinitions
-     * @covers \Bristolian\Cli\CliCommandDefinition::__construct
-     */
     public function test_registerCommands_registers_all_definitions_on_application(): void
     {
         $console = new Application();
@@ -138,10 +94,6 @@ class CliCommandRegistryTest extends BaseTestCase
         $this->assertTrue($sendWebPush->getDefinition()->hasArgument('message'));
     }
 
-    /**
-     * @covers \Bristolian\Cli\CliCommandRegistry::registerCommand
-     * @covers \Bristolian\Cli\CliCommandDefinition::__construct
-     */
     public function test_registerCommand_allows_empty_description_and_configure(): void
     {
         $console = new Application();
@@ -161,10 +113,6 @@ class CliCommandRegistryTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Cli\CliCommandRegistry::registerCommand
-     * @covers \Bristolian\Cli\CliCommandDefinition::__construct
-     */
     public function test_registerCommand_runs_configure_callback(): void
     {
         $console = new Application();

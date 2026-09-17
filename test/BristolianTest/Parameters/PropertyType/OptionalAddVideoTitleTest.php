@@ -14,9 +14,11 @@ use DataType\GetInputTypesFromAttributes;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Parameters\PropertyType\OptionalAddVideoTitle::class, '__construct')]
+#[CoversMethod(\Bristolian\Parameters\PropertyType\OptionalAddVideoTitle::class, 'getInputType')]
+
 class OptionalAddVideoTitleTest extends BaseTestCase
 {
     /**
@@ -36,8 +38,6 @@ class OptionalAddVideoTitleTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\OptionalAddVideoTitle::__construct
-     * @covers \Bristolian\Parameters\PropertyType\OptionalAddVideoTitle::getInputType
      * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
@@ -63,7 +63,6 @@ class OptionalAddVideoTitleTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\OptionalAddVideoTitle::getInputType
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]
@@ -80,9 +79,6 @@ class OptionalAddVideoTitleTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\OptionalAddVideoTitle::getInputType
-     */
     public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new OptionalAddVideoTitle('test_name');

@@ -7,15 +7,13 @@ namespace BristolianTest\Service\Mailgun;
 use Bristolian\Service\Mailgun\FakePayloadValidator;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\Mailgun\FakePayloadValidator::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\Mailgun\FakePayloadValidator::class, 'validate')]
+
 class FakePayloadValidatorTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\Mailgun\FakePayloadValidator::__construct
-     * @covers \Bristolian\Service\Mailgun\FakePayloadValidator::validate
-     */
     public function test_validate_returns_true_by_default(): void
     {
         $validator = new FakePayloadValidator();
@@ -23,9 +21,6 @@ class FakePayloadValidatorTest extends BaseTestCase
         $this->assertTrue($validator->validate($payload));
     }
 
-    /**
-     * @covers \Bristolian\Service\Mailgun\FakePayloadValidator::validate
-     */
     public function test_validate_returns_false_when_constructed_with_false(): void
     {
         $validator = new FakePayloadValidator(false);

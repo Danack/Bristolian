@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\CliController;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversFunction;
 use Bristolian\CliController\BccTroFetcherCliController;
 use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;
@@ -19,7 +19,6 @@ use BristolianTest\BaseTestCase;
 /**
  * BccTroRepo that records the last array passed to saveData for assertions.
  *
- * @coversNothing
  */
 //final class BccTroFetcherTestBccTroRepo implements BccTroRepo
 //{
@@ -37,7 +36,6 @@ use BristolianTest\BaseTestCase;
 /**
  * BccTroFetcher that returns a fixed list of TROs for testing.
  *
- * @coversNothing
  */
 
 // TODO - why do these rubbish fakes exist.
@@ -54,9 +52,6 @@ final class BccTroFetcherReturningFixedTros implements BccTroFetcher
     }
 }
 
-/**
- * @coversNothing
- */
 final class BccTroFetcherThatThrows implements BccTroFetcher
 {
     public function __construct(private \Throwable $throwable)
@@ -69,7 +64,7 @@ final class BccTroFetcherThatThrows implements BccTroFetcher
     }
 }
 
-#[CoversNothing]
+#[CoversFunction('output_tro_list_to_output')]
 class BccTroFetcherCliControllerTest extends BaseTestCase
 {
     public function setUp(): void
@@ -78,18 +73,12 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
         class_exists(BccTroFetcherCliController::class);
     }
 
-    /**
-     * @covers \Bristolian\CliController\output_tro_list_to_output
-     */
     public function test_output_tro_list_to_output_empty_echoes_no_tros_found(): void
     {
         $output = output_tro_list_to_output([]);
         $this->assertStringContainsString('No TROs found.', $output);
     }
 
-    /**
-     * @covers \Bristolian\CliController\output_tro_list_to_output
-     */
     public function test_output_tro_list_to_output_with_one_tro_echoes_title_and_reference(): void
     {
         $doc = new BccTroDocument('', '', '');
@@ -101,9 +90,6 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
         $this->assertStringContainsString('---', $output);
     }
 
-    /**
-     * @covers \Bristolian\CliController\output_tro_list_to_output
-     */
     public function test_output_tro_list_to_output_echoes_statement_of_reasons_when_non_empty(): void
     {
         $statement = new BccTroDocument('Reasons doc', 'https://example.com/reasons', 'id1');
@@ -114,9 +100,6 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
         $this->assertStringContainsString('Link: https://example.com/reasons', $output);
     }
 
-    /**
-     * @covers \Bristolian\CliController\output_tro_list_to_output
-     */
     public function test_output_tro_list_to_output_echoes_notice_of_proposal_when_non_empty(): void
     {
         $proposal = new BccTroDocument('Notice title', 'https://example.com/notice', 'id2');
@@ -127,9 +110,6 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
         $this->assertStringContainsString('Link: https://example.com/notice', $output);
     }
 
-    /**
-     * @covers \Bristolian\CliController\output_tro_list_to_output
-     */
     public function test_output_tro_list_to_output_echoes_proposed_plan_when_non_empty(): void
     {
         $plan = new BccTroDocument('Plan title', 'https://example.com/plan', 'id3');
@@ -141,7 +121,6 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
     }
 
 //    /**
-//     * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
 //     */
 //    public function test_fetchTros_writes_fetching_line_and_saves_fetched_tros_to_repo(): void
 //    {
@@ -168,7 +147,6 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
 //     */
 //    public function test_fetchTros_writes_error_and_returns_when_transport_room_is_missing(): void
 //    {
@@ -194,7 +172,6 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
 //     */
 //    public function test_fetchTros_writes_error_and_requests_exit_when_fetch_throws(): void
 //    {
@@ -212,7 +189,6 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
 //     */
 //    public function test_runInternal_writes_skip_when_not_in_daily_window(): void
 //    {
@@ -235,7 +211,6 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
 //     */
 //    public function test_runInternal_writes_skip_when_last_run_within_cooldown(): void
 //    {
@@ -260,7 +235,6 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
 //     */
 //    public function test_runInternal_fetches_and_finishes_when_allowed(): void
 //    {
@@ -294,8 +268,6 @@ class BccTroFetcherCliControllerTest extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\CliController\BccTroFetcherCliController::single_bcc_tro_process
-//     * @covers \Bristolian\CliController\BccTroFetcherCliController::fetchTros
 //     */
 //    public function test_runInternal_records_error_and_finishes_when_fetch_throws(): void
 //    {

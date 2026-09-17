@@ -6,33 +6,27 @@ namespace BristolianTest\Service\AvatarImageStorage;
 
 use Bristolian\Service\AvatarImageStorage\UploadError;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\AvatarImageStorage\UploadError::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\AvatarImageStorage\UploadError::class, 'extensionNotAllowed')]
+#[CoversMethod(\Bristolian\Service\AvatarImageStorage\UploadError::class, 'imageTooSmall')]
+#[CoversMethod(\Bristolian\Service\AvatarImageStorage\UploadError::class, 'uploadedFileUnreadable')]
+
 class UploadErrorTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\UploadError::__construct
-     * @covers \Bristolian\Service\AvatarImageStorage\UploadError::uploadedFileUnreadable
-     */
     public function test_uploadedFileUnreadable_returns_error_with_message(): void
     {
         $error = UploadError::uploadedFileUnreadable();
         $this->assertSame('Uploaded file is not readable', $error->error_message);
     }
 
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\UploadError::extensionNotAllowed
-     */
     public function test_extensionNotAllowed_returns_error_with_extension_in_message(): void
     {
         $error = UploadError::extensionNotAllowed('exe');
         $this->assertSame("File extension 'exe' is not allowed", $error->error_message);
     }
 
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\UploadError::imageTooSmall
-     */
     public function test_imageTooSmall_returns_error_with_dimensions_in_message(): void
     {
         $error = UploadError::imageTooSmall(100, 200, 512);

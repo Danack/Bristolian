@@ -12,11 +12,13 @@ use DataType\Exception\Runtime\ValidationException;
 use function convertToValue;
 use function convertToValueSafe;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversFunction;
 use Safe\DateTime;
 use function Safe\fopen;
-use PHPUnit\Framework\Attributes\CoversNothing;
 
-#[CoversNothing]
+#[CoversFunction('convertToValue')]
+#[CoversFunction('convertToValueSafe')]
+
 class ConvertToValueTest extends BaseTestCase
 {
 
@@ -32,12 +34,6 @@ class ConvertToValueTest extends BaseTestCase
         yield [MemeFileState::INITIAL, 'initial'];
     }
 
-
-
-
-    /**
-     * @covers ::convertToValue
-     */
     #[DataProvider('provides_convertToValue_works')]
     public function test_convertToValue_works(mixed $input, mixed $expected_value)
     {
@@ -46,8 +42,6 @@ class ConvertToValueTest extends BaseTestCase
         $this->assertNull($error);
         $this->assertEquals($expected_value, $value);
     }
-
-
 
     public static function provides_convertToValue_fails()
     {
@@ -58,10 +52,6 @@ class ConvertToValueTest extends BaseTestCase
         yield [[new \StdClass], "Unsupported type [%s] of class [%s] for toArray."];
     }
 
-
-    /**
-     * @covers ::convertToValue
-     */
     #[DataProvider('provides_convertToValue_fails')]
     public function test_convertToValue_fails(mixed $input, string $expected_error)
     {
@@ -74,9 +64,6 @@ class ConvertToValueTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers ::convertToValueSafe
-     */
     public function test_convertToValueSafe_returns_value_when_conversion_succeeds(): void
     {
         $result = convertToValueSafe(42);

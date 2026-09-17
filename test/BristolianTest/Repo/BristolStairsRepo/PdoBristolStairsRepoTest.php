@@ -13,12 +13,14 @@ use BristolianTest\Repo\TestPlaceholders;
 use BristolianGenerated\Model\BristolStairInfo;
 use Ramsey\Uuid\Uuid;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class)]
+
 class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
 {
     use TestPlaceholders;
@@ -58,18 +60,12 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         return $fileId;
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_constructor(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
         $this->assertInstanceOf(PdoBristolStairsRepo::class, $repo);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_store_stairs_info_creates_new_stair(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -93,9 +89,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         $this->assertInstanceOf(\DateTimeInterface::class, $stair_info->updated_at);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_getStairInfoById_returns_correct_stair(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -119,9 +112,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         $this->assertSame(-2.5943, $found_stair->longitude);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_getStairInfoById_returns_null_for_nonexistent_id(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -131,9 +121,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         $this->assertNull($result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_getAllStairsInfo_returns_array(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -147,9 +134,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         }
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_getAllStairsInfo_includes_newly_created_stair(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -183,9 +167,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         $this->assertTrue($found, 'Newly created stair should be in getAllStairsInfo results');
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_updateStairInfo_updates_description_and_steps(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -212,9 +193,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         $this->assertSame(80, $updated_stair->steps);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_updateStairInfo_preserves_other_fields(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -247,9 +225,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         $this->assertSame(0, $updated_stair->is_deleted);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_updateStairInfo_throws_exception_for_nonexistent_id(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -264,9 +239,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         $repo->updateStairInfo($params);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_updateStairPosition_updates_coordinates(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -293,9 +265,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         $this->assertSame(-2.7, $updated_stair->longitude);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_updateStairPosition_preserves_other_fields(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -328,9 +297,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         $this->assertSame(0, $updated_stair->is_deleted);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_updateStairPosition_throws_exception_for_nonexistent_id(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -345,9 +311,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         $repo->updateStairPosition($params);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_get_total_number_of_steps_returns_integers(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -360,9 +323,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         $this->assertGreaterThanOrEqual(0, (int)$steps);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_get_total_number_of_steps_includes_new_stairs(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -391,9 +351,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         $this->assertSame($steps_before + 25, $steps_after);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_multiple_operations_in_sequence(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -434,9 +391,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         $this->assertSame(-2.62, $final_stair->longitude);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_store_stairs_info_with_precise_coordinates(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);
@@ -459,9 +413,6 @@ class PdoBristolStairsRepoTest extends BristolStairsRepoFixture
         $this->assertSame(-2.654321, $retrieved_stair->longitude);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo
-     */
     public function test_store_stairs_info_with_various_step_counts(): void
     {
         $repo = $this->injector->make(PdoBristolStairsRepo::class);

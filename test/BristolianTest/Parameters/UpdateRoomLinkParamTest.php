@@ -11,9 +11,10 @@ use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\UpdateRoomLinkParam::class)]
+
 class UpdateRoomLinkParamTest extends BaseTestCase
 {
     /**
@@ -34,8 +35,6 @@ class UpdateRoomLinkParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\UpdateRoomLinkParam
-     * @covers \Bristolian\Parameters\UpdateRoomLinkParam::__construct
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -51,7 +50,6 @@ class UpdateRoomLinkParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\UpdateRoomLinkParam
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -87,7 +85,6 @@ class UpdateRoomLinkParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\UpdateRoomLinkParam
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]

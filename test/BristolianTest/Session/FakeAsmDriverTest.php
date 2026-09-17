@@ -10,9 +10,15 @@ use Asm\SessionConfig;
 use Asm\SessionManager;
 use Bristolian\Session\FakeAsmDriver;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Session\FakeAsmDriver::class, '__construct')]
+#[CoversMethod(\Bristolian\Session\FakeAsmDriver::class, 'addSession')]
+#[CoversMethod(\Bristolian\Session\FakeAsmDriver::class, 'createSession')]
+#[CoversMethod(\Bristolian\Session\FakeAsmDriver::class, 'deleteSessionByID')]
+#[CoversMethod(\Bristolian\Session\FakeAsmDriver::class, 'forceReleaseLockByID')]
+#[CoversMethod(\Bristolian\Session\FakeAsmDriver::class, 'openSessionByID')]
+
 class FakeAsmDriverTest extends BaseTestCase
 {
     private FakeAsmDriver $driver;
@@ -33,18 +39,12 @@ class FakeAsmDriverTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAsmDriver::__construct
-     */
     public function test_construct(): void
     {
         $driver = new FakeAsmDriver([['Set-Cookie', 'test=abc']]);
         $this->assertInstanceOf(FakeAsmDriver::class, $driver);
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAsmDriver::openSessionByID
-     */
     public function test_openSessionByID_returns_null_when_no_session(): void
     {
         $result = $this->driver->openSessionByID(
@@ -56,10 +56,6 @@ class FakeAsmDriverTest extends BaseTestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAsmDriver::openSessionByID
-     * @covers \Bristolian\Session\FakeAsmDriver::addSession
-     */
     public function test_openSessionByID_returns_session_after_addSession(): void
     {
         $session = new FakeAsmSession('sess-123');
@@ -74,9 +70,6 @@ class FakeAsmDriverTest extends BaseTestCase
         $this->assertSame($session, $result);
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAsmDriver::createSession
-     */
     public function test_createSession_returns_new_session(): void
     {
         $session = $this->driver->createSession(
@@ -87,9 +80,6 @@ class FakeAsmDriverTest extends BaseTestCase
         $this->assertSame('session-1', $session->getSessionId());
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAsmDriver::createSession
-     */
     public function test_createSession_increments_id(): void
     {
         $first = $this->driver->createSession($this->encrypter, $this->sessionManager);
@@ -99,9 +89,6 @@ class FakeAsmDriverTest extends BaseTestCase
         $this->assertSame('session-2', $second->getSessionId());
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAsmDriver::deleteSessionByID
-     */
     public function test_deleteSessionByID_removes_session(): void
     {
         $session = new FakeAsmSession('sess-to-delete');
@@ -118,9 +105,6 @@ class FakeAsmDriverTest extends BaseTestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAsmDriver::forceReleaseLockByID
-     */
     public function test_forceReleaseLockByID_does_not_throw(): void
     {
         $this->driver->forceReleaseLockByID('any-id');

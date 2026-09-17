@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianChatTest\Fixtures;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Psr\Http\Message\UriInterface;
 use function Safe\parse_url;
 
@@ -11,8 +12,10 @@ use function Safe\parse_url;
  * Minimal PSR-7 Uri for building Amp Request in tests.
  * Supports a simple absolute URI (e.g. http://localhost/).
  *
- * @coversNothing
  */
+
+#[CoversNothing]
+
 final class Psr7UriForTests implements UriInterface
 {
     public function __construct(

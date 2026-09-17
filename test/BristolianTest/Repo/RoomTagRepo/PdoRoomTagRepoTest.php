@@ -11,12 +11,16 @@ use Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo;
 use Bristolian\Repo\RoomTagRepo\RoomTagRepo;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::class, 'createTag')]
+#[CoversMethod(\Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::class, 'getTagsForRoom')]
+
 class PdoRoomTagRepoTest extends RoomTagRepoFixture
 {
     use HasTestWorld;
@@ -43,10 +47,6 @@ class PdoRoomTagRepoTest extends RoomTagRepoFixture
         return $this->testRoomId;
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::__construct
-     * @covers \Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::createTag
-     */
     public function test_pdo_createTag_persists_and_returns_tag(): void
     {
         $repo = $this->getTestInstance();
@@ -64,9 +64,6 @@ class PdoRoomTagRepoTest extends RoomTagRepoFixture
         $this->assertSame($roomId, $tag->room_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::getTagsForRoom
-     */
     public function test_pdo_getTagsForRoom_returns_created_tags(): void
     {
         $repo = $this->getTestInstance();
@@ -86,9 +83,6 @@ class PdoRoomTagRepoTest extends RoomTagRepoFixture
         $this->assertContains($text, $texts);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::createTag
-     */
     public function test_pdo_createTag_throws_when_max_tags_reached(): void
     {
         $repo = $this->getTestInstance();

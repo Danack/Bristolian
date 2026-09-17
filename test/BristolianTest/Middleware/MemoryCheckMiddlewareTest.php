@@ -6,14 +6,12 @@ use BristolianTest\BaseTestCase;
 use Bristolian\Middleware\MemoryCheckMiddleware;
 use Bristolian\Service\MemoryWarningCheck\FakeMemoryWarningCheck;
 use Laminas\Diactoros\ServerRequest;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Middleware\MemoryCheckMiddleware::class)]
+
 class MemoryCheckMiddlewareTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Middleware\MemoryCheckMiddleware
-     */
     public function testWorks()
     {
         $memoryWarningCheck = new FakeMemoryWarningCheck(50);

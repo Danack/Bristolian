@@ -7,15 +7,14 @@ namespace BristolianTest\Service\TinnedFish;
 use Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher;
 use Bristolian\Service\TinnedFish\OpenFoodFactsApiException;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher::class, 'fetchProduct')]
+#[CoversMethod(\Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher::class, 'setException')]
+#[CoversMethod(\Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher::class, 'setResponse')]
+
 class FakeOpenFoodFactsFetcherTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher::setResponse
-     * @covers \Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher::fetchProduct
-     */
     public function test_fetchProduct_returns_set_response(): void
     {
         $fetcher = new FakeOpenFoodFactsFetcher();
@@ -25,19 +24,12 @@ class FakeOpenFoodFactsFetcherTest extends BaseTestCase
         $this->assertSame($data, $fetcher->fetchProduct('123'));
     }
 
-    /**
-     * @covers \Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher::fetchProduct
-     */
     public function test_fetchProduct_returns_null_when_no_response_set(): void
     {
         $fetcher = new FakeOpenFoodFactsFetcher();
         $this->assertNull($fetcher->fetchProduct('unknown'));
     }
 
-    /**
-     * @covers \Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher::setResponse
-     * @covers \Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher::fetchProduct
-     */
     public function test_fetchProduct_returns_null_when_response_set_to_null(): void
     {
         $fetcher = new FakeOpenFoodFactsFetcher();
@@ -45,10 +37,6 @@ class FakeOpenFoodFactsFetcherTest extends BaseTestCase
         $this->assertNull($fetcher->fetchProduct('456'));
     }
 
-    /**
-     * @covers \Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher::setException
-     * @covers \Bristolian\Service\TinnedFish\FakeOpenFoodFactsFetcher::fetchProduct
-     */
     public function test_fetchProduct_throws_when_exception_set(): void
     {
         $fetcher = new FakeOpenFoodFactsFetcher();

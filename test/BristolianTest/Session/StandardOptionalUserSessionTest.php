@@ -6,11 +6,13 @@ use BristolianTest\BaseTestCase;
 use Bristolian\Session\StandardOptionalUserSession;
 use Bristolian\Session\AppSession;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 #[CoversClass(\Bristolian\Session\StandardOptionalUserSession::class)]
 class StandardOptionalUserSessionTest extends BaseTestCase
 {
     // Technically, I don't like mocks, but also, I am lazy.
+    #[AllowMockObjectsWithoutExpectations]
     public function testConstructorStoresAppSession(): void
     {
         $appSessionMock = $this->createMock(AppSession::class);
@@ -18,6 +20,7 @@ class StandardOptionalUserSessionTest extends BaseTestCase
         $this->assertSame($appSessionMock, $session->getAppSession());
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testGetAppSessionReturnsAppSession(): void
     {
         $appSessionMock = $this->createMock(AppSession::class);

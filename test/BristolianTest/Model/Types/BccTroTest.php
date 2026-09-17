@@ -9,14 +9,12 @@ use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;
 use Bristolian\Repo\BccTroRepo\FakeBccTroRepo;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Types\ApiToken::class)]
+
 class BccTroTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\ApiToken
-     */
     public function test_construct(): void
     {
         $statement = new BccTroDocument('Stmt', '/f/1', 'd1');

@@ -3,17 +3,15 @@
 namespace BristolianTest\Key;
 
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Keys\ContentSecurityPolicyKey::class)]
+#[CoversClass(\Bristolian\Keys\PhpBugsMaxCommentStorageKey::class)]
+#[CoversClass(\Bristolian\Keys\RoomMessageKey::class)]
+#[CoversClass(\Bristolian\Keys\UrlCacheKey::class)]
+
 class KeyTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Keys\ContentSecurityPolicyKey
-     * @covers \Bristolian\Keys\PhpBugsMaxCommentStorageKey
-     * @covers \Bristolian\Keys\UrlCacheKey
-     * @covers \Bristolian\Keys\RoomMessageKey
-     */
     public function test_works()
     {
         $result = \Bristolian\Keys\ContentSecurityPolicyKey::getAbsoluteKeyName("some key");

@@ -9,9 +9,10 @@ use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\QRTokenParams::class)]
+
 class QRTokenParamsTest extends BaseTestCase
 {
     /**
@@ -24,7 +25,6 @@ class QRTokenParamsTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\QRTokenParams
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -45,7 +45,6 @@ class QRTokenParamsTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\QRTokenParams
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]

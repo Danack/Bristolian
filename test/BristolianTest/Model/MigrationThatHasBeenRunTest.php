@@ -5,14 +5,12 @@ namespace BristolianTest\Model;
 use Bristolian\Model\Types\MigrationThatHasBeenRun;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Types\MigrationThatHasBeenRun::class)]
+
 class MigrationThatHasBeenRunTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\MigrationThatHasBeenRun
-     */
     public function testConstruct()
     {
         $id = 1;

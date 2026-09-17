@@ -14,9 +14,11 @@ use DataType\GetInputTypesFromAttributes;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Parameters\PropertyType\ClipTimestamp::class, '__construct')]
+#[CoversMethod(\Bristolian\Parameters\PropertyType\ClipTimestamp::class, 'getInputType')]
+
 class ClipTimestampTest extends BaseTestCase
 {
     /**
@@ -30,8 +32,6 @@ class ClipTimestampTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\ClipTimestamp::__construct
-     * @covers \Bristolian\Parameters\PropertyType\ClipTimestamp::getInputType
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_standalone_input_and_expected_seconds')]
@@ -53,7 +53,6 @@ class ClipTimestampTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\ClipTimestamp::getInputType
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_standalone_input_and_expected_error')]
@@ -70,9 +69,6 @@ class ClipTimestampTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\ClipTimestamp::getInputType
-     */
     public function test_pair_parses_when_end_is_after_start(): void
     {
         $fixture = ClipTimestampPairFixture::createFromVarMap(new ArrayVarMap([
@@ -83,9 +79,6 @@ class ClipTimestampTest extends BaseTestCase
         $this->assertSame(120, $fixture->end_seconds);
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\ClipTimestamp::getInputType
-     */
     public function test_pair_rejects_end_not_after_start(): void
     {
         try {
@@ -102,18 +95,12 @@ class ClipTimestampTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\ClipTimestamp::getInputType
-     */
     public function test_getInputType_returns_correct_name_without_start_reference(): void
     {
         $propertyType = new ClipTimestamp('start_time');
         $this->assertSame('start_time', $propertyType->getInputType()->getName());
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\ClipTimestamp::getInputType
-     */
     public function test_getInputType_returns_correct_name_with_start_reference(): void
     {
         $propertyType = new ClipTimestamp('end_time', 'start_time');

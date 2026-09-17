@@ -10,15 +10,15 @@ use Bristolian\Response\GetTranscriptsResponse;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
 use function Safe\json_decode;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Response\GetTranscriptsResponse::class, '__construct')]
+#[CoversMethod(\Bristolian\Response\GetTranscriptsResponse::class, 'getBody')]
+#[CoversMethod(\Bristolian\Response\GetTranscriptsResponse::class, 'getHeaders')]
+#[CoversMethod(\Bristolian\Response\GetTranscriptsResponse::class, 'getStatus')]
+
 class GetTranscriptsResponseTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Response\GetTranscriptsResponse::__construct
-     * @covers \Bristolian\Response\GetTranscriptsResponse::getStatus
-     */
     public function test_getStatus_returns_200(): void
     {
         $transcriptList = new RoomVideoTranscriptList([]);
@@ -26,9 +26,6 @@ class GetTranscriptsResponseTest extends BaseTestCase
         $this->assertSame(200, $response->getStatus());
     }
 
-    /**
-     * @covers \Bristolian\Response\GetTranscriptsResponse::getHeaders
-     */
     public function test_getHeaders_returns_content_type_json(): void
     {
         $transcriptList = new RoomVideoTranscriptList([]);
@@ -38,9 +35,6 @@ class GetTranscriptsResponseTest extends BaseTestCase
         $this->assertSame('application/json', $headers['Content-Type']);
     }
 
-    /**
-     * @covers \Bristolian\Response\GetTranscriptsResponse::getBody
-     */
     public function test_getBody_returns_json_with_empty_transcripts(): void
     {
         $transcriptList = new RoomVideoTranscriptList([]);
@@ -54,9 +48,6 @@ class GetTranscriptsResponseTest extends BaseTestCase
         $this->assertSame([], $decoded['data']['transcripts']);
     }
 
-    /**
-     * @covers \Bristolian\Response\GetTranscriptsResponse::getBody
-     */
     public function test_getBody_returns_json_with_transcripts_list(): void
     {
         $transcript = new RoomVideoTranscript(

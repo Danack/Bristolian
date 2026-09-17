@@ -6,15 +6,13 @@ namespace BristolianTest\Service\SecureTokenGenerator;
 
 use Bristolian\Service\SecureTokenGenerator\FixedSecureTokenGenerator;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\SecureTokenGenerator\FixedSecureTokenGenerator::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\SecureTokenGenerator\FixedSecureTokenGenerator::class, 'generate')]
+
 class FakeSecureTokenGeneratorTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\SecureTokenGenerator\FixedSecureTokenGenerator::__construct
-     * @covers \Bristolian\Service\SecureTokenGenerator\FixedSecureTokenGenerator::generate
-     */
     public function test_generate_returns_configured_token(): void
     {
         $token = 'my-fixed-token-value';
@@ -24,10 +22,6 @@ class FakeSecureTokenGeneratorTest extends BaseTestCase
         $this->assertSame($token, $generator->generate());
     }
 
-    /**
-     * @covers \Bristolian\Service\SecureTokenGenerator\FixedSecureTokenGenerator::__construct
-     * @covers \Bristolian\Service\SecureTokenGenerator\FixedSecureTokenGenerator::generate
-     */
     public function test_generate_returns_default_token_when_none_configured(): void
     {
         $generator = new FixedSecureTokenGenerator();

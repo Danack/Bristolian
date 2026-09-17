@@ -6,12 +6,17 @@ namespace BristolianTest\Repo\RoomRepo;
 
 use Bristolian\Repo\RoomRepo\FakeRoomRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\RoomRepo\FakeRoomRepo::class, 'createRoom')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\FakeRoomRepo::class, 'getAllRooms')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\FakeRoomRepo::class, 'getLatestRoomsCreated')]
+#[CoversMethod(\Bristolian\Repo\RoomRepo\FakeRoomRepo::class, 'updateRoomNameAndPurpose')]
+
 class FakeRoomRepoTest extends RoomRepoFixture
 {
     public function getTestInstance(): RoomRepo
@@ -24,9 +29,6 @@ class FakeRoomRepoTest extends RoomRepoFixture
         return 'user_123';
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::updateRoomNameAndPurpose
-     */
     public function test_updateRoomNameAndPurpose_with_nonexistent_room_id_does_nothing(): void
     {
         $repo = new FakeRoomRepo();
@@ -44,11 +46,6 @@ class FakeRoomRepoTest extends RoomRepoFixture
         $this->assertSame('Existing purpose', $retrievedRoom->purpose);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getAllRooms
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::getLatestRoomsCreated
-     * @covers \Bristolian\Repo\RoomRepo\FakeRoomRepo::createRoom
-     */
     public function test_list_methods_honour_explicit_limit(): void
     {
         $repo = new FakeRoomRepo();

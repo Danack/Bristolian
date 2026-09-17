@@ -11,9 +11,10 @@ use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\UpdateRoomAnnotationParam::class)]
+
 class UpdateRoomAnnotationParamTest extends BaseTestCase
 {
     private static function validTitle(): string
@@ -41,8 +42,6 @@ class UpdateRoomAnnotationParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\UpdateRoomAnnotationParam
-     * @covers \Bristolian\Parameters\UpdateRoomAnnotationParam::__construct
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -58,7 +57,6 @@ class UpdateRoomAnnotationParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\UpdateRoomAnnotationParam
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -103,7 +101,6 @@ class UpdateRoomAnnotationParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\UpdateRoomAnnotationParam
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]

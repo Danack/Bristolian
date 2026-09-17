@@ -9,15 +9,13 @@ use Bristolian\Service\TooMuchMemoryNotifier\LoggingTooMuchMemoryNotifier;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Uri;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\TooMuchMemoryNotifier\LoggingTooMuchMemoryNotifier::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\TooMuchMemoryNotifier\LoggingTooMuchMemoryNotifier::class, 'tooMuchMemory')]
+
 class LoggingTooMuchMemoryNotifierTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\TooMuchMemoryNotifier\LoggingTooMuchMemoryNotifier::__construct
-     * @covers \Bristolian\Service\TooMuchMemoryNotifier\LoggingTooMuchMemoryNotifier::tooMuchMemory
-     */
     public function test_tooMuchMemory_logs_request_path(): void
     {
         $cliOutput = new CapturingCliOutput();

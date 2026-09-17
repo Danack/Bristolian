@@ -7,16 +7,18 @@ namespace BristolianTest\Service\CliOutput;
 use Bristolian\Service\CliOutput\CapturingCliOutput;
 use Bristolian\Service\CliOutput\CliExitRequestedException;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\CliOutput\CapturingCliOutput::class, 'exit')]
+#[CoversMethod(\Bristolian\Service\CliOutput\CapturingCliOutput::class, 'getCapturedErrorLines')]
+#[CoversMethod(\Bristolian\Service\CliOutput\CapturingCliOutput::class, 'getCapturedLines')]
+#[CoversMethod(\Bristolian\Service\CliOutput\CapturingCliOutput::class, 'getCapturedOutput')]
+#[CoversMethod(\Bristolian\Service\CliOutput\CapturingCliOutput::class, 'write')]
+#[CoversMethod(\Bristolian\Service\CliOutput\CapturingCliOutput::class, 'writeError')]
+#[CoversMethod(\Bristolian\Service\CliOutput\CliExitRequestedException::class, 'getExitCode')]
+
 class CapturingCliOutputTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::write
-     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::getCapturedLines
-     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::getCapturedOutput
-     */
     public function test_write_captures_messages(): void
     {
         $output = new CapturingCliOutput();
@@ -27,10 +29,6 @@ class CapturingCliOutputTest extends BaseTestCase
         $this->assertSame('line oneline two', $output->getCapturedOutput());
     }
 
-    /**
-     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::writeError
-     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::getCapturedErrorLines
-     */
     public function test_writeError_captures_error_messages(): void
     {
         $output = new CapturingCliOutput();
@@ -40,9 +38,6 @@ class CapturingCliOutputTest extends BaseTestCase
         $this->assertSame(['error one', 'error two'], $output->getCapturedErrorLines());
     }
 
-    /**
-     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::exit
-     */
     public function test_exit_throws_with_code(): void
     {
         $output = new CapturingCliOutput();
@@ -52,9 +47,6 @@ class CapturingCliOutputTest extends BaseTestCase
         $output->exit(42);
     }
 
-    /**
-     * @covers \Bristolian\Service\CliOutput\CliExitRequestedException::getExitCode
-     */
     public function test_exit_exception_has_exit_code(): void
     {
         $output = new CapturingCliOutput();

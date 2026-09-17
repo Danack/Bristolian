@@ -7,15 +7,13 @@ namespace BristolianTest\Service\MemoryWarningCheck;
 use Bristolian\Service\MemoryWarningCheck\FakeMemoryWarningCheck;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\MemoryWarningCheck\FakeMemoryWarningCheck::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\MemoryWarningCheck\FakeMemoryWarningCheck::class, 'checkMemoryUsage')]
+
 class FakeMemoryWarningCheckTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\MemoryWarningCheck\FakeMemoryWarningCheck::__construct
-     * @covers \Bristolian\Service\MemoryWarningCheck\FakeMemoryWarningCheck::checkMemoryUsage
-     */
     public function test_checkMemoryUsage_returns_configured_percentage(): void
     {
         $check = new FakeMemoryWarningCheck(85);
@@ -23,9 +21,6 @@ class FakeMemoryWarningCheckTest extends BaseTestCase
         $this->assertSame(85, $check->checkMemoryUsage($request));
     }
 
-    /**
-     * @covers \Bristolian\Service\MemoryWarningCheck\FakeMemoryWarningCheck::checkMemoryUsage
-     */
     public function test_checkMemoryUsage_returns_zero_when_constructed_with_zero(): void
     {
         $check = new FakeMemoryWarningCheck(0);

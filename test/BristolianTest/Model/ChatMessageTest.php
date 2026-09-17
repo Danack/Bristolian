@@ -2,17 +2,15 @@
 
 namespace BristolianTest\Model;
 
-use Bristolian\Model\Chat\SystemChatMessage;
 use Bristolian\Model\Chat\UserChatMessage;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Chat\UserChatMessage::class)]
 class ChatMessageTest extends BaseTestCase
 {
 //    /**
-//     * @covers \Bristolian\Model\Chat\SystemChatMessage
 //     */
 //    public function testSystemChatMessage_construct(): void
 //    {
@@ -31,9 +29,6 @@ class ChatMessageTest extends BaseTestCase
 //        $this->assertSame($createdAt, $message->created_at);
 //    }
 
-    /**
-     * @covers \Bristolian\Model\Chat\UserChatMessage
-     */
     public function testConstruct(): void
     {
         $id = 123;
@@ -60,9 +55,6 @@ class ChatMessageTest extends BaseTestCase
         $this->assertSame($createdAt, $chatMessage->created_at);
     }
 
-    /**
-     * @covers \Bristolian\Model\Chat\UserChatMessage
-     */
     public function testConstructWithNullReplyId(): void
     {
         $chatMessage = new UserChatMessage(
@@ -77,10 +69,6 @@ class ChatMessageTest extends BaseTestCase
         $this->assertNull($chatMessage->reply_message_id);
     }
 
-    /**
-     * @covers \Bristolian\Model\Chat\UserChatMessage
-     * @covers \Bristolian\Model\Chat\UserChatMessage::withText
-     */
     public function testWithText_replaces_text_and_preserves_other_fields(): void
     {
         $createdAt = new DateTimeImmutable('2024-06-01 12:00:00');
@@ -104,9 +92,6 @@ class ChatMessageTest extends BaseTestCase
         $this->assertSame('Original text', $original->text);
     }
 
-    /**
-     * @covers \Bristolian\Model\Chat\UserChatMessage
-     */
     public function testToArray(): void
     {
         $chatMessage = new UserChatMessage(

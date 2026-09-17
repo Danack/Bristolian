@@ -6,15 +6,15 @@ namespace BristolianTest\Service\MemeStorageProcessor;
 
 use Bristolian\Service\MemeStorageProcessor\UploadError;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\UploadError::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\UploadError::class, 'duplicateOriginalFilename')]
+#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\UploadError::class, 'unsupportedFileType')]
+#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\UploadError::class, 'uploadedFileUnreadable')]
+
 class UploadErrorTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\MemeStorageProcessor\UploadError::__construct
-     * @covers \Bristolian\Service\MemeStorageProcessor\UploadError::uploadedFileUnreadable
-     */
     public function test_uploadedFileUnreadable_returns_error_with_constant_message(): void
     {
         $error = UploadError::uploadedFileUnreadable();
@@ -23,9 +23,6 @@ class UploadErrorTest extends BaseTestCase
         $this->assertNull($error->error_data);
     }
 
-    /**
-     * @covers \Bristolian\Service\MemeStorageProcessor\UploadError::unsupportedFileType
-     */
     public function test_unsupportedFileType_returns_error_with_constant_message(): void
     {
         $error = UploadError::unsupportedFileType();
@@ -34,9 +31,6 @@ class UploadErrorTest extends BaseTestCase
         $this->assertNull($error->error_data);
     }
 
-    /**
-     * @covers \Bristolian\Service\MemeStorageProcessor\UploadError::duplicateOriginalFilename
-     */
     public function test_duplicateOriginalFilename_returns_error_with_code_and_data(): void
     {
         $error = UploadError::duplicateOriginalFilename('myfile.jpg');

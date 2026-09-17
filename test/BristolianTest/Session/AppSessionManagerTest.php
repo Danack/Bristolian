@@ -13,9 +13,18 @@ use Bristolian\Session\AppSessionManager;
 use Bristolian\Session\FakeAsmDriver;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Session\AppSessionManager::class, '__construct')]
+#[CoversMethod(\Bristolian\Session\AppSessionManager::class, 'checkInitialised')]
+#[CoversMethod(\Bristolian\Session\AppSessionManager::class, 'createRawSession')]
+#[CoversMethod(\Bristolian\Session\AppSessionManager::class, 'deleteSession')]
+#[CoversMethod(\Bristolian\Session\AppSessionManager::class, 'getCurrentAppSession')]
+#[CoversMethod(\Bristolian\Session\AppSessionManager::class, 'getRawSession')]
+#[CoversMethod(\Bristolian\Session\AppSessionManager::class, 'initialize')]
+#[CoversMethod(\Bristolian\Session\AppSessionManager::class, 'renewSession')]
+#[CoversMethod(\Bristolian\Session\AppSessionManager::class, 'saveIfOpenedAndGetHeaders')]
+
 class AppSessionManagerTest extends BaseTestCase
 {
     private function createSessionManager(FakeAsmDriver|null $driver = null): SessionManager
@@ -36,18 +45,12 @@ class AppSessionManagerTest extends BaseTestCase
         return (new ServerRequest())->withCookieParams($cookies);
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::__construct
-     */
     public function test_construct(): void
     {
         $manager = new AppSessionManager($this->createSessionManager());
         $this->assertInstanceOf(AppSessionManager::class, $manager);
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::initialize
-     */
     public function test_initialize_sets_request(): void
     {
         $manager = new AppSessionManager($this->createSessionManager());
@@ -57,9 +60,6 @@ class AppSessionManagerTest extends BaseTestCase
         $this->assertNull($session);
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::initialize
-     */
     public function test_initialize_throws_when_called_twice(): void
     {
         $manager = new AppSessionManager($this->createSessionManager());
@@ -71,10 +71,6 @@ class AppSessionManagerTest extends BaseTestCase
         $manager->initialize($this->createRequest());
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::getCurrentAppSession
-     * @covers \Bristolian\Session\AppSessionManager::checkInitialised
-     */
     public function test_getCurrentAppSession_throws_when_not_initialized(): void
     {
         $manager = new AppSessionManager($this->createSessionManager());
@@ -85,9 +81,6 @@ class AppSessionManagerTest extends BaseTestCase
         $manager->getCurrentAppSession();
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::getCurrentAppSession
-     */
     public function test_getCurrentAppSession_returns_null_when_no_cookie(): void
     {
         $manager = new AppSessionManager($this->createSessionManager());
@@ -96,9 +89,6 @@ class AppSessionManagerTest extends BaseTestCase
         $this->assertNull($manager->getCurrentAppSession());
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::getCurrentAppSession
-     */
     public function test_getCurrentAppSession_returns_session_from_cookie(): void
     {
         $driver = new FakeAsmDriver([
@@ -118,9 +108,6 @@ class AppSessionManagerTest extends BaseTestCase
         $this->assertSame('user-123', $appSession->getUserId());
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::getCurrentAppSession
-     */
     public function test_getCurrentAppSession_returns_cached_session_on_second_call(): void
     {
         $driver = new FakeAsmDriver();
@@ -141,9 +128,6 @@ class AppSessionManagerTest extends BaseTestCase
         $this->assertSame('user-abc', $second->getUserId());
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::createRawSession
-     */
     public function test_createRawSession_throws_when_not_initialized(): void
     {
         $manager = new AppSessionManager($this->createSessionManager());
@@ -154,9 +138,6 @@ class AppSessionManagerTest extends BaseTestCase
         $manager->createRawSession();
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::createRawSession
-     */
     public function test_createRawSession_creates_new_session(): void
     {
         $manager = new AppSessionManager($this->createSessionManager());
@@ -167,9 +148,6 @@ class AppSessionManagerTest extends BaseTestCase
         $this->assertInstanceOf(\Asm\Session::class, $rawSession);
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::createRawSession
-     */
     public function test_createRawSession_returns_existing_session_when_already_open(): void
     {
         $driver = new FakeAsmDriver();
@@ -186,9 +164,6 @@ class AppSessionManagerTest extends BaseTestCase
         $this->assertSame('sess-existing', $rawSession->getSessionId());
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::deleteSession
-     */
     public function test_deleteSession_throws_when_not_initialized(): void
     {
         $manager = new AppSessionManager($this->createSessionManager());
@@ -199,9 +174,6 @@ class AppSessionManagerTest extends BaseTestCase
         $manager->deleteSession();
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::deleteSession
-     */
     public function test_deleteSession_with_existing_session(): void
     {
         $driver = new FakeAsmDriver();
@@ -217,9 +189,6 @@ class AppSessionManagerTest extends BaseTestCase
         $this->assertTrue($existingSession->wasDeleted());
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::deleteSession
-     */
     public function test_deleteSession_without_existing_session(): void
     {
         $manager = new AppSessionManager($this->createSessionManager());
@@ -230,9 +199,6 @@ class AppSessionManagerTest extends BaseTestCase
         $this->assertNull($manager->getCurrentAppSession());
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::renewSession
-     */
     public function test_renewSession_with_active_session_returns_headers(): void
     {
         $driver = new FakeAsmDriver([
@@ -253,9 +219,6 @@ class AppSessionManagerTest extends BaseTestCase
         $this->assertTrue($existingSession->wasSaved());
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::renewSession
-     */
     public function test_renewSession_without_session_returns_empty(): void
     {
         $manager = new AppSessionManager($this->createSessionManager());
@@ -266,9 +229,6 @@ class AppSessionManagerTest extends BaseTestCase
         $this->assertSame([], $headers);
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::saveIfOpenedAndGetHeaders
-     */
     public function test_saveIfOpenedAndGetHeaders_with_active_session(): void
     {
         $driver = new FakeAsmDriver();
@@ -289,10 +249,6 @@ class AppSessionManagerTest extends BaseTestCase
         $this->assertTrue($existingSession->wasSaved());
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSessionManager::saveIfOpenedAndGetHeaders
-     * @covers \Bristolian\Session\AppSessionManager::getRawSession
-     */
     public function test_saveIfOpenedAndGetHeaders_without_session_returns_empty(): void
     {
         $manager = new AppSessionManager($this->createSessionManager());

@@ -8,13 +8,15 @@ use Bristolian\Parameters\CreateUserParams;
 use BristolianTest\Repo\TestPlaceholders;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group debug_pdo_tracking
  * @group db
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\AdminRepo\PdoAdminRepo::class)]
+
 class PdoAdminRepoTest extends AdminRepoFixture
 {
     use TestPlaceholders;
@@ -25,7 +27,6 @@ class PdoAdminRepoTest extends AdminRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\AdminRepo\PdoAdminRepo
      * @group db
      */
     public function testWorks(): void

@@ -8,14 +8,13 @@ use Bristolian\Service\CliOutput\EchoCliOutput;
 use BristolianTest\BaseTestCase;
 use function Safe\ob_get_clean;
 use function Safe\ob_start;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\CliOutput\EchoCliOutput::class, 'write')]
+#[CoversMethod(\Bristolian\Service\CliOutput\EchoCliOutput::class, 'writeError')]
+
 class EchoCliOutputTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\CliOutput\EchoCliOutput::write
-     */
     public function test_write_echoes_message(): void
     {
         $output = new EchoCliOutput();
@@ -27,9 +26,6 @@ class EchoCliOutputTest extends BaseTestCase
         $this->assertSame('hello', $out);
     }
 
-    /**
-     * @covers \Bristolian\Service\CliOutput\EchoCliOutput::write
-     */
     public function test_write_echoes_multiple_calls_without_separator(): void
     {
         $output = new EchoCliOutput();
@@ -43,7 +39,6 @@ class EchoCliOutputTest extends BaseTestCase
     }
 
 //    /**
-//     * @covers \Bristolian\Service\CliOutput\EchoCliOutput::writeError
 //     */
 //    public function test_writeError_invokes_error_log_without_throwing(): void
 //    {

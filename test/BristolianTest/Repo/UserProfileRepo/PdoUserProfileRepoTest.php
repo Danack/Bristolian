@@ -9,12 +9,18 @@ use Bristolian\Parameters\UserProfileUpdateParams;
 use Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo;
 use Bristolian\Repo\UserProfileRepo\UserProfileRepo;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, 'getDisplayNameHistory')]
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, 'getUserProfile')]
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, 'updateAvatarImage')]
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, 'updateProfile')]
+
 class PdoUserProfileRepoTest extends UserProfileRepoFixture
 {
     private ?string $cachedTestUserId = null;
@@ -33,10 +39,6 @@ class PdoUserProfileRepoTest extends UserProfileRepoFixture
         return $this->cachedTestUserId;
     }
 
-    /**
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::__construct
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::getUserProfile
-     */
     public function test_pdo_getUserProfile_returns_blank_profile_for_user_with_no_profile_rows(): void
     {
         $adminUser = $this->createTestAdminUser();
@@ -52,9 +54,6 @@ class PdoUserProfileRepoTest extends UserProfileRepoFixture
         $this->assertNull($result->getAvatarImageId());
     }
 
-    /**
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::getUserProfile
-     */
     public function test_pdo_getUserProfile_returns_profile_and_display_name_after_update(): void
     {
         $repo = $this->injector->make(PdoUserProfileRepo::class);
@@ -71,9 +70,6 @@ class PdoUserProfileRepoTest extends UserProfileRepoFixture
         $this->assertSame('Pdo about me', $result->getAboutMe());
     }
 
-    /**
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::getDisplayNameHistory
-     */
     public function test_pdo_getDisplayNameHistory_returns_empty_then_ordered_versions(): void
     {
         $adminUser = $this->createTestAdminUser();
@@ -98,9 +94,6 @@ class PdoUserProfileRepoTest extends UserProfileRepoFixture
         $this->assertSame('Name1', $history[1]->display_name);
     }
 
-    /**
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::updateProfile
-     */
     public function test_pdo_updateProfile_persists_display_name_and_profile(): void
     {
         $repo = $this->injector->make(PdoUserProfileRepo::class);
@@ -118,9 +111,6 @@ class PdoUserProfileRepoTest extends UserProfileRepoFixture
         $this->assertSame('Updated Display', $profile->getDisplayName());
     }
 
-    /**
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::updateAvatarImage
-     */
     public function test_pdo_updateAvatarImage_persists_avatar_id(): void
     {
         $repo = $this->injector->make(PdoUserProfileRepo::class);

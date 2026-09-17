@@ -6,12 +6,15 @@ namespace BristolianTest\Repo\Link;
 
 use Bristolian\Repo\LinkRepo\FakeLinkRepo;
 use Bristolian\Repo\LinkRepo\LinkRepo;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\LinkRepo\FakeLinkRepo::class, 'getLastAddedLink')]
+#[CoversMethod(\Bristolian\Repo\LinkRepo\FakeLinkRepo::class, 'getStoredLinks')]
+
 class FakeLinkRepoTest extends LinkRepoFixture
 {
     /**
@@ -25,7 +28,6 @@ class FakeLinkRepoTest extends LinkRepoFixture
     /**
      * Test FakeLinkRepo-specific method getStoredLinks
      *
-     * @covers \Bristolian\Repo\LinkRepo\FakeLinkRepo::getStoredLinks
      */
     public function test_getStoredLinks(): void
     {
@@ -54,18 +56,12 @@ class FakeLinkRepoTest extends LinkRepoFixture
         $this->assertSame($url_2, $links[$link_id_2]->url);
     }
 
-    /**
-     * @covers \Bristolian\Repo\LinkRepo\FakeLinkRepo::getLastAddedLink
-     */
     public function test_getLastAddedLink_returns_null_when_empty(): void
     {
         $linkRepo = new FakeLinkRepo();
         $this->assertNull($linkRepo->getLastAddedLink());
     }
 
-    /**
-     * @covers \Bristolian\Repo\LinkRepo\FakeLinkRepo::getLastAddedLink
-     */
     public function test_getLastAddedLink_returns_last_added_link(): void
     {
         $linkRepo = new FakeLinkRepo();

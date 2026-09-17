@@ -11,9 +11,10 @@ use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\UpdateRoomFileParam::class)]
+
 class UpdateRoomFileParamTest extends BaseTestCase
 {
     /**
@@ -52,8 +53,6 @@ class UpdateRoomFileParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\UpdateRoomFileParam
-     * @covers \Bristolian\Parameters\UpdateRoomFileParam::__construct
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -71,7 +70,6 @@ class UpdateRoomFileParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\UpdateRoomFileParam
      * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
@@ -122,7 +120,6 @@ class UpdateRoomFileParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\UpdateRoomFileParam
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]

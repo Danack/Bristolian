@@ -13,12 +13,17 @@ use Bristolian\Repo\RoomVideoTranscriptRepo\RoomVideoTranscriptRepo;
 use Bristolian\Repo\VideoRepo\PdoVideoRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Support\HasTestWorld;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::class, 'addTranscript')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::class, 'getTranscriptById')]
+#[CoversMethod(\Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::class, 'getTranscriptsForRoomVideo')]
+
 class PdoRoomVideoTranscriptRepoTest extends BaseTestCase
 {
     use HasTestWorld;
@@ -47,10 +52,6 @@ class PdoRoomVideoTranscriptRepoTest extends BaseTestCase
         return $this->injector->make(PdoRoomVideoTranscriptRepo::class);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::__construct
-     * @covers \Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::getTranscriptsForRoomVideo
-     */
     public function test_getTranscriptsForRoomVideo_returns_empty_list_before_add(): void
     {
         $repo = $this->getRepo();
@@ -60,10 +61,6 @@ class PdoRoomVideoTranscriptRepoTest extends BaseTestCase
         $this->assertSame([], $list->transcripts);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::addTranscript
-     * @covers \Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::getTranscriptsForRoomVideo
-     */
     public function test_addTranscript_and_getTranscriptsForRoomVideo(): void
     {
         $repo = $this->getRepo();
@@ -77,10 +74,6 @@ class PdoRoomVideoTranscriptRepoTest extends BaseTestCase
         $this->assertSame('en', $list->transcripts[0]->language);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::addTranscript
-     * @covers \Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::getTranscriptById
-     */
     public function test_getTranscriptById_returns_transcript(): void
     {
         $repo = $this->getRepo();
@@ -92,9 +85,6 @@ class PdoRoomVideoTranscriptRepoTest extends BaseTestCase
         $this->assertSame($this->roomVideoId, $transcript->room_video_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::getTranscriptById
-     */
     public function test_getTranscriptById_throws_for_nonexistent_id(): void
     {
         $repo = $this->getRepo();

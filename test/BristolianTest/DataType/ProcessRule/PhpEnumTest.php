@@ -8,14 +8,12 @@ use Bristolian\Parameters\ProcessRule\PhpEnum;
 use DataType\DataStorage\TestArrayDataStorage;
 use DataType\Messages;
 use DataType\ProcessedValues;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\ProcessRule\PhpEnum::class)]
+
 class PhpEnumTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\PhpEnum
-     */
     public function testValidationWorks()
     {
         $testEnum = FixtureEnum::APPLES;
@@ -57,10 +55,6 @@ class PhpEnumTest extends BaseTestCase
         }
     }
 
-
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\PhpEnum
-     */
     public function testDescription()
     {
         $rule = new PhpEnum(FixtureEnum::class);

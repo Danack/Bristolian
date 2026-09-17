@@ -5,10 +5,16 @@ namespace BristolianTest;
 use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversFunction;
 use function Safe\file_get_contents;
-use PHPUnit\Framework\Attributes\CoversNothing;
 
-#[CoversNothing]
+#[CoversFunction('bccTroDataEquals')]
+#[CoversFunction('extractDocumentLinksFromUl')]
+#[CoversFunction('parseTrosFromHtml')]
+#[CoversFunction('renderBccTrosAsMarkdown')]
+#[CoversFunction('resolveBccDocumentHref')]
+#[CoversFunction('sortArrayKeysRecursive')]
+
 class FunctionsBccTest extends BaseTestCase
 {
     /**
@@ -21,9 +27,6 @@ class FunctionsBccTest extends BaseTestCase
         yield 'no TROs in HTML' => ['<html><body><h1>No TROs here</h1><p>Just some content</p></body></html>'];
     }
 
-    /**
-     * @covers \parseTrosFromHtml
-     */
     #[DataProvider('provides_parse_tros_from_html_returns_empty')]
     public function testParseTrosFromHtmlReturnsEmptyForInput(string $html): void
     {
@@ -31,9 +34,6 @@ class FunctionsBccTest extends BaseTestCase
 
         $this->assertCount(0, $tros);
     }
-
-
-
 
     public static function provides_ParseTrosFromHtmlParsesExampleFile()
     {
@@ -64,8 +64,6 @@ class FunctionsBccTest extends BaseTestCase
 
         yield [__DIR__ . '/Service/BccTroFetcher/example_1.html', $bccTro_1];
 
-
-
         $statement_of_reasons_2 = new BccTroDocument(
             'Statement of Reasons, PX DJR 26 004',
             'https://www.bristol.gov.uk/files/documents/11286-statement-of-reasons-px-djr-26-004',
@@ -82,7 +80,6 @@ class FunctionsBccTest extends BaseTestCase
             '11285'
         );
 
-
         $bccTro_2 = new BccTro(
             $title = 'Proposed Zebra Crossing: Marsh Street, City Centre (Central ward): ref PX-DJR-26-004',
             $reference_code = 'PX-DJR-26-004',
@@ -94,12 +91,7 @@ class FunctionsBccTest extends BaseTestCase
         yield [__DIR__ . '/Service/BccTroFetcher/example_2.html', $bccTro_2];
     }
 
-
-
     /**
-     * @covers \parseTrosFromHtml
-     * @covers \extractDocumentLinksFromUl
-     * @covers \resolveBccDocumentHref
      * @group tro_wip
      */
     #[DataProvider('provides_ParseTrosFromHtmlParsesExampleFile')]
@@ -114,7 +106,6 @@ class FunctionsBccTest extends BaseTestCase
 
         $this->assertCount(1, $tros);
 
-
         $this->assertCount(1, $tros);
         $tro = $tros[0];
         $this->assertInstanceOf(BccTro::class, $tro);
@@ -122,9 +113,6 @@ class FunctionsBccTest extends BaseTestCase
         $this->assertEquals($expected_bcc_tro, $tro);
     }
 
-    /**
-     * @covers \parseTrosFromHtml
-     */
     public function testParseTrosFromHtmlSkipsH3WithoutColon(): void
     {
         $html = '<html><body>'
@@ -143,7 +131,6 @@ class FunctionsBccTest extends BaseTestCase
     }
 
 //    /**
-//     * @covers \parseTrosFromHtml
 //     */
 //    public function testParseTrosFromHtmlWithH3H4ButNoUlReturnsTroWithEmptyDocuments(): void
 //    {
@@ -159,11 +146,6 @@ class FunctionsBccTest extends BaseTestCase
 //        $this->assertSame('', $tros[0]->statement_of_reasons->id);
 //    }
 
-    /**
-     * @covers \parseTrosFromHtml
-     * @covers \extractDocumentLinksFromUl
-     * @covers \resolveBccDocumentHref
-     */
     public function testParseTrosFromHtmlExtractsIdFromHrefWhenDataIdMissing(): void
     {
         $html = '<html><body><h3>TRO: Title</h3><h4>Ref X</h4><ul>'
@@ -212,7 +194,6 @@ class FunctionsBccTest extends BaseTestCase
     }
 
     /**
-     * @covers \resolveBccDocumentHref
      * @dataProvider provides_resolve_bcc_document_href_cases
      */
     #[DataProvider('provides_resolve_bcc_document_href_cases')]
@@ -247,8 +228,6 @@ class FunctionsBccTest extends BaseTestCase
     }
 
     /**
-     * @covers \bccTroDataEquals
-     * @covers \sortArrayKeysRecursive
      * @dataProvider provides_bcc_tro_data_equals_cases
      */
     #[DataProvider('provides_bcc_tro_data_equals_cases')]
@@ -260,10 +239,6 @@ class FunctionsBccTest extends BaseTestCase
         $this->assertSame($expectedEqual, bccTroDataEquals($left, $right));
     }
 
-    /**
-     * @covers \extractDocumentLinksFromUl
-     * @covers \resolveBccDocumentHref
-     */
     public function testExtractDocumentLinksFromUlReturnsAllThreeDocumentTypes(): void
     {
         $html = '<ul>'
@@ -300,10 +275,6 @@ class FunctionsBccTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \extractDocumentLinksFromUl
-     * @covers \resolveBccDocumentHref
-     */
     public function testExtractDocumentLinksFromUlUsesLinkTextWhenDataTitleMissing(): void
     {
         $html = '<ul><li><a href="/files/42-foo">Statement of Reasons</a></li></ul>';
@@ -319,10 +290,6 @@ class FunctionsBccTest extends BaseTestCase
         $this->assertSame('42', $documents['statement_of_reasons']->id);
     }
 
-
-    /**
-     * @covers ::renderBccTrosAsMarkdown
-     */
     public function test_renderBccTrosAsMarkdown(): void
     {
         $output_none = renderBccTrosAsMarkdown([]);
@@ -341,7 +308,6 @@ There are 1 TROs.## Proposed Zebra Crossing: Marsh Street, City Centre (Central 
 - [Notice of Proposal](/files/documents/11287-notice-of-proposal-px-djr-26-004)
 - [Proposed Plan](/files/documents/11285-proposed-plan-zebra-crossing-px-djr-26-004)
 TEXT;
-
 
         $bcc_tro = BccTro::createFromJson($test_tro_test);
 

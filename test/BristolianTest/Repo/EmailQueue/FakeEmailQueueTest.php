@@ -10,12 +10,18 @@ use Bristolian\Model\Types\Email;
 use Bristolian\Repo\EmailQueue\EmailQueue;
 use Bristolian\Repo\EmailQueue\FakeEmailQueue;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'getAllEmails')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'getEmailById')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'setEmailFailed')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'setEmailSent')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'setEmailToRetry')]
+
 class FakeEmailQueueTest extends EmailQueueFixture
 {
     public function getTestInstance(EnvironmentName $environmentName): EmailQueue
@@ -23,9 +29,6 @@ class FakeEmailQueueTest extends EmailQueueFixture
         return new FakeEmailQueue();
     }
 
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailById
-     */
     public function test_getEmailById_returns_null_for_nonexistent_id(): void
     {
         $fakeQueue = new FakeEmailQueue();
@@ -36,7 +39,6 @@ class FakeEmailQueueTest extends EmailQueueFixture
     /**
      * Fake-specific test: verify emails are stored
      *
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getAllEmails
      */
     public function test_queueEmailToUsers_stores_emails(): void
     {
@@ -203,9 +205,6 @@ class FakeEmailQueueTest extends EmailQueueFixture
         $this->assertNotNull($sentEmail);
     }
 
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailSent
-     */
     public function test_setEmailSent_with_unknown_email_does_nothing(): void
     {
         $fakeQueue = new FakeEmailQueue();
@@ -223,9 +222,6 @@ class FakeEmailQueueTest extends EmailQueueFixture
         $this->assertNull($fakeQueue->getEmailById(99999));
     }
 
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailFailed
-     */
     public function test_setEmailFailed_with_unknown_email_does_nothing(): void
     {
         $fakeQueue = new FakeEmailQueue();
@@ -243,9 +239,6 @@ class FakeEmailQueueTest extends EmailQueueFixture
         $this->assertNull($fakeQueue->getEmailById(99999));
     }
 
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailToRetry
-     */
     public function test_setEmailToRetry_with_unknown_email_does_nothing(): void
     {
         $fakeQueue = new FakeEmailQueue();
@@ -263,9 +256,6 @@ class FakeEmailQueueTest extends EmailQueueFixture
         $this->assertNull($fakeQueue->getEmailById(99999));
     }
 
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailById
-     */
     public function test_getEmailById_returns_null_for_unknown_id(): void
     {
         $fakeQueue = new FakeEmailQueue();

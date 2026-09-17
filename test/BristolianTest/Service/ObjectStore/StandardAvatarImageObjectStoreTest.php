@@ -12,13 +12,16 @@ use function Safe\file_get_contents;
 use function Safe\mkdir;
 use function Safe\rmdir;
 use function Safe\unlink;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * Unit test for StandardAvatarImageObjectStore using a local filesystem (no external storage).
  *
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Service\ObjectStore\StandardAvatarImageObjectStore::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\ObjectStore\StandardAvatarImageObjectStore::class, 'upload')]
+
 class StandardAvatarImageObjectStoreTest extends BaseTestCase
 {
     private ?string $testDir = null;
@@ -35,10 +38,6 @@ class StandardAvatarImageObjectStoreTest extends BaseTestCase
         parent::tearDown();
     }
 
-    /**
-     * @covers \Bristolian\Service\ObjectStore\StandardAvatarImageObjectStore::__construct
-     * @covers \Bristolian\Service\ObjectStore\StandardAvatarImageObjectStore::upload
-     */
     public function test_upload_writes_file_via_avatar_image_filesystem(): void
     {
         $this->testDir = sys_get_temp_dir() . '/avatar_image_store_' . uniqid();

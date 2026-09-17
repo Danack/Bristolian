@@ -11,12 +11,20 @@ use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\MemeTagUpdateParams;
 use Bristolian\UploadedFiles\UploadedFile;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class, 'addTagForMeme')]
+#[CoversMethod(\Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class, 'deleteTagForUser')]
+#[CoversMethod(\Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class, 'getMostCommonTags')]
+#[CoversMethod(\Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class, 'getMostCommonTagsForMemes')]
+#[CoversMethod(\Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class, 'getUserTagsForMeme')]
+#[CoversMethod(\Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class, 'updateTagForUser')]
+
 class PdoMemeTagRepoTest extends MemeTagRepoFixture
 {
     private ?string $testUserId = null;
@@ -51,10 +59,6 @@ class PdoMemeTagRepoTest extends MemeTagRepoFixture
         return $this->testMemeId;
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::__construct
-     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::addTagForMeme
-     */
     public function test_pdo_addTagForMeme_persists_tag(): void
     {
         $repo = $this->injector->make(PdoMemeTagRepo::class);
@@ -71,9 +75,6 @@ class PdoMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame('tag_text', $tags[0]->text);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::getUserTagsForMeme
-     */
     public function test_pdo_getUserTagsForMeme_returns_empty_before_adding(): void
     {
         $repo = $this->injector->make(PdoMemeTagRepo::class);
@@ -81,9 +82,6 @@ class PdoMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame([], $tags);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::updateTagForUser
-     */
     public function test_pdo_updateTagForUser_updates_user_tag_text(): void
     {
         $repo = $this->injector->make(PdoMemeTagRepo::class);
@@ -109,9 +107,6 @@ class PdoMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame('updated_text', $tagsAfter[0]->text);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::deleteTagForUser
-     */
     public function test_pdo_deleteTagForUser_removes_tag(): void
     {
         $repo = $this->injector->make(PdoMemeTagRepo::class);
@@ -131,9 +126,6 @@ class PdoMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame([], $tagsAfter);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::getMostCommonTags
-     */
     public function test_pdo_getMostCommonTags_returns_tags_sorted_by_count(): void
     {
         $repo = $this->injector->make(PdoMemeTagRepo::class);
@@ -160,9 +152,6 @@ class PdoMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame(2, $commonRow['count']);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::getMostCommonTagsForMemes
-     */
     public function test_pdo_getMostCommonTagsForMemes_empty_array_returns_empty(): void
     {
         $repo = $this->injector->make(PdoMemeTagRepo::class);
@@ -170,9 +159,6 @@ class PdoMemeTagRepoTest extends MemeTagRepoFixture
         $this->assertSame([], $result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::getMostCommonTagsForMemes
-     */
     public function test_pdo_getMostCommonTagsForMemes_returns_common_tags_for_given_memes(): void
     {
         $memeStorageRepo = $this->injector->make(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class);

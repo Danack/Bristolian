@@ -6,15 +6,15 @@ use Bristolian\Response\RoomFileUploadErrorResponse;
 use Bristolian\Service\RoomFileStorage\UploadError;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Response\RoomFileUploadErrorResponse::class, '__construct')]
+#[CoversMethod(\Bristolian\Response\RoomFileUploadErrorResponse::class, 'getBody')]
+#[CoversMethod(\Bristolian\Response\RoomFileUploadErrorResponse::class, 'getHeaders')]
+#[CoversMethod(\Bristolian\Response\RoomFileUploadErrorResponse::class, 'getStatus')]
+
 class RoomFileUploadErrorResponseTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Response\RoomFileUploadErrorResponse::__construct
-     * @covers \Bristolian\Response\RoomFileUploadErrorResponse::getStatus
-     */
     public function testGetStatusReturns400(): void
     {
         $error = UploadError::uploadedFileUnreadable();
@@ -23,9 +23,6 @@ class RoomFileUploadErrorResponseTest extends BaseTestCase
         $this->assertSame(400, $response->getStatus());
     }
 
-    /**
-     * @covers \Bristolian\Response\RoomFileUploadErrorResponse::getHeaders
-     */
     public function testGetHeadersReturnsContentType(): void
     {
         $error = UploadError::uploadedFileUnreadable();
@@ -36,9 +33,6 @@ class RoomFileUploadErrorResponseTest extends BaseTestCase
         $this->assertSame('application/json', $headers['Content-Type']);
     }
 
-    /**
-     * @covers \Bristolian\Response\RoomFileUploadErrorResponse::getBody
-     */
     public function testGetBodyReturnsErrorJson(): void
     {
         $error = UploadError::unsupportedFileType();

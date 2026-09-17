@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\EmailQueue;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\CliController\Email as EmailController;
 use Bristolian\Config\EnvironmentName;
 use Bristolian\Config\HardCodedEnvironmentName;
@@ -14,8 +15,22 @@ use BristolianTest\BaseTestCase;
 /**
  * Abstract test class for EmailQueue implementations.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'clearQueue')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'getEmailToSendAndUpdateState')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'queueEmailToUsers')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'setEmailFailed')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'setEmailSent')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'setEmailToRetry')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\PdoEmailQueue::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\PdoEmailQueue::class, 'clearQueue')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\PdoEmailQueue::class, 'getEmailToSendAndUpdateState')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\PdoEmailQueue::class, 'queueEmailToUsers')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\PdoEmailQueue::class, 'setEmailFailed')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\PdoEmailQueue::class, 'setEmailSent')]
+#[CoversMethod(\Bristolian\Repo\EmailQueue\PdoEmailQueue::class, 'setEmailToRetry')]
+
 abstract class EmailQueueFixture extends BaseTestCase
 {
     /**
@@ -25,13 +40,6 @@ abstract class EmailQueueFixture extends BaseTestCase
      */
     abstract public function getTestInstance(EnvironmentName $environmentName): EmailQueue;
 
-
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::__construct
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
-     */
     public function testqueueEmailToUserscreatesemails(): void
     {
         $env = new HardCodedEnvironmentName('testing');
@@ -45,12 +53,6 @@ abstract class EmailQueueFixture extends BaseTestCase
         $repo->queueEmailToUsers($users, $subject, $body);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
-     */
     public function test_queueEmailToUsers_accepts_empty_user_array(): void
     {
         $env = new HardCodedEnvironmentName('testing');
@@ -63,15 +65,6 @@ abstract class EmailQueueFixture extends BaseTestCase
         $repo->queueEmailToUsers([], $subject, $body);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
-     */
     public function test_getEmailToSendAndUpdateState_returns_email_with_initial_status(): void
     {
         $env = new HardCodedEnvironmentName('testing');
@@ -90,18 +83,6 @@ abstract class EmailQueueFixture extends BaseTestCase
         $this->assertSame(0, $email->retries);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailToRetry
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailToRetry
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::setEmailToRetry
-     */
     public function test_getEmailToSendAndUpdateState_returns_email_with_retry_status(): void
     {
         $env = new HardCodedEnvironmentName('testing');
@@ -119,18 +100,6 @@ abstract class EmailQueueFixture extends BaseTestCase
         $this->assertNotNull($email2);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailSent
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailSent
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::setEmailSent
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
-     */
     public function test_setEmailSent_updates_email_status(): void
     {
         $env = new HardCodedEnvironmentName('testing');
@@ -144,18 +113,6 @@ abstract class EmailQueueFixture extends BaseTestCase
         $repo->setEmailSent($email);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailFailed
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailFailed
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::setEmailFailed
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
-     */
     public function test_setEmailFailed_updates_email_status(): void
     {
         $env = new HardCodedEnvironmentName('testing');
@@ -169,18 +126,6 @@ abstract class EmailQueueFixture extends BaseTestCase
         $repo->setEmailFailed($email);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailToRetry
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailToRetry
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::setEmailToRetry
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
-     */
     public function test_setEmailToRetry_increments_retry_count(): void
     {
         $env = new HardCodedEnvironmentName('testing');
@@ -195,15 +140,6 @@ abstract class EmailQueueFixture extends BaseTestCase
         $repo->setEmailToRetry($email);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::clearQueue
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::clearQueue
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::clearQueue
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
-     */
     public function test_clearQueue_returns_count_of_cleared_emails(): void
     {
         $env = new HardCodedEnvironmentName('testing');
@@ -216,18 +152,6 @@ abstract class EmailQueueFixture extends BaseTestCase
         $this->assertGreaterThanOrEqual(0, $count);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::clearQueue
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::clearQueue
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::clearQueue
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
-     */
     public function test_clearQueue_clears_initial_sending_and_retry_emails(): void
     {
         $env = new HardCodedEnvironmentName('testing');
@@ -245,18 +169,6 @@ abstract class EmailQueueFixture extends BaseTestCase
         $this->assertGreaterThanOrEqual(1, $count);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailSent
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailSent
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::setEmailSent
-     */
     public function test_full_email_lifecycle(): void
     {
         $env = new HardCodedEnvironmentName('testing');
@@ -278,18 +190,6 @@ abstract class EmailQueueFixture extends BaseTestCase
         $this->assertNull($email2);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\EmailQueue::setEmailToRetry
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\FakeEmailQueue::setEmailToRetry
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::queueEmailToUsers
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::getEmailToSendAndUpdateState
-     * @covers \Bristolian\Repo\EmailQueue\PdoEmailQueue::setEmailToRetry
-     */
     public function test_retry_lifecycle(): void
     {
         $env = new HardCodedEnvironmentName('testing');

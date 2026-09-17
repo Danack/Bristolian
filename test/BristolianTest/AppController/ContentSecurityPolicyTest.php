@@ -14,9 +14,13 @@ use BristolianTest\BaseTestCase;
 use SlimDispatcher\Response\HtmlResponse;
 use SlimDispatcher\Response\JsonNoCacheResponse;
 use SlimDispatcher\Response\TextResponse;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\ContentSecurityPolicy::class, 'clearReports')]
+#[CoversMethod(\Bristolian\AppController\ContentSecurityPolicy::class, 'getReports')]
+#[CoversMethod(\Bristolian\AppController\ContentSecurityPolicy::class, 'getTestPage')]
+#[CoversMethod(\Bristolian\AppController\ContentSecurityPolicy::class, 'postReport')]
+
 class ContentSecurityPolicyTest extends BaseTestCase
 {
     public function setup(): void
@@ -26,9 +30,6 @@ class ContentSecurityPolicyTest extends BaseTestCase
         $this->injector->share(FakeCSPViolationStorage::class);
     }
 
-    /**
-     * @covers \Bristolian\AppController\ContentSecurityPolicy::postReport
-     */
     public function test_postReport(): void
     {
         $cspPayload = [
@@ -55,27 +56,18 @@ class ContentSecurityPolicyTest extends BaseTestCase
         $this->assertInstanceOf(TextResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\ContentSecurityPolicy::clearReports
-     */
     public function test_clearReports(): void
     {
         $result = $this->injector->execute([ContentSecurityPolicy::class, 'clearReports']);
         $this->assertInstanceOf(TextResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\ContentSecurityPolicy::getReports
-     */
     public function test_getReports(): void
     {
         $result = $this->injector->execute([ContentSecurityPolicy::class, 'getReports']);
         $this->assertInstanceOf(JsonNoCacheResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\ContentSecurityPolicy::getReports
-     */
     public function test_getReports_with_stored_reports_returns_array_of_toArray(): void
     {
         $report = ContentPolicyViolationReport::fromArray([
@@ -96,9 +88,6 @@ class ContentSecurityPolicyTest extends BaseTestCase
         $this->assertStringContainsString('script-src', $body);
     }
 
-    /**
-     * @covers \Bristolian\AppController\ContentSecurityPolicy::getTestPage
-     */
     public function test_getTestPage(): void
     {
         $result = $this->injector->execute([ContentSecurityPolicy::class, 'getTestPage']);

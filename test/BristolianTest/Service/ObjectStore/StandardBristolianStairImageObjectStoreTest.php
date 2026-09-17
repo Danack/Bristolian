@@ -12,13 +12,16 @@ use function Safe\file_get_contents;
 use function Safe\mkdir;
 use function Safe\rmdir;
 use function Safe\unlink;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * Unit test for StandardBristolianStairImageObjectStore using a local filesystem (no external storage).
  *
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Service\ObjectStore\StandardBristolianStairImageObjectStore::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\ObjectStore\StandardBristolianStairImageObjectStore::class, 'upload')]
+
 class StandardBristolianStairImageObjectStoreTest extends BaseTestCase
 {
     private ?string $testDir = null;
@@ -35,10 +38,6 @@ class StandardBristolianStairImageObjectStoreTest extends BaseTestCase
         parent::tearDown();
     }
 
-    /**
-     * @covers \Bristolian\Service\ObjectStore\StandardBristolianStairImageObjectStore::__construct
-     * @covers \Bristolian\Service\ObjectStore\StandardBristolianStairImageObjectStore::upload
-     */
     public function test_upload_writes_file_via_bristol_stairs_filesystem(): void
     {
         $this->testDir = sys_get_temp_dir() . '/bristol_stair_image_store_' . uniqid();

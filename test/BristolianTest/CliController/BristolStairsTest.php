@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\CliController;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\CliController\BristolStairs;
 use Bristolian\Filesystem\BristolStairsFilesystem;
 use BristolianGenerated\Model\StairImageObjectInfo;
@@ -25,7 +25,6 @@ use Safe\DateTimeImmutable;
 /**
  * Adapter that throws UnableToListContents when the listing is iterated (so BristolStairs' try/foreach catches it).
  *
- * @coversNothing
  */
 final class ThrowingListContentsAdapter extends LocalFilesystemAdapter
 {
@@ -41,7 +40,6 @@ final class ThrowingListContentsAdapter extends LocalFilesystemAdapter
 /**
  * Storage info repo that returns one known file for a given path so we can hit the "known files" branch.
  *
- * @coversNothing
  */
 final class BristolStairImageStorageInfoRepoWithOneKnown implements BristolStairImageStorageInfoRepo
 {
@@ -86,7 +84,6 @@ final class BristolStairImageStorageInfoRepoWithOneKnown implements BristolStair
 /**
  * BristolStairImageStorage that always returns UploadError for create() failure path.
  *
- * @coversNothing
  */
 final class BristolStairImageStorageReturningUploadError implements BristolStairImageStorage
 {
@@ -100,15 +97,19 @@ final class BristolStairImageStorageReturningUploadError implements BristolStair
     }
 }
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\CliController\BristolStairs::class, '__construct')]
+#[CoversMethod(\Bristolian\CliController\BristolStairs::class, 'check_contents')]
+#[CoversMethod(\Bristolian\CliController\BristolStairs::class, 'create')]
+#[CoversMethod(\Bristolian\CliController\BristolStairs::class, 'total')]
+#[CoversMethod(\Bristolian\Service\CliOutput\CapturingCliOutput::class, 'exit')]
+#[CoversMethod(\Bristolian\Service\CliOutput\CapturingCliOutput::class, 'getCapturedLines')]
+#[CoversMethod(\Bristolian\Service\CliOutput\CapturingCliOutput::class, 'getCapturedOutput')]
+#[CoversMethod(\Bristolian\Service\CliOutput\CapturingCliOutput::class, 'write')]
+#[CoversMethod(\Bristolian\Service\CliOutput\CliExitRequestedException::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\CliOutput\CliExitRequestedException::class, 'getExitCode')]
+
 class BristolStairsTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\CliController\BristolStairs::__construct
-     * @covers \Bristolian\CliController\BristolStairs::total
-     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::write
-     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::getCapturedOutput
-     */
     public function test_total_outputs_steps_and_flights(): void
     {
         $output = new CapturingCliOutput();
@@ -124,10 +125,6 @@ class BristolStairsTest extends BaseTestCase
         $this->assertStringContainsString('3 flights_of_stairs', $output->getCapturedOutput());
     }
 
-    /**
-     * @covers \Bristolian\CliController\BristolStairs::check_contents
-     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::getCapturedLines
-     */
     public function test_check_contents_reports_unknown_files(): void
     {
         $output = new CapturingCliOutput();
@@ -146,12 +143,6 @@ class BristolStairsTest extends BaseTestCase
         $this->assertStringContainsString('Unknown files:', $full);
     }
 
-    /**
-     * @covers \Bristolian\CliController\BristolStairs::create
-     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::exit
-     * @covers \Bristolian\Service\CliOutput\CliExitRequestedException::__construct
-     * @covers \Bristolian\Service\CliOutput\CliExitRequestedException::getExitCode
-     */
     public function test_create_when_admin_not_found_writes_message_and_exits(): void
     {
         $output = new CapturingCliOutput();
@@ -176,7 +167,6 @@ class BristolStairsTest extends BaseTestCase
 
     /**
      * @group slow
-     * @covers \Bristolian\CliController\BristolStairs::create
      */
     public function test_create_success_does_not_exit(): void
     {
@@ -200,9 +190,6 @@ class BristolStairsTest extends BaseTestCase
         $this->assertSame('', $output->getCapturedOutput());
     }
 
-    /**
-     * @covers \Bristolian\CliController\BristolStairs::check_contents
-     */
     public function test_check_contents_when_listContents_throws_writes_message_and_exits(): void
     {
         $output = new CapturingCliOutput();
@@ -225,7 +212,6 @@ class BristolStairsTest extends BaseTestCase
 
     /**
      * @group slow
-     * @covers \Bristolian\CliController\BristolStairs::create
      */
     public function test_create_when_storage_returns_UploadError_writes_message_and_exits(): void
     {
@@ -254,9 +240,6 @@ class BristolStairsTest extends BaseTestCase
         $this->assertStringContainsString('Failed to upload file', $output->getCapturedOutput());
     }
 
-    /**
-     * @covers \Bristolian\CliController\BristolStairs::check_contents
-     */
     public function test_check_contents_with_mix_of_known_and_unknown_files(): void
     {
         $output = new CapturingCliOutput();

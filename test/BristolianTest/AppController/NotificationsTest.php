@@ -13,9 +13,12 @@ use Bristolian\Response\EndpointAccessedViaGetResponse;
 use Bristolian\Response\SuccessResponse;
 use Bristolian\Response\ValidationErrorResponse;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\Notifications::class, 'generate_keys')]
+#[CoversMethod(\Bristolian\AppController\Notifications::class, 'save_subscription')]
+#[CoversMethod(\Bristolian\AppController\Notifications::class, 'save_subscription_get')]
+
 class NotificationsTest extends BaseTestCase
 {
     public function setup(): void
@@ -25,9 +28,6 @@ class NotificationsTest extends BaseTestCase
         $this->injector->share(FakeWebPushSubscriptionRepo::class);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Notifications::generate_keys
-     */
     public function test_generate_keys(): void
     {
         $result = $this->injector->execute([Notifications::class, 'generate_keys']);
@@ -35,18 +35,12 @@ class NotificationsTest extends BaseTestCase
         $this->assertStringContainsString('keys', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Notifications::save_subscription_get
-     */
     public function test_save_subscription_get(): void
     {
         $result = $this->injector->execute([Notifications::class, 'save_subscription_get']);
         $this->assertInstanceOf(EndpointAccessedViaGetResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Notifications::save_subscription
-     */
     public function test_save_subscription(): void
     {
         $data = [
@@ -64,9 +58,6 @@ class NotificationsTest extends BaseTestCase
         $this->assertInstanceOf(SuccessResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Notifications::save_subscription
-     */
     public function test_save_subscription_with_invalid_data(): void
     {
         $data = [];

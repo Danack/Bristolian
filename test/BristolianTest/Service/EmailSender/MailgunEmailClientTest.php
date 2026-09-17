@@ -11,9 +11,15 @@ use Bristolian\Service\EmailSender\MailgunEmailClient;
 use Bristolian\Service\EmailSender\TestableMailgun;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\EmailSender\FakeMailgunHttpClient::class, 'sendRequest')]
+#[CoversMethod(\Bristolian\Service\EmailSender\FakeMailgunHttpClient::class, 'setNextBody')]
+#[CoversMethod(\Bristolian\Service\EmailSender\FakeMailgunHttpClient::class, 'setNextResponseStatusCode')]
+#[CoversMethod(\Bristolian\Service\EmailSender\MailgunEmailClient::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\EmailSender\MailgunEmailClient::class, 'send')]
+#[CoversMethod(\Bristolian\Service\EmailSender\TestableMailgun::class, 'createWithHttpClient')]
+
 class MailgunEmailClientTest extends BaseTestCase
 {
     private function createMailgunWithFakeClient(FakeMailgunHttpClient $fakeClient): TestableMailgun
@@ -35,11 +41,6 @@ class MailgunEmailClientTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Service\EmailSender\MailgunEmailClient::__construct
-     * @covers \Bristolian\Service\EmailSender\MailgunEmailClient::send
-     * @covers \Bristolian\Service\EmailSender\TestableMailgun::createWithHttpClient
-     */
     public function test_send_returns_true_when_mailgun_succeeds(): void
     {
         $fakeClient = new FakeMailgunHttpClient();
@@ -55,10 +56,6 @@ class MailgunEmailClientTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Service\EmailSender\MailgunEmailClient::send
-     * @covers \Bristolian\Service\EmailSender\FakeMailgunHttpClient::sendRequest
-     * @covers \Bristolian\Service\EmailSender\FakeMailgunHttpClient::setNextResponseStatusCode
-     * @covers \Bristolian\Service\EmailSender\FakeMailgunHttpClient::setNextBody
      * Covers the failure path: catch block logs via CliOutput and returns false.
      */
     public function test_send_returns_false_when_mailgun_throws_http_client_exception(): void
@@ -80,9 +77,6 @@ class MailgunEmailClientTest extends BaseTestCase
         $this->assertStringContainsString('Bad request', $errorLines[0]);
     }
 
-    /**
-     * @covers \Bristolian\Service\EmailSender\FakeMailgunHttpClient::sendRequest
-     */
     public function test_fake_client_returns_configured_status_and_body(): void
     {
         $fakeClient = new FakeMailgunHttpClient();

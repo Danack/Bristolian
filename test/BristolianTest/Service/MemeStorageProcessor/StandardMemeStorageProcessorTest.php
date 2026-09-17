@@ -16,15 +16,13 @@ use function Safe\file_get_contents;
 use function Safe\file_put_contents;
 use function Safe\tempnam;
 use function Safe\unlink;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::class, 'storeMemeForUser')]
+
 class StandardMemeStorageProcessorTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::__construct
-     * @covers \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::storeMemeForUser
-     */
     public function test_storeMemeForUser_returns_ObjectStoredMeme_and_uploads_to_object_store(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -45,9 +43,6 @@ class StandardMemeStorageProcessorTest extends BaseTestCase
         $this->assertTrue($objectStore->hasFile($result->normalized_filename));
     }
 
-    /**
-     * @covers \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::storeMemeForUser
-     */
     public function test_storeMemeForUser_returns_duplicateOriginalFilename_when_user_already_has_file(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();
@@ -63,9 +58,6 @@ class StandardMemeStorageProcessorTest extends BaseTestCase
         $this->assertSame(UploadError::DUPLICATE_FILENAME, $second->error_code);
     }
 
-    /**
-     * @covers \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::storeMemeForUser
-     */
     public function test_storeMemeForUser_returns_uploadError_when_file_unreadable(): void
     {
         $tempFile = tempnam(sys_get_temp_dir(), 'meme_test_') . '.txt';
@@ -98,9 +90,6 @@ class StandardMemeStorageProcessorTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::storeMemeForUser
-     */
     public function test_storeMemeForUser_returns_uploadError_when_extension_not_allowed(): void
     {
         $memeStorageRepo = new FakeMemeStorageRepo();

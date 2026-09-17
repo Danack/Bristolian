@@ -4,14 +4,12 @@ namespace BristolianTest\Model;
 
 use Bristolian\Model\Types\WebPushNotification;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Types\WebPushNotification::class)]
+
 class WebPushNotificationTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\WebPushNotification
-     */
     public function testCreate(): void
     {
         $title = 'Test Notification';
@@ -23,9 +21,6 @@ class WebPushNotificationTest extends BaseTestCase
         $this->assertSame($body, $notification->getBody());
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\WebPushNotification
-     */
     public function testGetters(): void
     {
         $notification = WebPushNotification::create('Title', 'Body');

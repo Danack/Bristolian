@@ -10,9 +10,10 @@ use DataType\GetInputTypesFromAttributes;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\PropertyType\DisplayName::class)]
+
 class DisplayNameTest extends BaseTestCase
 {
     /**
@@ -26,7 +27,6 @@ class DisplayNameTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\DisplayName
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -48,7 +48,6 @@ class DisplayNameTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\DisplayName
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]
@@ -66,9 +65,6 @@ class DisplayNameTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\DisplayName
-     */
     public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new DisplayName('test_name');

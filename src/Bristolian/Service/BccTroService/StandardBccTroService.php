@@ -69,6 +69,5 @@ class StandardBccTroService implements BccTroService
 //        $this->cliOutput->write("message sent to room.\n");
 //
 //        $this->cliOutput->write("$markdown_text\n");
-
     }
 }

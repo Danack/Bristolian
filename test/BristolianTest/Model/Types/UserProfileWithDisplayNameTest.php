@@ -9,14 +9,12 @@ use BristolianGenerated\Model\UserProfile;
 use Bristolian\Model\Types\UserProfileWithDisplayName;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Types\UserProfileWithDisplayName::class)]
+
 class UserProfileWithDisplayNameTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\UserProfileWithDisplayName
-     */
     public function test_getters_with_display_name(): void
     {
         $now = new DateTimeImmutable();
@@ -43,9 +41,6 @@ class UserProfileWithDisplayNameTest extends BaseTestCase
         $this->assertSame('avatar-456', $profile->getAvatarImageId());
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\UserProfileWithDisplayName
-     */
     public function test_getDisplayName_returns_empty_string_when_display_name_null(): void
     {
         $now = new DateTimeImmutable();

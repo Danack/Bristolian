@@ -8,15 +8,13 @@ use Bristolian\Service\RoomFileStorage\FakeRoomFileStorage;
 use Bristolian\Service\RoomFileStorage\UploadError;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\RoomFileStorage\FakeRoomFileStorage::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\RoomFileStorage\FakeRoomFileStorage::class, 'storeFileForRoomAndUser')]
+
 class FakeRoomFileStorageTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\RoomFileStorage\FakeRoomFileStorage::__construct
-     * @covers \Bristolian\Service\RoomFileStorage\FakeRoomFileStorage::storeFileForRoomAndUser
-     */
     public function test_storeFileForRoomAndUser_returns_configured_file_id(): void
     {
         $fileId = 'roomfile_abc';
@@ -28,9 +26,6 @@ class FakeRoomFileStorageTest extends BaseTestCase
         $this->assertSame($fileId, $result);
     }
 
-    /**
-     * @covers \Bristolian\Service\RoomFileStorage\FakeRoomFileStorage::storeFileForRoomAndUser
-     */
     public function test_storeFileForRoomAndUser_returns_configured_error(): void
     {
         $error = UploadError::unsupportedFileType();

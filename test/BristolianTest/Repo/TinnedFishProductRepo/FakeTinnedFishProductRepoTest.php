@@ -7,12 +7,14 @@ namespace BristolianTest\Repo\TinnedFishProductRepo;
 use Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo;
 use Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::class, '__construct')]
+
 class FakeTinnedFishProductRepoTest extends TinnedFishProductRepoFixture
 {
     /**
@@ -23,9 +25,6 @@ class FakeTinnedFishProductRepoTest extends TinnedFishProductRepoFixture
         return new FakeTinnedFishProductRepo([]);
     }
 
-    /**
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::__construct
-     */
     public function test_constructor_with_initial_products(): void
     {
         $product = new \Bristolian\Model\TinnedFish\Product(

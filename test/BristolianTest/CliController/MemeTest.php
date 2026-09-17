@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\CliController;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\CliController\Meme;
 use Bristolian\Filesystem\MemeFilesystem;
 use Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo;
@@ -22,7 +22,6 @@ use function Safe\unlink;
 /**
  * Adapter that throws UnableToListContents when listContents is iterated.
  *
- * @coversNothing
  */
 final class MemeTestThrowingListAdapter extends LocalFilesystemAdapter
 {
@@ -35,7 +34,12 @@ final class MemeTestThrowingListAdapter extends LocalFilesystemAdapter
     }
 }
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\CliController\Meme::class, '__construct')]
+#[CoversMethod(\Bristolian\CliController\Meme::class, 'check_contents_of_database')]
+#[CoversMethod(\Bristolian\CliController\Meme::class, 'check_contents_of_storage')]
+#[CoversMethod(\Bristolian\Service\CliOutput\CapturingCliOutput::class, 'exit')]
+#[CoversMethod(\Bristolian\Service\CliOutput\CliExitRequestedException::class, 'getExitCode')]
+
 class MemeTest extends BaseTestCase
 {
     private ?string $testFsDir = null;
@@ -54,10 +58,6 @@ class MemeTest extends BaseTestCase
         parent::tearDown();
     }
 
-    /**
-     * @covers \Bristolian\CliController\Meme::__construct
-     * @covers \Bristolian\CliController\Meme::check_contents_of_storage
-     */
     public function test_check_contents_of_storage_reports_unknown_files(): void
     {
         $this->testFsDir = __DIR__ . '/MemeTest_fs_' . uniqid();
@@ -82,11 +82,6 @@ class MemeTest extends BaseTestCase
         $this->assertStringContainsString("'unknown.jpg'", $full);
     }
 
-    /**
-     * @covers \Bristolian\CliController\Meme::check_contents_of_storage
-     * @covers \Bristolian\Service\CliOutput\CapturingCliOutput::exit
-     * @covers \Bristolian\Service\CliOutput\CliExitRequestedException::getExitCode
-     */
     public function test_check_contents_of_storage_when_list_throws_writes_message_and_exits(): void
     {
         $output = new CapturingCliOutput();
@@ -108,9 +103,6 @@ class MemeTest extends BaseTestCase
         $this->assertStringContainsString('test list failure', $output->getCapturedOutput());
     }
 
-    /**
-     * @covers \Bristolian\CliController\Meme::check_contents_of_database
-     */
     public function test_check_contents_of_database_marks_missing_files_and_outputs_deleted_line(): void
     {
         $this->testFsDir = __DIR__ . '/MemeTest_fs_' . uniqid();
@@ -141,9 +133,6 @@ class MemeTest extends BaseTestCase
         $this->assertTrue($repo->getMeme($idMissing)->deleted);
     }
 
-    /**
-     * @covers \Bristolian\CliController\Meme::check_contents_of_database
-     */
     public function test_check_contents_of_database_when_all_files_present_outputs_dots_only(): void
     {
         $this->testFsDir = __DIR__ . '/MemeTest_fs_' . uniqid();

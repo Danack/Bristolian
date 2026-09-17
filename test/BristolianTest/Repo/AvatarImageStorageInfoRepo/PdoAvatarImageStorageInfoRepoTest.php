@@ -8,12 +8,15 @@ use Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo;
 use Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\UploadedFiles\UploadedFile;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::class, 'setUploaded')]
+#[CoversMethod(\Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::class, 'storeFileInfo')]
+
 class PdoAvatarImageStorageInfoRepoTest extends AvatarImageStorageInfoRepoFixture
 {
     public function getTestInstance(): AvatarImageStorageInfoRepo
@@ -27,9 +30,6 @@ class PdoAvatarImageStorageInfoRepoTest extends AvatarImageStorageInfoRepoFixtur
         return $adminUser->getUserId();
     }
 
-    /**
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::storeFileInfo
-     */
     public function test_storeFileInfo_throws_UserConstraintFailedException_when_user_does_not_exist(): void
     {
         $repo = $this->getTestInstance();
@@ -50,9 +50,6 @@ class PdoAvatarImageStorageInfoRepoTest extends AvatarImageStorageInfoRepoFixtur
         );
     }
 
-    /**
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::setUploaded
-     */
     public function test_setUploaded_throws_when_file_id_does_not_exist(): void
     {
         $repo = $this->getTestInstance();

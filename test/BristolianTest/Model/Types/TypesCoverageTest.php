@@ -30,9 +30,46 @@ use Bristolian\Parameters\FoiRequestParams;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Model\Types\AdminUser::class, 'getEmailAddress')]
+#[CoversMethod(\Bristolian\Model\Types\AdminUser::class, 'getPasswordHash')]
+#[CoversMethod(\Bristolian\Model\Types\AdminUser::class, 'getUserId')]
+#[CoversMethod(\Bristolian\Model\Types\AdminUser::class, 'new')]
+#[CoversMethod(\Bristolian\Model\Types\BccTro::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\BccTroDocument::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\Email::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\FoiRequest::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\FoiRequest::class, 'fromParam')]
+#[CoversMethod(\Bristolian\Model\Types\FoiRequest::class, 'getCreatedAt')]
+#[CoversMethod(\Bristolian\Model\Types\FoiRequest::class, 'getDescription')]
+#[CoversMethod(\Bristolian\Model\Types\FoiRequest::class, 'getFoiRequestId')]
+#[CoversMethod(\Bristolian\Model\Types\FoiRequest::class, 'getText')]
+#[CoversMethod(\Bristolian\Model\Types\FoiRequest::class, 'getUrl')]
+#[CoversMethod(\Bristolian\Model\Types\IncomingEmail::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\IncomingEmailParam::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\IncomingEmailParam::class, 'createFromData')]
+#[CoversMethod(\Bristolian\Model\Types\Meme::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\MigrationFromCode::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\MigrationThatHasBeenRun::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\ProcessorState::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\RoomAnnotationWithTags::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\RoomFileWithTags::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\RoomLinkWithTags::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\RoomNoteWithTags::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\RoomVideoTranscriptList::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\RoomVideoWithTags::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\UserWebPushSubscription::class, '__construct')]
+#[CoversMethod(\Bristolian\Model\Types\UserWebPushSubscription::class, 'getEndpoint')]
+#[CoversMethod(\Bristolian\Model\Types\UserWebPushSubscription::class, 'getExpirationTime')]
+#[CoversMethod(\Bristolian\Model\Types\UserWebPushSubscription::class, 'getRaw')]
+#[CoversMethod(\Bristolian\Model\Types\WebPushNotification::class, 'create')]
+#[CoversMethod(\Bristolian\Model\Types\WebPushNotification::class, 'getBody')]
+#[CoversMethod(\Bristolian\Model\Types\WebPushNotification::class, 'getData')]
+#[CoversMethod(\Bristolian\Model\Types\WebPushNotification::class, 'getSound')]
+#[CoversMethod(\Bristolian\Model\Types\WebPushNotification::class, 'getTitle')]
+#[CoversMethod(\Bristolian\Model\Types\WebPushNotification::class, 'getVibrate')]
+
 class TypesCoverageTest extends BaseTestCase
 {
     private static function now(): DateTimeImmutable
@@ -40,12 +77,6 @@ class TypesCoverageTest extends BaseTestCase
         return new DateTimeImmutable();
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\AdminUser::new
-     * @covers \Bristolian\Model\Types\AdminUser::getUserId
-     * @covers \Bristolian\Model\Types\AdminUser::getEmailAddress
-     * @covers \Bristolian\Model\Types\AdminUser::getPasswordHash
-     */
     public function test_AdminUser_new_and_getters(): void
     {
         $admin = AdminUser::new('user-id-1', 'admin@example.com', 'hashed_pw');
@@ -55,7 +86,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertSame('hashed_pw', $admin->getPasswordHash());
     }
 
-    /** @covers \Bristolian\Model\Types\BccTro::__construct */
     public function test_BccTro(): void
     {
         $document = new BccTroDocument('doc title', 'https://example.com', 'doc-1');
@@ -66,7 +96,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertSame($document, $tro->statement_of_reasons);
     }
 
-    /** @covers \Bristolian\Model\Types\BccTroDocument::__construct */
     public function test_BccTroDocument(): void
     {
         $document = new BccTroDocument('Title', 'https://example.com/doc', 'id-123');
@@ -76,7 +105,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertSame('id-123', $document->id);
     }
 
-    /** @covers \Bristolian\Model\Types\Email::__construct */
     public function test_Email(): void
     {
         $now = self::now();
@@ -90,14 +118,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertSame('Subject', $email->subject);
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\FoiRequest::__construct
-     * @covers \Bristolian\Model\Types\FoiRequest::getFoiRequestId
-     * @covers \Bristolian\Model\Types\FoiRequest::getText
-     * @covers \Bristolian\Model\Types\FoiRequest::getUrl
-     * @covers \Bristolian\Model\Types\FoiRequest::getDescription
-     * @covers \Bristolian\Model\Types\FoiRequest::getCreatedAt
-     */
     public function test_FoiRequest_constructor_and_getters(): void
     {
         $now = self::now();
@@ -110,9 +130,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertSame($now, $request->getCreatedAt());
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\FoiRequest::fromParam
-     */
     public function test_FoiRequest_fromParam(): void
     {
         $params = FoiRequestParams::createFromVarMap(new ArrayVarMap([
@@ -130,7 +147,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertInstanceOf(\DateTimeInterface::class, $request->getCreatedAt());
     }
 
-    /** @covers \Bristolian\Model\Types\IncomingEmail::__construct */
     public function test_IncomingEmail(): void
     {
         $now = self::now();
@@ -144,10 +160,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertSame('sender@example.com', $email->sender);
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\IncomingEmailParam::__construct
-     * @covers \Bristolian\Model\Types\IncomingEmailParam::createFromData
-     */
     public function test_IncomingEmailParam_createFromData(): void
     {
         $data = [
@@ -173,9 +185,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertSame(IncomingEmailParam::STATUS_INITIAL, $param->status);
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\IncomingEmailParam::createFromData
-     */
     public function test_IncomingEmailParam_createFromData_throws_on_missing_key(): void
     {
         $this->expectException(BristolianException::class);
@@ -184,7 +193,6 @@ class TypesCoverageTest extends BaseTestCase
         IncomingEmailParam::createFromData([]);
     }
 
-    /** @covers \Bristolian\Model\Types\Meme::__construct */
     public function test_Meme(): void
     {
         $now = self::now();
@@ -196,7 +204,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertFalse($meme->deleted);
     }
 
-    /** @covers \Bristolian\Model\Types\MigrationFromCode::__construct */
     public function test_MigrationFromCode(): void
     {
         $migration = new MigrationFromCode(1, 'Create users table', ['CREATE TABLE users (id INT)']);
@@ -206,7 +213,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertSame(['CREATE TABLE users (id INT)'], $migration->queries_to_run);
     }
 
-    /** @covers \Bristolian\Model\Types\MigrationThatHasBeenRun::__construct */
     public function test_MigrationThatHasBeenRun(): void
     {
         $now = self::now();
@@ -218,7 +224,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertSame($now, $migration->created_at);
     }
 
-    /** @covers \Bristolian\Model\Types\ProcessorState::__construct */
     public function test_ProcessorState(): void
     {
         $now = self::now();
@@ -230,7 +235,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertSame($now, $state->updated_at);
     }
 
-    /** @covers \Bristolian\Model\Types\RoomAnnotationWithTags::__construct */
     public function test_RoomAnnotationWithTags(): void
     {
         $tag = new RoomTag('tag-1', 'room-1', 'Tag Name', '', self::now());
@@ -244,7 +248,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertSame('Tag Name', $annotation->tags[0]->text);
     }
 
-    /** @covers \Bristolian\Model\Types\RoomFileWithTags::__construct */
     public function test_RoomFileWithTags(): void
     {
         $tag = new RoomTag('tag-1', 'room-1', 'Tag', '', self::now());
@@ -257,7 +260,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertCount(1, $file->tags);
     }
 
-    /** @covers \Bristolian\Model\Types\RoomLinkWithTags::__construct */
     public function test_RoomLinkWithTags(): void
     {
         $tag = new RoomTag('tag-1', 'room-1', 'Tag', '', self::now());
@@ -271,7 +273,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertCount(1, $link->tags);
     }
 
-    /** @covers \Bristolian\Model\Types\RoomNoteWithTags::__construct */
     public function test_RoomNoteWithTags(): void
     {
         $tag = new RoomTag('tag-1', 'room-1', 'Tag', '', self::now());
@@ -293,7 +294,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertCount(1, $note->tags);
     }
 
-    /** @covers \Bristolian\Model\Types\RoomVideoTranscriptList::__construct */
     public function test_RoomVideoTranscriptList(): void
     {
         $transcript = new RoomVideoTranscript('t-1', 'rv-1', 1, 'en', 'WEBVTT', self::now());
@@ -303,7 +303,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertSame('t-1', $list->transcripts[0]->id);
     }
 
-    /** @covers \Bristolian\Model\Types\RoomVideoWithTags::__construct */
     public function test_RoomVideoWithTags(): void
     {
         $tag = new RoomTag('tag-1', 'room-1', 'Tag', '', self::now());
@@ -318,12 +317,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertCount(1, $video->tags);
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\UserWebPushSubscription::__construct
-     * @covers \Bristolian\Model\Types\UserWebPushSubscription::getEndpoint
-     * @covers \Bristolian\Model\Types\UserWebPushSubscription::getExpirationTime
-     * @covers \Bristolian\Model\Types\UserWebPushSubscription::getRaw
-     */
     public function test_UserWebPushSubscription(): void
     {
         $subscription = new UserWebPushSubscription(
@@ -337,14 +330,6 @@ class TypesCoverageTest extends BaseTestCase
         $this->assertSame('{"endpoint":"https://push.example.com/sub/abc"}', $subscription->getRaw());
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\WebPushNotification::create
-     * @covers \Bristolian\Model\Types\WebPushNotification::getTitle
-     * @covers \Bristolian\Model\Types\WebPushNotification::getBody
-     * @covers \Bristolian\Model\Types\WebPushNotification::getVibrate
-     * @covers \Bristolian\Model\Types\WebPushNotification::getSound
-     * @covers \Bristolian\Model\Types\WebPushNotification::getData
-     */
     public function test_WebPushNotification(): void
     {
         $notification = WebPushNotification::create('Test Title', 'Test Body');

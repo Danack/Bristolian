@@ -5,14 +5,12 @@ namespace BristolianTest\Model\Types;
 use BristolianTest\BaseTestCase;
 use BristolianGenerated\Model\StairImageObjectInfo;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\BristolianGenerated\Model\StairImageObjectInfo::class)]
+
 class BristolStairImageFileTest extends BaseTestCase
 {
-    /**
-     * @covers \BristolianGenerated\Model\StairImageObjectInfo
-     */
     public function testConstruct()
     {
         $id = 'stair-image-123';

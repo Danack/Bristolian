@@ -11,12 +11,17 @@ use Bristolian\Repo\MemeTextRepo\MemeTextRepo;
 use Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo;
 use BristolianTest\Repo\DbTransactionIsolation;
 use Bristolian\UploadedFiles\UploadedFile;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class, 'getNextMemeToOCR')]
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class, 'searchMemeIdsByText')]
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class, 'updateMemeText')]
+
 class PdoMemeTextRepoTest extends MemeTextRepoFixture
 {
 //    use DbTransactionIsolation;
@@ -72,10 +77,6 @@ class PdoMemeTextRepoTest extends MemeTextRepoFixture
         return $this->testUserId2;
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::__construct
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::getNextMemeToOCR
-     */
     public function test_pdo_getNextMemeToOCR_returns_meme_without_text(): void
     {
         $memeStorageRepo = $this->getMemeStorageRepo();
@@ -89,9 +90,6 @@ class PdoMemeTextRepoTest extends MemeTextRepoFixture
         $this->assertNotEmpty($result->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::searchMemeIdsByText
-     */
     public function test_pdo_searchMemeIdsByText_returns_matching_meme_ids(): void
     {
         $memeStorageRepo = $this->getMemeStorageRepo();
@@ -116,9 +114,6 @@ class PdoMemeTextRepoTest extends MemeTextRepoFixture
         $this->assertContains($memeId, $result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::updateMemeText
-     */
     public function test_pdo_updateMemeText_inserts_when_no_existing_text(): void
     {
         $memeStorageRepo = $this->getMemeStorageRepo();
@@ -133,9 +128,6 @@ class PdoMemeTextRepoTest extends MemeTextRepoFixture
         $this->assertSame('New text via update', $text->text);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::updateMemeText
-     */
     public function test_pdo_updateMemeText_updates_existing_text(): void
     {
         $memeStorageRepo = $this->getMemeStorageRepo();

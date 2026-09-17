@@ -7,17 +7,13 @@ namespace BristolianTest\Service\WhatDoTheyKnowFeedFetcher;
 use Bristolian\Service\HttpFetcher\FakeHttpFetcherWithFixedResponse;
 use Bristolian\Service\WhatDoTheyKnowFeedFetcher\StandardWhatDoTheyKnowFeedFetcher;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-/**
- */
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\WhatDoTheyKnowFeedFetcher\StandardWhatDoTheyKnowFeedFetcher::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\WhatDoTheyKnowFeedFetcher\StandardWhatDoTheyKnowFeedFetcher::class, 'fetchRequestedFromBristolCityCouncilJson')]
+
 final class StandardWhatDoTheyKnowFeedFetcherTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\WhatDoTheyKnowFeedFetcher\StandardWhatDoTheyKnowFeedFetcher::__construct
-     * @covers \Bristolian\Service\WhatDoTheyKnowFeedFetcher\StandardWhatDoTheyKnowFeedFetcher::fetchRequestedFromBristolCityCouncilJson
-     */
     public function test_fetch_returns_body_on_200(): void
     {
         $httpFetcher = new FakeHttpFetcherWithFixedResponse(200, '{"ok":true}');
@@ -26,9 +22,6 @@ final class StandardWhatDoTheyKnowFeedFetcherTest extends BaseTestCase
         self::assertSame('{"ok":true}', $fetcher->fetchRequestedFromBristolCityCouncilJson());
     }
 
-    /**
-     * @covers \Bristolian\Service\WhatDoTheyKnowFeedFetcher\StandardWhatDoTheyKnowFeedFetcher::fetchRequestedFromBristolCityCouncilJson
-     */
     public function test_fetch_throws_on_non_200(): void
     {
         $httpFetcher = new FakeHttpFetcherWithFixedResponse(503, 'unavailable');

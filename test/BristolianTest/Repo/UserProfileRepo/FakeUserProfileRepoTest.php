@@ -8,12 +8,14 @@ use Bristolian\Parameters\UserProfileUpdateParams;
 use Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo;
 use Bristolian\Repo\UserProfileRepo\UserProfileRepo;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::class, 'getDisplayNameHistory')]
+
 class FakeUserProfileRepoTest extends UserProfileRepoFixture
 {
     public function getTestInstance(): UserProfileRepo
@@ -21,18 +23,12 @@ class FakeUserProfileRepoTest extends UserProfileRepoFixture
         return new FakeUserProfileRepo();
     }
 
-    /**
-     * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::getDisplayNameHistory
-     */
     public function test_getDisplayNameHistory_returns_empty_for_unknown_user(): void
     {
         $repo = new FakeUserProfileRepo();
         $this->assertSame([], $repo->getDisplayNameHistory('nonexistent-user-id'));
     }
 
-    /**
-     * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::getDisplayNameHistory
-     */
     public function test_getDisplayNameHistory_returns_history_after_updateProfile(): void
     {
         $repo = new FakeUserProfileRepo();

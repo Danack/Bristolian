@@ -5,14 +5,12 @@ namespace BristolianTest\Model;
 use Bristolian\Model\Types\Meme;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Types\Meme::class)]
+
 class MemeTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\Meme
-     */
     public function testConstruct(): void
     {
         $id = 'meme-123';
@@ -35,9 +33,6 @@ class MemeTest extends BaseTestCase
         $this->assertFalse($meme->deleted);
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\Meme
-     */
     public function testToArray(): void
     {
         $meme = new Meme(

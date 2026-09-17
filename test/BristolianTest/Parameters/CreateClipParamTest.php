@@ -10,9 +10,10 @@ use BristolianTest\BaseTestCase;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\CreateClipParam::class)]
+
 class CreateClipParamTest extends BaseTestCase
 {
     /**
@@ -67,8 +68,6 @@ class CreateClipParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\CreateClipParam
-     * @covers \Bristolian\Parameters\CreateClipParam::__construct
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -167,7 +166,6 @@ class CreateClipParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\CreateClipParam
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]

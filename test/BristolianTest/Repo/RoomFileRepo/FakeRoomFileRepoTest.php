@@ -11,14 +11,16 @@ use Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo;
 use Bristolian\Repo\RoomFileRepo\RoomFileRepo;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Tests for FakeRoomFileRepo
  *
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::class)]
+
 class FakeRoomFileRepoTest extends RoomFileRepoFixture
 {
     /**
@@ -38,18 +40,12 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
     {
         return 'file_123';
     }
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo
-     */
     public function test_constructor(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
         $this->assertInstanceOf(FakeRoomFileRepo::class, $roomFileRepo);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     */
     public function test_getFilesForRoom_returns_empty_initially(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -59,11 +55,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertEmpty($files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
-     */
     public function test_addFileToRoom_and_getFilesForRoom(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -87,11 +78,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertEmpty($files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
-     */
     public function test_getFilesForRoom_returns_stored_files(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -107,11 +93,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($file_id, $files[0]->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
-     */
     public function test_files_in_different_rooms_are_independent(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -133,10 +114,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($file_id_2, $room2_files[0]->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFileDetails
-     */
     public function test_getFileDetails_returns_file(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -152,9 +129,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($file_id, $fileDetails->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFileDetails
-     */
     public function test_getFileDetails_returns_null_for_nonexistent_file(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -164,9 +138,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertNull($fileDetails);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFileDetails
-     */
     public function test_getFileDetails_returns_null_when_file_not_in_room(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -174,9 +145,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertNull($roomFileRepo->getFileDetails('room_1', 'other_file'));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFileDetails
-     */
     public function test_getFileDetails_returns_null_for_nonexistent_room(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -186,10 +154,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertNull($fileDetails);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFileDetails
-     */
     public function test_getFileDetails_returns_null_for_file_in_different_room(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -207,11 +171,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertNull($fileDetails);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
-     */
     public function test_same_file_in_multiple_rooms(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -234,11 +193,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($file_id, $room2_files[0]->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
-     */
     public function test_stored_file_properties(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -253,11 +207,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertInstanceOf(\DateTimeInterface::class, $file->created_at);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
-     */
     public function test_multiple_files_in_room(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -273,12 +222,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertCount(3, $files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::addFileToRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFileDetails
-     */
     public function test_getFileDetails_matches_getFilesForRoom(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -299,10 +242,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($file_id, $file_details->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
-     */
     public function test_getFilesForRoom_filters_by_title(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -317,10 +256,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame('match_me_in_name', $files[0]->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
-     */
     public function test_getFilesForRoom_filters_by_created_at_after(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -334,10 +269,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertCount(0, $files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
-     */
     public function test_getFilesForRoom_filters_by_created_at_before(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -351,11 +282,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertCount(0, $files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::setDocumentTimestampForFileInRoom
-     */
     public function test_getFilesForRoom_filters_by_document_timestamp_after(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -371,11 +297,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertCount(0, $files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::filterFilesBySearch
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::setDocumentTimestampForFileInRoom
-     */
     public function test_getFilesForRoom_filters_by_document_timestamp_before(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -391,9 +312,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertCount(0, $files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     */
     public function test_getFilesForRoom_orders_by_name_asc_when_order_param_plus_name(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -425,9 +343,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame(['file_a', 'file_b'], array_map(static fn ($file) => $file->id, $files));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     */
     public function test_getFilesForRoom_orders_by_size_desc_when_order_param_minus_size(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -459,10 +374,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame(['file_big', 'file_small'], array_map(static fn ($file) => $file->id, $files));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::setDocumentTimestampForFileInRoom
-     */
     public function test_getFilesForRoom_orders_document_date_asc_puts_null_timestamp_last(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -495,9 +406,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame(['file_with_doc_date', 'file_no_doc_date'], array_map(static fn ($file) => $file->id, $files));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesForRoom
-     */
     public function test_getFilesForRoom_honors_limit(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -512,10 +420,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertCount(2, $files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::registerFileObjectInfo
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesInRoomByOriginalFilename
-     */
     public function test_registerFileObjectInfo_and_getFilesInRoomByOriginalFilename_returns_matching_files(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -539,9 +443,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame('report.pdf', $matching[0]->original_filename);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesInRoomByOriginalFilename
-     */
     public function test_getFilesInRoomByOriginalFilename_returns_empty_for_unknown_room(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -551,9 +452,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame([], $matching);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesInRoomByOriginalFilename
-     */
     public function test_getFilesInRoomByOriginalFilename_returns_empty_when_no_original_filename_match(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -574,9 +472,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame([], $matching);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesInRoomByOriginalFilename
-     */
     public function test_getFilesInRoomByOriginalFilename_returns_newest_first_when_multiple_match(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -611,10 +506,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame('file-old', $matching[1]->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesInRoomByOriginalFilename
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::setDocumentTimestampForFileInRoom
-     */
     public function test_getFilesInRoomByOriginalFilename_includes_document_timestamp_when_set(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -646,7 +537,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
      * Room membership can reference a file id without metadata if internal state is inconsistent; skip those ids.
      * TODO - what is this test? Why is this a thing?
      *
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::getFilesInRoomByOriginalFilename
      */
     public function test_getFilesInRoomByOriginalFilename_skips_file_ids_without_registered_metadata(): void
     {
@@ -666,9 +556,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame([], $matching);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::updateRoomFileDetails
-     */
     public function test_updateRoomFileDetails_updates_description_note_and_document_timestamp(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();
@@ -689,9 +576,6 @@ class FakeRoomFileRepoTest extends RoomFileRepoFixture
         $this->assertSame($documentTimestamp->getTimestamp(), $files[0]->document_timestamp->getTimestamp());
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileRepo\FakeRoomFileRepo::updateRoomFileDetails
-     */
     public function test_updateRoomFileDetails_throws_when_file_not_in_room(): void
     {
         $roomFileRepo = new FakeRoomFileRepo();

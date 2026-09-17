@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace BristolianTest\Session;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Asm\Session;
 
 /**
  * In-memory implementation of the Asm\Session interface for unit testing.
- * @coversNothing
  */
+
+#[CoversNothing]
+
 class FakeAsmSession implements Session
 {
     /** @var array<string, int|bool|array<mixed>|string|float> */

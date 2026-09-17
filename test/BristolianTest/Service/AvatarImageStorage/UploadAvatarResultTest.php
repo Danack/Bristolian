@@ -8,15 +8,15 @@ use Bristolian\Response\UploadAvatarErrorResponse;
 use Bristolian\Service\AvatarImageStorage\UploadAvatarResult;
 use Bristolian\Service\AvatarImageStorage\UploadError;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\AvatarImageStorage\UploadAvatarResult::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\AvatarImageStorage\UploadAvatarResult::class, 'failure')]
+#[CoversMethod(\Bristolian\Service\AvatarImageStorage\UploadAvatarResult::class, 'failureResponse')]
+#[CoversMethod(\Bristolian\Service\AvatarImageStorage\UploadAvatarResult::class, 'success')]
+
 class UploadAvatarResultTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\UploadAvatarResult::__construct
-     * @covers \Bristolian\Service\AvatarImageStorage\UploadAvatarResult::success
-     */
     public function test_success_returns_ok_with_avatar_id(): void
     {
         $avatarImageId = 'av_123';
@@ -27,9 +27,6 @@ class UploadAvatarResultTest extends BaseTestCase
         $this->assertNull($result->errorResponse);
     }
 
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\UploadAvatarResult::failure
-     */
     public function test_failure_returns_not_ok_with_error(): void
     {
         $error = UploadError::extensionNotAllowed('exe');
@@ -40,9 +37,6 @@ class UploadAvatarResultTest extends BaseTestCase
         $this->assertNull($result->errorResponse);
     }
 
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\UploadAvatarResult::failureResponse
-     */
     public function test_failureResponse_returns_not_ok_with_response(): void
     {
         $error = UploadError::imageTooSmall(100, 100, 512);

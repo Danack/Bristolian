@@ -7,15 +7,19 @@ namespace BristolianTest\Session;
 use Bristolian\Model\Types\AdminUser;
 use Bristolian\Session\AppSession;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Session\AppSession::class, '__construct')]
+#[CoversMethod(\Bristolian\Session\AppSession::class, 'createSessionForUser')]
+#[CoversMethod(\Bristolian\Session\AppSession::class, 'getUserId')]
+#[CoversMethod(\Bristolian\Session\AppSession::class, 'getUsername')]
+#[CoversMethod(\Bristolian\Session\AppSession::class, 'isLoggedIn')]
+#[CoversMethod(\Bristolian\Session\AppSession::class, 'setLoggedIn')]
+#[CoversMethod(\Bristolian\Session\AppSession::class, 'setUserId')]
+#[CoversMethod(\Bristolian\Session\AppSession::class, 'setUsername')]
+
 class AppSessionTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Session\AppSession::__construct
-     * @covers \Bristolian\Session\AppSession::isLoggedIn
-     */
     public function test_isLoggedIn_returns_true(): void
     {
         $rawSession = new FakeAsmSession();
@@ -24,10 +28,6 @@ class AppSessionTest extends BaseTestCase
         $this->assertTrue($session->isLoggedIn());
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSession::setUserId
-     * @covers \Bristolian\Session\AppSession::getUserId
-     */
     public function test_setUserId_and_getUserId(): void
     {
         $rawSession = new FakeAsmSession();
@@ -37,10 +37,6 @@ class AppSessionTest extends BaseTestCase
         $this->assertSame('user-abc', $session->getUserId());
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSession::setUsername
-     * @covers \Bristolian\Session\AppSession::getUsername
-     */
     public function test_setUsername_and_getUsername(): void
     {
         $rawSession = new FakeAsmSession();
@@ -50,9 +46,6 @@ class AppSessionTest extends BaseTestCase
         $this->assertSame('alice@example.com', $session->getUsername());
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSession::setLoggedIn
-     */
     public function test_setLoggedIn(): void
     {
         $rawSession = new FakeAsmSession();
@@ -62,9 +55,6 @@ class AppSessionTest extends BaseTestCase
         $this->assertTrue($rawSession->get(AppSession::LOGGED_IN));
     }
 
-    /**
-     * @covers \Bristolian\Session\AppSession::createSessionForUser
-     */
     public function test_createSessionForUser(): void
     {
         $rawSession = new FakeAsmSession();

@@ -8,12 +8,16 @@ use Bristolian\Model\Types\BccTro;
 use Bristolian\Model\Types\BccTroDocument;
 use Bristolian\Repo\BccTroRepo\BccTroRepo;
 use Bristolian\Repo\BccTroRepo\PdoBccTroRepo;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class, 'getMostRecentData')]
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class, 'saveData')]
+
 class PdoBccTroRepoTest extends BccTroRepoFixture
 {
     public function getTestInstance(): BccTroRepo
@@ -21,10 +25,6 @@ class PdoBccTroRepoTest extends BccTroRepoFixture
         return $this->injector->make(PdoBccTroRepo::class);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::__construct
-     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveData
-     */
     public function test_pdo_saveData_persists_tros(): void
     {
         $repo = $this->injector->make(PdoBccTroRepo::class);
@@ -44,7 +44,6 @@ class PdoBccTroRepoTest extends BccTroRepoFixture
     }
 
 //    /**
-//     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::getMostRecentData
 //     */
 //    public function test_pdo_getMostRecentData_returns_null(): void
 //    {
@@ -55,7 +54,6 @@ class PdoBccTroRepoTest extends BccTroRepoFixture
 //    /**
 //     * saveData throws when convertToValue returns an error (e.g. unsupported type).
 //     *
-//     * @covers \Bristolian\Repo\BccTroRepo\PdoBccTroRepo::saveData
 //     */
 //    public function test_pdo_saveData_throws_when_conversion_fails(): void
 //    {

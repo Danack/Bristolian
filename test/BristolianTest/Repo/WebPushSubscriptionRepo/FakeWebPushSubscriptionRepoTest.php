@@ -9,12 +9,15 @@ use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Parameters\WebPushSubscriptionParams;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::class, 'getUserSubscriptions')]
+#[CoversMethod(\Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::class, 'save')]
+
 class FakeWebPushSubscriptionRepoTest extends WebPushSubscriptionRepoFixture
 {
     public function getTestInstance(): WebPushSubscriptionRepo
@@ -23,7 +26,6 @@ class FakeWebPushSubscriptionRepoTest extends WebPushSubscriptionRepoFixture
     }
 
     /**
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::save
      * Fake-specific test: verify duplicate endpoint throws exception
      */
     public function test_save_throws_exception_for_duplicate_endpoint(): void
@@ -61,19 +63,12 @@ class FakeWebPushSubscriptionRepoTest extends WebPushSubscriptionRepoFixture
         $fakeRepo->save('user-456', $webPushSubscriptionParam, '{"raw": "data2"}');
     }
 
-    /**
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::getUserSubscriptions
-     */
     public function test_getUserSubscriptions_returns_empty_for_unknown_user(): void
     {
         $fakeRepo = new FakeWebPushSubscriptionRepo();
         $this->assertSame([], $fakeRepo->getUserSubscriptions('unknown-user'));
     }
 
-    /**
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::getUserSubscriptions
-     * @covers \Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::save
-     */
     public function test_getUserSubscriptions_returns_saved_subscriptions(): void
     {
         $fakeRepo = new FakeWebPushSubscriptionRepo();

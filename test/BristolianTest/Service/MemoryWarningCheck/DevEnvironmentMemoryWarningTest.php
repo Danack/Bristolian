@@ -9,14 +9,12 @@ use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
 use function Safe\ini_get;
 use function Safe\ini_set;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\MemoryWarningCheck\DevEnvironmentMemoryWarning::class, 'checkMemoryUsage')]
+
 class DevEnvironmentMemoryWarningTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\MemoryWarningCheck\DevEnvironmentMemoryWarning::checkMemoryUsage
-     */
     public function test_checkMemoryUsage_returns_percentage_when_under_threshold(): void
     {
         $previous_memory_limit = ini_get('memory_limit');

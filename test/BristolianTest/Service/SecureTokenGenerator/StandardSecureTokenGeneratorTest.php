@@ -6,14 +6,12 @@ namespace BristolianTest\Service\SecureTokenGenerator;
 
 use Bristolian\Service\SecureTokenGenerator\RandomBytesSecureTokenGenerator;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\SecureTokenGenerator\RandomBytesSecureTokenGenerator::class, 'generate')]
+
 class StandardSecureTokenGeneratorTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\SecureTokenGenerator\RandomBytesSecureTokenGenerator::generate
-     */
     public function test_generate_returns_non_empty_url_safe_token(): void
     {
         $generator = new RandomBytesSecureTokenGenerator();
@@ -25,9 +23,6 @@ class StandardSecureTokenGeneratorTest extends BaseTestCase
         $this->assertGreaterThanOrEqual(40, strlen($token), 'Token should be at least ~44 chars from 32 bytes base64url');
     }
 
-    /**
-     * @covers \Bristolian\Service\SecureTokenGenerator\RandomBytesSecureTokenGenerator::generate
-     */
     public function test_generate_returns_different_values_each_call(): void
     {
         $generator = new RandomBytesSecureTokenGenerator();

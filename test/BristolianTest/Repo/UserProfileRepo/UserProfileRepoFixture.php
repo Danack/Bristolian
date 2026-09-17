@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\UserProfileRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use BristolianGenerated\Model\UserDisplayName;
 use Bristolian\Model\Types\UserProfileWithDisplayName;
 use Bristolian\Parameters\UserProfileUpdateParams;
@@ -15,8 +16,18 @@ use VarMap\ArrayVarMap;
 /**
  * Abstract test class for UserProfileRepo implementations.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::class, 'getDisplayNameHistory')]
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::class, 'getUserProfile')]
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::class, 'updateAvatarImage')]
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::class, 'updateProfile')]
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, 'getDisplayNameHistory')]
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, 'getUserProfile')]
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, 'updateAvatarImage')]
+#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, 'updateProfile')]
+
 abstract class UserProfileRepoFixture extends BaseTestCase
 {
     use TestPlaceholders;
@@ -37,7 +48,6 @@ abstract class UserProfileRepoFixture extends BaseTestCase
     }
 
 //    /**
-//     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::getUserProfile
 //     */
 //    public function test_getUserProfile_returns_profile_even_for_nonexistent_user(): void
 //    {
@@ -54,12 +64,6 @@ abstract class UserProfileRepoFixture extends BaseTestCase
 //        $this->assertSame('', $result->getDisplayName()); // No display name yet
 //    }
 
-    /**
-     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::updateProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::updateProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::__construct
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::updateProfile
-     */
     public function test_updateProfile_creates_profile_and_display_name(): void
     {
         $repo = $this->getTestInstance();
@@ -77,11 +81,6 @@ abstract class UserProfileRepoFixture extends BaseTestCase
         $this->assertSame('About me text', $result->getAboutMe());
     }
 
-    /**
-     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::updateProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::updateProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::updateProfile
-     */
     public function test_updateProfile_creates_new_display_name_version(): void
     {
         $repo = $this->getTestInstance();
@@ -103,14 +102,6 @@ abstract class UserProfileRepoFixture extends BaseTestCase
         $this->assertSame('Second about me', $result->getAboutMe());
     }
 
-    /**
-     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::getDisplayNameHistory
-     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::updateProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::getDisplayNameHistory
-     * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::updateProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::getDisplayNameHistory
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::updateProfile
-     */
     public function test_getDisplayNameHistory_returns_all_versions_ordered_desc(): void
     {
         $repo = $this->getTestInstance();
@@ -142,14 +133,6 @@ abstract class UserProfileRepoFixture extends BaseTestCase
         $this->assertSame('Name 1', $history[2]->display_name);
     }
 
-    /**
-     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::updateAvatarImage
-     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::getUserProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::updateAvatarImage
-     * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::getUserProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::updateAvatarImage
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::getUserProfile
-     */
     public function test_updateAvatarImage_updates_avatar(): void
     {
         $repo = $this->getTestInstance();
@@ -161,17 +144,6 @@ abstract class UserProfileRepoFixture extends BaseTestCase
         $this->assertSame('avatar-image-id-456', $profile->getAvatarImageId());
     }
 
-    /**
-     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::updateAvatarImage
-     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::updateProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::getUserProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::updateAvatarImage
-     * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::updateProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::getUserProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::updateAvatarImage
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::updateProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::getUserProfile
-     */
     public function test_updateAvatarImage_updates_existing_profile(): void
     {
         $repo = $this->getTestInstance();
@@ -190,14 +162,6 @@ abstract class UserProfileRepoFixture extends BaseTestCase
         $this->assertSame('About me', $profile->getAboutMe()); // Should preserve about_me
     }
 
-    /**
-     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::getUserProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\UserProfileRepo::updateProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::getUserProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::updateProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::getUserProfile
-     * @covers \Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::updateProfile
-     */
     public function test_getUserProfile_returns_latest_display_name(): void
     {
         $repo = $this->getTestInstance();

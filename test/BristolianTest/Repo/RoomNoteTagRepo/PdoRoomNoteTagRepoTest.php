@@ -12,20 +12,19 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\RoomNoteTagRepo\PdoRoomNoteTagRepo::class)]
+
 class PdoRoomNoteTagRepoTest extends BaseTestCase
 {
     use HasTestWorld;
     use TestPlaceholders;
 
-    /**
-     * @covers \Bristolian\Repo\RoomNoteTagRepo\PdoRoomNoteTagRepo
-     */
     public function test_setTagsForRoomNote_and_getTagIdsForRoomNote_roundtrip(): void
     {
         $this->ensureStandardSetup();

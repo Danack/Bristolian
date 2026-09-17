@@ -8,14 +8,12 @@ use Bristolian\Model\TinnedFish\Product;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\TinnedFish\Product::class)]
+
 class ProductTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\TinnedFish\Product
-     */
     public function test_construct(): void
     {
         $createdAt = new DateTimeImmutable('2024-01-15 10:00:00');
@@ -50,9 +48,6 @@ class ProductTest extends BaseTestCase
         $this->assertSame($updatedAt, $product->updated_at);
     }
 
-    /**
-     * @covers \Bristolian\Model\TinnedFish\Product
-     */
     public function test_construct_with_defaults(): void
     {
         $product = new Product(
@@ -73,9 +68,6 @@ class ProductTest extends BaseTestCase
         $this->assertNull($product->updated_at);
     }
 
-    /**
-     * @covers \Bristolian\Model\TinnedFish\Product::fromRow
-     */
     public function test_fromRow(): void
     {
         $row = [
@@ -108,9 +100,6 @@ class ProductTest extends BaseTestCase
         $this->assertEquals(new DateTimeImmutable('2024-02-02 10:30:00'), $product->updated_at);
     }
 
-    /**
-     * @covers \Bristolian\Model\TinnedFish\Product::fromRow
-     */
     public function test_fromRow_with_null_weight_and_no_validation_status(): void
     {
         $row = [

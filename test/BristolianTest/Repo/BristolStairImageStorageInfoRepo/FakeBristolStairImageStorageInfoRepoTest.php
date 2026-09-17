@@ -17,7 +17,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
  *
  * @group standard_repo
  */
+
 #[CoversClass(\Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo::class)]
+
 class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageInfoRepoFixture
 {
     /**
@@ -27,18 +29,12 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
     {
         return new FakeBristolStairImageStorageInfoRepo();
     }
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_constructor(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
         $this->assertInstanceOf(FakeBristolStairImageStorageInfoRepo::class, $repo);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_storeFileInfo_creates_new_record(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -56,9 +52,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         $this->assertNotEmpty($file_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_getStoredFileInfo_returns_empty_initially(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -68,9 +61,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         $this->assertEmpty($files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_getStoredFileInfo_returns_stored_files(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -92,9 +82,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         $this->assertInstanceOf(BristolStairImageFile::class, $files[$file_id]);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_stored_file_properties(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -122,9 +109,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         $this->assertInstanceOf(\DateTimeInterface::class, $storedFile->created_at);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_multiple_files_stored(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -157,9 +141,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         $this->assertArrayHasKey($file_id3, $files);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_getById_returns_file(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -174,9 +155,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         $this->assertSame('file1.jpg', $file->normalized_name);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_getById_returns_null_for_nonexistent_id(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -186,9 +164,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         $this->assertNull($file);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_getByNormalizedName_returns_file(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -203,9 +178,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         $this->assertSame('test-file.jpg', $file->normalized_name);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_getByNormalizedName_returns_null_for_nonexistent_name(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -215,9 +187,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         $this->assertNull($file);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_setUploaded_updates_state(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -237,9 +206,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         $this->assertSame(FileState::UPLOADED->value, $file_after->state);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_setUploaded_throws_exception_for_nonexistent_id(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -250,9 +216,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         $repo->setUploaded('nonexistent-id');
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_each_stored_file_has_unique_id(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -269,9 +232,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         $this->assertNotSame($file_id1, $file_id3);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_stored_files_keyed_by_id(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -289,9 +249,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         }
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_created_at_timestamp_is_recent(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -317,9 +274,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         );
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_setUploaded_preserves_other_properties(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();
@@ -348,9 +302,6 @@ class FakeBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageI
         $this->assertSame($original_created_at, $file_after->created_at);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\FakeBristolStairImageStorageInfoRepo
-     */
     public function test_complete_workflow(): void
     {
         $repo = new FakeBristolStairImageStorageInfoRepo();

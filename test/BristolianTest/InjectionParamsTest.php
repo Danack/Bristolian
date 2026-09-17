@@ -5,14 +5,12 @@ namespace BristolianTest;
 use Bristolian\InjectionParams;
 use BristolianTest\BaseTestCase;
 use DI\Injector;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\InjectionParams::class)]
+
 class InjectionParamsTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\InjectionParams
-     */
     public function testWorks_constructor_with_defaults()
     {
         $params = new InjectionParams();
@@ -26,9 +24,6 @@ class InjectionParamsTest extends BaseTestCase
         $this->assertSame([], $params->namedParams);
     }
 
-    /**
-     * @covers \Bristolian\InjectionParams
-     */
     public function testWorks_constructor_with_all_parameters()
     {
         $shares = [new \stdClass()];
@@ -55,9 +50,6 @@ class InjectionParamsTest extends BaseTestCase
         $this->assertSame($namedParams, $params->namedParams);
     }
 
-    /**
-     * @covers \Bristolian\InjectionParams
-     */
     public function testWorks_fromSharedObjects_with_interface()
     {
         $interface = 'TestInterface';
@@ -72,9 +64,6 @@ class InjectionParamsTest extends BaseTestCase
         $this->assertSame(\stdClass::class, $params->aliases[$interface]);
     }
 
-    /**
-     * @covers \Bristolian\InjectionParams
-     */
     public function testWorks_fromSharedObjects_with_same_class()
     {
         $className = \stdClass::class;
@@ -88,9 +77,6 @@ class InjectionParamsTest extends BaseTestCase
         $this->assertArrayNotHasKey($className, $params->aliases);
     }
 
-    /**
-     * @covers \Bristolian\InjectionParams
-     */
     public function testWorks_alias()
     {
         $params = new InjectionParams();
@@ -100,9 +86,6 @@ class InjectionParamsTest extends BaseTestCase
         $this->assertSame('Alias', $params->aliases['Original']);
     }
 
-    /**
-     * @covers \Bristolian\InjectionParams
-     */
     public function testWorks_share_with_string()
     {
         $params = new InjectionParams();
@@ -112,9 +95,6 @@ class InjectionParamsTest extends BaseTestCase
         $this->assertSame(\stdClass::class, $params->shares[0]);
     }
 
-    /**
-     * @covers \Bristolian\InjectionParams
-     */
     public function testWorks_share_with_object()
     {
         $params = new InjectionParams();
@@ -125,9 +105,6 @@ class InjectionParamsTest extends BaseTestCase
         $this->assertSame($object, $params->shares[0]);
     }
 
-    /**
-     * @covers \Bristolian\InjectionParams
-     */
     public function testWorks_defineNamedParam()
     {
         $params = new InjectionParams();
@@ -137,9 +114,6 @@ class InjectionParamsTest extends BaseTestCase
         $this->assertSame('value', $params->namedParams['paramName']);
     }
 
-    /**
-     * @covers \Bristolian\InjectionParams
-     */
     public function testWorks_delegate()
     {
         $params = new InjectionParams();
@@ -152,9 +126,6 @@ class InjectionParamsTest extends BaseTestCase
         $this->assertSame($callable, $params->delegates['ClassName']);
     }
 
-    /**
-     * @covers \Bristolian\InjectionParams
-     */
     public function testWorks_defineClassParam()
     {
         $params = new InjectionParams();
@@ -165,9 +136,6 @@ class InjectionParamsTest extends BaseTestCase
         $this->assertSame($classParams, $params->classParams['ClassName']);
     }
 
-    /**
-     * @covers \Bristolian\InjectionParams
-     */
     public function testWorks_prepare()
     {
         $params = new InjectionParams();
@@ -180,9 +148,6 @@ class InjectionParamsTest extends BaseTestCase
         $this->assertSame($callable, $params->prepares['ClassName']);
     }
 
-    /**
-     * @covers \Bristolian\InjectionParams
-     */
     public function testWorks_addToInjector()
     {
         $injector = new Injector();

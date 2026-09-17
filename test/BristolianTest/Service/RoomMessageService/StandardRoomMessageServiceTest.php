@@ -12,18 +12,19 @@ use Bristolian\Repo\UserRepo\UserRepo;
 use Bristolian\Service\RoomMessageService\StandardRoomMessageService;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Service\RoomMessageService\StandardRoomMessageService::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\RoomMessageService\StandardRoomMessageService::class, 'sendMessage')]
+#[CoversMethod(\Bristolian\Service\RoomMessageService\StandardRoomMessageService::class, 'sendRoomMessage')]
+#[CoversMethod(\Bristolian\Service\RoomMessageService\StandardRoomMessageService::class, 'sendSystemMessage')]
+
 class StandardRoomMessageServiceTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\RoomMessageService\StandardRoomMessageService::__construct
-     * @covers \Bristolian\Service\RoomMessageService\StandardRoomMessageService::sendMessage
-     */
     public function test_sendMessage_stores_via_repo_and_pushes_to_redis(): void
     {
         $chatMessageRepo = new FakeChatMessageRepo();
@@ -70,9 +71,6 @@ class StandardRoomMessageServiceTest extends BaseTestCase
 //        $this->redis->lRem($key, $lastPushed, 1);
     }
 
-    /**
-     * @covers \Bristolian\Service\RoomMessageService\StandardRoomMessageService::sendRoomMessage
-     */
     public function test_sendRoomMessage_stores_for_user_resolved_from_room(): void
     {
         $chatMessageRepo = new FakeChatMessageRepo();
@@ -111,9 +109,6 @@ class StandardRoomMessageServiceTest extends BaseTestCase
         $this->assertSame('Room message', $message->text);
     }
 
-    /**
-     * @covers \Bristolian\Service\RoomMessageService\StandardRoomMessageService::sendSystemMessage
-     */
     public function test_sendSystemMessage_stores_via_chat_repo_system_path(): void
     {
         $chatMessageRepo = new FakeChatMessageRepo();

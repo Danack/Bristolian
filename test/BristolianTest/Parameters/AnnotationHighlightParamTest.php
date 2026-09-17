@@ -9,9 +9,10 @@ use Bristolian\Parameters\AnnotationHighlightParam;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\AnnotationHighlightParam::class)]
+
 class AnnotationHighlightParamTest extends BaseTestCase
 {
     /**
@@ -36,7 +37,6 @@ class AnnotationHighlightParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\AnnotationHighlightParam
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -114,7 +114,6 @@ class AnnotationHighlightParamTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\AnnotationHighlightParam
      * @param array<string, mixed> $input
      * @param array<string, string> $expectedProblems
      */

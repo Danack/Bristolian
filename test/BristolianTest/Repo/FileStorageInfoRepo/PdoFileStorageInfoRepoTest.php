@@ -7,19 +7,18 @@ use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use Ramsey\Uuid\Uuid;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo::class)]
+
 class PdoFileStorageInfoRepoTest extends BaseTestCase
 {
     use TestPlaceholders;
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileObjectInfoRepo\PdoRoomFileObjectInfoRepo
-     */
     public function test_createEntry()
     {
         $pdoFileStorageInfoRepo = $this->make(PdoRoomFileObjectInfoRepo::class);

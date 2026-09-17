@@ -9,14 +9,13 @@ use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
 use function Safe\file_get_contents;
 use function Safe\json_decode;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Types\IncomingEmail::class)]
+#[CoversClass(\Bristolian\Model\Types\IncomingEmailParam::class)]
+
 class IncomingEmailTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\IncomingEmailParam
-     */
     public function testIncomingEmailParam_construct(): void
     {
         $param = new IncomingEmailParam(
@@ -36,9 +35,6 @@ class IncomingEmailTest extends BaseTestCase
         $this->assertSame(IncomingEmailParam::STATUS_INITIAL, $param->status);
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\IncomingEmailParam::createFromData
-     */
     public function testIncomingEmailParam_createFromData(): void
     {
         $json = file_get_contents(__DIR__ . '/../../data/mailgun/incoming_email_2025_01_18_06_57_45.json');
@@ -49,9 +45,6 @@ class IncomingEmailTest extends BaseTestCase
         $this->assertInstanceOf(IncomingEmailParam::class, $incomingEmail);
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\IncomingEmailParam::createFromData
-     */
     public function testIncomingEmailParam_createFromData_throws_when_key_missing(): void
     {
         $this->expectException(BristolianException::class);
@@ -60,9 +53,6 @@ class IncomingEmailTest extends BaseTestCase
         IncomingEmailParam::createFromData([]);
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\IncomingEmail
-     */
     public function testIncomingEmail_construct(): void
     {
         $now = new DateTimeImmutable();

@@ -10,12 +10,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
  * Tests for ProductError model
  *
  */
+
 #[CoversClass(\Bristolian\Model\TinnedFish\ProductError::class)]
+
 class ProductErrorTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\TinnedFish\ProductError::productNotFound
-     */
     public function test_productNotFound_creates_correct_error(): void
     {
         $error = ProductError::productNotFound('1234567890123');
@@ -26,9 +25,6 @@ class ProductErrorTest extends BaseTestCase
         $this->assertNull($error->details);
     }
 
-    /**
-     * @covers \Bristolian\Model\TinnedFish\ProductError::invalidBarcode
-     */
     public function test_invalidBarcode_creates_correct_error(): void
     {
         $error = ProductError::invalidBarcode('invalid');
@@ -39,9 +35,6 @@ class ProductErrorTest extends BaseTestCase
         $this->assertNull($error->details);
     }
 
-    /**
-     * @covers \Bristolian\Model\TinnedFish\ProductError::externalApiError
-     */
     public function test_externalApiError_creates_correct_error(): void
     {
         $error = ProductError::externalApiError('1234567890123', 'Network timeout');
@@ -52,9 +45,6 @@ class ProductErrorTest extends BaseTestCase
         $this->assertSame('Network timeout', $error->details);
     }
 
-    /**
-     * @covers \Bristolian\Model\TinnedFish\ProductError::internalError
-     */
     public function test_internalError_creates_correct_error(): void
     {
         $error = ProductError::internalError();
@@ -65,9 +55,6 @@ class ProductErrorTest extends BaseTestCase
         $this->assertNull($error->details);
     }
 
-    /**
-     * @covers \Bristolian\Model\TinnedFish\ProductError::__construct
-     */
     public function test_constructor_sets_all_fields(): void
     {
         $error = new ProductError(

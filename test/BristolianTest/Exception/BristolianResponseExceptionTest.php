@@ -6,14 +6,12 @@ namespace BristolianTest\Exception;
 
 use Bristolian\Exception\BristolianResponseException;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Exception\BristolianResponseException::class, 'failedToOpenFile')]
+
 class BristolianResponseExceptionTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Exception\BristolianResponseException::failedToOpenFile
-     */
     public function test_failedToOpenFile_returns_exception_with_filename_in_message(): void
     {
         $filename = '/some/path/to/file.txt';

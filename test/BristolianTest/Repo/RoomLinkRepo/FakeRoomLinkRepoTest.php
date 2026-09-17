@@ -14,12 +14,14 @@ use Bristolian\Repo\RoomLinkRepo\RoomLinkRepo;
 use BristolianTest\Repo\TestPlaceholders;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::class)]
+
 class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
 {
     use TestPlaceholders;
@@ -47,9 +49,6 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         return 'room_456';
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo
-     */
     public function testAddLinkToRoom(): void
     {
         $varMap = new ArrayVarMap([
@@ -78,9 +77,6 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertSame($room_id, $roomLink->room_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo
-     */
     public function testGetLinksForRoom(): void
     {
         $this->initInMemoryFakes();
@@ -90,11 +86,6 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertEmpty($roomLinks);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::addLinkToRoomFromParam
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLastAddedLink
-     */
     public function test_getLinksForRoom_and_getLastAddedLink_after_add(): void
     {
         $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
@@ -113,9 +104,6 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertSame($room_id, $last->room_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLastAddedLink
-     */
     public function test_getLastAddedLink_returns_null_when_empty(): void
     {
         $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
@@ -123,9 +111,6 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertNull($repo->getLastAddedLink());
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getRoomLink
-     */
     public function test_getRoomLink_returns_null_for_unknown_id(): void
     {
         $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
@@ -133,10 +118,6 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertNull($repo->getRoomLink('nonexistent-link-id'));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::filterLinksBySearch
-     */
     public function test_getLinksForRoom_filters_by_title(): void
     {
         $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
@@ -158,10 +139,6 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertSame('Report with unique slug here', $links[0]->title);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::filterLinksBySearch
-     */
     public function test_getLinksForRoom_filters_by_description(): void
     {
         $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
@@ -185,10 +162,6 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertSame('Report with unique desc slug here', $links[0]->description);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::filterLinksBySearch
-     */
     public function test_getLinksForRoom_filters_by_created_at_after(): void
     {
         $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
@@ -202,10 +175,6 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertCount(0, $links);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::filterLinksBySearch
-     */
     public function test_getLinksForRoom_filters_by_created_at_before(): void
     {
         $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
@@ -219,11 +188,6 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertCount(0, $links);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::filterLinksBySearch
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::setDocumentTimestampForRoomLink
-     */
     public function test_getLinksForRoom_filters_by_document_timestamp_after(): void
     {
         $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
@@ -238,11 +202,6 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertCount(0, $links);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getLinksForRoom
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::filterLinksBySearch
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::setDocumentTimestampForRoomLink
-     */
     public function test_getLinksForRoom_filters_by_document_timestamp_before(): void
     {
         $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
@@ -257,10 +216,6 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $this->assertCount(0, $links);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::updateTitleAndDescription
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::addLinkToRoomFromParam
-     */
     public function test_updateTitleAndDescription_throws_when_room_mismatches(): void
     {
         $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();
@@ -273,11 +228,6 @@ class FakeRoomLinkRepoTest extends RoomLinkRepoFixture
         $repo->updateTitleAndDescription('room-b', $roomLinkId, 'Title', 'Description');
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::updateTitleAndDescription
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::addLinkToRoomFromParam
-     * @covers \Bristolian\Repo\RoomLinkRepo\FakeRoomLinkRepo::getRoomLink
-     */
     public function test_updateTitleAndDescription_iterates_past_other_link_ids(): void
     {
         $linkRepo = new \Bristolian\Repo\LinkRepo\FakeLinkRepo();

@@ -13,12 +13,14 @@ use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\Repo\TestPlaceholders;
 use Ramsey\Uuid\Uuid;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo::class)]
+
 class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageInfoRepoFixture
 {
     use TestPlaceholders;
@@ -31,7 +33,6 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
     /**
      * Duplicate id triggers constraint violation (23000); repo throws UserConstraintFailedException.
      *
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo::storeFileInfo
      */
     public function test_storeFileInfo_throws_UserConstraintFailedException_on_duplicate_id(): void
     {
@@ -50,9 +51,6 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
         $repo->storeFileInfo($user->getUserId(), 'other.jpg', $uploadedFile);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
-     */
     public function test_storeFileInfo_creates_new_record(): void
     {
         $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
@@ -71,9 +69,6 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
         $this->assertNotEmpty($file_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
-     */
     public function test_getById_returns_file_info(): void
     {
         $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
@@ -99,9 +94,6 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
         $this->assertInstanceOf(\DateTimeInterface::class, $file_info->created_at);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
-     */
     public function test_getById_returns_null_for_nonexistent_id(): void
     {
         $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
@@ -111,9 +103,6 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
         $this->assertNull($file_info);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
-     */
     public function test_getByNormalizedName_returns_file_info(): void
     {
         $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
@@ -136,9 +125,6 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
         $this->assertSame($normalized_filename, $file_info->normalized_name);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
-     */
     public function test_getByNormalizedName_returns_null_for_nonexistent_name(): void
     {
         $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
@@ -148,9 +134,6 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
         $this->assertNull($file_info);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
-     */
     public function test_setUploaded_updates_state(): void
     {
         $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
@@ -178,9 +161,6 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
         $this->assertSame(FileState::UPLOADED->value, $file_info_after->state);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
-     */
     public function test_setUploaded_throws_exception_for_nonexistent_id(): void
     {
         $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
@@ -191,9 +171,6 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
         $repo->setUploaded('nonexistent-id-' . time());
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
-     */
     public function test_file_info_properties(): void
     {
         $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
@@ -222,9 +199,6 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
         $this->assertGreaterThan(0, $file_info->size);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
-     */
     public function test_multiple_files_for_same_user(): void
     {
         $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
@@ -260,9 +234,6 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
         $this->assertSame($normalized_filename2, $file2->normalized_name);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
-     */
     public function test_files_from_different_users(): void
     {
         $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
@@ -295,9 +266,6 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
         $this->assertNotSame($file1->user_id, $file2->user_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
-     */
     public function test_created_at_is_recent(): void
     {
         $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
@@ -330,9 +298,6 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
         );
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
-     */
     public function test_complete_workflow(): void
     {
         $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);
@@ -367,9 +332,6 @@ class PdoBristolStairImageStorageInfoRepoTest extends BristolStairImageStorageIn
         $this->assertSame(FileState::UPLOADED->value, $file_uploaded->state);
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairImageStorageInfoRepo\PdoBristolStairImageStorageInfoRepo
-     */
     public function test_original_filename_preserved(): void
     {
         $repo = $this->injector->make(PdoBristolStairImageStorageInfoRepo::class);

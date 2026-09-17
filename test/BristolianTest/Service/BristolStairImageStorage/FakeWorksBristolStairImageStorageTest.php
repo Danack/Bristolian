@@ -10,14 +10,12 @@ use Bristolian\Service\BristolStairImageStorage\FakeWorksBristolStairImageStorag
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\BristolStairImageStorage\FakeWorksBristolStairImageStorage::class, 'storeFileForUser')]
+
 class FakeWorksBristolStairImageStorageTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\BristolStairImageStorage\FakeWorksBristolStairImageStorage::storeFileForUser
-     */
     public function test_storeFileForUser_returns_BristolStairInfo(): void
     {
         $storage = new FakeWorksBristolStairImageStorage();
@@ -44,9 +42,6 @@ class FakeWorksBristolStairImageStorageTest extends BaseTestCase
         $this->assertNotEmpty($result->stored_stair_image_file_id);
     }
 
-    /**
-     * @covers \Bristolian\Service\BristolStairImageStorage\FakeWorksBristolStairImageStorage::storeFileForUser
-     */
     public function test_storeFileForUser_increments_id_on_each_call(): void
     {
         $storage = new FakeWorksBristolStairImageStorage();

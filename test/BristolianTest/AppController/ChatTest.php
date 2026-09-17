@@ -16,9 +16,13 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Session\FakeAsmSession;
 use VarMap\ArrayVarMap;
 use VarMap\VarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\Chat::class, 'get_room_messages')]
+#[CoversMethod(\Bristolian\AppController\Chat::class, 'get_test_page')]
+#[CoversMethod(\Bristolian\AppController\Chat::class, 'send_message')]
+#[CoversMethod(\Bristolian\AppController\Chat::class, 'send_message_get')]
+
 class ChatTest extends BaseTestCase
 {
     public function setup(): void
@@ -28,18 +32,12 @@ class ChatTest extends BaseTestCase
         $this->injector->share(FakeChatMessageRepo::class);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Chat::send_message_get
-     */
     public function test_send_message_get(): void
     {
         $result = $this->injector->execute([Chat::class, 'send_message_get']);
         $this->assertInstanceOf(EndpointAccessedViaGetResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Chat::get_test_page
-     */
     public function test_get_test_page(): void
     {
         $result = $this->injector->execute([Chat::class, 'get_test_page']);
@@ -47,9 +45,6 @@ class ChatTest extends BaseTestCase
         $this->assertStringContainsString('chat_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Chat::get_room_messages
-     */
     public function test_get_room_messages(): void
     {
         $roomId = 'test-room-123';
@@ -67,9 +62,6 @@ class ChatTest extends BaseTestCase
         $this->assertStringContainsString('Plain', $result->getBody());
     }
 
-    /**
-     * @covers \Bristolian\AppController\Chat::send_message
-     */
     public function test_send_message(): void
     {
         $this->setupAppControllerFakes();

@@ -7,24 +7,21 @@ namespace BristolianTest\Response;
 use Bristolian\Response\FetchTranscriptSuccessResponse;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Response\FetchTranscriptSuccessResponse::class, '__construct')]
+#[CoversMethod(\Bristolian\Response\FetchTranscriptSuccessResponse::class, 'getBody')]
+#[CoversMethod(\Bristolian\Response\FetchTranscriptSuccessResponse::class, 'getHeaders')]
+#[CoversMethod(\Bristolian\Response\FetchTranscriptSuccessResponse::class, 'getStatus')]
+
 class FetchTranscriptSuccessResponseTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Response\FetchTranscriptSuccessResponse::__construct
-     * @covers \Bristolian\Response\FetchTranscriptSuccessResponse::getStatus
-     */
     public function test_getStatus_returns_200(): void
     {
         $response = new FetchTranscriptSuccessResponse('transcript_1', 1);
         $this->assertSame(200, $response->getStatus());
     }
 
-    /**
-     * @covers \Bristolian\Response\FetchTranscriptSuccessResponse::getHeaders
-     */
     public function test_getHeaders_returns_content_type_json(): void
     {
         $response = new FetchTranscriptSuccessResponse('transcript_1', 1);
@@ -33,9 +30,6 @@ class FetchTranscriptSuccessResponseTest extends BaseTestCase
         $this->assertSame('application/json', $headers['Content-Type']);
     }
 
-    /**
-     * @covers \Bristolian\Response\FetchTranscriptSuccessResponse::getBody
-     */
     public function test_getBody_returns_json_with_transcript_id_and_number(): void
     {
         $transcriptId = 'transcript_abc';
@@ -50,9 +44,6 @@ class FetchTranscriptSuccessResponseTest extends BaseTestCase
         $this->assertSame($transcriptNumber, $decoded['data']['transcript_number']);
     }
 
-    /**
-     * @covers \Bristolian\Response\FetchTranscriptSuccessResponse::getBody
-     */
     public function test_getBody_accepts_null_transcript_number(): void
     {
         $response = new FetchTranscriptSuccessResponse('transcript_xyz', null);

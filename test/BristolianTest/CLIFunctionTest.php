@@ -7,14 +7,14 @@ namespace BristolianTest;
 use Bristolian\CLIFunction;
 use ErrorException;
 use function Safe\exec;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\CLIFunction::class, 'errorHandler')]
+#[CoversMethod(\Bristolian\CLIFunction::class, 'fatalErrorShutdownHandler')]
+#[CoversMethod(\Bristolian\CLIFunction::class, 'setupErrorHandlers')]
+
 class CLIFunctionTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\CLIFunction::errorHandler
-     */
     public function test_errorHandler_returns_true_when_error_reporting_is_zero(): void
     {
         $saved = error_reporting(0);
@@ -31,9 +31,6 @@ class CLIFunctionTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\CLIFunction::errorHandler
-     */
     public function test_errorHandler_returns_true_for_E_DEPRECATED(): void
     {
         $result = CLIFunction::errorHandler(
@@ -45,9 +42,6 @@ class CLIFunctionTest extends BaseTestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @covers \Bristolian\CLIFunction::errorHandler
-     */
     public function test_errorHandler_throws_ErrorException_for_E_WARNING(): void
     {
         $this->expectException(ErrorException::class);
@@ -60,9 +54,6 @@ class CLIFunctionTest extends BaseTestCase
         CLIFunction::errorHandler(E_WARNING, 'should throw', '/myfile.php', 42);
     }
 
-    /**
-     * @covers \Bristolian\CLIFunction::errorHandler
-     */
     public function test_errorHandler_throws_ErrorException_for_E_NOTICE(): void
     {
         $this->expectException(ErrorException::class);
@@ -71,9 +62,6 @@ class CLIFunctionTest extends BaseTestCase
         CLIFunction::errorHandler(E_NOTICE, 'undefined index', '/app/foo.php', 7);
     }
 
-    /**
-     * @covers \Bristolian\CLIFunction::errorHandler
-     */
     public function test_errorHandler_uses_generic_label_for_unknown_errno(): void
     {
         $this->expectException(ErrorException::class);
@@ -82,18 +70,12 @@ class CLIFunctionTest extends BaseTestCase
         CLIFunction::errorHandler(99999, 'weird error', '/x.php', 1);
     }
 
-    /**
-     * @covers \Bristolian\CLIFunction::fatalErrorShutdownHandler
-     */
     public function test_fatalErrorShutdownHandler_does_nothing_when_no_fatal_occurred(): void
     {
         CLIFunction::fatalErrorShutdownHandler();
         $this->addToAssertionCount(1);
     }
 
-    /**
-     * @covers \Bristolian\CLIFunction::fatalErrorShutdownHandler
-     */
     public function test_fatalErrorShutdownHandler_logs_and_exits_when_fatal_occurred(): void
     {
         $runner = __DIR__ . '/cli_fatal_runner.php';
@@ -110,10 +92,6 @@ class CLIFunctionTest extends BaseTestCase
         $this->assertSame(255, $exitCode, 'exit(-1) becomes 255 on Unix');
     }
 
-    /**
-     * @covers \Bristolian\CLIFunction::setupErrorHandlers
-     * @covers \Bristolian\CLIFunction::errorHandler
-     */
     public function test_setupErrorHandlers_sets_handler_that_throws_on_user_warning(): void
     {
         CLIFunction::setupErrorHandlers();

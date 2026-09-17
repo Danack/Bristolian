@@ -6,14 +6,12 @@ namespace BristolianTest\Parameters;
 
 use Bristolian\Parameters\SupervisordProgramParams;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\SupervisordProgramParams::class)]
+
 class SupervisordProgramParamsTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Parameters\SupervisordProgramParams
-     */
     public function test_createFromArray_parses_whatdotheyknow_requested_fixture(): void
     {
         $configPath = dirname(__DIR__, 3)
@@ -29,9 +27,6 @@ class SupervisordProgramParamsTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\Parameters\SupervisordProgramParams::toExplorerArray
-     */
     public function test_toExplorerArray_returns_only_program_name_and_command(): void
     {
         $configPath = dirname(__DIR__, 3)

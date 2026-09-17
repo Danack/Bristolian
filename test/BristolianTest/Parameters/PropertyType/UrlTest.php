@@ -10,9 +10,10 @@ use DataType\GetInputTypesFromAttributes;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\PropertyType\Url::class)]
+
 class UrlTest extends BaseTestCase
 {
     /**
@@ -24,7 +25,6 @@ class UrlTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\Url
      * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
@@ -48,7 +48,6 @@ class UrlTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\Url
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]
@@ -66,9 +65,6 @@ class UrlTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\Url
-     */
     public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new Url('test_name');

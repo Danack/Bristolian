@@ -7,9 +7,11 @@ use BristolianTest\BaseTestCase;
 use DataType\DataStorage\TestArrayDataStorage;
 use DataType\ProcessedValues;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Parameters\ProcessRule\StringToBoolDefaultTrue::class, 'process')]
+#[CoversMethod(\Bristolian\Parameters\ProcessRule\StringToBoolDefaultTrue::class, 'updateParamDescription')]
+
 class StringToBoolDefaultTrueTest extends BaseTestCase
 {
     private function createProcessRule(): StringToBoolDefaultTrue
@@ -17,9 +19,6 @@ class StringToBoolDefaultTrueTest extends BaseTestCase
         return new StringToBoolDefaultTrue();
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\StringToBoolDefaultTrue::process
-     */
     public function test_null_returns_true(): void
     {
         $rule = $this->createProcessRule();
@@ -32,9 +31,6 @@ class StringToBoolDefaultTrueTest extends BaseTestCase
         $this->assertSame(true, $result->getValue());
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\StringToBoolDefaultTrue::process
-     */
     public function test_empty_string_returns_true(): void
     {
         $rule = $this->createProcessRule();
@@ -58,9 +54,6 @@ class StringToBoolDefaultTrueTest extends BaseTestCase
         yield 'Yes mixed case' => ['Yes'];
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\StringToBoolDefaultTrue::process
-     */
     #[DataProvider('provides_truthy_values_return_true')]
     public function test_truthy_values_return_true(string $value): void
     {
@@ -85,9 +78,6 @@ class StringToBoolDefaultTrueTest extends BaseTestCase
         yield 'No mixed case' => ['No'];
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\StringToBoolDefaultTrue::process
-     */
     #[DataProvider('provides_falsy_values_return_false')]
     public function test_falsy_values_return_false(string $value): void
     {
@@ -101,9 +91,6 @@ class StringToBoolDefaultTrueTest extends BaseTestCase
         $this->assertSame(false, $result->getValue());
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\StringToBoolDefaultTrue::process
-     */
     public function test_invalid_value_returns_error(): void
     {
         $rule = $this->createProcessRule();
@@ -118,9 +105,6 @@ class StringToBoolDefaultTrueTest extends BaseTestCase
         $this->assertStringContainsString('boolean', $problems[0]->getProblemMessage());
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\StringToBoolDefaultTrue::process
-     */
     public function test_whitespace_is_trimmed(): void
     {
         $rule = $this->createProcessRule();
@@ -133,9 +117,6 @@ class StringToBoolDefaultTrueTest extends BaseTestCase
         $this->assertSame(true, $result->getValue());
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\StringToBoolDefaultTrue::updateParamDescription
-     */
     public function test_updateParamDescription_sets_type_and_default(): void
     {
         $rule = $this->createProcessRule();

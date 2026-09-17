@@ -6,15 +6,15 @@ namespace BristolianTest\Service\UnknownCacheQueries;
 
 use Bristolian\Service\UnknownCacheQueries\InMemoryUnknownCacheQueriesProvider;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\UnknownCacheQueries\InMemoryUnknownCacheQueriesProvider::class, 'addKey')]
+#[CoversMethod(\Bristolian\Service\UnknownCacheQueries\InMemoryUnknownCacheQueriesProvider::class, 'getMemberKeys')]
+#[CoversMethod(\Bristolian\Service\UnknownCacheQueries\InMemoryUnknownCacheQueriesProvider::class, 'getQuery')]
+#[CoversMethod(\Bristolian\Service\UnknownCacheQueries\InMemoryUnknownCacheQueriesProvider::class, 'setQuery')]
+
 class InMemoryUnknownCacheQueriesProviderTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\UnknownCacheQueries\InMemoryUnknownCacheQueriesProvider::addKey
-     * @covers \Bristolian\Service\UnknownCacheQueries\InMemoryUnknownCacheQueriesProvider::getMemberKeys
-     */
     public function test_getMemberKeys_returns_added_keys(): void
     {
         $provider = new InMemoryUnknownCacheQueriesProvider();
@@ -23,10 +23,6 @@ class InMemoryUnknownCacheQueriesProviderTest extends BaseTestCase
         $this->assertSame(['key1', 'key2'], $provider->getMemberKeys());
     }
 
-    /**
-     * @covers \Bristolian\Service\UnknownCacheQueries\InMemoryUnknownCacheQueriesProvider::setQuery
-     * @covers \Bristolian\Service\UnknownCacheQueries\InMemoryUnknownCacheQueriesProvider::getQuery
-     */
     public function test_getQuery_returns_set_query_or_false(): void
     {
         $provider = new InMemoryUnknownCacheQueriesProvider();

@@ -9,18 +9,18 @@ use function get_image_gps;
 use function getGps;
 use function gps2Num;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversFunction;
 
-#[CoversNothing]
+#[CoversFunction('getGps')]
+#[CoversFunction('get_image_gps')]
+#[CoversFunction('gps2Num')]
+
 class FunctionsExifTest extends BaseTestCase
 {
     private const STAIRS_WITH_GPS = __DIR__ . '/../fixtures/stairs/stairs_test_a_8.jpeg';
 
     private const STAIRS_WITHOUT_GPS = __DIR__ . '/../fixtures/stairs/stairs_test_c_7.jpeg';
 
-    /**
-     * @covers ::get_image_gps
-     */
     public function test_get_image_gps_returns_coordinates_for_image_with_gps(): void
     {
         $result = get_image_gps(self::STAIRS_WITH_GPS);
@@ -34,9 +34,6 @@ class FunctionsExifTest extends BaseTestCase
         $this->assertGreaterThan(-3, $longitude);
     }
 
-    /**
-     * @covers ::get_image_gps
-     */
     public function test_get_image_gps_returns_null_for_image_without_gps(): void
     {
         $result = get_image_gps(self::STAIRS_WITHOUT_GPS);
@@ -44,9 +41,6 @@ class FunctionsExifTest extends BaseTestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @covers ::get_image_gps
-     */
     public function test_get_image_gps_returns_null_for_non_existent_file(): void
     {
         $result = get_image_gps('/nonexistent/path/image.jpeg');
@@ -75,7 +69,6 @@ class FunctionsExifTest extends BaseTestCase
     }
 
     /**
-     * @covers ::getGps
      * @param array<string> $exifCoord
      */
     #[DataProvider('provides_getGps_input_and_expected')]
@@ -99,9 +92,6 @@ class FunctionsExifTest extends BaseTestCase
         yield 'degrees minutes seconds' => ['93/100', 0.93];
     }
 
-    /**
-     * @covers ::gps2Num
-     */
     #[DataProvider('provides_gps2Num_input_and_expected')]
     public function test_gps2Num_converts_coord_part_to_float(string $coordPart, float $expected): void
     {

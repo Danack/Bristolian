@@ -12,16 +12,12 @@ use Bristolian\Service\RoomMessageService\FakeRoomMessageService;
 use Bristolian\Service\WhatDoTheyKnowFeedFetcher\FakeWhatDoTheyKnowFeedFetcherReturningJson;
 use BristolianTest\BaseTestCase;
 use function Safe\file_get_contents;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-/**
- */
-#[CoversNothing]
+#[CoversMethod(\Bristolian\CliController\WhatDoTheyKnowFeedCliController::class, 'syncRequestedFromBristolOnce')]
+
 final class WhatDoTheyKnowFeedCliControllerTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\CliController\WhatDoTheyKnowFeedCliController::syncRequestedFromBristolOnce
-     */
     public function test_syncRequestedFromBristolOnce_inserts_and_messages_for_each_new_event(): void
     {
         $fixturePath = dirname(__DIR__, 2) . '/fixtures/whatdotheyknow/requested_from_bristol_city_council.json';
@@ -51,9 +47,6 @@ final class WhatDoTheyKnowFeedCliControllerTest extends BaseTestCase
         self::assertStringContainsString('FOI Request: Supported Exempt Accommodation', $firstMessage);
     }
 
-    /**
-     * @covers \Bristolian\CliController\WhatDoTheyKnowFeedCliController::syncRequestedFromBristolOnce
-     */
     public function test_syncRequestedFromBristolOnce_second_run_inserts_nothing_and_sends_no_messages(): void
     {
         $fixturePath = dirname(__DIR__, 2) . '/fixtures/whatdotheyknow/requested_from_bristol_city_council.json';
@@ -87,9 +80,6 @@ final class WhatDoTheyKnowFeedCliControllerTest extends BaseTestCase
         self::assertCount(25, $messages->getChatMessages());
     }
 
-    /**
-     * @covers \Bristolian\CliController\WhatDoTheyKnowFeedCliController::syncRequestedFromBristolOnce
-     */
     public function test_syncRequestedFromBristolOnce_without_room_still_stores_events_and_skips_messages(): void
     {
         $fixturePath = dirname(__DIR__, 2) . '/fixtures/whatdotheyknow/requested_from_bristol_city_council.json';
@@ -116,9 +106,6 @@ final class WhatDoTheyKnowFeedCliControllerTest extends BaseTestCase
         self::assertStringContainsString("Failed to find room named 'FOI advice'", $cliOutput->getCapturedOutput());
     }
 
-    /**
-     * @covers \Bristolian\CliController\WhatDoTheyKnowFeedCliController::syncRequestedFromBristolOnce
-     */
     public function test_syncRequestedFromBristolOnce_throws_when_top_level_json_is_not_a_list(): void
     {
         $fetcher = new FakeWhatDoTheyKnowFeedFetcherReturningJson('{"not":"a list"}');
@@ -140,9 +127,6 @@ final class WhatDoTheyKnowFeedCliControllerTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \Bristolian\CliController\WhatDoTheyKnowFeedCliController::syncRequestedFromBristolOnce
-     */
     public function test_syncRequestedFromBristolOnce_throws_when_feed_item_is_not_object(): void
     {
         $fetcher = new FakeWhatDoTheyKnowFeedFetcherReturningJson('[1]');

@@ -6,14 +6,12 @@ use BristolianTest\BaseTestCase;
 
 use BristolianGenerated\Model\ProcessorRunRecord;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\BristolianGenerated\Model\ProcessorRunRecord::class)]
+
 class ProcessorRunRecordTest extends BaseTestCase
 {
-    /**
-     * @covers \BristolianGenerated\Model\ProcessorRunRecord
-     */
     public function testConstruct()
     {
         $id = 1;
@@ -40,9 +38,6 @@ class ProcessorRunRecordTest extends BaseTestCase
         $this->assertSame($processorType, $record->processor_type);
     }
 
-    /**
-     * @covers \BristolianGenerated\Model\ProcessorRunRecord
-     */
     public function testConstructWithNullEndTime()
     {
         $record = new ProcessorRunRecord(
@@ -57,9 +52,6 @@ class ProcessorRunRecordTest extends BaseTestCase
         $this->assertNull($record->end_time);
     }
 
-    /**
-     * @covers \BristolianGenerated\Model\ProcessorRunRecord
-     */
     public function testToArray()
     {
         $record = new ProcessorRunRecord(

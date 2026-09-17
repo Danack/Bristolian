@@ -8,12 +8,14 @@ use Bristolian\Model\Types\AvatarImageFile;
 use Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo;
 use Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo;
 use Bristolian\UploadedFiles\UploadedFile;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::class, 'setUploaded')]
+
 class FakeAvatarImageStorageInfoRepoTest extends AvatarImageStorageInfoRepoFixture
 {
     public function getTestInstance(): AvatarImageStorageInfoRepo
@@ -24,7 +26,6 @@ class FakeAvatarImageStorageInfoRepoTest extends AvatarImageStorageInfoRepoFixtu
     /**
      * Test FakeAvatarImageStorageInfoRepo-specific behavior: setUploaded updates state
      *
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::setUploaded
      */
     public function test_setUploaded_updates_file_state(): void
     {
@@ -45,7 +46,6 @@ class FakeAvatarImageStorageInfoRepoTest extends AvatarImageStorageInfoRepoFixtu
     /**
      * Test FakeAvatarImageStorageInfoRepo-specific behavior: setUploaded throws for nonexistent file
      *
-     * @covers \Bristolian\Repo\AvatarImageStorageInfoRepo\FakeAvatarImageStorageInfoRepo::setUploaded
      */
     public function test_setUploaded_throws_for_nonexistent_file(): void
     {

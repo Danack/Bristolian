@@ -14,10 +14,9 @@ use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\Parameters\ProcessRule\OptionalStringToRoomSearchTagIds
- */
+#[CoversClass(\Bristolian\Parameters\ProcessRule\OptionalStringToRoomSearchTagIds::class)]
 #[CoversClass(\Bristolian\Parameters\PropertyType\RoomContentSearchTagIds::class)]
+
 class RoomContentSearchTagIdsTest extends BaseTestCase
 {
     /**
@@ -94,9 +93,6 @@ class RoomContentSearchTagIdsTest extends BaseTestCase
         $this->assertSame('tag_ids', $propertyType->getInputType()->getName());
     }
 
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\OptionalStringToRoomSearchTagIds::updateParamDescription
-     */
     public function test_process_rule_updateParamDescription_sets_type_and_description(): void
     {
         $rule = new OptionalStringToRoomSearchTagIds();

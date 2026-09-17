@@ -4,14 +4,12 @@ namespace BristolianTest\UserUploadedFile;
 
 use Bristolian\UserUploadedFile\UserUploadedFile;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\UserUploadedFile\UserUploadedFile::class)]
+
 class UserUploadedFileTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\UserUploadedFile\UserUploadedFile
-     */
     public function testWorks()
     {
         $tmp_name = '/tmp/test_file.txt';

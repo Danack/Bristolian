@@ -19,15 +19,13 @@ use function Safe\file_get_contents;
 use function Safe\file_put_contents;
 use function Safe\tempnam;
 use function Safe\unlink;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::class, 'storeFileForUser')]
+
 class StandardBristolStairImageStorageTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::__construct
-     * @covers \Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::storeFileForUser
-     */
     public function test_storeFileForUser_returns_BristolStairInfo_and_uploads_to_object_store(): void
     {
         $stairImageStorageInfoRepo = new FakeBristolStairImageStorageInfoRepo();
@@ -65,9 +63,6 @@ class StandardBristolStairImageStorageTest extends BaseTestCase
         $this->assertTrue($objectStore->hasFile($fileInfo->normalized_name));
     }
 
-    /**
-     * @covers \Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::storeFileForUser
-     */
     public function test_storeFileForUser_converts_heic_to_jpg_and_returns_BristolStairInfo(): void
     {
         $heicPath = __DIR__ . '/../../../fixtures/images/the_wrongest_thing.heic';
@@ -111,9 +106,6 @@ class StandardBristolStairImageStorageTest extends BaseTestCase
         $this->assertTrue($objectStore->hasFile($fileInfo->normalized_name));
     }
 
-    /**
-     * @covers \Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::storeFileForUser
-     */
     public function test_storeFileForUser_returns_UploadError_when_extension_not_allowed(): void
     {
         $storage = new StandardBristolStairImageStorage(
@@ -140,7 +132,6 @@ class StandardBristolStairImageStorageTest extends BaseTestCase
      * Unreadable path: file_get_contents fails. Skipped when chmod 0o000 does not
      * prevent read (e.g. process is owner in some environments).
      *
-     * @covers \Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::storeFileForUser
      */
     public function test_storeFileForUser_returns_UploadError_when_file_unreadable(): void
     {

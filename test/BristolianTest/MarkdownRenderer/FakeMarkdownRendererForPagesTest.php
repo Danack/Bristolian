@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 declare(strict_types=1);
 
 namespace BristolianTest\MarkdownRenderer;
@@ -10,14 +7,12 @@ namespace BristolianTest\MarkdownRenderer;
 use BristolianTest\BaseTestCase;
 use Bristolian\MarkdownRenderer\FakeMarkdownRenderer;
 use Bristolian\MarkdownRenderer\MarkdownRendererException;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\MarkdownRenderer\FakeMarkdownRenderer::class)]
+
 class FakeMarkdownRendererForPagesTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\MarkdownRenderer\FakeMarkdownRenderer
-     */
     public function testWorks(): void
     {
         $renderer = new FakeMarkdownRenderer();

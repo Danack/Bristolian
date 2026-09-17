@@ -2,11 +2,6 @@
 
 namespace BristolianTest;
 
-/**
- *
- *
- */
-
 use BristolianTest\TestFixtures\NestedToArrayClass;
 use BristolianTest\TestFixtures\ToArrayClass;
 use BristolianTest\TestFixtures\ToArrayClassWithDatetime;
@@ -14,16 +9,12 @@ use BristolianTest\TestFixtures\ToArrayClassWithSkippedProperty;
 use BristolianTest\TestFixtures\ToArrayClassWithUnsupportedProperty;
 use Bristolian\Exception\BristolianException;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversTrait;
 
-/**
- */
-#[CoversNothing]
+#[CoversTrait(\Bristolian\ToArray::class)]
+
 class ToArrayTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\ToArray
-     */
     public function test_works()
     {
         $string_value = "John";
@@ -50,9 +41,7 @@ class ToArrayTest extends BaseTestCase
         $this->assertSame($expected_nested, $nested_object->toArray());
     }
 
-
     /**
-     * @covers \Bristolian\ToArray
      * @return void
      * @throws \Bristolian\Exception\BristolianException
      */
@@ -73,9 +62,6 @@ class ToArrayTest extends BaseTestCase
         $this->assertSame($expected, $result);
     }
 
-    /**
-     * @covers \Bristolian\ToArray
-     */
     public function test_properties_starting_with_double_underscore_are_skipped(): void
     {
         $object = new ToArrayClassWithSkippedProperty('visible', 'ignored');
@@ -85,9 +71,6 @@ class ToArrayTest extends BaseTestCase
         $this->assertArrayNotHasKey('__internal', $result);
     }
 
-    /**
-     * @covers \Bristolian\ToArray
-     */
     public function test_throws_BristolianException_when_property_cannot_be_converted(): void
     {
         $object = new ToArrayClassWithUnsupportedProperty('foo', new \stdClass());

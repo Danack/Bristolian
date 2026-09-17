@@ -6,9 +6,12 @@ namespace BristolianTest\Repo\RoomFileTagRepo;
 
 use Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo;
 use Bristolian\Repo\RoomFileTagRepo\RoomFileTagRepo;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::class, 'getTagIdsForRoomFile')]
+#[CoversMethod(\Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::class, 'key')]
+#[CoversMethod(\Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::class, 'setTagsForRoomFile')]
+
 class FakeRoomFileTagRepoTest extends RoomFileTagRepoFixture
 {
     public function getTestInstance(): RoomFileTagRepo
@@ -16,10 +19,6 @@ class FakeRoomFileTagRepoTest extends RoomFileTagRepoFixture
         return new FakeRoomFileTagRepo();
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::getTagIdsForRoomFile
-     * @covers \Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::setTagsForRoomFile
-     */
     public function test_fake_setTags_and_getTagIds_roundtrip(): void
     {
         $repo = new FakeRoomFileTagRepo();
@@ -27,11 +26,6 @@ class FakeRoomFileTagRepoTest extends RoomFileTagRepoFixture
         $this->assertEquals(['tag-a', 'tag-b'], $repo->getTagIdsForRoomFile('room-1', 'file-1'));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::key
-     * @covers \Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::getTagIdsForRoomFile
-     * @covers \Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::setTagsForRoomFile
-     */
     public function test_different_room_file_pairs_are_isolated(): void
     {
         $repo = new FakeRoomFileTagRepo();
@@ -44,10 +38,6 @@ class FakeRoomFileTagRepoTest extends RoomFileTagRepoFixture
         $this->assertSame(['tag-c'], $repo->getTagIdsForRoomFile('room-2', 'file-1'));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::getTagIdsForRoomFile
-     * @covers \Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::setTagsForRoomFile
-     */
     public function test_setTagsForRoomFile_with_empty_array_clears_tags(): void
     {
         $repo = new FakeRoomFileTagRepo();
@@ -58,10 +48,6 @@ class FakeRoomFileTagRepoTest extends RoomFileTagRepoFixture
         $this->assertSame([], $repo->getTagIdsForRoomFile('room-1', 'file-1'));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::getTagIdsForRoomFile
-     * @covers \Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::setTagsForRoomFile
-     */
     public function test_setTagsForRoomFile_reindexes_associative_array(): void
     {
         $repo = new FakeRoomFileTagRepo();

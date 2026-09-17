@@ -9,12 +9,15 @@ use Bristolian\Parameters\FoiRequestParams;
 use Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo;
 use Bristolian\Repo\FoiRequestRepo\FoiRequestRepo;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::class, 'createFoiRequest')]
+#[CoversMethod(\Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::class, 'getAllFoiRequests')]
+
 class FakeFoiRequestRepoTest extends FoiRequestRepoFixture
 {
     public function getTestInstance(): FoiRequestRepo
@@ -22,9 +25,6 @@ class FakeFoiRequestRepoTest extends FoiRequestRepoFixture
         return new FakeFoiRequestRepo();
     }
 
-    /**
-     * @covers \Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::getAllFoiRequests
-     */
     public function test_fake_getAllFoiRequests_returns_empty_then_created(): void
     {
         $repo = new FakeFoiRequestRepo();
@@ -42,9 +42,6 @@ class FakeFoiRequestRepoTest extends FoiRequestRepoFixture
         $this->assertInstanceOf(FoiRequest::class, $first);
     }
 
-    /**
-     * @covers \Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::createFoiRequest
-     */
     public function test_fake_createFoiRequest_stores_and_returns_request(): void
     {
         $repo = new FakeFoiRequestRepo();

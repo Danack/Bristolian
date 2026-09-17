@@ -17,24 +17,27 @@ use Bristolian\Repo\DbInfo\FakeDbInfo;
 use Bristolian\CSPViolation\CSPViolationStorage;
 use Bristolian\CSPViolation\FakeCSPViolationStorage;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\System::class, 'deploy_log')]
+#[CoversMethod(\Bristolian\AppController\System::class, 'display_swagger')]
+#[CoversMethod(\Bristolian\AppController\System::class, 'index')]
+#[CoversMethod(\Bristolian\AppController\System::class, 'route_explorer')]
+#[CoversMethod(\Bristolian\AppController\System::class, 'showDbInfo')]
+#[CoversMethod(\Bristolian\AppController\System::class, 'showDbTables')]
+#[CoversMethod(\Bristolian\AppController\System::class, 'showMigrationInfo')]
+#[CoversMethod(\Bristolian\AppController\System::class, 'show_csp_reports')]
+#[CoversMethod(\Bristolian\AppController\System::class, 'tinned_fish_products')]
+#[CoversMethod(\Bristolian\AppController\System::class, 'updateProductValidationStatus')]
+
 class SystemTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\AppController\System::index
-     */
     public function testWorks_index()
     {
         $result = $this->injector->execute([System::class, 'index']);
         $this->assertIsString($result);
     }
 
-
-    /**
-     * @covers \Bristolian\AppController\System::showDbInfo
-     */
     public function testWorks_showDbInfo()
     {
         $this->injector->alias(DbInfo::class, FakeDbInfo::class);
@@ -43,9 +46,6 @@ class SystemTest extends BaseTestCase
         $this->assertIsString($result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\System::deploy_log
-     */
     public function testWorks_deploy_log()
     {
         $this->injector->alias(DeployLogRenderer::class, LocalDeployLogRenderer::class);
@@ -54,18 +54,12 @@ class SystemTest extends BaseTestCase
         $this->assertStringContainsString('Deploy log', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\System::display_swagger
-     */
     public function testWorks_display_swagger()
     {
         $result = $this->injector->execute([System::class, 'display_swagger']);
         $this->assertInstanceOf(JsonResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\System::showDbTables
-     */
     public function testWorks_showDbTables()
     {
         $this->injector->alias(DbInfo::class, FakeDbInfo::class);
@@ -73,9 +67,6 @@ class SystemTest extends BaseTestCase
         $this->assertIsString($result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\System::showMigrationInfo
-     */
     public function testWorks_showMigrationInfo()
     {
         $this->injector->alias(DbInfo::class, FakeDbInfo::class);
@@ -83,9 +74,6 @@ class SystemTest extends BaseTestCase
         $this->assertIsString($result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\System::show_csp_reports
-     */
     public function testWorks_show_csp_reports()
     {
         $this->injector->alias(CSPViolationStorage::class, FakeCSPViolationStorage::class);
@@ -94,9 +82,6 @@ class SystemTest extends BaseTestCase
         $this->assertIsString($result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\System::route_explorer
-     */
     public function test_route_explorer(): void
     {
         require_once __DIR__ . '/../../../app/src/app_routes.php';
@@ -105,9 +90,6 @@ class SystemTest extends BaseTestCase
         $this->assertStringContainsString('Routes', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\System::tinned_fish_products
-     */
     public function test_tinned_fish_products(): void
     {
         $this->injector->alias(TinnedFishProductRepo::class, FakeTinnedFishProductRepo::class);
@@ -118,9 +100,6 @@ class SystemTest extends BaseTestCase
         $this->assertStringContainsString('Tinned Fish Products', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\System::updateProductValidationStatus
-     */
     public function test_updateProductValidationStatus(): void
     {
         $this->injector->alias(TinnedFishProductRepo::class, FakeTinnedFishProductRepo::class);

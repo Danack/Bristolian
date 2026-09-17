@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\MemeTextRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use BristolianGenerated\Model\MemeText;
 use BristolianGenerated\Model\StoredMeme;
 use Bristolian\Model\Types\Meme;
@@ -18,8 +19,18 @@ use BristolianTest\Repo\TestPlaceholders;
 /**
  * Abstract test class for MemeTextRepo implementations.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::class, 'getMemeText')]
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::class, 'saveMemeText')]
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::class, 'searchMemeIdsByText')]
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::class, 'updateMemeText')]
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class, 'getMemeText')]
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class, 'saveMemeText')]
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class, 'searchMemeIdsByText')]
+#[CoversMethod(\Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class, 'updateMemeText')]
+
 abstract class MemeTextRepoFixture extends BaseTestCase
 {
     use TestPlaceholders;
@@ -58,7 +69,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
     }
 
 //    /**
-//     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
 //     */
 //    public function test_getNextMemeToOCR_returns_null_when_no_memes(): void
 //    {
@@ -70,7 +80,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
 //     */
 //    public function test_getNextMemeToOCR_returns_meme_without_text(): void
 //    {
@@ -92,7 +101,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
 //     */
 //    public function test_getNextMemeToOCR_returns_oldest_meme_first(): void
 //    {
@@ -124,7 +132,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
 //     */
 //    public function test_getNextMemeToOCR_excludes_deleted_memes(): void
 //    {
@@ -146,7 +153,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getNextMemeToOCR
 //     */
 //    public function test_getNextMemeToOCR_excludes_memes_with_text(): void
 //    {
@@ -183,12 +189,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
 //        $this->assertNull($result);
 //    }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::saveMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::saveMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::__construct
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::saveMemeText
-     */
     public function test_saveMemeText_stores_text(): void
     {
         $memeStorageRepo = $this->getMemeStorageRepo();
@@ -218,11 +218,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
         $repo->saveMemeText($storedMeme, 'Found text from OCR');
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::getMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::getMemeText
-     */
     public function test_getMemeText_returns_null_for_nonexistent_meme(): void
     {
         $repo = $this->getTestInstance();
@@ -232,14 +227,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::saveMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::getMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::saveMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::getMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::saveMemeText
-     */
     public function test_getMemeText_returns_saved_text(): void
     {
         $memeStorageRepo = $this->getMemeStorageRepo();
@@ -274,11 +261,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
         $this->assertSame($meme_id, $result->meme_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::searchMemeIdsByText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::searchMemeIdsByText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::searchMemeIdsByText
-     */
     public function test_searchMemeIdsByText_returns_empty_array_when_no_matches(): void
     {
         $repo = $this->getTestInstance();
@@ -288,14 +270,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
         $this->assertEmpty($result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::searchMemeIdsByText
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::saveMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::searchMemeIdsByText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::saveMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::searchMemeIdsByText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::saveMemeText
-     */
     public function test_searchMemeIdsByText_finds_memes_by_text(): void
     {
         $memeStorageRepo = $this->getMemeStorageRepo();
@@ -350,14 +324,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
         $this->assertContains($meme_id2, $result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::searchMemeIdsByText
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::saveMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::searchMemeIdsByText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::saveMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::searchMemeIdsByText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::saveMemeText
-     */
     public function test_searchMemeIdsByText_is_case_insensitive(): void
     {
         $memeStorageRepo = $this->getMemeStorageRepo();
@@ -391,14 +357,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
         $this->assertContains($meme_id, $result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::searchMemeIdsByText
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::saveMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::searchMemeIdsByText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::saveMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::searchMemeIdsByText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::saveMemeText
-     */
     public function test_searchMemeIdsByText_only_returns_memes_for_specified_user(): void
     {
         $memeStorageRepo = $this->getMemeStorageRepo();
@@ -453,14 +411,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
         $this->assertNotContains($meme_id2, $result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::updateMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::updateMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::getMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::updateMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::getMemeText
-     */
     public function test_updateMemeText_creates_text_if_not_exists(): void
     {
         $memeStorageRepo = $this->getMemeStorageRepo();
@@ -482,17 +432,6 @@ abstract class MemeTextRepoFixture extends BaseTestCase
         $this->assertSame('Updated text', $result->text);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::updateMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::saveMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\MemeTextRepo::getMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::updateMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::saveMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::getMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::updateMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::saveMemeText
-     * @covers \Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::getMemeText
-     */
     public function test_updateMemeText_updates_existing_text(): void
     {
         $memeStorageRepo = $this->getMemeStorageRepo();

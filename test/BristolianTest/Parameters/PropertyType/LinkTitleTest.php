@@ -10,9 +10,10 @@ use DataType\GetInputTypesFromAttributes;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\PropertyType\LinkTitle::class)]
+
 class LinkTitleTest extends BaseTestCase
 {
     /**
@@ -30,7 +31,6 @@ class LinkTitleTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\LinkTitle
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -51,7 +51,6 @@ class LinkTitleTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\LinkTitle
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]
@@ -69,9 +68,6 @@ class LinkTitleTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\LinkTitle
-     */
     public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new LinkTitle('test_name');

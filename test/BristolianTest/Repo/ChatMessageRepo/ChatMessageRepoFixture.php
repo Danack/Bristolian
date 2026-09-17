@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\ChatMessageRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Model\Chat\UserChatMessage;
 use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\Repo\ChatMessageRepo\ChatMessageRepo;
@@ -14,8 +15,12 @@ use VarMap\ArrayVarMap;
 /**
  * Abstract test class for ChatMessageRepo implementations.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::class, 'storeChatMessageForUser')]
+#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class, 'storeChatMessageForUser')]
+
 abstract class ChatMessageRepoFixture extends BaseTestCase
 {
     use TestPlaceholders;
@@ -52,12 +57,6 @@ abstract class ChatMessageRepoFixture extends BaseTestCase
         return 'different-room';
     }
 
-    /**
-     * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::storeChatMessageForUser
-     * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::storeChatMessageForUser
-     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::__construct
-     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::storeChatMessageForUser
-     */
     public function test_storeChatMessageForUser_creates_and_returns_message(): void
     {
         $repo = $this->getTestInstance();
@@ -78,11 +77,6 @@ abstract class ChatMessageRepoFixture extends BaseTestCase
         $this->assertNull($message->reply_message_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ChatMessageRepo\ChatMessageRepo::storeChatMessageForUser
-     * @covers \Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::storeChatMessageForUser
-     * @covers \Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::storeChatMessageForUser
-     */
     public function test_storeChatMessageForUser_stores_message_with_reply_id(): void
     {
         $repo = $this->getTestInstance();

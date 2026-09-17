@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianChatTest\Fixtures;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Amp\Socket\InternetAddress;
 use Amp\Socket\SocketAddress;
 use Amp\Websocket\WebsocketClient;
@@ -16,9 +17,11 @@ use Amp\Websocket\WebsocketTimestamp;
 /**
  * Fake WebsocketClient for testing StandardClientHandler::handleClient.
  * Configure with id, remote address string, and messages to return from receive().
- * @coversNothing
  * @implements \IteratorAggregate<int, never>
  */
+
+#[CoversNothing]
+
 final class FakeWebsocketClient implements WebsocketClient, \IteratorAggregate
 {
     /** @var list<WebsocketMessage|null> */

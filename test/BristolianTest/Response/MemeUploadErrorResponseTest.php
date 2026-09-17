@@ -6,15 +6,15 @@ use Bristolian\Response\MemeUploadErrorResponse;
 use Bristolian\Service\MemeStorageProcessor\UploadError;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Response\MemeUploadErrorResponse::class, '__construct')]
+#[CoversMethod(\Bristolian\Response\MemeUploadErrorResponse::class, 'getBody')]
+#[CoversMethod(\Bristolian\Response\MemeUploadErrorResponse::class, 'getHeaders')]
+#[CoversMethod(\Bristolian\Response\MemeUploadErrorResponse::class, 'getStatus')]
+
 class MemeUploadErrorResponseTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Response\MemeUploadErrorResponse::__construct
-     * @covers \Bristolian\Response\MemeUploadErrorResponse::getStatus
-     */
     public function testGetStatusReturns400(): void
     {
         $error = UploadError::uploadedFileUnreadable();
@@ -23,9 +23,6 @@ class MemeUploadErrorResponseTest extends BaseTestCase
         $this->assertSame(400, $response->getStatus());
     }
 
-    /**
-     * @covers \Bristolian\Response\MemeUploadErrorResponse::getHeaders
-     */
     public function testGetHeadersReturnsContentType(): void
     {
         $error = UploadError::uploadedFileUnreadable();
@@ -36,9 +33,6 @@ class MemeUploadErrorResponseTest extends BaseTestCase
         $this->assertSame('application/json', $headers['Content-Type']);
     }
 
-    /**
-     * @covers \Bristolian\Response\MemeUploadErrorResponse::getBody
-     */
     public function testGetBodyReturnsErrorJsonWithMessageOnly(): void
     {
         $error = UploadError::uploadedFileUnreadable();
@@ -53,10 +47,6 @@ class MemeUploadErrorResponseTest extends BaseTestCase
         $this->assertArrayNotHasKey('error_data', $decoded);
     }
 
-    /**
-     * @covers \Bristolian\Response\MemeUploadErrorResponse::__construct
-     * @covers \Bristolian\Response\MemeUploadErrorResponse::getBody
-     */
     public function testGetBodyIncludesErrorCodeAndErrorDataWhenPresent(): void
     {
         $error = UploadError::duplicateOriginalFilename('test.png');

@@ -14,12 +14,16 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::class, 'getTagIdsForRoomAnnotation')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::class, 'setTagsForRoomAnnotation')]
+
 class PdoRoomAnnotationTagRepoTest extends BaseTestCase
 {
     use HasTestWorld;
@@ -65,10 +69,6 @@ class PdoRoomAnnotationTagRepoTest extends BaseTestCase
         return $this->injector->make(PdoRoomAnnotationTagRepo::class);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::__construct
-     * @covers \Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::getTagIdsForRoomAnnotation
-     */
     public function test_getTagIdsForRoomAnnotation_returns_empty_before_set(): void
     {
         $repo = $this->getRepo();
@@ -76,10 +76,6 @@ class PdoRoomAnnotationTagRepoTest extends BaseTestCase
         $this->assertSame([], $repo->getTagIdsForRoomAnnotation($this->roomAnnotationId));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::setTagsForRoomAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::getTagIdsForRoomAnnotation
-     */
     public function test_setTagsForRoomAnnotation_and_getTagIdsForRoomAnnotation_roundtrip(): void
     {
         $repo = $this->getRepo();
@@ -91,10 +87,6 @@ class PdoRoomAnnotationTagRepoTest extends BaseTestCase
         $this->assertContains($this->tagId2, $ids);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::setTagsForRoomAnnotation
-     * @covers \Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::getTagIdsForRoomAnnotation
-     */
     public function test_setTagsForRoomAnnotation_replaces_existing(): void
     {
         $repo = $this->getRepo();

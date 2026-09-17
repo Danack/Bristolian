@@ -13,12 +13,16 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\RoomFileTagRepo\PdoRoomFileTagRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\RoomFileTagRepo\PdoRoomFileTagRepo::class, 'getTagIdsForRoomFile')]
+#[CoversMethod(\Bristolian\Repo\RoomFileTagRepo\PdoRoomFileTagRepo::class, 'setTagsForRoomFile')]
+
 class PdoRoomFileTagRepoTest extends BaseTestCase
 {
     use HasTestWorld;
@@ -56,10 +60,6 @@ class PdoRoomFileTagRepoTest extends BaseTestCase
         return $this->injector->make(PdoRoomFileTagRepo::class);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileTagRepo\PdoRoomFileTagRepo::__construct
-     * @covers \Bristolian\Repo\RoomFileTagRepo\PdoRoomFileTagRepo::getTagIdsForRoomFile
-     */
     public function test_getTagIdsForRoomFile_returns_empty_before_set(): void
     {
         $repo = $this->getRepo();
@@ -67,10 +67,6 @@ class PdoRoomFileTagRepoTest extends BaseTestCase
         $this->assertSame([], $repo->getTagIdsForRoomFile($this->roomId, $this->storedFileId));
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileTagRepo\PdoRoomFileTagRepo::setTagsForRoomFile
-     * @covers \Bristolian\Repo\RoomFileTagRepo\PdoRoomFileTagRepo::getTagIdsForRoomFile
-     */
     public function test_setTagsForRoomFile_and_getTagIdsForRoomFile_roundtrip(): void
     {
         $repo = $this->getRepo();
@@ -82,10 +78,6 @@ class PdoRoomFileTagRepoTest extends BaseTestCase
         $this->assertContains($this->tagId2, $ids);
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomFileTagRepo\PdoRoomFileTagRepo::setTagsForRoomFile
-     * @covers \Bristolian\Repo\RoomFileTagRepo\PdoRoomFileTagRepo::getTagIdsForRoomFile
-     */
     public function test_setTagsForRoomFile_replaces_existing(): void
     {
         $repo = $this->getRepo();

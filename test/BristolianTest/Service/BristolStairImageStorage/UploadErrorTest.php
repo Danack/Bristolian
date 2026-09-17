@@ -6,24 +6,20 @@ namespace BristolianTest\Service\BristolStairImageStorage;
 
 use Bristolian\Service\BristolStairImageStorage\UploadError;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\BristolStairImageStorage\UploadError::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\BristolStairImageStorage\UploadError::class, 'unsupportedFileType')]
+#[CoversMethod(\Bristolian\Service\BristolStairImageStorage\UploadError::class, 'uploadedFileUnreadable')]
+
 class UploadErrorTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\BristolStairImageStorage\UploadError::__construct
-     * @covers \Bristolian\Service\BristolStairImageStorage\UploadError::uploadedFileUnreadable
-     */
     public function test_uploadedFileUnreadable_returns_error_with_constant_message(): void
     {
         $error = UploadError::uploadedFileUnreadable();
         $this->assertSame(UploadError::UNREADABLE_FILE_MESSAGE, $error->error_message);
     }
 
-    /**
-     * @covers \Bristolian\Service\BristolStairImageStorage\UploadError::unsupportedFileType
-     */
     public function test_unsupportedFileType_returns_error_with_constant_message(): void
     {
         $error = UploadError::unsupportedFileType();

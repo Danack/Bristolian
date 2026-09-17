@@ -7,15 +7,13 @@ namespace BristolianTest\CliController;
 use Bristolian\CliController\GenerateFiles;
 use BristolianTest\BaseTestCase;
 use function Safe\file_get_contents;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\CliController\GenerateFiles::class, 'generateWidgetApiCallsBreadcrumbBlock')]
+#[CoversMethod(\Bristolian\CliController\GenerateFiles::class, 'generateWidgetPanels')]
+
 class GenerateWidgetPanelsTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\CliController\GenerateFiles::generateWidgetPanels
-     * @covers \Bristolian\CliController\GenerateFiles::generateWidgetApiCallsBreadcrumbBlock
-     */
     public function test_generateWidgetPanels_writes_panels_and_api_calls(): void
     {
         $generator = new GenerateFiles();

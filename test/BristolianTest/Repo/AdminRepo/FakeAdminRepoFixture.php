@@ -4,13 +4,16 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\AdminRepo;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Bristolian\Repo\AdminRepo\AdminRepo;
 use Bristolian\Repo\AdminRepo\FakeAdminRepo;
 
 /**
  * @group standard_repo
- * @coversNothing
  */
+
+#[CoversNothing]
+
 class FakeAdminRepoFixture extends AdminRepoFixture
 {
     /**

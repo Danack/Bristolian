@@ -28,9 +28,25 @@ use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use VarMap\ArrayVarMap;
 use function Safe\json_decode;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\User::class, 'getMemeTagSuggestions')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'getMemeTagSuggestions_get')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'getMemeText')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'getTagsForMeme')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'get_login_status')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'handleMemeTagAdd')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'handleMemeTagAdd_get')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'handleMemeTagDelete')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'handleMemeTagDelete_get')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'handleMemeTagUpdate')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'handleMemeTagUpdate_get')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'listMemes')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'listUntaggedMemes')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'manageMemes')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'searchMemes')]
+#[CoversMethod(\Bristolian\AppController\User::class, 'updateMemeText')]
+
 class UserTest extends BaseTestCase
 {
     public function setup(): void
@@ -45,27 +61,18 @@ class UserTest extends BaseTestCase
         $this->setupFakeUserSession();
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::listMemes
-     */
     public function test_listMemes(): void
     {
         $result = $this->injector->execute([User::class, 'listMemes']);
         $this->assertInstanceOf(GetMemesResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::listUntaggedMemes
-     */
     public function test_listUntaggedMemes(): void
     {
         $result = $this->injector->execute([User::class, 'listUntaggedMemes']);
         $this->assertInstanceOf(GetMemesResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::listMemes
-     */
     public function test_listMemes_truncates_when_over_display_limit(): void
     {
         $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
@@ -84,9 +91,6 @@ class UserTest extends BaseTestCase
         $this->assertCount(User::MEMES_DISPLAY_LIMIT, $data['data']['memes']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::listUntaggedMemes
-     */
     public function test_listUntaggedMemes_truncates_when_over_display_limit(): void
     {
         $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
@@ -105,9 +109,6 @@ class UserTest extends BaseTestCase
         $this->assertCount(User::MEMES_DISPLAY_LIMIT, $data['data']['memes']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::searchMemes
-     */
     public function test_searchMemes_no_criteria(): void
     {
         $params = MemeSearchParams::createFromVarMap(new ArrayVarMap([]));
@@ -117,9 +118,6 @@ class UserTest extends BaseTestCase
         $this->assertInstanceOf(GetMemesResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::searchMemes
-     */
     public function test_searchMemes_with_query(): void
     {
         $params = MemeSearchParams::createFromVarMap(new ArrayVarMap([
@@ -131,9 +129,6 @@ class UserTest extends BaseTestCase
         $this->assertInstanceOf(GetMemesResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::searchMemes
-     */
     public function test_searchMemes_with_tags(): void
     {
         $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
@@ -154,9 +149,6 @@ class UserTest extends BaseTestCase
         $this->assertSame($memeId, $data['data']['memes'][0]['id']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::searchMemes
-     */
     public function test_searchMemes_with_text_search_returns_matching_memes(): void
     {
         $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
@@ -192,9 +184,6 @@ class UserTest extends BaseTestCase
         $this->assertSame($memeId, $memes[0]['id']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::searchMemes
-     */
     public function test_searchMemes_combined_results_truncated(): void
     {
         $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
@@ -218,9 +207,6 @@ class UserTest extends BaseTestCase
         $this->assertCount(User::MEMES_DISPLAY_LIMIT, $data['data']['memes']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::manageMemes
-     */
     public function test_manageMemes(): void
     {
         $result = $this->injector->execute([User::class, 'manageMemes']);
@@ -228,9 +214,6 @@ class UserTest extends BaseTestCase
         $this->assertStringContainsString('meme_management_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::getTagsForMeme
-     */
     public function test_getTagsForMeme(): void
     {
         $this->injector->defineParam('meme_id', 'fake-meme-id');
@@ -238,9 +221,6 @@ class UserTest extends BaseTestCase
         $this->assertInstanceOf(GetMemesTagsResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::getMemeText
-     */
     public function test_getMemeText_not_found(): void
     {
         $this->injector->defineParam('meme_id', 'nonexistent-meme-id');
@@ -248,9 +228,6 @@ class UserTest extends BaseTestCase
         $this->assertInstanceOf(GetMemeTextResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::getMemeText
-     */
     public function test_getMemeText_found_returns_text(): void
     {
         $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
@@ -281,9 +258,6 @@ class UserTest extends BaseTestCase
         $this->assertSame('Stored meme text', $data['data']['meme_text']['text']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::handleMemeTagAdd
-     */
     public function test_handleMemeTagAdd(): void
     {
         $request = new ServerRequest(
@@ -306,36 +280,24 @@ class UserTest extends BaseTestCase
         $this->assertInstanceOf(PostMemetagaddResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::handleMemeTagAdd_get
-     */
     public function test_handleMemeTagAdd_get(): void
     {
         $result = $this->injector->execute([User::class, 'handleMemeTagAdd_get']);
         $this->assertInstanceOf(EndpointAccessedViaGetResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::handleMemeTagUpdate_get
-     */
     public function test_handleMemeTagUpdate_get(): void
     {
         $result = $this->injector->execute([User::class, 'handleMemeTagUpdate_get']);
         $this->assertInstanceOf(EndpointAccessedViaGetResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::handleMemeTagDelete_get
-     */
     public function test_handleMemeTagDelete_get(): void
     {
         $result = $this->injector->execute([User::class, 'handleMemeTagDelete_get']);
         $this->assertInstanceOf(EndpointAccessedViaGetResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::getMemeTagSuggestions
-     */
     public function test_getMemeTagSuggestions(): void
     {
         $request = new ServerRequest(
@@ -351,9 +313,6 @@ class UserTest extends BaseTestCase
         $this->assertInstanceOf(GetMemeTagSuggestionsResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::getMemeTagSuggestions
-     */
     public function test_getMemeTagSuggestions_with_meme_ids_calls_getMostCommonTagsForMemes(): void
     {
         $request = new ServerRequest(
@@ -373,9 +332,6 @@ class UserTest extends BaseTestCase
         $this->assertIsArray($data['data']['tags']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::get_login_status
-     */
     public function test_get_login_status_not_logged_in(): void
     {
         $sessionManager = new FakeAppSessionManager();
@@ -389,9 +345,6 @@ class UserTest extends BaseTestCase
         $this->assertFalse($body['logged_in']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::get_login_status
-     */
     public function test_get_login_status_logged_in(): void
     {
         $sessionManager = FakeAppSessionManager::createLoggedIn();
@@ -405,18 +358,12 @@ class UserTest extends BaseTestCase
         $this->assertTrue($body['logged_in']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::getMemeTagSuggestions_get
-     */
     public function test_getMemeTagSuggestions_get(): void
     {
         $result = $this->injector->execute([User::class, 'getMemeTagSuggestions_get']);
         $this->assertInstanceOf(EndpointAccessedViaGetResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::updateMemeText
-     */
     public function test_updateMemeText_not_found(): void
     {
         $this->injector->defineParam('meme_id', 'nonexistent-meme-id');
@@ -436,9 +383,6 @@ class UserTest extends BaseTestCase
         $this->assertInstanceOf(SuccessResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::updateMemeText
-     */
     public function test_updateMemeText_success(): void
     {
         $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
@@ -469,9 +413,6 @@ class UserTest extends BaseTestCase
         $this->assertSame('New meme text', $memeText->text);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::updateMemeText
-     */
     public function test_updateMemeText_truncates_long_text(): void
     {
         $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
@@ -503,9 +444,6 @@ class UserTest extends BaseTestCase
         $this->assertSame(str_repeat('x', 4096), $memeText->text);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::updateMemeText
-     */
     public function test_updateMemeText_uses_array_access_parsed_body(): void
     {
         $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
@@ -536,9 +474,6 @@ class UserTest extends BaseTestCase
         $this->assertSame('Text from ArrayAccess', $memeText->text);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::updateMemeText
-     */
     public function test_updateMemeText_uses_post_fallback_when_parsed_body_empty(): void
     {
         $pdfPath = __DIR__ . '/../../fixtures/pdfs/sample.pdf';
@@ -573,9 +508,6 @@ class UserTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::handleMemeTagDelete
-     */
     public function test_handleMemeTagDelete(): void
     {
         $request = new ServerRequest(
@@ -597,9 +529,6 @@ class UserTest extends BaseTestCase
         $this->assertInstanceOf(PostMemetagdeleteResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\User::handleMemeTagUpdate
-     */
     public function test_handleMemeTagUpdate(): void
     {
         $request = new ServerRequest(

@@ -6,14 +6,13 @@ namespace BristolianTest\Service\YouTube;
 
 use Bristolian\Service\YouTube\FakeYouTubeTranscriptFetcher;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\YouTube\FakeYouTubeTranscriptFetcher::class, 'addTranscript')]
+#[CoversMethod(\Bristolian\Service\YouTube\FakeYouTubeTranscriptFetcher::class, 'fetchAsVtt')]
+
 class FakeYouTubeTranscriptFetcherTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\YouTube\FakeYouTubeTranscriptFetcher::fetchAsVtt
-     */
     public function test_fetchAsVtt_returns_default_when_no_transcript_added(): void
     {
         $fetcher = new FakeYouTubeTranscriptFetcher();
@@ -23,10 +22,6 @@ class FakeYouTubeTranscriptFetcherTest extends BaseTestCase
         $this->assertNull($language);
     }
 
-    /**
-     * @covers \Bristolian\Service\YouTube\FakeYouTubeTranscriptFetcher::addTranscript
-     * @covers \Bristolian\Service\YouTube\FakeYouTubeTranscriptFetcher::fetchAsVtt
-     */
     public function test_fetchAsVtt_returns_added_transcript(): void
     {
         $fetcher = new FakeYouTubeTranscriptFetcher();
@@ -39,10 +34,6 @@ class FakeYouTubeTranscriptFetcherTest extends BaseTestCase
         $this->assertSame('en', $language);
     }
 
-    /**
-     * @covers \Bristolian\Service\YouTube\FakeYouTubeTranscriptFetcher::addTranscript
-     * @covers \Bristolian\Service\YouTube\FakeYouTubeTranscriptFetcher::fetchAsVtt
-     */
     public function test_addTranscript_with_null_language(): void
     {
         $fetcher = new FakeYouTubeTranscriptFetcher();

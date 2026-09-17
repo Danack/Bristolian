@@ -7,12 +7,13 @@ use Bristolian\Repo\EmailIncoming\PdoEmailIncoming;
 use Bristolian\Repo\EmailIncoming\EmailIncoming;
 use BristolianTest\Repo\TestPlaceholders;
 use function Safe\json_encode;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\Repo\EmailIncoming\PdoEmailIncoming::class)]
 class PdoEmailIncomingTest extends EmailIncomingFixture
 {
     use TestPlaceholders;
@@ -22,9 +23,6 @@ class PdoEmailIncomingTest extends EmailIncomingFixture
         return $this->injector->make(PdoEmailIncoming::class);
     }
 
-    /**
-     * @covers \Bristolian\Repo\EmailIncoming\EmailIncoming::saveEmail
-     */
     public function testSaveEmail(): void
     {
         $incoming_email = $this->getTestIncomingEmeail();
@@ -38,9 +36,6 @@ class PdoEmailIncomingTest extends EmailIncomingFixture
 //        $this->assertTrue(true);
     }
 
-    /**
-     * @covers \Bristolian\Repo\EmailIncoming\EmailIncoming::saveEmail
-     */
     public function testSaveEmailWithAllFields(): void
     {
         $emailParam = new IncomingEmailParam(
@@ -62,9 +57,6 @@ class PdoEmailIncomingTest extends EmailIncomingFixture
         //$this->assertTrue(true);
     }
 
-    /**
-     * @covers \Bristolian\Repo\EmailIncoming\EmailIncoming::saveEmail
-     */
     public function testSaveMultipleEmails(): void
     {
         $pdoEmailIncoming = $this->injector->make(PdoEmailIncoming::class);
@@ -90,9 +82,6 @@ class PdoEmailIncomingTest extends EmailIncomingFixture
         //$this->assertTrue(true);
     }
 
-    /**
-     * @covers \Bristolian\Repo\EmailIncoming\EmailIncoming::saveEmail
-     */
     public function testSaveEmailWithLongContent(): void
     {
         $longText = str_repeat('This is a long email body. ', 100);
@@ -117,9 +106,6 @@ class PdoEmailIncomingTest extends EmailIncomingFixture
         // $this->assertTrue(true);
     }
 
-    /**
-     * @covers \Bristolian\Repo\EmailIncoming\EmailIncoming::saveEmail
-     */
     public function testSaveEmailWithSpecialCharacters(): void
     {
         $emailParam = new IncomingEmailParam(
@@ -142,9 +128,6 @@ class PdoEmailIncomingTest extends EmailIncomingFixture
 //        $this->assertTrue(true);
     }
 
-    /**
-     * @covers \Bristolian\Repo\EmailIncoming\EmailIncoming::saveEmail
-     */
     public function testSaveEmailWithUnicodeContent(): void
     {
         $emailParam = new IncomingEmailParam(
@@ -167,9 +150,6 @@ class PdoEmailIncomingTest extends EmailIncomingFixture
 //        $this->assertTrue(true);
     }
 
-    /**
-     * @coversNothing
-     */
     public function testSaveEmailImplementsInterface(): void
     {
         $pdoEmailIncoming = $this->injector->make(PdoEmailIncoming::class);
@@ -180,9 +160,6 @@ class PdoEmailIncomingTest extends EmailIncomingFixture
         );
     }
 
-    /**
-     * @covers \Bristolian\Repo\EmailIncoming\EmailIncoming::saveEmail
-     */
     public function testSaveEmailWithEmptyRetries(): void
     {
         $emailParam = new IncomingEmailParam(

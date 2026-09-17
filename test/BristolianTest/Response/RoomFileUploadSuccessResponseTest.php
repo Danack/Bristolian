@@ -5,15 +5,15 @@ namespace BristolianTest\Response;
 use Bristolian\Response\RoomFileUploadSuccessResponse;
 use BristolianTest\BaseTestCase;
 use function Safe\json_decode;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Response\RoomFileUploadSuccessResponse::class, '__construct')]
+#[CoversMethod(\Bristolian\Response\RoomFileUploadSuccessResponse::class, 'getBody')]
+#[CoversMethod(\Bristolian\Response\RoomFileUploadSuccessResponse::class, 'getHeaders')]
+#[CoversMethod(\Bristolian\Response\RoomFileUploadSuccessResponse::class, 'getStatus')]
+
 class RoomFileUploadSuccessResponseTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Response\RoomFileUploadSuccessResponse::__construct
-     * @covers \Bristolian\Response\RoomFileUploadSuccessResponse::getStatus
-     */
     public function testGetStatusReturns200(): void
     {
         $response = new RoomFileUploadSuccessResponse('file-123');
@@ -21,9 +21,6 @@ class RoomFileUploadSuccessResponseTest extends BaseTestCase
         $this->assertSame(200, $response->getStatus());
     }
 
-    /**
-     * @covers \Bristolian\Response\RoomFileUploadSuccessResponse::getHeaders
-     */
     public function testGetHeadersReturnsContentType(): void
     {
         $response = new RoomFileUploadSuccessResponse('file-123');
@@ -33,9 +30,6 @@ class RoomFileUploadSuccessResponseTest extends BaseTestCase
         $this->assertSame('application/json', $headers['Content-Type']);
     }
 
-    /**
-     * @covers \Bristolian\Response\RoomFileUploadSuccessResponse::getBody
-     */
     public function testGetBodyReturnsSuccessJsonWithFileId(): void
     {
         $response = new RoomFileUploadSuccessResponse('file-456');

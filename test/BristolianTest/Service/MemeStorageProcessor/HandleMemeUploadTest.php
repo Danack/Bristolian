@@ -15,15 +15,13 @@ use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
 use BristolianTest\BaseTestCase;
 use SlimDispatcher\Response\StubResponse;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\HandleMemeUpload::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\HandleMemeUpload::class, 'handle')]
+
 class HandleMemeUploadTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\MemeStorageProcessor\HandleMemeUpload::__construct
-     * @covers \Bristolian\Service\MemeStorageProcessor\HandleMemeUpload::handle
-     */
     public function test_handle_returns_failureResponse_when_upload_handler_returns_stub_response(): void
     {
         $userSession = new FakeUserSession(false, '', '');
@@ -43,9 +41,6 @@ class HandleMemeUploadTest extends BaseTestCase
         $this->assertInstanceOf(StubResponse::class, $result->errorResponse);
     }
 
-    /**
-     * @covers \Bristolian\Service\MemeStorageProcessor\HandleMemeUpload::handle
-     */
     public function test_handle_returns_failure_when_processor_returns_upload_error(): void
     {
         $uploadedFile = UploadedFile::fromFile(__FILE__);
@@ -67,9 +62,6 @@ class HandleMemeUploadTest extends BaseTestCase
         $this->assertNull($result->errorResponse);
     }
 
-    /**
-     * @covers \Bristolian\Service\MemeStorageProcessor\HandleMemeUpload::handle
-     */
     public function test_handle_returns_success_when_processor_stores_meme(): void
     {
         $imagePath = __DIR__ . '/../../../fixtures/stairs/stairs_test_c_7.jpeg';

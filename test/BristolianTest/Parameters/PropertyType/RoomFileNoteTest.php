@@ -12,9 +12,11 @@ use DataType\GetInputTypesFromAttributes;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Parameters\PropertyType\RoomFileNote::class, '__construct')]
+#[CoversMethod(\Bristolian\Parameters\PropertyType\RoomFileNote::class, 'getInputType')]
+
 class RoomFileNoteTest extends BaseTestCase
 {
     /**
@@ -33,8 +35,6 @@ class RoomFileNoteTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\RoomFileNote::__construct
-     * @covers \Bristolian\Parameters\PropertyType\RoomFileNote::getInputType
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -58,7 +58,6 @@ class RoomFileNoteTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\RoomFileNote::getInputType
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_invalid_input_and_expected_error')]
@@ -75,9 +74,6 @@ class RoomFileNoteTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\RoomFileNote::getInputType
-     */
     public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new RoomFileNote('test_name');

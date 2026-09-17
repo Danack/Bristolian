@@ -14,6 +14,7 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use SlimDispatcher\Response\JsonResponse;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversFunction;
 use Safe\DateTimeImmutable;
 use function Safe\fopen;
 use function Safe\ini_get;
@@ -26,23 +27,65 @@ use function Safe\putenv;
 use function Safe\rmdir;
 use function Safe\scandir;
 use function Safe\unlink;
-use PHPUnit\Framework\Attributes\CoversNothing;
 
-#[CoversNothing]
+#[CoversFunction('array_contains')]
+#[CoversFunction('continuallyExecuteCallable')]
+#[CoversFunction('convertToArrayOfObjects')]
+#[CoversFunction('convertToValue')]
+#[CoversFunction('createBlankUserProfileForUserId')]
+#[CoversFunction('createErrorJsonResponse')]
+#[CoversFunction('createJsonResponse')]
+#[CoversFunction('customSort')]
+#[CoversFunction('encodeWidgetyData')]
+#[CoversFunction('ensureFileCachedFromStream')]
+#[CoversFunction('ensureFileCachedFromString')]
+#[CoversFunction('escapeMySqlLikeString')]
+#[CoversFunction('extract_youtube_video_id')]
+#[CoversFunction('formatLinesWithCount')]
+#[CoversFunction('generateSecureToken')]
+#[CoversFunction('generateSystemInfoEmailContent')]
+#[CoversFunction('generate_password_hash')]
+#[CoversFunction('getEnumCaseValues')]
+#[CoversFunction('getEnumCases')]
+#[CoversFunction('getEnvString')]
+#[CoversFunction('getExceptionInfoAsArray')]
+#[CoversFunction('getMask')]
+#[CoversFunction('getMimeTypeFromFilename')]
+#[CoversFunction('getPercentMemoryUsed')]
+#[CoversFunction('getRandomId')]
+#[CoversFunction('getReasonPhrase')]
+#[CoversFunction('getRouteForStoredFile')]
+#[CoversFunction('get_external_source_link')]
+#[CoversFunction('get_mime_type_from_extension')]
+#[CoversFunction('get_password_options')]
+#[CoversFunction('get_readable_variable_type')]
+#[CoversFunction('get_supported_avatar_image_extensions')]
+#[CoversFunction('get_supported_bristolian_stair_image_extensions')]
+#[CoversFunction('get_supported_meme_file_extensions')]
+#[CoversFunction('get_supported_room_file_extensions')]
+#[CoversFunction('human_readable_value')]
+#[CoversFunction('json_decode_safe')]
+#[CoversFunction('json_encode_safe')]
+#[CoversFunction('mapStreamingResponseToPSR7')]
+#[CoversFunction('normalize_file_extension')]
+#[CoversFunction('parse_clip_timestamp_to_seconds')]
+#[CoversFunction('peak_memory')]
+#[CoversFunction('remove_install_prefix_from_path')]
+#[CoversFunction('renderChatMessageMarkdown')]
+#[CoversFunction('renderTableHtml')]
+#[CoversFunction('sanitise_filename')]
+#[CoversFunction('slugify')]
+#[CoversFunction('standardise_username_to_filename')]
+#[CoversFunction('underscore_separated_datetime_to_human_readable')]
+
 class FunctionsTest extends BaseTestCase
 {
-    /**
-     * @covers ::getRandomId
-     */
     public function testGetRandomId()
     {
         $id = getRandomId();
         $this->assertSame(64, strlen($id));
     }
 
-    /**
-     * @covers ::generateSecureToken
-     */
     public function test_generateSecureToken_returns_url_safe_token_of_expected_length(): void
     {
         $token = generateSecureToken();
@@ -52,9 +95,6 @@ class FunctionsTest extends BaseTestCase
         $this->assertNotSame($token, $token2, 'tokens must be unique');
     }
 
-    /**
-     * @covers ::formatLinesWithCount
-     */
     public function test_formatLinesWithCount()
     {
         $result = formatLinesWithCount(['foo', 'bar']);
@@ -66,9 +106,6 @@ TEXT;
         $this->assertSame($expected, $result);
     }
 
-    /**
-     * @covers ::continuallyExecuteCallable
-     */
     public function test_continuallyExecuteCallable_runs_callable_until_maxRunTime(): void
     {
         $ran = false;
@@ -88,9 +125,6 @@ TEXT;
         $this->assertStringContainsString('Finishing continuallyExecuteCallable', $output);
     }
 
-    /**
-     * @covers ::json_decode_safe
-     */
     public function test_json_decode_safe()
     {
         $data = ['foo' => 'bar'];
@@ -99,9 +133,6 @@ TEXT;
         $this->assertSame($data, $output);
     }
 
-    /**
-     * @covers ::json_decode_safe
-     */
     public function test_json_decode_safe_throws_for_null(): void
     {
         $this->expectException(\Bristolian\Exception\JsonException::class);
@@ -109,9 +140,6 @@ TEXT;
         json_decode_safe(null);
     }
 
-    /**
-     * @covers ::json_decode_safe
-     */
     public function test_json_decode_safe_throws_for_invalid_json(): void
     {
         $this->expectException(\Seld\JsonLint\ParsingException::class);
@@ -119,7 +147,6 @@ TEXT;
     }
 
     /**
-     * @covers ::json_decode_safe
      * Triggers path where json_decode fails (e.g. depth) but parser returns null, so we throw JsonException.
      */
     public function test_json_decode_safe_throws_JsonException_when_decode_fails_but_lint_returns_null(): void
@@ -130,9 +157,6 @@ TEXT;
         json_decode_safe($deeplyNested);
     }
 
-    /**
-     * @covers ::json_encode_safe
-     */
     public function test_json_encode_safe_returns_json_string_for_valid_data(): void
     {
         $data = ['foo' => 'bar', 'n' => 42];
@@ -141,9 +165,6 @@ TEXT;
         $this->assertSame($data, $decoded);
     }
 
-    /**
-     * @covers ::json_encode_safe
-     */
     public function test_json_encode_safe_throws_for_unencodable_value(): void
     {
         $this->expectException(\Bristolian\Exception\JsonException::class);
@@ -151,9 +172,6 @@ TEXT;
         json_encode_safe(fopen('php://memory', 'rb'));
     }
 
-    /**
-     * @covers ::getExceptionInfoAsArray
-     */
     public function test_getExceptionInfoAsArray_returns_structure_for_exception(): void
     {
         $exception = new \RuntimeException('Test message');
@@ -167,9 +185,6 @@ TEXT;
         $this->assertIsArray($result['details'][0]['trace']);
     }
 
-    /**
-     * @covers ::getExceptionInfoAsArray
-     */
     public function test_getExceptionInfoAsArray_includes_previous_exceptions(): void
     {
         $previous = new \InvalidArgumentException('Cause');
@@ -181,9 +196,6 @@ TEXT;
         $this->assertSame('Cause', $result['details'][1]['message']);
     }
 
-    /**
-     * @covers ::getReasonPhrase
-     */
     public function test_getReasonPhrase_returns_known_phrases(): void
     {
         $this->assertSame('Enhance Your Calm', getReasonPhrase(420));
@@ -191,18 +203,12 @@ TEXT;
         $this->assertSame('Server known limitation', getReasonPhrase(512));
     }
 
-    /**
-     * @covers ::getReasonPhrase
-     */
     public function test_getReasonPhrase_returns_empty_string_for_unknown_status(): void
     {
         $this->assertSame('', getReasonPhrase(200));
         $this->assertSame('', getReasonPhrase(999));
     }
 
-    /**
-     * @covers ::peak_memory
-     */
     public function test_peak_memory()
     {
         $memory_string = peak_memory();
@@ -213,10 +219,6 @@ TEXT;
         );
     }
 
-
-    /**
-     * @covers ::renderTableHtml
-     */
     public function test_renderTableHtml_returns_table_with_headers_and_rows(): void
     {
         $headers = ['Name', 'Value'];
@@ -236,9 +238,6 @@ TEXT;
         $this->assertStringContainsString('2', $result);
     }
 
-    /**
-     * @covers ::getMask
-     */
     public function test_getMask_returns_expected_values(): void
     {
         $this->assertSame(0x2, getMask('sign'));
@@ -246,9 +245,6 @@ TEXT;
         $this->assertSame(0x80000000000000, getMask('mantissa'));
     }
 
-    /**
-     * @covers ::getMask
-     */
     public function test_getMask_throws_for_unknown_name(): void
     {
         $this->expectException(\Exception::class);
@@ -256,9 +252,6 @@ TEXT;
         getMask('unknown');
     }
 
-    /**
-     * @covers ::human_readable_value
-     */
     public function test_human_readable_value_formats_sizes(): void
     {
         $this->assertSame('500 B', human_readable_value(500));
@@ -266,9 +259,6 @@ TEXT;
         $this->assertSame('1 MB', human_readable_value(1024 * 1024));
     }
 
-    /**
-     * @covers ::getPercentMemoryUsed
-     */
     public function test_getPercentMemoryUsed()
     {
         $memoryLimit = ini_get('memory_limit');
@@ -281,9 +271,6 @@ TEXT;
         $this->assertLessThanOrEqual(100, $percentMemoryUsed);
     }
 
-    /**
-     * @covers ::createJsonResponse
-     */
     public function test_createJsonResponse_returns_success_response_for_convertible_data(): void
     {
         $response = createJsonResponse(['key' => 'value']);
@@ -293,9 +280,6 @@ TEXT;
         $this->assertSame(['key' => 'value'], $payload['data']);
     }
 
-    /**
-     * @covers ::createJsonResponse
-     */
     public function test_createJsonResponse_returns_failure_response_when_convertToValue_fails(): void
     {
         $response = createJsonResponse(['bad' => fopen('php://memory', 'rb')]);
@@ -306,9 +290,6 @@ TEXT;
         $this->assertArrayHasKey('error', $payload);
     }
 
-    /**
-     * @covers ::getRouteForStoredFile
-     */
     public function test_getRouteForStoredFile_returns_esprintf_route(): void
     {
         $storedFile = new \BristolianGenerated\Model\RoomFileObjectInfo(
@@ -327,14 +308,10 @@ TEXT;
         $this->assertMatchesRegularExpression('/Original(.+)Name\.pdf$/', $result, 'filename is URI-encoded in route');
     }
 
-    /**
-     * @covers ::createErrorJsonResponse
-     */
     public function test_createErrorJsonResponse()
     {
         $result = createErrorJsonResponse([]);
         $this->assertNull($result, "No errors should have returned null.");
-
 
         $dataStorage = TestArrayDataStorage::fromSingleValueAndSetCurrentPosition(
             'foo',
@@ -349,20 +326,12 @@ TEXT;
         $this->assertSame(400, $response->getStatus());
     }
 
-
-    /**
-     * @covers ::remove_install_prefix_from_path
-     */
     public function test_normaliseFilePath()
     {
         $result = remove_install_prefix_from_path("/var/app/test");
         $this->assertSame('test', $result);
     }
 
-
-    /**
-     * @covers ::getEnvString
-     */
     public function test_getEnvString()
     {
         putenv("FOO=BAR");
@@ -374,9 +343,6 @@ TEXT;
         getEnvString("NONEXISTENT");
     }
 
-    /**
-     * @covers ::array_contains
-     */
     public function test_array_contains()
     {
         $this->assertFalse(array_contains(true, [1]));
@@ -384,7 +350,6 @@ TEXT;
     }
 
     /**
-     * @covers ::generate_password_hash
      * @group slow
      */
     public function test_generate_password_hash_returns_bcrypt_hash_verifiable_with_password(): void
@@ -398,9 +363,6 @@ TEXT;
         $this->assertNotSame($hash, $hash2, 'each call should produce a different hash (salted)');
     }
 
-    /**
-     * @covers ::get_password_options
-     */
     public function test_get_password_options()
     {
         $options = get_password_options();
@@ -425,7 +387,6 @@ TEXT;
     }
 
     /**
-     * @covers slugify
      * @param string $input
      * @param string $expected
      * @return void
@@ -455,9 +416,6 @@ TEXT;
         yield 'invalid url no id' => ['https://www.youtube.com/watch', null];
     }
 
-    /**
-     * @covers ::extract_youtube_video_id
-     */
     #[DataProvider('provides_extract_youtube_video_id')]
     public function test_extract_youtube_video_id(string $url, ?string $expected): void
     {
@@ -483,7 +441,6 @@ TEXT;
         yield 'negative seconds' => ['-1', null];
         yield 'non numeric seconds only' => ['x', null];
 
-
         yield 'non-numeric minutes with hour' => ['1:xx:10', null];
         yield 'invalid minutes with hour' => ['1:75:10', null];
         yield 'invalid seconds with hour' => ['1:1:75', null];
@@ -491,9 +448,6 @@ TEXT;
         yield 'too many sections' => ['1:1:1:75', null];
     }
 
-    /**
-     * @covers ::parse_clip_timestamp_to_seconds
-     */
     #[DataProvider('provides_parse_clip_timestamp_to_seconds')]
     public function test_parse_clip_timestamp_to_seconds(string $input, ?int $expected): void
     {
@@ -508,7 +462,6 @@ TEXT;
     }
 
     /**
-     * @covers ::sanitise_filename
      * @param string $input
      * @param string $expected
      * @return void
@@ -529,7 +482,6 @@ TEXT;
     }
 
     /**
-     * @covers ::standardise_username_to_filename
      * @param string $input
      * @param string $expected
      * @return void
@@ -548,9 +500,6 @@ TEXT;
         yield ['foo%bar', 'foo\\%bar'];
     }
 
-    /**
-     * @covers ::escapeMySqlLikeString
-     */
     #[DataProvider('provides_escapeMySqlLikeString')]
     public function test_escapeMySqlLikeString(string $input, string $expected)
     {
@@ -558,10 +507,6 @@ TEXT;
         $this->assertSame($expected, $result);
     }
 
-
-    /**
-     * @covers ::get_external_source_link
-     */
     public function test_get_external_source_link()
     {
         // Case without /raw/
@@ -576,9 +521,6 @@ TEXT;
         $this->assertSame($expected, $result);
     }
 
-    /**
-     * @covers ::convertToArrayOfObjects
-     */
     public function test_convertToArrayOfObjects()
     {
         $int_value = 1234;
@@ -608,7 +550,6 @@ TEXT;
     }
 
     /**
-     * @covers ::normalize_file_extension
      * @param string $original_filename
      * @param string[] $allowed_extensions
      * @throws BristolianException
@@ -625,9 +566,6 @@ TEXT;
         $this->assertSame('pdf', $result);
     }
 
-    /**
-     * @covers ::normalize_file_extension
-     */
     public function test_normalize_file_extension_throws()
     {
         $this->expectException(\Bristolian\Exception\BristolianException::class);
@@ -647,7 +585,6 @@ TEXT;
     }
 
     /**
-     * @covers ::normalize_file_extension
      * @param string $original_filename
      * @param string[] $allowed_extensions
      * @throws BristolianException
@@ -664,8 +601,6 @@ TEXT;
         $this->assertNull($result);
     }
 
-
-
     public static function provides_convertToValue_works()
     {
         yield ['foo', 'foo'];
@@ -679,9 +614,6 @@ TEXT;
         yield [$toArrayClass, ['foo' => $string_value, 'bar' => $int_value]];
     }
 
-    /**
-     * @covers ::convertToValue
-     */
     #[DataProvider('provides_convertToValue_works')]
     public function test_convertToValue_works(mixed $input, mixed $expected_value)
     {
@@ -703,9 +635,6 @@ TEXT;
         yield [fopen("php://memory", "r"), "resource (stream)"];
     }
 
-    /**
-     * @covers ::get_readable_variable_type
-     */
     #[DataProvider('provides_get_readable_variable_type_works')]
     public function test_get_readable_variable_type(mixed $value, string $expected_message)
     {
@@ -717,9 +646,6 @@ TEXT;
         );
     }
 
-    /**
-     * @covers ::customSort
-     */
     public function test_customSort()
     {
         $input = ['name', 'id', 'user_id', 'created_at', 'modified_at', 'group_id', 'email'];
@@ -729,10 +655,6 @@ TEXT;
         $this->assertSame($expected, $sorted);
     }
 
-    /**
-     * @covers ::get_supported_room_file_extensions
-     * @covers ::get_supported_room_file_extensions
-     */
     public function testMimeTypesAreAdequate()
     {
         $file_room_extensions = get_supported_room_file_extensions();
@@ -748,9 +670,6 @@ TEXT;
         }
     }
 
-    /**
-     * @covers ::get_supported_bristolian_stair_image_extensions
-     */
     public function test_get_supported_bristolian_stair_image_extensions(): void
     {
         $extensions = get_supported_bristolian_stair_image_extensions();
@@ -758,9 +677,6 @@ TEXT;
         $this->assertContains('jpg', $extensions);
     }
 
-    /**
-     * @covers ::get_supported_avatar_image_extensions
-     */
     public function test_get_supported_avatar_image_extensions(): void
     {
         $extensions = get_supported_avatar_image_extensions();
@@ -769,9 +685,6 @@ TEXT;
         $this->assertContains('png', $extensions);
     }
 
-    /**
-     * @covers ::get_supported_meme_file_extensions
-     */
     public function test_get_supported_meme_file_extensions_returns_expected_list(): void
     {
         $extensions = get_supported_meme_file_extensions();
@@ -785,9 +698,6 @@ TEXT;
         $this->assertCount(7, $extensions);
     }
 
-    /**
-     * @covers ::encodeWidgetyData
-     */
     public function test_encodeWidgetyData_escapes_json(): void
     {
         $data = ['key' => 'value'];
@@ -796,34 +706,22 @@ TEXT;
         $this->assertStringContainsString('value', $result);
     }
 
-    /**
-     * @covers ::get_mime_type_from_extension
-     */
     public function test_get_mime_type_from_extension_returns_null_for_unknown(): void
     {
         $this->assertNull(get_mime_type_from_extension('xyz'));
     }
 
-    /**
-     * @covers ::get_mime_type_from_extension
-     */
     public function test_get_mime_type_from_extension_returns_type_for_known(): void
     {
         $this->assertSame('image/jpeg', get_mime_type_from_extension('jpg'));
     }
 
-    /**
-     * @covers ::getMimeTypeFromFilename
-     */
     public function test_getMimeTypeFromFilename_returns_mime_type_for_known_extension(): void
     {
         $this->assertSame('image/jpeg', getMimeTypeFromFilename('photo.jpg'));
         $this->assertSame('application/pdf', getMimeTypeFromFilename('doc.PDF'));
     }
 
-    /**
-     * @covers ::getMimeTypeFromFilename
-     */
     public function test_getMimeTypeFromFilename_throws_for_unknown_extension(): void
     {
         $this->expectException(\Bristolian\Exception\BristolianException::class);
@@ -831,18 +729,12 @@ TEXT;
         getMimeTypeFromFilename('file.unknown');
     }
 
-    /**
-     * @covers ::getEnumCases
-     */
     public function test_getEnumCases_returns_cases_for_enum(): void
     {
         $cases = getEnumCases(DocumentType::class);
         $this->assertNotEmpty($cases);
     }
 
-    /**
-     * @covers ::getEnumCases
-     */
     public function test_getEnumCases_throws_for_non_existent_class(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -851,9 +743,6 @@ TEXT;
         getEnumCases('NonExistentClass');
     }
 
-    /**
-     * @covers ::getEnumCases
-     */
     public function test_getEnumCases_throws_for_non_enum_class(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -862,18 +751,12 @@ TEXT;
         getEnumCases(\StdClass::class);
     }
 
-    /**
-     * @covers ::getEnumCaseValues
-     */
     public function test_getEnumCaseValues_returns_values_for_enum(): void
     {
         $values = getEnumCaseValues(DocumentType::class);
         $this->assertNotEmpty($values);
     }
 
-    /**
-     * @covers ::getEnumCaseValues
-     */
     public function test_getEnumCaseValues_throws_for_non_existent_class(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -881,9 +764,6 @@ TEXT;
         getEnumCaseValues('NonExistentClass');
     }
 
-    /**
-     * @covers ::getEnumCaseValues
-     */
     public function test_getEnumCaseValues_throws_for_non_enum_class(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -892,9 +772,6 @@ TEXT;
         getEnumCaseValues(\StdClass::class);
     }
 
-    /**
-     * @covers ::createBlankUserProfileForUserId
-     */
     public function test_createBlankUserProfileForUserId(): void
     {
         $profile = createBlankUserProfileForUserId('user_123');
@@ -904,9 +781,6 @@ TEXT;
         $this->assertNull($profile->about_me);
     }
 
-    /**
-     * @covers ::ensureFileCachedFromString
-     */
     public function test_ensureFileCachedFromString_returns_cached_content_when_file_exists(): void
     {
         $cacheDir = sys_get_temp_dir() . '/fc_cache_' . uniqid();
@@ -928,9 +802,6 @@ TEXT;
         }
     }
 
-    /**
-     * @covers ::ensureFileCachedFromString
-     */
     public function test_ensureFileCachedFromString_reads_from_source_and_writes_to_cache_when_missing(): void
     {
         $cacheDir = sys_get_temp_dir() . '/fc_cache2_' . uniqid();
@@ -953,9 +824,6 @@ TEXT;
         }
     }
 
-    /**
-     * @covers ::ensureFileCachedFromStream
-     */
     public function test_ensureFileCachedFromStream_writes_to_cache_when_file_not_cached(): void
     {
         $cacheDir = sys_get_temp_dir() . '/fc_stream_cache_' . uniqid();
@@ -978,9 +846,6 @@ TEXT;
         }
     }
 
-    /**
-     * @covers ::ensureFileCachedFromStream
-     */
     public function test_ensureFileCachedFromStream_does_nothing_when_already_cached(): void
     {
         $cacheDir = sys_get_temp_dir() . '/fc_stream_c2_' . uniqid();
@@ -1003,9 +868,6 @@ TEXT;
         }
     }
 
-    /**
-     * @covers ::generateSystemInfoEmailContent
-     */
     public function test_generateSystemInfoEmailContent_returns_body_with_shamoan_and_disk_info(): void
     {
         $result = generateSystemInfoEmailContent();
@@ -1013,9 +875,6 @@ TEXT;
         $this->assertStringContainsString("\n\n", $result);
     }
 
-    /**
-     * @covers ::mapStreamingResponseToPSR7
-     */
     public function test_mapStreamingResponseToPSR7_returns_psr7_response_with_status_and_body(): void
     {
         $filepath = __DIR__ . '/../fixtures/pdfs/sample.pdf';
@@ -1038,9 +897,6 @@ TEXT;
         yield 'midnight new year' => ['2026_01_01_00_00_00', '1 January 2026, 00:00:00'];
     }
 
-    /**
-     * @covers ::underscore_separated_datetime_to_human_readable
-     */
     #[DataProvider('provides_underscore_separated_datetime_to_human_readable')]
     public function test_underscore_separated_datetime_to_human_readable(string $input, string $expected): void
     {
@@ -1060,9 +916,6 @@ TEXT;
 //        yield 'invalid calendar date' => ['2026_02_30_00_00_00'];
     }
 
-    /**
-     * @covers ::underscore_separated_datetime_to_human_readable
-     */
     #[DataProvider('provides_underscore_separated_datetime_to_human_readable_invalid')]
     public function test_underscore_separated_datetime_to_human_readable_throws_when_not_parseable(string $input): void
     {
@@ -1071,9 +924,6 @@ TEXT;
         underscore_separated_datetime_to_human_readable($input);
     }
 
-    /**
-     * @covers ::renderChatMessageMarkdown
-     */
     public function test_renderChatMessageMarkdown_returns_chat_message_with_rendered_text(): void
     {
         $chatMessage = new UserChatMessage(

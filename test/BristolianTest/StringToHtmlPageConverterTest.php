@@ -11,14 +11,12 @@ use Laminas\Diactoros\Request;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\StringToHtmlPageConverter::class)]
+
 class StringToHtmlPageConverterTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\StringToHtmlPageConverter
-     */
     public function testWorks()
     {
         $assetLinkConfig = new HardCodedAssetLinkConfig(false, 'abc123');
@@ -45,9 +43,6 @@ class StringToHtmlPageConverterTest extends BaseTestCase
         $this->assertStringContainsString('</html>', $html);
     }
 
-    /**
-     * @covers \Bristolian\StringToHtmlPageConverter
-     */
     public function testWorks_with_extra_assets()
     {
         $assetLinkConfig = new HardCodedAssetLinkConfig(false, 'abc123');
@@ -73,9 +68,6 @@ class StringToHtmlPageConverterTest extends BaseTestCase
         $this->assertStringContainsString('/js/custom.js', $html);
     }
 
-    /**
-     * @covers \Bristolian\StringToHtmlPageConverter
-     */
     public function testWorks_with_empty_content()
     {
         $assetLinkConfig = new HardCodedAssetLinkConfig(false, 'abc123');
@@ -102,9 +94,6 @@ class StringToHtmlPageConverterTest extends BaseTestCase
         $this->assertStringContainsString('</html>', $html);
     }
 
-    /**
-     * @covers \Bristolian\StringToHtmlPageConverter
-     */
     public function testWorks_preserves_existing_response_properties()
     {
         $assetLinkConfig = new HardCodedAssetLinkConfig(false, 'abc123');

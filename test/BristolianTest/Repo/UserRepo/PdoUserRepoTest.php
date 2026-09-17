@@ -10,21 +10,22 @@ use Bristolian\Repo\UserRepo\UserRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use PDO;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\UserRepo\PdoUserRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\UserRepo\PdoUserRepo::class, 'ensureRoomUserOwnershipExistsForRoom')]
+#[CoversMethod(\Bristolian\Repo\UserRepo\PdoUserRepo::class, 'ensureSystemUserExists')]
+#[CoversMethod(\Bristolian\Repo\UserRepo\PdoUserRepo::class, 'getRoomUserForRoom')]
+#[CoversMethod(\Bristolian\Repo\UserRepo\PdoUserRepo::class, 'getSystemUser')]
+
 final class PdoUserRepoTest extends BaseTestCase
 {
     use TestPlaceholders;
 
-    /**
-     * @covers \Bristolian\Repo\UserRepo\PdoUserRepo::__construct
-     * @covers \Bristolian\Repo\UserRepo\PdoUserRepo::ensureRoomUserOwnershipExistsForRoom
-     * @covers \Bristolian\Repo\UserRepo\PdoUserRepo::getRoomUserForRoom
-     */
     public function test_ensureRoomUserOwnershipExistsForRoom_is_idempotent_and_getRoomUserForRoom_matches(): void
     {
         $adminUser = $this->createTestAdminUser();
@@ -53,7 +54,6 @@ final class PdoUserRepoTest extends BaseTestCase
     /**
      * Uses raw PDO deletes so test DBs that already have a SYSTEM row still exercise the insert path.
      *
-     * @covers \Bristolian\Repo\UserRepo\PdoUserRepo::ensureSystemUserExists
      */
     public function test_ensureSystemUserExists_inserts_after_system_row_removed(): void
     {
@@ -73,10 +73,6 @@ final class PdoUserRepoTest extends BaseTestCase
         self::assertNull($after->room_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\UserRepo\PdoUserRepo::ensureSystemUserExists
-     * @covers \Bristolian\Repo\UserRepo\PdoUserRepo::getSystemUser
-     */
     public function test_ensureSystemUserExists_is_idempotent_and_getSystemUser_matches(): void
     {
         $repo = $this->injector->make(PdoUserRepo::class);

@@ -3,42 +3,36 @@
 namespace Functions;
 
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversFunction;
 
 /**
  * @TODO - these tests could really do with some assertions.
  */
-#[CoversNothing]
+
+#[CoversFunction('createFooterHtml')]
+#[CoversFunction('createPageHeaderHtml')]
+#[CoversFunction('createPageHtml')]
+#[CoversFunction('getPageLayoutHtml')]
+#[CoversFunction('share_this_page')]
+
 class SiteHtmlFunctionsTest extends BaseTestCase
 {
-    /**
-     * @covers ::createPageHeaderHtml
-     */
     public function test_createPageHeaderHtml()
     {
         $result = createPageHeaderHtml();
     }
 
-    /**
-     * @covers ::createFooterHtml
-     */
     public function test_createFooterHtml()
     {
         $result = createFooterHtml();
     }
 
-    /**
-     * @covers ::getPageLayoutHtml
-     */
     public function test_getPageLayoutHtml()
     {
         $extraAssets = new \Bristolian\SiteHtml\ExtraAssets();
         $result = getPageLayoutHtml($extraAssets);
     }
 
-    /**
-     * @covers ::createPageHtml
-     */
     public function test_createPageHtml()
     {
         $assetLinkConfig = new \Bristolian\Config\HardCodedAssetLinkConfig(true, "abdefg");
@@ -52,9 +46,6 @@ class SiteHtmlFunctionsTest extends BaseTestCase
         $this->assertStringContainsString('data-widgety-debug-allowed="1"', $result);
     }
 
-    /**
-     * @covers ::createPageHtml
-     */
     public function test_createPageHtml_disables_widgety_debug_in_production()
     {
         $assetLinkConfig = new \Bristolian\Config\HardCodedAssetLinkConfig(true, "abdefg", true);
@@ -66,10 +57,6 @@ class SiteHtmlFunctionsTest extends BaseTestCase
         $this->assertStringContainsString('data-widgety-debug-allowed="0"', $result);
     }
 
-
-    /**
-     * @covers ::share_this_page
-     */
     public function test_share_this_page()
     {
         $_SERVER['HTTP_HOST']  = "www.example.com";

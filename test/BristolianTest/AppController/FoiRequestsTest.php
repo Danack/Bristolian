@@ -12,9 +12,12 @@ use BristolianTest\BaseTestCase;
 use SlimDispatcher\Response\RedirectResponse;
 use VarMap\ArrayVarMap;
 use VarMap\VarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\FoiRequests::class, 'edit')]
+#[CoversMethod(\Bristolian\AppController\FoiRequests::class, 'process_add')]
+#[CoversMethod(\Bristolian\AppController\FoiRequests::class, 'view')]
+
 class FoiRequestsTest extends BaseTestCase
 {
     public function setup(): void
@@ -24,9 +27,6 @@ class FoiRequestsTest extends BaseTestCase
         $this->injector->share(FakeFoiRequestRepo::class);
     }
 
-    /**
-     * @covers \Bristolian\AppController\FoiRequests::view
-     */
     public function test_view_with_no_requests_returns_message(): void
     {
         $result = $this->injector->execute([FoiRequests::class, 'view']);
@@ -34,9 +34,6 @@ class FoiRequestsTest extends BaseTestCase
         $this->assertSame('No FOI requests created on system yet.', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\FoiRequests::view
-     */
     public function test_view_with_requests(): void
     {
         $repo = $this->injector->make(FakeFoiRequestRepo::class);
@@ -53,9 +50,6 @@ class FoiRequestsTest extends BaseTestCase
         $this->assertStringContainsString('Test FOI request', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\FoiRequests::process_add
-     */
     public function test_process_add(): void
     {
         $varMap = new ArrayVarMap([
@@ -70,9 +64,6 @@ class FoiRequestsTest extends BaseTestCase
         $this->assertInstanceOf(RedirectResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\FoiRequests::edit
-     */
     public function test_edit(): void
     {
         $result = $this->injector->execute([FoiRequests::class, 'edit']);

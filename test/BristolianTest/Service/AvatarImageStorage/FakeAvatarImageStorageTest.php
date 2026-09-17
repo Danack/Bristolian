@@ -8,15 +8,13 @@ use Bristolian\Service\AvatarImageStorage\FakeAvatarImageStorage;
 use Bristolian\Service\AvatarImageStorage\UploadError;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\AvatarImageStorage\FakeAvatarImageStorage::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\AvatarImageStorage\FakeAvatarImageStorage::class, 'storeAvatarForUser')]
+
 class FakeAvatarImageStorageTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\FakeAvatarImageStorage::__construct
-     * @covers \Bristolian\Service\AvatarImageStorage\FakeAvatarImageStorage::storeAvatarForUser
-     */
     public function test_storeAvatarForUser_returns_configured_avatar_image_id(): void
     {
         $avatarImageId = 'avatar_image_abc';
@@ -28,9 +26,6 @@ class FakeAvatarImageStorageTest extends BaseTestCase
         $this->assertSame($avatarImageId, $result);
     }
 
-    /**
-     * @covers \Bristolian\Service\AvatarImageStorage\FakeAvatarImageStorage::storeAvatarForUser
-     */
     public function test_storeAvatarForUser_returns_configured_error(): void
     {
         $error = UploadError::uploadedFileUnreadable();

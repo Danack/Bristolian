@@ -36,9 +36,18 @@ use VarMap\ArrayVarMap;
 use function Safe\file_put_contents;
 use function Safe\json_decode;
 use function Safe\mkdir;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\Users::class, 'getAvatarImage')]
+#[CoversMethod(\Bristolian\AppController\Users::class, 'getUserAvatar')]
+#[CoversMethod(\Bristolian\AppController\Users::class, 'getUserInfo')]
+#[CoversMethod(\Bristolian\AppController\Users::class, 'index')]
+#[CoversMethod(\Bristolian\AppController\Users::class, 'showOwnProfile')]
+#[CoversMethod(\Bristolian\AppController\Users::class, 'showUserProfile')]
+#[CoversMethod(\Bristolian\AppController\Users::class, 'updateProfile')]
+#[CoversMethod(\Bristolian\AppController\Users::class, 'uploadAvatar')]
+#[CoversMethod(\Bristolian\AppController\Users::class, 'whoami')]
+
 class UsersTest extends BaseTestCase
 {
     public function setup(): void
@@ -66,9 +75,6 @@ class UsersTest extends BaseTestCase
         return (new ServerRequest())->withCookieParams($cookies);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::index
-     */
     public function test_index(): void
     {
         $result = $this->injector->execute([Users::class, 'index']);
@@ -76,9 +82,6 @@ class UsersTest extends BaseTestCase
         $this->assertStringContainsString('User list', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::whoami
-     */
     public function test_whoami_not_logged_in(): void
     {
         $sessionManager = $this->createSessionManager();
@@ -94,9 +97,6 @@ class UsersTest extends BaseTestCase
         $this->assertStringContainsString('Not logged in', $body);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::whoami
-     */
     public function test_whoami_logged_in(): void
     {
         $existingSession = new FakeAsmSession('sess-whoami');
@@ -118,9 +118,6 @@ class UsersTest extends BaseTestCase
         $this->assertSame('test-user-id-001', $body['user_id']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::getUserInfo
-     */
     public function test_getUserInfo(): void
     {
         $this->injector->defineParam('user_id', 'test-user-id-001');
@@ -128,9 +125,6 @@ class UsersTest extends BaseTestCase
         $this->assertInstanceOf(GetUserInfoResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::showOwnProfile
-     */
     public function test_showOwnProfile(): void
     {
         $existingSession = new FakeAsmSession('sess-own');
@@ -151,9 +145,6 @@ class UsersTest extends BaseTestCase
         $this->assertStringContainsString('user_profile_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::showUserProfile
-     */
     public function test_showUserProfile_different_user(): void
     {
         $sessionManager = $this->createSessionManager();
@@ -170,9 +161,6 @@ class UsersTest extends BaseTestCase
         $this->assertStringContainsString('false', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::showUserProfile
-     */
     public function test_showUserProfile_same_user(): void
     {
         $existingSession = new FakeAsmSession('sess-same');
@@ -195,9 +183,6 @@ class UsersTest extends BaseTestCase
         $this->assertStringContainsString('true', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::getUserAvatar
-     */
     public function test_getUserAvatar_no_avatar_returns_error(): void
     {
         $tempRoot = sys_get_temp_dir() . '/bristolian_avatar_test_' . uniqid();
@@ -218,9 +203,6 @@ class UsersTest extends BaseTestCase
         $this->assertStringContainsString('No avatar for user', $responseBody);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::getUserAvatar
-     */
     public function test_getUserAvatar_has_avatar_returns_streaming_response(): void
     {
         $tempRoot = sys_get_temp_dir() . '/bristolian_avatar_test_' . uniqid();
@@ -250,9 +232,6 @@ class UsersTest extends BaseTestCase
         $this->assertInstanceOf(\Bristolian\Response\StreamingResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::getAvatarImage
-     */
     public function test_getAvatarImage_not_found_returns_error(): void
     {
         $tempRoot = sys_get_temp_dir() . '/bristolian_avatar_test_' . uniqid();
@@ -273,9 +252,6 @@ class UsersTest extends BaseTestCase
         $this->assertStringContainsString('nonexistent-avatar-id', $responseBody);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::getAvatarImage
-     */
     public function test_getAvatarImage_found_returns_streaming_response(): void
     {
         $tempRoot = sys_get_temp_dir() . '/bristolian_avatar_test_' . uniqid();
@@ -302,9 +278,6 @@ class UsersTest extends BaseTestCase
         $this->assertInstanceOf(\Bristolian\Response\StreamingResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::uploadAvatar
-     */
     public function test_uploadAvatar_no_file_returns_stub_response(): void
     {
         $uploadedFiles = new FakeUploadedFiles([]);
@@ -321,9 +294,6 @@ class UsersTest extends BaseTestCase
         $this->assertInstanceOf(\SlimDispatcher\Response\StubResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::uploadAvatar
-     */
     public function test_uploadAvatar_storage_returns_error_returns_400(): void
     {
         $uploadedFile = new \Bristolian\UploadedFiles\UploadedFile(__FILE__, 1024, 'test.php', 0);
@@ -342,9 +312,6 @@ class UsersTest extends BaseTestCase
         $this->assertSame(400, $result->getStatus());
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::uploadAvatar
-     */
     public function test_uploadAvatar_success_returns_upload_avatar_response(): void
     {
         $uploadedFile = new \Bristolian\UploadedFiles\UploadedFile(__FILE__, 1024, 'test.php', 0);
@@ -362,9 +329,6 @@ class UsersTest extends BaseTestCase
         $this->assertInstanceOf(UploadAvatarResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Users::updateProfile
-     */
     public function test_updateProfile(): void
     {
         $params = UserProfileUpdateParams::createFromVarMap(new ArrayVarMap([

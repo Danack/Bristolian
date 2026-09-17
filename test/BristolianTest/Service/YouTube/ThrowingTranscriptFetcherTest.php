@@ -7,14 +7,12 @@ namespace BristolianTest\Service\YouTube;
 use Bristolian\Exception\YouTube\YouTubeNoCaptionTracksException;
 use Bristolian\Service\YouTube\ThrowingTranscriptFetcher;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Service\YouTube\ThrowingTranscriptFetcher::class)]
+
 class ThrowingTranscriptFetcherTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\YouTube\ThrowingTranscriptFetcher
-     */
     public function testWorks(): void
     {
         $id = "abcdef12345";

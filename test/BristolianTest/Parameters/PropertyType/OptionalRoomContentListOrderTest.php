@@ -17,9 +17,12 @@ use DataType\ProcessRule\SkipIfNull;
 use DataType\Value\Ordering;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Parameters\PropertyType\OptionalRoomContentListOrder::class, '__construct')]
+#[CoversMethod(\Bristolian\Parameters\PropertyType\OptionalRoomContentListOrder::class, 'getInputType')]
+#[CoversMethod(\Bristolian\Parameters\PropertyType\OptionalRoomContentListOrder::class, 'knownOrderNames')]
+
 class OptionalRoomContentListOrderTest extends BaseTestCase
 {
     /**
@@ -39,8 +42,6 @@ class OptionalRoomContentListOrderTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\OptionalRoomContentListOrder::__construct
-     * @covers \Bristolian\Parameters\PropertyType\OptionalRoomContentListOrder::getInputType
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -57,10 +58,6 @@ class OptionalRoomContentListOrderTest extends BaseTestCase
         $this->assertSame($expectedValue->toOrderArray(), $params->order->toOrderArray());
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\OptionalRoomContentListOrder::__construct
-     * @covers \Bristolian\Parameters\PropertyType\OptionalRoomContentListOrder::getInputType
-     */
     public function test_rejects_unknown_order_name(): void
     {
         try {
@@ -82,11 +79,6 @@ class OptionalRoomContentListOrderTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\OptionalRoomContentListOrder::__construct
-     * @covers \Bristolian\Parameters\PropertyType\OptionalRoomContentListOrder::knownOrderNames
-     * @covers \Bristolian\Parameters\PropertyType\OptionalRoomContentListOrder::getInputType
-     */
     public function test_getInputType_uses_expected_name_and_rules(): void
     {
         $propertyType = new OptionalRoomContentListOrder('sort');

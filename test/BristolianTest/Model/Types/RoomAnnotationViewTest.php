@@ -6,14 +6,12 @@ namespace BristolianTest\Model\Types;
 
 use Bristolian\Model\Types\RoomAnnotationView;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Types\RoomAnnotationView::class)]
+
 class RoomAnnotationViewTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\RoomAnnotationView
-     */
     public function test_construct(): void
     {
         $id = 'annotation-id';

@@ -8,16 +8,15 @@ use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\Service\RoomMessageService\FakeRoomMessageService;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\RoomMessageService\FakeRoomMessageService::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\RoomMessageService\FakeRoomMessageService::class, 'getChatMessages')]
+#[CoversMethod(\Bristolian\Service\RoomMessageService\FakeRoomMessageService::class, 'sendMessage')]
+#[CoversMethod(\Bristolian\Service\RoomMessageService\FakeRoomMessageService::class, 'sendRoomMessage')]
+
 class FakeRoomMessageServiceTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\RoomMessageService\FakeRoomMessageService::__construct
-     * @covers \Bristolian\Service\RoomMessageService\FakeRoomMessageService::sendMessage
-     * @covers \Bristolian\Service\RoomMessageService\FakeRoomMessageService::getChatMessages
-     */
     public function test_sendMessage_stores_message_and_getChatMessages_returns_it(): void
     {
         $service = new FakeRoomMessageService();
@@ -37,10 +36,6 @@ class FakeRoomMessageServiceTest extends BaseTestCase
         $this->assertSame($message, $messages[0]);
     }
 
-    /**
-     * @covers \Bristolian\Service\RoomMessageService\FakeRoomMessageService::sendMessage
-     * @covers \Bristolian\Service\RoomMessageService\FakeRoomMessageService::getChatMessages
-     */
     public function test_sendMessage_increments_id_and_appends_to_messages(): void
     {
         $service = new FakeRoomMessageService();
@@ -57,10 +52,6 @@ class FakeRoomMessageServiceTest extends BaseTestCase
         $this->assertSame('Second', $messages[1]->text);
     }
 
-    /**
-     * @covers \Bristolian\Service\RoomMessageService\FakeRoomMessageService::sendRoomMessage
-     * @covers \Bristolian\Service\RoomMessageService\FakeRoomMessageService::sendMessage
-     */
     public function test_sendRoomMessage_delegates_with_placeholder_room_user_id(): void
     {
         $service = new FakeRoomMessageService();

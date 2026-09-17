@@ -12,9 +12,10 @@ use DataType\GetInputTypesFromAttributes;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\PropertyType\ClipTitle::class)]
+
 class ClipTitleTest extends BaseTestCase
 {
     /**
@@ -30,7 +31,6 @@ class ClipTitleTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\ClipTitle
      * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
@@ -51,7 +51,6 @@ class ClipTitleTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\ClipTitle
      * @dataProvider provides_invalid_input_and_expected_error
      * @param array<string, mixed> $input
      */
@@ -69,9 +68,6 @@ class ClipTitleTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\ClipTitle
-     */
     public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new ClipTitle('test_name');

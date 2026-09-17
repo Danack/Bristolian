@@ -4,14 +4,12 @@ namespace BristolianTest\Model;
 
 use Bristolian\Model\Types\UserWebPushSubscription;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Types\UserWebPushSubscription::class)]
+
 class UserWebPushSubscriptionTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\UserWebPushSubscription
-     */
     public function testConstruct()
     {
         $endpoint = 'https://push.example.com/endpoint';
@@ -25,9 +23,6 @@ class UserWebPushSubscriptionTest extends BaseTestCase
         $this->assertSame($raw, $subscription->getRaw());
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\UserWebPushSubscription
-     */
     public function testGetters()
     {
         $subscription = new UserWebPushSubscription(

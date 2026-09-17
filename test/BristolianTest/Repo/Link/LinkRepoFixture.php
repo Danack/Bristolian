@@ -4,14 +4,19 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\Link;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Repo\LinkRepo\LinkRepo;
 use BristolianTest\BaseTestCase;
 
 /**
  * Abstract test class for LinkRepo implementations.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\LinkRepo\FakeLinkRepo::class, 'store_link')]
+#[CoversMethod(\Bristolian\Repo\LinkRepo\PdoLinkRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\LinkRepo\PdoLinkRepo::class, 'store_link')]
+
 abstract class LinkRepoFixture extends BaseTestCase
 {
     /**
@@ -21,13 +26,6 @@ abstract class LinkRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): LinkRepo;
 
-
-    /**
-     * @covers \Bristolian\Repo\LinkRepo\LinkRepo::store_link
-     * @covers \Bristolian\Repo\LinkRepo\FakeLinkRepo::store_link
-     * @covers \Bristolian\Repo\LinkRepo\PdoLinkRepo::__construct
-     * @covers \Bristolian\Repo\LinkRepo\PdoLinkRepo::store_link
-     */
     public function test_store_link(): void
     {
         $linkRepo = $this->getTestInstance();
@@ -39,12 +37,6 @@ abstract class LinkRepoFixture extends BaseTestCase
         $this->assertNotEmpty($link_id_1);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\LinkRepo\LinkRepo::store_link
-     * @covers \Bristolian\Repo\LinkRepo\FakeLinkRepo::store_link
-     * @covers \Bristolian\Repo\LinkRepo\PdoLinkRepo::store_link
-     */
     public function test_store_link_returns_different_ids_for_different_calls(): void
     {
         $linkRepo = $this->getTestInstance();

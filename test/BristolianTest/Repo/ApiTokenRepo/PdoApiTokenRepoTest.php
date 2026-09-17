@@ -9,12 +9,16 @@ use Bristolian\Repo\ApiTokenRepo\ApiTokenCreateFailedException;
 use Bristolian\Repo\ApiTokenRepo\ApiTokenRepo;
 use Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo;
 use Bristolian\Service\SecureTokenGenerator\FixedSecureTokenGenerator;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\ApiTokenCreateFailedException::class, 'afterMaxRetries')]
+#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::class, 'createToken')]
+#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::class, 'getByToken')]
+
 class PdoApiTokenRepoTest extends ApiTokenRepoFixture
 {
     /**
@@ -25,10 +29,6 @@ class PdoApiTokenRepoTest extends ApiTokenRepoFixture
         return $this->injector->make(PdoApiTokenRepo::class);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::createToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenCreateFailedException::afterMaxRetries
-     */
     public function test_createToken_throws_after_max_retries_when_token_collides(): void
     {
         $repo = $this->getTestInstance();
@@ -45,9 +45,6 @@ class PdoApiTokenRepoTest extends ApiTokenRepoFixture
         $repoWithCollidingGenerator->createToken('second-' . create_test_uniqid());
     }
 
-    /**
-     * @covers \Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::getByToken
-     */
     public function test_getByToken_returns_token_with_all_fields_mapped(): void
     {
         $repo = $this->getTestInstance();

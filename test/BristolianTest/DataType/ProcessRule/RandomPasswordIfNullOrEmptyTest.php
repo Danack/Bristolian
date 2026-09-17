@@ -7,14 +7,12 @@ use BristolianTest\BaseTestCase;
 use Bristolian\Parameters\ProcessRule\RandomPasswordIfNullOrEmpty;
 use DataType\DataStorage\TestArrayDataStorage;
 use DataType\ProcessedValues;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\ProcessRule\RandomPasswordIfNullOrEmpty::class)]
+
 class RandomPasswordIfNullOrEmptyTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\RandomPasswordIfNullOrEmpty
-     */
     public function testValidationWorks()
     {
         $testValue = 'password12345';
@@ -29,7 +27,6 @@ class RandomPasswordIfNullOrEmptyTest extends BaseTestCase
         );
         $this->assertNoProblems($validationResult);
         $this->assertSame($validationResult->getValue(), $testValue);
-
 
         // Null case
         $validationResult = $rule->process(
@@ -46,10 +43,6 @@ class RandomPasswordIfNullOrEmptyTest extends BaseTestCase
         $this->assertGreaterThanOrEqual(8, strlen($validationResult->getValue()));
     }
 
-
-    /**
-     * @covers \Bristolian\Parameters\ProcessRule\RandomPasswordIfNullOrEmpty
-     */
     public function testDescription()
     {
         $rule = new RandomPasswordIfNullOrEmpty(8);

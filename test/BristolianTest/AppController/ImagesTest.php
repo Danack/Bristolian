@@ -16,9 +16,11 @@ use League\Flysystem\Local\LocalFilesystemAdapter;
 use SlimDispatcher\Response\ImageResponse;
 use function Safe\file_put_contents;
 use function Safe\mkdir;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\Images::class, '__construct')]
+#[CoversMethod(\Bristolian\AppController\Images::class, 'show_meme')]
+
 class ImagesTest extends BaseTestCase
 {
     private string $tempRoot;
@@ -34,10 +36,6 @@ class ImagesTest extends BaseTestCase
         $this->injector->share(new LocalCacheFilesystem($adapter, $this->tempRoot));
     }
 
-    /**
-     * @covers \Bristolian\AppController\Images::__construct
-     * @covers \Bristolian\AppController\Images::show_meme
-     */
     public function test_show_meme_throws_when_meme_not_found(): void
     {
         $this->injector->defineParam('id', 'nonexistent-meme-id');
@@ -48,9 +46,6 @@ class ImagesTest extends BaseTestCase
         $this->injector->execute([Images::class, 'show_meme']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Images::show_meme
-     */
     public function test_show_meme_returns_image_response_when_meme_exists_and_file_cached(): void
     {
         $normalizedName = 'meme-' . uniqid() . '.jpg';
@@ -72,9 +67,6 @@ class ImagesTest extends BaseTestCase
         $this->assertInstanceOf(ImageResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Images::show_meme
-     */
     public function test_show_meme_returns_StoredFileErrorResponse_when_file_unreadable(): void
     {
         $normalizedName = 'meme-missing-' . uniqid() . '.jpg';

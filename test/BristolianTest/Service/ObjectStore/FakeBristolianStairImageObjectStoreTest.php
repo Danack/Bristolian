@@ -6,16 +6,14 @@ namespace BristolianTest\Service\ObjectStore;
 
 use Bristolian\Service\ObjectStore\FakeBristolianStairImageObjectStore;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\ObjectStore\FakeBristolianStairImageObjectStore::class, 'getFileContents')]
+#[CoversMethod(\Bristolian\Service\ObjectStore\FakeBristolianStairImageObjectStore::class, 'hasFile')]
+#[CoversMethod(\Bristolian\Service\ObjectStore\FakeBristolianStairImageObjectStore::class, 'upload')]
+
 class FakeBristolianStairImageObjectStoreTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\ObjectStore\FakeBristolianStairImageObjectStore::upload
-     * @covers \Bristolian\Service\ObjectStore\FakeBristolianStairImageObjectStore::hasFile
-     * @covers \Bristolian\Service\ObjectStore\FakeBristolianStairImageObjectStore::getFileContents
-     */
     public function test_upload_stores_content_and_hasFile_getFileContents_work(): void
     {
         $store = new FakeBristolianStairImageObjectStore();
@@ -28,9 +26,6 @@ class FakeBristolianStairImageObjectStoreTest extends BaseTestCase
         $this->assertSame($contents, $store->getFileContents($filename));
     }
 
-    /**
-     * @covers \Bristolian\Service\ObjectStore\FakeBristolianStairImageObjectStore::hasFile
-     */
     public function test_hasFile_returns_false_for_missing_file(): void
     {
         $store = new FakeBristolianStairImageObjectStore();

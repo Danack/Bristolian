@@ -18,12 +18,25 @@ use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
 use Ramsey\Uuid\Uuid;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'getByNormalizedName')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'getMeme')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'getMemeByOriginalFilename')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'listAllMemes')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'listMemesForUser')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'listMemesForUserWithNoTags')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'markAsDeleted')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'searchMemesByExactTags')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'searchMemesForUser')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'setUploaded')]
+#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'storeMeme')]
+
 class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
 {
     use HasTestWorld;
@@ -40,11 +53,6 @@ class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
         return $this->standardTestData()->getTestingUserId();
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::__construct
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::storeMeme
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::setUploaded
-     */
     public function test_createEntry(): void
     {
         $repo = $this->injector->make(PdoMemeStorageRepo::class);
@@ -61,9 +69,6 @@ class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
         $repo->setUploaded($file_id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::getMeme
-     */
     public function test_getMeme_returns_meme_after_store(): void
     {
         $repo = $this->injector->make(PdoMemeStorageRepo::class);
@@ -79,9 +84,6 @@ class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertSame($meme_id, $meme->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::getByNormalizedName
-     */
     public function test_getByNormalizedName_returns_meme(): void
     {
         $repo = $this->injector->make(PdoMemeStorageRepo::class);
@@ -96,9 +98,6 @@ class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertSame($normalized_name, $meme->normalized_name);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::listMemesForUser
-     */
     public function test_listMemesForUser_returns_uploaded_memes(): void
     {
         $repo = $this->injector->make(PdoMemeStorageRepo::class);
@@ -113,9 +112,6 @@ class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertContainsOnlyInstancesOf(Meme::class, $memes);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::listAllMemes
-     */
     public function test_listAllMemes_returns_uploaded_memes(): void
     {
         $repo = $this->injector->make(PdoMemeStorageRepo::class);
@@ -129,9 +125,6 @@ class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertNotEmpty($memes);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::listMemesForUserWithNoTags
-     */
     public function test_listMemesForUserWithNoTags_returns_memes(): void
     {
         $repo = $this->injector->make(PdoMemeStorageRepo::class);
@@ -145,9 +138,6 @@ class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertCount(1, $memes);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::searchMemesForUser
-     */
     public function test_searchMemesForUser_null_criteria_returns_listMemesForUser(): void
     {
         $repo = $this->injector->make(PdoMemeStorageRepo::class);
@@ -161,9 +151,6 @@ class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertCount(1, $memes);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::searchMemesForUser
-     */
     public function test_searchMemesForUser_with_query_returns_matching_memes(): void
     {
         $repo = $this->injector->make(PdoMemeStorageRepo::class);
@@ -183,9 +170,6 @@ class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertCount(1, $memes);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::searchMemesByExactTags
-     */
     public function test_searchMemesByExactTags_empty_returns_listMemesForUser(): void
     {
         $repo = $this->injector->make(PdoMemeStorageRepo::class);
@@ -199,9 +183,6 @@ class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertCount(1, $memes);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::searchMemesByExactTags
-     */
     public function test_searchMemesByExactTags_with_matching_tags_returns_meme(): void
     {
         $repo = $this->injector->make(PdoMemeStorageRepo::class);
@@ -226,9 +207,6 @@ class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertCount(1, $memes);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::markAsDeleted
-     */
     public function test_markAsDeleted(): void
     {
         $repo = $this->injector->make(PdoMemeStorageRepo::class);
@@ -245,9 +223,6 @@ class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
         $this->assertNotContains($meme_id, $ids);
     }
 
-    /**
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::getMemeByOriginalFilename
-     */
     public function test_getMemeByOriginalFilename_returns_meme(): void
     {
         $repo = $this->injector->make(PdoMemeStorageRepo::class);
@@ -266,7 +241,6 @@ class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
     /**
      * Duplicate id triggers constraint violation (23000); repo throws UserConstraintFailedException.
      *
-     * @covers \Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::storeMeme
      */
     public function test_storeMeme_throws_UserConstraintFailedException_on_duplicate_id(): void
     {

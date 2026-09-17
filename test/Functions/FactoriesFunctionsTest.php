@@ -2,7 +2,7 @@
 
 namespace Functions;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversFunction;
 use Bristolian\App;
 use Bristolian\Config\Config;
 use Bristolian\Data\DatabaseUserConfig;
@@ -14,7 +14,6 @@ use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 /**
  * Test Config class that allows testing production environment paths
  *
- * @coversNothing
  */
 class TestProductionConfig extends Config
 {
@@ -35,7 +34,6 @@ class TestProductionConfig extends Config
 /**
  * AppSessionManager that returns null from getCurrentAppSession for testing createAppSession throw path.
  *
- * @coversNothing
  */
 class AppSessionManagerReturnsNull extends \Bristolian\Session\AppSessionManager
 {
@@ -53,7 +51,6 @@ class AppSessionManagerReturnsNull extends \Bristolian\Session\AppSessionManager
 /**
  * AppSessionManager that returns a given session from getCurrentAppSession for testing success path.
  *
- * @coversNothing
  */
 class AppSessionManagerReturnsSession extends \Bristolian\Session\AppSessionManager
 {
@@ -70,21 +67,39 @@ class AppSessionManagerReturnsSession extends \Bristolian\Session\AppSessionMana
     }
 }
 
-#[CoversNothing]
+#[CoversFunction('createApiDomain')]
+#[CoversFunction('createAppSession')]
+#[CoversFunction('createAvatarImageFilesystem')]
+#[CoversFunction('createBristolStairsFilesystem')]
+#[CoversFunction('createDeployLogRenderer')]
+#[CoversFunction('createLocalCacheFilesystem')]
+#[CoversFunction('createLocalFilesystem')]
+#[CoversFunction('createMailgun')]
+#[CoversFunction('createMemeFilesystem')]
+#[CoversFunction('createMemoryWarningCheck')]
+#[CoversFunction('createOptionalUserSession')]
+#[CoversFunction('createPDOForUser')]
+#[CoversFunction('createPdoSimpleWithTableTracking')]
+#[CoversFunction('createPredisClient')]
+#[CoversFunction('createRedis')]
+#[CoversFunction('createRedisCachedUrlFetcher')]
+#[CoversFunction('createRoomFileFilesystem')]
+#[CoversFunction('createSessionConfig')]
+#[CoversFunction('createUnknownCacheQueriesProvider')]
+#[CoversFunction('createUnknownQueryHandler')]
+#[CoversFunction('createUserDocumentsFilesystem')]
+#[CoversFunction('forbidden')]
+#[CoversFunction('getRedisConfig')]
+#[CoversFunction('getRedisOptions')]
+
 class FactoriesFunctionsTest extends BaseTestCase
 {
-    /**
-     * @covers ::forbidden
-     */
     public function test_forbidden()
     {
         $this->expectException(\DI\InjectionException::class);
         forbidden($this->injector);
     }
 
-    /**
-     * @covers ::createMemoryWarningCheck
-     */
     public function test_createMemoryWarningCheck()
     {
         $result = $this->injector->execute(createMemoryWarningCheck(...));
@@ -100,9 +115,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers ::createMemoryWarningCheck
-     */
     public function test_createMemoryWarningCheck_production(): void
     {
         $config = new TestProductionConfig(true);
@@ -117,9 +129,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers ::createRedis
-     */
     #[RequiresPhpExtension('redis')]
     public function test_createRedis()
     {
@@ -128,9 +137,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\Redis::class, $result);
     }
 
-    /**
-     * @covers ::createRedisCachedUrlFetcher
-     */
     #[RequiresPhpExtension('redis')]
     public function test_createRedisCachedUrlFetcher()
     {
@@ -139,9 +145,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\UrlFetcher\RedisCachedUrlFetcher::class, $result);
     }
 
-    /**
-     * @covers ::getRedisConfig
-     */
     #[RequiresPhpExtension('redis')]
     public function test_getRedisConfig()
     {
@@ -155,9 +158,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertSame('tcp', $result['scheme']);
     }
 
-    /**
-     * @covers ::getRedisOptions
-     */
     public function test_getRedisOptions()
     {
         $result = getRedisOptions();
@@ -168,9 +168,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertSame('bristolian:', $result['prefix']);
     }
 
-    /**
-     * @covers ::createPredisClient
-     */
     public function test_createPredisClient()
     {
         $result = $this->injector->execute(createPredisClient(...));
@@ -178,9 +175,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\Predis\Client::class, $result);
     }
 
-    /**
-     * @covers ::createApiDomain
-     */
     public function test_createApiDomain()
     {
         $config = $this->injector->make(Config::class);
@@ -192,9 +186,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertSame('http://local.api.bristolian.org', $result->getDomain());
     }
 
-    /**
-     * @covers ::createApiDomain
-     */
     public function test_createApiDomain_production()
     {
         $config = new TestProductionConfig(true);
@@ -204,9 +195,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertSame('https://api.bristolian.org', $result->getDomain());
     }
 
-    /**
-     * @covers ::createPDOForUser
-     */
     public function test_createPDOForUser()
     {
         $result = $this->injector->execute(createPDOForUser(...));
@@ -214,9 +202,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\PDO::class, $result);
     }
 
-    /**
-     * @covers ::createSessionConfig
-     */
     public function test_createSessionConfig()
     {
         $result = createSessionConfig();
@@ -227,9 +212,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertSame('john_is_my_name', $result->getSessionName());
     }
 
-    /**
-     * @covers ::createLocalFilesystem
-     */
     public function test_createLocalFilesystem()
     {
         $result = createLocalFilesystem();
@@ -237,9 +219,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\Bristolian\Filesystem\LocalFilesystem::class, $result);
     }
 
-    /**
-     * @covers ::createLocalCacheFilesystem
-     */
     public function test_createLocalCacheFilesystem()
     {
         $result = createLocalCacheFilesystem();
@@ -247,9 +226,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\Bristolian\Filesystem\LocalCacheFilesystem::class, $result);
     }
 
-    /**
-     * @covers ::createMemeFilesystem
-     */
     public function test_createMemeFilesystem()
     {
         $result = $this->injector->execute(createMemeFilesystem(...));
@@ -257,9 +233,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\Bristolian\Filesystem\MemeFilesystem::class, $result);
     }
 
-    /**
-     * @covers ::createRoomFileFilesystem
-     */
     public function test_createRoomFileFilesystem()
     {
         $result = $this->injector->execute(createRoomFileFilesystem(...));
@@ -267,9 +240,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\Bristolian\Filesystem\RoomFileFilesystem::class, $result);
     }
 
-    /**
-     * @covers ::createBristolStairsFilesystem
-     */
     public function test_createBristolStairsFilesystem()
     {
         $result = $this->injector->execute(createBristolStairsFilesystem(...));
@@ -277,9 +247,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\Bristolian\Filesystem\BristolStairsFilesystem::class, $result);
     }
 
-    /**
-     * @covers ::createAvatarImageFilesystem
-     */
     public function test_createAvatarImageFilesystem()
     {
         $result = $this->injector->execute(createAvatarImageFilesystem(...));
@@ -287,9 +254,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\Bristolian\Filesystem\AvatarImageFilesystem::class, $result);
     }
 
-    /**
-     * @covers ::createUserDocumentsFilesystem
-     */
     public function test_createUserDocumentsFilesystem()
     {
         $result = $this->injector->execute(createUserDocumentsFilesystem(...));
@@ -297,9 +261,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\Bristolian\Filesystem\UserDocumentsFilesystem::class, $result);
     }
 
-    /**
-     * @covers ::createDeployLogRenderer
-     */
     public function test_createDeployLogRenderer()
     {
         $result = $this->injector->execute(createDeployLogRenderer(...));
@@ -315,9 +276,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers ::createDeployLogRenderer
-     */
     public function test_createDeployLogRenderer_production()
     {
         $config = new TestProductionConfig(true);
@@ -333,9 +291,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers ::createMemeFilesystem
-     */
     public function test_createMemeFilesystem_production_bucket()
     {
         $config = new TestProductionConfig(true);
@@ -344,9 +299,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\Bristolian\Filesystem\MemeFilesystem::class, $result);
     }
 
-    /**
-     * @covers ::createBristolStairsFilesystem
-     */
     public function test_createBristolStairsFilesystem_production_bucket()
     {
         $config = new TestProductionConfig(true);
@@ -355,9 +307,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\Bristolian\Filesystem\BristolStairsFilesystem::class, $result);
     }
 
-    /**
-     * @covers ::createAvatarImageFilesystem
-     */
     public function test_createAvatarImageFilesystem_production_bucket()
     {
         $config = new TestProductionConfig(true);
@@ -366,9 +315,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\Bristolian\Filesystem\AvatarImageFilesystem::class, $result);
     }
 
-    /**
-     * @covers ::createUserDocumentsFilesystem
-     */
     public function test_createUserDocumentsFilesystem_production_bucket()
     {
         $config = new TestProductionConfig(true);
@@ -377,9 +323,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\Bristolian\Filesystem\UserDocumentsFilesystem::class, $result);
     }
 
-    /**
-     * @covers ::createRoomFileFilesystem
-     */
     public function test_createRoomFileFilesystem_production_bucket()
     {
         $config = new TestProductionConfig(true);
@@ -389,7 +332,6 @@ class FactoriesFunctionsTest extends BaseTestCase
     }
 
     /**
-     * @covers ::createUnknownQueryHandler
      * @group db
      */
     #[RequiresPhpExtension('redis')]
@@ -402,7 +344,6 @@ class FactoriesFunctionsTest extends BaseTestCase
     }
 
     /**
-     * @covers ::createUnknownQueryHandler
      * @group db
      */
     #[RequiresPhpExtension('redis')]
@@ -415,7 +356,6 @@ class FactoriesFunctionsTest extends BaseTestCase
     }
 
     /**
-     * @covers ::createUnknownCacheQueriesProvider
      * @group db
      */
     #[RequiresPhpExtension('redis')]
@@ -430,7 +370,6 @@ class FactoriesFunctionsTest extends BaseTestCase
     }
 
     /**
-     * @covers ::createPdoSimpleWithTableTracking
      * @group db
      */
     public function test_createPdoSimpleWithTableTracking_returns_instance(): void
@@ -442,9 +381,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers ::createMailgun
-     */
     public function test_createMailgun()
     {
         $result = $this->injector->execute(createMailgun(...));
@@ -452,9 +388,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertInstanceOf(\Mailgun\Mailgun::class, $result);
     }
 
-    /**
-     * @covers ::createOptionalUserSession
-     */
     public function test_createOptionalUserSession(): void
     {
         $sessionManager = new \Asm\SessionManager(
@@ -470,9 +403,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         $this->assertNull($result->getAppSession());
     }
 
-    /**
-     * @covers ::createAppSession
-     */
     public function test_createAppSession_throws_when_not_logged_in(): void
     {
         $sessionManager = new \Asm\SessionManager(
@@ -485,9 +415,6 @@ class FactoriesFunctionsTest extends BaseTestCase
         createAppSession($appSessionManager);
     }
 
-    /**
-     * @covers ::createAppSession
-     */
     public function test_createAppSession_returns_session_when_logged_in(): void
     {
         $sessionManager = new \Asm\SessionManager(

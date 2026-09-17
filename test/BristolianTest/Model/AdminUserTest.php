@@ -4,14 +4,12 @@ namespace BristolianTest\Model;
 
 use Bristolian\Model\Types\AdminUser;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Types\AdminUser::class)]
+
 class AdminUserTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\AdminUser
-     */
     public function testNew()
     {
         $userId = 'test-user-id';
@@ -26,7 +24,6 @@ class AdminUserTest extends BaseTestCase
     }
 
 //    /**
-//     * @covers \Bristolian\Model\Types\AdminUser
 //     */
 //    public function testFromPartial()
 //    {
@@ -39,9 +36,6 @@ class AdminUserTest extends BaseTestCase
 //        $this->assertSame($passwordHash, $adminUser->getPasswordHash());
 //    }
 
-    /**
-     * @covers \Bristolian\Model\Types\AdminUser
-     */
     public function testToArray()
     {
         $adminUser = AdminUser::new('user-123', 'test@example.com', 'hash123');

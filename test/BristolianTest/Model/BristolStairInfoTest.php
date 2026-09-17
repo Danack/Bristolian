@@ -5,14 +5,12 @@ namespace BristolianTest\Model;
 use BristolianTest\BaseTestCase;
 use BristolianGenerated\Model\BristolStairInfo;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\BristolianGenerated\Model\BristolStairInfo::class)]
+
 class BristolStairInfoTest extends BaseTestCase
 {
-    /**
-     * @covers BristolianGenerated\Model\BristolStairInfo
-     */
     public function testConstruct()
     {
         $id = 123;

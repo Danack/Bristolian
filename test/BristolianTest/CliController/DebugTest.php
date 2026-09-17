@@ -6,14 +6,17 @@ use BristolianTest\BaseTestCase;
 use Bristolian\CliController\Debug;
 use function Safe\ob_get_clean;
 use function Safe\ob_start;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\CliController\Debug::class, 'hello')]
+#[CoversMethod(\Bristolian\CliController\Debug::class, 'stack_trace')]
+#[CoversFunction('Bristolian\CliController\fn_level_1')]
+#[CoversFunction('Bristolian\CliController\fn_level_2')]
+#[CoversFunction('Bristolian\CliController\fn_level_3')]
+
 class DebugTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\CliController\Debug::hello
-     */
     public function test_hello_outputs_hello(): void
     {
         $debug = $this->injector->make(Debug::class);
@@ -23,12 +26,6 @@ class DebugTest extends BaseTestCase
         $this->assertSame('Hello.', trim($output));
     }
 
-    /**
-     * @covers \Bristolian\CliController\Debug::stack_trace
-     * @covers \Bristolian\CliController\fn_level_1
-     * @covers \Bristolian\CliController\fn_level_2
-     * @covers \Bristolian\CliController\fn_level_3
-     */
     public function test_stack_trace_throws_from_inner_function(): void
     {
         $debug = $this->injector->make(Debug::class);

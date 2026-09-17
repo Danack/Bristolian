@@ -8,25 +8,25 @@ use Bristolian\Exception\BristolianException;
 use Bristolian\Session\FakeAppSessionManager;
 use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Session\FakeAppSessionManager::class, '__construct')]
+#[CoversMethod(\Bristolian\Session\FakeAppSessionManager::class, 'createLoggedIn')]
+#[CoversMethod(\Bristolian\Session\FakeAppSessionManager::class, 'createRawSession')]
+#[CoversMethod(\Bristolian\Session\FakeAppSessionManager::class, 'deleteSession')]
+#[CoversMethod(\Bristolian\Session\FakeAppSessionManager::class, 'getCurrentAppSession')]
+#[CoversMethod(\Bristolian\Session\FakeAppSessionManager::class, 'initialize')]
+#[CoversMethod(\Bristolian\Session\FakeAppSessionManager::class, 'renewSession')]
+#[CoversMethod(\Bristolian\Session\FakeAppSessionManager::class, 'saveIfOpenedAndGetHeaders')]
+
 class FakeAppSessionManagerTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Session\FakeAppSessionManager::__construct
-     * @covers \Bristolian\Session\FakeAppSessionManager::getCurrentAppSession
-     */
     public function test_getCurrentAppSession_returns_null_by_default(): void
     {
         $manager = new FakeAppSessionManager();
         $this->assertNull($manager->getCurrentAppSession());
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAppSessionManager::createLoggedIn
-     * @covers \Bristolian\Session\FakeAppSessionManager::getCurrentAppSession
-     */
     public function test_createLoggedIn_returns_logged_in_session(): void
     {
         $manager = FakeAppSessionManager::createLoggedIn();
@@ -38,9 +38,6 @@ class FakeAppSessionManagerTest extends BaseTestCase
         $this->assertSame('john', $session->getUsername());
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAppSessionManager::initialize
-     */
     public function test_initialize_does_not_throw(): void
     {
         $manager = new FakeAppSessionManager();
@@ -51,9 +48,6 @@ class FakeAppSessionManagerTest extends BaseTestCase
         $this->assertNull($manager->getCurrentAppSession());
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAppSessionManager::deleteSession
-     */
     public function test_deleteSession_throws(): void
     {
         $manager = new FakeAppSessionManager();
@@ -64,9 +58,6 @@ class FakeAppSessionManagerTest extends BaseTestCase
         $manager->deleteSession();
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAppSessionManager::createRawSession
-     */
     public function test_createRawSession_throws(): void
     {
         $manager = new FakeAppSessionManager();
@@ -77,9 +68,6 @@ class FakeAppSessionManagerTest extends BaseTestCase
         $manager->createRawSession();
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAppSessionManager::renewSession
-     */
     public function test_renewSession_returns_default_headers(): void
     {
         $manager = new FakeAppSessionManager();
@@ -90,9 +78,6 @@ class FakeAppSessionManagerTest extends BaseTestCase
         $this->assertStringContainsString('john_is_my_name', $headers[0][1]);
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAppSessionManager::renewSession
-     */
     public function test_renewSession_returns_custom_headers_when_provided(): void
     {
         $customHeaders = [['X-Custom', 'value']];
@@ -103,9 +88,6 @@ class FakeAppSessionManagerTest extends BaseTestCase
         $this->assertSame($customHeaders, $headers);
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAppSessionManager::saveIfOpenedAndGetHeaders
-     */
     public function test_saveIfOpenedAndGetHeaders_returns_default_headers(): void
     {
         $manager = new FakeAppSessionManager();
@@ -116,9 +98,6 @@ class FakeAppSessionManagerTest extends BaseTestCase
         $this->assertStringContainsString('john_is_my_name', $headers[0][1]);
     }
 
-    /**
-     * @covers \Bristolian\Session\FakeAppSessionManager::saveIfOpenedAndGetHeaders
-     */
     public function test_saveIfOpenedAndGetHeaders_returns_custom_headers_when_provided(): void
     {
         $customHeaders = [['X-Test', 'header-value']];

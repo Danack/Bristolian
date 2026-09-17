@@ -6,15 +6,13 @@ namespace BristolianChatTest\ClientHandler;
 
 use BristolianChat\ClientHandler\FakeClientHandler;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\BristolianChat\ClientHandler\FakeClientHandler::class, 'broadcastText')]
+#[CoversMethod(\BristolianChat\ClientHandler\FakeClientHandler::class, 'getRecordedCalls')]
+
 class FakeClientHandlerTest extends BaseTestCase
 {
-    /**
-     * @covers \BristolianChat\ClientHandler\FakeClientHandler::broadcastText
-     * @covers \BristolianChat\ClientHandler\FakeClientHandler::getRecordedCalls
-     */
     public function test_broadcastText_records_call_and_getRecordedCalls_returns_it(): void
     {
         $handler = new FakeClientHandler();
@@ -27,10 +25,6 @@ class FakeClientHandlerTest extends BaseTestCase
         $this->assertSame([], $calls[0]['excludedClientIds']);
     }
 
-    /**
-     * @covers \BristolianChat\ClientHandler\FakeClientHandler::broadcastText
-     * @covers \BristolianChat\ClientHandler\FakeClientHandler::getRecordedCalls
-     */
     public function test_broadcastText_with_excludedClientIds_records_them(): void
     {
         $handler = new FakeClientHandler();
@@ -42,10 +36,6 @@ class FakeClientHandlerTest extends BaseTestCase
         $this->assertSame(['id1', 'id2'], $calls[0]['excludedClientIds']);
     }
 
-    /**
-     * @covers \BristolianChat\ClientHandler\FakeClientHandler::broadcastText
-     * @covers \BristolianChat\ClientHandler\FakeClientHandler::getRecordedCalls
-     */
     public function test_multiple_broadcastText_calls_recorded_in_order(): void
     {
         $handler = new FakeClientHandler();

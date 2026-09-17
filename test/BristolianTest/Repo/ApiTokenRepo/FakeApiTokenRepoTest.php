@@ -9,12 +9,16 @@ use Bristolian\Repo\ApiTokenRepo\ApiTokenRepo;
 use Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo;
 use Bristolian\Service\SecureTokenGenerator\FixedSecureTokenGenerator;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\ApiTokenCreateFailedException::class, 'afterMaxRetries')]
+#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::class, 'createToken')]
+
 class FakeApiTokenRepoTest extends ApiTokenRepoFixture
 {
     /**
@@ -25,9 +29,6 @@ class FakeApiTokenRepoTest extends ApiTokenRepoFixture
         return new FakeApiTokenRepo([], new FixedSecureTokenGenerator());
     }
 
-    /**
-     * @covers \Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::__construct
-     */
     public function test_constructor_with_initial_tokens(): void
     {
         $existingToken = new \Bristolian\Model\Types\ApiToken(
@@ -45,9 +46,6 @@ class FakeApiTokenRepoTest extends ApiTokenRepoFixture
         $this->assertSame('existing-id', $found->id);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::createToken
-     */
     public function test_createToken_returns_token_from_generator(): void
     {
         $expectedToken = 'deterministic-token-from-fake-generator';
@@ -60,10 +58,6 @@ class FakeApiTokenRepoTest extends ApiTokenRepoFixture
         $this->assertSame('my-token-name', $apiToken->name);
     }
 
-    /**
-     * @covers \Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::createToken
-     * @covers \Bristolian\Repo\ApiTokenRepo\ApiTokenCreateFailedException::afterMaxRetries
-     */
     public function test_createToken_throws_after_max_retries_when_all_collide(): void
     {
         $collidingToken = 'same-token-every-time';

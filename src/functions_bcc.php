@@ -17,8 +17,7 @@ use function Safe\parse_url;
 function parseTrosFromHtml(
     string $html,
     string $baseUrl = 'https://www.bristol.gov.uk'
-): array
-{
+): array {
     if (empty(trim($html))) {
         return [];
     }
@@ -172,8 +171,7 @@ function extractDocumentLinksFromUl(
     \DOMXPath $xpath,
     \DOMElement $ulElement,
     string $baseUrl = 'https://www.bristol.gov.uk'
-): array
-{
+): array {
     $documents = [];
 
     $linkElements = $xpath->query('.//a', $ulElement);

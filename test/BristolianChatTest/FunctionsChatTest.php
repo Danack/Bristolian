@@ -10,17 +10,18 @@ use BristolianTest\BaseTestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\CoversFunction;
 use Safe\DateTimeImmutable;
 use function Safe\json_decode;
-use PHPUnit\Framework\Attributes\CoversNothing;
 
-#[CoversNothing]
+#[CoversFunction('generateFakeChatMessage')]
+#[CoversFunction('send_data_to_clients')]
+#[CoversFunction('send_system_message_to_clients')]
+#[CoversFunction('send_user_message_to_clients')]
+
 class FunctionsChatTest extends BaseTestCase
 {
 
-    /**
-     * @covers ::generateFakeChatMessage
-     */
     public function test_generateFakeChatMessage_returns_message_with_expected_shape(): void
     {
         $message = generateFakeChatMessage();
@@ -33,9 +34,6 @@ class FunctionsChatTest extends BaseTestCase
         $this->assertInstanceOf(\DateTimeInterface::class, $message->created_at);
     }
 
-    /**
-     * @covers ::generateFakeChatMessage
-     */
     public function test_generateFakeChatMessage_increments_id_on_each_call(): void
     {
         $first = generateFakeChatMessage();
@@ -43,9 +41,6 @@ class FunctionsChatTest extends BaseTestCase
         $this->assertSame($first->id + 1, $second->id);
     }
 
-    /**
-     * @covers ::generateFakeChatMessage
-     */
     public function test_generateFakeChatMessage_every_fifth_has_reply_message_id(): void
     {
         $messagesWithReply = null;
@@ -94,10 +89,6 @@ class FunctionsChatTest extends BaseTestCase
         ];
     }
 
-    /**
-     * @covers ::send_user_message_to_clients
-     * @covers ::send_data_to_clients
-     */
     #[DataProvider('provides_send_user_message_to_clients')]
     public function test_send_user_message_to_clients_broadcasts_to_handler_and_logs(
         UserChatMessage $chatMessage,
@@ -130,8 +121,6 @@ class FunctionsChatTest extends BaseTestCase
     }
 
 //    /**
-//     * @covers ::send_system_message_to_clients
-//     * @covers ::send_data_to_clients
 //     */
 //    public function test_send_system_message_to_clients_broadcasts_to_handler_and_logs(): void
 //    {
@@ -168,8 +157,6 @@ class FunctionsChatTest extends BaseTestCase
 //    }
 
 //    /**
-//     * @covers ::send_system_message_to_clients
-//     * @covers ::send_data_to_clients
 //     */
 //    public function test_send_system_message_to_clients_includes_reply_message_id_when_set(): void
 //    {

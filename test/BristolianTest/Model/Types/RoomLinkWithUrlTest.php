@@ -7,14 +7,12 @@ namespace BristolianTest\Model\Types;
 use Bristolian\Model\Types\RoomLinkWithUrl;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Model\Types\RoomLinkWithUrl::class, '__construct')]
+
 class RoomLinkWithUrlTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\RoomLinkWithUrl::__construct
-     */
     public function test_constructor_sets_all_properties(): void
     {
         $id = 'room-link-id-1';
@@ -47,9 +45,6 @@ class RoomLinkWithUrlTest extends BaseTestCase
         $this->assertSame($documentTimestamp, $row->document_timestamp);
     }
 
-    /**
-     * @covers \Bristolian\Model\Types\RoomLinkWithUrl::__construct
-     */
     public function test_constructor_accepts_null_title_description_and_document_timestamp(): void
     {
         $createdAt = new DateTimeImmutable('2025-01-10 08:00:00');

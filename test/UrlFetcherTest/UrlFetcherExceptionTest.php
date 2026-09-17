@@ -6,14 +6,12 @@ namespace UrlFetcherTest;
 
 use BristolianTest\BaseTestCase;
 use UrlFetcher\UrlFetcherException;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\UrlFetcher\UrlFetcherException::class)]
+
 class UrlFetcherExceptionTest extends BaseTestCase
 {
-    /**
-     * @covers \UrlFetcher\UrlFetcherException
-     */
     public function testBasic(): void
     {
         $status = 503;

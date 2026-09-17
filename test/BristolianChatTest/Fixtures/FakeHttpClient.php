@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianChatTest\Fixtures;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use Amp\Http\Server\Driver\Client;
 use Amp\Socket\InternetAddress;
 use Amp\Socket\SocketAddress;
@@ -12,8 +13,10 @@ use Amp\Socket\TlsInfo;
 /**
  * Fake Driver\Client for building Amp\Http\Server\Request in tests.
  *
- * @coversNothing
  */
+
+#[CoversNothing]
+
 final class FakeHttpClient implements Client
 {
     /** @var \Closure():void|null */

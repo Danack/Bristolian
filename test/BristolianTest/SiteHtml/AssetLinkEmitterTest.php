@@ -5,14 +5,12 @@ namespace BristolianTest\SiteHtml;
 use Bristolian\SiteHtml\AssetLinkEmitter;
 use Bristolian\Config\HardCodedAssetLinkConfig;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\SiteHtml\AssetLinkEmitter::class)]
+
 class AssetLinkEmitterTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\SiteHtml\AssetLinkEmitter
-     */
     public function testWorks()
     {
         $sha = "abcdef";

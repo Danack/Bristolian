@@ -433,25 +433,10 @@ Production CLI binds **`EchoCliOutput`** in `cli/cli_injection_params.php`. Test
 
 **Do not** rely on `@codeCoverageIgnore` or comments such as “not unit-tested” to skip testing CLI code—prefer this pattern so behaviour is testable.
 
-### PHPUnit Coverage Annotations
+### PHPUnit Coverage Attributes
 
-- **Test class (required):** Declare a class-level PHPUnit coverage attribute. Prefer `#[CoversNothing]` so coverage is not attributed by accident. Use `#[CoversClass(...)]` (or another `Covers*` attribute) only when the whole class intentionally covers specific code. Enforced by PHPStan (`TestClassRequiresCoversAttributeRule`).
-- **Test methods (optional):** Add `@covers` docblocks or method-level coverage attributes for the classes/methods a test exercises when you want precise coverage attribution.
-- **Constructor coverage:** When using method-level covers, include the class constructor in the first test (`@covers \Full\Class\Name::__construct`). Example: `test/BristolianTest/Service/BccTroFetcher/StandardBccTroFetcherTest.php`.
-- **Example:**
-  ```php
-  use PHPUnit\Framework\Attributes\CoversNothing;
+Every `*Test` class must declare class-level `Covers*` attributes for the specific classes, methods, functions, or traits it exercises (e.g. `#[CoversClass(...)]`, `#[CoversMethod(...)]`, `#[CoversFunction(...)]`, `#[CoversTrait(...)]`).
 
-  #[CoversNothing]
-  class BarcodeLookupParamsTest extends BaseTestCase
-  {
-      /**
-       * @covers \Bristolian\Parameters\TinnedFish\BarcodeLookupParams
-       * @covers \Bristolian\Parameters\PropertyType\OptionalBoolDefaultTrue
-       * @dataProvider provides_fetch_external_input_and_expected_output
-       */
-      public function test_fetch_external_parses_input_to_expected_output(...): void
-      ```
 
 ### DataProviders
 
@@ -479,10 +464,9 @@ public static function provides_fetch_external_input_and_expected_output(): \Gen
 }
 
 /**
- * @covers \Bristolian\Parameters\TinnedFish\BarcodeLookupParams
- * @covers \Bristolian\Parameters\PropertyType\OptionalBoolDefaultTrue
- * @dataProvider provides_fetch_external_input_and_expected_output
+ * @param array<string, mixed> $input
  */
+#[DataProvider('provides_fetch_external_input_and_expected_output')]
 public function test_fetch_external_parses_input_to_expected_output(
     array $input,
     bool $expectedFetchExternal

@@ -6,14 +6,12 @@ namespace BristolianTest\AppController;
 
 use Bristolian\AppController\Topics;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\Topics::class, 'index')]
+
 class TopicsTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\AppController\Topics::index
-     */
     public function test_index(): void
     {
         $result = $this->injector->execute([Topics::class, 'index']);

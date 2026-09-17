@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\FoiRequestRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Model\Types\FoiRequest;
 use Bristolian\Parameters\FoiRequestParams;
 use Bristolian\Repo\FoiRequestRepo\FoiRequestRepo;
@@ -13,8 +14,14 @@ use VarMap\ArrayVarMap;
 /**
  * Abstract test class for FoiRequestRepo implementations.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::class, 'createFoiRequest')]
+#[CoversMethod(\Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::class, 'getAllFoiRequests')]
+#[CoversMethod(\Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::class, 'createFoiRequest')]
+#[CoversMethod(\Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::class, 'getAllFoiRequests')]
+
 abstract class FoiRequestRepoFixture extends BaseTestCase
 {
     /**
@@ -24,13 +31,6 @@ abstract class FoiRequestRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): FoiRequestRepo;
 
-
-    /**
-     * @covers \Bristolian\Repo\FoiRequestRepo\FoiRequestRepo::createFoiRequest
-     * @covers \Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::createFoiRequest
-     * @covers \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::__construct
-     * @covers \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::createFoiRequest
-     */
     public function test_createFoiRequest_creates_and_stores_request(): void
     {
         $repo = $this->getTestInstance();
@@ -48,13 +48,6 @@ abstract class FoiRequestRepoFixture extends BaseTestCase
         $this->assertSame('https://example.com', $foiRequest->getUrl());
     }
 
-    /**
-     * @covers \Bristolian\Repo\FoiRequestRepo\FoiRequestRepo::getAllFoiRequests
-     * @covers \Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::getAllFoiRequests
-     * @covers \Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::createFoiRequest
-     * @covers \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::getAllFoiRequests
-     * @covers \Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::createFoiRequest
-     */
     public function test_getAllFoiRequests_returns_all_created_requests(): void
     {
         $repo = $this->getTestInstance();

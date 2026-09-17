@@ -7,17 +7,13 @@ namespace BristolianTest\Repo\WhatDoTheyKnowRequestEventRepo;
 use Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\FakeWhatDoTheyKnowRequestEventRepo;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-/**
- */
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\FakeWhatDoTheyKnowRequestEventRepo::class, 'getInsertedRows')]
+#[CoversMethod(\Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\FakeWhatDoTheyKnowRequestEventRepo::class, 'insertNewRequestEvent')]
+
 final class FakeWhatDoTheyKnowRequestEventRepoTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\FakeWhatDoTheyKnowRequestEventRepo::insertNewRequestEvent
-     * @covers \Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\FakeWhatDoTheyKnowRequestEventRepo::getInsertedRows
-     */
     public function test_insertNewRequestEvent_tracks_rows_and_rejects_duplicate_wdt_event_id(): void
     {
         $repo = new FakeWhatDoTheyKnowRequestEventRepo();

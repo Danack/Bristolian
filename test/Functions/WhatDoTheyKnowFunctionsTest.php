@@ -8,11 +8,25 @@ use Bristolian\WhatDoTheyKnow\RequestEvent;
 use BristolianTest\BaseTestCase;
 use function Safe\file_get_contents;
 use function Safe\json_decode;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversFunction;
 
-/**
- */
-#[CoversNothing]
+#[CoversFunction('buildNewEventRoomMessageText')]
+#[CoversFunction('parseWhatDoTheyKnowRequestEventFromArray')]
+#[CoversFunction('parseWhatDoTheyKnowRequestEventsJson')]
+#[CoversFunction('whatDoTheyKnowRequestUrlFromUrlTitle')]
+#[CoversFunction('whatDoTheyKnowWdtEventOccurredAtUtc')]
+#[CoversFunction('whatdotheyknowInfoRequestFromArray')]
+#[CoversFunction('whatdotheyknowOptionalInt')]
+#[CoversFunction('whatdotheyknowOptionalString')]
+#[CoversFunction('whatdotheyknowPublicBodyFromArray')]
+#[CoversFunction('whatdotheyknowPublicBodyRequestCountsFromArray')]
+#[CoversFunction('whatdotheyknowRequestEventFromArray')]
+#[CoversFunction('whatdotheyknowRequestEventUserFromArray')]
+#[CoversFunction('whatdotheyknowRequireArray')]
+#[CoversFunction('whatdotheyknowRequireBool')]
+#[CoversFunction('whatdotheyknowRequireInt')]
+#[CoversFunction('whatdotheyknowRequireString')]
+
 final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
 {
     /**
@@ -69,20 +83,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         ];
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventsJson
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowInfoRequestFromArray
-     * @covers \whatdotheyknowPublicBodyFromArray
-     * @covers \whatdotheyknowPublicBodyRequestCountsFromArray
-     * @covers \whatdotheyknowRequestEventUserFromArray
-     * @covers \whatdotheyknowRequireArray
-     * @covers \whatdotheyknowRequireString
-     * @covers \whatdotheyknowOptionalString
-     * @covers \whatdotheyknowRequireInt
-     * @covers \whatdotheyknowOptionalInt
-     * @covers \whatdotheyknowRequireBool
-     */
     public function test_parseWhatDoTheyKnowRequestEventsJson_parses_fixture(): void
     {
         $path = dirname(__DIR__) . '/fixtures/whatdotheyknow/requested_from_bristol_city_council.json';
@@ -103,9 +103,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         self::assertSame('116', $first->public_body->tags[0]->value);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventsJson
-     */
     public function test_parseWhatDoTheyKnowRequestEventsJson_rejects_non_list_top_level(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -114,9 +111,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventsJson('{"id":1}');
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventsJson
-     */
     public function test_parseWhatDoTheyKnowRequestEventsJson_rejects_non_object_element(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -125,10 +119,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventsJson('[1]');
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_matches_first_fixture_element(): void
     {
         $path = dirname(__DIR__) . '/fixtures/whatdotheyknow/requested_from_bristol_city_council.json';
@@ -144,20 +134,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         self::assertSame(1416480, $event->info_request->id);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowOptionalString
-     * @covers \whatdotheyknowOptionalInt
-     * @covers \whatdotheyknowInfoRequestFromArray
-     * @covers \whatdotheyknowPublicBodyFromArray
-     * @covers \whatdotheyknowPublicBodyRequestCountsFromArray
-     * @covers \whatdotheyknowRequestEventUserFromArray
-     * @covers \whatdotheyknowRequireArray
-     * @covers \whatdotheyknowRequireString
-     * @covers \whatdotheyknowRequireInt
-     * @covers \whatdotheyknowRequireBool
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_accepts_omitted_optional_event_keys(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -172,11 +148,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         self::assertNull($event->public_body->short_name);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowRequireInt
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_top_level_id_missing(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -188,11 +159,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowRequireString
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_event_type_not_string(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -204,11 +170,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowRequireArray
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_info_request_missing(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -220,11 +181,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowRequireArray
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_info_request_not_object(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -236,11 +192,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowInfoRequestFromArray
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_info_request_tag_not_string(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -252,12 +203,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowInfoRequestFromArray
-     * @covers \whatdotheyknowRequireString
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_info_request_title_missing(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -269,12 +214,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowInfoRequestFromArray
-     * @covers \whatdotheyknowRequireInt
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_info_request_id_not_integer(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -286,12 +225,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowInfoRequestFromArray
-     * @covers \whatdotheyknowRequireBool
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_awaiting_description_missing(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -303,11 +236,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowPublicBodyFromArray
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_public_body_tag_not_pair(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -319,11 +247,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowPublicBodyFromArray
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_public_body_tag_key_not_string(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -335,11 +258,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowPublicBodyFromArray
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_public_body_tag_value_not_string_or_null(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -351,12 +269,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowPublicBodyFromArray
-     * @covers \whatdotheyknowOptionalString
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_short_name_not_string_or_null(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -368,11 +280,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowOptionalInt
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_optional_int_not_int_or_null(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -384,12 +291,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowInfoRequestFromArray
-     * @covers \whatdotheyknowRequireBool
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_awaiting_description_not_bool(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -401,13 +302,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowPublicBodyFromArray
-     * @covers \whatdotheyknowPublicBodyRequestCountsFromArray
-     * @covers \whatdotheyknowRequireInt
-     */
     public function test_parseWhatDoTheyKnowRequestEventFromArray_throws_when_request_counts_missing_field(): void
     {
         $data = self::minimalValidRequestEventArray();
@@ -419,18 +313,12 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         parseWhatDoTheyKnowRequestEventFromArray($data);
     }
 
-    /**
-     * @covers \whatDoTheyKnowWdtEventOccurredAtUtc
-     */
     public function test_whatDoTheyKnowWdtEventOccurredAtUtc_normalises_to_utc(): void
     {
         $utc = whatDoTheyKnowWdtEventOccurredAtUtc('2026-04-02T15:00:44.392+01:00');
         self::assertSame('2026-04-02 14:00:44', $utc->format('Y-m-d H:i:s'));
     }
 
-    /**
-     * @covers \whatDoTheyKnowRequestUrlFromUrlTitle
-     */
     public function test_whatDoTheyKnowRequestUrlFromUrlTitle_builds_url(): void
     {
         self::assertSame(
@@ -439,21 +327,6 @@ final class WhatDoTheyKnowFunctionsTest extends BaseTestCase
         );
     }
 
-    /**
-     * @covers \buildNewEventRoomMessageText
-     * @covers \parseWhatDoTheyKnowRequestEventFromArray
-     * @covers \whatdotheyknowRequestEventFromArray
-     * @covers \whatdotheyknowInfoRequestFromArray
-     * @covers \whatdotheyknowPublicBodyFromArray
-     * @covers \whatdotheyknowPublicBodyRequestCountsFromArray
-     * @covers \whatdotheyknowRequestEventUserFromArray
-     * @covers \whatdotheyknowRequireArray
-     * @covers \whatdotheyknowRequireString
-     * @covers \whatdotheyknowOptionalString
-     * @covers \whatdotheyknowRequireInt
-     * @covers \whatdotheyknowOptionalInt
-     * @covers \whatdotheyknowRequireBool
-     */
     public function test_buildNewEventRoomMessageText_formats_summary_lines(): void
     {
         $event = parseWhatDoTheyKnowRequestEventFromArray(self::minimalValidRequestEventArray());

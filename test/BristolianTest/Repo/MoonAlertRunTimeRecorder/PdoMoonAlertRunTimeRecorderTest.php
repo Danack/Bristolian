@@ -10,19 +10,17 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 /**
  * @group db
  */
+
 #[CoversNothing]
+
 class PdoMoonAlertRunTimeRecorderTest extends BaseTestCase
 {
     use TestPlaceholders;
 
-    /**
-     * @coversNothing
-     */
     public function testPHPUnitDoesntLikeEmptyTestClasses(): void
     {
         // Placeholder test to prevent PHPUnit from complaining about empty test class
     }
-
 
 //    public function testWorks()
 //    {

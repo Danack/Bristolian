@@ -4,14 +4,12 @@ namespace BristolianTest\Config;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Config\RedisConfig;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Config\RedisConfig::class)]
+
 class RedisConfigTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Config\RedisConfig
-     */
     public function test_works()
     {
         $host = "1.2.3.4";

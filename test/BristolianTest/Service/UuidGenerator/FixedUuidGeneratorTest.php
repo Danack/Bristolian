@@ -6,15 +6,13 @@ namespace BristolianTest\Service\UuidGenerator;
 
 use Bristolian\Service\UuidGenerator\FixedUuidGenerator;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\UuidGenerator\FixedUuidGenerator::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\UuidGenerator\FixedUuidGenerator::class, 'generate')]
+
 class FixedUuidGeneratorTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\UuidGenerator\FixedUuidGenerator::__construct
-     * @covers \Bristolian\Service\UuidGenerator\FixedUuidGenerator::generate
-     */
     public function test_generate_returns_configured_uuid(): void
     {
         $uuid = 'aaaaaaaa-bbbb-7ccc-8ddd-eeeeeeeeeeee';
@@ -24,10 +22,6 @@ class FixedUuidGeneratorTest extends BaseTestCase
         $this->assertSame($uuid, $generator->generate());
     }
 
-    /**
-     * @covers \Bristolian\Service\UuidGenerator\FixedUuidGenerator::__construct
-     * @covers \Bristolian\Service\UuidGenerator\FixedUuidGenerator::generate
-     */
     public function test_generate_returns_default_uuid_when_none_configured(): void
     {
         $generator = new FixedUuidGenerator();

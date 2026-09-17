@@ -9,15 +9,15 @@ use Bristolian\Service\MemeStorageProcessor\ObjectStoredMeme;
 use Bristolian\Service\MemeStorageProcessor\UploadError;
 use Bristolian\Service\MemeStorageProcessor\UploadMemeResult;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\UploadMemeResult::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\UploadMemeResult::class, 'failure')]
+#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\UploadMemeResult::class, 'failureResponse')]
+#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\UploadMemeResult::class, 'success')]
+
 class UploadMemeResultTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\MemeStorageProcessor\UploadMemeResult::__construct
-     * @covers \Bristolian\Service\MemeStorageProcessor\UploadMemeResult::success
-     */
     public function test_success_returns_ok_with_meme(): void
     {
         $meme = new ObjectStoredMeme('normalized.png', 'meme_456');
@@ -28,9 +28,6 @@ class UploadMemeResultTest extends BaseTestCase
         $this->assertNull($result->errorResponse);
     }
 
-    /**
-     * @covers \Bristolian\Service\MemeStorageProcessor\UploadMemeResult::failure
-     */
     public function test_failure_returns_not_ok_with_error(): void
     {
         $error = UploadError::unsupportedFileType();
@@ -41,9 +38,6 @@ class UploadMemeResultTest extends BaseTestCase
         $this->assertNull($result->errorResponse);
     }
 
-    /**
-     * @covers \Bristolian\Service\MemeStorageProcessor\UploadMemeResult::failureResponse
-     */
     public function test_failureResponse_returns_not_ok_with_response(): void
     {
         $error = UploadError::uploadedFileUnreadable();

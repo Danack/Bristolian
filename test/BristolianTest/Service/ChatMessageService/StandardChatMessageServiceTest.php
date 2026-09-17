@@ -9,15 +9,13 @@ use Bristolian\Service\ChatMessageService\StandardChatMessageService;
 use Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo;
 use BristolianTest\BaseTestCase;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\ChatMessageService\StandardChatMessageService::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\ChatMessageService\StandardChatMessageService::class, 'handleChatMessage')]
+
 class StandardChatMessageServiceTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\ChatMessageService\StandardChatMessageService::__construct
-     * @covers \Bristolian\Service\ChatMessageService\StandardChatMessageService::handleChatMessage
-     */
     public function test_handleChatMessage_stores_message_in_repo(): void
     {
         $repo = new FakeChatMessageRepo();

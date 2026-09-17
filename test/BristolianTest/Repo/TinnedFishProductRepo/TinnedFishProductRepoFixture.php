@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\TinnedFishProductRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Model\TinnedFish\Product;
 use Bristolian\Model\TinnedFish\ValidationStatus;
 use Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo;
@@ -13,8 +14,18 @@ use Safe\DateTimeImmutable;
 /**
  * Abstract test class for TinnedFishProductRepo implementations.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::class, 'getAll')]
+#[CoversMethod(\Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::class, 'getByBarcode')]
+#[CoversMethod(\Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::class, 'save')]
+#[CoversMethod(\Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::class, 'updateValidationStatus')]
+#[CoversMethod(\Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::class, 'getAll')]
+#[CoversMethod(\Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::class, 'getByBarcode')]
+#[CoversMethod(\Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::class, 'save')]
+#[CoversMethod(\Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::class, 'updateValidationStatus')]
+
 abstract class TinnedFishProductRepoFixture extends BaseTestCase
 {
     /**
@@ -24,12 +35,6 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): TinnedFishProductRepo;
 
-    /**
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::getByBarcode
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::__construct
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::getByBarcode
-     */
     public function test_getByBarcode_returns_null_for_nonexistent_barcode(): void
     {
         $repo = $this->getTestInstance();
@@ -38,12 +43,6 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
         $this->assertNull($result);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::getByBarcode
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::getByBarcode
-     */
     public function test_getByBarcode_returns_null_for_empty_barcode(): void
     {
         $repo = $this->getTestInstance();
@@ -52,14 +51,6 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::save
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::save
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::getByBarcode
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::save
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::getByBarcode
-     */
     public function test_save_and_getByBarcode(): void
     {
         $repo = $this->getTestInstance();
@@ -89,14 +80,6 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
         $this->assertSame('Sardines in Olive Oil', $found->name);
     }
 
-    /**
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::save
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::save
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::getByBarcode
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::save
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::getByBarcode
-     */
     public function test_save_updates_existing_product(): void
     {
         $repo = $this->getTestInstance();
@@ -143,17 +126,6 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
         $this->assertSame('New Brand', $found->brand);
     }
 
-    /**
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::updateValidationStatus
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::save
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getByBarcode
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::updateValidationStatus
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::save
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::getByBarcode
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::updateValidationStatus
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::save
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::getByBarcode
-     */
     public function test_updateValidationStatus(): void
     {
         $repo = $this->getTestInstance();
@@ -184,14 +156,6 @@ abstract class TinnedFishProductRepoFixture extends BaseTestCase
         $this->assertSame(ValidationStatus::VALIDATED_IS_FISH, $updated->validation_status);
     }
 
-    /**
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::getAll
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo::save
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::getAll
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::save
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::getAll
-     * @covers \Bristolian\Repo\TinnedFishProductRepo\PdoTinnedFishProductRepo::save
-     */
     public function test_getAll_returns_saved_products(): void
     {
         $repo = $this->getTestInstance();

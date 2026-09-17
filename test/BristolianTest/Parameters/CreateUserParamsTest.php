@@ -7,14 +7,12 @@ namespace BristolianTest\Parameters;
 use Bristolian\Parameters\CreateUserParams;
 use VarMap\ArrayVarMap;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\CreateUserParams::class)]
+
 class CreateUserParamsTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Parameters\CreateUserParams
-     */
     public function testWorks()
     {
         $email_address = 'Johnathan@example.com';

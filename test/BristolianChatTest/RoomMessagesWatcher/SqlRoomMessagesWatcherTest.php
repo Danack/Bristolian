@@ -8,19 +8,18 @@ use BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher;
 use BristolianTest\BaseTestCase;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group db
  */
-#[CoversNothing]
+
+#[CoversMethod(\BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher::class, '__construct')]
+#[CoversMethod(\BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher::class, 'getInitialPreviousId')]
+#[CoversMethod(\BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher::class, 'getNextChatMessageAfter')]
+
 class SqlRoomMessagesWatcherTest extends BaseTestCase
 {
-    /**
-     * @covers \BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher::__construct
-     * @covers \BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher::getInitialPreviousId
-     * @covers \BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher::getNextChatMessageAfter
-     */
     public function test_getInitialPreviousId_returns_non_negative_int(): void
     {
         $logger = new Logger('test');
@@ -33,9 +32,6 @@ class SqlRoomMessagesWatcherTest extends BaseTestCase
         $this->assertGreaterThanOrEqual(0, $id);
     }
 
-    /**
-     * @covers \BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher::getInitialPreviousId
-     */
     public function test_getInitialPreviousId_logs_when_no_messages(): void
     {
         $testHandler = new TestHandler();
@@ -52,9 +48,6 @@ class SqlRoomMessagesWatcherTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher::getNextChatMessageAfter
-     */
     public function test_getNextChatMessageAfter_returns_null_when_no_later_row(): void
     {
         $logger = new Logger('test');

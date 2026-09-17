@@ -17,15 +17,13 @@ use Bristolian\UploadedFiles\UploadedFile;
 use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
 use BristolianTest\BaseTestCase;
 use SlimDispatcher\Response\StubResponse;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\RoomFileStorage\HandleRoomFileUpload::class, '__construct')]
+#[CoversMethod(\Bristolian\Service\RoomFileStorage\HandleRoomFileUpload::class, 'handle')]
+
 class HandleRoomFileUploadTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\RoomFileStorage\HandleRoomFileUpload::__construct
-     * @covers \Bristolian\Service\RoomFileStorage\HandleRoomFileUpload::handle
-     */
     public function test_handle_returns_failureResponse_when_upload_handler_returns_stub_response(): void
     {
         $userSession = new FakeUserSession(false, '', '');
@@ -43,9 +41,6 @@ class HandleRoomFileUploadTest extends BaseTestCase
         $this->assertInstanceOf(StubResponse::class, $result->errorResponse);
     }
 
-    /**
-     * @covers \Bristolian\Service\RoomFileStorage\HandleRoomFileUpload::handle
-     */
     public function test_handle_returns_failure_when_storage_returns_upload_error(): void
     {
         $uploadedFile = UploadedFile::fromFile(__FILE__);
@@ -69,9 +64,6 @@ class HandleRoomFileUploadTest extends BaseTestCase
         $this->assertNull($result->errorResponse);
     }
 
-    /**
-     * @covers \Bristolian\Service\RoomFileStorage\HandleRoomFileUpload::handle
-     */
     public function test_handle_returns_success_when_storage_stores_file(): void
     {
         $imagePath = __DIR__ . '/../../../fixtures/images/invalid_avatar.jpg';

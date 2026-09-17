@@ -6,13 +6,13 @@ namespace BristolianTest\Data;
 
 use BristolianTest\BaseTestCase;
 use Bristolian\Data\ContentPolicyViolationReport;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Data\ContentPolicyViolationReport::class)]
+
 class ContentPolicyViolationReportTest extends BaseTestCase
 {
     /**
-     * @covers \Bristolian\Data\ContentPolicyViolationReport
      * @return void
      */
     public function testWorks()
@@ -44,7 +44,6 @@ class ContentPolicyViolationReportTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Data\ContentPolicyViolationReport
      * @return void
      */
     public function testFromCSPPayloadWorks()
@@ -57,7 +56,6 @@ class ContentPolicyViolationReportTest extends BaseTestCase
         $data['original-policy'] = 'some policy';
 
         $report['csp-report'] = $data;
-
 
         $report = ContentPolicyViolationReport::fromCSPPayload($report);
 

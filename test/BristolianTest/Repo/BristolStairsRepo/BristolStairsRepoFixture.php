@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\BristolStairsRepo;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\Exception\ContentNotFoundException;
 use BristolianGenerated\Model\BristolStairInfo;
 use Bristolian\Parameters\BristolStairsInfoParams;
@@ -16,8 +17,22 @@ use VarMap\ArrayVarMap;
 /**
  * Abstract test class for BristolStairsRepo implementations.
  *
- * @coversNothing
  */
+
+#[CoversMethod(\Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::class, 'getAllStairsInfo')]
+#[CoversMethod(\Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::class, 'getStairInfoById')]
+#[CoversMethod(\Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::class, 'get_total_number_of_steps')]
+#[CoversMethod(\Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::class, 'store_stairs_info')]
+#[CoversMethod(\Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::class, 'updateStairInfo')]
+#[CoversMethod(\Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::class, 'updateStairPosition')]
+#[CoversMethod(\Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class, 'getAllStairsInfo')]
+#[CoversMethod(\Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class, 'getStairInfoById')]
+#[CoversMethod(\Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class, 'get_total_number_of_steps')]
+#[CoversMethod(\Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class, 'store_stairs_info')]
+#[CoversMethod(\Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class, 'updateStairInfo')]
+#[CoversMethod(\Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::class, 'updateStairPosition')]
+
 abstract class BristolStairsRepoFixture extends BaseTestCase
 {
     use TestPlaceholders;
@@ -37,12 +52,6 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
         return 'test_image_id';
     }
 
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::store_stairs_info
-     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::store_stairs_info
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::__construct
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::store_stairs_info
-     */
     public function test_store_stairs_info(): void
     {
         $repo = $this->getTestInstance();
@@ -69,12 +78,6 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
         $this->assertSame($stored_stair_image_file_id, $stair->stored_stair_image_file_id);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::get_total_number_of_steps
-     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::get_total_number_of_steps
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::get_total_number_of_steps
-     */
     public function test_get_total_number_of_steps(): void
     {
         $repo = $this->getTestInstance();
@@ -89,12 +92,6 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
         $this->assertGreaterThanOrEqual(0, $total_steps);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::getAllStairsInfo
-     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::getAllStairsInfo
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::getAllStairsInfo
-     */
     public function test_getAllStairsInfo(): void
     {
         $repo = $this->getTestInstance();
@@ -108,12 +105,6 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
         }
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::getStairInfoById
-     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::getStairInfoById
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::getStairInfoById
-     */
     public function test_getStairInfoById_returns_null_or_throws_for_nonexistent_id(): void
     {
         $repo = $this->getTestInstance();
@@ -130,15 +121,6 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
         }
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::getStairInfoById
-     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::store_stairs_info
-     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::getStairInfoById
-     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::store_stairs_info
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::getStairInfoById
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::store_stairs_info
-     */
     public function test_getStairInfoById_returns_stair_after_storing(): void
     {
         $repo = $this->getTestInstance();
@@ -157,15 +139,6 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
         $this->assertSame($stair->id, $found->id);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::updateStairInfo
-     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::store_stairs_info
-     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::updateStairInfo
-     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::store_stairs_info
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::updateStairInfo
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::store_stairs_info
-     */
     public function test_updateStairInfo(): void
     {
         $repo = $this->getTestInstance();
@@ -188,15 +161,6 @@ abstract class BristolStairsRepoFixture extends BaseTestCase
         $repo->updateStairInfo($params);
     }
 
-
-    /**
-     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::updateStairPosition
-     * @covers \Bristolian\Repo\BristolStairsRepo\BristolStairsRepo::store_stairs_info
-     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::updateStairPosition
-     * @covers \Bristolian\Repo\BristolStairsRepo\FakeBristolStairsRepo::store_stairs_info
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::updateStairPosition
-     * @covers \Bristolian\Repo\BristolStairsRepo\PdoBristolStairsRepo::store_stairs_info
-     */
     public function test_updateStairPosition(): void
     {
         $repo = $this->getTestInstance();

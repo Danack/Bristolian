@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 
-#[CoversClass(TestClassCoversAttributeDetector::class)]
+#[CoversClass(\Bristolian\PHPStan\TestClassCoversAttributeDetector::class)]
 class TestClassCoversAttributeDetectorTest extends BaseTestCase
 {
     private TestClassCoversAttributeDetector $detector;
@@ -37,9 +37,6 @@ class TestClassCoversAttributeDetectorTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\PHPStan\TestClassCoversAttributeDetector::__construct
-     * @covers \Bristolian\PHPStan\TestClassCoversAttributeDetector::hasCoversAttribute
-     * @covers \Bristolian\PHPStan\TestClassCoversAttributeDetector::reflectionClassHasCoversAttribute
      * @dataProvider provides_reflection_class_has_covers_attribute_cases
      */
     #[DataProvider('provides_reflection_class_has_covers_attribute_cases')]
@@ -66,7 +63,6 @@ class TestClassCoversAttributeDetectorTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\PHPStan\TestClassCoversAttributeDetector::isTestClassShortName
      * @dataProvider provides_is_test_class_short_name_cases
      */
     #[DataProvider('provides_is_test_class_short_name_cases')]
@@ -88,7 +84,6 @@ class TestClassCoversAttributeDetectorTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\PHPStan\TestClassCoversAttributeDetector::isPathUnderTestDirectory
      * @dataProvider provides_is_path_under_test_directory_cases
      */
     #[DataProvider('provides_is_path_under_test_directory_cases')]

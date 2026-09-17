@@ -9,9 +9,10 @@ use Bristolian\Parameters\BristolStairsPositionParams;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\BristolStairsPositionParams::class)]
+
 class BristolStairsPositionParamsTest extends BaseTestCase
 {
     /**
@@ -32,7 +33,6 @@ class BristolStairsPositionParamsTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\BristolStairsPositionParams
      * @param array<string, mixed> $input
      */
     #[DataProvider('provides_valid_input_and_expected_output')]
@@ -76,7 +76,6 @@ class BristolStairsPositionParamsTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\BristolStairsPositionParams
      * @dataProvider provides_invalid_input_and_expected_errors
      * @param array<string, mixed> $input
      * @param array<string, string> $expectedProblems

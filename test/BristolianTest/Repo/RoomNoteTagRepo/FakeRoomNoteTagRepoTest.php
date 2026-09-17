@@ -6,14 +6,12 @@ namespace BristolianTest\Repo\RoomNoteTagRepo;
 
 use Bristolian\Repo\RoomNoteTagRepo\FakeRoomNoteTagRepo;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Repo\RoomNoteTagRepo\FakeRoomNoteTagRepo::class)]
+
 class FakeRoomNoteTagRepoTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Repo\RoomNoteTagRepo\FakeRoomNoteTagRepo
-     */
     public function test_set_and_get_roundtrip(): void
     {
         $repo = new FakeRoomNoteTagRepo();

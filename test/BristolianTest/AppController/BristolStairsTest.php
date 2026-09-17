@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BristolianTest\AppController;
 
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Bristolian\AppController\BristolStairs;
 use Bristolian\Filesystem\BristolStairsFilesystem;
 use Bristolian\Filesystem\LocalCacheFilesystem;
@@ -41,7 +41,6 @@ use function Safe\tmpfile;
 /**
  * BristolStairImageStorage that always returns UploadError for testing error path.
  *
- * @coversNothing
  */
 final class BristolStairImageStorageReturningUploadError implements BristolStairImageStorage
 {
@@ -55,7 +54,17 @@ final class BristolStairImageStorageReturningUploadError implements BristolStair
     }
 }
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\BristolStairs::class, 'getData')]
+#[CoversMethod(\Bristolian\AppController\BristolStairs::class, 'getImage')]
+#[CoversMethod(\Bristolian\AppController\BristolStairs::class, 'getOpenmapNearby')]
+#[CoversMethod(\Bristolian\AppController\BristolStairs::class, 'handleFileUpload')]
+#[CoversMethod(\Bristolian\AppController\BristolStairs::class, 'render_stairs_page')]
+#[CoversMethod(\Bristolian\AppController\BristolStairs::class, 'stairs_page')]
+#[CoversMethod(\Bristolian\AppController\BristolStairs::class, 'stairs_page_stair_selected')]
+#[CoversMethod(\Bristolian\AppController\BristolStairs::class, 'update_stairs_info')]
+#[CoversMethod(\Bristolian\AppController\BristolStairs::class, 'update_stairs_info_get')]
+#[CoversMethod(\Bristolian\AppController\BristolStairs::class, 'update_stairs_position')]
+
 class BristolStairsTest extends BaseTestCase
 {
     public function setup(): void
@@ -64,19 +73,12 @@ class BristolStairsTest extends BaseTestCase
         $this->setupAppControllerFakes();
     }
 
-    /**
-     * @covers \Bristolian\AppController\BristolStairs::update_stairs_info_get
-     */
     public function test_update_stairs_info_get(): void
     {
         $result = $this->injector->execute([BristolStairs::class, 'update_stairs_info_get']);
         $this->assertInstanceOf(EndpointAccessedViaGetResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\BristolStairs::stairs_page
-     * @covers \Bristolian\AppController\BristolStairs::render_stairs_page
-     */
     public function test_stairs_page(): void
     {
         $result = $this->injector->execute([BristolStairs::class, 'stairs_page']);
@@ -87,10 +89,6 @@ class BristolStairsTest extends BaseTestCase
         $this->assertStringContainsString('steps', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\BristolStairs::stairs_page_stair_selected
-     * @covers \Bristolian\AppController\BristolStairs::render_stairs_page
-     */
     public function test_stairs_page_stair_selected(): void
     {
         $this->injector->defineParam('stair_id', 1);
@@ -101,18 +99,12 @@ class BristolStairsTest extends BaseTestCase
         $this->assertStringContainsString('steps', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\BristolStairs::getData
-     */
     public function test_getData(): void
     {
         $result = $this->injector->execute([BristolStairs::class, 'getData']);
         $this->assertInstanceOf(GetBristolStairsResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\BristolStairs::update_stairs_info
-     */
     public function test_update_stairs_info(): void
     {
         $this->setupFakeUserSession();
@@ -128,9 +120,6 @@ class BristolStairsTest extends BaseTestCase
         $this->assertInstanceOf(SuccessResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\BristolStairs::update_stairs_position
-     */
     public function test_update_stairs_position(): void
     {
         $this->setupFakeUserSession();
@@ -146,9 +135,6 @@ class BristolStairsTest extends BaseTestCase
         $this->assertInstanceOf(SuccessResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\BristolStairs::getOpenmapNearby
-     */
     public function test_getOpenmapNearby_returns_error_when_not_logged_in(): void
     {
         $session = new FakeUserSession(false, '', '');
@@ -166,9 +152,6 @@ class BristolStairsTest extends BaseTestCase
         $this->assertStringContainsString('Not logged in', $result->getBody());
     }
 
-    /**
-     * @covers \Bristolian\AppController\BristolStairs::getOpenmapNearby
-     */
     public function test_getOpenmapNearby_returns_locations_when_logged_in(): void
     {
         $this->setupFakeUserSession();
@@ -189,9 +172,6 @@ class BristolStairsTest extends BaseTestCase
         $this->assertIsArray($body['data']['locations']);
     }
 
-    /**
-     * @covers \Bristolian\AppController\BristolStairs::getImage
-     */
     public function test_getImage_returns_StreamingResponse_when_file_exists(): void
     {
         $tempRoot = sys_get_temp_dir() . '/bristol_stairs_image_' . uniqid();
@@ -219,9 +199,6 @@ class BristolStairsTest extends BaseTestCase
         $this->assertInstanceOf(StreamingResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\BristolStairs::getImage
-     */
     public function test_getImage_returns_StoredFileErrorResponse_when_file_unreadable(): void
     {
         $tempRoot = sys_get_temp_dir() . '/bristol_stairs_image_' . uniqid();
@@ -250,9 +227,6 @@ class BristolStairsTest extends BaseTestCase
         $this->assertStringContainsString($normalizedName, $result->getBody());
     }
 
-    /**
-     * @covers \Bristolian\AppController\BristolStairs::handleFileUpload
-     */
     public function test_handleFileUpload_returns_stub_response_when_no_file(): void
     {
         $this->setupFakeUserSession();
@@ -268,9 +242,6 @@ class BristolStairsTest extends BaseTestCase
         $this->assertInstanceOf(StubResponse::class, $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\BristolStairs::handleFileUpload
-     */
     public function test_handleFileUpload_returns_json_error_when_storage_returns_UploadError(): void
     {
         $this->setupFakeUserSession();
@@ -296,9 +267,6 @@ class BristolStairsTest extends BaseTestCase
         fclose($tmpFile);
     }
 
-    /**
-     * @covers \Bristolian\AppController\BristolStairs::handleFileUpload
-     */
     public function test_handleFileUpload_returns_UploadBristolStairsImageResponse_on_success(): void
     {
         $this->setupFakeUserSession();

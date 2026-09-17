@@ -8,14 +8,13 @@ use Bristolian\Service\DailyProcessorSchedule\StandardDailyProcessorSchedule;
 use BristolianTest\BaseTestCase;
 use Safe\DateTime;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\Service\DailyProcessorSchedule\StandardDailyProcessorSchedule::class, 'isOverXHoursAgo')]
+#[CoversMethod(\Bristolian\Service\DailyProcessorSchedule\StandardDailyProcessorSchedule::class, 'isTimeToRunDailySystemInfo')]
+
 class StandardDailyProcessorScheduleTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Service\DailyProcessorSchedule\StandardDailyProcessorSchedule::isTimeToRunDailySystemInfo
-     */
     public function test_isTimeToRunDailySystemInfo_returns_true_between_noon_and_3pm(): void
     {
         $schedule = new StandardDailyProcessorSchedule();
@@ -25,9 +24,6 @@ class StandardDailyProcessorScheduleTest extends BaseTestCase
         $this->assertSame($expected, $result);
     }
 
-    /**
-     * @covers \Bristolian\Service\DailyProcessorSchedule\StandardDailyProcessorSchedule::isOverXHoursAgo
-     */
     public function test_isOverXHoursAgo_returns_true_when_datetime_is_older_than_threshold(): void
     {
         $schedule = new StandardDailyProcessorSchedule();
@@ -35,9 +31,6 @@ class StandardDailyProcessorScheduleTest extends BaseTestCase
         $this->assertTrue($schedule->isOverXHoursAgo(4, $fiveHoursAgo));
     }
 
-    /**
-     * @covers \Bristolian\Service\DailyProcessorSchedule\StandardDailyProcessorSchedule::isOverXHoursAgo
-     */
     public function test_isOverXHoursAgo_returns_false_when_datetime_is_within_threshold(): void
     {
         $schedule = new StandardDailyProcessorSchedule();

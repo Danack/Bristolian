@@ -9,12 +9,17 @@ use Bristolian\Parameters\AnnotationParam;
 use Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo;
 use Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * @group standard_repo
  */
-#[CoversNothing]
+
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::class, '__construct')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::class, 'getAnnotationsForRoom')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::class, 'getAnnotationsForRoomAndTitle')]
+#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::class, 'updateTitleAndText')]
+
 class FakeRoomAnnotationRepoTest extends RoomAnnotationRepoFixture
 {
     public function getTestInstance(): RoomAnnotationRepo
@@ -47,9 +52,6 @@ class FakeRoomAnnotationRepoTest extends RoomAnnotationRepoFixture
         return 'file-999';
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::__construct
-     */
     public function test_fake_construct_with_no_args_returns_empty_from_getAnnotationsForRoom(): void
     {
         $repo = new FakeRoomAnnotationRepo();
@@ -59,7 +61,6 @@ class FakeRoomAnnotationRepoTest extends RoomAnnotationRepoFixture
     /**
      * When a room annotation references a missing annotation, getAnnotationsForRoom skips it (defensive path).
      *
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoom
      */
     public function test_getAnnotationsForRoom_skips_room_annotation_when_annotation_missing(): void
     {
@@ -81,7 +82,6 @@ class FakeRoomAnnotationRepoTest extends RoomAnnotationRepoFixture
     /**
      * When a room annotation references a missing annotation, getAnnotationsForRoomAndTitle skips it.
      *
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoomAndTitle
      */
     public function test_getAnnotationsForRoomAndTitle_skips_room_annotation_when_annotation_missing(): void
     {
@@ -104,7 +104,6 @@ class FakeRoomAnnotationRepoTest extends RoomAnnotationRepoFixture
     /**
      * updateTitleAndText throws when the annotation row is missing even if room_annotation exists.
      *
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::updateTitleAndText
      */
     public function test_updateTitleAndText_throws_when_annotation_row_missing(): void
     {
@@ -121,9 +120,6 @@ class FakeRoomAnnotationRepoTest extends RoomAnnotationRepoFixture
         $repo->updateTitleAndText($room_id, 'ra-1', 'New Title That Is Long Enough', 'New text');
     }
 
-    /**
-     * @covers \Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::getAnnotationsForRoomAndTitle
-     */
     public function test_getAnnotationsForRoomAndTitle_returns_empty_when_room_does_not_match(): void
     {
         $repo = new FakeRoomAnnotationRepo();

@@ -14,9 +14,15 @@ use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use SlimDispatcher\Response\StubResponse;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\Bristolian\AppController\Pages::class, 'about')]
+#[CoversMethod(\Bristolian\AppController\Pages::class, 'experimental')]
+#[CoversMethod(\Bristolian\AppController\Pages::class, 'experimental_debug_param')]
+#[CoversMethod(\Bristolian\AppController\Pages::class, 'get404Page')]
+#[CoversMethod(\Bristolian\AppController\Pages::class, 'homepage')]
+#[CoversMethod(\Bristolian\AppController\Pages::class, 'index')]
+
 class PagesTest extends BaseTestCase
 {
     public function setup(): void
@@ -25,9 +31,6 @@ class PagesTest extends BaseTestCase
         $this->injector->alias(MarkdownRenderer::class, CommonMarkRenderer::class);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Pages::index
-     */
     public function test_index(): void
     {
         $result = $this->injector->execute([Pages::class, 'index']);
@@ -35,18 +38,12 @@ class PagesTest extends BaseTestCase
         $this->assertStringContainsString('Absolute alpha', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Pages::homepage
-     */
     public function test_homepage(): void
     {
         $result = $this->injector->execute([Pages::class, 'homepage']);
         $this->assertIsString($result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Pages::get404Page
-     */
     public function test_get404Page(): void
     {
         $request = new ServerRequest(
@@ -71,18 +68,12 @@ class PagesTest extends BaseTestCase
         $this->assertSame(404, $result->getStatus());
     }
 
-    /**
-     * @covers \Bristolian\AppController\Pages::about
-     */
     public function test_about(): void
     {
         $result = $this->injector->execute([Pages::class, 'about']);
         $this->assertIsString($result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Pages::experimental
-     */
     public function test_experimental(): void
     {
         $result = $this->injector->execute([Pages::class, 'experimental']);
@@ -90,9 +81,6 @@ class PagesTest extends BaseTestCase
         $this->assertStringContainsString('notification_panel', $result);
     }
 
-    /**
-     * @covers \Bristolian\AppController\Pages::experimental_debug_param
-     */
     public function test_experimental_debug_param(): void
     {
         $params = \Bristolian\Parameters\DebugParams::createFromVarMap(

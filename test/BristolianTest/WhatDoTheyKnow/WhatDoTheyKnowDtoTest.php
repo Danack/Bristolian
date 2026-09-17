@@ -11,16 +11,17 @@ use Bristolian\WhatDoTheyKnow\PublicBodyTag;
 use Bristolian\WhatDoTheyKnow\RequestEvent;
 use Bristolian\WhatDoTheyKnow\RequestEventUser;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-/**
- */
-#[CoversNothing]
+#[CoversMethod(\Bristolian\WhatDoTheyKnow\InfoRequest::class, '__construct')]
+#[CoversMethod(\Bristolian\WhatDoTheyKnow\PublicBody::class, '__construct')]
+#[CoversMethod(\Bristolian\WhatDoTheyKnow\PublicBodyRequestCounts::class, '__construct')]
+#[CoversMethod(\Bristolian\WhatDoTheyKnow\PublicBodyTag::class, '__construct')]
+#[CoversMethod(\Bristolian\WhatDoTheyKnow\RequestEvent::class, '__construct')]
+#[CoversMethod(\Bristolian\WhatDoTheyKnow\RequestEventUser::class, '__construct')]
+
 final class WhatDoTheyKnowDtoTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\WhatDoTheyKnow\PublicBodyTag::__construct
-     */
     public function test_PublicBodyTag_holds_key_and_value(): void
     {
         $tag = new PublicBodyTag('k', 'v');
@@ -28,9 +29,6 @@ final class WhatDoTheyKnowDtoTest extends BaseTestCase
         self::assertSame('v', $tag->value);
     }
 
-    /**
-     * @covers \Bristolian\WhatDoTheyKnow\PublicBodyRequestCounts::__construct
-     */
     public function test_PublicBodyRequestCounts_holds_counts(): void
     {
         $counts = new PublicBodyRequestCounts(1, 2, 3, 4, 5);
@@ -38,9 +36,6 @@ final class WhatDoTheyKnowDtoTest extends BaseTestCase
         self::assertSame(5, $counts->requests_visible_classified_count);
     }
 
-    /**
-     * @covers \Bristolian\WhatDoTheyKnow\InfoRequest::__construct
-     */
     public function test_InfoRequest_holds_fields(): void
     {
         $info = new InfoRequest(
@@ -59,18 +54,12 @@ final class WhatDoTheyKnowDtoTest extends BaseTestCase
         self::assertSame('slug', $info->url_title);
     }
 
-    /**
-     * @covers \Bristolian\WhatDoTheyKnow\RequestEventUser::__construct
-     */
     public function test_RequestEventUser_holds_fields(): void
     {
         $user = new RequestEventUser(1, 'url', 'Name', '', '');
         self::assertSame('Name', $user->name);
     }
 
-    /**
-     * @covers \Bristolian\WhatDoTheyKnow\PublicBody::__construct
-     */
     public function test_PublicBody_holds_fields(): void
     {
         $counts = new PublicBodyRequestCounts(0, 0, 0, 0, 0);
@@ -91,9 +80,6 @@ final class WhatDoTheyKnowDtoTest extends BaseTestCase
         self::assertSame('Bristol', $body->name);
     }
 
-    /**
-     * @covers \Bristolian\WhatDoTheyKnow\RequestEvent::__construct
-     */
     public function test_RequestEvent_holds_nested_objects(): void
     {
         $info = new InfoRequest(

@@ -5,14 +5,12 @@ namespace BristolianTest\Model;
 use Bristolian\Model\Types\Email;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Model\Types\Email::class)]
+
 class EmailTest extends BaseTestCase
 {
-    /**
-     * @covers \Bristolian\Model\Types\Email
-     */
     public function testConstruct()
     {
         $id = 123;

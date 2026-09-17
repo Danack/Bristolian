@@ -9,19 +9,20 @@ use BristolianTest\Repo\TestPlaceholders;
 use UrlFetcher\FakeUrlFetcher;
 use UrlFetcher\RedisCachedUrlFetcher;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group network
  * @group redis
  */
-#[CoversNothing]
+
+#[CoversClass(\UrlFetcher\RedisCachedUrlFetcher::class)]
+
 class RedisCachedUrlFetcherTest extends BaseTestCase
 {
     use TestPlaceholders;
 
     /**
-     * @covers \UrlFetcher\RedisCachedUrlFetcher
      * @group network
      */
     #[RequiresPhpExtension('redis')]

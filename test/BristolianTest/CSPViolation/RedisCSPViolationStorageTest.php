@@ -7,20 +7,16 @@ use Bristolian\CSPViolation\RedisCSPViolationStorage;
 use BristolianTest\Repo\TestPlaceholders;
 use Bristolian\CSPViolation\CSPViolationStorage;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Bristolian\CSPViolation\RedisCSPViolationStorage
- */
 #[RequiresPhpExtension('redis')]
-#[CoversNothing]
+
+#[CoversClass(\Bristolian\CSPViolation\RedisCSPViolationStorage::class)]
+
 class RedisCSPViolationStorageTest extends BaseTestCase
 {
     use TestPlaceholders;
 
-    /**
-     * @covers \Bristolian\CSPViolation\RedisCSPViolationStorage
-     */
     public function testWorks()
     {
         $cspViolationStorage = $this->injector->make(RedisCSPViolationStorage::class);

@@ -10,9 +10,10 @@ use DataType\GetInputTypesFromAttributes;
 use DataType\Messages;
 use VarMap\ArrayVarMap;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(\Bristolian\Parameters\PropertyType\WebPushEndPoint::class)]
+
 class WebPushEndPointTest extends BaseTestCase
 {
     /**
@@ -27,7 +28,6 @@ class WebPushEndPointTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\WebPushEndPoint
      * @dataProvider provides_valid_input_and_expected_output
      * @param array<string, mixed> $input
      */
@@ -52,7 +52,6 @@ class WebPushEndPointTest extends BaseTestCase
     }
 
     /**
-     * @covers \Bristolian\Parameters\PropertyType\WebPushEndPoint
      * @dataProvider provides_invalid_input_and_expected_error
      * @param array<string, mixed> $input
      */
@@ -71,9 +70,6 @@ class WebPushEndPointTest extends BaseTestCase
         }
     }
 
-    /**
-     * @covers \Bristolian\Parameters\PropertyType\WebPushEndPoint
-     */
     public function test_getInputType_returns_correct_name(): void
     {
         $propertyType = new WebPushEndPoint('test_name');

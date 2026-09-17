@@ -7,15 +7,14 @@ namespace BristolianChatTest\RoomMessagesWatcher;
 use Bristolian\Model\Chat\UserChatMessage;
 use BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversNothing]
+#[CoversMethod(\BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher::class, '__construct')]
+#[CoversMethod(\BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher::class, 'getInitialPreviousId')]
+#[CoversMethod(\BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher::class, 'getNextChatMessageAfter')]
+
 class FakeRoomMessagesWatcherTest extends BaseTestCase
 {
-    /**
-     * @covers \BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher::__construct
-     * @covers \BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher::getInitialPreviousId
-     */
     public function test_getInitialPreviousId_returns_zero_when_max_id_null(): void
     {
         $fetcher = new FakeRoomMessagesWatcher(null, []);
@@ -23,9 +22,6 @@ class FakeRoomMessagesWatcherTest extends BaseTestCase
         $this->assertSame(0, $fetcher->getInitialPreviousId());
     }
 
-    /**
-     * @covers \BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher::getInitialPreviousId
-     */
     public function test_getInitialPreviousId_returns_max_id_when_set(): void
     {
         $fetcher = new FakeRoomMessagesWatcher(42, []);
@@ -33,9 +29,6 @@ class FakeRoomMessagesWatcherTest extends BaseTestCase
         $this->assertSame(42, $fetcher->getInitialPreviousId());
     }
 
-    /**
-     * @covers \BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher::getNextChatMessageAfter
-     */
     public function test_getNextChatMessageAfter_returns_messages_in_order_then_null(): void
     {
         $row1 = ['id' => 1, 'room_id' => 'r1', 'text' => 'a', 'reply_message_id' => null, 'user_id' => 'u1', 'created_at' => '2025-01-01T00:00:00+00:00'];
@@ -57,9 +50,6 @@ class FakeRoomMessagesWatcherTest extends BaseTestCase
         $this->assertNull($fetcher->getNextChatMessageAfter(2));
     }
 
-    /**
-     * @covers \BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher::getNextChatMessageAfter
-     */
     public function test_getNextChatMessageAfter_returns_null_when_queue_empty(): void
     {
         $fetcher = new FakeRoomMessagesWatcher(10, []);

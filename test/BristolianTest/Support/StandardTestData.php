@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Support;
 
+use PHPUnit\Framework\Attributes\CoversNothing;
 use BristolianGenerated\Model\Room;
 use Bristolian\Parameters\CreateUserParams;
 use Bristolian\Parameters\AnnotationParam;
@@ -28,8 +29,10 @@ use Ramsey\Uuid\Uuid;
  * - RoomScenario - for room-specific test scenarios (e.g., withPrivateRoom(), withPublicRoom())
  * - UserScenario - for user-specific test scenarios (e.g., withAdminUser(), withRegularUser())
  *
- * @coversNothing
  */
+
+#[CoversNothing]
+
 final class StandardTestData
 {
     private const MIN_DOCUMENTS_PER_ROOM = 2;
