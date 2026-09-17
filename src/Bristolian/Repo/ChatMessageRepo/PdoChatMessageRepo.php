@@ -18,6 +18,8 @@ class PdoChatMessageRepo implements ChatMessageRepo
     }
 
     #[ReadsTable(user_ownership::class)]
+    #[ReadsTable(chat_message::class)]
+    #[WritesTable(chat_message::class)]
     public function storeChatMessageForSystem(ChatMessageParam $chatMessage): UserChatMessage
     {
         $sql = user_ownership::SELECT . " where type = 'SYSTEM'";

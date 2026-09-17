@@ -26,6 +26,7 @@ class PdoApiTokenRepo implements ApiTokenRepo
     ) {
     }
 
+    #[ReadsTable(api_token::class)]
     #[WritesTable(api_token::class)]
     public function createToken(string $name): ApiToken
     {

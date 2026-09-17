@@ -16,6 +16,8 @@ interface ChatMessageRepo
     public function storeChatMessageForUser(string $user_id, ChatMessageParam $chatMessage): UserChatMessage;
 
     #[ReadsTable(user_ownership::class)]
+    #[ReadsTable(chat_message::class)]
+    #[WritesTable(chat_message::class)]
     public function storeChatMessageForSystem(ChatMessageParam $chatMessage): UserChatMessage;
 
 

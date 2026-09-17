@@ -8,6 +8,7 @@ use Bristolian\Model\Types\AdminUser;
 use Bristolian\Parameters\CreateUserParams;
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
+use BristolianGenerated\Database\user;
 use BristolianGenerated\Database\user_auth_email_password;
 
 /**
@@ -15,6 +16,7 @@ use BristolianGenerated\Database\user_auth_email_password;
  */
 interface AdminRepo
 {
+    #[WritesTable(user::class)]
     #[WritesTable(user_auth_email_password::class)]
     public function addUser(CreateUserParams $createAdminUserParams): AdminUser;
 

@@ -34,6 +34,7 @@ interface UserProfileRepo
     #[WritesTable(user_display_name::class)]
     #[WritesTable(user_profile::class)]
     #[ReadsTable(user_display_name::class)]
+    #[ReadsTable(user_profile::class)]
     public function updateProfile(string $user_id, \Bristolian\Parameters\UserProfileUpdateParams $params): UserProfileWithDisplayName;
 
     /**

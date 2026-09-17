@@ -50,6 +50,7 @@ interface MemeTextRepo
      * @param string $text
      * @return void
      */
+    #[ReadsTable(meme_text::class)]
     #[WritesTable(meme_text::class)]
     public function updateMemeText(string $meme_id, string $text): void;
 }

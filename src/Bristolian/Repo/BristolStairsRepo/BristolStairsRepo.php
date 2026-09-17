@@ -11,6 +11,7 @@ use Bristolian\Parameters\BristolStairsPositionParams;
 
 interface BristolStairsRepo
 {
+    #[ReadsTable(bristol_stair_info::class)]
     #[WritesTable(bristol_stair_info::class)]
     public function store_stairs_info(
         string $stored_stair_image_file_id,

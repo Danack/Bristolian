@@ -9,6 +9,7 @@ use BristolianGenerated\Model\Room;
 
 interface RoomRepo
 {
+    #[ReadsTable(room_table::class)]
     #[WritesTable(room_table::class)]
     public function createRoom(string $user_id, string $name, string $purpose): Room;
 

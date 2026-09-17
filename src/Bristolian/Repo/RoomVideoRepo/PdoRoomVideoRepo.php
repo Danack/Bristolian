@@ -94,6 +94,9 @@ class PdoRoomVideoRepo implements RoomVideoRepo
      * @return RoomVideoWithTags[]
      */
     #[ReadsTable(room_tag::class)]
+    #[ReadsTable(room_video::class)]
+    #[ReadsTable(room_video_tag::class)]
+    #[ReadsTable(videoTable::class)]
     public function getVideosForRoomWithTags(string $room_id, RoomContentSearchParams $search): array
     {
         $videos = $this->getVideosForRoom($room_id, $search);
@@ -205,6 +208,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
      *
      * @throws ContentNotFoundException
      */
+    #[ReadsTable(room_video::class)]
     public function getRoomVideoForRoom(string $room_id, string $room_video_id): RoomVideo
     {
         $roomVideo = $this->getRoomVideo($room_video_id);
@@ -217,6 +221,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
     /**
      * Add a full video (not a clip) to a room.
      */
+    #[ReadsTable(room_video::class)]
     #[WritesTable(room_video::class)]
     public function addVideo(
         string $room_id,
@@ -242,6 +247,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
     /**
      * Add a clip (time-bounded segment) of an existing room video to the room.
      */
+    #[ReadsTable(room_video::class)]
     #[WritesTable(room_video::class)]
     public function addClip(
         string $room_id,
@@ -269,6 +275,7 @@ class PdoRoomVideoRepo implements RoomVideoRepo
     /**
      * Update a room video's title and/or description. Null means leave unchanged.
      */
+    #[ReadsTable(room_video::class)]
     #[WritesTable(room_video::class)]
     public function updateTitleAndDescription(
         string $room_id,

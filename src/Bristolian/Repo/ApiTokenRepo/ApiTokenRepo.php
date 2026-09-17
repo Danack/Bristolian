@@ -21,6 +21,7 @@ interface ApiTokenRepo
      * @param string $name Name/identifier for the token
      * @return ApiToken The created token (includes the generated token value)
      */
+    #[ReadsTable(api_token::class)]
     #[WritesTable(api_token::class)]
     public function createToken(string $name): ApiToken;
 

@@ -7,6 +7,7 @@ use Bristolian\Attribute\WritesTable;
 use BristolianGenerated\Database\room_tag;
 use BristolianGenerated\Database\room_video;
 use BristolianGenerated\Database\room_video_tag;
+use BristolianGenerated\Database\video;
 use Bristolian\Exception\ContentNotFoundException;
 use BristolianGenerated\Model\RoomVideo;
 use Bristolian\Model\Types\RoomVideoWithTags;
@@ -25,6 +26,9 @@ interface RoomVideoRepo
      * @return RoomVideoWithTags[]
      */
     #[ReadsTable(room_tag::class)]
+    #[ReadsTable(room_video::class)]
+    #[ReadsTable(room_video_tag::class)]
+    #[ReadsTable(video::class)]
     public function getVideosForRoomWithTags(string $room_id, RoomContentSearchParams $search): array;
 
     /**
@@ -40,11 +44,13 @@ interface RoomVideoRepo
      *
      * @throws ContentNotFoundException if not found or room_video is in a different room
      */
+    #[ReadsTable(room_video::class)]
     public function getRoomVideoForRoom(string $room_id, string $room_video_id): RoomVideo;
 
     /**
      * Add a full video to the room.
      */
+    #[ReadsTable(room_video::class)]
     #[WritesTable(room_video::class)]
     public function addVideo(
         string $room_id,
@@ -56,6 +62,7 @@ interface RoomVideoRepo
     /**
      * Add a clip (time-bounded segment) of an existing room video.
      */
+    #[ReadsTable(room_video::class)]
     #[WritesTable(room_video::class)]
     public function addClip(
         string $room_id,
@@ -71,6 +78,7 @@ interface RoomVideoRepo
      *
      * @throws ContentNotFoundException if not found or room_video is in a different room
      */
+    #[ReadsTable(room_video::class)]
     #[WritesTable(room_video::class)]
     public function updateTitleAndDescription(
         string $room_id,
