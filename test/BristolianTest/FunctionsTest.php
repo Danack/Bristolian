@@ -51,6 +51,7 @@ use function Safe\unlink;
 #[CoversFunction('getExceptionInfoAsArray')]
 #[CoversFunction('getMask')]
 #[CoversFunction('getMimeTypeFromFilename')]
+#[CoversFunction('getMysqlHostForCurrentEnvironment')]
 #[CoversFunction('getPercentMemoryUsed')]
 #[CoversFunction('getRandomId')]
 #[CoversFunction('getReasonPhrase')]
@@ -341,6 +342,47 @@ TEXT;
 
         $this->expectException(\Bristolian\Exception\BristolianException::class);
         getEnvString("NONEXISTENT");
+    }
+
+    /**
+     * @return \Generator<string, array{string|null, string, string}>
+     */
+    public static function provides_mysql_host_for_current_environment(): \Generator
+    {
+        yield 'not in docker uses localhost' => [null, 'db', '127.0.0.1'];
+        yield 'empty env uses localhost' => ['', 'db', '127.0.0.1'];
+        yield 'docker uses configured host' => ['1', 'db', 'db'];
+        yield 'docker preserves other hosts' => ['1', '127.0.0.1', '127.0.0.1'];
+    }
+
+    /**
+     * @param string|null $runningInDocker
+     */
+    #[DataProvider('provides_mysql_host_for_current_environment')]
+    public function test_getMysqlHostForCurrentEnvironment(
+        string|null $runningInDocker,
+        string $configuredHost,
+        string $expectedHost
+    ): void {
+        $previous = getenv('RUNNING_IN_DOCKER');
+        try {
+            if ($runningInDocker === null) {
+                putenv('RUNNING_IN_DOCKER');
+            }
+            else {
+                putenv('RUNNING_IN_DOCKER=' . $runningInDocker);
+            }
+
+            $this->assertSame($expectedHost, getMysqlHostForCurrentEnvironment($configuredHost));
+        }
+        finally {
+            if ($previous === false) {
+                putenv('RUNNING_IN_DOCKER');
+            }
+            else {
+                putenv('RUNNING_IN_DOCKER=' . $previous);
+            }
+        }
     }
 
     public function test_array_contains()

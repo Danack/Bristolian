@@ -490,6 +490,21 @@ function getEnvString(string $name): string
     return $value;
 }
 
+/**
+ * Docker Compose hostnames such as `db` only resolve on the compose network.
+ * Amp's DNS resolver also queries public nameservers instead of the system
+ * resolver, which hangs then NXDomains for `db` when PHPUnit runs on the host.
+ */
+function getMysqlHostForCurrentEnvironment(string $configuredHost): string
+{
+    $running_in_docker = getenv("RUNNING_IN_DOCKER");
+    if ($running_in_docker !== "1") {
+        return "127.0.0.1";
+    }
+
+    return $configuredHost;
+}
+
 
 /**
  * @param mixed $needle

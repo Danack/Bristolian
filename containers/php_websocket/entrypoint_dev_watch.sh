@@ -22,7 +22,7 @@ fi
 # Poll file mtimes every POLL_INTERVAL seconds; restart the server when any watched file changes.
 # (Polling is used because inotify often doesn't work over Docker volume mounts on Mac.)
 WATCH_DIRS="/var/app/src/BristolianChat /var/app/chat/src"
-WATCH_FILES="/var/app/src/functions.php /var/app/src/functions_chat.php /var/app/src/functions_common.php"
+WATCH_FILES="/var/app/src/functions.php /var/app/src/functions_chat.php /var/app/src/functions_common.php /var/app/src/factories.php"
 POLL_INTERVAL=10
 
 echo "[chat-watch] Polling every ${POLL_INTERVAL}s (no inotify):"

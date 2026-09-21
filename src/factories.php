@@ -139,19 +139,9 @@ function createPDOForUser(Config $config)
 
     $dsn_string = sprintf(
         'mysql:host=%s;dbname=%s',
-        $db_config->host,
+        getMysqlHostForCurrentEnvironment($db_config->host),
         $db_config->schema
     );
-
-    $running_in_docker = getenv("RUNNING_IN_DOCKER");
-
-    if ($running_in_docker !== "1") {
-        $dsn_string = sprintf(
-            'mysql:host=%s;dbname=%s',
-            "127.0.0.1",
-            $db_config->schema
-        );
-    }
     $pdo_options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_EMULATE_PREPARES => false,
@@ -170,7 +160,6 @@ function createPDOForUser(Config $config)
 
     // TODO - return a readonly connection.
     // this needs a little thought to allow people to login, or you know, write to the DB
-    $attempt_retry = true;
     $pdo = new \PDO(
         $dsn_string,
         $db_config->username,
@@ -178,35 +167,26 @@ function createPDOForUser(Config $config)
         $pdo_options
     );
 
-
-
-//    while ($attempt_retry === true) {
-//        try {
-//            $pdo = new \PDO(
-//                $dsn_string,
-//                $db_config->username,
-//                $db_config->password,
-//                $pdo_options
-//            );
-//            $attempt_retry = false;
-//        } catch (\Exception $e) {
-//
-//
-//            $failures += 1;
-//            sleep(1);
-//            if ($failures > 3) {
-//                $attempt_retry = false;
-//
-//                throw new \Exception(
-//                    "Error creating PDO:" . $e->getMessage(),
-//                    $e->getCode(),
-//                    $e
-//                );
-//            }
-//        }
-//    }
-
     return $pdo;
+}
+
+/**
+ * @return \Amp\Mysql\MysqlConnection
+ * @throws Exception
+ */
+function createMysqlClient(Config $config): \Amp\Mysql\MysqlConnection
+{
+    $db_config = $config->getDatabaseUserConfig();
+
+    $mysql_config = new \Amp\Mysql\MysqlConfig(
+        getMysqlHostForCurrentEnvironment($db_config->host),
+        \Amp\Mysql\MysqlConfig::DEFAULT_PORT,
+        $db_config->username,
+        $db_config->password,
+        $db_config->schema,
+    );
+
+    return \Amp\Mysql\connect($mysql_config);
 }
 
 

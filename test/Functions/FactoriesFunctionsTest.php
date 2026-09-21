@@ -77,6 +77,7 @@ class AppSessionManagerReturnsSession extends \Bristolian\Session\AppSessionMana
 #[CoversFunction('createMailgun')]
 #[CoversFunction('createMemeFilesystem')]
 #[CoversFunction('createMemoryWarningCheck')]
+#[CoversFunction('createMysqlClient')]
 #[CoversFunction('createOptionalUserSession')]
 #[CoversFunction('createPDOForUser')]
 #[CoversFunction('createPdoSimpleWithTableTracking')]
@@ -200,6 +201,13 @@ class FactoriesFunctionsTest extends BaseTestCase
         $result = $this->injector->execute(createPDOForUser(...));
         
         $this->assertInstanceOf(\PDO::class, $result);
+    }
+
+    public function test_createMysqlClient(): void
+    {
+        $result = $this->injector->execute(createMysqlClient(...));
+
+        $this->assertInstanceOf(\Amp\Mysql\MysqlConnection::class, $result);
     }
 
     public function test_createSessionConfig()

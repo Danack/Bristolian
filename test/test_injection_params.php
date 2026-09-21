@@ -7,6 +7,7 @@ function testInjectionParams() : InjectionParams
     // These classes will only be created once by the injector.
     $shares = [
         \PDO::class,
+        \Amp\Mysql\MysqlConnection::class,
         \Redis::class,
         \Bristolian\PdoSimple\PdoSimple::class,
         \Bristolian\Cache\RequestTableAccessRecorder::class,
@@ -57,6 +58,7 @@ function testInjectionParams() : InjectionParams
     // Delegate the creation of types to callables.
     $delegates = [
         \PDO::class => 'createPDOForUser',
+        \Amp\Mysql\MysqlConnection::class => 'createMysqlClient',
         \Redis::class =>
             'createRedis',
 

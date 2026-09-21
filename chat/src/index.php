@@ -8,7 +8,6 @@ use Amp\Http\Server\Router;
 use Amp\Http\Server\SocketHttpServer;
 use Amp\Log\ConsoleFormatter;
 use Amp\Log\StreamHandler;
-use Amp\Mysql\MysqlConfig;
 use Amp\Redis\RedisConfig;
 use Amp\Socket;
 use Amp\Websocket\Compression\Rfc7692CompressionFactory;
@@ -21,11 +20,9 @@ use BristolianChat\ChatSpammer;
 use Monolog\Logger;
 use BristolianChat\ClientHandler\StandardClientHandler;
 use BristolianChat\FallbackHandler;
-use BristolianChat\RoomMessagesWatcher\SqlRoomMessagesWatcher;
 
 use function Amp\ByteStream\getStdout;
 use function Amp\Redis\createRedisClient;
-use function \Amp\Mysql\connect as mysql_connect;
 
 require __DIR__ . '/chat_includes.php';
 
@@ -36,6 +33,11 @@ $logHandler = new StreamHandler(getStdout());
 $logHandler->setFormatter(new ConsoleFormatter);
 $logger = new Logger('server');
 $logger->pushHandler($logHandler);
+
+$injector = new \DI\Injector();
+chatInjectionParams()->addToInjector($injector);
+$injector->share($injector);
+$injector->share($logger);
 
 // Redis
 $config = getGeneratedConfig();
@@ -48,35 +50,11 @@ $uri = sprintf(
 $redis_config = RedisConfig::fromUri($uri);
 $redis = createRedisClient($redis_config);
 
-// MySql
-$mysql_config = new MysqlConfig(
-    $config[Config::BRISTOLIAN_SQL_HOST],
-    MysqlConfig::DEFAULT_PORT,
-    $config[Config::BRISTOLIAN_SQL_USERNAME],
-    $config[Config::BRISTOLIAN_SQL_PASSWORD],
-    $config[Config::BRISTOLIAN_SQL_DATABASE],
-);
-$mysql_client = mysql_connect($mysql_config);
-
-
-$clientHandler = new StandardClientHandler($logger);
+$clientHandler = $injector->make(StandardClientHandler::class);
 
 $chat_spammer = new ChatSpammer($clientHandler, $logger);
 
-// MessageWatcher - just spins watching messages
-$roomMessageFetcher = new SqlRoomMessagesWatcher(
-    $mysql_client,
-    $logger
-);
-
-$markdownRenderer = new \Bristolian\MarkdownRenderer\CommonMarkRenderer();
-
-$roomMessageWatcher = new RoomMessageFetcher(
-    $markdownRenderer,
-    $roomMessageFetcher,
-    $clientHandler,
-    $logger
-);
+$roomMessageWatcher = $injector->make(RoomMessageFetcher::class);
 
 // Websocket server
 $server = SocketHttpServer::createForDirectAccess($logger);

@@ -18,12 +18,9 @@ require_once __DIR__ . "/../api/src/api_injection_params.php";
 require_once __DIR__ . "/../api/src/api_routes.php";
 require_once __DIR__ . "/../src/site_html.php";
 
-use Amp\Mysql\MysqlConfig;
-use Bristolian\Config\Config;
 use Bristolian\Repo\AdminRepo\PdoAdminRepo;
 use Bristolian\Session\UserSession;
 use Bristolian\Session\FakeUserSession;
-use function Amp\Mysql\connect as mysql_connect;
 
 
 /**
@@ -84,21 +81,6 @@ function create_test_uniqid(): string
     $counter += 1;
 
     return $id;
-}
-
-function createMysqlClient(): \Amp\Mysql\MysqlConnection
-{
-    $config = getGeneratedConfig();
-
-    $mysql_config = new MysqlConfig(
-        $config[Config::BRISTOLIAN_SQL_HOST],
-        MysqlConfig::DEFAULT_PORT,
-        $config[Config::BRISTOLIAN_SQL_USERNAME],
-        $config[Config::BRISTOLIAN_SQL_PASSWORD],
-        $config[Config::BRISTOLIAN_SQL_DATABASE],
-    );
-
-    return mysql_connect($mysql_config);
 }
 
 

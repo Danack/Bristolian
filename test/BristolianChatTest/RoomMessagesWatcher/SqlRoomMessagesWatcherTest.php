@@ -25,7 +25,7 @@ class SqlRoomMessagesWatcherTest extends BaseTestCase
         $logger = new Logger('test');
         $logger->pushHandler(new TestHandler());
 
-        $connection = createMysqlClient();
+        $connection = $this->injector->make(\Amp\Mysql\MysqlConnection::class);
         $watcher = new SqlRoomMessagesWatcher($connection, $logger);
 
         $id = $watcher->getInitialPreviousId();
@@ -38,7 +38,7 @@ class SqlRoomMessagesWatcherTest extends BaseTestCase
         $logger = new Logger('test');
         $logger->pushHandler($testHandler);
 
-        $connection = createMysqlClient();
+        $connection = $this->injector->make(\Amp\Mysql\MysqlConnection::class);
         $watcher = new SqlRoomMessagesWatcher($connection, $logger);
 
         $id = $watcher->getInitialPreviousId();
@@ -51,7 +51,7 @@ class SqlRoomMessagesWatcherTest extends BaseTestCase
     public function test_getNextChatMessageAfter_returns_null_when_no_later_row(): void
     {
         $logger = new Logger('test');
-        $connection = createMysqlClient();
+        $connection = $this->injector->make(\Amp\Mysql\MysqlConnection::class);
         $watcher = new SqlRoomMessagesWatcher($connection, $logger);
 
         $message = $watcher->getNextChatMessageAfter(PHP_INT_MAX);
