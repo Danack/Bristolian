@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace BristolianTest\Repo\BccTroRepo;
 
-use Bristolian\Model\Types\BccTro;
-use Bristolian\Model\Types\BccTroDocument;
 use Bristolian\Repo\BccTroRepo\BccTroRepo;
 use Bristolian\Repo\BccTroRepo\FakeBccTroRepo;
 use PHPUnit\Framework\Attributes\CoversMethod;
@@ -14,9 +12,10 @@ use PHPUnit\Framework\Attributes\CoversMethod;
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'getSavedBatches')]
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'getSavedPages')]
 #[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'saveData')]
 #[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'saveDataIfNew')]
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'getMostRecentData')]
 
 class FakeBccTroRepoTest extends BccTroRepoFixture
 {
@@ -25,43 +24,36 @@ class FakeBccTroRepoTest extends BccTroRepoFixture
         return new FakeBccTroRepo();
     }
 
-    public function test_fake_saveData_stores_tros(): void
+    public function test_fake_saveDataIfNew_does_not_append_duplicate_page(): void
     {
         $repo = new FakeBccTroRepo();
-        $statement = new BccTroDocument('Stmt', '/f/1', 'd1');
-        $notice = new BccTroDocument('Notice', '/f/2', 'd2');
-        $plan = new BccTroDocument('Plan', '/f/3', 'd3');
-        $tro = new BccTro(
-            title: 'Fake TRO',
-            reference_code: 'F-001',
-            statement_of_reasons: $statement,
-            notice_of_proposal: $notice,
-            proposed_plan: $plan
-        );
+        $html = '<html>duplicate page</html>';
 
-        $repo->saveData([$tro]);
-        $this->addToAssertionCount(1);
-    }
-
-    public function test_fake_saveDataIfNew_does_not_append_duplicate_batch(): void
-    {
-        $repo = new FakeBccTroRepo();
-        $statement = new BccTroDocument('Stmt', '/f/1', 'd1');
-        $notice = new BccTroDocument('Notice', '/f/2', 'd2');
-        $plan = new BccTroDocument('Plan', '/f/3', 'd3');
-        $tro = new BccTro(
-            title: 'Fake TRO',
-            reference_code: 'F-001',
-            statement_of_reasons: $statement,
-            notice_of_proposal: $notice,
-            proposed_plan: $plan
-        );
-
-        $firstId = $repo->saveDataIfNew([$tro]);
-        $secondId = $repo->saveDataIfNew([$tro]);
+        $firstId = $repo->saveDataIfNew($html);
+        $secondId = $repo->saveDataIfNew($html);
 
         $this->assertSame(0, $firstId);
         $this->assertNull($secondId);
-        $this->assertCount(1, $repo->getSavedBatches());
+        $this->assertCount(1, $repo->getSavedPages());
+        $this->assertSame([$html], $repo->getSavedPages());
+    }
+
+    public function test_fake_getMostRecentData_returns_null_when_nothing_saved(): void
+    {
+        $repo = new FakeBccTroRepo();
+
+        $this->assertNull($repo->getMostRecentData());
+    }
+
+    public function test_fake_getMostRecentData_returns_last_saved_page(): void
+    {
+        $repo = new FakeBccTroRepo();
+        $firstHtml = '<html>first</html>';
+        $secondHtml = '<html>second</html>';
+
+        $repo->saveData($firstHtml);
+        $repo->saveData($secondHtml);
+
+        $this->assertSame($secondHtml, $repo->getMostRecentData());
     }
 }

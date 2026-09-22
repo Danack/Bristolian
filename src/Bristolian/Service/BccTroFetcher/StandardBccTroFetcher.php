@@ -2,7 +2,6 @@
 
 namespace Bristolian\Service\BccTroFetcher;
 
-use Bristolian\Model\Types\BccTro;
 use Bristolian\Service\HttpFetcher\HttpFetcher;
 
 class StandardBccTroFetcher implements BccTroFetcher
@@ -14,18 +13,7 @@ class StandardBccTroFetcher implements BccTroFetcher
     ) {
     }
 
-    /**
-     * @return BccTro[]
-     */
-    public function fetchTros(): array
-    {
-        $htmlContent = $this->fetchHtmlContent();
-
-        return \parseTrosFromHtml($htmlContent, self::SOURCE_URL);
-    }
-
-
-    private function fetchHtmlContent(): string
+    public function fetchPage(): string
     {
         $headers = [
             'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -35,7 +23,7 @@ class StandardBccTroFetcher implements BccTroFetcher
             'Upgrade-Insecure-Requests: 1',
         ];
 
-        [$statusCode, $htmlContent, $responseHeaders] = $this->httpFetcher->fetch(
+        [$statusCode, $htmlContent] = $this->httpFetcher->fetch(
             self::SOURCE_URL,
             'GET',
             [],

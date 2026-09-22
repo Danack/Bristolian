@@ -2,16 +2,11 @@
 
 namespace Bristolian\CliController;
 
-use Bristolian\Model\Types\BccTro;
-use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\Repo\BccTroRepo\BccTroRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
-use Bristolian\Repo\RoomRepo\RoomRepo;
 use Bristolian\Service\BccTroFetcher\BccTroFetcher;
 use Bristolian\Service\CliOutput\CliOutput;
-use Bristolian\Service\DailyProcessorSchedule\DailyProcessorSchedule;
-use Bristolian\Service\RoomMessageService\RoomMessageService;
 use Bristolian\Service\DailyProcessorSchedule\BccTroExecutionCheck;
 
 class BccTroFetcherCliController
@@ -74,9 +69,9 @@ class BccTroFetcherCliController
         );
 
         try {
-            $new_tros = $bccTroFetcher->fetchTros();
+            $page_html = $bccTroFetcher->fetchPage();
 
-            $save_id_or_null = $bccTroRepo->saveDataIfNew($new_tros);
+            $save_id_or_null = $bccTroRepo->saveDataIfNew($page_html);
 
             $message = "BccTro save_id_or_null is " . var_export($save_id_or_null, true) . "\n";
             $cliOutput->write($message);

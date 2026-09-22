@@ -3,7 +3,6 @@
 namespace Bristolian\Repo\BccTroRepo;
 
 use BristolianGenerated\Database\bcc_tro_information;
-use Bristolian\Model\Types\BccTro;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Attribute\ReadsTable;
 use Bristolian\Attribute\WritesTable;
@@ -15,55 +14,32 @@ class PdoBccTroRepo implements BccTroRepo
     {
     }
 
-    /**
-     * @param BccTro[] $tros
-     */
     #[WritesTable(bcc_tro_information::class)]
-    public function saveData(array $tros): int
+    public function saveData(string $html): int
     {
-        [$error, $data] = convertToValue($tros);
-
-        if ($error !== null) {
-            throw new \Exception($error);
-        }
-
-        $json = json_encode_safe($data);
-
         return $this->pdo_simple->insert(
             bcc_tro_information::INSERT,
-            [':tro_data' => $json]
+            [':tro_data' => $html]
         );
     }
 
-    /**
-     * @param BccTro[] $tros
-     */
     #[ReadsTable(bcc_tro_information::class)]
     #[WritesTable(bcc_tro_information::class)]
-    public function saveDataIfNew(array $tros): int|null
+    public function saveDataIfNew(string $html): int|null
     {
-        [$error, $newData] = convertToValue($tros);
-
-        if ($error !== null) {
-            throw new \Exception($error);
-        }
-
         $sql = bcc_tro_information::SELECT . " order by id desc limit 1";
 
         $latestEntry = $this->pdo_simple->fetchOneAsDataOrNull($sql, []);
 
-        if ($latestEntry !== null) {
-            $previousData = json_decode_safe($latestEntry['tro_data']);
-            if (bccTroDataEquals($previousData, $newData)) {
-                return null;
-            }
+        if ($latestEntry !== null && $latestEntry['tro_data'] === $html) {
+            return null;
         }
 
-        return $this->saveData($tros);
+        return $this->saveData($html);
     }
 
     #[ReadsTable(bcc_tro_information::class)]
-    public function getMostRecentData(): BccTro|null
+    public function getMostRecentData(): string|null
     {
         $sql = bcc_tro_information::SELECT . " order by id desc";
 
@@ -74,9 +50,11 @@ class PdoBccTroRepo implements BccTroRepo
         );
 
         if ($latest_entry === null) {
+            // Difficult to test: databases may already contain rows, so an empty
+            // table is not a reliable fixture.
             return null;
         }
 
-        return BccTro::createFromJson($latest_entry->tro_data);
+        return $latest_entry->tro_data;
     }
 }

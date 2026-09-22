@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace BristolianTest\Repo\BccTroRepo;
 
 use PHPUnit\Framework\Attributes\CoversMethod;
-use Bristolian\Model\Types\BccTro;
 use Bristolian\Repo\BccTroRepo\BccTroRepo;
 use BristolianTest\BaseTestCase;
 
@@ -15,9 +14,11 @@ use BristolianTest\BaseTestCase;
 
 #[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'saveData')]
 #[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'saveDataIfNew')]
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'getMostRecentData')]
 #[CoversMethod(\Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class, '__construct')]
 #[CoversMethod(\Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class, 'saveData')]
 #[CoversMethod(\Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class, 'saveDataIfNew')]
+#[CoversMethod(\Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class, 'getMostRecentData')]
 
 abstract class BccTroRepoFixture extends BaseTestCase
 {
@@ -28,95 +29,56 @@ abstract class BccTroRepoFixture extends BaseTestCase
      */
     abstract public function getTestInstance(): BccTroRepo;
 
-    public function test_saveData_stores_data(): void
+    public function test_saveData_stores_page_html(): void
     {
         $repo = $this->getTestInstance();
+        $html = $this->createUniquePageHtml('save-data');
 
-        $statement1 = new \Bristolian\Model\Types\BccTroDocument('Statement 1', '/files/1', 'doc1');
-        $notice1 = new \Bristolian\Model\Types\BccTroDocument('Notice 1', '/files/2', 'doc2');
-        $plan1 = new \Bristolian\Model\Types\BccTroDocument('Plan 1', '/files/3', 'doc3');
+        $saveId = $repo->saveData($html);
 
-        $tro1 = new BccTro(
-            title: 'TRO 1',
-            reference_code: 'REF-001',
-            statement_of_reasons: $statement1,
-            notice_of_proposal: $notice1,
-            proposed_plan: $plan1
-        );
-
-        // Should not throw exception
-        $repo->saveData([$tro1]);
-    }
-
-    public function test_saveData_accepts_empty_array(): void
-    {
-        $repo = $this->getTestInstance();
-
-        // Should not throw exception
-        $repo->saveData([]);
+        $this->assertGreaterThanOrEqual(0, $saveId);
     }
 
     public function test_saveDataIfNew_saves_when_no_previous_data(): void
     {
         $repo = $this->getTestInstance();
-        $tro = $this->createUniqueTro('first-save');
+        $html = $this->createUniquePageHtml('first-save');
 
-        $saveId = $repo->saveDataIfNew([$tro]);
+        $saveId = $repo->saveDataIfNew($html);
 
         $this->assertNotNull($saveId);
     }
 
-    public function test_saveDataIfNew_returns_null_when_data_unchanged(): void
+    public function test_saveDataIfNew_returns_null_when_page_unchanged(): void
     {
         $repo = $this->getTestInstance();
-        $tro = $this->createUniqueTro('unchanged');
+        $html = $this->createUniquePageHtml('unchanged');
 
-        $firstSaveId = $repo->saveDataIfNew([$tro]);
+        $firstSaveId = $repo->saveDataIfNew($html);
         $this->assertNotNull($firstSaveId);
 
-        $secondSaveId = $repo->saveDataIfNew([$tro]);
+        $secondSaveId = $repo->saveDataIfNew($html);
         $this->assertNull($secondSaveId);
     }
 
-    public function test_saveDataIfNew_saves_when_data_differs(): void
+    public function test_saveDataIfNew_saves_when_page_differs(): void
     {
         $repo = $this->getTestInstance();
-        $firstTro = $this->createUniqueTro('before-change');
-        $secondTro = $this->createUniqueTro('after-change');
+        $firstHtml = $this->createUniquePageHtml('before-change');
+        $secondHtml = $this->createUniquePageHtml('after-change');
 
-        $firstSaveId = $repo->saveDataIfNew([$firstTro]);
+        $firstSaveId = $repo->saveDataIfNew($firstHtml);
         $this->assertNotNull($firstSaveId);
 
-        $secondSaveId = $repo->saveDataIfNew([$secondTro]);
+        $secondSaveId = $repo->saveDataIfNew($secondHtml);
         $this->assertNotNull($secondSaveId);
         $this->assertNotSame($firstSaveId, $secondSaveId);
     }
 
-    private function createUniqueTro(string $label): BccTro
+    private function createUniquePageHtml(string $label): string
     {
         $unique = create_test_uniqid();
-        $statement = new \Bristolian\Model\Types\BccTroDocument(
-            'Statement ' . $label . ' ' . $unique,
-            'https://www.bristol.gov.uk/files/' . $unique . '-statement',
-            'doc-' . $unique . '-1'
-        );
-        $notice = new \Bristolian\Model\Types\BccTroDocument(
-            'Notice ' . $label . ' ' . $unique,
-            'https://www.bristol.gov.uk/files/' . $unique . '-notice',
-            'doc-' . $unique . '-2'
-        );
-        $plan = new \Bristolian\Model\Types\BccTroDocument(
-            'Plan ' . $label . ' ' . $unique,
-            'https://www.bristol.gov.uk/files/' . $unique . '-plan',
-            'doc-' . $unique . '-3'
-        );
 
-        return new BccTro(
-            title: 'TRO ' . $label . ' ' . $unique,
-            reference_code: 'REF-' . $unique,
-            statement_of_reasons: $statement,
-            notice_of_proposal: $notice,
-            proposed_plan: $plan
-        );
+        return '<html><body>TRO page ' . $label . ' ' . $unique . '</body></html>';
     }
 }
