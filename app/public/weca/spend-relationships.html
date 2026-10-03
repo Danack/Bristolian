@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WECA spend corrections</title>
+<style>
+  :root { color-scheme: light; --ink:#1c1917; --muted:#57534e; --line:#e7e5e4; --band:#d6d3d1; --accent:#1d4ed8; --paper:#fafaf9; }
+  body { margin:0; font: 16px/1.45 Georgia, "Iowan Old Style", serif; color: var(--ink); background: var(--paper); }
+  main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  h1 { font-weight: 500; font-size: 1.7rem; margin: 0 0 0.4rem; }
+  h2 { font-weight: 500; font-size: 1.2rem; margin: 2rem 0 0.4rem; }
+  p { color: var(--muted); margin: 0.3rem 0 0.8rem; }
+  .controls { display:flex; gap:1.5rem; align-items:flex-end; flex-wrap:wrap; margin: 1rem 0; }
+  label { font-size: 0.85rem; color: var(--muted); display:block; margin-bottom: 0.25rem; }
+  select { font: inherit; padding: 0.4rem 0.5rem; min-width: 22rem; background: white; border: 1px solid var(--line); }
+  .stat strong { display:block; font-size: 1.25rem; font-weight: 600; }
+  .stat span { color: var(--muted); font-size: 0.85rem; }
+  svg { width: 100%; height: auto; display:block; }
+  svg text { font-family: Georgia, serif; }
+  table { width:100%; border-collapse: collapse; margin: 1rem 0 0.5rem; font-size: 0.92rem; }
+  th, td { text-align:left; padding: 0.35rem 0.45rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 0.78rem; letter-spacing: 0.02em; color: var(--muted); font-weight: 600; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .choice { margin: 0.6rem 0; }
+  hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0; }
+  path.band { cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <h1>What the correction changed</h1>
+  <p>West of England Combined Authority transparency reports, quarters republished from 2020/21 Q1 to 2025/26 Q2. Band width is the payment amount. The largest links are drawn individually; the rest are grouped.</p>
+
+  <h2>Service areas, by how much the published total rose</h2>
+  <p>Left blocks are the same height, one per service area, labelled with the amount already published under that name. Right blocks are sized by the pounds added in the correction. The percentage is that increase divided by the amount already published. Every category here went up. Removed payments are £1.6 million in total, spread across 34 rows, so no category shows a material fall.</p>
+  <div id="category"></div>
+  <table id="category-table"></table>
+
+  <hr>
+  <div class="controls">
+    <div>
+      <label for="relation">Relationship</label>
+      <select id="relation">
+        <option value="supplier">Supplier name on matched payments</option>
+        <option value="added">Added payments: year to service area</option>
+      </select>
+    </div>
+    <div class="stat"><strong id="stat-amount"></strong><span>Amount in this view</span></div>
+    <div class="stat"><strong id="stat-count"></strong><span>Payments</span></div>
+  </div>
+  <h2 id="flow-title"></h2>
+  <p id="flow-note"></p>
+  <div id="flow"></div>
+  <p class="choice" id="choice"></p>
+  <table id="detail"></table>
+  <p id="caution"></p>
+</main>
+<script>
+const DATA = {"supplier": [{"id": "s0", "from": "BRISTOL MUSIC TRUST LTD", "to": "BMT Enterprises Ltd", "amount": 9847000.0, "count": 2, "samples": [{"year": "2020/21", "quarter": "4", "date": "2021-02-17", "txn": "300002375", "purpose": "General Grants", "amount": 9336000.0}, {"year": "2021/22", "quarter": "1", "date": "2021-04-28", "txn": "300002999", "purpose": "Grants to LAs", "amount": 511000.0}]}, {"id": "s1", "from": "HCT Group Operations CIC - PREVIOUSLY CT PLUS", "to": "CLOSED HCT Group Operations Community Interest Company - in Administra", "amount": 3342268.58, "count": 60, "samples": [{"year": "2020/21", "quarter": "1", "date": "2020-06-11", "txn": "300000290", "purpose": "Transport Operators - Concessionary Fares", "amount": 10807.54}, {"year": "2020/21", "quarter": "1", "date": "2020-06-09", "txn": "300000334", "purpose": "Transport Operators - Concessionary Fares", "amount": 10781.2}, {"year": "2020/21", "quarter": "1", "date": "2020-06-09", "txn": "300000337", "purpose": "Transport Operators - Concessionary Fares", "amount": 11029.73}, {"year": "2020/21", "quarter": "2", "date": "2020-07-19", "txn": "300000581", "purpose": "Transport Operators - Concessionary Fares", "amount": 12198.56}, {"year": "2020/21", "quarter": "2", "date": "2020-07-29", "txn": "300000611", "purpose": "Transport Operators - Supported Bus Services", "amount": 4438.36}, {"year": "2020/21", "quarter": "2", "date": "2020-07-29", "txn": "300000611", "purpose": "Transport Operators - Supported Bus Services", "amount": 19205.01}]}, {"id": "s2", "from": "SOUTH GLOUCESTERSHIRE COUNCIL", "to": "CREATIVE ENGLAND", "amount": 2929250.0, "count": 1, "samples": [{"year": "2025/26", "quarter": "2", "date": "2025-10-01", "txn": "400008885", "purpose": "Capital Grants", "amount": 2929250.0}]}, {"id": "s3", "from": "BRISTOL CITY COUNCIL GEN ACCOUNT", "to": "VIA TECHNOLOGIES", "amount": 2783500.0, "count": 1, "samples": [{"year": "2025/26", "quarter": "2", "date": "2025-10-01", "txn": "400008885", "purpose": "Capital Grants", "amount": 2783500.0}]}, {"id": "s4", "from": "ATKINS LIMITED", "to": "AtkinsRealis UK Limited", "amount": 2709643.68, "count": 268, "samples": [{"year": "2020/21", "quarter": "2", "date": "2020-06-05", "txn": "300000151", "purpose": "Consultants - Project Based Work", "amount": 15053.5}, {"year": "2020/21", "quarter": "2", "date": "2020-06-27", "txn": "300000462", "purpose": "Fees - Business Case Reviews", "amount": 2333.25}, {"year": "2020/21", "quarter": "2", "date": "2020-07-30", "txn": "300000621", "purpose": "Consultants - Specialist Advice", "amount": 5000.0}, {"year": "2020/21", "quarter": "2", "date": "2020-08-11", "txn": "300000669", "purpose": "Consultants - Project Based Work", "amount": 14151.5}, {"year": "2020/21", "quarter": "2", "date": "2020-08-11", "txn": "300000672", "purpose": "Consultants - Project Based Work", "amount": 15289.93}, {"year": "2020/21", "quarter": "2", "date": "2020-08-11", "txn": "300000678", "purpose": "Fees - Business Case Reviews", "amount": 610.0}]}, {"id": "s5", "from": "BATH & NORTH EAST SOMERSET COUNCIL GENERAL SUSPSENSE ACCOUNT", "to": "BRISTOL CITY COUNCIL GEN ACCOUNT", "amount": 2220250.0, "count": 1, "samples": [{"year": "2025/26", "quarter": "2", "date": "2025-10-01", "txn": "400008885", "purpose": "Capital Grants", "amount": 2220250.0}]}, {"id": "s6", "from": "Rowe IT", "to": "CACI Ltd (formerly Rowe IT)", "amount": 1282345.22, "count": 14, "samples": [{"year": "2022/23", "quarter": "4", "date": "2023-03-27", "txn": "300009073", "purpose": "Consultancy Costs", "amount": 223797.11}, {"year": "2023/24", "quarter": "1", "date": "2023-05-15", "txn": "300009512", "purpose": "Consultancy Costs", "amount": 123231.25}, {"year": "2023/24", "quarter": "2", "date": "2023-06-02", "txn": "300009740", "purpose": "Consultancy Costs", "amount": 74449.21}, {"year": "2023/24", "quarter": "2", "date": "2023-07-05", "txn": "300010184", "purpose": "Consultancy Costs", "amount": 84936.4}, {"year": "2023/24", "quarter": "2", "date": "2023-08-03", "txn": "300010434", "purpose": "Consultancy Costs", "amount": 75675.0}, {"year": "2023/24", "quarter": "2", "date": "2023-09-12", "txn": "300010885", "purpose": "Consultancy Costs", "amount": 78806.25}]}, {"id": "s7", "from": "PEC Trust", "to": "PEC Trust t/a Plymouth Energy Community", "amount": 968116.34, "count": 5, "samples": [{"year": "2023/24", "quarter": "4", "date": "2024-03-11", "txn": "300012977", "purpose": "", "amount": 153149.43}, {"year": "2024/25", "quarter": "1", "date": "2024-06-03", "txn": "300014119", "purpose": "General Grants", "amount": 332070.83}, {"year": "2024/25", "quarter": "2", "date": "2024-09-03", "txn": "300015248", "purpose": "General Grants", "amount": 151284.38}, {"year": "2024/25", "quarter": "3", "date": "2024-11-25", "txn": "300016453", "purpose": "Grants", "amount": 155585.89}, {"year": "2024/25", "quarter": "4", "date": "2025-03-03", "txn": "300017908", "purpose": "Grants", "amount": 176025.81}]}, {"id": "s8", "from": "C T Coaches (Susan Young & David Young T/A)", "to": "C T Coaches Ltd", "amount": 813108.0, "count": 53, "samples": [{"year": "2020/21", "quarter": "1", "date": "2020-06-11", "txn": "300000286", "purpose": "Transport Operators - Concessionary Fares", "amount": 932.55}, {"year": "2020/21", "quarter": "1", "date": "2020-06-09", "txn": "300000333", "purpose": "Transport Operators - Concessionary Fares", "amount": 932.55}, {"year": "2020/21", "quarter": "1", "date": "2020-06-09", "txn": "300000336", "purpose": "Transport Operators - Concessionary Fares", "amount": 932.55}, {"year": "2020/21", "quarter": "2", "date": "2020-06-21", "txn": "300000463", "purpose": "Transport Operators - Supported Bus Services", "amount": 25504.56}, {"year": "2020/21", "quarter": "2", "date": "2020-06-21", "txn": "300000464", "purpose": "Transport Operators - Supported Bus Services", "amount": 25620.91}, {"year": "2020/21", "quarter": "2", "date": "2020-07-06", "txn": "300000486", "purpose": "Transport Operators - Supported Bus Services", "amount": 25237.11}]}, {"id": "s9", "from": "Redacted - Sole Trader", "to": "C T Coaches Ltd", "amount": 620054.3, "count": 21, "samples": [{"year": "2021/22", "quarter": "2", "date": "2021-07-02", "txn": "300003439", "purpose": "Transport Operators - Supported Bus Services", "amount": 23677.27}, {"year": "2021/22", "quarter": "2", "date": "2021-08-02", "txn": "300003635", "purpose": "Transport Operators - Supported Bus Services", "amount": 23363.22}, {"year": "2021/22", "quarter": "2", "date": "2021-09-01", "txn": "300003824", "purpose": "Transport Operators - Supported Bus Services", "amount": 21393.28}, {"year": "2021/22", "quarter": "3", "date": "2021-10-11", "txn": "300004086", "purpose": "Transport Operators - Supported Bus Services", "amount": 24312.44}, {"year": "2021/22", "quarter": "3", "date": "2021-11-01", "txn": "300004252", "purpose": "Transport Operators - Supported Bus Services", "amount": 22545.2}, {"year": "2021/22", "quarter": "3", "date": "2021-12-10", "txn": "300004598", "purpose": "Transport Operators - Supported Bus Services", "amount": 22263.8}]}, {"id": "s10", "from": "DESTINATION BRISTOL T/A VISIT WEST", "to": "VISIT WEST LIMITED", "amount": 519000.0, "count": 9, "samples": [{"year": "2023/24", "quarter": "1", "date": "2023-04-26", "txn": "300009357", "purpose": "Grants - Other", "amount": 51050.0}, {"year": "2023/24", "quarter": "1", "date": "2023-05-11", "txn": "300009494", "purpose": "Advertising", "amount": 4000.0}, {"year": "2023/24", "quarter": "4", "date": "2024-02-09", "txn": "300012594", "purpose": "", "amount": 950.0}, {"year": "2023/24", "quarter": "4", "date": "2024-03-25", "txn": "300013273", "purpose": "", "amount": 50000.0}, {"year": "2024/25", "quarter": "1", "date": "2024-05-10", "txn": "300013829", "purpose": "General Grants", "amount": 37026.0}, {"year": "2024/25", "quarter": "2", "date": "2024-07-11", "txn": "300014579", "purpose": "General Grants", "amount": 12974.0}]}, {"id": "s11", "from": "The Big Lemon", "to": "Big Lemon Bristol and The West LTD", "amount": 518618.97, "count": 9, "samples": [{"year": "2024/25", "quarter": "1", "date": "2024-04-03", "txn": "300013290", "purpose": "Transport Operators - Supported Bus Services", "amount": 55895.59}, {"year": "2024/25", "quarter": "1", "date": "2024-05-02", "txn": "300013703", "purpose": "Transport Operators - Supported Bus Services", "amount": 58321.41}, {"year": "2024/25", "quarter": "1", "date": "2024-06-03", "txn": "300014159", "purpose": "Transport Operators - Supported Bus Services", "amount": 58282.11}, {"year": "2024/25", "quarter": "2", "date": "2024-07-01", "txn": "300014438", "purpose": "Transport Operators - Supported Bus Services", "amount": 58710.71}, {"year": "2024/25", "quarter": "2", "date": "2024-08-05", "txn": "300014876", "purpose": "Transport Operators - Supported Bus Services", "amount": 58887.51}, {"year": "2024/25", "quarter": "2", "date": "2024-09-04", "txn": "300015288", "purpose": "Transport Operators - Supported Bus Services", "amount": 58826.71}]}, {"id": "s12", "from": "Via DRT", "to": "VIA TECHNOLOGIES", "amount": 464601.32, "count": 2, "samples": [{"year": "2025/26", "quarter": "2", "date": "2025-08-01", "txn": "400008674", "purpose": "Transport Operators", "amount": 334938.36}, {"year": "2025/26", "quarter": "2", "date": "2025-10-01", "txn": "400008885", "purpose": "Transport Operators", "amount": 129662.96}]}, {"id": "s13", "from": "AtkinsR\u00e9alis UK Limited", "to": "AtkinsRealis UK Limited", "amount": 405942.56, "count": 51, "samples": [{"year": "2023/24", "quarter": "4", "date": "2023-12-15", "txn": "300011936", "purpose": "", "amount": 3267.45}, {"year": "2023/24", "quarter": "4", "date": "2023-12-15", "txn": "300011936", "purpose": "", "amount": 4901.18}, {"year": "2023/24", "quarter": "4", "date": "2023-12-15", "txn": "300011937", "purpose": "", "amount": 3945.6}, {"year": "2023/24", "quarter": "4", "date": "2023-12-15", "txn": "300011937", "purpose": "", "amount": 5918.4}, {"year": "2023/24", "quarter": "4", "date": "2023-12-15", "txn": "300011938", "purpose": "", "amount": 1294.65}, {"year": "2023/24", "quarter": "4", "date": "2023-12-15", "txn": "300011938", "purpose": "", "amount": 1941.98}]}, {"id": "s14", "from": "Solace in Business Ltd", "to": "Solace in Business Ltd (Recruitment, Interim Management & Consultancy ", "amount": 393742.59, "count": 26, "samples": [{"year": "2022/23", "quarter": "4", "date": "2023-03-23", "txn": "300009035", "purpose": "Consultants - Project Based Work", "amount": 27500.0}, {"year": "2023/24", "quarter": "2", "date": "2023-07-18", "txn": "300010281", "purpose": "Advertising", "amount": 4837.5}, {"year": "2023/24", "quarter": "2", "date": "2023-07-18", "txn": "300010294", "purpose": "Advertising", "amount": 4837.5}, {"year": "2023/24", "quarter": "2", "date": "2023-07-21", "txn": "300010309", "purpose": "Agency Costs - Temporary Staff", "amount": 2955.0}, {"year": "2023/24", "quarter": "2", "date": "2023-08-07", "txn": "300010474", "purpose": "Agency Costs - Temporary Staff", "amount": 19700.0}, {"year": "2023/24", "quarter": "2", "date": "2023-09-11", "txn": "300010874", "purpose": "Agency Costs - Temporary Staff", "amount": 23640.0}]}, {"id": "s15", "from": "Social Access Ltd", "to": "CLOSED - Social Access Ltd", "amount": 367882.53, "count": 28, "samples": [{"year": "2020/21", "quarter": "1", "date": "2020-06-11", "txn": "900000084", "purpose": "Transport Operators - Community Transport", "amount": 53192.25}, {"year": "2020/21", "quarter": "2", "date": "2020-07-06", "txn": "300000496", "purpose": "Transport Operators - Community Transport", "amount": 50237.13}, {"year": "2020/21", "quarter": "2", "date": "2020-07-14", "txn": "300000552", "purpose": "Transport Operators - Concessionary Fares", "amount": 5366.4}, {"year": "2020/21", "quarter": "2", "date": "2020-07-14", "txn": "300000553", "purpose": "Transport Operators - Concessionary Fares", "amount": 5172.48}, {"year": "2020/21", "quarter": "2", "date": "2020-07-14", "txn": "300000561", "purpose": "Transport Operators - Concessionary Fares", "amount": 5510.4}, {"year": "2020/21", "quarter": "2", "date": "2020-09-21", "txn": "300001033", "purpose": "Transport Operators - Concessionary Fares", "amount": 4543.89}]}, {"id": "s16", "from": "BRISTOL COMMUNITY ENERGY LTD", "to": "BRISTOL COMMUNITY ENERGY LTD T/A BRISTOL ENERGY COOPERATIVE", "amount": 342499.07, "count": 25, "samples": [{"year": "2022/23", "quarter": "2", "date": "2022-08-25", "txn": "300006691", "purpose": "Private Businesses", "amount": 2000.0}, {"year": "2022/23", "quarter": "4", "date": "2023-02-10", "txn": "300008361", "purpose": "Private Businesses", "amount": 1136.0}, {"year": "2023/24", "quarter": "2", "date": "2023-06-28", "txn": "300010079", "purpose": "Private Businesses", "amount": 16720.18}, {"year": "2023/24", "quarter": "2", "date": "2023-07-21", "txn": "300010305", "purpose": "Private Businesses", "amount": 6074.61}, {"year": "2023/24", "quarter": "3", "date": "2023-10-17", "txn": "300011261", "purpose": "Private Businesses", "amount": 6488.27}, {"year": "2023/24", "quarter": "3", "date": "2023-10-17", "txn": "300011261", "purpose": "Grants - Other", "amount": 19600.0}]}, {"id": "s17", "from": "JAMES BLAKE SOLUTIONS LTD T/A JBi DIGITAL", "to": "[REDACTED]", "amount": 308469.57, "count": 32, "samples": [{"year": "2022/23", "quarter": "1", "date": "2022-05-03", "txn": "300005823", "purpose": "Website Developemt", "amount": 35959.0}, {"year": "2022/23", "quarter": "1", "date": "2022-05-26", "txn": "300005998", "purpose": "Web Hosting", "amount": 2400.0}, {"year": "2022/23", "quarter": "2", "date": "2022-08-31", "txn": "300006764", "purpose": "Web Hosting", "amount": 18000.0}, {"year": "2022/23", "quarter": "2", "date": "2022-08-31", "txn": "300006765", "purpose": "Web Hosting", "amount": 8955.0}, {"year": "2022/23", "quarter": "4", "date": "2022-12-14", "txn": "300007769", "purpose": "Website Developemt", "amount": 6900.0}, {"year": "2023/24", "quarter": "1", "date": "2023-05-09", "txn": "300009464", "purpose": "Website Developemt", "amount": 3824.39}]}, {"id": "sother", "from": "Other original names", "to": "Other corrected names", "amount": 11453603.7, "count": 1725, "samples": []}], "added": [{"id": "a0", "from": "2020/21", "to": "Grant Management & Assurance (Capital)", "amount": 60895048.47, "count": 99, "suppliers": [{"name": "SOUTH GLOUCESTERSHIRE COUNCIL", "amount": 21204008.59}, {"name": "BMT Enterprises Ltd", "amount": 9847000.0}, {"name": "BATH & NORTH EAST SOMERSET COUNCIL GENERAL SUSPSENSE ACCOUNT", "amount": 9744974.82}, {"name": "CITY OF BRISTOL COLLEGE", "amount": 8598000.0}, {"name": "SOUTH GLOUCESTERSHIRE AND STROUD COLLEGE", "amount": 5290640.0}]}, {"id": "a1", "from": "2022/23", "to": "Low Carbon & Net Zero (Capital)", "amount": 47043440.69, "count": 35, "suppliers": [{"name": "CITY ENERGY NETWORK LIMITED", "amount": 19653409.95}, {"name": "E.ON NEXT", "amount": 16042020.61}, {"name": "Department for Business Energy & Industrial Strategy", "amount": 11118581.0}, {"name": "HAPPY ENERGY SOLUTIONS LTD", "amount": 205260.04}, {"name": "CLOSED -Jaminns Ltd (trading as Jam Inns Ice Delivery)", "amount": 14841.5}]}, {"id": "a2", "from": "2024/25", "to": "Grant Management & Assurance (Capital)", "amount": 40597949.0, "count": 27, "suppliers": [{"name": "South Gloucestershire Council", "amount": 11863330.0}, {"name": "Bristol City Council", "amount": 11843062.5}, {"name": "Bath & North East Somerset Council", "amount": 10052357.5}, {"name": "SOUTH GLOUCESTERSHIRE COUNCIL", "amount": 2525306.0}, {"name": "BRISTOL CITY COUNCIL GEN ACCOUNT", "amount": 2399738.0}]}, {"id": "a3", "from": "2023/24", "to": "Grant Management & Assurance (Capital)", "amount": 32171300.0, "count": 20, "suppliers": [{"name": "BRISTOL CITY COUNCIL GEN ACCOUNT", "amount": 11300000.0}, {"name": "South Gloucestershire Council", "amount": 7708131.0}, {"name": "Bristol City Council", "amount": 7321455.0}, {"name": "Bath and North East Somerset Council", "amount": 5841714.0}]}, {"id": "a4", "from": "2020/21", "to": "Integrated Transport", "amount": 25777885.27, "count": 767, "suppliers": [{"name": "First West of England Ltd", "amount": 15862367.06}, {"name": "Stagecoach Service Ltd", "amount": 2915493.59}, {"name": "CLOSED HCT Group Operations Community Interest Company - in ", "amount": 1923685.36}, {"name": "BATH & NORTH EAST SOMERSET COUNCIL GENERAL SUSPSENSE ACCOUNT", "amount": 657438.3}, {"name": "Idox Software Ltd", "amount": 377032.08}]}, {"id": "a5", "from": "2025/26", "to": "Grant Management & Assurance (Capital)", "amount": 23799000.0, "count": 18, "suppliers": [{"name": "SOUTH GLOUCESTERSHIRE COUNCIL", "amount": 8787750.0}, {"name": "BRISTOL CITY COUNCIL GEN ACCOUNT", "amount": 8350500.0}, {"name": "BATH & NORTH EAST SOMERSET COUNCIL GENERAL SUSPSENSE ACCOUNT", "amount": 4440500.0}, {"name": "BATH AND NORTH EAST SOMERSET", "amount": 2220250.0}]}, {"id": "a6", "from": "2024/25", "to": "Employment & Skills", "amount": 22090626.79, "count": 519, "suppliers": [{"name": "CITY OF BRISTOL COLLEGE", "amount": 8057397.36}, {"name": "SOUTH GLOUCESTERSHIRE AND STROUD COLLEGE", "amount": 2671274.45}, {"name": "BATH COLLEGE CURRENT ACCOUNT", "amount": 1872734.09}, {"name": "BRISTOL CITY COUNCIL GEN ACCOUNT", "amount": 1779200.64}, {"name": "WESTON COLLEGE", "amount": 1635415.03}]}, {"id": "a7", "from": "2023/24", "to": "Employment & Skills", "amount": 20465586.56, "count": 413, "suppliers": [{"name": "CITY OF BRISTOL COLLEGE", "amount": 7133582.25}, {"name": "SOUTH GLOUCESTERSHIRE AND STROUD COLLEGE", "amount": 2613534.55}, {"name": "BATH COLLEGE CURRENT ACCOUNT", "amount": 1696010.37}, {"name": "BRISTOL CITY COUNCIL GEN ACCOUNT", "amount": 1587091.85}, {"name": "WESTON COLLEGE", "amount": 1585566.52}]}, {"id": "a8", "from": "2020/21", "to": "Employment & Skills", "amount": 19472514.85, "count": 401, "suppliers": [{"name": "CITY OF BRISTOL COLLEGE", "amount": 7267964.62}, {"name": "SOUTH GLOUCESTERSHIRE AND STROUD COLLEGE", "amount": 2588582.06}, {"name": "BATH COLLEGE CURRENT ACCOUNT", "amount": 2315759.34}, {"name": "BRISTOL CITY COUNCIL GEN ACCOUNT", "amount": 1802412.55}, {"name": "WESTON COLLEGE", "amount": 1604869.05}]}, {"id": "a9", "from": "2024/25", "to": "Integrated Transport", "amount": 18297399.65, "count": 322, "suppliers": [{"name": "First West of England Ltd", "amount": 12387237.7}, {"name": "Via Technologies Europe B.V.", "amount": 1270365.71}, {"name": "VIA TECHNOLOGIES", "amount": 1003853.98}, {"name": "Stagecoach Service Ltd", "amount": 650475.07}, {"name": "BATH & NORTH EAST SOMERSET COUNCIL GENERAL SUSPSENSE ACCOUNT", "amount": 495369.27}]}, {"id": "a10", "from": "2022/23", "to": "Employment & Skills", "amount": 16160633.34, "count": 177, "suppliers": [{"name": "CITY OF BRISTOL COLLEGE", "amount": 6309432.47}, {"name": "SOUTH GLOUCESTERSHIRE AND STROUD COLLEGE", "amount": 2669124.11}, {"name": "BATH COLLEGE CURRENT ACCOUNT", "amount": 1648138.77}, {"name": "BRISTOL CITY COUNCIL GEN ACCOUNT", "amount": 1549080.87}, {"name": "WESTON COLLEGE", "amount": 1190511.49}]}, {"id": "a11", "from": "2023/24", "to": "Integrated Transport", "amount": 15285913.35, "count": 363, "suppliers": [{"name": "First West of England Ltd", "amount": 10920487.96}, {"name": "Via Technologies Europe B.V.", "amount": 498746.15}, {"name": "WEMOVE SOLUTIONS LTD", "amount": 463743.78}, {"name": "BATH & NORTH EAST SOMERSET COUNCIL GENERAL SUSPSENSE ACCOUNT", "amount": 441240.56}, {"name": "Community Transport (Brighton, Hove & Area) Ltd", "amount": 366784.48}]}, {"id": "a12", "from": "2022/23", "to": "Integrated Transport", "amount": 13985459.93, "count": 382, "suppliers": [{"name": "First West of England Ltd", "amount": 10849568.13}, {"name": "Stagecoach Service Ltd", "amount": 413957.81}, {"name": "BATH & NORTH EAST SOMERSET COUNCIL GENERAL SUSPSENSE ACCOUNT", "amount": 386436.27}, {"name": "CLOSED - Social Access Ltd", "amount": 216930.74}, {"name": "Hartcliffe & Withywood Community Partnership (HWCP)", "amount": 212734.0}]}, {"id": "a13", "from": "2022/23", "to": "Enterprise, Inward Investment & Trade", "amount": 13900760.43, "count": 20, "suppliers": [{"name": "SOUTH GLOUCESTERSHIRE COUNCIL", "amount": 13694440.36}, {"name": "Sundry Supplier- Business Growth Grants", "amount": 137645.97}, {"name": "MIPIM", "amount": 41877.95}, {"name": "NCC OPERATIONS LTD", "amount": 14400.0}, {"name": "ZZZ LTD", "amount": 4646.02}]}, {"id": "a14", "from": "2021/22", "to": "Integrated Transport", "amount": 13190015.47, "count": 216, "suppliers": [{"name": "First West of England Ltd", "amount": 11222475.64}, {"name": "Stagecoach Service Ltd", "amount": 466662.24}, {"name": "BATH & NORTH EAST SOMERSET COUNCIL GENERAL SUSPSENSE ACCOUNT", "amount": 283470.63}, {"name": "CLOSED HCT Group Operations Community Interest Company - in ", "amount": 194538.15}, {"name": "Hartcliffe & Withywood Community Partnership (HWCP)", "amount": 119000.0}]}, {"id": "a15", "from": "2021/22", "to": "Employment & Skills", "amount": 11885934.12, "count": 96, "suppliers": [{"name": "CITY OF BRISTOL COLLEGE", "amount": 5055830.84}, {"name": "BATH COLLEGE CURRENT ACCOUNT", "amount": 1998315.23}, {"name": "SOUTH GLOUCESTERSHIRE AND STROUD COLLEGE", "amount": 1671868.03}, {"name": "WESTON COLLEGE", "amount": 1079680.61}, {"name": "BRISTOL CITY COUNCIL GEN ACCOUNT", "amount": 868499.64}]}, {"id": "aother", "from": "All years", "to": "Other service areas", "amount": 110108086.39, "count": 3302, "suppliers": []}]};
+const CATEGORY_CHANGE = [
+  { name: "Grant Management & Assurance (Capital)", added: 163713297, base: 181275467, count: 167 },
+  { name: "Employment & Skills", added: 95946837, base: 33103712, count: 1729 },
+  { name: "Integrated Transport", added: 91955575, base: 109996792, count: 2140 },
+  { name: "Low Carbon & Net Zero (Capital)", added: 58398345, base: 21031110, count: 62 },
+  { name: "Funding from Central Government", added: 19256592, base: 134373, count: 29 },
+  { name: "Enterprise, Inward Investment & Trade", added: 16804383, base: 18810588, count: 400 },
+  { name: "Capital Delivery (Capital)", added: 9882455, base: 127350522, count: 104 },
+  { name: "Low Carbon & Net Zero", added: 8764937, base: 17546523, count: 204 },
+  { name: "Core Funding", added: 6730489, base: 151751, count: 9 },
+  { name: "Grant Management & Assurance", added: 5279840, base: 41100920, count: 73 },
+  { name: "BSPSIG", added: 3298275, base: 1744272, count: 45 },
+  { name: "Capital Delivery", added: 2850057, base: 18549672, count: 100 },
+];
+const GBP = new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 });
+const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const clip = (s, n) => s.length > n ? s.slice(0, n - 1) + "…" : s;
+
+function categorySankey() {
+  const rows = CATEGORY_CHANGE;
+  const width = 1100, height = 620, top = 28, pad = 8, gap = 8, nodeW = 12, leftX = 340, rightX = 720;
+  const usable = height - top - pad - gap * (rows.length - 1);
+  const leftH = usable / rows.length;
+  const addedTotal = rows.reduce((s, r) => s + r.added, 0);
+  let yLeft = top, yRight = top;
+  const bands = rows.map((row) => {
+    const h1 = (row.added / addedTotal) * usable;
+    const band = { row, y0: yLeft, h0: leftH, y1: yRight, h1 };
+    yLeft += leftH + gap; yRight += h1 + gap;
+    return band;
+  });
+  const parts = [`<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Service area already published, equal blocks, to amount added">`,
+    `<text x="${leftX}" y="14" text-anchor="end" fill="#78716c" font-size="11">Already published</text>`,
+    `<text x="${rightX + nodeW}" y="14" fill="#78716c" font-size="11">Added by the correction</text>`];
+  for (const { row, y0, h0, y1, h1 } of bands) {
+    const mid = (leftX + nodeW + rightX) / 2;
+    const pct = Math.round((row.added / row.base) * 100);
+    const d = `M ${leftX + nodeW} ${y0} C ${mid} ${y0}, ${mid} ${y1}, ${rightX} ${y1} L ${rightX} ${y1 + h1} C ${mid} ${y1 + h1}, ${mid} ${y0 + h0}, ${leftX + nodeW} ${y0 + h0} Z`;
+    const title = `${row.name}: already ${GBP.format(row.base)}, added ${GBP.format(row.added)}, +${pct}%`;
+    parts.push(`<path d="${d}" fill="#e7e5e4"><title>${esc(title)}</title></path>`);
+    parts.push(`<rect x="${leftX}" y="${y0}" width="${nodeW}" height="${h0}" fill="#a8a29e"/>`);
+    parts.push(`<rect x="${rightX}" y="${y1}" width="${nodeW}" height="${h1}" fill="#1d4ed8"/>`);
+    const leftLabel = `${clip(row.name, 42)}  ${GBP.format(row.base)}`;
+    parts.push(`<text x="${leftX - 8}" y="${y0 + Math.min(h0 / 2, 10) + 4}" text-anchor="end" fill="#1c1917" font-size="11">${esc(leftLabel)}</text>`);
+    if (h1 >= 16) {
+      parts.push(`<text x="${rightX + nodeW + 8}" y="${y1 + h1 / 2 + 4}" fill="#1c1917" font-size="11">${esc(GBP.format(row.added) + "  +" + pct + "%")}</text>`);
+    }
+  }
+  parts.push("</svg>");
+  document.getElementById("category").innerHTML = parts.join("");
+  document.getElementById("category-table").innerHTML =
+    `<thead><tr><th>Service area</th><th class="num">Already published</th><th class="num">Added</th><th class="num">Change</th></tr></thead><tbody>` +
+    rows.map((row) => `<tr><td>${esc(row.name)}</td><td class="num">${GBP.format(row.base)}</td><td class="num">${GBP.format(row.added)}</td><td class="num">+${Math.round(row.added / row.base * 100)}%</td></tr>`).join("") +
+    `</tbody>`;
+}
+
+function layout(flows, height) {
+  const pad = 8, nodeW = 12, leftX = 250, rightX = 720, gap = 6;
+  const order = (side) => {
+    const totals = new Map();
+    for (const flow of flows) totals.set(flow[side], (totals.get(flow[side]) || 0) + flow.amount);
+    return [...totals.entries()].sort((a, b) => b[1] - a[1]);
+  };
+  const place = (entries) => {
+    const total = entries.reduce((s, [, v]) => s + v, 0);
+    const usable = height - pad * 2 - gap * Math.max(0, entries.length - 1);
+    let y = pad;
+    const boxes = new Map();
+    for (const [name, value] of entries) {
+      const h = Math.max(10, (value / total) * usable);
+      boxes.set(name, { y, h });
+      y += h + gap;
+    }
+    return boxes;
+  };
+  const left = place(order("from"));
+  const right = place(order("to"));
+  const usedL = new Map(), usedR = new Map();
+  const ribbons = flows.map((flow) => {
+    const L = left.get(flow.from), R = right.get(flow.to);
+    const leftTotal = flows.filter((item) => item.from === flow.from).reduce((s, item) => s + item.amount, 0);
+    const rightTotal = flows.filter((item) => item.to === flow.to).reduce((s, item) => s + item.amount, 0);
+    const h0 = (flow.amount / leftTotal) * L.h;
+    const h1 = (flow.amount / rightTotal) * R.h;
+    const y0 = L.y + (usedL.get(flow.from) || 0);
+    const y1 = R.y + (usedR.get(flow.to) || 0);
+    usedL.set(flow.from, (usedL.get(flow.from) || 0) + h0);
+    usedR.set(flow.to, (usedR.get(flow.to) || 0) + h1);
+    return { flow, y0, h0, y1, h1 };
+  });
+  return { left, right, ribbons, leftX, rightX, nodeW };
+}
+
+let selected = null;
+function renderFlow() {
+  const relation = document.getElementById("relation").value;
+  const flows = relation === "supplier" ? DATA.supplier : DATA.added;
+  if (!flows.some((flow) => flow.id === selected)) selected = flows[0].id;
+  const active = flows.find((flow) => flow.id === selected);
+  const height = relation === "supplier" ? 780 : 680;
+  const width = 1100;
+  const drawn = layout(flows, height);
+  const total = flows.reduce((s, f) => s + f.amount, 0);
+  const count = flows.reduce((s, f) => s + f.count, 0);
+  document.getElementById("stat-amount").textContent = GBP.format(total);
+  document.getElementById("stat-count").textContent = String(count);
+  document.getElementById("flow-title").textContent = relation === "supplier"
+    ? "Original supplier name to corrected supplier name"
+    : "Added payments from year to service area";
+  const leftTitle = relation === "supplier" ? "Name on the original report" : "Financial year";
+  const rightTitle = relation === "supplier" ? "Name on the corrected report" : "Service area";
+  document.getElementById("flow-note").textContent = `${leftTitle} on the left, ${rightTitle} on the right, amounts in pounds. Click a band to list sample payments or the largest suppliers in it.`;
+  const parts = [`<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(leftTitle)} to ${esc(rightTitle)}">`];
+  for (const { flow, y0, h0, y1, h1 } of drawn.ribbons) {
+    const on = flow.id === active.id;
+    const mid = (drawn.leftX + drawn.nodeW + drawn.rightX) / 2;
+    const d = `M ${drawn.leftX + drawn.nodeW} ${y0} C ${mid} ${y0}, ${mid} ${y1}, ${drawn.rightX} ${y1} L ${drawn.rightX} ${y1 + h1} C ${mid} ${y1 + h1}, ${mid} ${y0 + h0}, ${drawn.leftX + drawn.nodeW} ${y0 + h0} Z`;
+    parts.push(`<path class="band" data-id="${flow.id}" d="${d}" fill="${on ? "#1d4ed8" : "#e7e5e4"}"><title>${esc(flow.from + " to " + flow.to + ": " + GBP.format(flow.amount))}</title></path>`);
+  }
+  for (const [name, box] of drawn.left) {
+    parts.push(`<rect x="${drawn.leftX}" y="${box.y}" width="${drawn.nodeW}" height="${box.h}" fill="#1d4ed8"/>`);
+    parts.push(`<text x="${drawn.leftX - 8}" y="${box.y + Math.min(box.h / 2, 12) + 4}" text-anchor="end" fill="#1c1917" font-size="11">${esc(clip(name, 36))}</text>`);
+  }
+  for (const [name, box] of drawn.right) {
+    parts.push(`<rect x="${drawn.rightX}" y="${box.y}" width="${drawn.nodeW}" height="${box.h}" fill="#1d4ed8"/>`);
+    parts.push(`<text x="${drawn.rightX + drawn.nodeW + 8}" y="${box.y + Math.min(box.h / 2, 12) + 4}" fill="#1c1917" font-size="11">${esc(clip(name, 42))}</text>`);
+  }
+  parts.push("</svg>");
+  const host = document.getElementById("flow");
+  host.innerHTML = parts.join("");
+  host.querySelectorAll("path.band").forEach((path) => {
+    path.addEventListener("click", () => { selected = path.dataset.id; renderFlow(); });
+  });
+  document.getElementById("choice").innerHTML = `<strong>${esc(GBP.format(active.amount))}</strong> · ${active.count} payments · ${esc(active.from)} → ${esc(active.to)}`;
+  const detail = document.getElementById("detail");
+  if (relation === "supplier" && active.samples && active.samples.length) {
+    detail.innerHTML = `<thead><tr><th>Year</th><th class="num">Quarter</th><th>Date</th><th>Transaction</th><th>Purpose</th><th class="num">Amount (£)</th></tr></thead><tbody>` +
+      active.samples.map((s) => `<tr><td>${esc(s.year)}</td><td class="num">${esc(s.quarter)}</td><td>${esc(s.date)}</td><td>${esc(s.txn)}</td><td>${esc(s.purpose || "—")}</td><td class="num">${GBP.format(s.amount)}</td></tr>`).join("") + `</tbody>`;
+  } else if (relation === "added" && active.suppliers && active.suppliers.length) {
+    detail.innerHTML = `<thead><tr><th>Largest suppliers in this band</th><th class="num">Amount (£)</th></tr></thead><tbody>` +
+      active.suppliers.map((s) => `<tr><td>${esc(s.name)}</td><td class="num">${GBP.format(s.amount)}</td></tr>`).join("") + `</tbody>`;
+  } else detail.innerHTML = "";
+  document.getElementById("caution").textContent = relation === "supplier"
+    ? "These rows matched on transaction number after the supplier text differed. Some transaction numbers are reused, so a band can join two different payments that share a number. The table shows the transaction number and date so those can be checked. Up to six payments are listed for each band."
+    : "";
+}
+
+categorySankey();
+document.getElementById("relation").addEventListener("change", () => { selected = null; renderFlow(); });
+renderFlow();
+</script>
+</body>
+</html>
