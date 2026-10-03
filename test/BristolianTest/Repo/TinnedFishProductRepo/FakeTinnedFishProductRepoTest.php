@@ -7,14 +7,13 @@ namespace BristolianTest\Repo\TinnedFishProductRepo;
 use Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo;
 use Bristolian\Repo\TinnedFishProductRepo\TinnedFishProductRepo;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\TinnedFishProductRepo\FakeTinnedFishProductRepo::class, '__construct')]
-
+#[CoversClass(FakeTinnedFishProductRepo::class)]
 class FakeTinnedFishProductRepoTest extends TinnedFishProductRepoFixture
 {
     /**

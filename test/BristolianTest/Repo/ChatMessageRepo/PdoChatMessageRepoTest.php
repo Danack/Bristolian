@@ -14,17 +14,13 @@ use Bristolian\Repo\UserRepo\PdoUserRepo;
 use BristolianTest\Repo\DbTransactionIsolation;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class, 'getMessagesForRoom')]
-#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class, 'storeChatMessageForSystem')]
-#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\PdoChatMessageRepo::class, 'storeChatMessageForUser')]
-
+#[CoversClass(PdoChatMessageRepo::class)]
 class PdoChatMessageRepoTest extends ChatMessageRepoFixture
 {
 //    use DbTransactionIsolation;

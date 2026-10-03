@@ -7,11 +7,9 @@ namespace BristolianTest\Service\DailyProcessorSchedule;
 use Bristolian\Service\DailyProcessorSchedule\FakeDailyProcessorSchedule;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\Service\DailyProcessorSchedule\FakeDailyProcessorSchedule::class, 'isOverXHoursAgo')]
-#[CoversMethod(\Bristolian\Service\DailyProcessorSchedule\FakeDailyProcessorSchedule::class, 'isTimeToRunDailySystemInfo')]
-
+#[CoversClass(FakeDailyProcessorSchedule::class)]
 class FakeDailyProcessorScheduleTest extends BaseTestCase
 {
     public function test_isTimeToRunDailySystemInfo_returns_configured_value(): void

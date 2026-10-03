@@ -11,12 +11,10 @@ use Bristolian\Service\ObjectStore\FakeAvatarImageObjectStore;
 use Bristolian\UploadedFiles\UploadedFile;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 use function Safe\getimagesize;
 
-#[CoversMethod(\Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::class, '__construct')]
-#[CoversMethod(\Bristolian\Service\AvatarImageStorage\StandardAvatarImageStorage::class, 'storeAvatarForUser')]
-
+#[CoversClass(StandardAvatarImageStorage::class)]
 class StandardAvatarImageStorageTest extends BaseTestCase
 {
     public function test_storeAvatarForUser_returns_extensionNotAllowed_when_extension_not_in_list(): void

@@ -6,11 +6,9 @@ namespace BristolianTest\Repo\RoomAnnotationTagRepo;
 
 use Bristolian\Repo\RoomAnnotationTagRepo\FakeRoomAnnotationTagRepo;
 use Bristolian\Repo\RoomAnnotationTagRepo\RoomAnnotationTagRepo;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\Repo\RoomAnnotationTagRepo\FakeRoomAnnotationTagRepo::class, 'getTagIdsForRoomAnnotation')]
-#[CoversMethod(\Bristolian\Repo\RoomAnnotationTagRepo\FakeRoomAnnotationTagRepo::class, 'setTagsForRoomAnnotation')]
-
+#[CoversClass(FakeRoomAnnotationTagRepo::class)]
 class FakeRoomAnnotationTagRepoTest extends RoomAnnotationTagRepoFixture
 {
     public function getTestInstance(): RoomAnnotationTagRepo

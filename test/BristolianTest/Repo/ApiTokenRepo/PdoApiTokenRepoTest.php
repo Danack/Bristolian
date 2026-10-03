@@ -9,16 +9,14 @@ use Bristolian\Repo\ApiTokenRepo\ApiTokenCreateFailedException;
 use Bristolian\Repo\ApiTokenRepo\ApiTokenRepo;
 use Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo;
 use Bristolian\Service\SecureTokenGenerator\FixedSecureTokenGenerator;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\ApiTokenCreateFailedException::class, 'afterMaxRetries')]
-#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::class, 'createToken')]
-#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\PdoApiTokenRepo::class, 'getByToken')]
-
+#[CoversClass(ApiTokenCreateFailedException::class)]
+#[CoversClass(PdoApiTokenRepo::class)]
 class PdoApiTokenRepoTest extends ApiTokenRepoFixture
 {
     /**

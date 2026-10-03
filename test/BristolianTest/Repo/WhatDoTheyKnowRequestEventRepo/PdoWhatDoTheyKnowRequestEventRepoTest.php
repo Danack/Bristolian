@@ -10,15 +10,13 @@ use Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\PdoWhatDoTheyKnowRequestEvent
 use Bristolian\Service\UuidGenerator\UuidGenerator;
 use BristolianTest\BaseTestCase;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\PdoWhatDoTheyKnowRequestEventRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\WhatDoTheyKnowRequestEventRepo\PdoWhatDoTheyKnowRequestEventRepo::class, 'insertNewRequestEvent')]
-
+#[CoversClass(PdoWhatDoTheyKnowRequestEventRepo::class)]
 final class PdoWhatDoTheyKnowRequestEventRepoTest extends BaseTestCase
 {
     public function test_insertNewRequestEvent_returns_true_then_false_on_duplicate_wdt_event_id(): void

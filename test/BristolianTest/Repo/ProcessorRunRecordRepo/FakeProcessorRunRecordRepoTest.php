@@ -7,16 +7,13 @@ namespace BristolianTest\Repo\ProcessorRunRecordRepo;
 use Bristolian\Repo\ProcessorRunRecordRepo\ProcessorRunRecordRepo;
 use Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo;
 use Bristolian\Repo\ProcessorRepo\ProcessType;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::class, 'getLastRunDateTime')]
-#[CoversMethod(\Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::class, 'getRunRecords')]
-#[CoversMethod(\Bristolian\Repo\ProcessorRunRecordRepo\FakeProcessorRunRecordRepo::class, 'setRunFinished')]
-
+#[CoversClass(FakeProcessorRunRecordRepo::class)]
 class FakeProcessorRunRecordRepoTest extends ProcessorRunRecordRepoFixture
 {
     public function getTestInstance(): ProcessorRunRecordRepo

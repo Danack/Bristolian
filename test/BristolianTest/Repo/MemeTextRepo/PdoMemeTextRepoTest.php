@@ -11,17 +11,13 @@ use Bristolian\Repo\MemeTextRepo\MemeTextRepo;
 use Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo;
 use BristolianTest\Repo\DbTransactionIsolation;
 use Bristolian\UploadedFiles\UploadedFile;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class, 'getNextMemeToOCR')]
-#[CoversMethod(\Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class, 'searchMemeIdsByText')]
-#[CoversMethod(\Bristolian\Repo\MemeTextRepo\PdoMemeTextRepo::class, 'updateMemeText')]
-
+#[CoversClass(PdoMemeTextRepo::class)]
 class PdoMemeTextRepoTest extends MemeTextRepoFixture
 {
 //    use DbTransactionIsolation;

@@ -39,7 +39,11 @@ use BristolianGenerated\Model\BristolStairInfo;
 use BristolianGenerated\Model\Link;
 use BristolianGenerated\Model\ProcessorRunRecord;
 use BristolianGenerated\Model\Room;
+use BristolianGenerated\Model\RoomNote;
+use BristolianGenerated\Model\RoomNoteTag;
 use BristolianGenerated\Model\RoomFileObjectInfo;
+use BristolianGenerated\Model\WhatdotheyknowFoiRequest;
+use BristolianGenerated\Model\WhatdotheyknowRoomFoiRequest;
 use BristolianGenerated\Model\RoomLink;
 use BristolianGenerated\Model\StairImageObjectInfo;
 use BristolianGenerated\Model\User;
@@ -71,6 +75,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(\BristolianGenerated\Model\Processor::class)]
 #[CoversClass(\BristolianGenerated\Model\ProcessorRunRecord::class)]
 #[CoversClass(\BristolianGenerated\Model\Room::class)]
+#[CoversClass(\BristolianGenerated\Model\RoomNote::class)]
+#[CoversClass(\BristolianGenerated\Model\RoomNoteTag::class)]
+#[CoversClass(\BristolianGenerated\Model\WhatdotheyknowFoiRequest::class)]
+#[CoversClass(\BristolianGenerated\Model\WhatdotheyknowRoomFoiRequest::class)]
 #[CoversClass(\BristolianGenerated\Model\RoomAnnotation::class)]
 #[CoversClass(\BristolianGenerated\Model\RoomAnnotationTag::class)]
 #[CoversClass(\BristolianGenerated\Model\RoomFile::class)]
@@ -362,6 +370,35 @@ class GeneratedModelCoverageTest extends BaseTestCase
     public function test_RoomLink(): void
     {
         $o = new RoomLink('id', 'room_id', 'link_id', 'title', 'desc', self::now(), null);
+        $this->assertSame('id', $o->id);
+        $this->assertSame('room_id', $o->room_id);
+    }
+
+    public function test_RoomNote(): void
+    {
+        $now = self::now();
+        $o = new RoomNote('id', 'room_id', 'user_id', 'title', 'markdown', null, $now, $now);
+        $this->assertSame('id', $o->id);
+        $this->assertSame('title', $o->title);
+    }
+
+    public function test_RoomNoteTag(): void
+    {
+        $o = new RoomNoteTag('note_id', 'tag_id');
+        $this->assertSame('note_id', $o->room_note_id);
+        $this->assertSame('tag_id', $o->tag_id);
+    }
+
+    public function test_WhatdotheyknowFoiRequest(): void
+    {
+        $o = new WhatdotheyknowFoiRequest('id', 42, self::now());
+        $this->assertSame('id', $o->id);
+        $this->assertSame(42, $o->wdt_info_request_id);
+    }
+
+    public function test_WhatdotheyknowRoomFoiRequest(): void
+    {
+        $o = new WhatdotheyknowRoomFoiRequest('id', 'room_id', 'foi_id', 'title', 'desc', self::now());
         $this->assertSame('id', $o->id);
         $this->assertSame('room_id', $o->room_id);
     }

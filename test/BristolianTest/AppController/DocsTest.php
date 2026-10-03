@@ -8,11 +8,9 @@ use Bristolian\AppController\Docs;
 use Bristolian\Session\UserSession;
 use Bristolian\Session\FakeUserSession;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\AppController\Docs::class, 'files')]
-#[CoversMethod(\Bristolian\AppController\Docs::class, 'index')]
-#[CoversMethod(\Bristolian\AppController\Docs::class, 'memes')]
+#[CoversClass(\Bristolian\AppController\Docs::class)]
 
 class DocsTest extends BaseTestCase
 {

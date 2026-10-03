@@ -10,8 +10,10 @@ use Bristolian\Service\CliOutput\CliExitRequestedException;
 use BristolianTest\BaseTestCase;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\Filesystem;
+use League\Flysystem\UnableToDeleteFile;
 use League\Flysystem\UnableToListContents;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use function Safe\file_put_contents;
 use function Safe\mkdir;
 use function Safe\rmdir;
@@ -31,10 +33,15 @@ final class BucketManagementDevThrowingListAdapter extends LocalFilesystemAdapte
     }
 }
 
-#[CoversMethod(\Bristolian\CliController\BucketManagementDev::class, '__construct')]
-#[CoversMethod(\Bristolian\CliController\BucketManagementDev::class, 'clearBucket')]
-#[CoversMethod(\Bristolian\CliController\BucketManagementDev::class, 'clear')]
+final class BucketManagementDevThrowingDeleteAdapter extends LocalFilesystemAdapter
+{
+    public function delete(string $path): void
+    {
+        throw UnableToDeleteFile::atLocation($path, 'test delete failure');
+    }
+}
 
+#[CoversClass(BucketManagementDev::class)]
 class BucketManagementDevTest extends BaseTestCase
 {
     private ?string $testFsDir = null;
@@ -42,13 +49,16 @@ class BucketManagementDevTest extends BaseTestCase
     public function tearDown(): void
     {
         if ($this->testFsDir !== null && is_dir($this->testFsDir)) {
-            foreach (['a.jpg', 'nested/b.txt', 'nested'] as $relativePath) {
-                $path = $this->testFsDir . '/' . $relativePath;
-                if (is_file($path)) {
-                    unlink($path);
+            $iterator = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($this->testFsDir, \FilesystemIterator::SKIP_DOTS),
+                \RecursiveIteratorIterator::CHILD_FIRST
+            );
+            foreach ($iterator as $fileInfo) {
+                if ($fileInfo->isDir()) {
+                    rmdir($fileInfo->getPathname());
                 }
-                if (is_dir($path)) {
-                    rmdir($path);
+                else {
+                    unlink($fileInfo->getPathname());
                 }
             }
             rmdir($this->testFsDir);
@@ -120,6 +130,48 @@ class BucketManagementDevTest extends BaseTestCase
         $this->assertStringContainsString('Failed to list contents', $output->getCapturedOutput());
     }
 
+    public function test_clearBucket_skips_directories_and_counts_files_only(): void
+    {
+        $this->testFsDir = __DIR__ . '/BucketManagementDevTest_fs_' . uniqid();
+        mkdir($this->testFsDir);
+        mkdir($this->testFsDir . '/nested');
+        file_put_contents($this->testFsDir . '/only-file.txt', 'x');
+
+        $output = new CapturingCliOutput();
+        $controller = new BucketManagementDev($output);
+        $filesystem = new Filesystem(new LocalFilesystemAdapter($this->testFsDir));
+
+        $controller->clearBucket('bristolian-memes-dev', $filesystem, false);
+
+        $captured = $output->getCapturedOutput();
+        $this->assertStringContainsString('would delete: only-file.txt', $captured);
+        $this->assertStringNotContainsString('would delete: nested', $captured);
+        $this->assertStringContainsString('(1 file(s))', $captured);
+    }
+
+    public function test_clearBucket_exits_when_delete_fails(): void
+    {
+        $this->testFsDir = __DIR__ . '/BucketManagementDevTest_fs_' . uniqid();
+        mkdir($this->testFsDir);
+        file_put_contents($this->testFsDir . '/a.jpg', 'x');
+
+        $output = new CapturingCliOutput();
+        $controller = new BucketManagementDev($output);
+        $filesystem = new Filesystem(new BucketManagementDevThrowingDeleteAdapter($this->testFsDir));
+
+        try {
+            $controller->clearBucket('bristolian-memes-dev', $filesystem, true);
+            $this->fail('Expected CliExitRequestedException');
+        }
+        catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+        }
+
+        $captured = $output->getCapturedOutput();
+        $this->assertStringContainsString('FAILED to delete: a.jpg', $captured);
+        $this->assertStringContainsString('test delete failure', $captured);
+    }
+
     public function test_clear_rejects_unknown_mode(): void
     {
         $output = new CapturingCliOutput();
@@ -134,5 +186,22 @@ class BucketManagementDevTest extends BaseTestCase
         }
 
         $this->assertStringContainsString("Unknown mode 'explode'", $output->getCapturedOutput());
+    }
+
+    /**
+     * Exercises clear() mode banner and resolveDeleteFlag dry-run path (requires Scaleway credentials).
+     *
+     * @group external
+     */
+    #[Group('external')]
+    public function test_clear_dry_run_mode(): void
+    {
+        $output = new CapturingCliOutput();
+        $controller = new BucketManagementDev($output);
+        $controller->clear(BucketManagementDev::MODE_DRY_RUN);
+
+        $captured = $output->getCapturedOutput();
+        $this->assertStringContainsString('Mode: dry-run', $captured);
+        $this->assertStringContainsString('Bucket: bristolian-memes-dev', $captured);
     }
 }

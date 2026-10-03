@@ -9,15 +9,13 @@ use Bristolian\Parameters\FoiRequestParams;
 use Bristolian\Repo\FoiRequestRepo\FoiRequestRepo;
 use Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\FoiRequestRepo\PdoFoiRequestRepo::class, 'getById')]
-
+#[CoversClass(PdoFoiRequestRepo::class)]
 class PdoFoiRequestRepoTest extends FoiRequestRepoFixture
 {
     public function getTestInstance(): FoiRequestRepo

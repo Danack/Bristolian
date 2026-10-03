@@ -14,14 +14,9 @@ use BristolianTest\BaseTestCase;
 use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use SlimDispatcher\Response\StubResponse;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\AppController\Pages::class, 'about')]
-#[CoversMethod(\Bristolian\AppController\Pages::class, 'experimental')]
-#[CoversMethod(\Bristolian\AppController\Pages::class, 'experimental_debug_param')]
-#[CoversMethod(\Bristolian\AppController\Pages::class, 'get404Page')]
-#[CoversMethod(\Bristolian\AppController\Pages::class, 'homepage')]
-#[CoversMethod(\Bristolian\AppController\Pages::class, 'index')]
+#[CoversClass(\Bristolian\AppController\Pages::class)]
 
 class PagesTest extends BaseTestCase
 {

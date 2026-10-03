@@ -17,18 +17,9 @@ use Bristolian\Repo\DbInfo\FakeDbInfo;
 use Bristolian\CSPViolation\CSPViolationStorage;
 use Bristolian\CSPViolation\FakeCSPViolationStorage;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\AppController\System::class, 'deploy_log')]
-#[CoversMethod(\Bristolian\AppController\System::class, 'display_swagger')]
-#[CoversMethod(\Bristolian\AppController\System::class, 'index')]
-#[CoversMethod(\Bristolian\AppController\System::class, 'route_explorer')]
-#[CoversMethod(\Bristolian\AppController\System::class, 'showDbInfo')]
-#[CoversMethod(\Bristolian\AppController\System::class, 'showDbTables')]
-#[CoversMethod(\Bristolian\AppController\System::class, 'showMigrationInfo')]
-#[CoversMethod(\Bristolian\AppController\System::class, 'show_csp_reports')]
-#[CoversMethod(\Bristolian\AppController\System::class, 'tinned_fish_products')]
-#[CoversMethod(\Bristolian\AppController\System::class, 'updateProductValidationStatus')]
+#[CoversClass(\Bristolian\AppController\System::class)]
 
 class SystemTest extends BaseTestCase
 {

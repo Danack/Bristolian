@@ -11,6 +11,7 @@ use function Safe\file_get_contents;
 #[CoversFunction('bccTroDataEquals')]
 #[CoversFunction('extractDocumentLinksFromUl')]
 #[CoversFunction('parseTrosFromHtml')]
+#[CoversFunction('renderBccTroAsMarkdown')]
 #[CoversFunction('renderBccTrosAsMarkdown')]
 #[CoversFunction('resolveBccDocumentHref')]
 #[CoversFunction('sortArrayKeysRecursive')]
@@ -33,6 +34,17 @@ class FunctionsBccTest extends BaseTestCase
         $tros = \parseTrosFromHtml($html);
 
         $this->assertCount(0, $tros);
+    }
+
+    public function testParseTrosFromHtml_skips_empty_h3_titles(): void
+    {
+        $html = '<html><body><h3>   </h3><h3>TRO: Title</h3><h4>Ref X</h4><ul>'
+            . '<li><a href="/files/999-statement-of-reasons">Statement of Reasons</a></li>'
+            . '</ul></body></html>';
+        $tros = \parseTrosFromHtml($html);
+
+        $this->assertCount(1, $tros);
+        $this->assertSame('TRO: Title', $tros[0]->title);
     }
 
     public static function provides_ParseTrosFromHtmlParsesExampleFile()
@@ -191,6 +203,11 @@ class FunctionsBccTest extends BaseTestCase
             $baseUrl,
             'https://www.bristol.gov.uk/residents/streets-travel/documents/1-foo',
         ];
+        yield 'path-relative from site root base' => [
+            'files/documents/1-foo',
+            'https://www.bristol.gov.uk/',
+            'https://www.bristol.gov.uk/files/documents/1-foo',
+        ];
     }
 
     /**
@@ -316,5 +333,38 @@ TEXT;
         $output = renderBccTrosAsMarkdown([$bcc_tro]);
 
         $this->assertSame($expected_output, $output);
+    }
+
+    public function test_renderBccTroAsMarkdown_includes_reference_when_present(): void
+    {
+        $tro = new BccTro(
+            'Proposed crossing: Test Street',
+            'REF-001',
+            new BccTroDocument('Statement', 'https://example.com/sor', '1'),
+            new BccTroDocument('Notice', 'https://example.com/notice', '2'),
+            new BccTroDocument('Plan', 'https://example.com/plan', '3'),
+        );
+
+        $markdown = renderBccTroAsMarkdown($tro);
+
+        $this->assertStringContainsString('## Proposed crossing: Test Street', $markdown);
+        $this->assertStringContainsString('**Reference:** REF-001', $markdown);
+        $this->assertStringContainsString('[Statement of Reasons](https://example.com/sor)', $markdown);
+    }
+
+    public function test_renderBccTroAsMarkdown_omits_reference_when_empty(): void
+    {
+        $tro = new BccTro(
+            'Untitled TRO',
+            '',
+            new BccTroDocument('Statement', 'https://example.com/sor', '1'),
+            new BccTroDocument('Notice', 'https://example.com/notice', '2'),
+            new BccTroDocument('Plan', 'https://example.com/plan', '3'),
+        );
+
+        $markdown = renderBccTroAsMarkdown($tro);
+
+        $this->assertStringContainsString('## Untitled TRO', $markdown);
+        $this->assertStringNotContainsString('**Reference:**', $markdown);
     }
 }

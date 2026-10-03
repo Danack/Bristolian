@@ -17,13 +17,11 @@ use Bristolian\UserUploadedFile\UserSessionFileUploadHandler;
 use Bristolian\Service\AvatarImageStorage\FakeAvatarImageStorage;
 use BristolianTest\BaseTestCase;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SlimDispatcher\Response\StubResponse;
 use function Safe\getimagesize;
 
-#[CoversMethod(\Bristolian\Service\AvatarImageStorage\HandleAvatarUpload::class, '__construct')]
-#[CoversMethod(\Bristolian\Service\AvatarImageStorage\HandleAvatarUpload::class, 'handle')]
-
+#[CoversClass(HandleAvatarUpload::class)]
 class HandleAvatarUploadTest extends BaseTestCase
 {
     public function test_handle_returns_failureResponse_when_upload_handler_returns_stub_response(): void

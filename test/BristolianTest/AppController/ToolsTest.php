@@ -10,18 +10,9 @@ use Bristolian\Session\OptionalUserSession;
 use Bristolian\Session\StandardOptionalUserSession;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Session\FakeAsmSession;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\AppController\Tools::class, 'committee_seats_page')]
-#[CoversMethod(\Bristolian\AppController\Tools::class, 'email_link_generator_page')]
-#[CoversMethod(\Bristolian\AppController\Tools::class, 'floating_point_page')]
-#[CoversMethod(\Bristolian\AppController\Tools::class, 'floating_point_page_8')]
-#[CoversMethod(\Bristolian\AppController\Tools::class, 'index')]
-#[CoversMethod(\Bristolian\AppController\Tools::class, 'notes_page')]
-#[CoversMethod(\Bristolian\AppController\Tools::class, 'qr_code_generator_page')]
-#[CoversMethod(\Bristolian\AppController\Tools::class, 'teleprompter_page')]
-#[CoversMethod(\Bristolian\AppController\Tools::class, 'timeline_page')]
-#[CoversMethod(\Bristolian\AppController\Tools::class, 'twitter_splitter_page')]
+#[CoversClass(\Bristolian\AppController\Tools::class)]
 
 class ToolsTest extends BaseTestCase
 {

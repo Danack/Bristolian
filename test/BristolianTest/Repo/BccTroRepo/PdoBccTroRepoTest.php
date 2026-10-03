@@ -6,17 +6,13 @@ namespace BristolianTest\Repo\BccTroRepo;
 
 use Bristolian\Repo\BccTroRepo\BccTroRepo;
 use Bristolian\Repo\BccTroRepo\PdoBccTroRepo;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class, 'getMostRecentData')]
-#[CoversMethod(\Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class, 'saveData')]
-#[CoversMethod(\Bristolian\Repo\BccTroRepo\PdoBccTroRepo::class, 'saveDataIfNew')]
-
+#[CoversClass(PdoBccTroRepo::class)]
 class PdoBccTroRepoTest extends BccTroRepoFixture
 {
     public function getTestInstance(): BccTroRepo

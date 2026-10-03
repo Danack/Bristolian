@@ -7,14 +7,13 @@ namespace BristolianTest\Repo\RoomFileObjectInfoRepo;
 use Bristolian\Repo\RoomFileObjectInfoRepo\FakeRoomFileObjectInfoRepo;
 use Bristolian\Repo\RoomFileObjectInfoRepo\RoomFileObjectInfoRepo;
 use Bristolian\UploadedFiles\UploadedFile;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\RoomFileObjectInfoRepo\FakeRoomFileObjectInfoRepo::class, 'getStoredFileInfo')]
-
+#[CoversClass(FakeRoomFileObjectInfoRepo::class)]
 class FakeRoomFileObjectInfoRepoTest extends RoomFileObjectInfoRepoFixture
 {
     /**

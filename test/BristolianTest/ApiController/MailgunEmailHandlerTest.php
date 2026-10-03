@@ -13,9 +13,9 @@ use SlimDispatcher\Response\JsonResponse;
 use VarMap\ArrayVarMap;
 use function Safe\file_get_contents;
 use function Safe\json_decode;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(MailgunEmailHandler::class)]
 class MailgunEmailHandlerTest extends BaseTestCase
 {
     use TestPlaceholders;

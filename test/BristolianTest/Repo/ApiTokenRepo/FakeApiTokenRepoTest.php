@@ -9,16 +9,14 @@ use Bristolian\Repo\ApiTokenRepo\ApiTokenRepo;
 use Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo;
 use Bristolian\Service\SecureTokenGenerator\FixedSecureTokenGenerator;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\ApiTokenCreateFailedException::class, 'afterMaxRetries')]
-#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\ApiTokenRepo\FakeApiTokenRepo::class, 'createToken')]
-
+#[CoversClass(ApiTokenCreateFailedException::class)]
+#[CoversClass(FakeApiTokenRepo::class)]
 class FakeApiTokenRepoTest extends ApiTokenRepoFixture
 {
     /**

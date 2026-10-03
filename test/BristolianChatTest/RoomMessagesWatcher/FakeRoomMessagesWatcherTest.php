@@ -7,12 +7,10 @@ namespace BristolianChatTest\RoomMessagesWatcher;
 use Bristolian\Model\Chat\UserChatMessage;
 use BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Safe\DateTimeImmutable;
 
-#[CoversMethod(\BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher::class, '__construct')]
-#[CoversMethod(\BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher::class, 'getInitialPreviousId')]
-#[CoversMethod(\BristolianChat\RoomMessagesWatcher\FakeRoomMessagesWatcher::class, 'getNextChatMessageAfter')]
-
+#[CoversClass(FakeRoomMessagesWatcher::class)]
 class FakeRoomMessagesWatcherTest extends BaseTestCase
 {
     public function test_getInitialPreviousId_returns_zero_when_max_id_null(): void
@@ -55,5 +53,25 @@ class FakeRoomMessagesWatcherTest extends BaseTestCase
         $fetcher = new FakeRoomMessagesWatcher(10, []);
 
         $this->assertNull($fetcher->getNextChatMessageAfter(10));
+    }
+
+    public function test_getNextChatMessageAfter_parses_datetime_object_and_reply_id(): void
+    {
+        $createdAt = new DateTimeImmutable('2025-03-01T10:00:00+00:00');
+        $row = [
+            'id' => 9,
+            'room_id' => 'room-x',
+            'text' => 'reply test',
+            'reply_message_id' => 3,
+            'user_id' => 'user-x',
+            'created_at' => $createdAt,
+        ];
+        $fetcher = new FakeRoomMessagesWatcher(8, [$row]);
+
+        $message = $fetcher->getNextChatMessageAfter(8);
+        $this->assertNotNull($message);
+        $this->assertSame(9, $message->id);
+        $this->assertSame(3, $message->reply_message_id);
+        $this->assertSame($createdAt, $message->created_at);
     }
 }

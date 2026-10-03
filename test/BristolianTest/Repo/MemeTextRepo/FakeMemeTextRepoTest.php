@@ -11,16 +11,13 @@ use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo;
 use Bristolian\Repo\MemeTextRepo\MemeTextRepo;
 use Bristolian\UploadedFiles\UploadedFile;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::class, 'getNextMemeToOCR')]
-#[CoversMethod(\Bristolian\Repo\MemeTextRepo\FakeMemeTextRepo::class, 'searchMemeIdsByText')]
-
+#[CoversClass(FakeMemeTextRepo::class)]
 class FakeMemeTextRepoTest extends MemeTextRepoFixture
 {
     private ?FakeMemeStorageRepo $memeStorageRepo = null;

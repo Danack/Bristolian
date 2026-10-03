@@ -12,11 +12,9 @@ use BristolianTest\BaseTestCase;
 use SlimDispatcher\Response\RedirectResponse;
 use VarMap\ArrayVarMap;
 use VarMap\VarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\AppController\FoiRequests::class, 'edit')]
-#[CoversMethod(\Bristolian\AppController\FoiRequests::class, 'process_add')]
-#[CoversMethod(\Bristolian\AppController\FoiRequests::class, 'view')]
+#[CoversClass(\Bristolian\AppController\FoiRequests::class)]
 
 class FoiRequestsTest extends BaseTestCase
 {

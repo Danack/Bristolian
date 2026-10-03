@@ -14,16 +14,13 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::class, 'getTagIdsForRoomAnnotation')]
-#[CoversMethod(\Bristolian\Repo\RoomAnnotationTagRepo\PdoRoomAnnotationTagRepo::class, 'setTagsForRoomAnnotation')]
-
+#[CoversClass(PdoRoomAnnotationTagRepo::class)]
 class PdoRoomAnnotationTagRepoTest extends BaseTestCase
 {
     use HasTestWorld;

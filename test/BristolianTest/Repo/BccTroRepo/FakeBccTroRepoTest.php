@@ -6,17 +6,13 @@ namespace BristolianTest\Repo\BccTroRepo;
 
 use Bristolian\Repo\BccTroRepo\BccTroRepo;
 use Bristolian\Repo\BccTroRepo\FakeBccTroRepo;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'getSavedPages')]
-#[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'saveData')]
-#[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'saveDataIfNew')]
-#[CoversMethod(\Bristolian\Repo\BccTroRepo\FakeBccTroRepo::class, 'getMostRecentData')]
-
+#[CoversClass(FakeBccTroRepo::class)]
 class FakeBccTroRepoTest extends BccTroRepoFixture
 {
     public function getTestInstance(): BccTroRepo

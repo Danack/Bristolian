@@ -18,19 +18,13 @@ use BristolianGenerated\Model\Room;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
 use function Safe\filesize;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class, 'addFileToRoom')]
-#[CoversMethod(\Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class, 'getFileDetails')]
-#[CoversMethod(\Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class, 'getFilesForRoom')]
-#[CoversMethod(\Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class, 'getFilesInRoomByOriginalFilename')]
-#[CoversMethod(\Bristolian\Repo\RoomFileRepo\PdoRoomFileRepo::class, 'updateRoomFileDetails')]
-
+#[CoversClass(PdoRoomFileRepo::class)]
 class PdoRoomFileRepoTest extends RoomFileRepoFixture
 {
     use HasTestWorld;

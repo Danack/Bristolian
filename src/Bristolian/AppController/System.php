@@ -100,25 +100,20 @@ HTML;
 
     public function showDbTables(DbInfo $dbInfo): string
     {
-        $table_info = <<< HTML
-<h2>Tables in DB</h2>
+        $table_info = '<h2>Tables in DB</h2>' . "\n\n"
+            . '<table>' . "\n"
+            . '  <thead>' . "\n"
+            . '    <tr>' . "\n"
+            . '      <th>Name</th>' . "\n"
+            . '      <th>Rows</th>' . "\n"
+            . '    </tr>' . "\n"
+            . '  </thead>' . "\n"
+            . '  <tbody>';
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Rows</th>
-    </tr>
-  </thead>
-  <tbody>
-HTML;
-
-        $row_template = <<<HTML
-<tr>
-    <td>:html_name</td>
-    <td>:html_rows</td>
-</tr>
-HTML;
+        $row_template = '<tr>' . "\n"
+            . '    <td>:html_name</td>' . "\n"
+            . '    <td>:html_rows</td>' . "\n"
+            . '</tr>';
 
         foreach ($dbInfo->getTableInfo() as $table) {
             $params = [
@@ -129,12 +124,8 @@ HTML;
             $table_info .= esprintf($row_template, $params);
         }
 
-        $table_info .= <<< HTML
-  </tbody>
-</table>
-HTML;
-
-
+        $table_info .= '  </tbody>' . "\n"
+            . '</table>';
 
         return $table_info;
     }

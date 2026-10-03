@@ -6,15 +6,13 @@ namespace BristolianTest\Repo\Link;
 
 use Bristolian\Repo\LinkRepo\FakeLinkRepo;
 use Bristolian\Repo\LinkRepo\LinkRepo;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\LinkRepo\FakeLinkRepo::class, 'getLastAddedLink')]
-#[CoversMethod(\Bristolian\Repo\LinkRepo\FakeLinkRepo::class, 'getStoredLinks')]
-
+#[CoversClass(FakeLinkRepo::class)]
 class FakeLinkRepoTest extends LinkRepoFixture
 {
     /**

@@ -22,22 +22,18 @@ class FoiRequests
             return "No FOI requests created on system yet.";
         }
 
-        $content .= <<< HTML
-<table>
-  <tr>
-    <th>
-      Text  
-    </th>
-    <th>Description</th>
-  </tr>
-HTML;
+        $content .= '<table>' . "\n"
+            . '  <tr>' . "\n"
+            . '    <th>' . "\n"
+            . '      Text  ' . "\n"
+            . '    </th>' . "\n"
+            . '    <th>Description</th>' . "\n"
+            . '  </tr>';
 
-        $tag_template = <<< HTML
-<tr>
-    <td><a href=":attr_url">:html_text</a></td>
-    <td>:html_description</td>        
-</tr>
-HTML;
+        $tag_template = '<tr>' . "\n"
+            . '    <td><a href=":attr_url">:html_text</a></td>' . "\n"
+            . '    <td>:html_description</td>' . "\n"
+            . '</tr>';
 
         foreach ($foiRequests as $foiRequest) {
             $params = [
@@ -69,29 +65,25 @@ HTML;
     {
         $content = "<h1>FOI Request editing page</h1>";
 
-        $content .= <<< HTML
-<h2>Add tag</h2>
-<form method="post">
-<table>
-  <tr>
-    <td>FOI Request text</td>
-    <td><input type="text" name="text" ></input></td>
-  </tr>
-  <tr>
-    <td>URL</td>
-    <td><input type="text" name="url" ></input></td>
-  </tr>
-  <tr>
-    <td>Description</td>
-    <td><input type="text" name="description"></input></td>
-  </tr>
-</table>
-
-<input type="submit" value="Add"></input>
-</form>
-
-<h2>Current FOI requests</h2>
-HTML;
+        $content .= '<h2>Add tag</h2>' . "\n"
+            . '<form method="post">' . "\n"
+            . '<table>' . "\n"
+            . '  <tr>' . "\n"
+            . '    <td>FOI Request text</td>' . "\n"
+            . '    <td><input type="text" name="text" ></input></td>' . "\n"
+            . '  </tr>' . "\n"
+            . '  <tr>' . "\n"
+            . '    <td>URL</td>' . "\n"
+            . '    <td><input type="text" name="url" ></input></td>' . "\n"
+            . '  </tr>' . "\n"
+            . '  <tr>' . "\n"
+            . '    <td>Description</td>' . "\n"
+            . '    <td><input type="text" name="description"></input></td>' . "\n"
+            . '  </tr>' . "\n"
+            . '</table>' . "\n\n"
+            . '<input type="submit" value="Add"></input>' . "\n"
+            . '</form>' . "\n\n"
+            . '<h2>Current FOI requests</h2>';
 
         return $content;
     }

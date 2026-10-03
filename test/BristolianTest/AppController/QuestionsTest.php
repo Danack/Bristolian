@@ -9,11 +9,9 @@ use Bristolian\MarkdownRenderer\CommonMarkRenderer;
 use Bristolian\MarkdownRenderer\FakeMarkdownRenderer;
 use Bristolian\MarkdownRenderer\MarkdownRenderer;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\AppController\Questions::class, 'index')]
-#[CoversMethod(\Bristolian\AppController\Questions::class, 'weca_question_active_travel')]
-#[CoversMethod(\Bristolian\AppController\Questions::class, 'weca_question_tram')]
+#[CoversClass(\Bristolian\AppController\Questions::class)]
 
 class QuestionsTest extends BaseTestCase
 {

@@ -10,18 +10,13 @@ use Bristolian\Repo\UserRepo\UserRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use PDO;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\UserRepo\PdoUserRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\UserRepo\PdoUserRepo::class, 'ensureRoomUserOwnershipExistsForRoom')]
-#[CoversMethod(\Bristolian\Repo\UserRepo\PdoUserRepo::class, 'ensureSystemUserExists')]
-#[CoversMethod(\Bristolian\Repo\UserRepo\PdoUserRepo::class, 'getRoomUserForRoom')]
-#[CoversMethod(\Bristolian\Repo\UserRepo\PdoUserRepo::class, 'getSystemUser')]
-
+#[CoversClass(PdoUserRepo::class)]
 final class PdoUserRepoTest extends BaseTestCase
 {
     use TestPlaceholders;

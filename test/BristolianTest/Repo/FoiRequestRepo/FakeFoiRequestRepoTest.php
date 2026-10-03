@@ -9,15 +9,13 @@ use Bristolian\Parameters\FoiRequestParams;
 use Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo;
 use Bristolian\Repo\FoiRequestRepo\FoiRequestRepo;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::class, 'createFoiRequest')]
-#[CoversMethod(\Bristolian\Repo\FoiRequestRepo\FakeFoiRequestRepo::class, 'getAllFoiRequests')]
-
+#[CoversClass(FakeFoiRequestRepo::class)]
 class FakeFoiRequestRepoTest extends FoiRequestRepoFixture
 {
     public function getTestInstance(): FoiRequestRepo

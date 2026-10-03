@@ -11,13 +11,10 @@ class Docs
     public function index(): string
     {
         $content = "<h1>Docs</h1>";
-        $content .= <<< HTML
-<ul>
-    <li><a href="/files">Files</a></li>
-    <li><a href="/memes">Memes</a></li>
-   
-</ul>
-HTML;
+        $content .= '<ul>' . "\n"
+            . '    <li><a href="/files">Files</a></li>' . "\n"
+            . '    <li><a href="/memes">Memes</a></li>' . "\n"
+            . '</ul>';
 
         return $content;
     }

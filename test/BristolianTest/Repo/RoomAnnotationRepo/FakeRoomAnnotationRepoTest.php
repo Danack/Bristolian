@@ -9,17 +9,13 @@ use Bristolian\Parameters\AnnotationParam;
 use Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo;
 use Bristolian\Repo\RoomAnnotationRepo\RoomAnnotationRepo;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::class, 'getAnnotationsForRoom')]
-#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::class, 'getAnnotationsForRoomAndTitle')]
-#[CoversMethod(\Bristolian\Repo\RoomAnnotationRepo\FakeRoomAnnotationRepo::class, 'updateTitleAndText')]
-
+#[CoversClass(FakeRoomAnnotationRepo::class)]
 class FakeRoomAnnotationRepoTest extends RoomAnnotationRepoFixture
 {
     public function getTestInstance(): RoomAnnotationRepo

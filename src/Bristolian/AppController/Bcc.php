@@ -10,7 +10,7 @@ class Bcc
     {
         $content = "<h1>BCC committee meetings</h1>";
 
-        $content .= <<< HTML
+        $content .= '
 
 <p>
   <a href="https://youtu.be/NwrqyODcHYw">Committee Model Working Group - Friday, 31st March</a>
@@ -115,7 +115,7 @@ class Bcc
   <a href="https://www.youtube.com/watch?v=kWEfaCoaP3g&feature=youtu.be&ab_channel=Danack">Bristol City council - Overview and Scrutiny Management Board 18th January</a>
 </p>
 
-HTML;
+';
 
         return $content;
     }

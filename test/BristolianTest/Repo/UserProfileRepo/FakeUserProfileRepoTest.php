@@ -8,14 +8,13 @@ use Bristolian\Parameters\UserProfileUpdateParams;
 use Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo;
 use Bristolian\Repo\UserProfileRepo\UserProfileRepo;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\UserProfileRepo\FakeUserProfileRepo::class, 'getDisplayNameHistory')]
-
+#[CoversClass(FakeUserProfileRepo::class)]
 class FakeUserProfileRepoTest extends UserProfileRepoFixture
 {
     public function getTestInstance(): UserProfileRepo

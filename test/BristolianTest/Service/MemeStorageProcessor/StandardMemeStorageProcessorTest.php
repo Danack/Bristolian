@@ -16,10 +16,9 @@ use function Safe\file_get_contents;
 use function Safe\file_put_contents;
 use function Safe\tempnam;
 use function Safe\unlink;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::class, '__construct')]
-#[CoversMethod(\Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::class, 'storeMemeForUser')]
+#[CoversClass(\Bristolian\Service\MemeStorageProcessor\StandardMemeStorageProcessor::class)]
 
 class StandardMemeStorageProcessorTest extends BaseTestCase
 {

@@ -12,19 +12,13 @@ use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\MemeTagUpdateParams;
 use Bristolian\UploadedFiles\UploadedFile;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::class, 'deleteTagForUser')]
-#[CoversMethod(\Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::class, 'getMostCommonTags')]
-#[CoversMethod(\Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::class, 'getMostCommonTagsForMemes')]
-#[CoversMethod(\Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::class, 'getUserTagsForMeme')]
-#[CoversMethod(\Bristolian\Repo\MemeTagRepo\FakeMemeTagRepo::class, 'updateTagForUser')]
-
+#[CoversClass(FakeMemeTagRepo::class)]
 class FakeMemeTagRepoTest extends MemeTagRepoFixture
 {
     public function getTestInstance(): MemeTagRepo

@@ -19,10 +19,9 @@ use function Safe\file_get_contents;
 use function Safe\file_put_contents;
 use function Safe\tempnam;
 use function Safe\unlink;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::class, '__construct')]
-#[CoversMethod(\Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::class, 'storeFileForUser')]
+#[CoversClass(\Bristolian\Service\BristolStairImageStorage\StandardBristolStairImageStorage::class)]
 
 class StandardBristolStairImageStorageTest extends BaseTestCase
 {

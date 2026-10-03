@@ -18,25 +18,13 @@ use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
 use Ramsey\Uuid\Uuid;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'getByNormalizedName')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'getMeme')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'getMemeByOriginalFilename')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'listAllMemes')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'listMemesForUser')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'listMemesForUserWithNoTags')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'markAsDeleted')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'searchMemesByExactTags')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'searchMemesForUser')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'setUploaded')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\PdoMemeStorageRepo::class, 'storeMeme')]
-
+#[CoversClass(PdoMemeStorageRepo::class)]
 class PdoMemeStorageRepoTest extends MemeStorageRepoFixture
 {
     use HasTestWorld;

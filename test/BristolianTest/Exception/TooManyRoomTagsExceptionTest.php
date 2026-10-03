@@ -7,9 +7,9 @@ namespace BristolianTest\Exception;
 use Bristolian\Exception\BristolianException;
 use Bristolian\Exception\TooManyRoomTagsException;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversNothing]
+#[CoversClass(TooManyRoomTagsException::class)]
 class TooManyRoomTagsExceptionTest extends BaseTestCase
 {
     public function test_forMaxReached_returns_exception_with_max_in_message(): void

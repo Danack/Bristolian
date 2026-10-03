@@ -10,15 +10,13 @@ use Bristolian\Parameters\TagParams;
 use Bristolian\Repo\RoomTagRepo\FakeRoomTagRepo;
 use Bristolian\Repo\RoomTagRepo\RoomTagRepo;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\RoomTagRepo\FakeRoomTagRepo::class, 'createTag')]
-#[CoversMethod(\Bristolian\Repo\RoomTagRepo\FakeRoomTagRepo::class, 'getTagsForRoom')]
-
+#[CoversClass(FakeRoomTagRepo::class)]
 class FakeRoomTagRepoTest extends RoomTagRepoFixture
 {
     private const FAKE_ROOM_ID = 'test-room-id-123';

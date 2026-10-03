@@ -6,11 +6,9 @@ namespace BristolianTest\Repo\RoomLinkTagRepo;
 
 use Bristolian\Repo\RoomLinkTagRepo\FakeRoomLinkTagRepo;
 use Bristolian\Repo\RoomLinkTagRepo\RoomLinkTagRepo;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\Repo\RoomLinkTagRepo\FakeRoomLinkTagRepo::class, 'getTagIdsForRoomLink')]
-#[CoversMethod(\Bristolian\Repo\RoomLinkTagRepo\FakeRoomLinkTagRepo::class, 'setTagsForRoomLink')]
-
+#[CoversClass(FakeRoomLinkTagRepo::class)]
 class FakeRoomLinkTagRepoTest extends RoomLinkTagRepoFixture
 {
     public function getTestInstance(): RoomLinkTagRepo

@@ -9,18 +9,13 @@ use Bristolian\Parameters\UserProfileUpdateParams;
 use Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo;
 use Bristolian\Repo\UserProfileRepo\UserProfileRepo;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, 'getDisplayNameHistory')]
-#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, 'getUserProfile')]
-#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, 'updateAvatarImage')]
-#[CoversMethod(\Bristolian\Repo\UserProfileRepo\PdoUserProfileRepo::class, 'updateProfile')]
-
+#[CoversClass(PdoUserProfileRepo::class)]
 class PdoUserProfileRepoTest extends UserProfileRepoFixture
 {
     private ?string $cachedTestUserId = null;

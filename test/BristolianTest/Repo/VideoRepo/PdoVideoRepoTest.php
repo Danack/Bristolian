@@ -10,16 +10,13 @@ use Bristolian\Repo\VideoRepo\PdoVideoRepo;
 use Bristolian\Repo\VideoRepo\VideoRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Support\HasTestWorld;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\VideoRepo\PdoVideoRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\VideoRepo\PdoVideoRepo::class, 'create')]
-#[CoversMethod(\Bristolian\Repo\VideoRepo\PdoVideoRepo::class, 'getById')]
-
+#[CoversClass(PdoVideoRepo::class)]
 class PdoVideoRepoTest extends BaseTestCase
 {
     use HasTestWorld;

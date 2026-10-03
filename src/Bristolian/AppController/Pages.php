@@ -24,41 +24,26 @@ class Pages
         $content .= "<p>Maybe have a look at the <a href='/bcc/committee_meetings'>BCC committee meetings</a> about committees.</p>";
         $content .= "<p>Or why you should object to the <a href='/complaints/triangle_road'>Triangle road change</a>.</p>";
 
-        $content .= <<< HTML
-<p>Oh, a tiny bit more; <a href='/questions'>questions</a>.</p>
-
-<h3>Explanations / F.A.Q.s</h3>
-
-<a href='/explanations/bristol_rovers'>Bristol Rovers</a><br/>
-<a href='/explanations/avon_crescent'>Avon Crescent</a><br/>
-<a href='/explanations/advice_for_speaking_at_council'>Advice for speaking at council</a><br/>
-
-<a href='/explanations/shenanigans_planning'>Shenanigans at Development Committee B</a><br/>
-
-
-<a href='/explanations/monitoring_officer_notes'>Monitoring Officer shenanigans</a><br/>
-
-<a href='/explanations/development_committee_rules'>Development Committee Made Up Rules</a><br/>
-
-
-<!--
-<ul>
-  <li><a href="/tags">Tags on the site</a></li>
-  <li><a href="/foi_requests">Interesting FOI requests</foi></li>
-</ul>
- -->
-
-HTML;
-
-        $content .= <<< HTML
-
-<h3>Eldon House music</h3>
-<p>
-  <a href="https://www.youtube.com/watch?v=hCNsspqVXMk&ab_channel=Danack">Act 1</a><br/> 
-  <a href="https://www.youtube.com/watch?v=3tpIn6oVkPE&ab_channel=Danack">Act 2</a> <br/>
-  <a href="https://www.youtube.com/watch?v=fvNFsCnoSn0&ab_channel=Danack">Act 3</a><br/>
-</p>
-HTML;
+        $content .= '<p>Oh, a tiny bit more; <a href=\'/questions\'>questions</a>.</p>' . "\n\n"
+            . '<h3>Explanations / F.A.Q.s</h3>' . "\n\n"
+            . '<a href=\'/explanations/bristol_rovers\'>Bristol Rovers</a><br/>' . "\n"
+            . '<a href=\'/explanations/avon_crescent\'>Avon Crescent</a><br/>' . "\n"
+            . '<a href=\'/explanations/advice_for_speaking_at_council\'>Advice for speaking at council</a><br/>' . "\n\n"
+            . '<a href=\'/explanations/shenanigans_planning\'>Shenanigans at Development Committee B</a><br/>' . "\n\n\n"
+            . '<a href=\'/explanations/monitoring_officer_notes\'>Monitoring Officer shenanigans</a><br/>' . "\n\n"
+            . '<a href=\'/explanations/development_committee_rules\'>Development Committee Made Up Rules</a><br/>' . "\n\n\n"
+            . '<!--' . "\n"
+            . '<ul>' . "\n"
+            . '  <li><a href="/tags">Tags on the site</a></li>' . "\n"
+            . '  <li><a href="/foi_requests">Interesting FOI requests</foi></li>' . "\n"
+            . '</ul>' . "\n"
+            . ' -->' . "\n\n"
+            . '<h3>Eldon House music</h3>' . "\n"
+            . '<p>' . "\n"
+            . '  <a href="https://www.youtube.com/watch?v=hCNsspqVXMk&ab_channel=Danack">Act 1</a><br/> ' . "\n"
+            . '  <a href="https://www.youtube.com/watch?v=3tpIn6oVkPE&ab_channel=Danack">Act 2</a> <br/>' . "\n"
+            . '  <a href="https://www.youtube.com/watch?v=fvNFsCnoSn0&ab_channel=Danack">Act 3</a><br/>' . "\n"
+            . '</p>';
 
         return $content;
     }

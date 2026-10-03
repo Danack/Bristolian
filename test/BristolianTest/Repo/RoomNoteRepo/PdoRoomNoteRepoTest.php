@@ -116,4 +116,43 @@ class PdoRoomNoteRepoTest extends BaseTestCase
         $this->expectException(ContentNotFoundException::class);
         $repo->update($room->id, '00000000-0000-0000-0000-000000000000', 'x', 'y', null);
     }
+
+    public function test_getNotesForRoom_filters_by_created_at_and_document_timestamp_before(): void
+    {
+        $this->ensureStandardSetup();
+        [$room, $user] = $this->createTestUserAndRoom();
+        $repo = $this->injector->make(PdoRoomNoteRepo::class);
+        $repo->create(
+            $user->getUserId(),
+            $room->id,
+            'Timestamped note',
+            'body',
+            new DateTimeImmutable('2021-06-15 12:00:00')
+        );
+
+        $afterCreated = $repo->getNotesForRoom($room->id, RoomContentSearchParams::createFromVarMap(
+            new ArrayVarMap(['created_at_after' => '2020-01-01'])
+        ));
+        $this->assertCount(1, $afterCreated);
+
+        $beforeCreated = $repo->getNotesForRoom($room->id, RoomContentSearchParams::createFromVarMap(
+            new ArrayVarMap(['created_at_before' => '2099-01-01'])
+        ));
+        $this->assertCount(1, $beforeCreated);
+
+        $beforeDocument = $repo->getNotesForRoom($room->id, RoomContentSearchParams::createFromVarMap(
+            new ArrayVarMap(['document_timestamp_before' => '2021-07-01'])
+        ));
+        $this->assertCount(1, $beforeDocument);
+    }
+
+    public function test_delete_throws_when_missing(): void
+    {
+        $this->ensureStandardSetup();
+        [$room] = $this->createTestUserAndRoom();
+        $repo = $this->injector->make(PdoRoomNoteRepo::class);
+
+        $this->expectException(ContentNotFoundException::class);
+        $repo->delete($room->id, '00000000-0000-0000-0000-000000000000');
+    }
 }

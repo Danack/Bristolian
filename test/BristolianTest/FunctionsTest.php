@@ -158,6 +158,13 @@ TEXT;
         json_decode_safe($deeplyNested);
     }
 
+    public function test_json_decode_safe_throws_when_decoded_value_is_not_array(): void
+    {
+        $this->expectException(\Bristolian\Exception\JsonException::class);
+        $this->expectExceptionMessage('Error decoding JSON: null returned.');
+        json_decode_safe('"just a string"');
+    }
+
     public function test_json_encode_safe_returns_json_string_for_valid_data(): void
     {
         $data = ['foo' => 'bar', 'n' => 42];
@@ -955,7 +962,6 @@ TEXT;
         yield 'too few parts' => ['2026_04_02'];
         yield 'too many parts' => ['2026_04_02_23_56_14_00'];
         yield 'non-numeric segment' => ['2026_ab_02_23_56_14'];
-//        yield 'invalid calendar date' => ['2026_02_30_00_00_00'];
     }
 
     #[DataProvider('provides_underscore_separated_datetime_to_human_readable_invalid')]

@@ -8,15 +8,13 @@ use Bristolian\Repo\AvatarImageStorageInfoRepo\AvatarImageStorageInfoRepo;
 use Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo;
 use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\UploadedFiles\UploadedFile;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::class, 'setUploaded')]
-#[CoversMethod(\Bristolian\Repo\AvatarImageStorageInfoRepo\PdoAvatarImageStorageInfoRepo::class, 'storeFileInfo')]
-
+#[CoversClass(PdoAvatarImageStorageInfoRepo::class)]
 class PdoAvatarImageStorageInfoRepoTest extends AvatarImageStorageInfoRepoFixture
 {
     public function getTestInstance(): AvatarImageStorageInfoRepo

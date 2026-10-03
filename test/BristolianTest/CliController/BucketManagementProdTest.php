@@ -10,15 +10,34 @@ use Bristolian\Service\CliOutput\CliExitRequestedException;
 use BristolianTest\BaseTestCase;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use League\Flysystem\UnableToListContents;
+use League\Flysystem\UnableToReadFile;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use function Safe\mkdir;
 use function Safe\rmdir;
 use function Safe\unlink;
 
-#[CoversMethod(\Bristolian\CliController\BucketManagementProd::class, '__construct')]
-#[CoversMethod(\Bristolian\CliController\BucketManagementProd::class, 'archiveBucket')]
-#[CoversMethod(\Bristolian\CliController\BucketManagementProd::class, 'archive')]
+final class BucketManagementProdThrowingListAdapter extends LocalFilesystemAdapter
+{
+    public function listContents(string $path, bool $deep): iterable
+    {
+        return (function () use ($path, $deep): \Generator {
+            throw UnableToListContents::atLocation($path, $deep, new \Exception('test list failure'));
+            yield;
+        })();
+    }
+}
 
+final class BucketManagementProdThrowingReadAdapter extends LocalFilesystemAdapter
+{
+    public function readStream(string $path)
+    {
+        throw UnableToReadFile::fromLocation($path, 'test read failure');
+    }
+}
+
+#[CoversClass(BucketManagementProd::class)]
 class BucketManagementProdTest extends BaseTestCase
 {
     private ?string $remoteDir = null;
@@ -122,6 +141,60 @@ class BucketManagementProdTest extends BaseTestCase
         $this->assertSame('old', $local->read('bristolian-memes/a.jpg'));
     }
 
+    public function test_archiveBucket_exits_when_listing_fails(): void
+    {
+        [$remote, $local] = $this->createFilesystems();
+        $remote = new Filesystem(new BucketManagementProdThrowingListAdapter($this->remoteDir));
+
+        $output = new CapturingCliOutput();
+        $controller = new BucketManagementProd($output);
+
+        try {
+            $controller->archiveBucket('bristolian-memes', $remote, $local, false);
+            $this->fail('Expected CliExitRequestedException');
+        }
+        catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+        }
+
+        $this->assertStringContainsString('Failed to list contents', $output->getCapturedOutput());
+    }
+
+    public function test_archiveBucket_exits_when_read_fails(): void
+    {
+        [$remote, $local] = $this->createFilesystems();
+        $remote->write('a.jpg', 'remote-a');
+        $remote = new Filesystem(new BucketManagementProdThrowingReadAdapter($this->remoteDir));
+
+        $output = new CapturingCliOutput();
+        $controller = new BucketManagementProd($output);
+
+        try {
+            $controller->archiveBucket('bristolian-memes', $remote, $local, true);
+            $this->fail('Expected CliExitRequestedException');
+        }
+        catch (CliExitRequestedException $exception) {
+            $this->assertSame(-1, $exception->getExitCode());
+        }
+
+        $captured = $output->getCapturedOutput();
+        $this->assertStringContainsString('FAILED: bristolian-memes/a.jpg', $captured);
+        $this->assertStringContainsString('test read failure', $captured);
+    }
+
+    public function test_archiveBucket_downloads_when_local_missing_even_if_remote_size_unknown(): void
+    {
+        [$remote, $local] = $this->createFilesystems();
+        $remote->write('unknown-size.bin', 'payload');
+
+        $output = new CapturingCliOutput();
+        $controller = new BucketManagementProd($output);
+        $controller->archiveBucket('bristolian-memes', $remote, $local, true);
+
+        $this->assertSame('payload', $local->read('bristolian-memes/unknown-size.bin'));
+        $this->assertStringContainsString('downloaded: bristolian-memes/unknown-size.bin', $output->getCapturedOutput());
+    }
+
     public function test_archive_rejects_unknown_mode(): void
     {
         $output = new CapturingCliOutput();
@@ -136,6 +209,23 @@ class BucketManagementProdTest extends BaseTestCase
         }
 
         $this->assertStringContainsString("Unknown mode 'explode'", $output->getCapturedOutput());
+    }
+
+    /**
+     * Exercises archive() mode banner and resolveDownloadFlag dry-run path (requires archive/ dir and Scaleway).
+     *
+     * @group external
+     */
+    #[Group('external')]
+    public function test_archive_dry_run_mode(): void
+    {
+        $output = new CapturingCliOutput();
+        $controller = new BucketManagementProd($output);
+        $controller->archive(BucketManagementProd::MODE_DRY_RUN);
+
+        $captured = $output->getCapturedOutput();
+        $this->assertStringContainsString('Mode: dry-run', $captured);
+        $this->assertStringContainsString('Bucket: bristolian-memes', $captured);
     }
 
     /**

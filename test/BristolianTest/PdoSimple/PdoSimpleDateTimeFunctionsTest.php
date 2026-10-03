@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\CoversFunction;
  */
 
 #[CoversFunction('Bristolian\PdoSimple\convertRowFromDatetime')]
+#[CoversFunction('Bristolian\PdoSimple\convertRowToDatetime')]
 
 class PdoSimpleDateTimeFunctionsTest extends BaseTestCase
 {

@@ -8,12 +8,12 @@ use Bristolian\Config\EnvironmentName;
 use Bristolian\PdoSimple\PdoSimple;
 use Bristolian\Repo\EmailQueue\EmailQueue;
 use Bristolian\Repo\EmailQueue\PdoEmailQueue;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
-#[CoversNothing]
+#[CoversClass(PdoEmailQueue::class)]
 class PdoEmailQueueTest extends EmailQueueFixture
 {
     public function setUp(): void

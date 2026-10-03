@@ -9,16 +9,13 @@ use Bristolian\Parameters\ChatMessageParam;
 use Bristolian\Repo\ChatMessageRepo\ChatMessageRepo;
 use Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::class, 'getMessagesForRoom')]
-#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::class, 'storeChatMessageForSystem')]
-#[CoversMethod(\Bristolian\Repo\ChatMessageRepo\FakeChatMessageRepo::class, 'storeChatMessageForUser')]
-
+#[CoversClass(FakeChatMessageRepo::class)]
 class FakeChatMessageRepoTest extends ChatMessageRepoFixture
 {
     public function getTestInstance(): ChatMessageRepo

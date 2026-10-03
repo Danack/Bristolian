@@ -16,10 +16,9 @@ use function Safe\file_get_contents;
 use function Safe\file_put_contents;
 use function Safe\tempnam;
 use function Safe\unlink;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::class, '__construct')]
-#[CoversMethod(\Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::class, 'storeFileForRoomAndUser')]
+#[CoversClass(\Bristolian\Service\RoomFileStorage\StandardRoomFileStorage::class)]
 
 class StandardRoomFileStorageTest extends BaseTestCase
 {

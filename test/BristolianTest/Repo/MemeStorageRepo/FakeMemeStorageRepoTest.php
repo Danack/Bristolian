@@ -8,25 +8,13 @@ use Bristolian\Exception\BristolianException;
 use Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo;
 use Bristolian\Repo\MemeStorageRepo\MemeStorageRepo;
 use Bristolian\UploadedFiles\UploadedFile;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'getByNormalizedName')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'getMeme')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'getMemeByOriginalFilename')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'getStoredMeme')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'listAllMemes')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'listMemesForUser')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'listMemesForUserWithNoTags')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'markAsDeleted')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'searchMemesByExactTags')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'searchMemesForUser')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'setUploaded')]
-#[CoversMethod(\Bristolian\Repo\MemeStorageRepo\FakeMemeStorageRepo::class, 'storeMeme')]
-
+#[CoversClass(FakeMemeStorageRepo::class)]
 class FakeMemeStorageRepoTest extends MemeStorageRepoFixture
 {
     /**

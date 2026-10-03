@@ -163,6 +163,19 @@ class CacheTagMiddlewareTest extends BaseTestCase
     }
 
 
+    public function testWriteTablesStillReturnsResponseFromHandler(): void
+    {
+        $this->recorder->recordTablesWritten(['users']);
+
+        $middleware = new CacheTagMiddleware($this->recorder);
+        $request = new ServerRequest([], [], null, 'POST');
+        $handler = $this->createHandler(200);
+
+        $response = $middleware($request, $handler);
+
+        $this->assertSame(200, $response->getStatusCode());
+    }
+
     #[RequiresEnvironmentVariable('RUNNING_IN_DOCKER', '1')]
     public function testBothReadAndWriteTablesOnlyReadsInHeader(): void
     {

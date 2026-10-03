@@ -14,16 +14,13 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Repo\TestPlaceholders;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo::class, 'getTagIdsForRoomLink')]
-#[CoversMethod(\Bristolian\Repo\RoomLinkTagRepo\PdoRoomLinkTagRepo::class, 'setTagsForRoomLink')]
-
+#[CoversClass(PdoRoomLinkTagRepo::class)]
 class PdoRoomLinkTagRepoTest extends BaseTestCase
 {
     use HasTestWorld;

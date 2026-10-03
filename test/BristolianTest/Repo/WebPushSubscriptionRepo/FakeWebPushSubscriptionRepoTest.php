@@ -9,15 +9,13 @@ use Bristolian\Repo\WebPushSubscriptionRepo\UserConstraintFailedException;
 use Bristolian\Repo\WebPushSubscriptionRepo\WebPushSubscriptionRepo;
 use Bristolian\Parameters\WebPushSubscriptionParams;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::class, 'getUserSubscriptions')]
-#[CoversMethod(\Bristolian\Repo\WebPushSubscriptionRepo\FakeWebPushSubscriptionRepo::class, 'save')]
-
+#[CoversClass(FakeWebPushSubscriptionRepo::class)]
 class FakeWebPushSubscriptionRepoTest extends WebPushSubscriptionRepoFixture
 {
     public function getTestInstance(): WebPushSubscriptionRepo

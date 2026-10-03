@@ -11,16 +11,13 @@ use Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo;
 use Bristolian\Repo\RoomTagRepo\RoomTagRepo;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::class, 'createTag')]
-#[CoversMethod(\Bristolian\Repo\RoomTagRepo\PdoRoomTagRepo::class, 'getTagsForRoom')]
-
+#[CoversClass(PdoRoomTagRepo::class)]
 class PdoRoomTagRepoTest extends RoomTagRepoFixture
 {
     use HasTestWorld;

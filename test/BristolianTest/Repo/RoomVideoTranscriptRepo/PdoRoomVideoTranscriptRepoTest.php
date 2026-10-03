@@ -13,17 +13,13 @@ use Bristolian\Repo\RoomVideoTranscriptRepo\RoomVideoTranscriptRepo;
 use Bristolian\Repo\VideoRepo\PdoVideoRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Support\HasTestWorld;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::class, 'addTranscript')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::class, 'getTranscriptById')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoTranscriptRepo\PdoRoomVideoTranscriptRepo::class, 'getTranscriptsForRoomVideo')]
-
+#[CoversClass(PdoRoomVideoTranscriptRepo::class)]
 class PdoRoomVideoTranscriptRepoTest extends BaseTestCase
 {
     use HasTestWorld;

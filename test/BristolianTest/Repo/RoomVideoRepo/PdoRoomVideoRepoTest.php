@@ -20,24 +20,13 @@ use BristolianTest\BaseTestCase;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'addClip')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'addVideo')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'fetchTagIdsForRoomVideo')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'fetchVideoById')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'getRoomVideo')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'getRoomVideoForRoom')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'getVideosForRoom')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'getVideosForRoomWithTags')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'resolveTagIdsToTags')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoRepo\PdoRoomVideoRepo::class, 'updateTitleAndDescription')]
-
+#[CoversClass(PdoRoomVideoRepo::class)]
 class PdoRoomVideoRepoTest extends BaseTestCase
 {
     use HasTestWorld;

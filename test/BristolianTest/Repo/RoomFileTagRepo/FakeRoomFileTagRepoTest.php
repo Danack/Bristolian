@@ -6,12 +6,9 @@ namespace BristolianTest\Repo\RoomFileTagRepo;
 
 use Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo;
 use Bristolian\Repo\RoomFileTagRepo\RoomFileTagRepo;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::class, 'getTagIdsForRoomFile')]
-#[CoversMethod(\Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::class, 'key')]
-#[CoversMethod(\Bristolian\Repo\RoomFileTagRepo\FakeRoomFileTagRepo::class, 'setTagsForRoomFile')]
-
+#[CoversClass(FakeRoomFileTagRepo::class)]
 class FakeRoomFileTagRepoTest extends RoomFileTagRepoFixture
 {
     public function getTestInstance(): RoomFileTagRepo

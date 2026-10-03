@@ -12,17 +12,12 @@ class Questions
     {
         $content = "<h1>Questions for WECA</h1>";
 
-        $content .= <<< HTML
-<p>
-    <a href="/questions/1_weca_active_travel">WECA active travel</a>
-</p>
-
-<p>
-    <a href="/questions/2_weca_cumberland_basin_tram">Cumberland Basin trams</a>
-</p>
-
-HTML;
-
+        $content .= '<p>' . "\n"
+            . '    <a href="/questions/1_weca_active_travel">WECA active travel</a>' . "\n"
+            . '</p>' . "\n\n"
+            . '<p>' . "\n"
+            . '    <a href="/questions/2_weca_cumberland_basin_tram">Cumberland Basin trams</a>' . "\n"
+            . '</p>' . "\n";
 
         return $content;
     }

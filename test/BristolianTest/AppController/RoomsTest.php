@@ -83,49 +83,9 @@ use function Safe\mkdir;
 use function Safe\rmdir;
 use function Safe\tmpfile;
 use function Safe\unlink;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'addLink')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'addNote')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'addTag')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'addVideo')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'annotate_file')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'createClip')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'deleteNote')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'fetchTranscript')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getAnnotations')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getAnnotationsForFile')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getFiles')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getLinks')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getNotes')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getRoomDetails')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getTags')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getTranscript')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getTranscripts')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'getVideos')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'handleAddAnnotation')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'handleFileUpload')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'handleFileUpload_get')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'iframe_show_file')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'index')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'render_annotate_file')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'resolveTagIdsToTags')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'serveFileForRoom')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'setAnnotationTags')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'setFileTags')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'setLinkTags')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'setNoteTags')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'setVideoTags')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'showNote')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'showRoom')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'updateAnnotation')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'updateLink')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'updateNote')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'updateRoomDetails')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'updateRoomFile')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'updateVideo')]
-#[CoversMethod(\Bristolian\AppController\Rooms::class, 'viewAnnotation')]
-
+#[CoversClass(\Bristolian\AppController\Rooms::class)]
 class RoomsTest extends BaseTestCase
 {
     private string $roomId;
@@ -863,6 +823,20 @@ class RoomsTest extends BaseTestCase
         $jsonInput = new FakeJsonInput([
             'title' => 'Agenda',
             'markdown' => '# Hello',
+        ]);
+        $this->injector->alias(JsonInput::class, FakeJsonInput::class);
+        $this->injector->share($jsonInput);
+
+        $result = $this->injector->execute([Rooms::class, 'addNote']);
+        $this->assertInstanceOf(SuccessResponse::class, $result);
+    }
+
+    public function test_addNote_with_blank_document_timestamp(): void
+    {
+        $jsonInput = new FakeJsonInput([
+            'title' => 'Agenda',
+            'markdown' => '# Hello',
+            'document_timestamp' => '   ',
         ]);
         $this->injector->alias(JsonInput::class, FakeJsonInput::class);
         $this->injector->share($jsonInput);

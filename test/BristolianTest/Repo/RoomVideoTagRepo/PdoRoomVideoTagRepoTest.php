@@ -11,16 +11,14 @@ use Bristolian\Repo\RoomVideoTagRepo\RoomVideoTagRepo;
 use BristolianTest\BaseTestCase;
 use BristolianTest\Support\HasTestWorld;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::class, 'getTagIdsForRoomVideo')]
-#[CoversMethod(\Bristolian\Repo\RoomVideoTagRepo\PdoRoomVideoTagRepo::class, 'setTagsForRoomVideo')]
-
+#[CoversClass(PdoRoomVideoTagRepo::class)]
 class PdoRoomVideoTagRepoTest extends BaseTestCase
 {
     use HasTestWorld;

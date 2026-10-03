@@ -6,17 +6,13 @@ namespace BristolianTest\Repo\RoomRepo;
 
 use Bristolian\Repo\RoomRepo\FakeRoomRepo;
 use Bristolian\Repo\RoomRepo\RoomRepo;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\RoomRepo\FakeRoomRepo::class, 'createRoom')]
-#[CoversMethod(\Bristolian\Repo\RoomRepo\FakeRoomRepo::class, 'getAllRooms')]
-#[CoversMethod(\Bristolian\Repo\RoomRepo\FakeRoomRepo::class, 'getLatestRoomsCreated')]
-#[CoversMethod(\Bristolian\Repo\RoomRepo\FakeRoomRepo::class, 'updateRoomNameAndPurpose')]
-
+#[CoversClass(FakeRoomRepo::class)]
 class FakeRoomRepoTest extends RoomRepoFixture
 {
     public function getTestInstance(): RoomRepo

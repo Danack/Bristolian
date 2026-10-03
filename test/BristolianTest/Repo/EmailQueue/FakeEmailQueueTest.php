@@ -10,18 +10,13 @@ use Bristolian\Model\Types\Email;
 use Bristolian\Repo\EmailQueue\EmailQueue;
 use Bristolian\Repo\EmailQueue\FakeEmailQueue;
 use Safe\DateTimeImmutable;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group standard_repo
  */
 
-#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'getAllEmails')]
-#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'getEmailById')]
-#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'setEmailFailed')]
-#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'setEmailSent')]
-#[CoversMethod(\Bristolian\Repo\EmailQueue\FakeEmailQueue::class, 'setEmailToRetry')]
-
+#[CoversClass(FakeEmailQueue::class)]
 class FakeEmailQueueTest extends EmailQueueFixture
 {
     public function getTestInstance(EnvironmentName $environmentName): EmailQueue

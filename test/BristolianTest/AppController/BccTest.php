@@ -6,9 +6,9 @@ namespace BristolianTest\AppController;
 
 use Bristolian\AppController\Bcc;
 use BristolianTest\BaseTestCase;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversMethod(\Bristolian\AppController\Bcc::class, 'committee_meetings')]
+#[CoversClass(\Bristolian\AppController\Bcc::class)]
 
 class BccTest extends BaseTestCase
 {

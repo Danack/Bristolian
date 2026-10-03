@@ -11,20 +11,13 @@ use Bristolian\Parameters\MemeTagParams;
 use Bristolian\Parameters\MemeTagUpdateParams;
 use Bristolian\UploadedFiles\UploadedFile;
 use VarMap\ArrayVarMap;
-use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @group db
  */
 
-#[CoversMethod(\Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class, '__construct')]
-#[CoversMethod(\Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class, 'addTagForMeme')]
-#[CoversMethod(\Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class, 'deleteTagForUser')]
-#[CoversMethod(\Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class, 'getMostCommonTags')]
-#[CoversMethod(\Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class, 'getMostCommonTagsForMemes')]
-#[CoversMethod(\Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class, 'getUserTagsForMeme')]
-#[CoversMethod(\Bristolian\Repo\MemeTagRepo\PdoMemeTagRepo::class, 'updateTagForUser')]
-
+#[CoversClass(PdoMemeTagRepo::class)]
 class PdoMemeTagRepoTest extends MemeTagRepoFixture
 {
     private ?string $testUserId = null;
