@@ -150,8 +150,9 @@ function createPDOForUser(Config $config)
 //        PDO::ATTR_PERSISTENT => true
     ];
 
-//    var_dump($dsn_string);
-//    exit(0);
+    var_dump($dsn_string);
+    var_dump(getenv());
+    exit(0);
 
     // PHP 8.5 moved MYSQL_ATTR_FOUND_ROWS onto Pdo\Mysql.
     if (PHP_VERSION_ID < 80500) {
