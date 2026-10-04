@@ -19,6 +19,7 @@ services:
   php_fpm:
     environment:
       - ENV_DESCRIPTION=default,prod
+      - RUNNING_IN_DOCKER=1
   varnish:
     depends_on:
       - caddy
