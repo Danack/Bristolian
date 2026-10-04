@@ -74,6 +74,25 @@ p {
   padding: 4px;
 }
 
+.group.on {
+  background: #e3effa;
+  color: inherit;
+  border-color: #9ec3e6;
+}
+
+.group.on .nums th,
+.group.on .nums td {
+  background: transparent;
+  color: inherit;
+}
+
+.group.on .group-name,
+.group.on button {
+  color: inherit;
+  background: transparent;
+  border-color: #9ec3e6;
+}
+
 .group-name {
   font-weight: 600;
   font-size: 0.8em;
@@ -108,10 +127,31 @@ p {
   font-variant-numeric: tabular-nums;
 }
 
-.note {
-  color: var(--muted);
+#info-dialog {
+  border: 1px solid var(--line);
+  padding: 1.25rem 1.5rem;
+  max-width: 36rem;
+  background: #fff;
+  color: inherit;
+}
+
+#info-dialog::backdrop {
+  background: rgba(28, 25, 23, 0.35);
+}
+
+#info-dialog h2 {
+  font-size: 1.15rem;
+  margin: 0 0 0.75rem;
+}
+
+#info-dialog p {
+  margin: 0 0 1rem;
+  line-height: 1.45;
+}
+
+#info-dialog form {
   margin: 0;
-  max-width: 18rem;
+  text-align: right;
 }
 
 button {
@@ -129,10 +169,9 @@ button {
   gap: 4px;
 }
 
-button.on {
-  background: #1c1917;
-  color: #fff;
-  border-color: #1c1917;
+#showing {
+  color: var(--muted);
+  margin: 0.75rem 0 0;
 }
 
 .wrap {
@@ -149,7 +188,7 @@ button.on {
   border-collapse: separate;
   border-spacing: 0;
   font-family: "Segoe UI", system-ui, sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   line-height: 1.0;
 }
 
@@ -160,40 +199,30 @@ button.on {
 
 .wrap th:nth-child(2),
 .wrap td:nth-child(2) {
-  width: 4.8rem;
+  width: 5.8rem;
 }
 
 .wrap th:nth-child(3),
 .wrap td:nth-child(3) {
-  width: 4.4rem;
-}
-
-.wrap th:nth-child(4),
-.wrap td:nth-child(4) {
-  width: 5.8rem;
-}
-
-.wrap th:nth-child(5),
-.wrap td:nth-child(5) {
   width: 6.6rem;
 }
 
+.wrap th:nth-child(4),
+.wrap td:nth-child(4),
+.wrap th:nth-child(5),
+.wrap td:nth-child(5),
 .wrap th:nth-child(6),
-.wrap td:nth-child(6),
-.wrap th:nth-child(7),
-.wrap td:nth-child(7),
-.wrap th:nth-child(8),
-.wrap td:nth-child(8) {
+.wrap td:nth-child(6) {
   width: 22%;
 }
 
-.wrap th:nth-child(9),
-.wrap td:nth-child(9) {
+.wrap th:nth-child(7),
+.wrap td:nth-child(7) {
   width: 7rem;
 }
 
-.wrap th:nth-child(10),
-.wrap td:nth-child(10) {
+.wrap th:nth-child(8),
+.wrap td:nth-child(8) {
   width: 9rem;
 }
 
@@ -215,7 +244,7 @@ button.on {
   top: 0;
   z-index: 1;
   cursor: pointer;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   color: var(--muted);
   white-space: nowrap;
 }
