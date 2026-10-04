@@ -356,8 +356,7 @@ TEXT;
      */
     public static function provides_mysql_host_for_current_environment(): \Generator
     {
-        yield 'not in docker uses localhost' => [null, 'db', '127.0.0.1'];
-        yield 'empty env uses localhost' => ['', 'db', '127.0.0.1'];
+        yield 'forced off uses localhost' => ['0', 'db', '127.0.0.1'];
         yield 'docker uses configured host' => ['1', 'db', 'db'];
         yield 'docker preserves other hosts' => ['1', '127.0.0.1', '127.0.0.1'];
     }

@@ -494,15 +494,23 @@ function getEnvString(string $name): string
  * Docker Compose hostnames such as `db` only resolve on the compose network.
  * Amp's DNS resolver also queries public nameservers instead of the system
  * resolver, which hangs then NXDomains for `db` when PHPUnit runs on the host.
+ *
+ * PHP-FPM sets clear_env, so RUNNING_IN_DOCKER is often missing from web
+ * workers even when the container has it. /.dockerenv is still present there.
  */
 function getMysqlHostForCurrentEnvironment(string $configuredHost): string
 {
     $running_in_docker = getenv("RUNNING_IN_DOCKER");
-    if ($running_in_docker !== "1") {
+    if ($running_in_docker === "0") {
         return "127.0.0.1";
     }
 
-    return $configuredHost;
+    // TODO - remove this file check
+    if ($running_in_docker === "1" || is_file("/.dockerenv")) {
+        return $configuredHost;
+    }
+
+    return "127.0.0.1";
 }
 
 
