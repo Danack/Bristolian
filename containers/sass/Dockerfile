@@ -1,5 +1,5 @@
 
-FROM node:14.4.0-stretch-slim
+FROM node:20-bookworm-slim
 
 WORKDIR /var/app
 
