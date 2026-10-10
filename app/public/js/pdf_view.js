@@ -470,6 +470,52 @@ function clearAllHighlights() {
 }
 
 
+// The parent page gives the iframe its height from CSS. On a cold load that
+// stylesheet can arrive after the PDF has rendered, so a single scrollIntoView
+// runs while the iframe viewport is still 0px tall and the scroll is lost.
+function scrollFirstHighlightIntoView(highlights, attempt) {
+    if (!highlights || highlights.length === 0) {
+        return;
+    }
+
+    const highlight = highlights[0];
+    const element = g_page_container[highlight.page];
+    const pageReady = element &&
+        element.offsetHeight > 0 &&
+        g_textlayer_drawn &&
+        g_textlayer_drawn[highlight.page] === true &&
+        window.innerHeight > 0;
+
+    if (!pageReady) {
+        if (attempt < 50) {
+            setTimeout(() => scrollFirstHighlightIntoView(highlights, attempt + 1), 100);
+            return;
+        }
+
+        let reason = "iframe viewport has no height";
+        const textLayerDrawn = g_textlayer_drawn && g_textlayer_drawn[highlight.page] === true;
+        if (!element) {
+            reason = "page element is missing";
+        }
+        else if (element.offsetHeight <= 0) {
+            reason = "page has no height";
+        }
+        else if (!textLayerDrawn) {
+            reason = "text layer is not drawn";
+        }
+        console.error(
+            `Gave up scrolling to annotation highlight on page ${highlight.page} after ${attempt} attempts: ${reason}.`
+        );
+        return;
+    }
+
+    element.scrollIntoView({
+        behavior: 'auto',
+        block: 'center',
+        inline: 'nearest'
+    });
+}
+
 function drawHighlights(highlights) {
 
     // highlights_json is in PDF viewport scale-1 CSS px; convert to current g_scale, then to bitmap via DPR.
@@ -477,17 +523,7 @@ function drawHighlights(highlights) {
 
     console.log("Drawing highlights", highlights);
 
-    if (highlights.length > 0) {
-        let element = g_page_container[highlights[0].page];
-
-        if (element) {
-            element.scrollIntoView({
-                behavior: 'smooth', // Options: 'auto' (default) or 'smooth' for smooth scrolling
-                block: 'center',    // Options: 'start', 'center', 'end', or 'nearest'
-                inline: 'nearest'   // Options: 'start', 'center', 'end', or 'nearest'
-            });
-        }
-    }
+    scrollFirstHighlightIntoView(highlights, 0);
 
     for (let i = 0; i < highlights.length; i += 1) {
         let highlight = highlights[i];
@@ -652,7 +688,12 @@ var url = params['stored_file_url'];
 var loadingTask = pdfjsLib.getDocument(url);
 loadingTask.promise.then(start_rendering_pdf_into_document);
 
-// window.addEventListener('scroll', handleWindowScroll);
+// Parent CSS can resize the iframe after the first scroll attempt.
+window.addEventListener('resize', () => {
+    if (g_last_stored_highlights !== null) {
+        scrollFirstHighlightIntoView(g_last_stored_highlights, 0);
+    }
+});
 
 
 let selectionChangeTimeout;

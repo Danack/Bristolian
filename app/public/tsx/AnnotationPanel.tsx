@@ -52,6 +52,7 @@ export function receiveSelectionMessage(event: MessageEvent) {
 
   if (event.data && event.data.type === PdfSelectionType.PDF_READY) {
     console.log("pdf ready");
+    sendMessage("pdf_ready", {});
   }
 
   if (event.data && event.data.type === PdfSelectionType.PDF_RENDERING) {
@@ -150,9 +151,14 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
 
   unsubscribe_logged_in: (() => void) | null = null;
 
-  // If the panel is loaded with a selected annotation_id, then we need
-  // to remember to render it when we get the data back about annotations.
+  // Deep-linked annotation to draw once both the annotation list and the
+  // PDF viewer are ready. Sending earlier is dropped: the iframe is not
+  // listening until the PDF has finished rendering.
   pending_annotation_id: null|string = null;
+
+  pdf_ready: boolean = false;
+
+  message_listener_pdf_ready: null|number = null;
 
   constructor(props: AnnotationPanelProps) {
     super(props);
@@ -171,6 +177,11 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
       () => this.receiveTextDeselected()
     );
 
+    this.message_listener_pdf_ready = registerMessageListener(
+      "pdf_ready",
+      () => this.receivePdfReady()
+    );
+
     this.unsubscribe_logged_in = subscribe_logged_in((logged_in: boolean) => {
       this.setState({ logged_in });
     });
@@ -181,6 +192,7 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
   componentWillUnmount() {
     unregisterListener(this.message_listener);
     unregisterListener(this.message_listener_deselect);
+    unregisterListener(this.message_listener_pdf_ready);
     if (this.unsubscribe_logged_in) {
       this.unsubscribe_logged_in();
       this.unsubscribe_logged_in = null;
@@ -240,17 +252,33 @@ export class AnnotationPanel extends Component<AnnotationPanelProps, AnnotationP
     }
   }
 
+  receivePdfReady() {
+    this.pdf_ready = true;
+    this.sendPendingHighlights();
+  }
+
   componentDidUpdate(prevProps: AnnotationPanelProps, prevState: AnnotationPanelState) {
     // The whole lifecycle and interaction between this panel and
     // the iframe containing the PDF could do with some re-thinking.
-    if (this.pending_annotation_id && this.state.annotations.length > 0) {
-      console.log("we had pending_annotation_id and data is now loaded, so sending highlights");
-      this.sendHighlightsToDraw();
-      this.pending_annotation_id = null;
+    if (this.state.annotations !== prevState.annotations) {
+      this.sendPendingHighlights();
     }
     else if (this.state.selected_annotation_id !== prevState.selected_annotation_id) {
-      this.sendHighlightsToDraw();
+      this.pending_annotation_id = this.state.selected_annotation_id;
+      this.sendPendingHighlights();
     }
+  }
+
+  sendPendingHighlights() {
+    if (!this.pdf_ready || this.pending_annotation_id === null) {
+      return;
+    }
+    if (this.state.annotations.length === 0) {
+      return;
+    }
+    console.log("annotation list and pdf viewer are both ready, sending highlights");
+    this.sendHighlightsToDraw();
+    this.pending_annotation_id = null;
   }
 
   sendHighlightsToDraw() {
