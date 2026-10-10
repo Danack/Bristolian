@@ -1,5 +1,5 @@
 
-FROM node:19.1.0-bullseye-slim
+FROM node:20-bookworm-slim
 
 WORKDIR /var/app/codeview
 
