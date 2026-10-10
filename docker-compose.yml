@@ -9,26 +9,6 @@ services:
     networks:
       app_network:
     restart: always
-  mediawiki:
-    image: mediawiki:latest
-    container_name: mediawiki
-    ports:
-      - "8080:80"
-    environment:
-      MEDIAWIKI_DB_HOST: db
-      MEDIAWIKI_DB_USER: mediawiki
-      MEDIAWIKI_DB_PASSWORD: abcd1234
-      MEDIAWIKI_DB_NAME: mediawiki
-      # MEDIAWIKI_DB_USER: mediawiki
-      # MEDIAWIKI_DB_PASSWORD: db_pasword
-      # MEDIAWIKI_DB_NAME: mediawiki
-    networks:
-      app_network:
-    depends_on:
-      - db
-    volumes:
-      - ./mediawiki_data:/var/www/html/images
-      - ./containers/mediawiki/LocalSettings.php:/var/www/html/LocalSettings.php
   db:
     image: mysql:8.0.30
     command: --default-authentication-plugin=mysql_native_password

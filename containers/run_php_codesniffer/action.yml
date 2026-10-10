@@ -1,6 +1,0 @@
-name: 'phpcs'
-description: 'Perform code-style analysis'
-author: 'David Stinemetze'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'

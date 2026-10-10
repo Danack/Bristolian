@@ -41,8 +41,6 @@ docker-compose up --build \
 
 # codeview_js_builder \
 
-# mediawiki \
-
 docker-compose down
 
 
