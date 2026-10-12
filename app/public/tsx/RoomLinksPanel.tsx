@@ -627,10 +627,16 @@ export class RoomLinksPanel extends Component<RoomLinksPanelProps, RoomLinksPane
                     <img src="/svg/search-button-icon.svg" alt="Show search" width={16} height={16} />
                 </button>
             )}
-            {links_block}
-            <div>Showing {length} links</div>
-            <button className="button_standard" onClick={() => this.refreshLinks()}>Refresh</button>
-            <RoomLinkAddPanel room_id={this.props.room_id}/>
+            <div className="room_content_split">
+                <div className="room_content_split_list">
+                    {links_block}
+                    <div>Showing {length} links</div>
+                    <button className="button_standard" onClick={() => this.refreshLinks()}>Refresh</button>
+                </div>
+                <div className="room_content_split_add">
+                    <RoomLinkAddPanel room_id={this.props.room_id}/>
+                </div>
+            </div>
         </div>
     }
 

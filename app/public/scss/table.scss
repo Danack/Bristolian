@@ -110,6 +110,9 @@ table.large_table {
 }
 
 table.room_files_table {
+  width: 100%;
+  max-width: calc-size(max-content, 2 * size);
+
   th.room_files_sortable_header {
     white-space: nowrap;
   }

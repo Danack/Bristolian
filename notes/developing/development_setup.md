@@ -148,6 +148,8 @@ Most of the time, you should just check the output of the `bristolian-js_builder
 
 ## Database Access
 
+**Note to AI Assistants**: Do not connect to running containers to look up live application data. That includes `docker ps` / `docker exec` into MySQL, Redis, or the app containers to find room ids, users, file contents, or anything else stored at runtime. The credentials below are for the developer. If a page needs checking, ask the developer which URL to open, or use the browser on a URL they already gave you. Commands the project requires inside containers (PHPUnit, PHPStan, Composer, npm, the generators) are still fine.
+
 ### MySQL Connection
 ```bash
 mysql -uroot -pPrJaGpnNSzSLW8p8 -h127.0.0.1

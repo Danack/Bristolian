@@ -134,8 +134,14 @@ export class RoomTabsPanel extends Component<RoomTabsPanelProps, RoomTabsPanelSt
                     </div>
 
                     <div className={this.panelClass("files")}>
-                        <RoomFilesPanel room_id={room_id} />
-                        <RoomFileUploadPanel room_id={room_id} />
+                        <div className="room_content_split">
+                            <div className="room_content_split_list">
+                                <RoomFilesPanel room_id={room_id} />
+                            </div>
+                            <div className="room_content_split_add">
+                                <RoomFileUploadPanel room_id={room_id} />
+                            </div>
+                        </div>
                     </div>
 
                     <div className={this.panelClass("notes")}>

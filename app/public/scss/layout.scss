@@ -195,6 +195,36 @@
   display: block;
 }
 
+.room_content_split {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+
+  .room_content_split_list {
+    flex: 1 1 auto;
+    min-width: max-content;
+  }
+
+  .room_content_split_add {
+    flex: 0 0 28rem;
+    width: 28rem;
+    max-width: 40%;
+    min-width: 16rem;
+
+    table {
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+  }
+}
+
 .roompage_bottom {
   margin-top: 1rem;
 }

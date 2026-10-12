@@ -835,10 +835,16 @@ export class RoomNotesPanel extends Component<RoomNotesPanelProps, RoomNotesPane
                     <img src="/svg/search-button-icon.svg" alt="Show search" width={16} height={16} />
                 </button>
             )}
-            {notes_block}
-            <div>Showing {this.state.roomNotes.length} notes</div>
-            <button className="button_standard" onClick={() => this.refreshNotes()}>Refresh</button>
-            {this.renderCreateForm()}
+            <div className="room_content_split">
+                <div className="room_content_split_list">
+                    {notes_block}
+                    <div>Showing {this.state.roomNotes.length} notes</div>
+                    <button className="button_standard" onClick={() => this.refreshNotes()}>Refresh</button>
+                </div>
+                <div className="room_content_split_add">
+                    {this.renderCreateForm()}
+                </div>
+            </div>
         </div>;
     }
 
